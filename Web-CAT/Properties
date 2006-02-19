@@ -1,0 +1,119 @@
+# ===================================================================
+# W E B - C A T   C O N F I G U R A T I O N   P R O P E R T I E S
+# ===================================================================
+# This file contains generic, system-wide property settings, many
+# of which form the overridable defaults for various Web-CAT settings.
+# This file is designed to be part of the main Web-CAT source
+# distribution, so developers should not include any installation-
+# specific settings here.
+#
+# We need to insert instructions for how to configure/override these
+# settings here.
+
+# -------------------------------------------------------------------
+# Subsystem loading options
+# -------------------------------------------------------------------
+subsystem.unjarred.classes = (\
+	 net.sf.webcat.admin.Admin\
+	 ,net.sf.webcat.grader.Grader\
+	 )
+
+
+# -------------------------------------------------------------------
+# Configure authenticator
+# -------------------------------------------------------------------
+# These entries add an internal database password authenticator
+# that shows up as "Support Personnel" on the login page
+# You can override these settings or add new domains in your
+# WebObjects.properties file.
+
+authenticator.DBAuth = net.sf.webcat.core.DatabaseAuthenticator
+authenticator.DBAuth.displayableName = Support Personnel
+authenticator.DBAuth.addIfNotFound   = false
+authenticator.default = DBAuth
+
+
+# -------------------------------------------------------------------
+# Configure core settings
+# -------------------------------------------------------------------
+# The URLs could be relative, but are absolute here for testing
+# before actual deployment.
+help.baseURL = http://web-cat.cs.vt.edu/Web-CAT.help/
+coreCmdShell = cmd /c
+
+# -------------------------------------------------------------------
+# Run-time control
+# -------------------------------------------------------------------
+# forcibly die 24 hours after starting up (no refusal period)
+ERTimeToLive = 86700
+# Or, start refusing new sessions 24 hours after starting up
+# ERTimeToDie = 86400
+# Forcibly die 180 seconds after starting to refuse new sessions
+ERTimeToKill = 180
+
+
+# -------------------------------------------------------------------
+# Configure WebObjects settings
+# -------------------------------------------------------------------
+WODefaultUndoStackLimit           = 0
+WOSessionTimeout                  = 1800
+WOAllowsConcurrentRequestHandling = true
+
+
+# -------------------------------------------------------------------
+# Configure ERExtensions settings
+# -------------------------------------------------------------------
+er.extensions.ERXEC.defaultAutomaticLockUnlock = true
+
+
+# -------------------------------------------------------------------
+# Configure WebObjects logging info
+# -------------------------------------------------------------------
+# The debug levels used internally by WebObjects are:
+# DebugLevelOff           = 0
+# DebugLevelCritical      = 1
+# DebugLevelInformational = 2
+# DebugLevelDetailed      = 3
+#
+# See the NSLog javadoc page for details on which debug groups
+# are available, and enable them by symbolic names as shown below.
+# -------------------------------------------------------------------
+# NSDebugGroups=(:3, com.webobjects.foundation.NSLog.DebugGroupComponents)
+
+
+# ===================================================================
+# W E B - C A T   L O G 4 J   C O N F I G U R A T I O N
+# ===================================================================
+
+# -------------------------------------------------------------------
+# Top-level configuration
+# -------------------------------------------------------------------
+# Generally, we keep the root log level at INFO or higher, and only
+# enable DEBUG-level output in specific subsystems or classes.  Otherwise,
+# the DEBUG-level messages from all classes would be a bit too cumbersome
+# to wade through.  You can change the default rootCategory, add alternative
+# logging levels on a subsystem/package/class level, etc., in your personal
+# properties file.
+# -------------------------------------------------------------------
+log4j.rootLogger = WARN, console
+log4j.logger.net.sf.webcat.core.Application = INFO
+log4j.logger.net.sf.webcat.core.install     = INFO
+log4j.logger.net.sf.webcat.dbupdate   = INFO
+log4j.loggerFactory=er.extensions.ERXLogger$Factory
+
+# -------------------------------------------------------------------
+# A few basic appender configurations
+# -------------------------------------------------------------------
+log4j.appender.console                = org.apache.log4j.ConsoleAppender
+log4j.appender.console.layout         = er.extensions.ERXPatternLayout
+log4j.appender.console.ImmediateFlush = true
+log4j.appender.console.layout.ConversionPattern = %5p [%t] %c{1}: %m%n
+
+log4j.appender.logfile                = org.apache.log4j.RollingFileAppender
+log4j.appender.logfile.file           = web-cat.log
+log4j.appender.logfile.ImmediateFlush = true
+log4j.appender.logfile.MaxFileSize    = 200000
+log4j.appender.logfile.MaxBackupIndex = 2
+log4j.appender.logfile.layout         = er.extensions.ERXPatternLayout
+log4j.appender.logfile.ImmediateFlush = true
+log4j.appender.logfile.layout.ConversionPattern = %5p %d{DATE} [%t] %c{1}: %m%n

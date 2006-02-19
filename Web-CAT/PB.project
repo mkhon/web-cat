@@ -1,0 +1,93 @@
+
+{
+    PDO_UNIX_JAVA_COMPILER = "$(JDKBINDIR)/javac";
+    PDO_UNIX_OBJCPLUS_COMPILER = "$(NEXTDEV_BIN)/gcc";
+    PDO_UNIX_BUILDTOOL = $NEXT_ROOT/Developer/bin/make;
+    WINDOWS_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/Applications";
+    LOCALIZABLE_FILES = 
+    {};
+    PROJECTNAME = "Web-CAT";
+    MAKEFILEDIR = "$(MAKEFILEPATH)/java_makefiles";
+    PBPROJECTTYPEVERSION = 4.0;
+    WINDOWS_BUILDTOOL = $NEXT_ROOT/Developer/Executables/make;
+    PDO_UNIX_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/Applications";
+    FRAMEWORKSEARCH = 
+    (
+       "$(NEXT_ROOT)$(LOCAL_LIBRARY_DIR)/Frameworks"
+    );
+    NEXTSTEP_BUILDTOOL = /bin/gnumake;
+    NEXTSTEP_JAVA_COMPILER = /usr/bin/javac;
+    LANGUAGE = English;
+    NEXTSTEP_OBJCPLUS_COMPILER = /usr/bin/cc;
+    NEXTSTEP_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/Applications";
+    DYNAMIC_CODE_GEN = YES;
+    PROJECTTYPE = JavaWebObjectsApplication;
+    WINDOWS_JAVA_COMPILER = "$(JDKBINDIR)/javac.exe";
+    PROJECTVERSION = 2.8;
+    WINDOWS_OBJCPLUS_COMPILER = "$(DEVDIR)/gcc";
+    FILESTABLE = 
+    {
+        OTHER_LINKED = 
+        ();
+        CLASSES = 
+        (
+           src/edu/vt/cs/Web_CAT/Grader/graphs/AssignmentSummary.java, 
+           src/edu/vt/cs/Web_CAT/Core/MutableArray.java, 
+           src/edu/vt/cs/Web_CAT/Core/MutableDictionary.java
+        );
+        FRAMEWORKS = 
+        (
+           Admin.framework, 
+           Core.framework, 
+           DBUpdateEngine.framework, 
+           EOJDBCPrototypes.framework, 
+           Grader.framework, 
+           EOJDBCPrototypes.framework, 
+           DBUpdateEngine.framework, 
+           Core.framework, 
+           Grader.framework, 
+           Admin.framework, 
+           Admin.framework, 
+           Core.framework, 
+           DBUpdateEngine.framework, 
+           EOJDBCPrototypes.framework, 
+           ERDirectToWeb.framework, 
+           ERExtensions.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           Grader.framework, 
+           JavaWOExtensions.framework, 
+           WOUnitTest.framework, 
+           JavaDirectToWeb.framework, 
+           JavaDTWGeneration.framework, 
+           JavaEOAccess.framework, 
+           JavaEOControl.framework, 
+           JavaEOProject.framework, 
+           JavaFoundation.framework, 
+           JavaJDBCAdaptor.framework, 
+           JavaWebObjects.framework, 
+           JavaWOJSPServlet.framework, 
+           JavaXML.framework, 
+           JDBCEOAdaptor.framework
+        );
+        WEBSERVER_RESOURCES = 
+        ();
+        WO_COMPONENTS = 
+        ();
+        OTHER_SOURCES = 
+        (
+           Makefile.preamble, 
+           Makefile, 
+           Makefile.postamble, 
+           CustomInfo.plist
+        );
+        WOAPP_RESOURCES = 
+        (
+           Properties, 
+           user.d2wmodel
+        );
+    };
+}

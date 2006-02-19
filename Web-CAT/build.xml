@@ -1,0 +1,230 @@
+<project name="Web-CAT" default="install" basedir=".">
+
+	<!-- main targets  -->
+	<!-- add optional targets to depends list if needed -->
+	<target name="build" depends="setProps,init.build,build.woapp,ssdd,war"/>
+
+	<target name="install" depends="local.license,build,install.war"/>
+    <target name="build.redistributable.war" depends="empty.license,build,install.war"/>
+
+    <target name="install.traditional" depends="setProps,init.build.traditional,build.traditional.woapp"/>
+    
+	<target name="clean" depends="setProps">
+	  	<delete dir="dist"/>
+	</target>
+
+	<!-- property determination  -->
+	<target name="setProps">
+		<property file="build.properties"/>
+		<property file="${user.home}${file.separator}Library${file.separator}wobuild.properties"/>
+		<condition property="wo.properties.check.failed">
+			<not>
+    			<and>
+      				<isset property="wo.wosystemroot"/>
+      				<isset property="wo.wolocalroot"/>
+    			</and>
+    		</not>
+  		</condition>
+  		<fail message="Could not find ${user.home}${file.separator}Library${file.separator}wobuild.properties." if="wo.properties.check.failed"/>
+		<property name="install.dir" value="${wo.wolocalroot}/Library/WebObjects/Applications"/>
+	</target>
+
+	<!-- basic initializations  -->
+	<target name="init.build">
+	 	<tstamp/>
+		<property name="dest.dir" value="dist"/>
+	</target>
+
+    <target name="init.build.traditional">
+        <tstamp/>
+        <property name="dest.dir" value="${install.dir}"/>
+    </target>
+
+	<!-- woproject tasks -->
+	<target name="build.woapp">
+
+	    <taskdef name="woapplication" classname="org.objectstyle.woproject.ant.WOApplication"/>
+
+		<!-- add webXML="true" to generate a web.xml file -->
+		<woapplication name="${project.name}"
+			       stdFrameworks="false"
+			       destDir="${dest.dir}/${project.name}/WEB-INF"
+			       customInfoPListContent="${customInfoPListContent}"
+			       principalClass="${principalClass}"
+			       webXML="true"
+                   webXML_WOROOT="${servlet.install.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks"
+                   webXML_LOCALROOT="${servlet.install.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks"
+                   webXML_WOAINSTALLROOT="${servlet.install.dir}/${project.name}/WEB-INF">
+   			<classes dir="${classes.dir}">
+      			<patternset>
+  					<includesfile name="woproject/classes.include.patternset"/>
+					<excludesfile name="woproject/classes.exclude.patternset"/>
+				</patternset>
+   			</classes>
+   			<wsresources dir=".">
+      			<patternset>
+  					<includesfile name="woproject/wsresources.include.patternset"/>
+					<excludesfile name="woproject/wsresources.exclude.patternset"/>
+				</patternset>
+			</wsresources>
+   			<resources dir=".">
+      				<patternset>
+  					<includesfile name="woproject/resources.include.patternset"/>
+					<excludesfile name="woproject/resources.exclude.patternset"/>
+				</patternset>
+       			</resources>
+			<frameworks root="${wo.wosystemroot}" embed="true">
+      				<patternset>
+  					<includesfile name="woproject/ant.frameworks.wo.wosystemroot"/>
+				</patternset>
+   			</frameworks>
+   			<frameworks root="${wo.wolocalroot}" embed="true">
+      				<patternset>
+  					<includesfile name="woproject/ant.frameworks.wo.wolocalroot"/>
+				</patternset>
+   			</frameworks>
+			<frameworks root="${user.home}" embed="true">
+      				<patternset>
+  					<includesfile name="woproject/ant.frameworks.user.home"/>
+				</patternset>
+   			</frameworks>
+			<otherclasspath root="${wo.wosystemroot}">
+   				<patternset>
+  					<includesfile name="woproject/ant.classpaths.wo.wosystemroot"/>
+				</patternset>
+			</otherclasspath>
+			<lib dir="../extra-jars">
+				<include name="**/*.jar"/>
+				<exclude name="**/*.woa/**"/>
+			</lib>
+   		</woapplication>
+	</target>
+
+    <target name="build.traditional.woapp">
+
+        <taskdef name="woapplication" classname="org.objectstyle.woproject.ant.WOApplication"/>
+
+        <!-- add webXML="true" to generate a web.xml file -->
+        <woapplication name="${project.name}"
+                   stdFrameworks="false"
+                   destDir="${dest.dir}"
+                   customInfoPListContent="${customInfoPListContent}"
+                   principalClass="${principalClass}"
+                   webXML="false">
+            <classes dir="${classes.dir}">
+                <patternset>
+                    <includesfile name="woproject/classes.include.patternset"/>
+                    <excludesfile name="woproject/classes.exclude.patternset"/>
+                </patternset>
+            </classes>
+            <wsresources dir=".">
+                <patternset>
+                    <includesfile name="woproject/wsresources.include.patternset"/>
+                    <excludesfile name="woproject/wsresources.exclude.patternset"/>
+                </patternset>
+            </wsresources>
+            <resources dir=".">
+                    <patternset>
+                    <includesfile name="woproject/resources.include.patternset"/>
+                    <excludesfile name="woproject/resources.exclude.patternset"/>
+                </patternset>
+                </resources>
+            <frameworks root="${wo.wosystemroot}">
+                    <patternset>
+                    <includesfile name="woproject/ant.frameworks.wo.wosystemroot"/>
+                </patternset>
+            </frameworks>
+            <frameworks root="${wo.wolocalroot}">
+                    <patternset>
+                    <includesfile name="woproject/ant.frameworks.wo.wolocalroot"/>
+                </patternset>
+            </frameworks>
+            <frameworks root="${user.home}">
+                    <patternset>
+                    <includesfile name="woproject/ant.frameworks.user.home"/>
+                </patternset>
+            </frameworks>
+            <otherclasspath root="${wo.wosystemroot}">
+                <patternset>
+                    <includesfile name="woproject/ant.classpaths.wo.wosystemroot"/>
+                </patternset>
+            </otherclasspath>
+            <lib dir=".">
+                <include name="Add .jar's that should be copied in the woa."/>
+                <exclude name="**/*.woa/**"/>
+            </lib>
+        </woapplication>
+    </target>
+   
+	<!-- optional targets -->
+
+	<!-- war target-->
+    <!-- To use this target remove the if="${never}" statement and create the LICENSE in your project
+         and create the web.xml file with the woapplication task.-->
+    <target name="war" depends="ssdd">
+        <war destfile="${dest.dir}/${project.name}.war"
+            webxml="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/web.xml"
+            basedir="${dest.dir}/${project.name}">
+            <lib dir="${wo.wosystemroot}/Library/Frameworks/JavaWOJSPServlet.framework/WebServerResources/Java/">
+                <include name="JavaWOJSPServlet_client.jar"/>
+            </lib>
+            <!--lib dir="c:/Web-CAT/extra-jars">
+                <include name="**/*.jar"/>
+                <exclude name="**/servlet-api.jar"/>
+            </lib-->
+        </war>
+    </target>
+
+	<!-- ssdd target-->   
+    <target name="patchWebXML"
+    	depends="build.woapp"
+	    description="Fix up ordering of frameworks in path">
+		<exec executable="perl" failonerror="true">
+	        <arg file="patchWebXML.pl"/>
+	    	<arg value="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/web.xml"/>
+		</exec>
+        <exec executable="perl" failonerror="true">
+            <arg file="patchClasspathTxt.pl"/>
+            <arg value="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Windows/CLSSPATH.TXT"/>
+        </exec>
+    </target>   
+
+    <target name="local.license">
+        <property name="license.dir" value="."/>
+    </target>
+    
+    <target name="empty.license">
+        <property name="license.dir" value="../empty-license"/>
+    </target>
+    
+	<!-- ssdd target-->
+    <!-- To use this target remove the if="${never}" statement and create the LICENSE in your project
+         and create the web.xml file with the woapplication task.-->
+    <target name="ssdd" depends="patchWebXML">
+    	<mkdir dir="${dest.dir}/${project.name}/WEB-INF/tlds"/>
+    	<copy todir="${dest.dir}/${project.name}/WEB-INF/">
+            <fileset dir="${license.dir}">
+                <include name="LICENSE"/>
+            </fileset>
+        </copy>
+        <copy todir="${dest.dir}/${project.name}/">
+            <fileset dir=".">
+                <include name="index.html"/>
+            </fileset>
+        </copy>
+    	<copy todir="${dest.dir}/${project.name}/WEB-INF/tlds">
+            <fileset dir="${wo.wosystemroot}/Library/Frameworks/JavaWOJSPServlet.framework/Resources/">
+                <include name="WOtaglib_1_0.tld"/>
+            </fileset>
+        </copy>
+     </target>
+
+    <target name="install.war" depends="war">
+    	<copy todir="${servlet.install.dir}/">
+            <fileset dir="${dest.dir}">
+                <include name="${project.name}.war"/>
+            </fileset>
+        </copy>
+ 	</target>
+
+</project>
