@@ -1,0 +1,11 @@
+Body: WOComponentContent {
+	_unroll = YES;
+}
+
+PlainPage: net.sf.webcat.core.PageWithNavigation {
+	title = "Edit Database";
+}
+
+Header: net.sf.webcat.admin.WCMenuHeader {
+}
+

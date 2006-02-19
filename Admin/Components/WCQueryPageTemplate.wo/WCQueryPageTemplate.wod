@@ -1,0 +1,80 @@
+BannerConditional: WOConditional {
+	_unroll = YES;
+	condition = showBanner;
+}
+
+EntityName: WOString {
+	_unroll = YES;
+	value = d2wContext.entity.name;
+}
+
+EntitySelectedConditional: WOConditional {
+	_unroll = YES;
+	condition = hasEntity;
+}
+
+FetchLimit: WOString {
+	_unroll = YES;
+	value = fetchLimit;
+}
+
+FetchLimitConditional: WOConditional {
+	_unroll = YES;
+	condition = fetchLimit;
+}
+
+PageWrapper: WOSwitchComponent {
+	WOComponentName = pageWrapperName;
+	_componentUnroll = YES;
+	_unroll = YES;
+}
+
+QueryForm: WOForm {
+	action = queryAction;
+}
+
+QuerySubmitButton: WOActiveImage {
+	action = queryAction;
+	alt = "Find objects matching the query";
+	border = "0";
+	filename = "QueryDBMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	name = "Find objects matching the query";
+	width = "88";
+}
+
+QueryTable: WOGenericContainer {
+	_unroll = YES;
+	bgcolor = d2wContext.backgroundColorForTable;
+	border = d2wContext.border;
+	cellpadding = 3;
+	cellspacing = 0;
+	elementName = "Table";
+}
+
+QueryTableHeaderRow: WOGenericContainer {
+	_unroll = YES;
+	bgcolor = backgroundColorForHeaderRow;
+	elementName = "tr";
+}
+
+ResourceInputRepresentation: WOSwitchComponent {
+	WOComponentName = d2wContext.componentName;
+	_componentUnroll = YES;
+	_unroll = YES;
+	displayGroup = displayGroup;
+	localContext = localContext;
+}
+
+ResourceLabel: WOString {
+	_unroll = YES;
+	value = d2wContext.displayNameForProperty;
+}
+
+ResourceRepetition: WORepetition {
+	_unroll = YES;
+	item = d2wContext.propertyKey;
+	list = d2wContext.displayPropertyKeys;
+}
+

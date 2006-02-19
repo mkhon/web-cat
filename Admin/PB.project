@@ -1,0 +1,118 @@
+
+{
+    PDO_UNIX_JAVA_COMPILER = "$(JDKBINDIR)/javac";
+    PDO_UNIX_OBJCPLUS_COMPILER = "$(NEXTDEV_BIN)/gcc";
+    PDO_UNIX_BUILDTOOL = $NEXT_ROOT/Developer/bin/make;
+    WINDOWS_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+    PROJECTNAME = Admin;
+    MAKEFILEDIR = "$(MAKEFILEPATH)/java_makefiles";
+    PBPROJECTTYPEVERSION = 4.0;
+    WINDOWS_BUILDTOOL = $NEXT_ROOT/Developer/Executables/make;
+    PDO_UNIX_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+    FRAMEWORKSEARCH = 
+    (
+       "$(NEXT_ROOT)$(LOCAL_LIBRARY_DIR)/Frameworks"
+    );
+    NEXTSTEP_BUILDTOOL = /bin/gnumake;
+    LANGUAGE = English;
+    NEXTSTEP_JAVA_COMPILER = /usr/bin/javac;
+    DEPLOY_WITH_VERSION_NAME = A;
+    DYNAMIC_CODE_GEN = YES;
+    NEXTSTEP_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+    NEXTSTEP_OBJCPLUS_COMPILER = /usr/bin/cc;
+    PROJECTTYPE = JavaWebObjectsFramework;
+    WINDOWS_JAVA_COMPILER = "$(JDKBINDIR)/javac.exe";
+    PROJECTVERSION = 2.8;
+    WINDOWS_OBJCPLUS_COMPILER = "$(DEVDIR)/gcc";
+    CURRENTLY_ACTIVE_VERSION = YES;
+    FILESTABLE = 
+    {
+        FRAMEWORKS = 
+        (
+           Core.framework, 
+           DBUpdateEngine.framework, 
+           EOJDBCPrototypes.framework, 
+           Core.framework, 
+           EOJDBCPrototypes.framework, 
+           ERDirectToWeb.framework, 
+           ERExtensions.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           ERJars.framework, 
+           JavaWOExtensions.framework, 
+           WOUnitTest.framework, 
+           JavaDirectToWeb.framework, 
+           JavaDTWGeneration.framework, 
+           JavaEOAccess.framework, 
+           JavaEOControl.framework, 
+           JavaFoundation.framework, 
+           JavaJDBCAdaptor.framework, 
+           JavaWebObjects.framework, 
+           JavaXML.framework
+        );
+        CLASSES = 
+        (
+           src/net/sf/webcat/admin/Admin.java, 
+           src/net/sf/webcat/admin/AdminStatusPage.java, 
+           src/net/sf/webcat/admin/EntryEditPage.java, 
+           src/net/sf/webcat/admin/FooPage.java, 
+           src/net/sf/webcat/admin/Log4JConfigurationPage.java, 
+           src/net/sf/webcat/admin/PropertyListPage.java, 
+           src/net/sf/webcat/admin/SettingsPage.java, 
+           src/net/sf/webcat/admin/UnitTestPage.java, 
+           src/net/sf/webcat/admin/WCConfirmPageTemplate.java, 
+           src/net/sf/webcat/admin/WCD2WAssignment.java, 
+           src/net/sf/webcat/admin/WCD2WNoPWAssignment.java, 
+           src/net/sf/webcat/admin/WCEditRelationshipPageTemplate.java, 
+           src/net/sf/webcat/admin/WCErrorPageTemplate.java, 
+           src/net/sf/webcat/admin/WCInspectPageTemplate.java, 
+           src/net/sf/webcat/admin/WCListPageTemplate.java, 
+           src/net/sf/webcat/admin/WCMenuHeader.java, 
+           src/net/sf/webcat/admin/WCPageWrapper.java, 
+           src/net/sf/webcat/admin/WCQueryAllEntitiesPageTemplate.java, 
+           src/net/sf/webcat/admin/WCQueryPageTemplate.java
+        );
+        WEBSERVER_RESOURCES = 
+        ();
+        WO_COMPONENTS = 
+        (
+           Components/AdminStatusPage.wo, 
+           Components/FooPage.wo, 
+           Components/PropertyListPage.wo, 
+           Components/WCConfirmPageTemplate.wo, 
+           Components/WCEditRelationshipPageTemplate.wo, 
+           Components/WCErrorPageTemplate.wo, 
+           Components/WCInspectPageTemplate.wo, 
+           Components/WCListPageTemplate.wo, 
+           Components/WCMenuHeader.wo, 
+           Components/WCPageWrapper.wo, 
+           Components/WCQueryAllEntitiesPageTemplate.wo, 
+           Components/WCQueryPageTemplate.wo, 
+           Components/SettingsPage.wo, 
+           Components/Log4JConfigurationPage.wo, 
+           Components/UnitTestPage.wo
+        );
+        SUBPROJECTS = 
+        ();
+        OTHER_SOURCES = 
+        (
+           CustomInfo.plist, 
+           java.template, 
+           Makefile, 
+           Makefile.postamble, 
+           Makefile.preamble
+        );
+        WOAPP_RESOURCES = 
+        (
+           Tabs.plist, 
+           d2w.d2wmodel, 
+           Components/WCPageWrapper.api, 
+           Components/PropertyListPage.api, 
+           Components/MenuHeader.api, 
+           Properties, 
+           d2wclientConfiguration.plist
+        );
+    };
+}

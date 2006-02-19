@@ -1,0 +1,53 @@
+ConfirmTable: WOGenericContainer {
+	_unroll = true;
+	bgcolor = d2wContext.backgroundColorForTable;
+	border = 3;
+	cellpadding = 3;
+	cellspacing = 1;
+	elementName = "table";
+}
+
+Exclamation: WOImage {
+	alt = "!";
+	border = "0";
+	filename = "exclamation.gif";
+	framework = "JavaDirectToWeb";
+	height = "32";
+	name = "!";
+	width = "32";
+}
+
+Form1: WOForm {
+	multipleSubmit = true;
+}
+
+Message: WOString {
+	escapeHTML = false;
+	value      = message;
+}
+
+NoButton: WOImageButton {
+	action = cancelAction;
+	alt = "No";
+	filename = "NoMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	name = "No";
+	width = "88";
+}
+
+PageWrapper: WOSwitchComponent {
+	WOComponentName  = pageWrapperName;
+	_componentUnroll = true;
+	_unroll          = true;
+}
+
+YesButton: WOImageButton {
+	action = confirmAction;
+	alt = "Yes";
+	filename = "YesMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	name = "Yes";
+	width = "88";
+}

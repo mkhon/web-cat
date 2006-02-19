@@ -1,0 +1,27 @@
+DieNow: WOSubmitButton {
+    action = dieNow;
+    value = " Die! Die! Die! ";
+}
+
+Form: WOForm {
+    multipleSubmit = true;
+    enctype        = "multipart/form-data";
+}
+
+GracefulShutdown: WOSubmitButton {
+    action = gracefulShutdown;
+    value = " Graceful Shutdown ";
+}
+
+Page : net.sf.webcat.core.PageWithNavigation {
+	title     = "System Status";
+}
+
+SystemStatus: SystemStatusBlock {
+    includeSeparator = true;
+}
+
+ThrowException: WOSubmitButton {
+    action = throwException;
+    value = " Force Exception ";
+}

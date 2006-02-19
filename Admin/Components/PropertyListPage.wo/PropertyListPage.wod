@@ -1,0 +1,50 @@
+Back: WOSubmitButton {
+    action = back;
+    value  = " < Back ";
+}
+
+BackForm: WOForm {
+    action = back;
+	multipleSubmit = true;
+}
+
+Properties: WORepetition {
+	item  = property;
+	list  = propertyDisplayGroup.displayedObjects;
+	index = propertyIndex;
+}
+
+PropForm: WOForm {
+    action = setNewProperty;
+	multipleSubmit = true;
+}
+
+Name: WOString {
+	value = propertyKey;
+}
+
+NameField: WOTextField {
+	value = newPropertyName;
+}
+
+Value: WOString {
+	value      = propertyValue;
+	escapeHTML = false;
+}
+
+ValueField: WOTextField {
+	value = newPropertyValue;
+}
+
+Page: net.sf.webcat.core.PageWithNavigation {
+	title = "View System Properties";
+}
+
+SetProperty: WOSubmitButton {
+    action = setNewProperty;
+    value  = " Set Property ";
+}
+
+TR: net.sf.webcat.core.TableRow {
+	index = propertyIndex;
+}

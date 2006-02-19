@@ -1,0 +1,18 @@
+Log4J: WOHyperlink {
+    string   = "Log4J configuration";
+    pageName = "net.sf.webcat.admin.Log4JConfigurationPage";
+}
+
+Page: net.sf.webcat.core.PageWithNavigation {
+	title = "Manage Configuration Settings";
+}
+
+Properties: WOHyperlink {
+    string   = "System properties";
+    pageName = "net.sf.webcat.admin.PropertyListPage";
+}
+
+UnitTests: WOHyperlink {
+    string   = "Unit test control panel";
+    pageName = "net.sf.webcat.admin.UnitTestPage";
+}

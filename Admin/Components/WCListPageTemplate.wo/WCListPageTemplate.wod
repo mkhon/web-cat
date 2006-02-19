@@ -1,0 +1,255 @@
+AttributeCell: WOGenericContainer {
+	_unroll = YES;
+	align = d2wContext.justification;
+	elementName = "td";
+	valign = "middle";
+}
+
+AttributeDisplay: WOSwitchComponent {
+	WOComponentName = d2wContext.componentName;
+	_componentUnroll = YES;
+	_unroll = YES;
+	object = object;
+	localContext = localContext;
+}
+
+AttributeRepetition: WORepetition {
+	_unroll = YES;
+	item = d2wContext.propertyKey;
+	list = d2wContext.displayPropertyKeys;
+}
+
+AttributeSorter: net.sf.webcat.core.WCSortOrder {
+	displayGroup = displayGroup;
+	displayKey = d2wContext.displayNameForProperty;
+	key = d2wContext.propertyKey;
+}
+
+BackLink2: WOHyperlink {
+	action = backAction;
+}
+
+BackLink: WOHyperlink {
+	action = backAction;
+}
+
+BackgroundColor: WOString {
+	_unroll = YES;
+	value = d2wContext.backgroundColorForTable;
+}
+
+BatchForm: WOForm {
+	_unroll = YES;
+}
+
+ColumnLabelRepetition: WORepetition {
+	_unroll = YES;
+	item = d2wContext.propertyKey;
+	list = d2wContext.displayPropertyKeys;
+}
+
+HideReturnOnSelect1: WOConditional {
+	_unroll = YES;
+	condition = isSelecting;
+	negate = YES;
+}
+
+HideReturnOnSelect2: WOConditional {
+	_unroll = YES;
+	condition = isSelecting;
+	negate = YES;
+}
+
+DeleteEO: WOHyperlink {
+	action = deleteObjectAction;
+}
+
+DeleteImage: WOImage {
+	alt = "Delete that Object";
+	border = "0";
+	src = "/icons/trash.gif";
+	height = "17";
+	name = "Delete that Object";
+	width = "14";
+}
+
+EditEO: WOHyperlink {
+	action = editObjectAction;
+}
+
+EditImage: WOImage {
+	alt = "Edit that Object";
+	border = "0";
+	name = "Edit that Object";
+	// filename = "EditMetalSmBtn.gif";
+	// framework = "JavaDirectToWeb";
+	// height = "21";
+	// width = "51";
+	src = "/icons/edit.gif";
+	height = "17";
+	width = "18";
+}
+
+EntityName: WOString {
+	_unroll = YES;
+	value = d2wContext.entity.name;
+}
+
+EntityRepetition: WORepetition {
+	item = object;
+	list = displayGroup.displayedObjects;
+}
+
+ExclamationImage: WOImage {
+	alt = "!";
+	border = "0";
+	filename = "exclamation.gif";
+	framework = "JavaDirectToWeb";
+	height = "32";
+	name = "!";
+	width = "32";
+}
+
+InspectEO: WOHyperlink {
+	action = inspectObjectAction;
+}
+
+InspectImage: WOImage {
+	alt = "Inspect that Object";
+	border = "0";
+	filename = "InspectMetalSmBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "21";
+	width = "51";
+	name = "Inspect that Object";
+}
+
+IsEntityNotWritable: WOConditional {
+	_unroll = YES;
+	condition = isEntityReadOnly;
+}
+
+IsEntityWritable2: WOConditional {
+	_unroll = YES;
+	condition = isEntityReadOnly;
+	negate = YES;
+}
+
+IsEntityWritable: WOConditional {
+	_unroll = YES;
+	condition = isEntityReadOnly;
+	negate = YES;
+}
+
+IsListing2: WOConditional {
+	_unroll = YES;
+	condition = isSelecting;
+	negate = YES;
+}
+
+IsListing: WOConditional {
+	_unroll = YES;
+	condition = isSelecting;
+	negate = YES;
+}
+
+IsPropertySortable: WOConditional {
+	_unroll = YES;
+	condition = isPropertyAnAttribute;
+}
+
+IsSelecting: WOConditional {
+	_unroll = YES;
+	condition = isSelecting;
+}
+
+ListEmpty: WOConditional {
+	condition = isListEmpty;
+}
+
+ListNotEmpty: WOConditional {
+	condition = isListEmpty;
+	negate = YES;
+}
+
+ListTable: WOGenericContainer {
+	_unroll = YES;
+	bgcolor = d2wContext.backgroundColorForTable;
+	border = d2wContext.border;
+	cellpadding = 3;
+	cellspacing = 0;
+	elementName = "table";
+}
+
+NavBar: WOBatchNavigationBar {
+	bgcolor = backgroundColorForHeaderRow;
+	border = 0;
+	displayGroup = displayGroup;
+	objectName = entity.name;
+	width = "80%";
+}
+
+NumberOfItems: WOString {
+	value = listSize;
+}
+
+PageWrapper: WOSwitchComponent {
+	WOComponentName = pageWrapperName;
+	_componentUnroll = YES;
+	_unroll = YES;
+}
+
+PropertyName: WOString {
+	_unroll = YES;
+	value = d2wContext.displayNameForProperty;
+}
+
+ReturnButton2: WOImage {
+	alt = "Returns to the previous page";
+	border = "0";
+	filename = "ReturnMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	width = "88";
+	name = "Returns to the previous page";
+}
+
+ReturnButton: WOImage {
+	alt = "Returns to the previous page";
+	border = "0";
+	filename = "ReturnMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	name = "Returns to the previous page";
+	width = "88";
+}
+
+RowContainer: WOGenericContainer {
+	align = "center";
+	bgcolor = backgroundColorForRow;
+	elementName = "tr";
+	valign = "middle";
+}
+
+SelectEO: WOHyperlink {
+	action = selectObjectAction;
+}
+
+SelectImage: WOImage {
+	alt = "Select that Object";
+	border = "0";
+	filename = d2wContext.selectButtonFileName;
+	framework = "JavaDirectToWeb";
+	height = "13";
+	name = "Select that Object";
+	width = "42";
+}
+
+ShowCancel2: WOConditional {
+	condition = showCancel;
+}
+
+ShowCancel: WOConditional {
+	condition = showCancel;
+}
+

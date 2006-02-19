@@ -1,0 +1,225 @@
+{
+    rules = (
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = backgroundColorForTable; 
+                value = "#ffffff"; 
+            }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {class = com.webobjects.directtoweb.Assignment; keyPath = border; value = 0; }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            lhs = {
+                class = com.webobjects.eocontrol.EOKeyValueQualifier; 
+                key = session.user.accessLevel; 
+                selectorName = "isLessThan"; 
+                value = {class = java.lang.Number; value = 90; }; 
+            }; 
+            rhs = {
+                class = net.sf.webcat.admin.WCD2WNoPWAssignment; 
+                keyPath = displayPropertyKeys; 
+                value = defaultPropertyKeysFromEntity; 
+            }; 
+        }, 
+        {
+            author = 60; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = net.sf.webcat.admin.WCD2WAssignment; 
+                keyPath = displayPropertyKeys; 
+                value = defaultPropertyKeysFromEntity; 
+            }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = editIcon; 
+                value = EditMetalSmBtn.gif; 
+            }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = inspectIcon; 
+                value = InspectMetalSmBtn.gif; 
+            }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            lhs = {
+                class = com.webobjects.eocontrol.EOKeyValueQualifier; 
+                key = task; 
+                selectorName = "isEqualTo"; 
+                value = error; 
+            }; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = pageName; 
+                value = net.sf.webcat.admin.WCErrorPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 0; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = pageWrapperName; 
+                value = net.sf.webcat.admin.WCPageWrapper; 
+            }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            lhs = {
+                class = com.webobjects.eocontrol.EOAndQualifier; 
+                qualifiers = (
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier; 
+                        key = session.user.accessLevel; 
+                        selectorName = "isLessThan"; 
+                        value = {class = java.lang.Number; value = 90; }; 
+                    }, 
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier; 
+                        key = session.suppressAccessControl; 
+                        selectorName = "isEqualTo"; 
+                        value = {class = java.lang.Number; value = 0; }; 
+                    }
+                ); 
+            }; 
+            rhs = {
+                class = com.webobjects.directtoweb.BooleanAssignment; 
+                keyPath = readOnly; 
+                value = true; 
+            }; 
+        }, 
+        {
+            author = 60; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = selectButtonFileName; 
+                value = SelectMetalSmBtn.gif; 
+            }; 
+        }, 
+        {
+            author = 50; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = selectButtonFileName; 
+                value = SelectMetalSmBtn.gif; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForConfirmPage; 
+                value = net.sf.webcat.admin.WCConfirmPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForEditPage; 
+                value = net.sf.webcat.admin.WCInspectPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForEditRelationshipPage; 
+                value = net.sf.webcat.admin.WCEditRelationshipPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForErrorPage; 
+                value = net.sf.webcat.admin.WCErrorPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForInspectPage; 
+                value = net.sf.webcat.admin.WCInspectPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForListPage; 
+                value = net.sf.webcat.admin.WCListPageTemplate; 
+//                value = er.directtoweb.ERD2WListPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForQueryAllPage; 
+                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForQueryAllEntitiesPage; 
+                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate; 
+            }; 
+        }, 
+        {
+            author = 10; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForQueryPage; 
+                value = net.sf.webcat.admin.WCQueryPageTemplate; 
+            }; 
+        },
+        {
+            author = 50;
+            class = com.webobjects.directtoweb.Rule;
+            lhs = {
+                class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                key = task;
+                selectorName = "isEqualTo";
+                value = queryAll;
+            };
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment;
+                keyPath = pageName;
+                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate;
+            };
+        }
+    ); 
+}

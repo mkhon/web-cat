@@ -1,0 +1,37 @@
+EntitiesForm: WOForm {
+    multipleSubmit = true;
+    enctype        = "multipart/form-data";
+}
+
+EntitiesPopup: WOPopUpButton {
+	item = entityNameInList;
+	list = visibleEntityNames;
+	selection = manipulatedEntityName;
+}
+
+FindButton: WOSubmitButton {
+	action = findEntityAction;
+	value  = " Find ";
+}
+
+HasValidSession: WOConditional {
+	condition = context.hasSession;
+}
+
+QueryAllLink: WOSubmitButton {
+    action = queryAllAction;
+    value  = " Query All ";
+}
+
+NewButton: WOSubmitButton {
+	action = newObjectAction;
+	value  = " New ";
+}
+
+NoValidSession: WOConditional {
+	condition = context.hasSession;
+	negate = YES;
+}
+
+RemoteControl: D2WRemoteControl {
+}

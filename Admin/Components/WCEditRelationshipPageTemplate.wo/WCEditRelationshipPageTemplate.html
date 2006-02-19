@@ -1,0 +1,41 @@
+<webobject name="PageWrapper"><center>
+      <webobject name="IsToMany">
+         <webobject name="EditingForm">
+            <webobject name="InspectTable">
+               <webobject name="InspectTableHeaderRow">
+                  <td colspan="3" align="center"><font size="+2"><b>Current
+                     <webobject name="AttributeName"/>(s)</b></font></td>
+               </webobject>
+               <tr>
+                  <td align="right"><strong><webobject name="NumberOfEntities"/>
+                     <webobject name="EntityName"/>(s)</strong></td>
+                  <td valign="middle" align="center"><webobject name="AttributeValue"/></td>
+                  <td valign="middle" align="center"><webobject name="RemoveButton"/></td>
+               </tr>
+            </webobject>
+         </webobject>
+      </webobject>
+      <webobject name="IsToOne">
+         <webobject name="EditingForm2">
+            <webobject name="InspectTable2">
+               <webobject name="InspectTableHeaderRow2">
+                  <td colspan="3" align="center"><font size="+2"><b>Current
+                     <webobject name="AttributeName2"/></b></font></td>
+               </webobject>
+               <tr>
+                  <td valign="middle" align="center"><webobject name="ToOneValue"/></td>
+                  <td valign="middle" align="center"><webobject name="RemoveToOneButton"/></td>
+               </tr>
+            </webobject>
+         </webobject>
+      </webobject>
+      <webobject name="ButtonForm">
+      <webobject name="ReturnLink"/>
+      <webobject name="QueryLink"/>
+      <webobject name="IsEntityWritable"><webobject name="NewLink"/></webobject>
+      </webobject>
+      <hr>
+      <webobject name="DisplayQuery"><webobject name="QueryComponent"/></webobject>
+      <webobject name="DisplayList"><webobject name="ListComponent"/></webobject>
+      <webobject name="DisplayNew"><webobject name="InspectComponent"/></webobject>
+</center></webobject>

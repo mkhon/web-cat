@@ -1,0 +1,24 @@
+{
+    "Administer" = {
+        accessLevel = 75;
+        priority = 1000;
+        children = {
+            Status = {
+                pageName = net.sf.webcat.admin.AdminStatusPage;
+                accessLevel = 75;
+                priority = 1;
+                wantsStart = YES;
+            };
+            Settings = {
+                pageName = net.sf.webcat.admin.SettingsPage;
+                accessLevel = 90;
+                priority = 2;
+            };
+            "Edit Database" = {
+                pageName = net.sf.webcat.admin.EntryEditPage;
+                accessLevel = 90;
+                priority = 3;
+            };
+        };
+    };
+}

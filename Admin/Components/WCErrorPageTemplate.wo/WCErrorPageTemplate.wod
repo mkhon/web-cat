@@ -1,0 +1,74 @@
+CancelButton: WOImage {
+	alt = "Returns to the previous page";
+	border = "0";
+	filename = "ReturnMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	name = "Returns to the previous page";
+	width = "88";
+}
+
+CancelLink: WOHyperlink {
+	action = cancelAction;
+}
+
+CollapseContainer: D2WCollapsibleComponentContent {
+	_unroll = YES;
+	allowCollapsing = d2wContext.allowCollapsing;
+	closedLabel = firstLineOfMessage;
+    condition = YES;
+}
+
+ErrorImage: WOImage {
+	alt = "!";
+	border = "0";
+	filename = "exclamation.gif";
+	framework = "JavaDirectToWeb";
+	height = "32";
+	name = "!";
+	width = "32";
+}
+
+ErrorMessage: WOString {
+	escapeHTML = "NO";
+	value = formattedMessage;
+}
+
+ErrorTable: WOGenericContainer {
+	_unroll = YES;
+	bgcolor = d2wContext.backgroundColorForTable;
+	border = 3;
+	cellpadding = 3;
+	cellspacing = 1;
+	elementName = "TABLE";
+}
+
+HasNextPage: WOConditional {
+	condition = hasNextPage;
+}
+
+HomeButton: WOImage {
+	alt = "Login again";
+	border = "0";
+	filename = "LoginMetalBtn.gif";
+	framework = "JavaDirectToWeb";
+	height = "31";
+	name = "Login again";
+	width = "88";
+}
+
+HomeLink: WOHyperlink {
+	href = homeHref;
+}
+
+NoNextPage: WOConditional {
+	condition = hasNextPage;
+	negate = YES;
+}
+
+PageWrapper: WOSwitchComponent {
+	WOComponentName = pageWrapperName;
+	_componentUnroll = YES;
+	_unroll = YES;
+}
+
