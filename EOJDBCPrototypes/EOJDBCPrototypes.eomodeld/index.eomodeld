@@ -1,0 +1,6 @@
+{
+    EOModelVersion = 2.1; 
+    adaptorName = JDBC; 
+    connectionDictionary = {URL = ""; driver = ""; password = ""; plugin = ""; username = ""; }; 
+    entities = ({className = EOGenericRecord; name = EOJDBCPrototypes; }); 
+}
