@@ -98,6 +98,10 @@
 				<exclude name="**/*.woa/**"/>
 			</lib>
    		</woapplication>
+        <!-- replace local license key with an empty file, so developer's license isn't 
+             included in the redistributable WAR file.   -->
+        <echo message="A-000-AAA-000-AAA-000-AAA-000-AAA-000"
+            file="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks/Library/Frameworks/JavaWebObjects.framework/Resources/License.key"/>
 	</target>
 
     <target name="build.traditional.woapp">
@@ -202,11 +206,6 @@
          and create the web.xml file with the woapplication task.-->
     <target name="ssdd" depends="patchWebXML">
     	<mkdir dir="${dest.dir}/${project.name}/WEB-INF/tlds"/>
-    	<copy todir="${dest.dir}/${project.name}/WEB-INF/">
-            <fileset dir="${license.dir}">
-                <include name="LICENSE"/>
-            </fileset>
-        </copy>
         <copy todir="${dest.dir}/${project.name}/">
             <fileset dir=".">
                 <include name="index.html"/>
