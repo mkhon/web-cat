@@ -20,32 +20,19 @@ subsystem.unjarred.classes = (\
 
 
 # -------------------------------------------------------------------
-# Configure authenticator
-# -------------------------------------------------------------------
-# These entries add an internal database password authenticator
-# that shows up as "Support Personnel" on the login page
-# You can override these settings or add new domains in your
-# WebObjects.properties file.
-
-authenticator.DBAuth = net.sf.webcat.core.DatabaseAuthenticator
-authenticator.DBAuth.displayableName = Support Personnel
-authenticator.DBAuth.addIfNotFound   = false
-authenticator.default = DBAuth
-
-
-# -------------------------------------------------------------------
 # Configure core settings
 # -------------------------------------------------------------------
 # The URLs could be relative, but are absolute here for testing
 # before actual deployment.
 help.baseURL = http://web-cat.cs.vt.edu/Web-CAT.help/
 coreCmdShell = cmd /c
+dbConnectDriverGLOBAL = org.gjt.mm.mysql.Driver
 
 # -------------------------------------------------------------------
 # Run-time control
 # -------------------------------------------------------------------
 # forcibly die 24 hours after starting up (no refusal period)
-ERTimeToLive = 86700
+# ERTimeToLive = 86700
 # Or, start refusing new sessions 24 hours after starting up
 # ERTimeToDie = 86400
 # Forcibly die 180 seconds after starting to refuse new sessions
@@ -98,7 +85,7 @@ er.extensions.ERXEC.defaultAutomaticLockUnlock = true
 log4j.rootLogger = WARN, console
 log4j.logger.net.sf.webcat.core.Application = INFO
 log4j.logger.net.sf.webcat.core.install     = INFO
-log4j.logger.net.sf.webcat.dbupdate   = INFO
+log4j.logger.net.sf.webcat.dbupdate         = INFO
 log4j.loggerFactory=er.extensions.ERXLogger$Factory
 
 # -------------------------------------------------------------------
