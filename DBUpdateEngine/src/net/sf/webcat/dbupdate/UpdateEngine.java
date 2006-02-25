@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UpdateEngine.java,v 1.1 2006/02/19 18:42:28 stedwar2 Exp $
+ |  $Id: UpdateEngine.java,v 1.2 2006/02/25 07:53:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * with some additional redesign work.
  *
  * @author Stephen Edwards
- * @version $Id: UpdateEngine.java,v 1.1 2006/02/19 18:42:28 stedwar2 Exp $
+ * @version $Id: UpdateEngine.java,v 1.2 2006/02/25 07:53:03 stedwar2 Exp $
  */
 public final class UpdateEngine
 {
@@ -165,7 +165,7 @@ public final class UpdateEngine
             latestVersion++;
             while ( updates.applyUpdateIncrement( latestVersion ) )
             {
-                log.info( "updated " + name + "to v." + latestVersion );
+                log.info( "updated " + name + " to v." + latestVersion );
                 database.setVersionNumber( name, latestVersion );
                 latestVersion++;
             }
