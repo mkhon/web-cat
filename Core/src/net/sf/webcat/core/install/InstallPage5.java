@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage5.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ |  $Id: InstallPage5.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage5.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ *  @version $Id: InstallPage5.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class InstallPage5
     extends InstallPage
@@ -104,9 +104,32 @@ public class InstallPage5
         {
             if ( authClass != null )
             {
-                Application.configurationProperties().setProperty(
-                    "authenticator." + defaultAuth,
-                    authClass );
+                if ( authClass.equals( "custom-auth-class" ) )
+                {
+                    String customClass = storeFormValueToConfig( formValues,
+                        "authenticator.default.class.custom",
+                        "authenticator." + defaultAuth,
+                        "You must specify a custom authentication class name."
+                        );
+                    if ( customClass != null )
+                    {
+                        // Check to see that it is indeed on the classpath
+                        try
+                        {
+                            Class.forName( customClass );
+                        }
+                        catch ( ClassNotFoundException e )
+                        {
+                            errorMessage( e.getMessage() );
+                        }
+                    }
+                }
+                else
+                {
+                    Application.configurationProperties().setProperty(
+                        "authenticator." + defaultAuth,
+                        authClass );
+                }
             }
             String value =
                 storeFormValueToConfig( formValues, "InstitutionName",
@@ -124,6 +147,10 @@ public class InstallPage5
             storeFormValueToConfig( formValues, "InstitutionEmailDomain",
                 "mail.default.domain",
                 null );
+            if ( !hasErrors() )
+            {
+                net.sf.webcat.core.AuthenticationDomain.refreshAuthDomains();
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCProperties.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: WCProperties.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -55,7 +55,7 @@ import org.apache.log4j.Logger;
  * support is based on code written by Chris Mair.
  * 
  * @author Stephen Edwards
- * @version $Id: WCProperties.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: WCProperties.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class WCProperties
     extends java.util.Properties
@@ -739,12 +739,14 @@ public class WCProperties
                 property =
                     super.getProperty( key + ERXProperties.DefaultString );
             }
-            // We go ahead and set the value to increase the lookup the next time the
-            // property is accessed.
-            if ( property != null && application != null )
-            {
-                setProperty( key + application, property );
-            }
+            // This behavior from ERXProperties makes it hard to dynamically
+            // reset properties easily, so turn it off here.
+            // // We go ahead and set the value to increase the lookup the
+            // // next time the property is accessed.
+            // if ( property != null && application != null )
+            // {
+            //     setProperty( key + application, property );
+            // }
         }
         if ( performSubstitution )
         {

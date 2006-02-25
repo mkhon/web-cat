@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPageWrapper.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ |  $Id: InstallPageWrapper.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPageWrapper.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ *  @version $Id: InstallPageWrapper.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class InstallPageWrapper
     extends WOComponent
@@ -75,7 +75,7 @@ public class InstallPageWrapper
     // ----------------------------------------------------------
     public String imageFileName()
     {
-        String name = "images/install-cat" + stepNo;
+        String name = "images/install-cat" + ( index + 1 );
         if ( stepNo != index + 1 )
         {
             name += "-off";
@@ -95,7 +95,7 @@ public class InstallPageWrapper
     public String nextButtonLabel()
     {
         return ( stepNo == install.steps.length )
-            ? " Site Administration > "
+            ? " Login > " // " Site Administration > "
             : " Next > ";
     }
 
@@ -103,7 +103,7 @@ public class InstallPageWrapper
     // ----------------------------------------------------------
     public boolean backEnabled()
     {
-        return stepNo > 1;
+        return 1 < stepNo  &&  stepNo < install.steps.length;
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author Stephen Edwards
- * @version $Id: AuthenticationDomain.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: AuthenticationDomain.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -145,6 +145,11 @@ public class AuthenticationDomain
                     log.debug ( "trying to register: " + base );
                     UserAuthenticator ua = null;
                     String uaClassName   = properties.getProperty( base );
+                    if ( uaClassName == null || uaClassName.equals( "" ) )
+                    {
+                        uaClassName = properties.getProperty(
+                            "authenticator.default.class" );
+                    }
                     try
                     {
                         ua = (UserAuthenticator)

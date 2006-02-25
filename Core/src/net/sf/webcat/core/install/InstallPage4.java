@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage4.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ |  $Id: InstallPage4.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage4.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ *  @version $Id: InstallPage4.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class InstallPage4
     extends InstallPage
@@ -90,6 +90,15 @@ public class InstallPage4
                     Application.application().servletConnectURL();
                 url = url.replaceFirst( "(//[^/]+/)/", "\\1" );
                 configuration.setProperty( "base.url", url );
+            }
+        }
+        if ( configuration.getProperty( "grader.workarea" ) == null )
+        {
+            String value = configuration.getProperty( "java.io.tmpdir" );
+            if ( value != null && !value.equals( "" ) )
+            {
+                value = value.replace( '\\', '/' );
+                configuration.setProperty( "grader.workarea", value );
             }
         }
         if ( configuration.getProperty( "WOSMTPHost" ) == null

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage1.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ |  $Id: InstallPage1.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage1.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ *  @version $Id: InstallPage1.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class InstallPage1
     extends InstallPage
@@ -72,10 +72,18 @@ public class InstallPage1
     // ----------------------------------------------------------
     public void setDefaultConfigValues( WCConfigurationFile configuration )
     {
-        configuration.setIsInstalling( true );
         if ( configuration.getProperty( "installComplete" ) != null )
         {
             configuration.remove( "installComplete" );
+        }
+        String osname = configuration.getProperty( "os.name" );
+        if ( osname.toLowerCase().startsWith( "windows" ) )
+        {
+            configuration.setProperty( "coreCmdShell", "cmd /c" );
+        }
+        else
+        {
+            configuration.setProperty( "coreCmdShell", "" );
         }
         super.setDefaultConfigValues( configuration );
     }

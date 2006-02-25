@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DatabaseAuthenticator.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: DatabaseAuthenticator.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  admitted.
  *
  *  @author Stephen Edwards
- *  @version $Id: DatabaseAuthenticator.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: DatabaseAuthenticator.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class DatabaseAuthenticator
     implements UserAuthenticator
@@ -106,6 +106,8 @@ public class DatabaseAuthenticator
         User user = null;
         try
         {
+            // FIXME: need to add the auth domain as an extra parameter
+            // in this search
             User u = (User)EOUtilities.objectMatchingKeyAndValue(
                     ec,
                     User.ENTITY_NAME,

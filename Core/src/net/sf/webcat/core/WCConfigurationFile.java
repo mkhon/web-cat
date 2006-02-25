@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCConfigurationFile.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: WCConfigurationFile.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import sun.security.action.*;
  *  for managing an installation configuration file.
  *
  *  @author  stedwar2
- *  @version $Id: WCConfigurationFile.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: WCConfigurationFile.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class WCConfigurationFile
     extends WCProperties
@@ -100,17 +100,12 @@ public class WCConfigurationFile
      */
     public boolean hasUsableConfiguration()
     {
-        boolean oldIsInstalling = isInstalling();
-        setIsInstalling( true );
-        boolean result =
-            getProperty( "configStep" ) == null
-            && getProperty( "applicationBaseURL" ) != null
+        return getProperty( "configStep" ) == null
+            && getProperty( "base.url" ) != null
             && getProperty( "dbConnectURLGLOBAL" ) != null
             && getProperty( "dbConnectUserGLOBAL" ) != null
             && getProperty( "dbConnectPasswordGLOBAL" ) != null
             && booleanForKey( "installComplete" );
-        setIsInstalling( oldIsInstalling );
-        return result;
     }
 
 
@@ -175,36 +170,10 @@ public class WCConfigurationFile
         for ( Iterator i = localEntrySet().iterator(); i.hasNext(); )
         {
             Map.Entry e = (Map.Entry)i.next();
-            System.setProperty(
-                e.getKey().toString(), e.getValue().toString() );
+            System.setProperty( (String)e.getKey(), e.getValue().toString() );
         }
+        er.extensions.ERXSystem.updateProperties();
         er.extensions.ERXLogger.configureLoggingWithSystemProperties();
-    }
-
-
-    // ----------------------------------------------------------
-    public void setIsInstalling( boolean value )
-    {
-        isInstalling = value;
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean isInstalling()
-    {
-        return isInstalling;
-    }
-
-
-    // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see net.sf.webcat.core.WCProperties#applicationNameForAppending()
-     * Override so that "property.Web-CAT"-style keys aren't actually
-     * searched in the config file while installing
-     */
-    protected String applicationNameForAppending()
-    {
-        return isInstalling ? null : super.applicationNameForAppending();
     }
 
 
@@ -230,7 +199,6 @@ public class WCConfigurationFile
     //~ Instance/static variables .............................................
 
     protected File configFile;
-    private   boolean isInstalling = false;
 
     public static final String header =
         " Web-CAT configuration settings\n"

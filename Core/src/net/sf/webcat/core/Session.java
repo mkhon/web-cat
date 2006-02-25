@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: Session.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -172,6 +172,10 @@ public class Session
         {
             ec.unlock();
         }
+        if ( loginSession == null )
+        {
+            Application.releasePeerEditingContext( ec );
+        }
         updateLoginSession();
         return this.sessionID();
     }
@@ -263,12 +267,15 @@ public class Session
                     ec.insertObject( loginSession );
                     loginSession.setSessionId( sessionID() );
                     loginSession.setUserRelationship( loginUser );
-                    
                 }
             }
             finally
             {
                 ec.unlock();
+            }
+            if ( loginSession == null )
+            {
+                Application.releasePeerEditingContext( ec );
             }
         }
         try

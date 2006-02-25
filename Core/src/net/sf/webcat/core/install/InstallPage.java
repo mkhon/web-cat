@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ |  $Id: InstallPage.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import net.sf.webcat.core.*;
  * A basic interface implemented by all InstallPages.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ *  @version $Id: InstallPage.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
  */
 public abstract class InstallPage
     extends WCComponentWithErrorMessages
@@ -160,10 +160,24 @@ public abstract class InstallPage
             if ( value != null )
             {
                 value = validateValueForKey( value, formKey ).toString();
-                if ( ( value == null || value.equals( "" ) )
-                     && errMsgIfEmpty != null )
+                if ( value == null || value.equals( "" ) )
                 {
-                    errorMessage( errMsgIfEmpty );
+                    if ( errMsgIfEmpty != null )
+                    {
+                        errorMessage( errMsgIfEmpty );
+                    }
+                    else if ( Application.configurationProperties()
+                                  .get( configKey ) != null )
+                    {
+                        Application.configurationProperties().remove(
+                            configKey );
+                    }
+                    else if ( Application.configurationProperties()
+                                    .getProperty( configKey ) != null )
+                      {
+                          Application.configurationProperties().setProperty(
+                              configKey, "" );
+                      }
                     value = null;
                 }
                 else
