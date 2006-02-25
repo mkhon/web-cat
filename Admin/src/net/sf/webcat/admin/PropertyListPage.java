@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PropertyListPage.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ |  $Id: PropertyListPage.java,v 1.2 2006/02/25 07:50:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * A property listing page.
  *
  *  @author edwards
- *  @version $Id: PropertyListPage.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ *  @version $Id: PropertyListPage.java,v 1.2 2006/02/25 07:50:48 stedwar2 Exp $
  */
 public class PropertyListPage
     extends WCComponent
@@ -150,8 +150,15 @@ public class PropertyListPage
             {
                 newPropertyValue = "";
             }
-            System.setProperty( newPropertyName, newPropertyValue );
-            er.extensions.ERXLogger.configureLoggingWithSystemProperties();
+            WCConfigurationFile config = Application.configurationProperties();
+            config.setProperty( newPropertyName, newPropertyValue );
+            config.attemptToSave();
+            // This may be redundant if the file is actually saved and the
+            // changes are picked up by the ERExtensions notification
+            // listeners, but that may not happen in a production environment,
+            // and won't happen if the config file isn't writeable, so we'll
+            // be conservative and do it anyway.
+            config.updateToSystemProperties();
             errorMessage( "System property \"" + newPropertyName
                 + "\" set to \"" + newPropertyValue + "\"." );
         }

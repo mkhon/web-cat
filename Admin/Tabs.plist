@@ -8,6 +8,7 @@
                 accessLevel = 75;
                 priority = 1;
                 wantsStart = YES;
+                id = AdminHome;
             };
             Settings = {
                 pageName = net.sf.webcat.admin.SettingsPage;
