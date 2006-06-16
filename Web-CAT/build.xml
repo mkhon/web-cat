@@ -5,7 +5,7 @@
 	<target name="build" depends="setProps,init.build,build.woapp,ssdd,war"/>
 
 	<target name="install" depends="local.license,build,install.war"/>
-    <target name="build.redistributable.war" depends="empty.license,build,install.war"/>
+    <target name="build.redistributable.war" depends="empty.license,build,install.war,export.jar"/>
 
     <target name="install.traditional" depends="setProps,init.build.traditional,build.traditional.woapp"/>
     
@@ -31,13 +31,24 @@
 
 	<!-- basic initializations  -->
 	<target name="init.build">
-	 	<tstamp/>
 		<property name="dest.dir" value="dist"/>
+        <tstamp/>
+        <copy file="Properties.master" tofile="Properties"/>
+        <propertyfile file="Properties"
+         comment="This file is automatically rewritten by ANT, so all formatting will be trashed.">
+          <entry key="webcat.version.date" value="${DSTAMP}"/>  
+        </propertyfile>
 	</target>
 
     <target name="init.build.traditional">
-        <tstamp/>
         <property name="dest.dir" value="${install.dir}"/>
+        <tstamp/>
+        <copy file="Properties.master" tofile="Properties"/>
+        <propertyfile file="Properties"
+         comment="This file is automatically rewritten by ANT, so all formatting will be trashed.">
+          <entry key="webcat.version.date" value="${DSTAMP}"/>  
+        </propertyfile>
+        <echo message="stamp = ${DSTAMP}"/>      
     </target>
 
 	<!-- woproject tasks -->
@@ -51,10 +62,7 @@
 			       destDir="${dest.dir}/${project.name}/WEB-INF"
 			       customInfoPListContent="${customInfoPListContent}"
 			       principalClass="${principalClass}"
-			       webXML="true"
-                   webXML_WOROOT="${servlet.install.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks"
-                   webXML_LOCALROOT="${servlet.install.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks"
-                   webXML_WOAINSTALLROOT="${servlet.install.dir}/${project.name}/WEB-INF">
+			       webXML="false">
    			<classes dir="${classes.dir}">
       			<patternset>
   					<includesfile name="woproject/classes.include.patternset"/>
@@ -167,10 +175,13 @@
          and create the web.xml file with the woapplication task.-->
     <target name="war" depends="ssdd">
         <war destfile="${dest.dir}/${project.name}.war"
-            webxml="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/web.xml"
+            webxml="web.xml"
             basedir="${dest.dir}/${project.name}">
             <lib dir="${wo.wosystemroot}/Library/Frameworks/JavaWOJSPServlet.framework/WebServerResources/Java/">
                 <include name="JavaWOJSPServlet_client.jar"/>
+            </lib>
+            <lib dir="../Bootstrap">
+                <include name="Bootstrap.jar"/>
             </lib>
             <!--lib dir="c:/Web-CAT/extra-jars">
                 <include name="**/*.jar"/>
@@ -182,7 +193,8 @@
 	<!-- ssdd target-->   
     <target name="patchWebXML"
     	depends="build.woapp"
-	    description="Fix up ordering of frameworks in path">
+	    description="Fix up ordering of frameworks in path"
+        if="${never}">
 		<exec executable="perl" failonerror="true">
 	        <arg file="patchWebXML.pl"/>
 	    	<arg value="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/web.xml"/>
@@ -226,4 +238,12 @@
         </copy>
  	</target>
 
+    <target name="export.jar">   
+        <!-- need to jar framework up somewhere, based on version number info -->
+        <property file="Properties"/>
+        <jar destfile="../webcat_${webcat.version.major}.${webcat.version.minor}.${webcat.version.revision}.jar"
+            basedir="${dest.dir}/${project.name}"
+            excludes="WEB-INF/${project.name}.woa/Contents/Frameworks/**"/>
+    </target>   
+   
 </project>

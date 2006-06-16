@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="/Core"/>
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Core/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/JavaWOExtensions/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaXML"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/Bootstrap"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

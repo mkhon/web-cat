@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -56,6 +56,8 @@ public class Grader
     public Grader()
     {
         super();
+
+        instance = this;
 
         // Apply any pending database updates for the grader
         UpdateEngine.instance().applyNecessaryUpdates(
@@ -97,6 +99,23 @@ public class Grader
                 Application.releasePeerEditingContext( ec );
             }
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Returns the current subsystem object.  In principle, only one instance
+     * of this class exists.  However, we're not using the singleton pattern
+     * exactly, since the instance is created using a normal constructor
+     * via reflection.  However, this class has a private static data member
+     * that keeps track of the most recently created instance, and this
+     * method provides access to it.  The result is much like a singleton,
+     * but without the guarantees provided by a hidden constructor.
+     * @return the current Grader subsystem instance
+     */
+    public static Grader getInstance()
+    {
+        return instance;
     }
 
 
@@ -902,8 +921,15 @@ public class Grader
                              TabDescriptor.TAB_DEFINITIONS ) ) );
     }
 
+    /**
+     * This is a reference to the single instance of this class, representing
+     * this subsystem.  It is initialized by the constructor.
+     */
+    private static Grader instance;
+
     /** this is the main single grader queue */
     private static GraderQueue graderQueue;
+
     /** this is the queue processor for processing grader jobs */
     private static GraderQueueProcessor graderQueueProcessor;
 

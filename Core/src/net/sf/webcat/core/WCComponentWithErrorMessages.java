@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponentWithErrorMessages.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: WCComponentWithErrorMessages.java,v 1.2 2006/06/16 14:48:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.*;
 * message handling features.
 *
 * @author Stephen Edwards
-* @version $Id: WCComponentWithErrorMessages.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+* @version $Id: WCComponentWithErrorMessages.java,v 1.2 2006/06/16 14:48:40 stedwar2 Exp $
 */
 public class WCComponentWithErrorMessages
     extends WOComponent
@@ -79,6 +79,21 @@ public class WCComponentWithErrorMessages
     public void errorMessage( String message )
     {
         errorMessage( message, message );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Record an error message for this page, if one is provided.  If a
+     * null message is provided, nothing happens (no message is recorded).
+     * @param message the error message, or null
+     */
+    public void possibleErrorMessage( String message )
+    {
+        if ( message != null )
+        {
+            errorMessage( message, message );
+        }
     }
 
 

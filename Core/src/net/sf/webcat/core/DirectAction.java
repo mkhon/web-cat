@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.3 2006/06/16 14:48:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: DirectAction.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ * @version $Id: DirectAction.java,v 1.3 2006/06/16 14:48:41 stedwar2 Exp $
  */
 public class DirectAction
     extends ERXDirectAction
@@ -442,11 +442,12 @@ public class DirectAction
      */
     public WOActionResults cmsRequestAction()
     {
+        // TODO: this entire action should be moved to a separate
+        // class in the Grader subsystem.
         log.debug( "entering cmsRequestAction()" );
         log.debug( "hasSession() = " + context().hasSession() );
         Subsystem subsystem = ( (Application)( Application.application() ) )
-            .subsystemManager()
-            .subsystem( "net.sf.webcat.grader.Grader" );
+            .subsystemManager().subsystem( "Grader" );
         WOActionResults result = null;
         result = subsystem.handleDirectAction(
             request(), null /*(Session)session()*/, context() );
@@ -464,6 +465,8 @@ public class DirectAction
      */
     public WOActionResults submitAction()
     {
+        // TODO: this entire action should be moved to a separate
+        // class in the Grader subsystem.
         NSMutableDictionary errors = new NSMutableDictionary();
         log.debug( "entering submitAction()" );
         log.debug( "hasSession() = " + context().hasSession() );
@@ -472,8 +475,7 @@ public class DirectAction
         {
             log.debug( "calling subsystem handler" );
             Subsystem subsystem = ( (Application)( Application.application() ) )
-                    .subsystemManager()
-                    .subsystem( "net.sf.webcat.grader.Grader" );
+                    .subsystemManager().subsystem( "Grader" );
             result = subsystem.handleDirectAction( request(),
                                                    (Session)session(),
                                                    context() );
@@ -506,6 +508,8 @@ public class DirectAction
      */
     public WOActionResults reportAction()
     {
+        // TODO: this entire action should be moved to a separate
+        // class in the Grader subsystem.
         log.debug( "entering reportAction()" );
         log.debug( "hasSession() = " + context().hasSession() );
         log.debug( "check 2 = " + request().isSessionIDInRequest() );
@@ -521,8 +525,7 @@ public class DirectAction
         {
             log.debug( "calling subsystem handler" );
             Subsystem subsystem = ( (Application)( Application.application() ) )
-                    .subsystemManager()
-                    .subsystem( "net.sf.webcat.grader.Grader" );
+                    .subsystemManager().subsystem( "Grader" );
             result = subsystem.handleDirectAction(
                             request(), mySession, context() );
 //          result = pageWithName( "net.sf.webcat.core.SubmitDebug" );

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Admin.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ |  $Id: Admin.java,v 1.2 2006/06/16 14:50:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.core.*;
  *  The subsystem defining Web-CAT administrative tasks.
  *
  *  @author Stephen Edwards
- *  @version $Id: Admin.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ *  @version $Id: Admin.java,v 1.2 2006/06/16 14:50:53 stedwar2 Exp $
  */
 public class Admin
     extends Subsystem
@@ -70,6 +70,8 @@ public class Admin
 
     //~ Instance/static variables .............................................
 
+    // TODO: this should be refactored into the Subsystem parent class,
+    // but that means handling Core in an appropriate way.
     private static NSArray subsystemTabTemplate;
     {
         NSBundle myBundle = NSBundle.bundleForClass( Admin.class );

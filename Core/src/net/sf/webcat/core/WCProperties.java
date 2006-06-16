@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCProperties.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: WCProperties.java,v 1.3 2006/06/16 14:48:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -55,7 +55,7 @@ import org.apache.log4j.Logger;
  * support is based on code written by Chris Mair.
  * 
  * @author Stephen Edwards
- * @version $Id: WCProperties.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ * @version $Id: WCProperties.java,v 1.3 2006/06/16 14:48:40 stedwar2 Exp $
  */
 public class WCProperties
     extends java.util.Properties
@@ -133,6 +133,7 @@ public class WCProperties
                     propertyfiles_loaded += ";" + file.getAbsolutePath();
                 }
                 setProperty( PROPERTYFILES_LOADED, propertyfiles_loaded );
+                is.close();
             }
             catch ( IOException e )
             {

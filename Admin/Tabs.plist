@@ -10,15 +10,20 @@
                 wantsStart = YES;
                 id = AdminHome;
             };
-            Settings = {
-                pageName = net.sf.webcat.admin.SettingsPage;
+            Subsystems = {
+                pageName = net.sf.webcat.admin.SubsystemManagerPage;
                 accessLevel = 90;
                 priority = 2;
+            };
+            System = {
+                pageName = net.sf.webcat.admin.SettingsPage;
+                accessLevel = 90;
+                priority = 3;
             };
             "Edit Database" = {
                 pageName = net.sf.webcat.admin.EntryEditPage;
                 accessLevel = 90;
-                priority = 3;
+                priority = 4;
             };
         };
     };

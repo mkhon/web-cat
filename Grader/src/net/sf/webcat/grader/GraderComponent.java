@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCComponent
@@ -290,10 +290,7 @@ public class GraderComponent
         job.setQueueTime( new NSTimestamp() );
         wcSession().commitLocalChanges();
 
-        ( (Grader)( ( (Application)Application.application() )
-                        .subsystemManager()
-                        .subsystem( Grader.class.getName() ) ) )
-            .graderQueue().enqueue( null );
+        Grader.getInstance().graderQueue().enqueue( null );
         
         prefs().clearUpload();
         prefs().setSubmissionInProcess( false );

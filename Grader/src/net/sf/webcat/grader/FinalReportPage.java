@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderComponent
@@ -490,9 +490,7 @@ public class FinalReportPage
                 log.error( "cannot find job in queue for:"
                            + prefs().submission() );
             }
-            Grader grader = (Grader)( ( (Application)Application.application() )
-                            .subsystemManager()
-                            .subsystem( Grader.class.getName() ) );
+            Grader grader = Grader.getInstance();
             jobData.mostRecentWait = grader.mostRecentJobWait();
             jobData.estimatedWait =
                 grader.estimatedJobTime() * ( jobData.queuePosition + 1 );

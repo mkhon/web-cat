@@ -1,0 +1,180 @@
+AutoUpdateEnabled: WOConditional {
+    condition = adaptor.willUpdateAutomatically;
+}
+
+AutoUpdateNotEnabled: WOConditional {
+    condition = adaptor.willUpdateAutomatically;
+    negate = true;
+}
+
+BuildDate: WOString {
+	value = subsystem.descriptor.versionDate;
+}
+
+CannotUpdate: WOConditional {
+    condition = canUpdate;
+    negate = true;
+}
+
+CanUpdate: WOConditional {
+    condition = canUpdate;
+}
+
+Description: WOString {
+	value = subsystem.descriptor.description;
+}
+
+DisableAutoUpdates: WOSubmitButton {
+    value = "Disable";
+    action = toggleAutoUpdates;
+}
+
+DownloadNewNow: WOActiveImage {
+	border    = "0";
+	filename  = "icons/download.gif";
+	framework = "Core";
+	height    = "18";
+	width     = "18";
+	alt       = "Download now for install on restart";
+	title     = "Download now for install on restart";
+	action    = downloadNew;
+}
+
+DownloadNow: WOActiveImage {
+	border    = "0";
+	filename  = "icons/download.gif";
+	framework = "Core";
+	height    = "18";
+	width     = "18";
+	alt       = "Download now for install on restart";
+	title     = "Download now for install on restart";
+	action    = download;
+}
+
+Edit: WOActiveImage {
+	border    = "0";
+	filename  = "icons/edit.gif";
+	framework = "Core";
+	height    = "17";
+	width     = "18";
+	alt       = "Configure subsystem settings";
+	title     = "Configure subsystem settings";
+	action    = edit;
+}
+
+EnableAutoUpdates: WOSubmitButton {
+    value = "Enable";
+    action = toggleAutoUpdates;
+}
+
+Form1: WOForm {
+    multipleSubmit = true;
+}
+
+Form2: WOForm {
+    multipleSubmit = true;
+}
+
+Name: WOString {
+	value = subsystem.name;
+}
+
+NewBuildDate: WOString {
+	value = feature.versionDate;
+}
+
+NewDescription: WOString {
+	value = feature.description;
+}
+
+NewName: WOString {
+	value = feature.name;
+}
+
+NewProvider: WOString {
+	value = feature.provider.name;
+}
+
+NewProviderURL: WOString {
+	value = feature.provider.url.toString;
+}
+
+NewSubsystemsAvailable: WOConditional {
+    condition = newSubsystems.count;
+}
+
+NewSubsystemRepetition: WORepetition {
+	item  = feature;
+	list  = newSubsystems;
+	index = index;
+}
+
+NewVersion: WOString {
+	value = subsystem.descriptor.providerVersion.currentVersion;
+}
+
+NewNewVersion: WOString {
+	value = feature.currentVersion;
+}
+
+NoNewSubsystemsAvailable: WOConditional {
+    condition = newSubsystems.count;
+    negate    = true;
+}
+
+OutOfDate: WOConditional {
+    condition = subsystem.descriptor.updateIsAvailable;
+}
+
+Page : net.sf.webcat.core.PageWithNavigation {
+    title = "Manage Subsystems";
+}
+
+ProviderURL: WOTextField {
+    value = providerURL;
+    size  = 70;
+}
+
+ScanNow: WOSubmitButton {
+    value = "Scan Now";
+    action = scanNow;
+}
+
+SubsystemRepetition: WORepetition {
+	item  = subsystem;
+	list  = subsystems;
+	index = index;
+}
+
+TR: net.sf.webcat.core.TableRow {
+    index = index;
+}
+
+UpToDate: WOConditional {
+    condition = subsystem.descriptor.updateIsAvailable;
+    negate = true;
+}
+
+Version: WOString {
+	value = subsystem.descriptor.currentVersion;
+}
+
+WillUpdate: WOImage {
+	border    = "0";
+	filename  = "icons/check.gif";
+	framework = "Core";
+	height    = "16";
+	width     = "16";
+	alt       = "Lastest version will be installed on next restart";
+	title     = "Lastest version will be installed on next restart";
+}
+
+WillNotUpdate: WOImage {
+	border    = "0";
+	filename  = "icons/exclaim.gif";
+	framework = "Core";
+	height    = "16";
+	width     = "16";
+	alt       = "Automatic updates disabled";
+	title     = "Automatic updates disabled";
+}

@@ -72,7 +72,8 @@
            src/net/sf/webcat/admin/WCMenuHeader.java, 
            src/net/sf/webcat/admin/WCPageWrapper.java, 
            src/net/sf/webcat/admin/WCQueryAllEntitiesPageTemplate.java, 
-           src/net/sf/webcat/admin/WCQueryPageTemplate.java
+           src/net/sf/webcat/admin/WCQueryPageTemplate.java, 
+           src/net/sf/webcat/admin/SubsystemManagerPage.java
         );
         WEBSERVER_RESOURCES = 
         ();
@@ -92,7 +93,8 @@
            Components/WCQueryPageTemplate.wo, 
            Components/SettingsPage.wo, 
            Components/Log4JConfigurationPage.wo, 
-           Components/UnitTestPage.wo
+           Components/UnitTestPage.wo, 
+           Components/SubsystemManagerPage.wo
         );
         SUBPROJECTS = 
         ();

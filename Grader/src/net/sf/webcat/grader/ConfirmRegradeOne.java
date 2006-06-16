@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmRegradeOne.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: ConfirmRegradeOne.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.core.*;
  * A confirmation page for regrading all student submissions.
  *
  * @author Stephen Edwards
- * @version $Id: ConfirmRegradeOne.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: ConfirmRegradeOne.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  */
 public class ConfirmRegradeOne
     extends ConfirmPage
@@ -72,10 +72,7 @@ public class ConfirmRegradeOne
         submission.requeueForGrading( wcSession().localContext() );
         prefs().setSubmission( null );
         wcSession().commitLocalChanges();
-        ( (Grader)( ( (Application)Application.application() )
-                    .subsystemManager()
-                    .subsystem( Grader.class.getName() ) ) )
-            .graderQueue().enqueue( null );
+        Grader.getInstance().graderQueue().enqueue( null );
         // Skip return to the grading results page
     }
 }

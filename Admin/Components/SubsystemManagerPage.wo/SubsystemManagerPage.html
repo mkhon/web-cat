@@ -1,0 +1,72 @@
+<webobject name="Page">
+<div class="shadow"><table><tbody><tr><th>Installed Subsystems</th><th>Version</th>
+  <th>Build Date</th><th>Will Update?</th><th>Action</th></tr>
+<webobject name="SubsystemRepetition">
+<webobject name="TR">
+<td><b><webobject name="Name"/></b>
+<webobject name="UpToDate">(up to date)</webobject>
+<webobject name="OutOfDate">(<b class="warn">v.<webobject name="NewVersion"/>
+is available</b>)</webobject>
+<br/><webobject name="Description"/></td>
+<td><webobject name="Version"/></td>
+<td><webobject name="BuildDate"/></td>
+<td class="s"><webobject name="UpToDate">not needed</webobject>
+<webobject name="OutOfDate"><webobject name="CanUpdate">
+  <webobject name="AutoUpdateEnabled"><webobject name="WillUpdate"/></webobject>
+  <webobject name="AutoUpdateNotEnabled"><webobject name="WillNotUpdate"/></webobject>
+</webobject><webobject name="CannotUpdate">
+  <webobject name="WillNotUpdate"/>
+</webobject></webobject></td>
+<td><webobject name="CanUpdate"><webobject name="DownloadNow"/></webobject><webobject name="Edit"/></td>
+</webobject></webobject></tbody></table></div>
+<div class="spacer">&nbsp;</div>
+
+<h2>Available for Web-based Installation</h2>
+<webobject name="NewSubsystemsAvailable">
+<div class="shadow"><table><tbody><tr><th>Available for Installation</th><th>Version</th>
+  <th>Build Date</th><th>Download?</th></tr>
+<webobject name="NewSubsystemRepetition">
+<webobject name="TR">
+<td><b><webobject name="NewName"/></b>
+<br/><b>Provider:</b> <webobject name="NewProvider"/>
+<br/><b>URL:</b> <webobject name="NewProviderURL"/>
+<br/><webobject name="NewDescription"/></td>
+<td><webobject name="NewNewVersion"/></td>
+<td><webobject name="NewBuildDate"/></td>
+<td><webobject name="CanUpdate"><webobject name="DownloadNewNow"/></webobject>
+<webobject name="CannotUpdate">install manually</webobject>
+</td>
+</webobject></webobject></tbody></table></div>
+<div class="spacer">&nbsp;</div>
+</webobject><webobject name="NoNewSubsystemsAvailable">
+<p>After scanning known providers, no new subsystems were detected.</p>
+</webobject>
+<webobject name="Form2"><p>
+Add provider URL:
+<webobject name="ProviderURL"/><webobject name="ScanNow"/>
+</p></webobject>
+
+<h2>Automatic Updates</h2>
+<webobject name="CannotUpdate"><p>
+Automatic updates <b class="warn">are disabled</b> on this installation.
+Automatic updates are only available on servlet-based deployments of this
+application.  Any updates must be downloaded and applied by hand when
+the application is not executing.
+</p></webobject>
+<webobject name="CanUpdate"><webobject name="Form2"><p>
+Automatic updates:
+<webobject name="AutoUpdateEnabled"><b class="check">Enabled</b>
+<webobject name="DisableAutoUpdates"/></webobject>
+<webobject name="AutoUpdateNotEnabled"><b class="warn">Disabled</b>
+<webobject name="EnableAutoUpdates"/></webobject>
+</p></webobject><p>
+This application is capable of downloading and installing new updates to
+subsystems that are currently installed.  When enabled, Web-CAT will check
+for newer versions of all installed subsystems on each restart, and download
+any available updates at that time.  You can also <span class="hl">manually
+download</span> updates on demand using the download icons in the table.
+All downloaded updates will <span class="hl">be applied when the application
+restarts.</span>
+</p>
+</webobject>
+</webobject>

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.2 2006/06/16 14:48:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,9 +26,10 @@
 package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import java.util.Iterator;
+import net.sf.webcat.FeatureDescriptor;
+import net.sf.webcat.WCServletAdaptor;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -37,9 +38,9 @@ import org.apache.log4j.Logger;
  *  communicate with subsystems.
  *
  *  @author Stephen Edwards
- *  @version $Id: Subsystem.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: Subsystem.java,v 1.2 2006/06/16 14:48:40 stedwar2 Exp $
  */
-public abstract class Subsystem
+public class Subsystem
 {
     //~ Constructors ..........................................................
 
@@ -49,7 +50,7 @@ public abstract class Subsystem
      */
     public Subsystem()
     {
-        // No action here
+        // Nothing to initialize here
     }
 
 
@@ -57,14 +58,61 @@ public abstract class Subsystem
 
     // ----------------------------------------------------------
     /**
-     * Get a short (one- to two-word) human-readable name for this
+     * Get the short (one-word) human-readable name for this
      * subsystem.
      * 
      * @return The short name
      */
     public String name()
     {
-        return getClass().getName();
+        return name;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the short (one-word) human-readable name for this subsystem.
+     * @param newName the name to use
+     */
+    public void setName( String newName )
+    {
+        name = newName;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get the FeatureDescriptor for this subsystem.
+     * @return this subsystem's descriptor
+     */
+    public FeatureDescriptor descriptor()
+    {
+        if ( descriptor == null )
+        {
+            // First, look to see if there is an appropriate subsystem updater
+            WCServletAdaptor adaptor = WCServletAdaptor.getInstance();
+            if ( adaptor != null )
+            {
+                for ( Iterator i = adaptor.subsystems().iterator();
+                      i.hasNext(); )
+                {
+                    FeatureDescriptor sd = (FeatureDescriptor)i.next();
+                    if ( name.equals( sd.name() ) )
+                    {
+                        // found it!
+                        descriptor = sd;
+                        break;
+                    }
+                }
+            }
+            // Otherwise, try to create one directly from properties
+            if ( descriptor == null )
+            {
+                descriptor = new FeatureDescriptor( name(),
+                    Application.configurationProperties(), false );
+            }
+        }
+        return descriptor;
     }
 
 
@@ -183,5 +231,7 @@ public abstract class Subsystem
 
     //~ Instance/static variables .............................................
 
+    private String name = getClass().getName();
+    private FeatureDescriptor descriptor;
     static Logger log = Logger.getLogger( Subsystem.class );
 }

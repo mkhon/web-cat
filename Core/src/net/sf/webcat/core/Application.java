@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: Application.java,v 1.3 2006/06/16 14:48:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.3 2006/06/16 14:48:40 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -75,6 +75,20 @@ public class Application
         // restoring sessions through the WCServletSessionStore doesn't
         // really work.
         setSessionStoreClassName( "WOServerSessionStore" );
+        NSNotificationCenter.defaultCenter().addObserver(
+            this, 
+            new NSSelector( "logNotification", 
+                            new Class[] { NSNotification.class } ), 
+            NSBundle.BundleDidLoadNotification,
+            null
+        );
+        NSNotificationCenter.defaultCenter().addObserver(
+            this, 
+            new NSSelector( "logNotification", 
+                            new Class[] { NSNotification.class } ), 
+            NSBundle.LoadedClassesNotification,
+            null
+        );
         if ( log.isInfoEnabled() )
         {
             log.info( "Web-CAT v" + version()
@@ -271,6 +285,12 @@ public class Application
         if ( __subsystemManager == null )
             __subsystemManager = new SubsystemManager( configurationProperties() );
         return __subsystemManager;
+    }
+
+    public void logNotification( NSNotification notification )
+    {
+        log.info( "notification posted: " + notification );
+        log.info( "notification object: " + notification.object() );
     }
 
 
@@ -1425,9 +1445,9 @@ public class Application
         if ( version == null )
         {
             WCConfigurationFile config = properties();
-            version =   config.getProperty( "core.version.major", "x" )
-                + "." + config.getProperty( "core.version.minor", "x" )
-                + "." + config.getProperty( "core.version.date", "xxxxxxxx" );
+            version =   config.getProperty( "Core.version.major", "x" )
+                + "." + config.getProperty( "Core.version.minor", "x" )
+                + "." + config.getProperty( "Core.version.date", "xxxxxxxx" );
         }
         return version;
     }

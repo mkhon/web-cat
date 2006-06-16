@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -28,8 +28,12 @@ package net.sf.webcat.grader;
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
 import java.io.*;
+import java.util.*;
 import java.util.zip.*;
+
+import net.sf.webcat.*;
 import net.sf.webcat.core.*;
+
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -37,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -262,10 +266,10 @@ public class ScriptFile
 //              log.debug( "script config.plist = " + dict );
                 String name = (String)dict.objectForKey( "name" );
                 String version = (String)dict.objectForKey( "version" );
-                if ( version != null )
-                {
-                    name = name + " (v" + version + ")";
-                }
+//                if ( version != null )
+//                {
+//                    name = name + " (v" + version + ")";
+//                }
 //              log.debug( "script name = " + name );
                 setName( name );
                 NSArray options = (NSArray)dict.objectForKey( "options" );
@@ -506,6 +510,21 @@ public class ScriptFile
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Get the FeatureDescriptor for this plugin.
+     * @return this plug-in's descriptor
+     */
+    public FeatureDescriptor descriptor()
+    {
+        if ( descriptor == null )
+        {
+            descriptor = new PluginDescriptor( this );
+        }
+        return descriptor;
+    }
+
+
 // If you add instance variables to store property values you
 // should add empty implementions of the Serialization methods
 // to avoid unnecessary overhead (the properties will be
@@ -536,6 +555,8 @@ public class ScriptFile
 
 
     //~ Instance/static variables .............................................
+
+    private PluginDescriptor descriptor;
 
     static private String scriptRoot = null;
     static private String scriptDataRoot = null;

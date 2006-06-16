@@ -4,10 +4,14 @@
 	<comment></comment>
 	<projects>
 		<project>Admin</project>
+		<project>ANTForPlugins</project>
+		<project>Bootstrap</project>
+		<project>CloverForPlugins</project>
 		<project>Core</project>
 		<project>DBUpdateEngine</project>
 		<project>EOJDBCPrototypes</project>
 		<project>Grader</project>
+		<project>PerlForPlugins</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

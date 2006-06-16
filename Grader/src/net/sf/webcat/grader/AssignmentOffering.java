@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -369,10 +369,7 @@ public class AssignmentOffering
             s.requeueForGrading( ec );
         }
         ec.saveChanges();
-        ( (Grader)( ( (Application)Application.application() )
-                    .subsystemManager()
-                    .subsystem( Grader.class.getName() ) ) )
-            .graderQueue().enqueue( null );
+        Grader.getInstance().graderQueue().enqueue( null );
     }
     
     

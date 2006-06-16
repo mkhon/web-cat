@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderComponent
@@ -296,10 +296,7 @@ public class EditAssignmentPage
             Application.releasePeerEditingContext( ec );
         }
         // trigger the grading queue to read the released jobs
-        ( (Grader)( ( (Application)Application.application() )
-                    .subsystemManager()
-                    .subsystem( Grader.class.getName() ) ) )
-            .graderQueue().enqueue( null );
+        Grader.getInstance().graderQueue().enqueue( null );
         return null;
     }
 

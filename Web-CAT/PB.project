@@ -42,12 +42,15 @@
            DBUpdateEngine.framework, 
            EOJDBCPrototypes.framework, 
            Grader.framework, 
+           PerlForPlugins.framework, 
            EOJDBCPrototypes.framework, 
            DBUpdateEngine.framework, 
            Core.framework, 
            Grader.framework, 
            Admin.framework, 
+           PerlForPlugins.framework, 
            Admin.framework, 
+           ANTForPlugins.framework, 
            Core.framework, 
            DBUpdateEngine.framework, 
            EOJDBCPrototypes.framework, 
@@ -60,6 +63,7 @@
            ERJars.framework, 
            Grader.framework, 
            JavaWOExtensions.framework, 
+           PerlForPlugins.framework, 
            WOUnitTest.framework, 
            JavaDirectToWeb.framework, 
            JavaDTWGeneration.framework, 
@@ -71,7 +75,8 @@
            JavaWebObjects.framework, 
            JavaWOJSPServlet.framework, 
            JavaXML.framework, 
-           JDBCEOAdaptor.framework
+           JDBCEOAdaptor.framework, 
+           JavaWOJSPServlet.framework
         );
         WEBSERVER_RESOURCES = 
         ();
