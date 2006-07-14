@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditScriptFilesPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: EditScriptFilesPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -286,8 +286,23 @@ public class EditScriptFilesPage
     // ----------------------------------------------------------
     public boolean nextEnabled()
     {
-        return nextPage != null
-               || wcSession().currentTab().hasNextSibling();
+        return !hideNextBack
+            && ( nextPage != null
+                 || wcSession().currentTab().hasNextSibling() );
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean backEnabled()
+    {
+        return !hideNextBack && super.backEnabled();
+    }
+
+
+    // ----------------------------------------------------------
+    public void hideNextAndBack( boolean value )
+    {
+        hideNextBack = value;
     }
 
 
@@ -313,5 +328,6 @@ public class EditScriptFilesPage
     //~ Instance/static variables .............................................
 
     private String title;
+    private boolean hideNextBack = false;
     static Logger log = Logger.getLogger( EditScriptFilesPage.class );
 }

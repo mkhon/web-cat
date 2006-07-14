@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -28,14 +28,11 @@ package net.sf.webcat.grader;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-
 import er.extensions.*;
 import er.extensions.ERXConstant;
 import java.io.*;
 import java.util.*;
-
 import net.sf.webcat.core.*;
-
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -45,7 +42,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -588,6 +585,12 @@ public class GraderQueueProcessor
             step.script().reinitializeConfigAttributesIfNecessary();
             log.debug( "creating properties file" );
             // Re-write the properties file
+            properties.addPropertiesFromDictionaryIfNotDefined(
+                ( (Application)Application.application() )
+                    .subsystemManager().pluginProperties()
+                );
+            properties.addPropertiesFromDictionaryIfNotDefined(
+                step.script().globalConfigSettings() );
             properties.addPropertiesFromDictionaryIfNotDefined(
                 step.script().defaultConfigSettings() );
             if ( step.config() != null )

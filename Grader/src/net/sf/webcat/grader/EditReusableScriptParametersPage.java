@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditReusableScriptParametersPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditReusableScriptParametersPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditReusableScriptParametersPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: EditReusableScriptParametersPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  */
 public class EditReusableScriptParametersPage
     extends GraderComponent
@@ -64,21 +64,11 @@ public class EditReusableScriptParametersPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public WODisplayGroup    optionGroup;
-    public NSDictionary      option;
     public Step              step;
     public WODisplayGroup    assignmentStepGroup;
     public Step              otherAssignmentStep;
     public int               index;
-
-    public NSArray           categories;
-    public String            category;
-    public String            chosenCategory;
-    public String            displayedCategory;
-
-    public static final String hideInfoKey = "EditScriptPageShowInfo";
-    public static final String verboseOptionsKey =
-        "EditScriptPageNoVerboseOptions";
+    public java.io.File      baseDir;
 
 
     //~ Methods ...............................................................
@@ -88,6 +78,11 @@ public class EditReusableScriptParametersPage
     {
         log.debug( "appendToResponse()" );
         step = prefs().step();
+        if ( baseDir == null )
+        {
+            baseDir = new java.io.File ( ScriptFile.userScriptDirName(
+                wcSession().user(), true ).toString() );
+        }
         if ( step.config() == null )
         {
             log.debug( "null config detected, populating it" );
@@ -96,19 +91,6 @@ public class EditReusableScriptParametersPage
             step.setConfigRelationship( newConfig );
             newConfig.setAuthor( wcSession().user() );
         }
-        NSArray options = (NSArray)step.script().configDescription()
-            .objectForKey( "options" );
-        if ( categories == null )
-        {
-            categories = (NSArray)step.script().configDescription()
-                .objectForKey( "optionCategories" );
-            if ( categories != null && categories.count() > 0 )
-            {
-                chosenCategory = (String)categories.objectAtIndex( 0 );
-            }
-        }
-        displayedCategory = chosenCategory;
-        optionGroup.setObjectArray( options );
         assignmentStepGroup.setObjectArray( step.config().steps() );
         if ( log.isDebugEnabled() )
         {
@@ -116,28 +98,6 @@ public class EditReusableScriptParametersPage
             log.debug( "shared option values =\n" + step.config().configSettings() );
         }
         super.appendToResponse( response, context );
-    }
-
-
-    // ----------------------------------------------------------
-    public void toggleHideInfo()
-    {
-        boolean hideInfo = ERXValueUtilities.booleanValue(
-            wcSession().userPreferences.objectForKey( hideInfoKey ) );
-        hideInfo = !hideInfo;
-        wcSession().userPreferences.setObjectForKey(
-            Boolean.valueOf( hideInfo ), hideInfoKey );
-    }
-
-
-    // ----------------------------------------------------------
-    public void toggleVerboseOptions()
-    {
-        boolean verboseOptions = ERXValueUtilities.booleanValue(
-            wcSession().userPreferences.objectForKey( verboseOptionsKey ) );
-        verboseOptions = !verboseOptions;
-        wcSession().userPreferences.setObjectForKey(
-            Boolean.valueOf( verboseOptions ), verboseOptionsKey );
     }
 
 
@@ -156,90 +116,9 @@ public class EditReusableScriptParametersPage
 
 
     // ----------------------------------------------------------
-    public WOComponent resetAssignmentOptions()
-    {
-        step.configSettings().removeAllObjects();
-        return null;
-    }
-
-
-    // ----------------------------------------------------------
     public WOComponent resetOptions()
     {
         step.config().configSettings().removeAllObjects();
-        return null;
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean canEditScript()
-    {
-        return wcSession().user().accessLevel() >= User.WEBCAT_RW_PRIVILEGES
-            || step.script().author() == wcSession().user();
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean showThisOption()
-    {
-        return displayedCategory == null
-           || displayedCategory.equals( option.valueForKey( "category" ) );
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent editScript()
-    {
-        EditScriptFilesPage newPage = (EditScriptFilesPage)
-            pageWithName( EditScriptFilesPage.class.getName() );
-        newPage.nextPage = this;
-        newPage.scriptFile = step.script();
-        newPage.isEditable = canEditScript();
-        return newPage;
-    }
-
-    // ----------------------------------------------------------
-    public WOComponent togglePublished()
-    {
-        step.script().setIsPublished( !step.script().isPublished() );
-        return null;
-    }
-    
-    // ----------------------------------------------------------
-    public String togglePublishedLabel()
-    {
-        return
-        step.script().isPublished()
-            ? "Unpublish It"
-            : "Publish It";
-    }
-    
-    // ----------------------------------------------------------
-    public String isPublished()
-    {
-        return
-            step.script().isPublished()
-                ? "yes"
-                : "no";
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Force a fresh reload of the script's config.plist file to pick up
-     * any changes (i.e., new attributes, new default values, etc.).
-     * @return null, to force this page to reload in the browser when the
-     *         action completes
-     */
-    public WOComponent reloadScriptDefinition()
-    {
-        clearErrors();
-        String errMsg = step.script().initializeConfigAttributes();
-        if ( errMsg != null )
-        {
-            errorMessage( errMsg );
-        }
-        categories = null;
         return null;
     }
 
@@ -249,17 +128,10 @@ public class EditReusableScriptParametersPage
     {
         return null;
     }
-    
-    // ----------------------------------------------------------
-//    public WOComponent apply()
-//    {
-//        log.debug( "apply(): changes:\n"
-//                   + wcSession().defaultEditingContext().updatedObjects() );
-//        return super.apply();
-//    }
 
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( EditReusableScriptParametersPage.class );
+    static Logger log =
+        Logger.getLogger( EditReusableScriptParametersPage.class );
 }

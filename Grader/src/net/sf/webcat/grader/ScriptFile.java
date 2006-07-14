@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.3 2006/07/14 17:04:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.3 2006/07/14 17:04:35 stedwar2 Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -156,8 +156,20 @@ public class ScriptFile
         throws java.io.IOException, InterruptedException
     {
         Runtime runtime = Runtime.getRuntime();
-        String  command =
-            net.sf.webcat.core.Application.cmdShell() + mainFilePath();
+        String  command = net.sf.webcat.core.Application.cmdShell();
+        if ( configDescription().containsKey( "interpreter.prefix" ) )
+        {
+            // Look up the associated value, perform property substitution
+            // on it, and add it before the main file name
+            command = command
+                + net.sf.webcat.core.Application.configurationProperties().
+                    substitutePropertyReferences(
+                        configDescription().valueForKey( "interpreter.prefix" )
+                            .toString()
+                    )
+                + " ";
+        }
+        command += mainFilePath();
         Process proc = null;
         if ( args != null )
         {
@@ -192,7 +204,10 @@ public class ScriptFile
     // ----------------------------------------------------------
     public String displayableName()
     {
-        String name = name();
+        Object nameObj = configDescription().valueForKey( "displayableName" );
+        String name = ( nameObj == null )
+            ? name()
+            : nameObj.toString();
         if ( name == null )
         {
             name = uploadedFileName();
@@ -247,6 +262,8 @@ public class ScriptFile
      */
     public String initializeConfigAttributes( File configPlist )
     {
+        // reset the cached descriptor, if any
+        descriptor = null;
         if ( configPlist.exists() )
         {
             try

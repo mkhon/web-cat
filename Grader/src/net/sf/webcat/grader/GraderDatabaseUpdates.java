@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -150,6 +150,20 @@ public class GraderDatabaseUpdates
             "alter table TSUBMISSIONPROFILE add "
             + "CSUBMISSIONMETHOD TINYINT NOT NULL" );
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds support for global configuration parameters for plug-ins.
+     * @throws SQLException on error
+     */
+    public void updateIncrement5() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TUPLOADEDSCRIPTFILES add "
+            + "CGLOBALCONFIGSETTINGS BLOB" );
+    }
+
 
     //~ Private Methods .......................................................
 
