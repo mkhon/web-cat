@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.2 2006/07/14 16:57:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -60,7 +60,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.2 2006/07/14 16:57:16 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -248,8 +248,14 @@ public class WCComponent
     public WOComponent cancel()
     {
         cancelLocalChanges();
-        return pageWithName( wcSession().currentTab().parent()
-                             .selectDefaultSibling().pageName() );
+        TabDescriptor parent = wcSession().currentTab().parent();
+        if ( parent.parent().parent() != null )
+        {
+            // If we're on a third-level tab, jump up one level so that
+            // we move to the default second-level tab.
+            parent = parent.parent();
+        }
+        return pageWithName( parent.selectDefault().pageName() );
     }
 
 
@@ -452,8 +458,14 @@ public class WCComponent
     {
         if ( applyLocalChanges() )
         {
-            return pageWithName( wcSession().currentTab().parent()
-                             .selectDefaultSibling().pageName() );
+            TabDescriptor parent = wcSession().currentTab().parent();
+            if ( parent.parent().parent() != null )
+            {
+                // If we're on a third-level tab, jump up one level so that
+                // we move to the default second-level tab.
+                parent = parent.parent();
+            }
+            return pageWithName( parent.selectDefault().pageName() );
         }
         else
         {
