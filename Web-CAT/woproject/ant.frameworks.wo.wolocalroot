@@ -1,5 +1,6 @@
 Library\Frameworks\Admin.framework
 Library\Frameworks\ANTForPlugins.framework
+Library\Frameworks\CloverForPlugins.framework
 Library\Frameworks\Core.framework
 Library\Frameworks\DBUpdateEngine.framework
 Library\Frameworks\EOJDBCPrototypes.framework
@@ -11,6 +12,8 @@ Library\Frameworks\JavaWOExtensions.framework
 Library\Frameworks\PerlForPlugins.framework
 Library\Frameworks\WOUnitTest.framework
 Library/Frameworks/Admin.framework
+Library/Frameworks/ANTForPlugins.framework
+Library/Frameworks/CloverForPlugins.framework
 Library/Frameworks/Core.framework
 Library/Frameworks/DBUpdateEngine.framework
 Library/Frameworks/EOJDBCPrototypes.framework

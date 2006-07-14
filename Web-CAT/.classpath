@@ -13,12 +13,17 @@
 	<classpathentry kind="src" path="/Admin"/>
 	<classpathentry kind="lib" path="/PerlForPlugins/build/PerlForPlugins.framework/Resources/Java"/>
 	<classpathentry kind="src" path="/PerlForPlugins"/>
-	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/Grader/JavaWOExtensions/PerlForPlugins/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaWOJSPServlet/JavaXML/JDBCEOAdaptor"/>
+	<classpathentry kind="lib" path="/ANTForPlugins/build/ANTForPlugins.framework/Resources/Java"/>
+	<classpathentry kind="src" path="/ANTForPlugins"/>
+	<classpathentry kind="lib" path="/CloverForPlugins/build/CloverForPlugins.framework/Resources/Java"/>
+	<classpathentry kind="src" path="/CloverForPlugins"/>
+	<classpathentry kind="lib" path="/Bootstrap/bin"/>
+	<classpathentry kind="src" path="/Bootstrap"/>
+	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/Grader/JavaWOExtensions/PerlForPlugins/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaWOJSPServlet/JavaXML/JDBCEOAdaptor"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry sourcepath="src" kind="lib" path="build/Web-CAT.woa/Contents/Resources/Java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Web-CAT-externals"/>
 	<classpathentry kind="lib" path="C:/Apple/Library/Frameworks/JavaWOJSPServlet.framework/WebServerResources/Java/JavaWOJSPServlet_client.jar"/>
 	<classpathentry kind="lib" path="C:/www/Tomcat5/common/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/Bootstrap/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -4,8 +4,8 @@
 	<!-- add optional targets to depends list if needed -->
 	<target name="build" depends="setProps,init.build,build.woapp,ssdd,war"/>
 
-	<target name="install" depends="local.license,build,install.war"/>
-    <target name="build.redistributable.war" depends="empty.license,build,install.war,export.jar"/>
+	<target name="install" depends="build,install.war"/>
+    <target name="build.redistributable.war" depends="install,export.jar"/>
 
     <target name="install.traditional" depends="setProps,init.build.traditional,build.traditional.woapp"/>
     
@@ -106,9 +106,9 @@
 				<exclude name="**/*.woa/**"/>
 			</lib>
    		</woapplication>
-        <!-- replace local license key with an empty file, so developer's license isn't 
+        <!-- delete local license key, so developer's license isn't 
              included in the redistributable WAR file.   -->
-        <echo message="A-000-AAA-000-AAA-000-AAA-000-AAA-000"
+        <delete
             file="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks/Library/Frameworks/JavaWebObjects.framework/Resources/License.key"/>
 	</target>
 
@@ -203,16 +203,8 @@
             <arg file="patchClasspathTxt.pl"/>
             <arg value="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Windows/CLSSPATH.TXT"/>
         </exec>
-    </target>   
+    </target>
 
-    <target name="local.license">
-        <property name="license.dir" value="."/>
-    </target>
-    
-    <target name="empty.license">
-        <property name="license.dir" value="../empty-license"/>
-    </target>
-    
 	<!-- ssdd target-->
     <!-- To use this target remove the if="${never}" statement and create the LICENSE in your project
          and create the web.xml file with the woapplication task.-->

@@ -16,11 +16,11 @@
        "$(NEXT_ROOT)$(LOCAL_LIBRARY_DIR)/Frameworks"
     );
     NEXTSTEP_BUILDTOOL = /bin/gnumake;
-    NEXTSTEP_JAVA_COMPILER = /usr/bin/javac;
     LANGUAGE = English;
-    NEXTSTEP_OBJCPLUS_COMPILER = /usr/bin/cc;
-    NEXTSTEP_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/Applications";
+    NEXTSTEP_JAVA_COMPILER = /usr/bin/javac;
     DYNAMIC_CODE_GEN = YES;
+    NEXTSTEP_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/Applications";
+    NEXTSTEP_OBJCPLUS_COMPILER = /usr/bin/cc;
     PROJECTTYPE = JavaWebObjectsApplication;
     WINDOWS_JAVA_COMPILER = "$(JDKBINDIR)/javac.exe";
     PROJECTVERSION = 2.8;
@@ -29,15 +29,11 @@
     {
         OTHER_LINKED = 
         ();
-        CLASSES = 
-        (
-           src/edu/vt/cs/Web_CAT/Grader/graphs/AssignmentSummary.java, 
-           src/edu/vt/cs/Web_CAT/Core/MutableArray.java, 
-           src/edu/vt/cs/Web_CAT/Core/MutableDictionary.java
-        );
         FRAMEWORKS = 
         (
+           ANTForPlugins.framework, 
            Admin.framework, 
+           CloverForPlugins.framework, 
            Core.framework, 
            DBUpdateEngine.framework, 
            EOJDBCPrototypes.framework, 
@@ -49,8 +45,11 @@
            Grader.framework, 
            Admin.framework, 
            PerlForPlugins.framework, 
+           ANTForPlugins.framework, 
+           CloverForPlugins.framework, 
            Admin.framework, 
            ANTForPlugins.framework, 
+           CloverForPlugins.framework, 
            Core.framework, 
            DBUpdateEngine.framework, 
            EOJDBCPrototypes.framework, 
@@ -77,6 +76,12 @@
            JavaXML.framework, 
            JDBCEOAdaptor.framework, 
            JavaWOJSPServlet.framework
+        );
+        CLASSES = 
+        (
+           src/edu/vt/cs/Web_CAT/Grader/graphs/AssignmentSummary.java, 
+           src/edu/vt/cs/Web_CAT/Core/MutableArray.java, 
+           src/edu/vt/cs/Web_CAT/Core/MutableDictionary.java
         );
         WEBSERVER_RESOURCES = 
         ();
