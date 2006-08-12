@@ -16,7 +16,7 @@
 # The URLs could be relative, but are absolute here for testing
 # before actual deployment.
 help.baseURL = http://web-cat.cs.vt.edu/Web-CAT.help/
-dbConnectDriverGLOBAL = org.gjt.mm.mysql.Driver
+dbConnectDriverGLOBAL = com.mysql.jdbc.Driver
 
 webcat.version.major=1
 webcat.version.minor=2
