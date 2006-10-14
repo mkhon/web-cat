@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: ConfirmPage.java,v 1.2 2006/10/14 04:40:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,6 +26,8 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
+import com.webobjects.foundation.*;
+import net.sf.webcat.core.WCComponent;
 
 
 // -------------------------------------------------------------------------
@@ -33,10 +35,10 @@ import com.webobjects.appserver.*;
  * A base class for stackable confirmation pages in wizard steps.
  *
  * @author Stephen Edwards
- * @version $Id: ConfirmPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: ConfirmPage.java,v 1.2 2006/10/14 04:40:49 stedwar2 Exp $
  */
-public abstract class ConfirmPage
-    extends GraderComponent
+public class ConfirmPage
+    extends WCComponent
 {
     //~ Constructors ..........................................................
 
@@ -51,28 +53,65 @@ public abstract class ConfirmPage
         super( context );
     }
 
+
+    //~ KVC Attributes (must be public) .......................................
+
+    public String           message;
+    public String           actionOk;
+    public String           actionCancel;
+    public NSKeyValueCoding actionReceiver;
+    public boolean          hideSteps = false;
+
+
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    public abstract void actionOnOK();
-
 
     // ----------------------------------------------------------
     public WOComponent okClicked()
     {
-        actionOnOK();
-        return super.next();
+        WOComponent next = null;
+        if ( actionOk != null )
+        {
+            next = (WOComponent)actionReceiver.valueForKey( actionOk );
+        }
+        if ( next == null )
+        {
+            next = super.next();
+        }
+        return next;
     }
 
 
     // ----------------------------------------------------------
     public WOComponent cancelClicked()
     {
-        return super.next();
+        WOComponent next = null;
+        if ( actionCancel != null )
+        {
+            next = (WOComponent)actionReceiver.valueForKey( actionCancel );
+        }
+        if ( next == null )
+        {
+            next = super.next();
+        }
+        return next;
+    }
+
+
+    // ----------------------------------------------------------
+    public String title()
+    {
+        return title;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setTitle( String newTitle )
+    {
+        title = newTitle;
     }
 
 
     //~ Instance/static variables .............................................
 
-    public String message;
+    private String title = "Confirm Action";
 }
