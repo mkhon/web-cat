@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.1 2006/06/16 14:50:52 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.2 2006/10/28 20:49:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,7 +26,10 @@
 package net.sf.webcat.admin;
 
 import com.webobjects.appserver.*;
+import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.ERXArrayUtilities;
+import er.extensions.ERXValueUtilities;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,7 +44,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.1 2006/06/16 14:50:52 stedwar2 Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.2 2006/10/28 20:49:10 stedwar2 Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -69,17 +72,32 @@ public class SubsystemManagerPage
     public int               index;
     public String            providerURL;
 
+    public static final String TERSE_DESCRIPTIONS_KEY =
+        "terseSubsystemDescriptions";
+
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse response, WOContext context )
     {
-        subsystems = ( (Application)Application.application() )
-            .subsystemManager().subsystems();
+        terse = null;
+        subsystems = ERXArrayUtilities.sortedArraySortedWithKey(
+            ( (Application)Application.application() )
+                .subsystemManager().subsystems(),
+            "name",
+            EOSortOrdering.CompareCaseInsensitiveAscending );
         if ( newSubsystems == null )
         {
-            newSubsystems = newSubsystems();
+            for ( Iterator i = FeatureProvider.providers().iterator();
+                  i.hasNext(); )
+            {
+                ( (FeatureProvider)i.next() ).refresh();
+            }
+            newSubsystems = ERXArrayUtilities.sortedArraySortedWithKey(
+                newSubsystems(),
+                "name",
+                EOSortOrdering.CompareCaseInsensitiveAscending );
         }
         super.appendToResponse( response, context );
     }
@@ -113,7 +131,10 @@ public class SubsystemManagerPage
               i.hasNext(); )
         {
             FeatureProvider provider = (FeatureProvider)i.next();
-            availableSubsystems.addAll( provider.subsystems() );
+            if ( provider != null )
+            {
+                availableSubsystems.addAll( provider.subsystems() );
+            }
         }
         for ( int i = 0; i < subsystems.count(); i++ )
         {
@@ -202,8 +223,11 @@ public class SubsystemManagerPage
      */
     public WOComponent edit()
     {
-        // TODO: implement edit action for subsystem configuration
-        return null;
+        ConfigureSubsystemPage page = (ConfigureSubsystemPage)
+            pageWithName( ConfigureSubsystemPage.class.getName() );
+        page.subsystem = subsystem;
+        page.nextPage = this;
+        return page;
     }
 
 
@@ -223,6 +247,90 @@ public class SubsystemManagerPage
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the history URL for the current subsystem.
+     * @return The history URL, or null if none is defined
+     */
+    public String subsystemHistoryUrl()
+    {
+        return subsystem.descriptor().getProperty( "history.url" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the information URL for the current subsystem.
+     * @return The information URL, or null if none is defined
+     */
+    public String subsystemInfoUrl()
+    {
+        return subsystem.descriptor().getProperty( "info.url" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the history URL for the current subsystem.
+     * @return The history URL, or null if none is defined
+     */
+    public String featureHistoryUrl()
+    {
+        return feature.getProperty( "history.url" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the information URL for the current subsystem.
+     * @return The information URL, or null if none is defined
+     */
+    public String featureInfoUrl()
+    {
+        return feature.getProperty( "info.url" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Toggle whether or not the user wants verbose descriptions of subsystems
+     * to be shown or hidden.  The setting is stored in the user's preferences
+     * under the key specified by the VERBOSE_DESCRIPTIONS_KEY, and will be
+     * permanently saved the next time the session's local changes are saved.
+     */
+    public void toggleVerboseDescriptions()
+    {
+        boolean verboseOptions = ERXValueUtilities.booleanValue(
+            wcSession().userPreferences.objectForKey(
+                TERSE_DESCRIPTIONS_KEY ) );
+        verboseOptions = !verboseOptions;
+        wcSession().userPreferences.setObjectForKey(
+            Boolean.valueOf( verboseOptions ), TERSE_DESCRIPTIONS_KEY );
+        wcSession().commitLocalChanges();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up the user's preferences and determine whether or not to show
+     * verbose subsystem descriptions in this component.
+     * @return true if verbose descriptions should be hidden, or false if
+     * they should be shown
+     */
+    public Boolean terse()
+    {
+        if ( terse == null )
+        {
+            terse = ERXValueUtilities.booleanValue(
+                wcSession().userPreferences.objectForKey(
+                    TERSE_DESCRIPTIONS_KEY ) )
+                ? Boolean.TRUE : Boolean.FALSE;
+        }
+        return terse;
+    }
+
+
     //~ Instance/static variables .............................................
+    private Boolean terse;
     static Logger log = Logger.getLogger( SubsystemManagerPage.class );
 }

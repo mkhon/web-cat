@@ -21,7 +21,8 @@ CanUpdate: WOConditional {
 }
 
 Description: WOString {
-	value = subsystem.descriptor.description;
+	value      = subsystem.descriptor.description;
+	escapeHTML = false;
 }
 
 DisableAutoUpdates: WOSubmitButton {
@@ -67,16 +68,36 @@ EnableAutoUpdates: WOSubmitButton {
     action = toggleAutoUpdates;
 }
 
-Form1: WOForm {
-    multipleSubmit = true;
-}
-
 Form2: WOForm {
     multipleSubmit = true;
 }
 
-Name: WOString {
-	value = subsystem.name;
+HasHistory: WOConditional {
+    condition = subsystemHistoryUrl;
+}
+
+HasOptions: WOConditional {
+    condition = subsystem.parameterDescriptions.options.count;
+}
+
+History: WOHyperlink {
+    href = subsystemHistoryUrl;
+    target = "_blank";
+}
+
+IsTerse: WOConditional {
+    condition = terse;
+}
+
+IsVerbose: WOConditional {
+    condition = terse;
+    negate    = true;
+}
+
+Name: WOHyperlink {
+	string = subsystem.name;
+	href   = subsystemInfoUrl;
+    target = "_blank";
 }
 
 NewBuildDate: WOString {
@@ -84,11 +105,23 @@ NewBuildDate: WOString {
 }
 
 NewDescription: WOString {
-	value = feature.description;
+	value      = feature.description;
+	escapeHTML = false;
 }
 
-NewName: WOString {
-	value = feature.name;
+NewHasHistory: WOConditional {
+    condition = featureHistoryUrl;
+}
+
+NewHistory: WOHyperlink {
+    href = featureHistoryUrl;
+    target = "_blank";
+}
+
+NewName: WOHyperlink {
+	string = feature.name;
+	href   = featureInfoUrl;
+    target = "_blank";
 }
 
 NewProvider: WOString {
@@ -146,6 +179,11 @@ SubsystemRepetition: WORepetition {
 	index = index;
 }
 
+TerseDescriptions: WOSubmitButton {
+    value  = "Hide Descriptions";
+    action = toggleVerboseDescriptions;
+}
+
 TR: net.sf.webcat.core.TableRow {
     index = index;
 }
@@ -153,6 +191,11 @@ TR: net.sf.webcat.core.TableRow {
 UpToDate: WOConditional {
     condition = subsystem.descriptor.updateIsAvailable;
     negate = true;
+}
+
+VerboseDescriptions: WOSubmitButton {
+    value  = "Show Descriptions";
+    action = toggleVerboseDescriptions;
 }
 
 Version: WOString {

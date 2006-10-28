@@ -1,6 +1,6 @@
 EntitiesForm: WOForm {
     multipleSubmit = true;
-    enctype        = "multipart/form-data";
+    otherTagString="enctype=\"multipart/form-data\"";
 }
 
 EntitiesPopup: WOPopUpButton {

@@ -1,0 +1,21 @@
+Config: WOString {
+    value = subsystem.parameterDescriptions;
+}
+
+OptionEditor: net.sf.webcat.core.OptionSetEditor {
+    options           = subsystem.parameterDescriptions.options;
+    optionValues      = application.properties;
+    categories        = subsystem.parameterDescriptions.optionCategories;
+    verboseOptionsKey = "ConfigureSubsystemPageNoVerboseOptions";
+}
+
+
+Page: net.sf.webcat.core.WizardPage {
+    sideStepTitle = "Configure Subsystem Settings";
+    applyEnabled  = true;
+}
+
+
+SubsystemName: WOString {
+    value = subsystem.name;
+}

@@ -5,7 +5,7 @@ DieNow: WOSubmitButton {
 
 Form: WOForm {
     multipleSubmit = true;
-    enctype        = "multipart/form-data";
+    otherTagString="enctype=\"multipart/form-data\"";
 }
 
 GracefulShutdown: WOSubmitButton {
