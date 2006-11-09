@@ -1,11 +1,10 @@
-<project name="Web-CAT" default="install" basedir=".">
+<project name="Web-CAT" default="build.redistributable.war" basedir=".">
 
 	<!-- main targets  -->
 	<!-- add optional targets to depends list if needed -->
 	<target name="build" depends="setProps,init.build,build.woapp,ssdd,war"/>
 
-	<target name="install" depends="build,install.war"/>
-    <target name="build.redistributable.war" depends="install,export.jar"/>
+    <target name="build.redistributable.war" depends="build,export.jar"/>
 
     <target name="install.traditional" depends="setProps,init.build.traditional,build.traditional.woapp"/>
     

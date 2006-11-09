@@ -1,5 +1,6 @@
 Library\Frameworks\Admin.framework
 Library\Frameworks\ANTForPlugins.framework
+Library\Frameworks\CheckstyleForPlugins.framework
 Library\Frameworks\CloverForPlugins.framework
 Library\Frameworks\Core.framework
 Library\Frameworks\DBUpdateEngine.framework
@@ -10,6 +11,7 @@ Library\Frameworks\ERJars.framework
 Library\Frameworks\Grader.framework
 Library\Frameworks\JavaWOExtensions.framework
 Library\Frameworks\PerlForPlugins.framework
+Library\Frameworks\PMDForPlugins.framework
 Library\Frameworks\WOUnitTest.framework
 Library/Frameworks/Admin.framework
 Library/Frameworks/ANTForPlugins.framework
@@ -19,3 +21,5 @@ Library/Frameworks/DBUpdateEngine.framework
 Library/Frameworks/EOJDBCPrototypes.framework
 Library/Frameworks/Grader.framework
 Library/Frameworks/PerlForPlugins.framework
+Library/Frameworks/CheckstyleForPlugins.framework
+Library/Frameworks/PMDForPlugins.framework

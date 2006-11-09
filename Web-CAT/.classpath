@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry sourcepath="/EOJDBCPrototypes/src" kind="lib" path="/EOJDBCPrototypes/build/EOJDBCPrototypes.framework/Resources/Java"/>
 	<classpathentry kind="src" path="/EOJDBCPrototypes"/>
 	<classpathentry sourcepath="/DBUpdateEngine/src" kind="lib" path="/DBUpdateEngine/build/DBUpdateEngine.framework/Resources/Java"/>
@@ -15,11 +14,15 @@
 	<classpathentry kind="src" path="/PerlForPlugins"/>
 	<classpathentry kind="lib" path="/ANTForPlugins/build/ANTForPlugins.framework/Resources/Java"/>
 	<classpathentry kind="src" path="/ANTForPlugins"/>
+	<classpathentry kind="lib" path="/CheckstyleForPlugins/build/CheckstyleForPlugins.framework/Resources/Java"/>
+	<classpathentry kind="src" path="/CheckstyleForPlugins"/>
+	<classpathentry kind="lib" path="/PMDForPlugins/build/PMDForPlugins.framework/Resources/Java"/>
+	<classpathentry kind="src" path="/PMDForPlugins"/>
 	<classpathentry kind="lib" path="/CloverForPlugins/build/CloverForPlugins.framework/Resources/Java"/>
 	<classpathentry kind="src" path="/CloverForPlugins"/>
 	<classpathentry kind="lib" path="/Bootstrap/bin"/>
 	<classpathentry kind="src" path="/Bootstrap"/>
-	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/Grader/JavaWOExtensions/PerlForPlugins/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaWOJSPServlet/JavaXML/JDBCEOAdaptor"/>
+	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CheckstyleForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/Grader/JavaWOExtensions/PerlForPlugins/PMDForPlugins/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaWOJSPServlet/JavaXML/JDBCEOAdaptor"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry sourcepath="src" kind="lib" path="build/Web-CAT.woa/Contents/Resources/Java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Web-CAT-externals"/>

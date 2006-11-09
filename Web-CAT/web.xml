@@ -25,7 +25,7 @@
        deployment mode, images are vended by the webserver. -->
   <context-param>
     <param-name>WOAppMode</param-name>
-    <param-value>Development</param-value>
+    <param-value>Deployment</param-value>
   </context-param>
 
   <!-- Class name of the WOApplication subclass that defines the

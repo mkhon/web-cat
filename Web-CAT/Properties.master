@@ -1,38 +1,33 @@
 # ===================================================================
 # W E B - C A T   C O N F I G U R A T I O N   P R O P E R T I E S
 # ===================================================================
-# This file contains generic, system-wide property settings, many
-# of which form the overridable defaults for various Web-CAT settings.
 # This file is designed to be part of the main Web-CAT source
 # distribution, so developers should not include any installation-
 # specific settings here.
-#
-# We need to insert instructions for how to configure/override these
-# settings here.
 
 # -------------------------------------------------------------------
-# Configure core settings
+# Define webcat subsystem characteristics
 # -------------------------------------------------------------------
-# The URLs could be relative, but are absolute here for testing
-# before actual deployment.
-help.baseURL = http://web-cat.cs.vt.edu/Web-CAT.help/
-dbConnectDriverGLOBAL = com.mysql.jdbc.Driver
+subsystem.webcat
 
 webcat.version.major=1
 webcat.version.minor=2
-webcat.version.revision=0
+webcat.version.revision=3
+
+webcat.copyright=(c) 2006 Virginia Tech Department of Computer Science
 webcat.provider=Virginia Tech Computer Science
 webcat.provider.url=http://web-cat.cs.vt.edu/updates
-webcat.copyright=(c) 2006 Virginia Tech Department of Computer Science
+webcat.info.url=http://web-cat.cs.vt.edu/WCWiki/WebCatApplication
+webcat.history.url=\
+	http://web-cat.cs.vt.edu/WCWiki/WebCatApplication/ChangeHistory
 webcat.license=GNU General Public License v.2
 webcat.license.url=http://www.gnu.org/copyleft/gpl.html
-webcat.description=This bundle is not a real subsystem. It \
-    is the main application startup configuration for the Web-CAT server. \
-    it contains very little code, since all behaviors are provided by \
-    subsystems instead.
-webcat.info.url=http://web-cat.cs.vt.edu/WCWiki/WebCatApplication
-webcat.history.url=http://web-cat.cs.vt.edu/WCWiki/WebCatApplication/ChangeHistory
-subsystem.webcat
+
+webcat.description=\
+    This bundle is not a real subsystem. It is the main application \
+    startup configuration for the Web-CAT server. it contains very \
+    little code, since all behaviors are provided by subsystems instead.
+
 
 # -------------------------------------------------------------------
 # Run-time control
@@ -56,6 +51,7 @@ WOAllowsConcurrentRequestHandling = true
 # -------------------------------------------------------------------
 # Configure ERExtensions settings
 # -------------------------------------------------------------------
+dbConnectDriverGLOBAL = com.mysql.jdbc.Driver
 er.extensions.ERXEC.defaultAutomaticLockUnlock = true
 
 
@@ -89,9 +85,6 @@ er.extensions.ERXEC.defaultAutomaticLockUnlock = true
 # properties file.
 # -------------------------------------------------------------------
 log4j.rootLogger = WARN, console
-log4j.logger.net.sf.webcat.core.Application = INFO
-log4j.logger.net.sf.webcat.core.install     = INFO
-log4j.logger.net.sf.webcat.dbupdate         = INFO
 log4j.loggerFactory=er.extensions.ERXLogger$Factory
 
 # -------------------------------------------------------------------
