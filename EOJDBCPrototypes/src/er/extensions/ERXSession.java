@@ -426,7 +426,7 @@ public class ERXSession extends WOSession implements Serializable {
     /** override this method in order to provide a different name for the WorkerThread for this rr loop
      * very useful for logging stuff: assign a log statement to a log entry. Something useful could be:
      * <code>return session().sessionID() + valueForKeyPath("user.username");
-     * @return
+     * @return the current thread's name
      */
     public String threadName() {
         return Thread.currentThread().getName();
@@ -505,7 +505,6 @@ public class ERXSession extends WOSession implements Serializable {
      * with <code>messageEncoding</code> object.
      * @param aRequest current request
      * @param aContext current context
-     * @return super's implementation of <code>invokeAction</code>
      */
     public void takeValuesFromRequest (WORequest aRequest, WOContext aContext){
         messageEncoding().setDefaultFormValueEncodingToRequest(aRequest);

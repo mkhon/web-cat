@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Fri Jul 14 10:59:05 EDT 2006
+#Thu Oct 26 21:25:45 EDT 2006
 EOJDBCPrototypes.license=GNU General Public License v.2
 EOJDBCPrototypes.provider.url=http\://web-cat.cs.vt.edu/updates
 EOJDBCPrototypes.info.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes
@@ -9,7 +9,7 @@ subsystem.EOJDBCPrototypes=
 EOJDBCPrototypes.provider=Virginia Tech Computer Science
 EOJDBCPrototypes.version.major=1
 EOJDBCPrototypes.history.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes/ChangeHistory
-EOJDBCPrototypes.version.date=20060714
+EOJDBCPrototypes.version.date=20061026
 EOJDBCPrototypes.description=This subsystem provides support services for all other subsystems by providing the common mappings from data types that Web-CAT deals with into those supported by the underlying database (MySQL).  This framework localizes this information so that porting to new databases will be easier.
 EOJDBCPrototypes.copyright=(c) 2006 Virginia Tech Department of Computer Science
 EOJDBCPrototypes.license.url=http\://www.gnu.org/copyleft/gpl.html
