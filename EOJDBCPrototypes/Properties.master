@@ -1,0 +1,24 @@
+# ===================================================================
+# EOJDBCPrototypes subsystem characteristics
+# ===================================================================
+subsystem.EOJDBCPrototypes=
+
+EOJDBCPrototypes.version.major=1
+EOJDBCPrototypes.version.minor=1
+EOJDBCPrototypes.version.revision=1
+
+EOJDBCPrototypes.copyright=\
+	(c) 2006 Virginia Tech Department of Computer Science
+EOJDBCPrototypes.provider=Virginia Tech Computer Science
+EOJDBCPrototypes.provider.url=http\://web-cat.cs.vt.edu/updates
+EOJDBCPrototypes.info.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes
+EOJDBCPrototypes.history.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes/ChangeHistory
+EOJDBCPrototypes.license=GNU General Public License v.2
+EOJDBCPrototypes.license.url=http\://www.gnu.org/copyleft/gpl.html
+
+EOJDBCPrototypes.description=\
+	This subsystem provides support services for all other subsystems by \
+	providing the common mappings from data types that Web-CAT deals with \
+	into those supported by the underlying database (MySQL).  This framework \
+	localizes this information so that porting to new databases will be easier.

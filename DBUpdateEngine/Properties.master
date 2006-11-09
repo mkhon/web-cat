@@ -1,0 +1,30 @@
+# ===================================================================
+# DBUpdateEngine subsystem characteristics
+# ===================================================================
+subsystem.DBUpdateEngine
+
+DBUpdateEngine.version.major=1
+DBUpdateEngine.version.minor=1
+DBUpdateEngine.version.revision=1
+
+DBUpdateEngine.copyright=(c) 2006 Virginia Tech Department of Computer Science
+DBUpdateEngine.provider=Virginia Tech Computer Science
+DBUpdateEngine.provider.url=http\://web-cat.cs.vt.edu/updates
+DBUpdateEngine.info.url=http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine
+DBUpdateEngine.history.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine/ChangeHistory
+DBUpdateEngine.license=GNU General Public License v.2
+DBUpdateEngine.license.url=http\://www.gnu.org/copyleft/gpl.html
+
+DBUpdateEngine.description=\
+    This subsystem provides support services for all other subsystems by \
+    implementing the features necessary to automatically update database \
+    schemas as subsystems add new features.  It also provides for creating \
+    an entire database from scratch if one does not yet exist, when \
+    installing a new Web-CAT server.
+
+
+# -------------------------------------------------------------------
+# DBUpdateEngine logging defaults
+# -------------------------------------------------------------------
+log4j.logger.net.sf.webcat.dbupdate = INFO
