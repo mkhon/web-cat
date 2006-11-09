@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ArchiveManager.java,v 1.1 2006/02/19 19:03:10 stedwar2 Exp $
+ |  $Id: ArchiveManager.java,v 1.2 2006/11/09 16:55:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.sf.webcat.archives.internal.CopyUtil;
 
 //-------------------------------------------------------------------------
 /**
@@ -236,12 +235,12 @@ public class ArchiveManager
 		{
 			if ( archiveFile.isDirectory() )
 			{
-				CopyUtil.recursiveCopy( destPath, archiveFile );
+				FileUtilities.copyDirectoryContents( archiveFile, destPath );
 			}
 			else
 			{
 				File destFile = new File( destPath, archiveFile.getName() );
-				CopyUtil.copyFile( destFile, archiveFile );
+				FileUtilities.copyFileToFile( archiveFile, destFile );
 			}
 		}
 	}
@@ -272,7 +271,7 @@ public class ArchiveManager
 		else
 		{
 			File destFile = new File( destPath, name );
-			CopyUtil.copyStream( destFile, stream );
+			FileUtilities.copyStreamToFile( stream, destFile );
 		}
 	}
 

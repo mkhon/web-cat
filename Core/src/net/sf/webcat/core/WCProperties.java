@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCProperties.java,v 1.3 2006/06/16 14:48:40 stedwar2 Exp $
+ |  $Id: WCProperties.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -55,11 +55,11 @@ import org.apache.log4j.Logger;
  * support is based on code written by Chris Mair.
  * 
  * @author Stephen Edwards
- * @version $Id: WCProperties.java,v 1.3 2006/06/16 14:48:40 stedwar2 Exp $
+ * @version $Id: WCProperties.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class WCProperties
     extends java.util.Properties
-    implements NSKeyValueCoding, NSKeyValueCodingAdditions
+    implements NSKeyValueCodingAdditions
 {
     //~ Constructors ..........................................................
 
@@ -609,7 +609,7 @@ public class WCProperties
 
     // ----------------------------------------------------------
     /**
-     * Just like {@link #substitutePropertyReferences(String}}, but
+     * Just like {@link #substitutePropertyReferences(String)}, but
      * only performs substitution if
      * {@link #willPerformPropertySubstitution()}.
      * @param value the string to perform substitution on
@@ -698,6 +698,23 @@ public class WCProperties
 
     // ----------------------------------------------------------
     /**
+     * Overriding the default setProperty method to check for and handle
+     * the NO_SUBSTITUTION_PREFIX on the key.
+     * @param key to check
+     * @return property value
+     */
+    public synchronized Object setProperty( String key, String value )
+    {
+        if ( key != null && key.startsWith( NO_SUBSTITUTION_PREFIX ) )
+        {
+            key = key.substring( NO_SUBSTITUTION_PREFIX.length() );
+        }
+        return super.setProperty( key, value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Overriding the default getProperty method to first check:
      * key.<ApplicationName> before checking for key.  If nothing
      * is found then key.  Default is checked.
@@ -728,6 +745,11 @@ public class WCProperties
     {
         String property = null;
         String application = applicationNameForAppending();
+        if ( key != null && key.startsWith( NO_SUBSTITUTION_PREFIX ) )
+        {
+            key = key.substring( NO_SUBSTITUTION_PREFIX.length() );
+            performSubstitution = false;
+        }
         if ( application != null )
         {
             property = super.getProperty( key + application );
@@ -937,4 +959,5 @@ public class WCProperties
 
     static Logger log = Logger.getLogger( WCProperties.class );
     static public String PROPERTYFILES_LOADED = "propertyfiles.loaded";
+    static public String NO_SUBSTITUTION_PREFIX = "NOSUB.";
 }

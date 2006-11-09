@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage3.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: InstallPage3.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -29,6 +29,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
 import com.webobjects.foundation.NSValidation.ValidationException;
+import net.sf.webcat.dbupdate.*;
 import net.sf.webcat.dbupdate.Database;
 import net.sf.webcat.dbupdate.MySQLDatabase;
 import er.extensions.ERXConfigurationManager;
@@ -46,7 +47,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage3.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ *  @version $Id: InstallPage3.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class InstallPage3
     extends InstallPage
@@ -205,10 +206,24 @@ public class InstallPage3
             ( (Application)Application.application() )
                 .configurationProperties().updateToSystemProperties();
             updateEOModels();
-            ( (Application)Application.application() ).initializeApplication();
+            
+            // Instead of calling initializeApplication(), let's just repeat
+            // the first few steps so that we can get the database updates
+            // done.
+            WOEC.installWOECFactory();
+
+            // Apply any pending database updates for the core
+            UpdateEngine.instance().database().setConnectionInfoFromProperties(
+                            Application.configurationProperties() );
+            UpdateEngine.instance().applyNecessaryUpdates(
+                            new CoreDatabaseUpdates() );
+
+            // We'll do this later, once the admin account is set up
+//          ( (Application)Application.application() ).initializeApplication();
         }
         catch ( Exception e )
         {
+            log.error( "exception initializing application:", e );
             errorMessage( e.getMessage() );
         }
         finally

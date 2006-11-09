@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.2 2006/07/14 16:57:16 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -60,7 +60,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.2 2006/07/14 16:57:16 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -143,8 +143,8 @@ public class WCComponent
      */
     public static String helpBaseURL()
     {
-        return Application.configurationProperties()
-            .getProperty( "help.baseURL", "/Web-CAT.help/" );
+        return Application.configurationProperties().getProperty(
+            "help.baseURL", "http://web-cat.cs.vt.edu/Web-CAT.help/" );
     }
 
 

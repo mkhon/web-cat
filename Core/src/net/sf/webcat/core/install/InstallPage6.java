@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage6.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: InstallPage6.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage6.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ *  @version $Id: InstallPage6.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class InstallPage6
     extends InstallPage
@@ -208,12 +208,16 @@ public class InstallPage6
             else
             {
                 String password =
-                    extractFormValue( formValues, "AdminPassword" );
+                    storeFormValueToConfig( formValues, "AdminPassword", 
+                    "An administrator password is required." );
                 if ( authDomainName.equals(
                     DatabaseAuthenticator.class.getName() )
                     && ( password == null || password.equals( "" ) ) )
                 {
-                    errorMessage( "An administrator password is required." );
+                    // Don't need this anymore, since the error message is
+                    // posted by storeFormValuesToConfig() above.
+
+                    // errorMessage( "An administrator password is required." );
                 }
                 else
                 {

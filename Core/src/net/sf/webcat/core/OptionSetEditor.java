@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionSetEditor.java,v 1.1 2006/07/14 16:57:16 stedwar2 Exp $
+ |  $Id: OptionSetEditor.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *  current page will be reloaded on basic form submissions.
  *
  *  @author  stedwar2
- *  @version $Id: OptionSetEditor.java,v 1.1 2006/07/14 16:57:16 stedwar2 Exp $
+ *  @version $Id: OptionSetEditor.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class OptionSetEditor
     extends WCComponent
@@ -60,18 +60,18 @@ public class OptionSetEditor
     //~ KVC Attributes (must be public) .......................................
 
     // For clients to configure this component
-    public NSArray             options;
-    public NSMutableDictionary optionValues;
-    public NSArray             categories;
-    public String              verboseOptionsKey = "verboseOptions";
-    public String              browsePageName;
-    public java.io.File        base;
+    public NSArray                   options;
+    public NSKeyValueCodingAdditions optionValues;
+    public NSArray                   categories;
+    public String                    verboseOptionsKey = "verboseOptions";
+    public String                    browsePageName;
+    public java.io.File              base;
 
     // For communicating with subcomponents ...
-    public NSDictionary        option;
-    public String              category;
-    public String              chosenCategory;
-    public String              displayedCategory;
+    public NSDictionary              option;
+    public String                    category;
+    public String                    chosenCategory;
+    public String                    displayedCategory;
 
 
     //~ Methods ...............................................................

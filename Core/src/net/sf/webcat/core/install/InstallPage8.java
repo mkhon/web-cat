@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage8.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: InstallPage8.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage8.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ *  @version $Id: InstallPage8.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class InstallPage8
     extends InstallPage
@@ -96,8 +96,16 @@ public class InstallPage8
         // configuration.setProperty( "configStep", "" + stepNo() );
         ( (Application)Application.application() )
             .setNeedsInstallation( false );
-        ( (Application)Application.application() )
-            .notifyAdminsOfStartup();
+        try
+        {
+            ( (Application)Application.application() ).initializeApplication();
+            ( (Application)Application.application() )
+                .notifyAdminsOfStartup();
+        }
+        catch ( Exception e )
+        {
+            log.error( "Exception initializing application:", e );
+        }
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TarUtil.java,v 1.1 2006/02/19 19:03:11 stedwar2 Exp $
+ |  $Id: TarUtil.java,v 1.2 2006/11/09 16:55:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -84,7 +84,7 @@ public class TarUtil
 				
 				if ( !destDir.exists() )
                 {
-					destDir.mkdir();
+					destDir.mkdirs();
                 }
 			}
 			else
@@ -94,7 +94,7 @@ public class TarUtil
 				
 				if ( destParent != null  &&  !destParent.exists() )
                 {
-					destParent.mkdir();
+					destParent.mkdirs();
                 }
 
 				FileOutputStream destStream = new FileOutputStream( destFile );

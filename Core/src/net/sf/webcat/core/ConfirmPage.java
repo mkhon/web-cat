@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage1.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: ConfirmPage.java,v 1.1 2006/11/09 16:55:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -23,34 +23,31 @@
  |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
 \*==========================================================================*/
 
-package net.sf.webcat.core.install;
+package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 
-import net.sf.webcat.core.*;
-
-import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
- * Implements the login UI functionality of the system.
+ * A base class for stackable confirmation pages in wizard steps.
  *
- *  @author Stephen Edwards
- *  @version $Id: InstallPage1.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ * @author Stephen Edwards
+ * @version $Id: ConfirmPage.java,v 1.1 2006/11/09 16:55:12 stedwar2 Exp $
  */
-public class InstallPage1
-    extends InstallPage
+public class ConfirmPage
+    extends WCComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
-     * Creates a new PreCheckPage object.
+     * This is the default constructor
      * 
-     * @param context The context to use
+     * @param context The page's context
      */
-    public InstallPage1( WOContext context )
+    public ConfirmPage( WOContext context )
     {
         super( context );
     }
@@ -58,59 +55,62 @@ public class InstallPage1
 
     //~ KVC Attributes (must be public) .......................................
 
+    public String           message;
+    public String           actionOk;
+    public String           actionCancel;
+    public NSKeyValueCoding actionReceiver;
+    public boolean          hideSteps = false;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public int stepNo()
+    public WOComponent okClicked()
     {
-        return 1;
-    }
-
-
-    // ----------------------------------------------------------
-    public void setDefaultConfigValues( WCConfigurationFile configuration )
-    {
-        if ( configuration.getProperty( "installComplete" ) != null )
+        WOComponent next = null;
+        if ( actionOk != null )
         {
-            configuration.remove( "installComplete" );
+            next = (WOComponent)actionReceiver.valueForKey( actionOk );
         }
-        super.setDefaultConfigValues( configuration );
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean configExists()
-    {
-        return Application.configurationProperties().exists();
-    }
-
-
-    // ----------------------------------------------------------
-    public String configLocation()
-    {
-        try
+        if ( next == null )
         {
-            return Application.configurationProperties().file()
-                .getCanonicalPath();
+            next = super.next();
         }
-        catch ( java.io.IOException e )
-        {
-            log.error( "exception looking up configuration file location:", e );
-            return e.getMessage();
-        }
+        return next;
     }
 
 
     // ----------------------------------------------------------
-    public boolean configIsWriteable()
+    public WOComponent cancelClicked()
     {
-        return Application.configurationProperties().isWriteable();
+        WOComponent next = null;
+        if ( actionCancel != null )
+        {
+            next = (WOComponent)actionReceiver.valueForKey( actionCancel );
+        }
+        if ( next == null )
+        {
+            next = super.next();
+        }
+        return next;
+    }
+
+
+    // ----------------------------------------------------------
+    public String title()
+    {
+        return title;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setTitle( String newTitle )
+    {
+        title = newTitle;
     }
 
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( InstallPage1.class );
+    private String title = "Confirm Action";
 }

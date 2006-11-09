@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManager.java,v 1.3 2006/07/14 16:57:16 stedwar2 Exp $
+ |  $Id: SubsystemManager.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * framework or a separate jar file that contains a framework.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubsystemManager.java,v 1.3 2006/07/14 16:57:16 stedwar2 Exp $
+ *  @version $Id: SubsystemManager.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
  */
 public class SubsystemManager
 {
@@ -293,6 +293,26 @@ public class SubsystemManager
                 .collectSubsystemFragments(
                     fragmentKey, htmlBuffer, wodBuffer );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Take a list of subsystem names (typically, requirements needed to
+     * support some feature) and determine if they are present.
+     * @param names a list of subsystem names to look for
+     * @return true if all of the named subsystems are installed
+     */
+    public boolean subsystemsAreInstalled( NSArray names )
+    {
+        for ( int i = 0; i < names.count(); i++ )
+        {
+            if ( subsystems.get( names.objectAtIndex( i ) ) == null )
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -605,7 +625,8 @@ public class SubsystemManager
         }
         if ( oldSize == names.size() )
         {
-            log.error( "cyclic dependencies among subsystems detected: "
+            log.error(
+                "cyclic or missing dependencies among subsystems detected: "
                 + names );
         }
         else
