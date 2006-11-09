@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.jdom.output.XMLOutputter;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author Stephen H. Edwards
- *  @version $Id: SubmissionFileStats.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: SubmissionFileStats.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -187,8 +187,10 @@ public class SubmissionFileStats
 //        contents.append( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 " );
 //        contents.append( "Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD" );
 //        contents.append( "/xhtml1-strict.dtd\">\n" );
-        contents.append( "<link rel=\"stylesheet\" type=\"text/css\" " );
-        contents.append( "href=\"http://web-cat.cs.vt.edu/wc-code.css\"/>\n" );
+        contents.append( "<link rel=\"stylesheet\" type=\"text/css\" href=\"" );
+        contents.append( WCResourceManager.resourceURLFor(
+            "wc-code.css", "Grader", null, null ) );
+        contents.append( "\"/>\n" );
 
         //get the array of file comments from the database
         NSArray comments = comments().sortedArrayUsingComparator(

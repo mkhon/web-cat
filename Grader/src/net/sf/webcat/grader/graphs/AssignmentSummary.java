@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentSummary.java,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+ |  $Id: AssignmentSummary.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.jfree.data.xy.IntervalXYDataset;
  * submissions to an assignment offering or an assignment.
  *
  * @author  Stephen Edwards
- * @version $Id: AssignmentSummary.java,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+ * @version $Id: AssignmentSummary.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class AssignmentSummary
     implements net.sf.webcat.core.MutableContainer,
@@ -127,6 +127,10 @@ public class AssignmentSummary
     public float[] percentageDistribution()
     {
         ensurePercentagesAreCurrent();
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "percentageDistribution():\n" + printable() );
+        }
         return percentages;
     }
 
@@ -141,6 +145,10 @@ public class AssignmentSummary
         if ( dataset == null )
         {
             dataset = new Dataset();
+        }
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "frequencyDataset():\n" + printable() );
         }
         return dataset;
     }
@@ -211,6 +219,11 @@ public class AssignmentSummary
      */
     public void addSubmission( double score )
     {
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "addSubmission(" + score + ") before:\n"
+                + printable() );
+        }
         float val = (float)score;
         int binNo = binFor( val );
         bin[binNo] += val;
@@ -220,6 +233,11 @@ public class AssignmentSummary
         numSubmissions++;
         percentagesAreUpToDate = false;
         setHasChanged( true );
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "addSubmission(" + score + ") after:\n"
+                + printable() );
+        }
     }
 
 
@@ -231,6 +249,11 @@ public class AssignmentSummary
      */
     public void removeSubmission( double score )
     {
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "removeSubmission(" + score + ") before:\n"
+                + printable() );
+        }
         float val = (float)score;
         int binNo = binFor( val );
         bin[binNo] -= val;
@@ -239,6 +262,11 @@ public class AssignmentSummary
         numStudents--;
         percentagesAreUpToDate = false;
         setHasChanged( true );
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "removeSubmission(" + score + ") after:\n"
+                + printable() );
+        }
     }
 
 
@@ -251,8 +279,18 @@ public class AssignmentSummary
      */
     public void updateSubmission( double oldScore, double newScore )
     {
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "updateSubmission(" + oldScore + ", " + newScore
+                + ") before:\n" + printable() );
+        }
         removeSubmission( oldScore );
         addSubmission( newScore );
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "updateSubmission(" + oldScore + ", " + newScore
+                + ") after:\n" + printable() );
+        }
     }
 
 
@@ -291,6 +329,11 @@ public class AssignmentSummary
         }
         binBoundary[numBins - 1] = this.maxScore;
         clear();
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "setMaxScore(" + maxScore + ") after:\n"
+                + printable() );
+        }
     }
 
 
@@ -474,6 +517,10 @@ public class AssignmentSummary
      */
     public NSData archiveData()
     {
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "archiveData():\n" + printable() );
+        }
         ByteArrayOutputStream bos = new ByteArrayOutputStream(
             kOverheadAdjustment + numBins * kCountBytesFactor );
         NSData result = null;
@@ -540,6 +587,10 @@ public class AssignmentSummary
             }
         }
 
+        if ( log.isDebugEnabled() && result != null )
+        {
+            log.debug( "objectWithArchiveData():\n" + result.printable() );
+        }
         return result;
     }
 
@@ -585,6 +636,60 @@ public class AssignmentSummary
             result = width - 1;
         }
         return result;
+    }
+
+
+    //----------------------------------------------------------
+    /**
+     * Generate a detailed printable view of this graph summary.
+     * @return the printable view as a string
+     */
+    public String printable()
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append( "AssignmentSummary, bin count = " );
+        buffer.append( numBins );
+        buffer.append( "\n    max score = " );
+        buffer.append( maxScore );
+        buffer.append( ", sum = " );
+        buffer.append( sum );
+        buffer.append( ", students = " );
+        buffer.append( numStudents );
+        buffer.append( ", subs = " );
+        buffer.append( numSubmissions );
+        buffer.append( ", changed = " );
+        buffer.append( hasChanged );
+        buffer.append( ", up-to-date = " );
+        buffer.append( percentagesAreUpToDate );
+        buffer.append( "\n" );
+        for ( int i = 0; i < numBins; i++ )
+        {
+            buffer.append( "    bin " );
+            buffer.append( i );
+            buffer.append( ": boundary = " );
+            if ( binBoundary == null )
+                buffer.append( "null" );
+            else
+                buffer.append( binBoundary[i] );
+            buffer.append( ", count = " );
+            if ( numInBin == null )
+                buffer.append( "null" );
+            else
+                buffer.append( numInBin[i] );
+            buffer.append( ", sum = " );
+            if ( bin == null )
+                buffer.append( "null" );
+            else
+                buffer.append( bin[i] );
+            buffer.append( ", % = " );
+            if ( percentages == null )
+                buffer.append( "null" );
+            else
+                buffer.append( percentages[i] );
+            buffer.append( "\n" );
+        }
+        
+        return buffer.toString();
     }
 
 

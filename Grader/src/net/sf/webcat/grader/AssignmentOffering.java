@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -316,7 +316,13 @@ public class AssignmentOffering
     public NSArray mostRecentSubsForAll()
     {
         NSMutableArray recentSubs = new NSMutableArray();
-        NSArray students = courseOffering().students();
+        NSMutableArray students = courseOffering().students().mutableClone();
+        NSArray staff = courseOffering().instructors();
+        students.removeObjectsInArray( staff );
+        students.addObjectsFromArray( staff );
+        staff = courseOffering().TAs();
+        students.removeObjectsInArray( staff );
+        students.addObjectsFromArray( staff );
         for ( int i = 0; i < students.count(); i++ )
         {
             Submission s =

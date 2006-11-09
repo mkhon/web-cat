@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -32,6 +32,7 @@ import er.extensions.*;
 import er.extensions.ERXConstant;
 import java.io.*;
 import java.util.*;
+import net.sf.webcat.archives.FileUtilities;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -500,7 +501,7 @@ public class GraderQueueProcessor
             }
         }
         // Clean up the working directory
-        Grader.deleteDirectory( job.workingDirName() );
+        FileUtilities.deleteDirectory( job.workingDirName() );
 
         generateFinalReport( job,
                              gradingProperties,
@@ -525,7 +526,7 @@ public class GraderQueueProcessor
         File workingDir = new File( job.workingDirName() );
         if ( workingDir.exists() )
         {
-            Grader.deleteDirectory( workingDir );
+            FileUtilities.deleteDirectory( workingDir );
         }
         workingDir.mkdirs();
 
@@ -546,7 +547,7 @@ public class GraderQueueProcessor
         File graderLD = new File( submission.resultDirName() );
         if ( graderLD.exists() )
         {
-            Grader.deleteDirectory( graderLD );
+            FileUtilities.deleteDirectory( graderLD );
         }
         graderLD.mkdirs();
     }
@@ -631,7 +632,11 @@ public class GraderQueueProcessor
             // execute the script
             log.debug( "executing script" );
             timeoutOccurredInStep =
-                step.execute( propertiesFile.getPath(), stdout, stderr );
+                step.execute(
+                    propertiesFile.getPath(),
+                    new File( job.workingDirName() ),
+                    stdout,
+                    stderr );
 
             if ( stderr.length() != 0 )
             {
@@ -930,7 +935,7 @@ public class GraderQueueProcessor
                             out.write( "<pre>".getBytes() );
                         }
 
-                        Grader.copyStream( in, out );
+                        FileUtilities.copyStream( in, out );
                         in.close();
 
                         if ( !isHTML )

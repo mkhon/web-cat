@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmitResponse.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: SubmitResponse.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,19 +26,17 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-
 import net.sf.webcat.core.*;
-
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
  *  This is the response page for BlueJ submission actions.  It is produced
- *  by {@link Grader#handleDirectionAction(WORequest,Session,WOContext)}
+ *  by {@link Grader#handleDirectAction(WORequest,Session,WOContext)}
  *  in response to a BlueJ submitter direct action transaction.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmitResponse.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: SubmitResponse.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  */
 public class SubmitResponse
     extends GraderComponent

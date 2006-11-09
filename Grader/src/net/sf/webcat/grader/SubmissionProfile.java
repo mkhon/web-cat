@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: SubmissionProfile.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -146,6 +146,7 @@ public class SubmissionProfile
      * submission profile, if specified, is included in the list.
      * 
      * @param context The editing context to use
+     * @param user   The user who's profiles should be listed
      * @param course The course to match against
      * @param mine An additional submission profile to include--probably
      * one that wouldn't be picked up by the fetch specification, say because
@@ -155,6 +156,7 @@ public class SubmissionProfile
      */
     public static NSArray profilesForCourseIncludingMine(
             EOEditingContext context,
+            net.sf.webcat.core.User user,
             net.sf.webcat.core.Course course,
             SubmissionProfile mine
         )

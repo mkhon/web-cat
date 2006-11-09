@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -30,9 +30,7 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import java.io.*;
 import java.util.*;
-
 import net.sf.webcat.core.*;
-
 import org.apache.log4j.Logger;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
@@ -45,7 +43,7 @@ import org.jdom.output.XMLOutputter;
  * of the source code.
  *
  * @author Stephen Edwards, Hussein Vastani
- * @version $Id: EditFileCommentsPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: EditFileCommentsPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -625,6 +623,26 @@ public class EditFileCommentsPage
         buffer.append( "<script type=\"text/javascript\">\n" );
         buffer.append( "var editor = null;\nfunction initEditor() {\n" );
         buffer.append( "editor = new HTMLArea(\"source\");\n" );
+        {
+            String url = WCResourceManager.resourceURLFor(
+                "htmlarea/htmlarea.js", "Grader", null, null );
+            if ( url != null )
+            {
+                buffer.append( "editor.config.editorURL = \"");
+                buffer.append( url.substring( 0,
+                    url.length() - "htmlarea.js".length() ) );
+                buffer.append( "\";\n");
+            }
+            url = WCResourceManager.resourceURLFor(
+                "images/blank.gif", "Core", null, null );
+            if ( url != null )
+            {
+                buffer.append( "editor.config.coreResourceURL = \"");
+                buffer.append( url.substring( 0,
+                    url.length() - "images/blank.gif".length() ) );
+                buffer.append( "\";\n");
+            }
+        }
         buffer.append( "editor.generate();\n" );
         if ( wcSession() != null && wcSession().user() != null )
         {

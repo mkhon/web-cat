@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPluginGlobalsPage.java,v 1.1 2006/07/14 17:04:35 stedwar2 Exp $
+ |  $Id: EditPluginGlobalsPage.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  rendering the page.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditPluginGlobalsPage.java,v 1.1 2006/07/14 17:04:35 stedwar2 Exp $
+ *  @version $Id: EditPluginGlobalsPage.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  */
 public class EditPluginGlobalsPage
     extends GraderComponent
@@ -81,5 +81,12 @@ public class EditPluginGlobalsPage
                 + plugin.globalConfigSettings() );
         }
         super.appendToResponse( response, context );
+    }
+    
+
+    // ----------------------------------------------------------
+    public WOComponent defaultAction()
+    {
+        return null;
     }
 }

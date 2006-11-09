@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,14 +27,12 @@ package net.sf.webcat.grader;
 
 import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-
+import net.sf.webcat.archives.ArchiveManager;
 import net.sf.webcat.core.*;
-
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -43,7 +41,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditScriptFilesPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ * @version $Id: EditScriptFilesPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -210,11 +208,12 @@ public class EditScriptFilesPage
         {
             File target =
                 new File( base.getParent(), selectedParentFolderForUpload );
-            ZipInputStream zipStream =
-                new ZipInputStream( uploadedFile2.stream() );
+            // ZipInputStream zipStream =
+            //    new ZipInputStream( uploadedFile2.stream() );
             try
             {
-                Grader.unZip( zipStream, target );
+                ArchiveManager.getInstance().unpack(
+                    target, uploadedFileName2, uploadedFile2.stream() );
             }
             catch ( java.io.IOException e )
             {
@@ -255,13 +254,14 @@ public class EditScriptFilesPage
         clearErrors();
         if ( WCFile.isArchiveFile( uploadedFileName3 ) )
         {
-            Grader.deleteDirectory( base );
+            net.sf.webcat.archives.FileUtilities.deleteDirectory( base );
             base.mkdirs();
-            ZipInputStream zipStream =
-                new ZipInputStream( uploadedFile3.stream() );
+            // ZipInputStream zipStream =
+            //    new ZipInputStream( uploadedFile3.stream() );
             try
             {
-                Grader.unZip( zipStream, base );
+                ArchiveManager.getInstance().unpack(
+                    base, uploadedFileName3, uploadedFile3.stream() );
             }
             catch ( java.io.IOException e )
             {

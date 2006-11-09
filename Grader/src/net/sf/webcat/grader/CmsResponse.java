@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CmsResponse.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: CmsResponse.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -32,7 +32,7 @@ import com.webobjects.appserver.*;
 *  The XML response page for CMS requests.
 *
 *  @author Stephen Edwards
-*  @version $Id: CmsResponse.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+*  @version $Id: CmsResponse.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
 */
 public class CmsResponse
     extends WOComponent
@@ -43,6 +43,7 @@ public class CmsResponse
     // ----------------------------------------------------------
     /**
      * Creates a new Grader subsystem object.
+     * @param context The page's context
      */
     public CmsResponse( WOContext context )
     {

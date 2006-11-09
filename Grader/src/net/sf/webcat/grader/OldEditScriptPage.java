@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OldEditScriptPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: OldEditScriptPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -30,6 +30,7 @@ import com.webobjects.appserver.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.zip.ZipFile;
+import net.sf.webcat.archives.FileUtilities;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: OldEditScriptPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: OldEditScriptPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class OldEditScriptPage
     extends GraderComponent
@@ -185,7 +186,7 @@ public class OldEditScriptPage
                     if ( dir.exists() )
                     {
                         log.debug( "deleting " + script.dirName() );
-                        Grader.deleteDirectory( script.dirName() );
+                        FileUtilities.deleteDirectory( script.dirName() );
                     }
                     else
                     {
@@ -253,11 +254,12 @@ public class OldEditScriptPage
                     try
                     {
                         File zfile = new File( script.mainFilePath() );
-                        ZipFile zip = new ZipFile( script.mainFilePath() );
+                        //ZipFile zip = new ZipFile( script.mainFilePath() );
                         script.setSubdirName( subdirName );
                         log.debug( "unzipping to " + script.dirName() );
-                        Grader.unZip( zip, new File( script.dirName() ) );
-                        zip.close();
+                        net.sf.webcat.archives.ArchiveManager.getInstance()
+                            .unpack( new File( script.dirName() ), zfile );
+                        //zip.close();
                         zfile.delete();
                     }
                     catch ( java.io.IOException e )
@@ -265,7 +267,7 @@ public class OldEditScriptPage
                         errorMessage( "There was an error unzipping "
                                       + "your file.  Please try again" );
                         script.setSubdirName( subdirName );
-                        Grader.deleteDirectory( script.dirName() );
+                        FileUtilities.deleteDirectory( script.dirName() );
                         log.warn( "error unzipping:", e );
                         // throw new NSForwardException( e );
                     }

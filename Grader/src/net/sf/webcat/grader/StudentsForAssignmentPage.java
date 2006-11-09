@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class StudentsForAssignmentPage
     extends GraderComponent
@@ -78,7 +78,14 @@ public class StudentsForAssignmentPage
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse response, WOContext context )
     {
-        NSArray students = wcSession().courseOffering().students();
+        NSMutableArray students =
+            wcSession().courseOffering().students().mutableClone();
+        NSArray staff = wcSession().courseOffering().instructors();
+        students.removeObjectsInArray( staff );
+        students.addObjectsFromArray( staff );
+        staff = wcSession().courseOffering().TAs();
+        students.removeObjectsInArray( staff );
+        students.addObjectsFromArray( staff );
         NSMutableArray submissions = new NSMutableArray();
         highScore = 0.0;
         lowScore  = 0.0;
@@ -192,6 +199,53 @@ public class StudentsForAssignmentPage
 //            destination.nextPage = this;
         }
         return destination;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Marks all the submissions shown that have been partially graded as
+     * being completed, sending e-mail notifications as necessary.
+     * @return null to force this page to reload
+     */
+    public WOComponent markAsCompleteActionOk()
+    {
+        NSArray submissions = submissionDisplayGroup.allObjects();
+        for ( int i = 0; i < submissions.count(); i++ )
+        {
+            Submission sub = (Submission)submissions.objectAtIndex( i );
+            if ( sub.result().status() != Status.UNFINISHED )
+            {
+                sub.result().setStatus( Status.CHECK );
+                wcSession().commitLocalChanges();
+                sub.emailNotificationToStudent(
+                    "has been updated by the course staff" );
+            }
+        }
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Marks all the submissions shown that have been partially graded as
+     * being completed, sending e-mail notifications as necessary.
+     * @return null to force this page to reload
+     */
+    public WOComponent markAsComplete()
+    {
+        ConfirmPage confirmPage =
+            (ConfirmPage)pageWithName( ConfirmPage.class.getName() );
+        confirmPage.nextPage       = this;
+        confirmPage.message        =
+            "You are about to mark all <b>partially graded</b> submissions "
+            + "as now complete.  Submissions that have no remarks or manual "
+            + "scoring information will not be affected.  All students who "
+            + "are affected will be receive an e-mail notification.";
+        confirmPage.actionReceiver = this;
+        confirmPage.actionOk       = "markAsCompleteActionOk";
+        confirmPage.setTitle( "Confirm Grading Is Complete" );
+        return confirmPage;
     }
 
 

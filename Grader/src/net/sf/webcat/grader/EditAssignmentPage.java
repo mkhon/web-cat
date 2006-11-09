@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderComponent
@@ -86,6 +86,7 @@ public class EditAssignmentPage
         submissionProfileDisplayGroup.setObjectArray(
             SubmissionProfile.profilesForCourseIncludingMine(
                 wcSession().localContext(),
+                wcSession().user(),
                 ao.courseOffering().course(),
                 ao.assignment().submissionProfile() )
              );
@@ -334,16 +335,40 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
+    public WOComponent regradeSubsActionOk()
+    {
+        wcSession().commitLocalChanges();
+        prefs().assignmentOffering().regradeMostRecentSubsForAll(
+            wcSession().localContext() );
+        wcSession().commitLocalChanges();
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
     public WOComponent regradeSubs()
     {
-        WCComponent result = null;
+        ConfirmPage confirmPage = null;
         if ( saveAndCanProceed() )
         {
-            result = (WCComponent)pageWithName(
-                ConfirmRegradeAll.class.getName() );
-            result.nextPage = this;
+            confirmPage =
+                (ConfirmPage)pageWithName( ConfirmPage.class.getName() );
+            confirmPage.nextPage       = this;
+            confirmPage.message        =
+                "This action will <b>regrade the most recent submission "
+                + "for every student</b> who has submitted to this "
+                + "assignment.</p><p>This will also <b>delete all prior "
+                + "results</b> for the submissions to be regraded and "
+                + "<b>delete all TA comments and scoring</b> that have been "
+                + "recorded for the submissions to be regraded.</p><p>Each "
+                + "student\'s most recent submission will be re-queued for "
+                + "grading, and each student will receive an e-mail message "
+                + "when their new results are available.";
+            confirmPage.actionReceiver = this;
+            confirmPage.actionOk       = "regradeSubsActionOk";
+            confirmPage.setTitle( "Confirm Regrade of All Submissions" );
         }
-        return result;
+        return confirmPage;
     }
 
 
@@ -476,6 +501,7 @@ public class EditAssignmentPage
     public WOComponent clearGraph()
     {
         prefs().assignmentOffering().clearGraphSummary();
+        wcSession().commitLocalChanges();
         return null;
     }
 

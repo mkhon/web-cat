@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: Submission.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class Submission
     extends _Submission
@@ -282,6 +282,7 @@ public class Submission
         if ( result != null )
         {
             log.debug( "removing SubmissionResult " + result );
+            result.setIsMostRecent( false );
             NSArray subs = result.submissions();
             for ( int i = 0; i < subs.count(); i++ )
             {

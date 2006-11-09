@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: StepConfig.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import net.sf.webcat.core.*;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: StepConfig.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: StepConfig.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
  */
 public class StepConfig
     extends _StepConfig
@@ -126,13 +126,18 @@ public class StepConfig
             StepConfig mine
         )
     {
-        NSArray results = objectsForUserAndCourseScript(
-            context, userBinding, scriptFileBinding, courseBinding );
+        // Have to use two separate queries here, since the join required
+        // in the second query will overly restrict the results of the first!
+        NSMutableArray results = objectsForUser( context, userBinding )
+            .mutableClone();
+        er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+            results, 
+            objectsForCourseAndScript(
+                context, scriptFileBinding, courseBinding )
+            );
         if ( mine != null && !results.containsObject( mine ) )
         {
-            NSMutableArray ma = results.mutableClone();
-            ma.addObject( mine );
-            results = ma;
+            results.addObject( mine );
         }
         return results;
     }

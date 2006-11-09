@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author Stephen Edwards
- * @version $Id: GradeStudentSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: GradeStudentSubmissionPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -328,20 +328,43 @@ public class GradeStudentSubmissionPage
 
 
     // ----------------------------------------------------------
+    public WOComponent regradeActionOk()
+    {
+        wcSession().commitLocalChanges();
+        Submission submission = prefs().submission();
+        submission.requeueForGrading( wcSession().localContext() );
+        prefs().setSubmission( null );
+        wcSession().commitLocalChanges();
+        Grader.getInstance().graderQueue().enqueue( null );
+        return (WCComponent)back();
+    }
+
+
+    // ----------------------------------------------------------
     public WOComponent regrade()
     {
+        ConfirmPage confirmPage = null;
         saveGrading();
         if ( !hasErrors() )
         {
-            WCComponent confirmPage =
-                (WCComponent)pageWithName( ConfirmRegradeOne.class.getName() );
-            confirmPage.nextPage = (WCComponent)back();
-            return confirmPage;
+            confirmPage =
+                (ConfirmPage)pageWithName( ConfirmPage.class.getName() );
+            confirmPage.nextPage       = this;
+            confirmPage.message        =
+                "This action will <b>regrade this submission</b> "
+            + "for the selected student.</p>"
+            + "<p>This will also <b>delete all prior results</b> for the "
+            + "submission, <b>delete all partner associations</b> for the "
+            + "submission, and <b>delete all TA comments and "
+            + "scoring</b> that have been recorded for the submission.</p>"
+            + "<p>This submission will be "
+            + "re-queued for grading, and the student will receive an e-mail "
+            + "message when new results are available.";
+            confirmPage.actionReceiver = this;
+            confirmPage.actionOk       = "regradeActionOk";
+            confirmPage.setTitle( "Confirm Regrade of This Submission" );
         }
-        else
-        {
-            return null;
-        }
+        return confirmPage;
     }
 
 
