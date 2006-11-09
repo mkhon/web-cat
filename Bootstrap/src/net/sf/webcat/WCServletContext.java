@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ |  $Id: WCServletContext.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ *  @version $Id: WCServletContext.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -98,18 +98,18 @@ public class WCServletContext
 
 
     // ----------------------------------------------------------
-    /**
-     * Splice the subsystem class path specified in the constructor into
-     * a WOClasspath-style value.  Searches the initial classpath value
-     * for the application's main Contents/Resources/Java directory, and
-     * adds the subsystem class path right after this entry.
-     * 
-     * @param classpath the initial classpath, as specified for the WOClasspath
-     *        initial parameter value entry in the web.xml file for
-     *        this application; this is a newline-separated list of
-     *        jar file or directory names
-     * @return the modified classpath
-     */
+//    /**
+//     * Splice the subsystem class path specified in the constructor into
+//     * a WOClasspath-style value.  Searches the initial classpath value
+//     * for the application's main Contents/Resources/Java directory, and
+//     * adds the subsystem class path right after this entry.
+//     * 
+//     * @param classpath the initial classpath, as specified for the WOClasspath
+//     *        initial parameter value entry in the web.xml file for
+//     *        this application; this is a newline-separated list of
+//     *        jar file or directory names
+//     * @return the modified classpath
+//     */
 //    public String fixUpClassPath( String classpath )
 //    {
 //        System.out.println( "WCServletContext.fixUpClassPath(): "

@@ -1,3 +1,4 @@
 *.out
 envtest.pl
 Bootstrap.jar
+bin

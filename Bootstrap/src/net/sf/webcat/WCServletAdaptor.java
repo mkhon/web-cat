@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -428,6 +428,8 @@ public class WCServletAdaptor
                     }
                 }
             }
+            
+            refreshSubsystemUpdaters();
         }
     }
 
@@ -462,6 +464,10 @@ public class WCServletAdaptor
      */
     private void downloadUpdateIfNecessary( SubsystemUpdater updater )
     {
+        if ( !updateDir.exists() )
+        {
+            updateDir.mkdirs();
+        }
         String msg = updater.downloadUpdateIfNecessary( updateDir );
         if ( msg != null )
         {
@@ -567,6 +573,26 @@ public class WCServletAdaptor
             }
         }
         return updater;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Refresh the subsystems collection so that it reflects the new
+     * updates (intended to be called after downloading/applying pending
+     * updates).
+     */
+    private void refreshSubsystemUpdaters()
+    {
+        Map oldSubsystems = subsystems;
+        subsystems = new HashMap();
+        for ( Iterator i = oldSubsystems.keySet().iterator(); i.hasNext(); )
+        {
+            File dir = (File)i.next();
+            // TODO: read delete param from current updater 
+            getUpdaterFor( dir, true );
+        }
+        oldSubsystems.clear();
     }
 
 

@@ -9,13 +9,18 @@
     <!-- Jars Java classes                             -->
     <!-- ============================================= -->
     <target name="jar">
-    <property file="build.properties"/>
-	<jar jarfile="${jar.name}.jar">
-        <fileset dir="${classes.dir}">
-			<include name="**/*.class" />
-			<include name="**/*.properties" />
-	    </fileset>
-	</jar>
+        <property file="build.properties"/>
+        <tstamp/>
+        <jar jarfile="${jar.name}.jar">
+            <manifest>
+                <attribute name="Specification-Version" value="${project.version}"/>
+                <attribute name="Implementation-Version" value="${project.version} ${DSTAMP}"/>
+            </manifest>   
+            <fileset dir="${classes.dir}">
+			    <include name="**/*.class" />
+			    <include name="**/*.properties" />
+	        </fileset>
+        </jar>
     </target>
     <target name="install" depends="jar">
         <copy todir="${servlet.install.dir}/${project.name}/WEB-INF/lib/"

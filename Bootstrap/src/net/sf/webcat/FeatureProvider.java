@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureProvider.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ |  $Id: FeatureProvider.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import java.util.*;
  *  site for obtaining dynamic updates.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureProvider.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ *  @version $Id: FeatureProvider.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  */
 public class FeatureProvider
 {
@@ -87,7 +87,10 @@ public class FeatureProvider
                         + "from subsystem provider at " + realURL );
                     System.out.println( e.getMessage() );
                 }
-                providerRegistry.put( realURL, provider );
+                if ( provider != null )
+                {
+                    providerRegistry.put( realURL, provider );
+                }
             }
         }
         return provider;
@@ -133,10 +136,28 @@ public class FeatureProvider
 
     // ----------------------------------------------------------
     /**
+     * Get the descriptor for a feature provided by this provider.
+     * @param featureName the name of the subsystem or plug-in
+     * @return the provider's descriptor for the given feature, or null
+     *     if there is none
+     */
+    public FeatureDescriptor descriptor( String featureName )
+    {
+        FeatureDescriptor result = subsystemDescriptor( featureName );
+        if ( result == null )
+        {
+            result = pluginDescriptor( featureName );
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Get the descriptor for a subsystem provided by this provider.
      * @param subsystemName the name of the subsystem
      * @return the provider's descriptor for the given subsystem, or null
-     *     if there are none
+     *     if there is none
      */
     public FeatureDescriptor subsystemDescriptor( String subsystemName )
     {
@@ -149,7 +170,7 @@ public class FeatureProvider
      * Get the descriptor for a subsystem provided by this provider.
      * @param pluginName the name of the subsystem
      * @return the provider's descriptor for the given subsystem, or null
-     *     if there are none
+     *     if there is none
      */
     public FeatureDescriptor pluginDescriptor( String pluginName )
     {

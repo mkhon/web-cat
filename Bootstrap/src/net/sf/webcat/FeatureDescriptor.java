@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ |  $Id: FeatureDescriptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import java.util.*;
  *  web.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureDescriptor.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ *  @version $Id: FeatureDescriptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
  */
 public class FeatureDescriptor
 {
@@ -139,7 +139,7 @@ public class FeatureDescriptor
     {
         if ( versionMajor < 0 )
         {
-            versionMajor = intProperty( name + ".version.major" );
+            versionMajor = intProperty( "version.major" );
         }
         return versionMajor;
     }
@@ -154,7 +154,7 @@ public class FeatureDescriptor
     {
         if ( versionMinor < 0 )
         {
-            versionMinor = intProperty( name + ".version.minor" );
+            versionMinor = intProperty( "version.minor" );
         }
         return versionMinor;
     }
@@ -169,7 +169,7 @@ public class FeatureDescriptor
     {
         if ( versionRevision < 0 )
         {
-            versionRevision = intProperty( name + ".version.revision" );
+            versionRevision = intProperty( "version.revision" );
         }
         return versionRevision;
     }
@@ -220,8 +220,10 @@ public class FeatureDescriptor
         FeatureDescriptor latest = null;
         FeatureProvider provider = provider();
         if ( provider != null )
-        {
-            latest = provider.subsystemDescriptor( name );
+        {            
+            latest = isPlugin()
+                ? provider.pluginDescriptor( name )
+                : provider.subsystemDescriptor( name );
         }
         return latest;
     }
@@ -236,9 +238,14 @@ public class FeatureDescriptor
      */
     public boolean isNewerThan( FeatureDescriptor other )
     {
-        return other.versionMajor() < this.versionMajor()
-            || other.versionMinor() < this.versionMinor()
-            || other.versionRevision() < this.versionRevision();
+        return ( other.versionMajor() < this.versionMajor() )
+
+            || ( other.versionMajor() == this.versionMajor()
+                 && other.versionMinor() < this.versionMinor() )
+
+            || ( other.versionMajor() == this.versionMajor()
+                 && other.versionMinor() == this.versionMinor()
+                 && other.versionRevision() < this.versionRevision() );
     }
 
 
@@ -275,6 +282,21 @@ public class FeatureDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Retrieve a subsystem-specific property's value.
+     * @param propName the name of the property to retrieve
+     * @param defaultValue the value to use if the property is not found
+     * @return the value of the <i>name.propName</i> property, where
+     *     <i>name</i> is the name of this subsystem, or the defaultValue
+     *     if no such property is found
+     */
+    public String getProperty( String propName, String defaultValue )
+    {
+        return properties.getProperty( name + "." + propName, defaultValue );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Get the raw subsystem properties object to inspect lower-level
      * information about this subsystem.
      * @return the subsystem's properties
@@ -287,7 +309,7 @@ public class FeatureDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Download this subsystem version from its provider.
+     * Download this feature version from its provider.
      * @param location the place to put the downloaded file
      * @return null on success, or an error message on failure
      */
@@ -297,7 +319,8 @@ public class FeatureDescriptor
         if ( provider != null )
         {
             String fileName = name + "_" + currentVersion() + ".jar";
-            String update = "subsystems/" + fileName;
+            String update = ( isPlugin() ? "plugins/" : "subsystems/" )
+                + fileName;
             try
             {
                 URL fileUrl = new URL( provider.url(), update );
@@ -346,7 +369,7 @@ public class FeatureDescriptor
         }
         else if ( name != null )
         {
-            logInfo( "Subsystem " + name + " is up to date." );
+            logInfo( "Feature " + name + " is up to date." );
         }
         return null;
     }
@@ -364,7 +387,7 @@ public class FeatureDescriptor
     protected int intProperty( String propName )
     {
         int val = 0;
-        String str = properties.getProperty( propName, "0" );
+        String str = getProperty( propName, "0" );
         try {
             if ( str.length() > 0 )
             {
@@ -374,7 +397,7 @@ public class FeatureDescriptor
         catch ( NumberFormatException e )
         {
             logError( "Error: Non-numeric property " + propName
-                + " for subsystem " + name );
+                + " for feature " + name );
         }
         return val;
     }
@@ -383,7 +406,7 @@ public class FeatureDescriptor
     // ----------------------------------------------------------
     /**
      * Log an informational message.  This implementation sends output
-     * to {@link System.out}, but provides a hook so that subclasses
+     * to {@link System#out}, but provides a hook so that subclasses
      * can use Log4J (we don't use that here, so that the Log4J library
      * can be dynamically updatable through subsystems).
      * @param msg the message to log
@@ -397,7 +420,7 @@ public class FeatureDescriptor
     // ----------------------------------------------------------
     /**
      * Log an error message.  This implementation sends output
-     * to {@link System.out}, but provides a hook so that subclasses
+     * to {@link System#out}, but provides a hook so that subclasses
      * can use Log4J (we don't use that here, so that the Log4J library
      * can be dynamically updatable through subsystems).
      * @param msg the message to log
@@ -411,7 +434,7 @@ public class FeatureDescriptor
     // ----------------------------------------------------------
     /**
      * Log an error message.  This implementation sends output
-     * to {@link System.out}, but provides a hook so that subclasses
+     * to {@link System#out}, but provides a hook so that subclasses
      * can use Log4J (we don't use that here, so that the Log4J library
      * can be dynamically updatable through subsystems).
      * @param msg the message to log
