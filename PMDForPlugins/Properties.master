@@ -1,0 +1,23 @@
+# ===================================================================
+# PMDForPlugins subsystem characteristics
+# ===================================================================
+subsystem.PMDForPlugins=net.sf.webcat.pmdforplugins.PMDForPlugins
+
+PMDForPlugins.version.major=1
+PMDForPlugins.version.minor=0
+PMDForPlugins.version.revision=0
+PMDForPlugins.requires=Core, ANTForPlugins
+PMDForPlugins.provides=pluginProperties
+
+PMDForPlugins.copyright=(c) 2006 Virginia Tech Department of Computer Science
+PMDForPlugins.provider=Virginia Tech Computer Science
+PMDForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
+PMDForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem
+PMDForPlugins.history.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem/ChangeHistory
+PMDForPlugins.license=GNU General Public License v.2
+PMDForPlugins.license.url=http\://www.gnu.org/copyleft/gpl.html
+
+PMDForPlugins.description=\
+	This subsystem provides <a href\="http\://pmd.sf.net/">PMD</a> to \
+	support grading plug-ins that perform static analysis of Java code.
