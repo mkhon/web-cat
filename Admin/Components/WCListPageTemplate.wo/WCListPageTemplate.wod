@@ -65,11 +65,12 @@ DeleteEO: WOHyperlink {
 }
 
 DeleteImage: WOImage {
-	alt = "Delete that Object";
+	alt = "Delete that object";
 	border = "0";
-	src = "/icons/trash.gif";
+	filename = "icons/trash.gif";
+	framework = "Core";
 	height = "17";
-	name = "Delete that Object";
+	name = "Delete that object";
 	width = "14";
 }
 
@@ -78,14 +79,11 @@ EditEO: WOHyperlink {
 }
 
 EditImage: WOImage {
-	alt = "Edit that Object";
+	alt = "Edit that object";
 	border = "0";
-	name = "Edit that Object";
-	// filename = "EditMetalSmBtn.gif";
-	// framework = "JavaDirectToWeb";
-	// height = "21";
-	// width = "51";
-	src = "/icons/edit.gif";
+	name = "Edit that object";
+	filename = "icons/edit.gif";
+	framework = "Core";
 	height = "17";
 	width = "18";
 }
@@ -115,13 +113,13 @@ InspectEO: WOHyperlink {
 }
 
 InspectImage: WOImage {
-	alt = "Inspect that Object";
+	alt = "Inspect that object";
 	border = "0";
 	filename = "InspectMetalSmBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "21";
 	width = "51";
-	name = "Inspect that Object";
+	name = "Inspect that object";
 }
 
 IsEntityNotWritable: WOConditional {
@@ -236,12 +234,12 @@ SelectEO: WOHyperlink {
 }
 
 SelectImage: WOImage {
-	alt = "Select that Object";
+	alt = "Select that object";
 	border = "0";
 	filename = d2wContext.selectButtonFileName;
 	framework = "JavaDirectToWeb";
 	height = "13";
-	name = "Select that Object";
+	name = "Select that object";
 	width = "42";
 }
 
