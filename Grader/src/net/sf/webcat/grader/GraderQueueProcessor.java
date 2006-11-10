@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.4 2006/11/10 14:31:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.4 2006/11/10 14:31:56 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -617,6 +617,22 @@ public class GraderQueueProcessor
             properties.setProperty( "timeoutForOneRun",
                             Integer.toString(
                                 step.effectiveTimeoutForOneRun() ) );
+            properties.setProperty( "course",
+                job.submission().assignmentOffering().courseOffering()
+                .course().deptNumber() );
+            properties.setProperty( "CRN",
+                job.submission().assignmentOffering().courseOffering()
+                .crn() );
+            properties.setProperty( "assignment",
+                job.submission().assignmentOffering().assignment()
+                .name() );
+            properties.setProperty( "dueDateTimestamp",
+                Long.toString( job.submission().assignmentOffering()
+                               .dueDate().getTime() ) );
+            properties.setProperty( "submissionTimestamp",
+                Long.toString( job.submission().submitTime().getTime() ) );
+            properties.setProperty( "submissionNo",
+                Integer.toString( job.submission().submitNumber() ) );
 
             BufferedOutputStream out = new BufferedOutputStream(
                 new FileOutputStream( propertiesFile ) );
