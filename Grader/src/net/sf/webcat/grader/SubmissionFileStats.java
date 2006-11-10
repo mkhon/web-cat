@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.3 2006/11/10 16:49:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.jdom.output.XMLOutputter;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author Stephen H. Edwards
- *  @version $Id: SubmissionFileStats.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ *  @version $Id: SubmissionFileStats.java,v 1.3 2006/11/10 16:49:25 stedwar2 Exp $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -174,6 +174,23 @@ public class SubmissionFileStats
     public String statusURL()
     {
         return Status.statusURL( status() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>remarks</code> value.
+     * @return the value of the attribute
+     */
+    public int remarks()
+    {
+        int result = super.remarks();
+        NSArray comments = comments();
+        if ( comments != null )
+        {
+            result += comments.count();
+        }
+        return result;
     }
 
 
