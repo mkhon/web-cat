@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.2 2006/10/28 20:49:10 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.3 2006/11/10 18:57:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.2 2006/10/28 20:49:10 stedwar2 Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.3 2006/11/10 18:57:08 stedwar2 Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -82,6 +82,8 @@ public class SubsystemManagerPage
     public void appendToResponse( WOResponse response, WOContext context )
     {
         terse = null;
+        ( (Application)Application.application() ).subsystemManager()
+            .refreshSubsystemDescriptorsAndProviders();
         subsystems = ERXArrayUtilities.sortedArraySortedWithKey(
             ( (Application)Application.application() )
                 .subsystemManager().subsystems(),
@@ -89,11 +91,6 @@ public class SubsystemManagerPage
             EOSortOrdering.CompareCaseInsensitiveAscending );
         if ( newSubsystems == null )
         {
-            for ( Iterator i = FeatureProvider.providers().iterator();
-                  i.hasNext(); )
-            {
-                ( (FeatureProvider)i.next() ).refresh();
-            }
             newSubsystems = ERXArrayUtilities.sortedArraySortedWithKey(
                 newSubsystems(),
                 "name",

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManager.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: SubsystemManager.java,v 1.5 2006/11/10 18:54:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -32,6 +32,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.jar.*;
+
+import net.sf.webcat.*;
+
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -40,7 +43,7 @@ import org.apache.log4j.Logger;
  * framework or a separate jar file that contains a framework.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubsystemManager.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
+ *  @version $Id: SubsystemManager.java,v 1.5 2006/11/10 18:54:12 stedwar2 Exp $
  */
 public class SubsystemManager
 {
@@ -411,6 +414,28 @@ public class SubsystemManager
         envCache = null;
         envpCache = null;
         pluginPropertiesCache = null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Refreshes cached information about subsystems and their providers.
+     */
+    public void refreshSubsystemDescriptorsAndProviders()
+    {
+        for ( Iterator i = FeatureProvider.providers().iterator();
+            i.hasNext(); )
+        {
+            ( (FeatureProvider)i.next() ).refresh();
+        }
+        if ( subsystemArray != null )
+        {
+            for ( int i = 0; i < subsystemArray.count(); i++ )
+            {
+                ( (Subsystem)subsystemArray.objectAtIndex( i ) )
+                    .refreshDescriptor();
+            }
+        }
     }
 
 

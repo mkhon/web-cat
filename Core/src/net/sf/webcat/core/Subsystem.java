@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.5 2006/11/10 18:54:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  communicate with subsystems.
  *
  *  @author Stephen Edwards
- *  @version $Id: Subsystem.java,v 1.4 2006/11/09 16:55:11 stedwar2 Exp $
+ *  @version $Id: Subsystem.java,v 1.5 2006/11/10 18:54:12 stedwar2 Exp $
  */
 public class Subsystem
 {
@@ -121,6 +121,17 @@ public class Subsystem
             }
         }
         return descriptor;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get the FeatureDescriptor for this subsystem.
+     * @return this subsystem's descriptor
+     */
+    public void refreshDescriptor()
+    {
+        descriptor = null;
     }
 
 
