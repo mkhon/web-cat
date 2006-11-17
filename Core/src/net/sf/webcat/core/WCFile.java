@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCFile.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: WCFile.java,v 1.2 2006/11/17 00:58:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Provides support functions for manipulating files.
  *
  *  @author  Stephen Edwards
- *  @version $Id: WCFile.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: WCFile.java,v 1.2 2006/11/17 00:58:20 stedwar2 Exp $
  */
 public class WCFile
 {
@@ -79,6 +79,12 @@ public class WCFile
                           || fileName.charAt( 0 ) == '\\' ) )
                 {
                     fileName = fileName.substring( 1 );
+                }
+                // If we're on a Windows-style system, be sure to switch
+                // to forward slashes for path names inside the zip file
+                if ( System.getProperty( "file.separator" ).equals( "\\" ) )
+                {
+                    fileName = fileName.replace( '\\', '/' );
                 }
                 ZipEntry e = new ZipEntry( fileName );
                 e.setSize( file.length() );
