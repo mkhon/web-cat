@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCFile.java,v 1.2 2006/11/17 00:58:20 stedwar2 Exp $
+ |  $Id: WCFile.java,v 1.3 2006/11/18 18:31:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Provides support functions for manipulating files.
  *
  *  @author  Stephen Edwards
- *  @version $Id: WCFile.java,v 1.2 2006/11/17 00:58:20 stedwar2 Exp $
+ *  @version $Id: WCFile.java,v 1.3 2006/11/18 18:31:55 stedwar2 Exp $
  */
 public class WCFile
 {
@@ -90,7 +90,8 @@ public class WCFile
                 e.setSize( file.length() );
                 zos.putNextEntry( e );
                 FileInputStream stream = new FileInputStream( file );
-                copyStream( stream, zos );
+                net.sf.webcat.archives.FileUtilities
+                    .copyStream( stream, zos );
                 stream.close();
             }
         }
@@ -98,33 +99,6 @@ public class WCFile
         {
             log.error( "exception trying to create zip output stream", e );
         }
-    }
-
-
-    // TODO: need to refactor the static methods in Grader, which this is
-    // copied from.
-    // ----------------------------------------------------------
-    /**
-     * Copies the contents of an input stream onto an existing output
-     * stream.  The output stream is flushed when the operation
-     * is complete.
-     * 
-     * @param in  the input stream to copy
-     * @param out the destination
-     * @throws IOException if there are IO errors
-     */
-    public static void copyStream( InputStream in, OutputStream out )
-        throws IOException
-    {
-        // read in increments of BUFFER_SIZE
-        byte[] b = new byte[BUFFER_SIZE];
-        int count = in.read( b );
-        while ( count > -1 )
-        {
-            out.write( b, 0, count );
-            count = in.read( b );
-        }
-        out.flush();
     }
 
 
@@ -157,6 +131,8 @@ public class WCFile
     }
 
 
+    // TODO: should refactor into ArchiveManager ... possibly other
+    // static methods need refactoring, too.
     // ----------------------------------------------------------
     /**
      * Determine if this is an archive file.
@@ -359,7 +335,5 @@ public class WCFile
                 .pathForResourceNamed( "filetype.properties", "Core", null ) ),
             Application.configurationProperties() );
     
-    static final private int BUFFER_SIZE = 8192;
-
     static Logger log = Logger.getLogger( WCFile.class );
 }
