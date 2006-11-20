@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Admin.java,v 1.2 2006/06/16 14:50:53 stedwar2 Exp $
+ |  $Id: Admin.java,v 1.3 2006/11/20 16:37:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.core.*;
  *  The subsystem defining Web-CAT administrative tasks.
  *
  *  @author Stephen Edwards
- *  @version $Id: Admin.java,v 1.2 2006/06/16 14:50:53 stedwar2 Exp $
+ *  @version $Id: Admin.java,v 1.3 2006/11/20 16:37:28 stedwar2 Exp $
  */
 public class Admin
     extends Subsystem
@@ -67,16 +67,26 @@ public class Admin
         s.tabs.mergeClonedChildren( subsystemTabTemplate );
     }
 
+    // ----------------------------------------------------------
+    /* (non-Javadoc)
+     * @see net.sf.webcat.core.Subsystem#init()
+     */
+    public void init()
+    {
+        super.init();
+        // TODO merge the tab template loading support into the Subsystem
+        // base class
+        {
+            NSBundle myBundle = NSBundle.bundleForClass( Admin.class );
+            subsystemTabTemplate = TabDescriptor.tabsFromPropertyList(
+                new NSData ( myBundle.bytesForResourcePath(
+                                 TabDescriptor.TAB_DEFINITIONS ) ) );
+        }
+    }
 
     //~ Instance/static variables .............................................
 
     // TODO: this should be refactored into the Subsystem parent class,
     // but that means handling Core in an appropriate way.
     private static NSArray subsystemTabTemplate;
-    {
-        NSBundle myBundle = NSBundle.bundleForClass( Admin.class );
-        subsystemTabTemplate = TabDescriptor.tabsFromPropertyList(
-            new NSData ( myBundle.bytesForResourcePath(
-                             TabDescriptor.TAB_DEFINITIONS ) ) );
-    }
 }
