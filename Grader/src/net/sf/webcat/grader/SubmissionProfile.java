@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.3 2006/12/04 20:13:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ * @version $Id: SubmissionProfile.java,v 1.3 2006/12/04 20:13:25 stedwar2 Exp $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -161,12 +161,14 @@ public class SubmissionProfile
             SubmissionProfile mine
         )
     {
-        NSArray results = objectsForCourse( context, course );
+        NSMutableArray results =
+            objectsForCourse( context, course ).mutableClone();
+        er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+            results, 
+            objectsForUser( context, user ) );
         if ( mine != null && !results.containsObject( mine ) )
         {
-            NSMutableArray ma = results.mutableClone();
-            ma.addObject( mine );
-            results = ma;
+            results.addObject( mine );
         }
         return results;
     }
