@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage3.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: InstallPage3.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -47,7 +47,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage3.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ *  @version $Id: InstallPage3.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public class InstallPage3
     extends InstallPage
@@ -224,7 +224,7 @@ public class InstallPage3
         catch ( Exception e )
         {
             log.error( "exception initializing application:", e );
-            errorMessage( e.getMessage() );
+            error( e.getMessage() );
         }
         finally
         {

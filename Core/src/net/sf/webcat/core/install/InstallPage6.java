@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage6.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: InstallPage6.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage6.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ *  @version $Id: InstallPage6.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public class InstallPage6
     extends InstallPage
@@ -110,7 +110,7 @@ public class InstallPage6
                 {
                     if ( users.count() > 1 )
                     {
-                        errorMessage( "Multiple accounts with the user name '"
+                        error( "Multiple accounts with the user name '"
                             + username + "' detected!" );
                     }
                     User admin = (User)users.objectAtIndex( 0 );
@@ -166,10 +166,10 @@ public class InstallPage6
         }
         if ( authDomainName == null && authDomainName.equals( "" ) )
         {
-            errorMessage( "Cannot identify default institution's "
+            error( "Cannot identify default institution's "
                 + "authentication configuration." );
         }
-        else if ( username != null && !hasErrors() )
+        else if ( username != null && !hasMessages() )
         {
             EOEditingContext ec = Application.newPeerEditingContext();
             AuthenticationDomain domain =
@@ -244,7 +244,7 @@ public class InstallPage6
             log.debug( "takeFormValues(): near end = " );
             log.debug( configuration.configSettingsAsString() );
         }
-        if ( !hasErrors() )
+        if ( !hasMessages() )
         {
             configuration.remove( "AdminFirstName" );
             configuration.remove( "AdminLastName" );

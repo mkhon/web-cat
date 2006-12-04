@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.*;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -80,7 +80,6 @@ public class MyProfilePage
     // ----------------------------------------------------------
     public boolean applyLocalChanges()
     {
-        clearErrors();
         User u = wcSession().localUser();
         String lcPassword = ( newPassword1 == null )
             ? null
@@ -91,34 +90,42 @@ public class MyProfilePage
         {
             if ( newPassword1 == null || newPassword2 == null )
             {
-                errorMessage(
+                error(
                     "To change your password, complete both password fields." );
             }
             else if ( !newPassword1.equals( newPassword2 ) )
             {
-                errorMessage(
+                error(
                     "The two password fields do not match.  "
                     + "Please re-enter your password." );
             }
             else if ( newPassword1.length() < 6 )
             {
-                errorMessage(
+                error(
                     "Your password must be at least six characters long." );
             }
             else if (  lcPassword.equals( u.userName().toLowerCase() )
                     || lcPassword.equals( u.firstName().toLowerCase() )
                     || lcPassword.equals( u.lastName().toLowerCase() ) )
             {
-                errorMessage(
+                error(
                     "You may not use your name as a password.  "
                     + "Please enter a different password." );
             }
-            if ( !hasErrors() )
+            else if ( newPassword1.equals( u.password() ) )
+            {
+                error( "The password you have specified is already "
+                       + "your current password." );
+            }
+            if ( !hasMessages() )
+            {
                 u.changePassword( newPassword1 );
+                confirmationMessage( "Your password has been changed." );
+            }
         }
+        newPassword1 = null;
+        newPassword2 = null;
         // TODO: include user validation here
-        if ( hasErrors() )
-            return false;
 //        wcSession().commitLocalChanges();
 //        return pageWithName( wcSession().currentTab().selectDefaultSibling()
 //                             .selectedPageName() );

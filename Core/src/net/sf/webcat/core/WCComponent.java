@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -60,7 +60,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.3 2006/11/09 16:55:11 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -247,6 +247,7 @@ public class WCComponent
      */
     public WOComponent cancel()
     {
+        clearMessages();
         cancelLocalChanges();
         TabDescriptor parent = wcSession().currentTab().parent();
         if ( parent.parent().parent() != null )
@@ -294,6 +295,10 @@ public class WCComponent
      */
     public WOComponent back()
     {
+        if ( hasMessages() )
+        {
+            return null;
+        }
         if ( nextPage != null )
         {
             return nextPage;
@@ -321,7 +326,7 @@ public class WCComponent
      */
     public boolean nextEnabled()
     {
-        return !hasErrors()
+        return !hasBlockingErrors()
             && ( nextPage != null
                || wcSession().currentTab().hasNextSibling() );
     }
@@ -342,7 +347,11 @@ public class WCComponent
      */
     public WOComponent next()
     {
-        if ( nextPage != null )
+        if ( hasMessages() )
+        {
+            return null;
+        }
+        else if ( nextPage != null )
         {
             return nextPage;
         }
@@ -383,6 +392,10 @@ public class WCComponent
      */
     public boolean applyLocalChanges()
     {
+        if ( hasBlockingErrors() )
+        {
+            return false;
+        }
         try
         {
             wcSession().commitLocalChanges();
@@ -394,13 +407,11 @@ public class WCComponent
                 e,
                 context(),
                 "Exception trying to save component's local changes" );
-            errorMessage( "An error occurred trying to save your changes.  "
-                          + "Please try again.", "applyFailed" );
+            // forces revert and refaultAllObjects
             wcSession().cancelLocalChanges();
-//            wcSession().defaultEditingContext().reset();
-//            wcSession().localContext().reset();
-            wcSession().defaultEditingContext().refaultAllObjects();
-            wcSession().localContext().refaultAllObjects();
+            warning( "An exception occurred while trying to save your "
+                + "changes: " + e + ".  As a result, your changes were "
+                + "canceled.  Please try again." );
             return false;
         }
     }
@@ -438,7 +449,7 @@ public class WCComponent
      */
     public boolean finishEnabled()
     {
-        return !hasErrors();
+        return !hasBlockingErrors();
     }
 
 
@@ -456,7 +467,7 @@ public class WCComponent
      */
     public WOComponent finish()
     {
-        if ( applyLocalChanges() )
+        if ( applyLocalChanges() && !hasMessages() )
         {
             TabDescriptor parent = wcSession().currentTab().parent();
             if ( parent.parent().parent() != null )

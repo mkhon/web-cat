@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: install.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: install.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: install.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ * @version $Id: install.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public class install
     extends ERXDirectAction
@@ -108,7 +108,7 @@ public class install
             InstallPage oldPage = (InstallPage)
                 pageWithName( InstallPage.class.getName() + step );
             oldPage.takeFormValues( request().formValues() );
-            if ( oldPage.hasErrors() )
+            if ( oldPage.hasMessages() )
             {
                 return oldPage;
             }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage2.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ |  $Id: InstallPage2.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage2.java,v 1.1 2006/02/19 19:03:08 stedwar2 Exp $
+ *  @version $Id: InstallPage2.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public class InstallPage2
     extends InstallPage
@@ -99,7 +99,7 @@ public class InstallPage2
         if ( !ERXValueUtilities.booleanValue(
             extractFormValue( formValues, "AgreedToLicense" ) ) )
         {
-            errorMessage( "You must agree to the license terms and "
+            error( "You must agree to the license terms and "
                 + "conditions to proceed." );
         }
     }

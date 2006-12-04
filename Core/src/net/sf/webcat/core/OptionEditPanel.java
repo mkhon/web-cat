@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: OptionEditPanel.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -324,7 +324,7 @@ public class OptionEditPanel
     {
         if ( !canBrowse() )
         {
-            errorMessage( "File and directory configuration options are" +
+            error( "File and directory configuration options are" +
                     "not supported on this page!" );
             return null;
         }

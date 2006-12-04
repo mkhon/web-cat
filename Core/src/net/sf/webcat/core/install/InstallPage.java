@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: InstallPage.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import net.sf.webcat.core.*;
  * A basic interface implemented by all InstallPages.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ *  @version $Id: InstallPage.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
  */
 public abstract class InstallPage
     extends WCComponentWithErrorMessages
@@ -95,7 +95,7 @@ public abstract class InstallPage
         Object    value,
         String    keypath )
     {
-        errorMessage( e.getMessage() );
+        error( e.getMessage() );
     }
 
 
@@ -164,7 +164,7 @@ public abstract class InstallPage
                 {
                     if ( errMsgIfEmpty != null )
                     {
-                        errorMessage( errMsgIfEmpty );
+                        error( errMsgIfEmpty );
                     }
                     else if ( Application.configurationProperties()
                                   .get( configKey ) != null )
@@ -188,13 +188,13 @@ public abstract class InstallPage
             }
             else if ( errMsgIfEmpty != null )
             {
-                errorMessage( errMsgIfEmpty );
+                error( errMsgIfEmpty );
                 value = null;
             }
         }
         catch ( NSValidation.ValidationException e )
         {
-            errorMessage( e.getMessage() );
+            error( e.getMessage() );
             value = null;
         }
         return value;
