@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @version $Id: ConfirmSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: ConfirmSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class ConfirmSubmissionPage
     extends GraderComponent
@@ -113,7 +113,7 @@ public class ConfirmSubmissionPage
             catch ( Exception e )
             {
                 prefs().clearUpload();
-                errorMessage(
+                error(
                     "An error occurred while unpacking "
                     + "your submission.  The error has been "
                     + "reported to the administrator.  If you "
@@ -168,7 +168,7 @@ public class ConfirmSubmissionPage
              && !course.isInstructor( wcSession().primeUser() )
              && !course.isTA( wcSession().primeUser() ) )
         {
-            errorMessage(
+            error(
                 "Unfortunately, the final deadline for this assignment "
                 + "has passed.  No more submissions are being accepted." );
         }
@@ -178,11 +178,11 @@ public class ConfirmSubmissionPage
             if ( msg != null )
             {
                 log.debug( "Submission error = " + msg );
-                errorMessage( msg );
+                error( msg );
             }
         }
 
-        if ( hasErrors() )
+        if ( hasMessages() )
         {
             return null;
         }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * of the source code.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileDetailsPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: SubmissionFileDetailsPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -85,12 +85,11 @@ public class SubmissionFileDetailsPage
         {
             String result = prefs().submissionFileStats().codeWithComments( 
                 wcSession().user(), false );
-            clearErrors();
             return result;
         }
         catch ( Exception e )
         {
-            errorMessage(
+            error(
                 "An error occurred while trying to prepare the source code "
                 + "view for this file.  The error has been reported to the "
                 + "administrator." );

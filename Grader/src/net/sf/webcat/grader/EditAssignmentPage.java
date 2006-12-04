@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderComponent
@@ -93,7 +93,6 @@ public class EditAssignmentPage
         log.debug( "starting super.appendToResponse()" );
         super.appendToResponse( response, context );
         log.debug( "finishing super.appendToResponse()" );
-        clearErrors();
         log.debug( "finishing appendToResponse()" );
     }
 
@@ -112,7 +111,7 @@ public class EditAssignmentPage
             }
             catch ( MalformedURLException e )
             {
-                errorMessage( "The specified URL is not valid." );
+                error( "The specified URL is not valid." );
                 log.error( "Error in validateURL()", e ); 
             }
         }
@@ -162,11 +161,11 @@ public class EditAssignmentPage
              prefs().assignmentOffering().assignment().submissionProfile()
              == null )
         {
-            errorMessage(
+            error(
                 "please select submission rules for this assignment." );
         }
         return  validateURL( prefs().assignmentOffering().assignment().url() )
-            && !hasErrors();
+            && !hasMessages();
     }
 
 
@@ -487,7 +486,7 @@ public class EditAssignmentPage
         if ( value != null && !Step.timeoutIsWithinLimits( value ) )
         {
             // set error message if timeout is out of range
-            errorMessage(
+            error(
                 "The maximum timeout allowed is "
                 + Step.maxTimeout()
                 + ".  Contact the administrator for higher limits." );
@@ -514,7 +513,7 @@ public class EditAssignmentPage
                                                Object    value,
                                                String    key )
     {
-        errorMessage( ex.getMessage() );
+        error( ex.getMessage() );
     }
 
 

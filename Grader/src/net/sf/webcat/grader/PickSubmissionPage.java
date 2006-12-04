@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @version $Id: PickSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: PickSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class PickSubmissionPage
     extends GraderComponent
@@ -106,7 +106,7 @@ public class PickSubmissionPage
         previousSubmissions = ( submissions.count() != 0 );
         if ( !previousSubmissions )
         {
-            errorMessage(
+            error(
                 "You have not completed any submissions for this assignment." );
         }
         if ( prefs().submission() != null )
@@ -158,7 +158,7 @@ public class PickSubmissionPage
         {
             log.debug( "saveSelectionCanContinue(): no selected "
                        + "submission, no index" );
-            errorMessage( "Please choose a submission." );
+            error( "Please choose a submission." );
         }
         else if ( selectedIndex >= 0 )
         {
@@ -170,19 +170,18 @@ public class PickSubmissionPage
                        + selectedIndex
                        + ", sub #"
                        + prefs().submission().submitNumber() );
-            clearErrors();
         }
         if ( prefs().submission() == null )
         {
             log.warn( "saveSelectionCanContinue(): null submission!" );
-            errorMessage( "Please choose a submission." );
+            error( "Please choose a submission." );
         }
         else if ( prefs().submission().result() == null )
         {
-            errorMessage( "The Grader has not yet completed processing "
+            error( "The Grader has not yet completed processing "
                           + "on that submission." );
         }
-        return !hasErrors();
+        return !hasMessages();
     }
 
 

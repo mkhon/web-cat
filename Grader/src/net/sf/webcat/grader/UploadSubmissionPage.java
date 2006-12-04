@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class UploadSubmissionPage
     extends GraderComponent
@@ -150,7 +150,7 @@ public class UploadSubmissionPage
     {
         if ( !okayToSubmit )
         {
-            errorMessage( "You have already made the maximum allowed "
+            error( "You have already made the maximum allowed "
                           + "number of submissions for this assignment." );
         }
         return okayToSubmit;
@@ -187,12 +187,11 @@ public class UploadSubmissionPage
                  && !course.isInstructor( wcSession().primeUser() )
                  && !course.isTA( wcSession().primeUser() ) )
             {
-                errorMessage(
+                error(
                     "Unfortunately, the final deadline for this assignment "
                     + "has passed.  No more submissions are being accepted." );
                 return null;
             }
-            clearErrors();
             boolean clearFileList = true;
             if ( !prefs().hasValidFileUpload() )
             {
@@ -203,7 +202,7 @@ public class UploadSubmissionPage
             }
             if ( !prefs().hasValidFileUpload() )
             {
-                errorMessage( "Please select a file to upload." );
+                error( "Please select a file to upload." );
                 return null;
             }
             if ( clearFileList )
@@ -214,7 +213,7 @@ public class UploadSubmissionPage
                  prefs().assignmentOffering().assignment()
                      .submissionProfile().effectiveMaxFileUploadSize() )
             {
-                errorMessage(
+                error(
                     "You file exceeds the file size limit for this assignment ("
                     + prefs().assignmentOffering().assignment()
                           .submissionProfile().effectiveMaxFileUploadSize()

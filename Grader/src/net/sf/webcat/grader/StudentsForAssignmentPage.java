@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.3 2006/11/10 06:00:59 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.3 2006/11/10 06:00:59 stedwar2 Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class StudentsForAssignmentPage
     extends GraderComponent
@@ -181,7 +181,7 @@ public class StudentsForAssignmentPage
     public WOComponent editSubmissionScore()
     {
         WOComponent destination = null;
-        if ( !hasErrors() )
+        if ( !hasMessages() )
         {
             if ( aSubmission == null )
             {
@@ -253,20 +253,6 @@ public class StudentsForAssignmentPage
     public boolean hasTAScore()
     {
         return aSubmission.result().taScoreRaw() != null;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent next()
-    {
-        if ( !hasErrors() )
-        {
-            return super.next();
-        }
-        else
-        {
-            return null;
-        }
     }
 
 

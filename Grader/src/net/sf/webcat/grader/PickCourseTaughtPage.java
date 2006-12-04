@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseTaughtPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PickCourseTaughtPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  courses taught or TA'ed for.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseTaughtPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: PickCourseTaughtPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class PickCourseTaughtPage
     extends GraderComponent
@@ -89,7 +89,7 @@ public class PickCourseTaughtPage
         if ( staffCourses.count() == 0 && adminCourses.count() == 0 )
         {
             // There are no enrolled courses
-            errorMessage(
+            error(
                 "You are not listed as the instructor or TA for any courses." );
         }
         CourseOffering selectedCourse = wcSession().courseOffering();
@@ -139,7 +139,6 @@ public class PickCourseTaughtPage
     // ----------------------------------------------------------
     public WOComponent next()
     {
-        clearErrors();
         if ( selectedStaffIndex >= 0 )
         {
             wcSession().setCourseOfferingRelationship(
@@ -157,7 +156,7 @@ public class PickCourseTaughtPage
         }
         else
         {
-            errorMessage( "You must choose a course to proceed." );
+            error( "You must choose a course to proceed." );
             return null;
         }
     }

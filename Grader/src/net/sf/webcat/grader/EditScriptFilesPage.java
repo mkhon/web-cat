@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditScriptFilesPage.java,v 1.3 2006/11/09 17:55:50 stedwar2 Exp $
+ * @version $Id: EditScriptFilesPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -178,7 +178,7 @@ public class EditScriptFilesPage
         wcSession().commitLocalChanges();
         if ( folderName == null || folderName.length() == 0 )
         {
-            errorMessage( "Please enter a folder name." );
+            error( "Please enter a folder name." );
         }
         else
         {
@@ -191,7 +191,7 @@ public class EditScriptFilesPage
             }
             catch ( Exception e )
             {
-                errorMessage( e.getMessage() );
+                error( e.getMessage() );
             }
         }
         folderList = null;
@@ -203,7 +203,6 @@ public class EditScriptFilesPage
     public WOComponent uploadFile()
     {
         wcSession().commitLocalChanges();
-        clearErrors();
         if ( unzip && WCFile.isArchiveFile( uploadedFileName2 ) )
         {
             File target =
@@ -217,7 +216,7 @@ public class EditScriptFilesPage
             }
             catch ( java.io.IOException e )
             {
-                errorMessage( e.getMessage() );
+                error( e.getMessage() );
             }
             folderList = null;
         }
@@ -235,7 +234,7 @@ public class EditScriptFilesPage
             }
             catch ( java.io.IOException e )
             {
-                errorMessage( e.getMessage() );
+                error( e.getMessage() );
             }
         }
         if ( scriptFile != null )
@@ -251,7 +250,6 @@ public class EditScriptFilesPage
     public WOComponent replaceEntireFolder()
     {
         wcSession().commitLocalChanges();
-        clearErrors();
         if ( WCFile.isArchiveFile( uploadedFileName3 ) )
         {
             net.sf.webcat.archives.FileUtilities.deleteDirectory( base );
@@ -265,7 +263,7 @@ public class EditScriptFilesPage
             }
             catch ( java.io.IOException e )
             {
-                errorMessage( e.getMessage() );
+                error( e.getMessage() );
             }
             if ( scriptFile != null )
             {
@@ -276,7 +274,7 @@ public class EditScriptFilesPage
         }
         else
         {
-            errorMessage( "To replace this entire folder, you must upload a "
+            error( "To replace this entire folder, you must upload a "
                           + "zip or a jar file." );
         }
         return null;

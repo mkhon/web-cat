@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickStepPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PickStepPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: PickStepPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: PickStepPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class PickStepPage
     extends GraderComponent
@@ -283,17 +283,12 @@ public class PickStepPage
             log.debug(" selected script     = " + selectedScriptIndex );
             log.debug(" request = " + context().request() );
         }
-        clearErrors();
         if ( createNew )
         {
             log.debug( "uploading a new script" );
-            if ( errors == null )
-            {
-                errors = new NSMutableDictionary();
-            }
             if ( uploadedName == null || uploadedData == null )
             {
-                errorMessage( "Please select a file to upload." );
+                error( "Please select a file to upload." );
                 return null;
             }
             ScriptFile newScript = ScriptFile.createNewScriptFile(
@@ -303,7 +298,7 @@ public class PickStepPage
                 uploadedData,
                 false,
                 true,
-                errors
+                messages()
             );
             if ( newScript != null )
             {
@@ -343,7 +338,7 @@ public class PickStepPage
         }
         else
         {
-            errorMessage( "Please select an option before continuing." );
+            error( "Please select an option before continuing." );
         }
 
 //        if ( saveSelectionCheckForEditing() )
@@ -356,11 +351,7 @@ public class PickStepPage
 
         uploadedName = null;
         uploadedData = null;
-        if ( !hasErrors() )
-        {
-            result = super.next();
-        }
-        return result;
+        return super.next();
     }
 
 

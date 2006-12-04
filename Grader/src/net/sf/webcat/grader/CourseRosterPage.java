@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class CourseRosterPage
     extends GraderComponent
@@ -125,13 +125,13 @@ public class CourseRosterPage
             }
             catch ( IOException e )
             {
-                errorMessage( "An IO exception occurred while reading your "
+                error( "An IO exception occurred while reading your "
                               + "CSV file." );
             }
         }
         else
         {
-            errorMessage( "Please select a CSV file to upload." );
+            error( "Please select a CSV file to upload." );
         }
         return null;
     }
@@ -171,7 +171,7 @@ public class CourseRosterPage
                 int pos = t[t.length - 2].indexOf( String.valueOf( '@' ) );
                 if ( pos < 0 )
                 {
-                    errorMessage( "illegal e-mail address '"+ t[t.length - 2]
+                    error( "illegal e-mail address '"+ t[t.length - 2]
                                   + "' for '" + lastName + ", " + firstName
                                   + "' on line " + row + ".  Is your CSV file "
                                   + "in VT Banner format?  Ignoring remainder "
@@ -211,7 +211,7 @@ public class CourseRosterPage
             
             if ( pid == null )
             {
-                errorMessage( "cannot identify user name on line " + row
+                error( "cannot identify user name on line " + row
                               + "." );
                 continue;
             }
@@ -277,7 +277,7 @@ public class CourseRosterPage
             {
                 log.error( "More than one user with same "
                + "pid exists in Database" );
-               errorMessage( "Multiple users with username '"
+               error( "Multiple users with username '"
                    + pid + "' exist; cannot add ambiguous user name "
                    + "to course." );
                user = null;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToEditPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PickAssignmentToEditPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToEditPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToEditPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class PickAssignmentToEditPage
     extends GraderComponent
@@ -129,7 +129,7 @@ public class PickAssignmentToEditPage
     {
         if ( selectedIndex == -1 && !createNew )
         {
-            errorMessage( "You must choose an assignment to proceed." );
+            error( "You must choose an assignment to proceed." );
             return null;
         }
         else if ( createNew )

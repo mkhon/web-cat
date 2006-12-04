@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginManagerPage.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: PluginManagerPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import net.sf.webcat.core.*;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: PluginManagerPage.java,v 1.3 2006/11/09 17:55:51 stedwar2 Exp $
+ *  @version $Id: PluginManagerPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class PluginManagerPage
 extends WCComponent
@@ -140,12 +140,15 @@ extends WCComponent
      */
     public WOComponent download()
     {
-        clearErrors();
         String msg = plugin.installUpdate();
         possibleErrorMessage( msg );
         if ( msg == null )
         {
             wcSession().commitLocalChanges();
+            confirmationMessage( "The plug-in '" + plugin.name()
+                + "' has been downloaded from its provider.  The downloaded "
+                + " version will replace the current version when " 
+                + "Web-CAT restarts." );
         }
         else
         {
@@ -162,13 +165,15 @@ extends WCComponent
      */
     public WOComponent downloadNew()
     {
-        clearErrors();
         String msg =
             ScriptFile.installOrUpdate( wcSession().user(), feature, false );
         possibleErrorMessage( msg );
         if ( msg == null )
         {
             wcSession().commitLocalChanges();
+            confirmationMessage( "New plug-in '" + feature.name()
+                + "' has been downloaded.  It will be installed when " 
+                + "Web-CAT restarts." );
         }
         else
         {
@@ -186,16 +191,15 @@ extends WCComponent
      */
     public WOComponent scanNow()
     {
-        clearErrors();
         if ( providerURL == null || providerURL.equals( "" ) )
         {
-            errorMessage( "Please specify a provider URL first." );
+            error( "Please specify a provider URL first." );
         }
         else
         {
             if ( FeatureProvider.getProvider( providerURL ) == null )
             {
-                errorMessage( "Cannot read feature provider information from "
+                error( "Cannot read feature provider information from "
                     + " specified URL: '" + providerURL + "'." );
             }
         }
@@ -298,13 +302,9 @@ extends WCComponent
      */
     public WOComponent upload()
     {
-        if ( errors == null )
-        {
-            errors = new NSMutableDictionary();
-        }
         if ( uploadedName == null || uploadedData == null )
         {
-            errorMessage( "Please select a file to upload." );
+            error( "Please select a file to upload." );
             return null;
         }
         ScriptFile.createNewScriptFile(
@@ -314,7 +314,7 @@ extends WCComponent
             uploadedData,
             false,
             true,
-            errors
+            messages()
         );
         wcSession().commitLocalChanges();
         uploadedName = null;
@@ -346,16 +346,17 @@ extends WCComponent
      */
     public WOComponent reloadScriptDefinition()
     {
-        clearErrors();
         String errMsg = plugin.initializeConfigAttributes();
         if ( errMsg != null )
         {
             cancelLocalChanges();
-            errorMessage( errMsg );
+            error( errMsg );
         }
         else
         {
             wcSession().commitLocalChanges();
+            confirmationMessage( "Configuration definition for plug-in '"
+                + plugin.name() + "' has been reloaded." );
         }
         return null;
     }

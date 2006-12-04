@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SelectSubmissionProfile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: SelectSubmissionProfile.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: SelectSubmissionProfile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: SelectSubmissionProfile.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class SelectSubmissionProfile
     extends GraderComponent
@@ -164,10 +164,9 @@ public class SelectSubmissionProfile
      */
     protected boolean saveSelectionCheckForEditing()
     {
-        clearErrors();
         if ( selectedIndex == -1 && !createNew )
         {
-            errorMessage(
+            error(
                 "You must choose a submission rule profile to proceed." );
             return false;
         }
@@ -181,7 +180,6 @@ public class SelectSubmissionProfile
             log.debug( "existing profile selected ("
                        + selectedIndex
                        + ")" );
-            clearErrors();
             Assignment selectedAssignment =
                 prefs().assignmentOffering().assignment();
             selectedAssignment.setSubmissionProfileRelationship(
@@ -196,7 +194,7 @@ public class SelectSubmissionProfile
     public WOComponent editSubmissionProfile()
     {
         WCComponent result = null;
-        if ( saveSelectionCheckForEditing() || !hasErrors() )
+        if ( saveSelectionCheckForEditing() || !hasMessages() )
         {
             result = (WCComponent)pageWithName(
                 EditSubmissionProfilePage.class.getName() );
@@ -217,7 +215,7 @@ public class SelectSubmissionProfile
             comp.nextPage = nextPage;
             result = comp;
         }
-        else if ( !hasErrors() )
+        else
         {
             result = super.next();
         }
@@ -236,7 +234,7 @@ public class SelectSubmissionProfile
             comp.nextPage = nextPage;
             result = comp;
         }
-        else if ( !hasErrors() )
+        else
         {
             result = super.finish();
         }
@@ -255,7 +253,7 @@ public class SelectSubmissionProfile
             comp.nextPage = nextPage;
             result = comp;
         }
-        else if ( !hasErrors() )
+        else
         {
             result = super.apply();
         }

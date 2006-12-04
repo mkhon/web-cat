@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditSubmissionProfilePage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: EditSubmissionProfilePage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -219,14 +219,7 @@ public class EditSubmissionProfilePage
     public WOComponent next()
     {
         saveTimeFields();
-        if ( hasErrors() )
-        {
-            return null;
-        }
-        else
-        {
-            return super.next();
-        }
+        return super.next();
     }
     
 
@@ -234,14 +227,7 @@ public class EditSubmissionProfilePage
     public boolean applyLocalChanges()
     {
         saveTimeFields();
-        if ( hasErrors() )
-        {
-            return false;
-        }
-        else
-        {
-            return super.applyLocalChanges();
-        }
+        return super.applyLocalChanges();
     }
     
 
@@ -260,7 +246,7 @@ public class EditSubmissionProfilePage
                              value.longValue() ) )
         {
             // set error message if size is out of range
-            errorMessage(
+            error(
                 "The maximum upload size allowed is "
                 + SubmissionProfile.maxMaxFileUploadSize()
                 + ".  Contact the administrator for higher limits.",
@@ -268,7 +254,7 @@ public class EditSubmissionProfilePage
         }
         else
         {
-            clearError( "tooLarge" );
+            clearMessage( "tooLarge" );
         }
         // This will automatically restrict to the max value anyway
         submissionProfile.setMaxFileUploadSizeRaw( value );

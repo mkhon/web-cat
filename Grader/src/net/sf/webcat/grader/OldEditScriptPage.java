@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OldEditScriptPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: OldEditScriptPage.java,v 1.3 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: OldEditScriptPage.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ * @version $Id: OldEditScriptPage.java,v 1.3 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class OldEditScriptPage
     extends GraderComponent
@@ -228,7 +228,7 @@ public class OldEditScriptPage
                 script.setUploadedFileName( null );
                 script.setMainFileName( null );
                 needsEditing = true;
-                errorMessage( "You have another script with this same "
+                error( "You have another script with this same "
                               + "name.  Please use a different file name." );
             }
             else
@@ -264,7 +264,7 @@ public class OldEditScriptPage
                     }
                     catch ( java.io.IOException e )
                     {
-                        errorMessage( "There was an error unzipping "
+                        error( "There was an error unzipping "
                                       + "your file.  Please try again" );
                         script.setSubdirName( subdirName );
                         FileUtilities.deleteDirectory( script.dirName() );

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent
@@ -102,7 +102,7 @@ public class PickCourseEnrolledPage
             && coursesAdmined.count() == 0 )
         {
             // There are no enrolled courses
-            errorMessage( "Web-CAT has no record of your course enrollments "
+            error( "Web-CAT has no record of your course enrollments "
                           + "for this semester." );
         }
         CourseOffering selectedCourse = wcSession().courseOffering();
@@ -215,7 +215,6 @@ public class PickCourseEnrolledPage
             log.debug(" selected 3 = " + selectedInstructorIndex );
             log.debug(" selected 4 = " + selectedAdminIndex );
         }
-        clearErrors();
         if ( selectedCourseIndex >= 0 )
         {
             log.debug( "choosing enrolled course " + selectedCourseIndex );
@@ -258,7 +257,7 @@ public class PickCourseEnrolledPage
         }
         else
         {
-            errorMessage( "You must choose a course to proceed." );
+            error( "You must choose a course to proceed." );
             return null;
         }
     }
