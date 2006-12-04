@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.3 2006/11/10 18:57:08 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.4 2006/12/04 02:55:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.3 2006/11/10 18:57:08 stedwar2 Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.4 2006/12/04 02:55:09 stedwar2 Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -161,7 +161,6 @@ public class SubsystemManagerPage
      */
     public WOComponent download()
     {
-        clearErrors();
         String msg = subsystem.descriptor().providerVersion().downloadTo(
             adaptor().updateDownloadLocation() );
         possibleErrorMessage( msg );
@@ -176,7 +175,6 @@ public class SubsystemManagerPage
      */
     public WOComponent downloadNew()
     {
-        clearErrors();
         String msg = feature.providerVersion().downloadTo(
             adaptor().updateDownloadLocation() );
         possibleErrorMessage( msg );
@@ -191,16 +189,15 @@ public class SubsystemManagerPage
      */
     public WOComponent scanNow()
     {
-        clearErrors();
         if ( providerURL == null || providerURL.equals( "" ) )
         {
-            errorMessage( "Please specify a provider URL first." );
+            error( "Please specify a provider URL first." );
         }
         else
         {
             if ( FeatureProvider.getProvider( providerURL ) == null )
             {
-                errorMessage( "Cannot read feature provider information from "
+                warning( "Cannot read feature provider information from "
                     + " specified URL: '" + providerURL + "'." );
             }
         }

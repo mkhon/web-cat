@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfigureSubsystemPage.java,v 1.2 2006/12/04 02:55:09 stedwar2 Exp $
+ |  $Id: NoticeTestPage.java,v 1.1 2006/12/04 02:55:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -23,7 +23,7 @@
  |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
 \*==========================================================================*/
 
-package net.sf.webcat.admin;
+package net.sf.webcat.admin.tests;
 
 import com.webobjects.appserver.*;
 
@@ -31,24 +31,22 @@ import net.sf.webcat.core.*;
 
 // -------------------------------------------------------------------------
 /**
- *  Displays the configuration parameters for a given subsystem and
- *  allows the corresponding settings to be edited.
+ *  A simple test page for exercising error/confirmation message features.
  *
  *  @author  stedwar2
- *  @version $Id: ConfigureSubsystemPage.java,v 1.2 2006/12/04 02:55:09 stedwar2 Exp $
+ *  @version $Id: NoticeTestPage.java,v 1.1 2006/12/04 02:55:09 stedwar2 Exp $
  */
-public class ConfigureSubsystemPage
+public class NoticeTestPage
     extends WCComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
-     * Creates a new EditSubsystemConfigurationPage object.
-     * 
+     * Creates a new NoticeTestPage object.
      * @param context The context to use
      */
-    public ConfigureSubsystemPage( WOContext context )
+    public NoticeTestPage( WOContext context )
     {
         super( context );
     }
@@ -56,70 +54,61 @@ public class ConfigureSubsystemPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public Subsystem subsystem;
+    public String stateMsg;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see net.sf.webcat.core.WCComponent#applyLocalChanges()
-     */
-    public boolean applyLocalChanges()
+    public void appendToResponse( WOResponse response, WOContext context )
     {
-        boolean result = Application.configurationProperties().attemptToSave();
-        Application.configurationProperties().updateToSystemProperties();
-        ( (Application)application() ).subsystemManager()
-            .clearSubsystemPropertyCache();
-        boolean superResult = super.applyLocalChanges();
-        if ( !result )
+        advanceState();
+        super.appendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    public void advanceState()
+    {
+        state = ( state + 1 ) % messages.length;
+        stateMsg = messages[state];
+        switch ( state )
         {
-            warning( "Cannot write to configuration file, so changes have "
-                + "not been made permanent." );
-        }
-        return  superResult && result;
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean nextEnabled()
-    {
-        return false;
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean backEnabled()
-    {
-        return false;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent cancel()
-    {
-        cancelLocalChanges();
-        return nextPage;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent finish()
-    {
-        if ( applyLocalChanges() )
-        {
-            return nextPage;
-        }
-        else
-        {
-            return null;
+            case 1:
+                error( "this is error message 1." );
+                break;
+            case 2:
+                warning( "this is warning message 2." );
+                break;
+            case 3:
+                error( "this is error message 3." );
+                warning( "this is warning message 4." );
+                break;
+            case 4:
+                confirmationMessage( "this is confirmation message 5." );
+                confirmationMessage( "this is confirmation message 6." );
+                break;
+            default:
+                // Do nothing
         }
     }
-    
+
 
     // ----------------------------------------------------------
-    public WOComponent defaultAction()
+    public WOComponent refresh()
     {
         return null;
     }
+
+
+    //~ Instance/static variables .............................................
+
+    private int state = -1;
+    private static final String[] messages = new String[]{
+        "Now in state 0, with no messages.",
+        "Now in state 1, with one error message.",
+        "Now in state 2, with one warning message.",
+        "Now in state 3, with one error message and one warning message.",
+        "Now in state 4, with two confirmation messages."
+    };
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PropertyListPage.java,v 1.2 2006/02/25 07:50:48 stedwar2 Exp $
+ |  $Id: PropertyListPage.java,v 1.3 2006/12/04 02:55:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * A property listing page.
  *
  *  @author edwards
- *  @version $Id: PropertyListPage.java,v 1.2 2006/02/25 07:50:48 stedwar2 Exp $
+ *  @version $Id: PropertyListPage.java,v 1.3 2006/12/04 02:55:10 stedwar2 Exp $
  */
 public class PropertyListPage
     extends WCComponent
@@ -131,7 +131,7 @@ public class PropertyListPage
     // ----------------------------------------------------------
     public WOComponent back()
     {
-        clearErrors();
+        clearMessages();
         return pageWithName( SettingsPage.class.getName() );
     }
 
@@ -139,10 +139,9 @@ public class PropertyListPage
     // ----------------------------------------------------------
     public WOComponent setNewProperty()
     {
-        clearErrors();
         if ( newPropertyName == null || newPropertyName.equals( "" ) )
         {
-            errorMessage( "Please specify a property name to set." );
+            error( "Please specify a property name to set." );
         }
         else
         {
@@ -159,7 +158,7 @@ public class PropertyListPage
             // and won't happen if the config file isn't writeable, so we'll
             // be conservative and do it anyway.
             config.updateToSystemProperties();
-            errorMessage( "System property \"" + newPropertyName
+            confirmMessage( "System property \"" + newPropertyName
                 + "\" set to \"" + newPropertyValue + "\"." );
         }
         return null;
