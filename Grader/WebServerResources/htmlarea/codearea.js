@@ -7,7 +7,7 @@
 //
 //
 //
-// $Id: codearea.js,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+// $Id: codearea.js,v 1.3 2006/12/04 19:58:49 stedwar2 Exp $
 
 // Creates a new HTMLArea object.  Tries to replace the textarea with the given
 // ID with it.

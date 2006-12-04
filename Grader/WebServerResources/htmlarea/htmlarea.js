@@ -8,7 +8,7 @@
 // Version 3.0 developed by Mihai Bazon for InteractiveTools.
 //           http://students.infoiasi.ro/~mishoo
 //
-// $Id: htmlarea.js,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+// $Id: htmlarea.js,v 1.2 2006/12/04 19:58:49 stedwar2 Exp $
 
 // Creates a new HTMLArea object.  Tries to replace the textarea with the given
 // ID with it.
