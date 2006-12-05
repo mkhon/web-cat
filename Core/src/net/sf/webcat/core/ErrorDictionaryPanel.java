@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ErrorDictionaryPanel.java,v 1.3 2006/12/05 00:58:52 stedwar2 Exp $
+ |  $Id: ErrorDictionaryPanel.java,v 1.4 2006/12/05 14:43:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import java.util.Enumeration;
  * er.extensions version.
  *
  * @author Stephen Edwards
- * @version $Id: ErrorDictionaryPanel.java,v 1.3 2006/12/05 00:58:52 stedwar2 Exp $
+ * @version $Id: ErrorDictionaryPanel.java,v 1.4 2006/12/05 14:43:59 stedwar2 Exp $
  */
 public class ErrorDictionaryPanel
     extends er.extensions.ERXStatelessComponent
@@ -255,23 +255,37 @@ public class ErrorDictionaryPanel
     // ----------------------------------------------------------
     public String dictionaryCssClass()
     {
+        String style = "";
         if ( extraErrorMessage() != null )
         {
-            return " error";
+            style += " error"; // must include the space at start
         }
-        NSDictionary dict = errorMessages();
-        for ( Enumeration e = dict.keyEnumerator(); e.hasMoreElements();) {
-            byte category = errorMessageCategory(
-                errorMessages().objectForKey( e.nextElement() ) );
-            switch ( category )
-            {
-                case Status.ERROR:
-                case Status.WARNING:
-                case Status.UNFINISHED:
-                    return " error"; // must include the space at the beginning
+        else
+        {
+            NSDictionary dict = errorMessages();
+            for ( Enumeration e = dict.keyEnumerator(); e.hasMoreElements();) {
+                byte category = errorMessageCategory(
+                    errorMessages().objectForKey( e.nextElement() ) );
+                switch ( category )
+                {
+                    case Status.ERROR:
+                    case Status.WARNING:
+                    case Status.UNFINISHED:
+                        style += " error"; // must include the space at start
+                }
             }
         }
-        return null;
+        if ( er.extensions.ERXValueUtilities.booleanValue(
+            valueForBinding( "shouldShowNewlineAbove" ) ) )
+        {
+            style += " nlbefore";
+        }
+        if ( er.extensions.ERXValueUtilities.booleanValue(
+            valueForBinding( "shouldShowNewlineBelow" ) ) )
+        {
+            style += " nlafter";
+        }
+        return style;
     }
     
 
