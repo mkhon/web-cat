@@ -1,3 +1,12 @@
+CanRestart: WOConditional {
+    condition = canRestart;
+}
+
+CannotRestart: WOConditional {
+    condition = canRestart;
+    negate    = true;
+}
+
 DieNow: WOSubmitButton {
     action = dieNow;
     value = " Die! Die! Die! ";

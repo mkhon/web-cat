@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdminStatusPage.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ |  $Id: AdminStatusPage.java,v 1.2 2006/12/05 00:20:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,7 +27,6 @@ package net.sf.webcat.admin;
 
 import com.webobjects.appserver.*;
 import com.webobjects.directtoweb.*;
-
 import net.sf.webcat.core.*;
 import er.extensions.ERXApplication;
 
@@ -37,7 +36,7 @@ import er.extensions.ERXApplication;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: AdminStatusPage.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+*  @version $Id: AdminStatusPage.java,v 1.2 2006/12/05 00:20:45 stedwar2 Exp $
 */
 public class AdminStatusPage
     extends WCComponent
@@ -71,5 +70,14 @@ public class AdminStatusPage
     {
         ERXApplication.erxApplication().killInstance();
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean canRestart()
+    {
+        return net.sf.webcat.WCServletAdaptor.getInstance() == null
+            || Application.configurationProperties()
+                .stringForKey( "coreKillAction" ) != null;
     }
 }

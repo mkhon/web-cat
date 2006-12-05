@@ -1,7 +1,11 @@
 <webobject name="Page">
 <webobject name="SystemStatus"/>
-<webobject name="Form"><webobject name="ThrowException"/>
+<webobject name="CanRestart"><webobject name="Form"><webobject name="ThrowException"/>
 <webobject name="GracefulShutdown"/>
 <webobject name="DieNow"/>
-</webobject>
+</webobject></webobject><webobject name="CannotRestart">
+<p>To enable kill/restart controls, please use the <b>Subsystems</b> tab above
+to edit the settings for the <b>Core subsystem</b> and provide a value for
+the <b>Web-CAT Shutdown/Restart External Command</b> setting.
+</p></webobject>
 </webobject>
