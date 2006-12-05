@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ErrorDictionaryPanel.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
+ |  $Id: ErrorDictionaryPanel.java,v 1.3 2006/12/05 00:58:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import java.util.Enumeration;
  * er.extensions version.
  *
  * @author Stephen Edwards
- * @version $Id: ErrorDictionaryPanel.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
+ * @version $Id: ErrorDictionaryPanel.java,v 1.3 2006/12/05 00:58:52 stedwar2 Exp $
  */
 public class ErrorDictionaryPanel
     extends er.extensions.ERXStatelessComponent
@@ -255,6 +255,10 @@ public class ErrorDictionaryPanel
     // ----------------------------------------------------------
     public String dictionaryCssClass()
     {
+        if ( extraErrorMessage() != null )
+        {
+            return " error";
+        }
         NSDictionary dict = errorMessages();
         for ( Enumeration e = dict.keyEnumerator(); e.hasMoreElements();) {
             byte category = errorMessageCategory(
