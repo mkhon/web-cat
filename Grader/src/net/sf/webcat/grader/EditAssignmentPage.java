@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.5 2006/12/06 15:48:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.5 2006/12/06 15:48:10 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderComponent
@@ -502,18 +502,6 @@ public class EditAssignmentPage
         prefs().assignmentOffering().clearGraphSummary();
         wcSession().commitLocalChanges();
         return null;
-    }
-
-
-    // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see com.webobjects.appserver.WOComponent#validationFailedWithException(java.lang.Throwable, java.lang.Object, java.lang.String)
-     */
-    public void validationFailedWithException( Throwable ex,
-                                               Object    value,
-                                               String    key )
-    {
-        error( ex.getMessage() );
     }
 
 
