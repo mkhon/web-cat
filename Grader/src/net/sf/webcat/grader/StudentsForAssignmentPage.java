@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.5 2006/12/06 15:49:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.5 2006/12/06 15:49:29 stedwar2 Exp $
  */
 public class StudentsForAssignmentPage
     extends GraderComponent
@@ -62,6 +62,7 @@ public class StudentsForAssignmentPage
     public WODisplayGroup submissionDisplayGroup;
     /** Submission in the worepetition */
     public Submission  aSubmission;
+    public Submission  partnerSubmission;
     /** index in the worepetition */
     public int         index;
 
@@ -253,6 +254,41 @@ public class StudentsForAssignmentPage
     public boolean hasTAScore()
     {
         return aSubmission.result().taScoreRaw() != null;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean hasPartners()
+    {
+        return aSubmission.result().submissions().count() > 1;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean hasMultiplePartners()
+    {
+        return aSubmission.result().submissions().count() > 2;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean isAPartner()
+    {
+        return partnerSubmission.user() != aSubmission.user();
+    }
+
+    // ----------------------------------------------------------
+    public boolean morePartners()
+    {
+        NSArray submissions = aSubmission.result().submissions();
+        Submission lastSubmission = (Submission)submissions
+            .objectAtIndex( submissions.count() - 1 );
+        if ( lastSubmission == aSubmission )
+        {
+            lastSubmission = (Submission)submissions
+            .objectAtIndex( submissions.count() - 2 );
+        }
+        return partnerSubmission != lastSubmission;
     }
 
 
