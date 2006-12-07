@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponentWithErrorMessages.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
+ |  $Id: WCComponentWithErrorMessages.java,v 1.4 2006/12/07 02:00:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import java.util.Enumeration;
 * message handling features.
 *
 * @author Stephen Edwards
-* @version $Id: WCComponentWithErrorMessages.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
+* @version $Id: WCComponentWithErrorMessages.java,v 1.4 2006/12/07 02:00:41 stedwar2 Exp $
 */
 public class WCComponentWithErrorMessages
     extends WOComponent
@@ -117,6 +117,17 @@ public class WCComponentWithErrorMessages
     public void error( String message )
     {
         error( message, null );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Record an exception as an error message for this page.
+     * @param anException the exception to be posted
+     */
+    public void error( Throwable anException )
+    {
+        message( anException, null );
     }
 
 
@@ -289,6 +300,18 @@ public class WCComponentWithErrorMessages
     public NSMutableDictionary messagesIfPresent()
     {
         return messages;
+    }
+
+
+    // ----------------------------------------------------------
+    /* (non-Javadoc)
+     * @see com.webobjects.appserver.WOComponent#validationFailedWithException(java.lang.Throwable, java.lang.Object, java.lang.String)
+     */
+    public void validationFailedWithException( Throwable ex,
+                                               Object    value,
+                                               String    key )
+    {
+        message( ex, key );
     }
 
 

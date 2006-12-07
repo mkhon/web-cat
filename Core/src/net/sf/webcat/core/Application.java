@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.6 2006/12/05 00:55:55 stedwar2 Exp $
+ |  $Id: Application.java,v 1.7 2006/12/07 02:00:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.6 2006/12/05 00:55:55 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.7 2006/12/07 02:00:41 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1411,7 +1411,7 @@ public class Application
         if ( dieTime != null && deathMessage == null )
         {
             StringBuffer buffer = new StringBuffer( 200 );
-            buffer.append( "<span class=\"hl\">Immediate shutdown:</span> " );
+            buffer.append( "<b>Immediate shutdown:</b> " );
             buffer.append( "Web-CAT will be going off-line at " );
             NSTimestampFormatter formatter =
                 new NSTimestampFormatter( "%I:%M%p" );

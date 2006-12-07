@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ErrorDictionaryPanel.java,v 1.4 2006/12/05 14:43:59 stedwar2 Exp $
+ |  $Id: ErrorDictionaryPanel.java,v 1.5 2006/12/07 02:00:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import java.util.Enumeration;
  * er.extensions version.
  *
  * @author Stephen Edwards
- * @version $Id: ErrorDictionaryPanel.java,v 1.4 2006/12/05 14:43:59 stedwar2 Exp $
+ * @version $Id: ErrorDictionaryPanel.java,v 1.5 2006/12/07 02:00:41 stedwar2 Exp $
  */
 public class ErrorDictionaryPanel
     extends er.extensions.ERXStatelessComponent
@@ -215,7 +215,10 @@ public class ErrorDictionaryPanel
     // ----------------------------------------------------------
     public String errorMessageItem()
     {
-        String msg = errorMessages().objectForKey( errorKey ).toString();
+        Object obj = errorMessages().objectForKey( errorKey );
+        String msg = ( obj instanceof Throwable )
+            ? ( (Throwable) obj).getMessage()
+            : obj.toString();
         return massageErrorMessage( msg, errorKey );
     }
 
