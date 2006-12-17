@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -151,42 +151,139 @@ public class WCServletAdaptor
     {
         if ( needsLicense )
         {
-            String key = request.getParameter( "key" );
-            if ( key == null || key.equals( "" ) )
+            String kind = request.getParameter( "kind" );
+            if ( kind == null )
             {
                 sendLicenseForm( response,
-                    "You must enter a deployment license key." );
+                    "You must choose a deployment license method." );
+            }
+            else if ( kind.equals( "key" ) )
+            {
+                String key = request.getParameter( "key" );
+                if ( key == null || key.equals( "" ) )
+                {
+                    sendLicenseForm( response,
+                        "You must enter a deployment license key." );
+                }
+                else
+                {
+                    // Try to install license
+                    File license = licenseKeyFile();
+                    if ( license.exists() )
+                    {
+                        license.delete();
+                    }
+                    try
+                    {
+                        properties.remove( INSTALLED_WOROOT );
+                        commitProperties();
+
+                        PrintWriter out = new PrintWriter(
+                            new FileWriter( license ) );
+                        out.println( key );
+                        out.close();
+                        // Try to re-initialize with new license
+                        super.init();
+                        needsLicense = false;
+                    }
+                    catch ( javax.servlet.UnavailableException e )
+                    {
+                        sendLicenseForm( response, null );
+                    }
+                    catch ( IOException e )
+                    {
+                        sendLicenseForm( response,
+                            "Error writing license key file: "
+                            + e.getMessage() );
+                    }
+                    if ( !needsLicense )
+                    {
+                        sendLicenseAcknowledgement( response );
+                    }
+                }
             }
             else
             {
-                // Try to install license
-                File license = licenseKeyFile();
-                if ( license.exists() )
-                {
-                    license.delete();
-                }
-                try
-                {
-                    PrintWriter out = new PrintWriter(
-                        new FileWriter( license ) );
-                    out.println( key );
-                    out.close();
-                    // Try to re-initialize with new license
-                    super.init();
-                    needsLicense = false;
-                }
-                catch ( javax.servlet.UnavailableException e )
-                {
-                    sendLicenseForm( response, null );
-                }
-                catch ( IOException e )
+                String woroot = request.getParameter( "woroot" );
+                if ( woroot == null )
                 {
                     sendLicenseForm( response,
-                        "Error writing license key file: " + e.getMessage() );
+                        "You must enter a directory for the local "
+                        + "WebObjects installation." );
                 }
-                if ( !needsLicense )
+                else
                 {
-                    sendLicenseAcknowledgement( response );
+                    File woRoot = new File( woroot );
+                    if ( !woRoot.exists() )
+                    {
+                        sendLicenseForm( response,
+                            "The local WebObjects root you specified "
+                            + "could not be found." );
+                    }
+                    else if ( !woRoot.isDirectory() )
+                    {
+                        sendLicenseForm( response,
+                            "The local WebObjects root you specified "
+                            + "is not a directory." );
+                    }
+                    else
+                    {
+                        // Save woroot in the properties file
+                        properties.setProperty( INSTALLED_WOROOT, woroot );
+                        commitProperties();
+
+                        // Force classpath to be reloaded
+                        String webInfRoot = super.getServletContext()
+                            .getRealPath( "WEB-INF" );
+                        File webInfDir = new File( webInfRoot );
+                        applyNecessaryUpdates( webInfDir );
+                        if ( wrappedContext != null )
+                        {
+                            ( (WCServletContext)wrappedContext )
+                                .setWOClasspath( woClasspath );
+                        }
+                        try
+                        {
+                            // Try to clear installed wo application wrapper
+                            // via reflection (need to access a private
+                            // field!)
+                            Class parent = com.webobjects.jspservlet
+                                .WOServletAdaptor.class;
+                            java.lang.reflect.Field field = parent
+                                .getDeclaredField( "woApplicationWrapper" );
+                            field.setAccessible( true );
+                            field.set( this, null );
+                            field = parent
+                                .getDeclaredField( "classLoader" );
+                            field.setAccessible( true );
+                            field.set( this, null );
+
+                            // Now, try to restart WO
+                            super.init();
+                            needsLicense = false;
+                        }
+                        catch ( Exception e )
+                        {
+                            e.printStackTrace();
+                            response.setContentType( "text/html" );
+                            PrintWriter out = new PrintWriter(
+                                response.getOutputStream() );
+                            out.println( "<html><head>" );
+                            out.println(
+                                "<title>WebObjects License Set</title>" );
+                            out.println( "</head><body>" );
+                            out.println( "<h1>WebObjects License Has Been " );
+                            out.println( "Set</h1>" );
+                            out.println( "<p>Web-CAT has been configured to " );
+                            out.println( "use your locally installed copy " );
+                            out.println( "of WebObjects.</p><p>Please " );
+                            out.println( "restart Web-CAT (or its servlet " );
+                            out.println( "container) to continue.</p>" );
+                            out.println( "</body></html>" );
+                            out.flush();
+                            out.close();
+                        }
+                    }
                 }
             }
         }
@@ -297,13 +394,79 @@ public class WCServletAdaptor
         out.print( "<p><b style=\"color:red\">" );
         out.print( msg );
         out.print( "</b></p>" );
+
+        // Check for possible local WO install
+        String defaultDir = null;
+        if ( System.getProperty( "os.name" ).indexOf( "Windows" ) >= 0 )
+        {
+            defaultDir = "C:/Apple";
+            File f = new File( defaultDir ); 
+            if ( !f.exists() || !f.isDirectory() )
+            {
+                // Not found
+                defaultDir = null;
+            }
+        }
+        else if ( System.getProperty( "os.name" ).indexOf( "Mac" ) >= 0 )
+        {
+            defaultDir = "/System";
+            File f = new File( defaultDir ); 
+            if ( !f.exists() || !f.isDirectory() )
+            {
+                // Not found
+                defaultDir = null;
+            }
+        }
+        else
+        {
+            defaultDir = "/opt/Apple";
+            File f = new File( defaultDir ); 
+            if ( !f.exists() || !f.isDirectory() )
+            {
+                // Not found, so try /usr/local
+                defaultDir = "/usr/local/Apple";
+                f = new File( defaultDir ); 
+                if ( !f.exists() || !f.isDirectory() )
+                {
+                    // Not found
+                    defaultDir = null;
+                }
+            }
+        }
+
         out.println( "<p>This application requires a valid <b>WebObjects " );
         out.println( "Deployment License</b>.  Please enter your deployment " );
         out.println( "license key.</p>" );
         out.println( "<form method=\"post\" action=\"\">" );
-        out.println( "License key: <input type=\"text\" name=\"key\" " );
-        out.println( "size=\"40\"/> <input type=\"submit\" " );
-        out.println( "value=\"Install License\"/>" );
+        out.println( "<input type=\"radio\" name=\"kind\" value=\"key\"" );
+        if ( defaultDir == null )
+        {
+            out.println( " checked" );
+        }
+        out.println( "> " );
+        out.println( "Install license key: <input type=\"text\" name=\"key\"");
+        out.println( " size=\"40\"/><blockquote><p>\n" );
+        out.println( "Enter a WebObjects 5.2.x deployment license key to\n" );
+        out.println( "use the built-in WebObjects run-time contained in the\n");
+        out.println( "WAR.</p></blockquote>\n" );
+        out.println( "<input type=\"radio\" name=\"kind\" value=\"local\"" );
+        if ( defaultDir != null )
+        {
+            out.println( " checked" );
+        }
+        out.println( "> " );
+        out.println( " Use existing WO installation: <input type=\"text\" " );
+        out.println( "name=\"woroot\" size=\"60\"" );
+        if ( defaultDir != null )
+        {
+            out.println( " value=\"" + defaultDir + "\"" );
+        }
+        out.println( "/><blockquote><p>\n" );
+        out.println( "Enter the local path to an existing WebObjects\n" );
+        out.println( "installation (your local WOROOT) to use your existing\n");
+        out.println( "license if you have one.</p></blockquote>\n" );
+        out.println( " <input type=\"submit\" " );
+        out.println( "value=\"Set License\"/>" );
         out.println( "</form></body></html>" );
         out.flush();
         out.close();
@@ -486,11 +649,41 @@ public class WCServletAdaptor
     private String classPathFrom( File[] subdirs, File mainBundle )
     {
         StringBuffer buffer = new StringBuffer( 20 * subdirs.length );
+        String woroot = properties.getProperty( INSTALLED_WOROOT );
+        File installedWOFrameworkDir = null;
+        if ( woroot != null )
+        {
+            installedWOFrameworkDir = new File( woroot, "Library/Frameworks" );
+            if ( !installedWOFrameworkDir.exists() )
+            {
+                System.out.println( "Cannot locate installed WO framework "
+                    + "directory at: " + installedWOFrameworkDir );
+                installedWOFrameworkDir = null;
+            }
+            else if ( !installedWOFrameworkDir.isDirectory() )
+            {
+                System.out.println( "Installed WO framework location is not a "
+                    + "directory: " + installedWOFrameworkDir );
+                installedWOFrameworkDir = null;
+            }
+            System.out.println( "using WO root = " + installedWOFrameworkDir );
+        }
 
         // First, handle all the subsystems
         for ( int i = 0; i < subdirs.length; i++ )
         {
-            getUpdaterFor( subdirs[i], true ).addToClasspath( buffer );
+            File subdir = subdirs[i];
+            if ( installedWOFrameworkDir != null )
+            {
+                File localSubdir =
+                    new File( installedWOFrameworkDir, subdir.getName() );
+                if ( localSubdir.exists() )
+                {
+                    // use the externally installed version instead
+                    subdir = localSubdir;
+                }
+            }
+            getUpdaterFor( subdir, true ).addToClasspath( buffer );
         }
 
         // Now handle the main bundle itself
@@ -657,6 +850,7 @@ public class WCServletAdaptor
         "ERJars.framework",
         "ERExtensions.framework"
     };
-    private static final String UPDATE_SUBDIR  = "pending-updates";
-    private static final String APP_JAR_PREFIX = "webcat_";
+    private static final String UPDATE_SUBDIR    = "pending-updates";
+    private static final String APP_JAR_PREFIX   = "webcat_";
+    private static final String INSTALLED_WOROOT = "installed.woroot";
 }

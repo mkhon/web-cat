@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ |  $Id: WCServletContext.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ *  @version $Id: WCServletContext.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -94,6 +94,17 @@ public class WCServletContext
             result = innerContext.getInitParameter( name );
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the internal value used for the WOClasspath init parameter.
+     * @param newClasspath the new value to use for WOClasspath
+     */
+    public void setWOClasspath( String newClasspath )
+    {
+        woClasspath = newClasspath;
     }
 
 
