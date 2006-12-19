@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.3 2006/12/04 20:13:25 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.4 2006/12/19 03:40:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.3 2006/12/04 20:13:25 stedwar2 Exp $
+ * @version $Id: SubmissionProfile.java,v 1.4 2006/12/19 03:40:12 stedwar2 Exp $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -199,7 +199,6 @@ public class SubmissionProfile
 
         public String name()
         {
-            log.debug( "TimeUnit.name() = " + name );
             return name;
         }
 
@@ -260,11 +259,11 @@ public class SubmissionProfile
     //~ Instance/static variables .............................................
 
     public static final TimeUnit[] timeUnits = new TimeUnit[] {
-            new TimeUnit( "Minute(s)",            60000 ),
-            new TimeUnit( "Hour(s)",           60*60000 ),
-            new TimeUnit( "Day(s)",         24*60*60000 ),
-            new TimeUnit( "Week(s)",      7*24*60*60000 ),
-            new TimeUnit( "Month(s)",  30*7*24*60*60000 )
+            new TimeUnit( "Minute(s)",                60000L ),
+            new TimeUnit( "Hour(s)",              60L*60000L ),
+            new TimeUnit( "Day(s)",           24L*60L*60000L ),
+            new TimeUnit( "Week(s)",       7L*24L*60L*60000L ),
+            new TimeUnit( "Month(s)",  30L*7L*24L*60L*60000L )
         };
 
     public static final String[] submitters = new String[] {
@@ -279,7 +278,7 @@ public class SubmissionProfile
 
     static final long maxMaxFileUploadSize = net.sf.webcat.core.Application
         .configurationProperties()
-        .longForKeyWithDefault( "grader.maxFileUploadSize", 200000 );
+        .longForKeyWithDefault( "grader.maxFileUploadSize", 200000L );
 
     static Logger log = Logger.getLogger( SubmissionProfile.class );
 }
