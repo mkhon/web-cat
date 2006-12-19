@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BarePage.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: BarePage.java,v 1.3 2006/12/19 03:52:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * contents.
  *
  * @author Stephen Edwards
- * @version $Id: BarePage.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
+ * @version $Id: BarePage.java,v 1.3 2006/12/19 03:52:45 stedwar2 Exp $
  */
 public class BarePage
     extends WOComponent
@@ -169,7 +169,8 @@ public class BarePage
     {
         buffer.append( "<script type=\"text/javascript\" src=\"" );
         buffer.append( 
-            WCResourceManager.frameworkPrefixedResourceURLFor( url ) );
+            WCResourceManager.frameworkPrefixedResourceURLFor( url,
+                context().request() ) );
         buffer.append( "\"></script>" );
     }
 
@@ -179,7 +180,8 @@ public class BarePage
     {
         buffer.append( "<link rel=\"stylesheet\" type=\"text/css\" href=\"" );
         buffer.append(
-            WCResourceManager.frameworkPrefixedResourceURLFor( url ) );
+            WCResourceManager.frameworkPrefixedResourceURLFor(
+                url, context().request() ) );
         buffer.append( "\"/>" );
     }
 
@@ -188,7 +190,7 @@ public class BarePage
     public String wcStylesheet()
     {
         return WCResourceManager.frameworkPrefixedResourceURLFor(
-            "Core.framework/WebServerResources/wc.css" );
+            "Core.framework/WebServerResources/wc.css", context().request() );
     }
 
 
@@ -196,7 +198,8 @@ public class BarePage
     public String wcIE5Stylesheet()
     {
         return WCResourceManager.frameworkPrefixedResourceURLFor(
-            "Core.framework/WebServerResources/wc-ie5.css" );
+            "Core.framework/WebServerResources/wc-ie5.css",
+            context().request() );
     }
 
 
@@ -204,7 +207,8 @@ public class BarePage
     public String wcIE6Stylesheet()
     {
         return WCResourceManager.frameworkPrefixedResourceURLFor(
-            "Core.framework/WebServerResources/wc-ie6.css" );
+            "Core.framework/WebServerResources/wc-ie6.css",
+            context().request() );
     }
 
 
@@ -215,7 +219,8 @@ public class BarePage
         {
             overlibLink = "<script type=\"text/javascript\" src=\""
                 + WCResourceManager.frameworkPrefixedResourceURLFor(
-            "Core.framework/WebServerResources/overlib/Mini/overlib_mini.js" )
+            "Core.framework/WebServerResources/overlib/Mini/overlib_mini.js",
+            context().request() )
                 + "\"></script>";
         }
         return overlibLink;
