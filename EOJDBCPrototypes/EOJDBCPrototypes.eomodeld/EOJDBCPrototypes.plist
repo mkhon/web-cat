@@ -88,15 +88,15 @@
             externalType = INTEGER; 
             name = foreignId; 
             valueClassName = NSNumber; 
-            valueType = i; 
+            valueType = l; 
         }, 
         {
             columnName = OID; 
             externalType = INTEGER; 
             name = id; 
             valueClassName = NSNumber; 
-            valueType = i; 
-        }, 
+            valueType = l;
+        },
         {
             allowsNull = Y; 
             columnName = ""; 
@@ -118,14 +118,14 @@
             externalType = BIGINT; 
             name = long; 
             userInfo = {
-                scalarConversionMethodName = intValue; 
+                scalarConversionMethodName = longValue; 
                 isScalar = true;
                 scalarDefault = 0L;
                 type = long;
                 valueClassName = Long;
             }; 
             valueClassName = NSNumber; 
-            valueType = i; 
+            valueType = l; 
         }, 
         {
             allowsNull = Y; 
