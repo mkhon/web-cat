@@ -6,7 +6,7 @@
 
     <!-- ............................................................... -->
     <target name="build.redistributable.war"
-        depends="build, export.jar, install.pending.updates"
+        depends="build.subsystems, build, export.jar, install.pending.updates"
         description="Build a publishable copy of the WAR distribution."/>
 
 
@@ -84,6 +84,94 @@
     <!-- ==============================================================  -->
     <!-- Lower-level targets                                             -->
     <!-- ==============================================================  -->
+
+    <!-- ............................................................... -->
+    <target name="build.subsystems">
+        <echo>
+------------------------------
+building Bootstrap
+------------------------------
+        </echo>
+        <ant dir="../Bootstrap"/>
+
+        <echo>
+------------------------------
+building EOJDBCPrototypes
+------------------------------
+        </echo>
+        <ant dir="../EOJDBCPrototypes"/>
+
+        <echo>
+------------------------------
+building DBUpdateEngine
+------------------------------
+        </echo>
+        <ant dir="../DBUpdateEngine"/>
+
+        <echo>
+------------------------------
+building Core
+------------------------------
+        </echo>
+        <ant dir="../Core"/>
+
+        <echo>
+------------------------------
+building Admin
+------------------------------
+        </echo>
+        <ant dir="../Admin"/>
+
+        <echo>
+------------------------------
+building Grader
+------------------------------
+        </echo>
+        <ant dir="../Grader"/>
+
+        <echo>
+------------------------------
+building ANTForPlugins
+------------------------------
+        </echo>
+        <ant dir="../ANTForPlugins"/>
+
+        <echo>
+------------------------------
+building CheckstyleForPlugins
+------------------------------
+        </echo>
+        <ant dir="../CheckstyleForPlugins"/>
+
+        <echo>
+------------------------------
+building CloverForPlugins
+------------------------------
+        </echo>
+        <ant dir="../CloverForPlugins"/>
+
+        <echo>
+------------------------------
+building PerlForPlugins
+------------------------------
+        </echo>
+        <ant dir="../PerlForPlugins"/>
+
+        <echo>
+------------------------------
+building PMDForPlugins
+------------------------------
+        </echo>
+        <ant dir="../PMDForPlugins"/>
+
+        <echo>
+------------------------------
+building Grader
+------------------------------
+        </echo>
+        <ant dir="../Grader"/>
+    </target>
+
 
     <!-- ............................................................... -->
     <target name="build.woapp" depends="init.build">
