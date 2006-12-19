@@ -4,25 +4,42 @@
 <project name="Bootstrap" default="install" basedir=".">
 
     <property file="build.properties"/>
-   
-    <!-- ============================================= -->
-    <!-- Jars Java classes                             -->
-    <!-- ============================================= -->
-    <target name="jar">
+    <property file="${user.home}${file.separator}Library${file.separator}wobuild.properties"/>
+
+    <!-- ==============================================================  -->
+    <!-- main targets                                                    -->
+    <!-- ==============================================================  -->
+
+    <!-- jar ..........................................................
+         Build the jar file only.  Presumes all the Java files have
+         already been compiled by Eclipse.  Adds a manifest containing
+         the project version information from the build.properties file.
+    -->
+    <target name="jar"
+        description="Create a jar file containing this project's class files.">
         <property file="build.properties"/>
         <tstamp/>
         <jar jarfile="${jar.name}.jar">
             <manifest>
-                <attribute name="Specification-Version" value="${project.version}"/>
-                <attribute name="Implementation-Version" value="${project.version} ${DSTAMP}"/>
-            </manifest>   
+                <attribute name="Specification-Version"
+                    value="${project.version}"/>
+                <attribute name="Implementation-Version"
+                    value="${project.version} ${DSTAMP}"/>
+            </manifest>
             <fileset dir="${classes.dir}">
-			    <include name="**/*.class" />
-			    <include name="**/*.properties" />
-	        </fileset>
+                <include name="**/*.class" />
+                <include name="**/*.properties" />
+            </fileset>
         </jar>
     </target>
-    <target name="install" depends="jar">
+
+
+    <!-- install ...................................................... -->
+    <target name="install"
+        depends="jar"
+        description="Build the jar and install it in an active servlet dir.">
+        <fail message="Property servlet.install.dir is not defined."
+            unless="servlet.install.dir"/>
         <copy todir="${servlet.install.dir}/${project.name}/WEB-INF/lib/"
              preservelastmodified="true"
              overwrite="true"
@@ -32,4 +49,5 @@
             </fileset>
         </copy>
     </target>
+
 </project>
