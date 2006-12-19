@@ -112,7 +112,7 @@
                   <excludesfile name="woproject/resources.exclude.patternset"/>
                 </patternset>
             </resources>
-            <resources dir="CheckstyleForPlugins.Resources">
+            <resources dir="${CheckstyleForPlugins.Resources}">
                 <patternset>
                     <include name="checkstyle-all.jar"/>
                 </patternset>
