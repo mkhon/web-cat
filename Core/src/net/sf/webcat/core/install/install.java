@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: install.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
+ |  $Id: install.java,v 1.4 2006/12/19 03:50:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: install.java,v 1.3 2006/12/04 03:02:16 stedwar2 Exp $
+ * @version $Id: install.java,v 1.4 2006/12/19 03:50:22 stedwar2 Exp $
  */
 public class install
     extends ERXDirectAction
@@ -64,11 +64,11 @@ public class install
     public static final String[] steps = new String[] {
         "pre-check",    // 1
         "license",      // 2
-        "step 1",       // 3
-        "step 2",       // 4
-        "step 3",       // 5
-        "step 4",       // 6
-        "step 5",       // 7
+        "step&nbsp;1",  // 3
+        "step&nbsp;2",  // 4
+        "step&nbsp;3",  // 5
+        "step&nbsp;4",  // 6
+        "step&nbsp;5",  // 7
         "done!"         // 8
         };
 
