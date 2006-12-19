@@ -16,17 +16,22 @@
     NEXTSTEP_BUILDTOOL = /bin/gnumake;
     LANGUAGE = English;
     NEXTSTEP_JAVA_COMPILER = /usr/bin/javac;
-    DEPLOY_WITH_VERSION_NAME = A;
-    DYNAMIC_CODE_GEN = YES;
-    NEXTSTEP_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/Frameworks";
     NEXTSTEP_OBJCPLUS_COMPILER = /usr/bin/cc;
+    NEXTSTEP_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+    DYNAMIC_CODE_GEN = YES;
+    DEPLOY_WITH_VERSION_NAME = A;
     PROJECTTYPE = JavaWebObjectsFramework;
     WINDOWS_JAVA_COMPILER = "$(JDKBINDIR)/javac.exe";
     PROJECTVERSION = 2.8;
     WINDOWS_OBJCPLUS_COMPILER = "$(DEVDIR)/gcc";
-    CURRENTLY_ACTIVE_VERSION = YES;
     FILESTABLE = 
     {
+        CLASSES = 
+        (
+           src/er/extensions/ERXSession.java, 
+           src/er/extensions/ERXWOForm.java, 
+           src/er/extensions/ERXDirectAction.java
+        );
         FRAMEWORKS = 
         (
            ERExtensions.framework, 
@@ -43,15 +48,7 @@
            JavaWOExtensions.framework, 
            JavaXML.framework
         );
-        CLASSES = 
-        (
-           src/er/extensions/ERXSession.java, 
-           src/er/extensions/ERXWOForm.java, 
-           src/er/extensions/ERXDirectAction.java
-        );
         WO_COMPONENTS = 
-        ();
-        SUBPROJECTS = 
         ();
         OTHER_SOURCES = 
         (
@@ -61,10 +58,12 @@
            Makefile.postamble, 
            Makefile.preamble
         );
+        SUBPROJECTS = 
+        ();
         WOAPP_RESOURCES = 
         (
-           Properties, 
            EOJDBCPrototypes.eomodeld
         );
     };
+    CURRENTLY_ACTIVE_VERSION = YES;
 }
