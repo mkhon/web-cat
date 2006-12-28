@@ -250,4 +250,3 @@ ShowCancel2: WOConditional {
 ShowCancel: WOConditional {
 	condition = showCancel;
 }
-
