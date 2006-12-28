@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCSortOrder.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: WCSortOrder.java,v 1.2 2006/12/28 02:04:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,6 +27,8 @@ package net.sf.webcat.core;
 
 
 import com.webobjects.appserver.WOContext;
+import com.webobjects.foundation.NSSelector;
+import com.webobjects.eocontrol.EOSortOrdering;
 
 
 // -------------------------------------------------------------------------
@@ -35,7 +37,7 @@ import com.webobjects.appserver.WOContext;
  * contents.
  *
  * @author Lally Singh
- * @version $Id: WCSortOrder.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: WCSortOrder.java,v 1.2 2006/12/28 02:04:18 stedwar2 Exp $
  */
 public class WCSortOrder
     extends com.webobjects.woextensions.WOSortOrder
@@ -54,7 +56,7 @@ public class WCSortOrder
     }
 
 
-    //~ Methods ...............................................................
+    //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
     /**
@@ -68,7 +70,23 @@ public class WCSortOrder
      */
     public String imageName()
     {
-        return "icons/" + super.imageName();
+        String anImageName = "Unsorted.gif";
+        if ( _isCurrentKeyPrimary() )
+        {
+            NSSelector aCurrentState = _primaryKeySortOrderingSelector();
+            if ( aCurrentState == EOSortOrdering.CompareAscending
+                 || aCurrentState ==
+                     EOSortOrdering.CompareCaseInsensitiveAscending )
+            {
+                anImageName = "Ascending.gif";
+            }
+            else if ( aCurrentState == EOSortOrdering.CompareDescending
+                      || aCurrentState ==
+                          EOSortOrdering.CompareCaseInsensitiveDescending )
+            {
+                anImageName = "Descending.gif";
+            }
+        }
+        return "icons/" + anImageName;
     }
-
 }
