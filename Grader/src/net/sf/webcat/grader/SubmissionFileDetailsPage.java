@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.3 2006/12/28 03:25:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,6 +27,9 @@ package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
+
+import net.sf.webcat.core.*;
+
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -36,7 +39,7 @@ import org.apache.log4j.Logger;
  * of the source code.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileDetailsPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: SubmissionFileDetailsPage.java,v 1.3 2006/12/28 03:25:22 stedwar2 Exp $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -57,6 +60,9 @@ public class SubmissionFileDetailsPage
     //~ KVC Attributes (must be public) .......................................
 
     public String codeWithComments = null;
+    public WODisplayGroup filesDisplayGroup;
+    public SubmissionFileStats file;
+    public SubmissionFileStats selectedFile = null;
 
 
     //~ Methods ...............................................................
@@ -72,6 +78,8 @@ public class SubmissionFileDetailsPage
     {
         log.debug( "beginning appendToResponse()" );
         codeWithComments = initializeCodeWithComments();
+        filesDisplayGroup.setObjectArray(
+            prefs().submission().result().submissionFileStats() );
         super.appendToResponse( response, context );
         codeWithComments = null;
         log.debug( "ending appendToResponse()" );
@@ -98,6 +106,25 @@ public class SubmissionFileDetailsPage
     }
     
     
+    // ----------------------------------------------------------
+    public WOComponent viewNextFile()
+    {
+        log.debug( "viewNextFile()" );
+        if ( selectedFile == null )
+        {
+            return next();
+        }
+        else
+        {
+            prefs().setSubmissionFileStatsRelationship( selectedFile );
+            WCComponent statsPage = (WCComponent)pageWithName(
+                SubmissionFileDetailsPage.class.getName() );
+            statsPage.nextPage = nextPage;
+            return statsPage;
+        }
+    }
+
+
     //~ Instance/static variables .............................................
 
     static Logger log = Logger.getLogger( SubmissionFileDetailsPage.class );

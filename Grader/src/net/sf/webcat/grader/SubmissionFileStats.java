@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.3 2006/11/10 16:49:25 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.4 2006/12/28 03:25:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.jdom.output.XMLOutputter;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author Stephen H. Edwards
- *  @version $Id: SubmissionFileStats.java,v 1.3 2006/11/10 16:49:25 stedwar2 Exp $
+ *  @version $Id: SubmissionFileStats.java,v 1.4 2006/12/28 03:25:22 stedwar2 Exp $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -138,6 +138,7 @@ public class SubmissionFileStats
         if ( result == null )
         {
             result = fullyQualifiedClassName().replace( '.', '/' ) + ".java";
+            setSourceFileNameRaw( result );
         }
         return result;
     }
