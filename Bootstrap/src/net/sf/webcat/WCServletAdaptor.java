@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.4 2007/01/12 21:29:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.4 2007/01/12 21:29:20 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -673,7 +673,10 @@ public class WCServletAdaptor
         for ( int i = 0; i < subdirs.length; i++ )
         {
             File subdir = subdirs[i];
-            if ( installedWOFrameworkDir != null )
+            // Be sure to use the *local* version of JavaWOExtensions (from
+            // project WONDER) rather than the default system version.
+            if ( installedWOFrameworkDir != null
+                 && !"JavaWOExtensions.framework".equals( subdir.getName() ) )
             {
                 File localSubdir =
                     new File( installedWOFrameworkDir, subdir.getName() );
