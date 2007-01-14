@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ |  $Id: FeatureDescriptor.java,v 1.3 2007/01/14 03:19:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import java.util.*;
  *  web.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureDescriptor.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ *  @version $Id: FeatureDescriptor.java,v 1.3 2007/01/14 03:19:38 stedwar2 Exp $
  */
 public class FeatureDescriptor
 {
@@ -75,6 +75,7 @@ public class FeatureDescriptor
 
     public static final String PLUGIN_NAME_PREFIX    = "plugin.";
     public static final String SUBSYSTEM_NAME_PREFIX = "subsystem.";
+    public static final String RENAME_SUFFIX = ".renameTo";
 
 
     //~ Public Methods ........................................................
