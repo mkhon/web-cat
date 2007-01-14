@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureProvider.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ |  $Id: FeatureProvider.java,v 1.3 2007/01/14 03:20:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import java.util.*;
  *  site for obtaining dynamic updates.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureProvider.java,v 1.2 2006/11/09 16:43:50 stedwar2 Exp $
+ *  @version $Id: FeatureProvider.java,v 1.3 2007/01/14 03:20:58 stedwar2 Exp $
  */
 public class FeatureProvider
 {
@@ -54,7 +54,9 @@ public class FeatureProvider
     {
         this.url = url;
         subsystems = new HashMap();
+        renamedSubsystems = new HashMap();
         plugins = new HashMap();
+        renamedPlugins = new HashMap();
         loadProperties( stream );
     }
 
@@ -161,6 +163,11 @@ public class FeatureProvider
      */
     public FeatureDescriptor subsystemDescriptor( String subsystemName )
     {
+        String newName = (String)renamedSubsystems.get( subsystemName );
+        if ( newName != null )
+        {
+            subsystemName = newName;
+        }
         return (FeatureDescriptor)subsystems.get( subsystemName );
     }
 
@@ -174,6 +181,11 @@ public class FeatureProvider
      */
     public FeatureDescriptor pluginDescriptor( String pluginName )
     {
+        String newName = (String)renamedPlugins.get( pluginName );
+        if ( newName != null )
+        {
+            pluginName = newName;
+        }
         return (FeatureDescriptor)plugins.get( pluginName );
     }
 
@@ -252,9 +264,21 @@ public class FeatureProvider
                  && key.indexOf( '.',
                    FeatureDescriptor.SUBSYSTEM_NAME_PREFIX.length() ) == -1 )
             {
-                String subsystemName = key.substring(
-                    SubsystemUpdater.SUBSYSTEM_NAME_PREFIX.length() );
-                if ( subsystems.get( subsystemName ) == null )
+                String originalName = key.substring(
+                    FeatureDescriptor.SUBSYSTEM_NAME_PREFIX.length() );
+                String subsystemName = originalName;
+                String newName = subsystemName;
+                while ( newName != null )
+                {
+                    subsystemName = newName;
+                    newName = properties.getProperty(
+                        subsystemName + FeatureDescriptor.RENAME_SUFFIX );
+                }
+                if ( !originalName.equals( subsystemName ) )
+                {
+                    renamedSubsystems.put( originalName, subsystemName );
+                }
+                else if ( subsystems.get( subsystemName ) == null )
                 {
                     subsystems.put(
                         subsystemName,
@@ -266,9 +290,21 @@ public class FeatureProvider
                       && key.indexOf( '.',
                        FeatureDescriptor.PLUGIN_NAME_PREFIX.length() ) == -1 )
             {
-                String pluginName = key.substring(
+                String originalName = key.substring(
                     FeatureDescriptor.PLUGIN_NAME_PREFIX.length() );
-                if ( plugins.get( pluginName ) == null )
+                String pluginName = originalName;
+                String newName = pluginName;
+                while ( newName != null )
+                {
+                    pluginName = newName;
+                    newName = properties.getProperty(
+                        pluginName + FeatureDescriptor.RENAME_SUFFIX );
+                }
+                if ( !originalName.equals( pluginName ) )
+                {
+                    renamedPlugins.put( originalName, pluginName );
+                }
+                else if ( plugins.get( pluginName ) == null )
                 {
                     plugins.put(
                         pluginName,
@@ -325,7 +361,9 @@ public class FeatureProvider
     private String name;
     private Properties properties;
     private Map subsystems;
+    private Map renamedSubsystems;
     private Map plugins;
+    private Map renamedPlugins;
     private static Map providerRegistry = new HashMap();
     private static final String UPDATE_PROPERTIES_FILE = "update.properties";
 }
