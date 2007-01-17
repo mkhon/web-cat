@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.4 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.5 2007/01/17 02:35:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.4 2006/11/09 17:55:51 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.5 2007/01/17 02:35:49 stedwar2 Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -145,7 +145,7 @@ public class ScriptFile
         throws java.io.IOException, InterruptedException
     {
         Runtime runtime = Runtime.getRuntime();
-        String  command = net.sf.webcat.core.Application.cmdShell();
+        String  command = "";
         if ( configDescription().containsKey( "interpreter.prefix" ) )
         {
             // Look up the associated value, perform property substitution
@@ -163,6 +163,21 @@ public class ScriptFile
         if ( args != null )
         {
             command = command + " " + args;
+        }
+
+        // Tack on the command shell prefix to the beginning, quoting the
+        // whole argument sequence if necessary
+        {
+            String shell = net.sf.webcat.core.Application.cmdShell();
+            if ( shell != null && shell.length() > 0 )
+            {
+                if ( shell.charAt( shell.length() - 1 ) == '"' )
+                {
+                    command = command.replaceAll("\"", "\\\"" );
+                    command += '"';
+                }
+                command = shell + command;
+            }
         }
 
         try
@@ -274,12 +289,6 @@ public class ScriptFile
                 setConfigDescription( dict );
 //              log.debug( "script config.plist = " + dict );
                 String name = (String)dict.objectForKey( "name" );
-                String version = (String)dict.objectForKey( "version" );
-//                if ( version != null )
-//                {
-//                    name = name + " (v" + version + ")";
-//                }
-//              log.debug( "script name = " + name );
                 setName( name );
                 NSArray options = (NSArray)dict.objectForKey( "options" );
 //              log.debug( "options = " + options );
@@ -655,6 +664,7 @@ public class ScriptFile
         
         ScriptFile newScriptFile = null;
         String subdirName = convertToSubdirName( plugin.name() );
+        File newScriptPath = null;
         if ( scriptFile == null )
         {
             newScriptFile = new ScriptFile();
@@ -663,6 +673,19 @@ public class ScriptFile
             newScriptFile.setAuthorRelationship( installedBy );
             newScriptFile.setSubdirName( subdirName );
             scriptFile = newScriptFile;
+        }
+        else if ( !subdirName.equals( scriptFile.subdirName() ) )
+        {
+            newScriptPath = new File (
+                userScriptDirName( installedBy, false ).toString(),
+                subdirName );
+            if ( newScriptPath.exists() )
+            {
+                return "The plug-in you are updating has changed names, but "
+                    + "you already have an installed plug-in with the new "
+                    + "name, so there is a conflict.  The original plug-in "
+                    + "cannot be updated until the name conflict is resolved.";
+            }
         }
 
         File pluginSubdir = new File( scriptFile.dirName() );
@@ -690,8 +713,11 @@ public class ScriptFile
         
         // Save the file to disk
         log.debug( "downloading plug-in archive" );
-        File scriptPath = new File( scriptFile.dirName() );
-        File downloadPath = scriptPath.getParentFile();
+        if ( newScriptPath == null )
+        {
+            newScriptPath = new File( scriptFile.dirName() );
+        }
+        File downloadPath = newScriptPath.getParentFile();
         File archiveFile = new File( downloadPath.getAbsolutePath()
             + "/" + plugin.name() + "_" + plugin.currentVersion() + ".jar" );
         downloadPath.mkdirs();
@@ -699,7 +725,7 @@ public class ScriptFile
         try
         {
             net.sf.webcat.archives.ArchiveManager.getInstance()
-                .unpack( scriptPath,  archiveFile );
+                .unpack( newScriptPath,  archiveFile );
         }
         catch ( java.io.IOException e )
         {
