@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.4 2006/12/04 02:55:09 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.5 2007/01/17 21:25:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.4 2006/12/04 02:55:09 stedwar2 Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.5 2007/01/17 21:25:09 stedwar2 Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -164,6 +164,13 @@ public class SubsystemManagerPage
         String msg = subsystem.descriptor().providerVersion().downloadTo(
             adaptor().updateDownloadLocation() );
         possibleErrorMessage( msg );
+        if ( msg == null )
+        {
+            confirmationMessage( "The subsystem '" + subsystem.name()
+                + "' has been downloaded from its provider.  The downloaded "
+                + " version will replace the current version when " 
+                + "Web-CAT restarts." );
+        }
         return null;
     }
 
@@ -178,6 +185,12 @@ public class SubsystemManagerPage
         String msg = feature.providerVersion().downloadTo(
             adaptor().updateDownloadLocation() );
         possibleErrorMessage( msg );
+        if ( msg == null )
+        {
+            confirmationMessage( "New subsystem '" + feature.name()
+                + "' has been downloaded from its provider.  It will be "
+                + " installed when Web-CAT restarts." );
+        }
         return null;
     }
 
