@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PartialInlineReport.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PartialInlineReport.java,v 1.2 2007/01/17 02:33:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * fragment to include.
  *
  * @author Stephen Edwards
- * @version $Id: PartialInlineReport.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: PartialInlineReport.java,v 1.2 2007/01/17 02:33:37 stedwar2 Exp $
  */
 public class PartialInlineReport
     extends WOComponent
@@ -71,15 +71,19 @@ public class PartialInlineReport
         NSData d = null;
         if ( file != null )
         {
-            try
+            // Only read the file if it is really there, of course
+            if ( file.exists() )
             {
-                FileInputStream stream = new FileInputStream( file );
-                d = new NSData( stream, (int)file.length() );
-                stream.close();
-            }
-            catch ( Exception e )
-            {
-                log.error( "Exception including inlined report:", e );
+                try
+                {
+                    FileInputStream stream = new FileInputStream( file );
+                    d = new NSData( stream, (int)file.length() );
+                    stream.close();
+                }
+                catch ( Exception e )
+                {
+                    log.error( "Exception including inlined report:", e );
+                }
             }
         }
         else
