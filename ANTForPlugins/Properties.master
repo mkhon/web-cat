@@ -4,8 +4,8 @@
 subsystem.ANTForPlugins=net.sf.webcat.antforplugins.ANTForPlugins
 
 ANTForPlugins.version.major=1
-ANTForPlugins.version.minor=0
-ANTForPlugins.version.revision=2
+ANTForPlugins.version.minor=1
+ANTForPlugins.version.revision=0
 ANTForPlugins.requires=Core
 ANTForPlugins.provides=env, pluginProperties
 
