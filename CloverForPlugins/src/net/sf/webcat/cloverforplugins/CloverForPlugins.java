@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CloverForPlugins.java,v 1.1 2006/11/09 18:59:21 stedwar2 Exp $
+ |  $Id: CloverForPlugins.java,v 1.2 2007/01/17 02:49:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import net.sf.webcat.core.Subsystem;
  *  for grading plug-ins.
  *
  *  @author  stedwar2
- *  @version $Id: CloverForPlugins.java,v 1.1 2006/11/09 18:59:21 stedwar2 Exp $
+ *  @version $Id: CloverForPlugins.java,v 1.2 2007/01/17 02:49:57 stedwar2 Exp $
  */
 public class CloverForPlugins
     extends Subsystem
@@ -69,14 +69,14 @@ public class CloverForPlugins
        // clover.jar
        addFileBinding(
            properties,
-           CLOVER_JAR_KEY,
-           SUBSYSTEM_PREFIX + CLOVER_JAR_KEY,
-           "clover/lib/clover.jar" );
+           CLOVER_DIR_KEY,
+           SUBSYSTEM_PREFIX + CLOVER_DIR_KEY,
+           "clover" );
    }
 
 
    //~ Instance/static variables .............................................
 
    private static final String SUBSYSTEM_PREFIX = "CloverForPlugins.";
-   private static final String CLOVER_JAR_KEY   = "clover.jar";
+   private static final String CLOVER_DIR_KEY   = "clover.dir";
 }

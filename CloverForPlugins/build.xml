@@ -116,6 +116,7 @@
                 <patternset>
                     <include name="clover/etc/**"/>
                     <include name="clover/lib/**"/>
+                    <include name="clover/clover.license"/>
                 </patternset>
             </resources>
             <lib dir=".">
