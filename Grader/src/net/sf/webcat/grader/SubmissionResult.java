@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.3 2007/01/17 02:36:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ *  @version $Id: SubmissionResult.java,v 1.3 2007/01/17 02:36:38 stedwar2 Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -316,6 +316,28 @@ public class SubmissionResult
     public String resultFileName()
     {
         return "GraderReport.html";
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the staff-directed "inline report" file as a File object.
+     * @return the file for this submission
+     */
+    public File staffResultFile()
+    {
+        return new File( submission().resultDirName(), staffResultFileName() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the base file name for the staff-directed "inline report".
+     * @return the base file name
+     */
+    public String staffResultFileName()
+    {
+        return "StaffGraderReport.html";
     }
 
 
