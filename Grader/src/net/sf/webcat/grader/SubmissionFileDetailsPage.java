@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.3 2006/12/28 03:25:22 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.4 2007/01/17 02:37:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * of the source code.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileDetailsPage.java,v 1.3 2006/12/28 03:25:22 stedwar2 Exp $
+ * @version $Id: SubmissionFileDetailsPage.java,v 1.4 2007/01/17 02:37:36 stedwar2 Exp $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -61,6 +61,7 @@ public class SubmissionFileDetailsPage
 
     public String codeWithComments = null;
     public WODisplayGroup filesDisplayGroup;
+    public SubmissionFileStats thisFile;
     public SubmissionFileStats file;
     public SubmissionFileStats selectedFile = null;
 
@@ -77,6 +78,10 @@ public class SubmissionFileDetailsPage
     public void appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "beginning appendToResponse()" );
+        if ( thisFile == null )
+        {
+            thisFile = prefs().submissionFileStats();
+        }
         codeWithComments = initializeCodeWithComments();
         filesDisplayGroup.setObjectArray(
             prefs().submission().result().submissionFileStats() );
@@ -91,7 +96,7 @@ public class SubmissionFileDetailsPage
     {
         try
         {
-            String result = prefs().submissionFileStats().codeWithComments( 
+            String result = thisFile.codeWithComments( 
                 wcSession().user(), false );
             return result;
         }
@@ -112,14 +117,18 @@ public class SubmissionFileDetailsPage
         log.debug( "viewNextFile()" );
         if ( selectedFile == null )
         {
+            log.debug( "viewNextFile(): returning next()" );
             return next();
         }
         else
         {
             prefs().setSubmissionFileStatsRelationship( selectedFile );
-            WCComponent statsPage = (WCComponent)pageWithName(
-                SubmissionFileDetailsPage.class.getName() );
+            SubmissionFileDetailsPage statsPage = (SubmissionFileDetailsPage)
+                pageWithName(
+                    SubmissionFileDetailsPage.class.getName() );
+            statsPage.thisFile = selectedFile;
             statsPage.nextPage = nextPage;
+            log.debug( "viewNextFile(): returning new page" );
             return statsPage;
         }
     }
