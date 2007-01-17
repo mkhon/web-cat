@@ -5,7 +5,7 @@ subsystem.CloverForPlugins=net.sf.webcat.cloverforplugins.CloverForPlugins
 
 CloverForPlugins.version.major=1
 CloverForPlugins.version.minor=0
-CloverForPlugins.version.revision=0
+CloverForPlugins.version.revision=1
 CloverForPlugins.requires=Core, ANTForPlugins
 CloverForPlugins.provides=pluginProperties
 
