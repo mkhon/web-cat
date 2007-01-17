@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BarePage.java,v 1.3 2006/12/19 03:52:45 stedwar2 Exp $
+ |  $Id: BarePage.java,v 1.4 2007/01/17 03:09:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * contents.
  *
  * @author Stephen Edwards
- * @version $Id: BarePage.java,v 1.3 2006/12/19 03:52:45 stedwar2 Exp $
+ * @version $Id: BarePage.java,v 1.4 2007/01/17 03:09:12 stedwar2 Exp $
  */
 public class BarePage
     extends WOComponent
@@ -221,6 +221,10 @@ public class BarePage
                 + WCResourceManager.frameworkPrefixedResourceURLFor(
             "Core.framework/WebServerResources/overlib/Mini/overlib_mini.js",
             context().request() )
+                + "\"></script><script type=\"text/javascript\" src=\""
+                + WCResourceManager.frameworkPrefixedResourceURLFor(
+                    "Core.framework/WebServerResources/wc.js",
+                    context().request() )
                 + "\"></script>";
         }
         return overlibLink;
