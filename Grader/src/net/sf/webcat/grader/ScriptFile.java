@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.5 2007/01/17 02:35:49 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.6 2007/01/17 21:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.5 2007/01/17 02:35:49 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.6 2007/01/17 21:47:28 stedwar2 Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -716,6 +716,10 @@ public class ScriptFile
         if ( newScriptPath == null )
         {
             newScriptPath = new File( scriptFile.dirName() );
+        }
+        else
+        {
+            scriptFile.setSubdirName( subdirName );
         }
         File downloadPath = newScriptPath.getParentFile();
         File archiveFile = new File( downloadPath.getAbsolutePath()
