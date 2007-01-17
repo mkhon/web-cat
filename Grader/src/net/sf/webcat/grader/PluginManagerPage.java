@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginManagerPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: PluginManagerPage.java,v 1.5 2007/01/17 21:34:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import net.sf.webcat.core.*;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: PluginManagerPage.java,v 1.4 2006/12/04 03:17:52 stedwar2 Exp $
+ *  @version $Id: PluginManagerPage.java,v 1.5 2007/01/17 21:34:17 stedwar2 Exp $
  */
 public class PluginManagerPage
 extends WCComponent
@@ -146,9 +146,7 @@ extends WCComponent
         {
             wcSession().commitLocalChanges();
             confirmationMessage( "The plug-in '" + plugin.name()
-                + "' has been downloaded from its provider.  The downloaded "
-                + " version will replace the current version when " 
-                + "Web-CAT restarts." );
+                + "' has been downloaded from its provider and re-installed." );
         }
         else
         {
@@ -172,8 +170,7 @@ extends WCComponent
         {
             wcSession().commitLocalChanges();
             confirmationMessage( "New plug-in '" + feature.name()
-                + "' has been downloaded.  It will be installed when " 
-                + "Web-CAT restarts." );
+                + "' has been downloaded and installed." );
         }
         else
         {
