@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.8 2006/12/19 03:52:45 stedwar2 Exp $
+ |  $Id: Application.java,v 1.9 2007/01/17 03:09:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.8 2006/12/19 03:52:45 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.9 2007/01/17 03:09:46 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1441,13 +1441,24 @@ public class Application
     {
         if ( cmdShell == null )
         {
-            if ( isRunningOnWindows() )
+            cmdShell = configurationProperties().getProperty( "cmdShell" );
+            if ( cmdShell == null )
             {
-                cmdShell = "cmd /c ";
+                if ( isRunningOnWindows() )
+                {
+                    cmdShell = "cmd /c";
+                }
+                else
+                {
+                    cmdShell = "sh -c \"";
+                }
             }
-            else
+            int len = cmdShell.length();
+            if ( len > 0
+                 && cmdShell.charAt( len - 1 ) != ' '
+                 && cmdShell.charAt( len - 1 ) != '"' )
             {
-                cmdShell = "";
+                cmdShell += " ";
             }
         }
         return cmdShell;
