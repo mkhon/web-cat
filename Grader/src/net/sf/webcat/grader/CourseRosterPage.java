@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.3 2007/01/17 02:34:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.3 2007/01/17 02:34:14 stedwar2 Exp $
  */
 public class CourseRosterPage
     extends GraderComponent
@@ -168,17 +168,17 @@ public class CourseRosterPage
             {
                 lastName  = t[1];
                 firstName = t[2];
-                int pos = t[t.length - 2].indexOf( String.valueOf( '@' ) );
+                int pos = t[t.length - 3].indexOf( String.valueOf( '@' ) );
                 if ( pos < 0 )
                 {
-                    error( "illegal e-mail address '"+ t[t.length - 2]
+                    error( "illegal e-mail address '"+ t[t.length - 3]
                                   + "' for '" + lastName + ", " + firstName
                                   + "' on line " + row + ".  Is your CSV file "
                                   + "in VT Banner format?  Ignoring remainder "
                                   + "of file." );
                     break;
                 }
-                pid = t[t.length - 2].substring( 0, pos );
+                pid = t[t.length - 3].substring( 0, pos );
                 idNo = t[0];
             }
             else
