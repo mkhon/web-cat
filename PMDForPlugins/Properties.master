@@ -4,7 +4,7 @@
 subsystem.PMDForPlugins=net.sf.webcat.pmdforplugins.PMDForPlugins
 
 PMDForPlugins.version.major=1
-PMDForPlugins.version.minor=0
+PMDForPlugins.version.minor=1
 PMDForPlugins.version.revision=0
 PMDForPlugins.requires=Core, ANTForPlugins
 PMDForPlugins.provides=pluginProperties

@@ -114,7 +114,6 @@
             <resources dir="${PMDForPlugins.Resources}">
                 <patternset>
                     <include name="pmd/lib/**"/>
-                    <include name="pmd/rulesets/**"/>
                 </patternset>
             </resources>
             <lib dir=".">
