@@ -5,7 +5,7 @@ subsystem.CheckstyleForPlugins=\
 	net.sf.webcat.checkstyleforplugins.CheckstyleForPlugins
 
 CheckstyleForPlugins.version.major=1
-CheckstyleForPlugins.version.minor=0
+CheckstyleForPlugins.version.minor=1
 CheckstyleForPlugins.version.revision=0
 CheckstyleForPlugins.requires=Core, ANTForPlugins
 CheckstyleForPlugins.provides=pluginProperties
