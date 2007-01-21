@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: Step.java,v 1.3 2007/01/21 21:57:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: Step.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ * @version $Id: Step.java,v 1.3 2007/01/21 21:57:36 stedwar2 Exp $
  */
 public class Step
     extends _Step
@@ -217,9 +217,13 @@ public class Step
             catch ( InterruptedException e )
             {
                 // Stopped by timeout
-                log.info( "Script process was interrupted due to "
+                log.info( "Plug-in process was interrupted due to "
                           + "grace period timeout" );
-                return;
+            }
+            catch ( Throwable t )
+            {
+                log.error( "Unhandled exception occurred executing plug-in:",
+                    t );
             }
             parentThread.interrupt();
         }
