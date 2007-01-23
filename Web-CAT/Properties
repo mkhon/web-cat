@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Thu Oct 26 21:31:28 EDT 2006
+#Tue Dec 19 10:04:36 EST 2006
 log4j.loggerFactory=er.extensions.ERXLogger$Factory
 webcat.license.url=http\://www.gnu.org/copyleft/gpl.html
 WODefaultUndoStackLimit=0
@@ -13,7 +13,7 @@ subsystem.webcat=
 log4j.appender.logfile.ImmediateFlush=true
 log4j.appender.logfile.file=web-cat.log
 webcat.version.major=1
-webcat.version.revision=3
+webcat.version.revision=4
 log4j.appender.console.layout.ConversionPattern=%5p [%t] %c{1}\: %m%n
 er.extensions.ERXEC.defaultAutomaticLockUnlock=true
 webcat.license=GNU General Public License v.2
@@ -27,7 +27,7 @@ webcat.version.minor=2
 webcat.info.url=http\://web-cat.cs.vt.edu/WCWiki/WebCatApplication
 webcat.provider=Virginia Tech Computer Science
 dbConnectDriverGLOBAL=com.mysql.jdbc.Driver
-webcat.version.date=20061026
+webcat.version.date=20061219
 webcat.copyright=(c) 2006 Virginia Tech Department of Computer Science
 log4j.rootLogger=WARN, console
 log4j.appender.logfile.layout=er.extensions.ERXPatternLayout
