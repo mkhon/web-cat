@@ -23,12 +23,12 @@ BannerConditional: WOConditional {
 }
 
 CancelButton: WOImage {
-	alt = "Reverts your changes";
+	alt = "Revert your changes";
 	border = "0";
 	filename = "CancelMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Reverts your changes";
+	title = "Revert your changes";
 	width = "88";
 }
 
@@ -37,12 +37,12 @@ CancelLink: WOHyperlink {
 }
 
 DeleteButton: WOImage {
-	alt = "Deletes this object";
+	alt = "Delete this object";
 	border = "0";
 	filename = "DeleteMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Deletes this object";
+	title = "Delete this object";
 	width = "88";
 }
 
@@ -51,12 +51,12 @@ DeleteLink: WOHyperlink {
 }
 
 EditImage: WOImage {
-	alt = "Edits this object";
+	alt = "Edit this object";
 	border = "0";
 	filename = "EditMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Edits this object";
+	title = "Edit this object";
 	width = "88";
 }
 
@@ -83,16 +83,12 @@ ErrorPanel: WOConditional {
 
 InspectTable: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = d2wContext.backgroundColorForTable;
-	border = d2wContext.border;
-	cellpadding = 3;
-	cellspacing = 0;
-	elementName = "Table";
+	elementName = "table";
+	class = "d2w";
 }
 
 InspectTableHeaderRow: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = backgroundColorForHeaderRow;
 	elementName = "tr";
 }
 
@@ -137,17 +133,22 @@ PageWrapper: WOSwitchComponent {
 }
 
 ReturnButton: WOImage {
-	alt = "Returns to the previous page";
+	alt = "Return to the previous page";
 	border = "0";
 	filename = "ReturnMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Returns to the previous page";
+	title = "Return to the previous page";
 	width = "88";
 }
 
 ReturnLink: WOHyperlink {
 	action = nextPage;
+}
+
+RowContainer: WOGenericContainer {
+	bgcolor = backgroundColorForRow;
+	elementName = "tr";
 }
 
 ShowCancel: WOConditional {
@@ -156,12 +157,12 @@ ShowCancel: WOConditional {
 
 SubmitChanges: WOImageButton {
 	action = submitAction;
-	alt = "Saves your changes";
+	alt = "Save your changes";
 	border = "0";
 	filename = "SaveMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Saves your changes";
+	title = "Save your changes";
 	width = "88";
 }
 

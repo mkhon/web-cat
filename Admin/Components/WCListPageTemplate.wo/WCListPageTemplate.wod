@@ -19,6 +19,10 @@ AttributeRepetition: WORepetition {
 	list = d2wContext.displayPropertyKeys;
 }
 
+NumColumns: WOString {
+    value = d2wContext.displayPropertyKeys.count;
+}
+
 AttributeSorter: net.sf.webcat.core.WCSortOrder {
 	displayGroup = displayGroup;
 	displayKey = d2wContext.displayNameForProperty;
@@ -65,12 +69,12 @@ DeleteEO: WOHyperlink {
 }
 
 DeleteImage: WOImage {
-	alt = "Delete that object";
+	alt = "Delete this object";
+	title = "Delete this object";
 	border = "0";
 	filename = "icons/trash.gif";
 	framework = "Core";
 	height = "17";
-	name = "Delete that object";
 	width = "14";
 }
 
@@ -79,9 +83,9 @@ EditEO: WOHyperlink {
 }
 
 EditImage: WOImage {
-	alt = "Edit that object";
+	alt = "Edit this object";
+	title = "Edit this object";
 	border = "0";
-	name = "Edit that object";
 	filename = "icons/edit.gif";
 	framework = "Core";
 	height = "17";
@@ -98,28 +102,18 @@ EntityRepetition: WORepetition {
 	list = displayGroup.displayedObjects;
 }
 
-ExclamationImage: WOImage {
-	alt = "!";
-	border = "0";
-	filename = "exclamation.gif";
-	framework = "JavaDirectToWeb";
-	height = "32";
-	name = "!";
-	width = "32";
-}
-
 InspectEO: WOHyperlink {
 	action = inspectObjectAction;
 }
 
 InspectImage: WOImage {
-	alt = "Inspect that object";
+	alt = "Inspect this object";
+	title = "Inspect this object";
 	border = "0";
 	filename = "InspectMetalSmBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "21";
 	width = "51";
-	name = "Inspect that object";
 }
 
 IsEntityNotWritable: WOConditional {
@@ -179,12 +173,10 @@ ListTable: WOGenericContainer {
 	elementName = "table";
 }
 
-NavBar: WOBatchNavigationBar {
-	bgcolor = backgroundColorForHeaderRow;
-	border = 0;
+NavBar: net.sf.webcat.core.WCBatchNavigator {
 	displayGroup = displayGroup;
 	objectName = entity.name;
-	width = "80%";
+	persistentKey = "WCListPageTemplate.batchSize";
 }
 
 NumberOfItems: WOString {
@@ -203,22 +195,22 @@ PropertyName: WOString {
 }
 
 ReturnButton2: WOImage {
-	alt = "Returns to the previous page";
+	alt = "Return to the previous page";
+	title = "Return to the previous page";
 	border = "0";
 	filename = "ReturnMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
 	width = "88";
-	name = "Returns to the previous page";
 }
 
 ReturnButton: WOImage {
-	alt = "Returns to the previous page";
+	alt = "Return to the previous page";
+	title = "Return to the previous page";
 	border = "0";
 	filename = "ReturnMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Returns to the previous page";
 	width = "88";
 }
 
@@ -234,12 +226,12 @@ SelectEO: WOHyperlink {
 }
 
 SelectImage: WOImage {
-	alt = "Select that object";
+	alt = "Select this object";
+	title = "Select this object";
 	border = "0";
 	filename = d2wContext.selectButtonFileName;
 	framework = "JavaDirectToWeb";
 	height = "13";
-	name = "Select that object";
 	width = "42";
 }
 

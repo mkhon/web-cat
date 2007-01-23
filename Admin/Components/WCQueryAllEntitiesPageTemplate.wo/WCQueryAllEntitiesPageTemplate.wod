@@ -32,22 +32,21 @@ QueryForm: WOForm {
 
 QueryTable: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = d2wContext.backgroundColorForTable;
-	border = d2wContext.border;
-	cellpadding = 3;
-	cellspacing = 0;
 	elementName = "table";
-	style = "border:none";
 }
 
 QueryTableHeaderRow: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = backgroundColorForHeaderRow;
 	elementName = "tr";
 }
 
 RegularQueryHyperlink: WOHyperlink {
 	action = showRegularQueryAction;
+}
+
+RowContainer: WOGenericContainer {
+	bgcolor = backgroundColorForRow;
+	elementName = "tr";
 }
 
 SearchButtonImage: WOActiveImage {
@@ -57,7 +56,7 @@ SearchButtonImage: WOActiveImage {
 	filename = "ButtonSmallSearch.gif";
 	framework = "JavaDirectToWeb";
 	height = "18";
-	name = "Find objects matching the query";
+	title = "Find objects matching the query";
 	width = "19";
 }
 

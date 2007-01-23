@@ -36,11 +36,11 @@ QueryForm: WOForm {
 QuerySubmitButton: WOActiveImage {
 	action = queryAction;
 	alt = "Find objects matching the query";
+	title = "Find objects matching the query";
 	border = "0";
 	filename = "QueryDBMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Find objects matching the query";
 	width = "88";
 }
 
@@ -55,7 +55,6 @@ QueryTable: WOGenericContainer {
 
 QueryTableHeaderRow: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = backgroundColorForHeaderRow;
 	elementName = "tr";
 }
 
@@ -78,3 +77,7 @@ ResourceRepetition: WORepetition {
 	list = d2wContext.displayPropertyKeys;
 }
 
+RowContainer: WOGenericContainer {
+	bgcolor = backgroundColorForRow;
+	elementName = "tr";
+}

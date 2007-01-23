@@ -1,10 +1,10 @@
 CancelButton: WOImage {
-	alt = "Returns to the previous page";
+	alt = "Return to the previous page";
 	border = "0";
 	filename = "ReturnMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Returns to the previous page";
+	title = "Return to the previous page";
 	width = "88";
 }
 
@@ -25,7 +25,7 @@ ErrorImage: WOImage {
 	filename = "exclamation.gif";
 	framework = "JavaDirectToWeb";
 	height = "32";
-	name = "!";
+	title = "!";
 	width = "32";
 }
 
@@ -53,7 +53,7 @@ HomeButton: WOImage {
 	filename = "LoginMetalBtn.gif";
 	framework = "JavaDirectToWeb";
 	height = "31";
-	name = "Login again";
+	title = "Login again";
 	width = "88";
 }
 

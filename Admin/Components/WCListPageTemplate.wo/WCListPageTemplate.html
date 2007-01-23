@@ -1,15 +1,15 @@
 <webobject name="PageWrapper">
    <webobject name="ListNotEmpty">
       <center>
-         <table style="border:none">
-            <tr><td align="center"><webobject name="NavBar"/></td></tr>
-         </table>
          <webobject name="ListTable">
+            <tr class="batchnav"><td></td><td colspan="<webobject name="NumColumns"></webobject>"><webobject name="NavBar"/></td><webobject name="IsListing"><td></td></webobject></tr>
             <tr><th>Edit</th>
                <webobject name="ColumnLabelRepetition">
                   <th valign="bottom"><webobject name="PropertyName"/><webobject name="IsPropertySortable"><webobject name="AttributeSorter"/></webobject></th>
                </webobject>
+               <webobject name="IsListing2"><webobject name="IsEntityWritable2">
                <th>Delete</th>
+               </webobject></webobject>
             </tr>
             <webobject name="EntityRepetition">
                <webobject name="RowContainer">
@@ -40,23 +40,12 @@
       </center>
    </webobject>
    <webobject name="ListEmpty">
-      <br/>
-      <table>
-         <tr>
-            <td> &nbsp; </td>
-         </tr>
-         <tr>
-            <td><webobject name="ExclamationImage"/></td>
-            <td>
-               <center>
-                  <font color="#ff0000"><b>No matching
-                  <webobject name="EntityName"/>
-                  records found.</b></font>
-               </center>
-            </td>
-         </tr>
-      </table>
-      <br/>
+<div class="NoticePanel error"><b class="top"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b></b><div class="boxcontent">
+<ul>
+<li class="warning">No matching <webobject name="EntityName"/>
+records found.</li>
+</ul>
+</div><b class="bottom"><b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b></b></div>
       <br/>
       <webobject name="HideReturnOnSelect2"><webobject name="ShowCancel2"><webobject name="BackLink2"><webobject name="ReturnButton2"/></webobject></webobject></webobject>
    </webobject>

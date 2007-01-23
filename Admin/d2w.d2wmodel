@@ -6,8 +6,108 @@
             rhs = {
                 class = com.webobjects.directtoweb.Assignment; 
                 keyPath = backgroundColorForTable; 
-                value = "#ffffff"; 
+                value = "#ffffff";
             }; 
+        },
+        {
+            author = 60;
+            class = com.webobjects.directtoweb.Rule; 
+            lhs = {
+                class = com.webobjects.eocontrol.EOOrQualifier;
+                qualifiers = (
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = list;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = queryAll;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = select;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = edit;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = inspect;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = query;
+                    }
+                );
+            };
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = backgroundColorForTable; 
+                value = "#ffffdd";
+            }; 
+        },
+        {
+            author = 10;
+            class = com.webobjects.directtoweb.Rule;
+            lhs = {
+                class = com.webobjects.eocontrol.EOOrQualifier;
+                qualifiers = (
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = list;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = queryAll;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = select;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = edit;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = inspect;
+                    },
+                    {
+                        class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo";
+                        value = query;
+                    }
+                );
+            };
+            rhs = {
+                class = com.webobjects.directtoweb.BooleanAssignment;
+                keyPath = alternateRowColor;
+                value = true;
+            };
         }, 
         {
             author = 50; 
@@ -176,29 +276,10 @@
                 class = com.webobjects.directtoweb.Assignment; 
                 keyPath = templateNameForListPage; 
                 value = net.sf.webcat.admin.WCListPageTemplate; 
-//                value = er.directtoweb.ERD2WListPageTemplate; 
             }; 
-        }, 
+        },
         {
-            author = 10; 
-            class = com.webobjects.directtoweb.Rule; 
-            rhs = {
-                class = com.webobjects.directtoweb.Assignment; 
-                keyPath = templateNameForQueryAllPage; 
-                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate; 
-            }; 
-        }, 
-        {
-            author = 10; 
-            class = com.webobjects.directtoweb.Rule; 
-            rhs = {
-                class = com.webobjects.directtoweb.Assignment; 
-                keyPath = templateNameForQueryAllEntitiesPage; 
-                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate; 
-            }; 
-        }, 
-        {
-            author = 10; 
+            author = 100; 
             class = com.webobjects.directtoweb.Rule; 
             rhs = {
                 class = com.webobjects.directtoweb.Assignment; 
@@ -207,7 +288,31 @@
             }; 
         },
         {
-            author = 50;
+            author = 100; 
+            class = com.webobjects.directtoweb.Rule; 
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment; 
+                keyPath = templateNameForQueryAllEntitiesPage; 
+                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate; 
+            }; 
+        },
+        {
+            author = 100;
+            class = com.webobjects.directtoweb.Rule;
+            lhs = {
+                class = com.webobjects.eocontrol.EOKeyValueQualifier;
+                key = task;
+                selectorName = "isEqualTo";
+                value = queryAll;
+            };
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment;
+                keyPath = pageAvailable;
+                value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate;
+            };
+        },
+        {
+            author = 100;
             class = com.webobjects.directtoweb.Rule;
             lhs = {
                 class = com.webobjects.eocontrol.EOKeyValueQualifier;

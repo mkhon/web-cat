@@ -54,31 +54,21 @@ InspectComponent: D2WEdit {
 
 InspectTable2: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = d2wContext.backgroundColorForTable;
-	border = 1;
-	cellpadding = 2;
-	cellspacing = 1;
-	elementName = "TABLE";
+	elementName = "table";
 }
 
 InspectTable: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = d2wContext.backgroundColorForTable;
-	border = 1;
-	cellpadding = 2;
-	cellspacing = 1;
-	elementName = "TABLE";
+	elementName = "table";
 }
 
 InspectTableHeaderRow2: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = backgroundColorForHeaderRow;
-	elementName = "TR";
+	elementName = "tr";
 }
 
 InspectTableHeaderRow: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = backgroundColorForHeaderRow;
 	elementName = "tr";
 }
 

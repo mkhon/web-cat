@@ -12,18 +12,18 @@
       <webobject name="InspectTable">
          <webobject name="BannerConditional">
             <webobject name="InspectTableHeaderRow">
-               <td colspan="2" align="center"><font size="+2"><b><webobject name="EntityName"/></b></font></td>
+               <th colspan="2"><webobject name="EntityName"/></th>
             </webobject>
          </webobject>
          <webobject name="AttributeRepetition">
-            <tr>
-               <td align="right"><strong><webobject name="AttributeName"/></strong></td>
+            <webobject name="RowContainer">
+               <td align="right"><strong><webobject name="AttributeName"/>:</strong></td>
                <td><webobject name="AttributeValue"/></td>
-            </tr>
+            </webobject>
          </webobject>
-         <tr>
+         <webobject name="RowContainer">
             <td align="center" colspan="2">
-               <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <table style="border:none">
                   <tr>
                      <webobject name="IsEntityWritable">
                         <td align="right">
@@ -51,7 +51,7 @@
                   </tr>
                </table>
             </td>
-         </tr>
+         </webobject>
       </webobject>
    </webobject>
 </webobject>
