@@ -179,6 +179,11 @@ NavBar: net.sf.webcat.core.WCBatchNavigator {
 	persistentKey = "WCListPageTemplate.batchSize";
 }
 
+NavBarForm: WOForm {
+    multipleSubmit = true;
+    otherTagString = "enctype=\"multipart/form-data\"";
+}
+
 NumberOfItems: WOString {
 	value = listSize;
 }
