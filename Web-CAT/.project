@@ -6,12 +6,15 @@
 		<project>Admin</project>
 		<project>ANTForPlugins</project>
 		<project>Bootstrap</project>
+		<project>CheckstyleForPlugins</project>
 		<project>CloverForPlugins</project>
 		<project>Core</project>
 		<project>DBUpdateEngine</project>
 		<project>EOJDBCPrototypes</project>
 		<project>Grader</project>
 		<project>PerlForPlugins</project>
+		<project>PMDForPlugins</project>
+		<project>Reporter</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -23,3 +23,4 @@ Library/Frameworks/Grader.framework
 Library/Frameworks/PerlForPlugins.framework
 Library/Frameworks/CheckstyleForPlugins.framework
 Library/Frameworks/PMDForPlugins.framework
+Library/Frameworks/Reporter.framework
