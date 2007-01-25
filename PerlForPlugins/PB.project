@@ -5,46 +5,25 @@
     DYNAMIC_CODE_GEN = YES;
     FILESTABLE = 
     {
-        CLASSES = 
-        (
-           src/net/sf/webcat/perlforplugins/PerlForPlugins.java
-        );
         FRAMEWORKS = 
         (
-           Core.framework, 
-           ERExtensions.framework, 
-           ERJars.framework, 
            JavaEOAccess.framework, 
            JavaEOControl.framework, 
            JavaFoundation.framework, 
            JavaJDBCAdaptor.framework, 
+           JavaWOExtensions.framework, 
            JavaWebObjects.framework, 
            JavaXML.framework
         );
         OTHER_SOURCES = 
-        (
-           CustomInfo.plist, 
-           Makefile, 
-           Makefile.postamble, 
-           Makefile.preamble, 
-           java.template
-        );
+        ();
         SUBPROJECTS = 
         ();
-        WEBSERVER_RESOURCES = 
-        ();
         WOAPP_RESOURCES = 
-        (
-           Properties, 
-           Resources
-        );
+        ();
         WO_COMPONENTS = 
         ();
     };
-    FRAMEWORKSEARCH = 
-    (
-       "$(NEXT_ROOT)$(LOCAL_LIBRARY_DIR)/Frameworks"
-    );
     LANGUAGE = English;
     MAKEFILEDIR = "$(MAKEFILEPATH)/java_makefiles";
     NEXTSTEP_BUILDTOOL = /bin/gnumake;
@@ -56,7 +35,6 @@
     PDO_UNIX_INSTALLDIR = "$(LOCAL_LIBRARY_DIR)/Frameworks";
     PDO_UNIX_JAVA_COMPILER = "$(JDKBINDIR)/javac";
     PDO_UNIX_OBJCPLUS_COMPILER = "$(NEXTDEV_BIN)/gcc";
-    PROJECTNAME = PerlForPlugins;
     PROJECTTYPE = JavaWebObjectsFramework;
     PROJECTVERSION = 2.8;
     WINDOWS_BUILDTOOL = $NEXT_ROOT/Developer/Executables/make;
