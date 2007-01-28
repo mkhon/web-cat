@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.9 2007/01/17 03:09:46 stedwar2 Exp $
+ |  $Id: Application.java,v 1.10 2007/01/28 03:27:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.9 2007/01/17 03:09:46 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.10 2007/01/28 03:27:30 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -71,6 +71,13 @@ public class Application
     public Application()
     {
         super();
+        
+        // Set UTF-8 encoding, to support localization
+        WOMessage.setDefaultEncoding( "UTF-8" );
+        WOMessage.setDefaultURLEncoding( "UTF-8" );
+        ERXMessageEncoding.setDefaultEncoding( "UTF8" );
+        ERXMessageEncoding.setDefaultEncodingForAllLanguages( "UTF8" );
+
         // We'll use plain WO sessions, even in a servlet context, since
         // restoring sessions through the WCServletSessionStore doesn't
         // really work.
