@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.3 2006/12/04 03:01:18 stedwar2 Exp $
+ |  $Id: Session.java,v 1.4 2007/01/29 03:35:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.3 2006/12/04 03:01:18 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.4 2007/01/29 03:35:45 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -293,10 +293,11 @@ public class Session
             catch ( Exception e )
             {
                 Application.emailExceptionToAdmins( e, context(), null );
-                loginSession.editingContext().revert();
-                loginSession.editingContext().refaultAllObjects();
-                loginSession.editingContext().unlock();
+                EOEditingContext ec = loginSession.editingContext();
                 loginSession = null;
+                ec.revert();
+                ec.invalidateAllObjects();
+                ec.unlock();
             }
         }
         finally
