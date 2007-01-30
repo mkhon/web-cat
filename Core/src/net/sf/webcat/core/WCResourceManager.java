@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.2 2006/12/19 03:52:45 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.3 2007/01/30 17:38:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  frameworksBaseURL() setting.
  *
  *  @author  stedwar2
- *  @version $Id: WCResourceManager.java,v 1.2 2006/12/19 03:52:45 stedwar2 Exp $
+ *  @version $Id: WCResourceManager.java,v 1.3 2007/01/30 17:38:30 stedwar2 Exp $
  */
 public class WCResourceManager
     extends WOResourceManager
@@ -102,12 +102,6 @@ public class WCResourceManager
             // The default developmentBaseURL should provide this for us
             // until static HTML resources have been initialized correctly
             // after the self-installation wizard completes.
-            int pos = aResourceName.indexOf( FRAMEWORK_SUFFIX );
-            if ( pos >= 0 )
-            {
-                aResourceName = aResourceName.substring(
-                    pos + FRAMEWORK_SUFFIX.length() );
-            }
             return developmentBaseURL + aResourceName;
         }
         String result =
