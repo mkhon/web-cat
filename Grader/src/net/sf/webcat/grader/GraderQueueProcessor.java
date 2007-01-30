@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.8 2007/01/30 02:24:30 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.9 2007/01/30 18:55:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.8 2007/01/30 02:24:30 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.9 2007/01/30 18:55:49 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -388,8 +388,8 @@ public class GraderQueueProcessor
 
         // Set up the properties to pass to execution scripts
         WCProperties gradingProperties = new WCProperties();
-        File gradingPropertiesFile =
-            new File( job.submission().resultDirName(), "grading.properties" );
+        File gradingPropertiesFile = new File(job.submission().resultDirName(),
+            SubmissionResult.propertiesFileName() );
         // Initial default values
         gradingProperties.setProperty( "numReports", "0" );
         Number toolPts = job.submission().assignmentOffering().assignment()
