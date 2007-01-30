@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.4 2007/01/30 00:51:00 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.5 2007/01/30 02:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.4 2007/01/30 00:51:00 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.5 2007/01/30 02:24:30 stedwar2 Exp $
  */
 public class CourseRosterPage
     extends GraderComponent
@@ -415,7 +415,8 @@ public class CourseRosterPage
      * changes. */
     protected int oldBatchIndex2;
 
-    private static final String GENERIC_FORMAT = "0";
+    // The first constant isn't needed in the code, since it's never used
+    // private static final String GENERIC_FORMAT = "0";
     private static final String BANNER_FORMAT  = "1";
 
     static Logger log = Logger.getLogger( CourseRosterPage.class );

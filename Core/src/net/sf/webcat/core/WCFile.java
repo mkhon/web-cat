@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCFile.java,v 1.3 2006/11/18 18:31:55 stedwar2 Exp $
+ |  $Id: WCFile.java,v 1.4 2007/01/30 02:21:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Provides support functions for manipulating files.
  *
  *  @author  Stephen Edwards
- *  @version $Id: WCFile.java,v 1.3 2006/11/18 18:31:55 stedwar2 Exp $
+ *  @version $Id: WCFile.java,v 1.4 2007/01/30 02:21:50 stedwar2 Exp $
  */
 public class WCFile
 {
@@ -327,6 +327,7 @@ public class WCFile
 
     //~ Instance/static variables .............................................
 
+    @SuppressWarnings( "deprecation" )
     private static WCFileProperties fileProperties =
         new WCFileProperties(
             Application.configurationProperties().getProperty(

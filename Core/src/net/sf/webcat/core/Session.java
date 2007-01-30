@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.4 2007/01/29 03:35:45 stedwar2 Exp $
+ |  $Id: Session.java,v 1.5 2007/01/30 02:21:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.4 2007/01/29 03:35:45 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.5 2007/01/30 02:21:50 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -153,13 +153,6 @@ public class Session
             loginSession = LoginSession.getLoginSessionForUser( ec, user() );
             if ( loginSession != null )
             {
-                if ( u == null )
-                {
-                    // m_project = null;
-                    loginSession.setExpirationTime( new NSTimestamp( 0, 0 ) );
-                    loginSession.editingContext().saveChanges();
-                    return this.sessionID();
-                }
                 NSTimestamp now = new NSTimestamp();
                 if ( loginSession.expirationTime().after( now ) )
                 {

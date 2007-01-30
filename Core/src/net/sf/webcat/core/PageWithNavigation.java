@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: PageWithNavigation.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Level;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: PageWithNavigation.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
  */
 public class PageWithNavigation
     extends BarePage
@@ -98,23 +98,26 @@ public class PageWithNavigation
             log.error( "context = " + context() );
             log.error( Application.extraInfoForContext( context() ) );
         }
-        if ( tabs.selectedDescendant() == null )
+        else
         {
-            log.error( "session.tabs.selectedDescendant = null" );
-            log.error( "tabs = " + tabs );
-            log.error( "context = " + context() );
-            log.error( Application.extraInfoForContext( context() ) );
+            if ( tabs.selectedDescendant() == null )
+            {
+                log.error( "session.tabs.selectedDescendant = null" );
+                log.error( "tabs = " + tabs );
+                log.error( "context = " + context() );
+                log.error( Application.extraInfoForContext( context() ) );
+            }
+            if ( tabs.selectedChild() == null )
+            {
+                log.error( "session.tabs.selectedChild = null" );
+                log.error( "tabs = " + tabs );
+                log.error( "context = " + context() );
+                log.error( Application.extraInfoForContext( context() ) );
+            }
+            bodyClass = tabs.selectedDescendant().cssClass();
+            secondLevelSelection = tabs.selectedChild().selectedChild();
+            log.debug( "second level = " + secondLevelSelection.label() );
         }
-        if ( tabs.selectedChild() == null )
-        {
-            log.error( "session.tabs.selectedChild = null" );
-            log.error( "tabs = " + tabs );
-            log.error( "context = " + context() );
-            log.error( Application.extraInfoForContext( context() ) );
-        }
-        bodyClass = tabs.selectedDescendant().cssClass();
-        secondLevelSelection = tabs.selectedChild().selectedChild();
-        log.debug( "second level = " + secondLevelSelection.label() );
         if ( thisPage == null )
         {
             WOComponent comp = context().page();

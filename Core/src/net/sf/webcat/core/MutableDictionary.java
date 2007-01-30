@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MutableDictionary.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: MutableDictionary.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -55,7 +55,7 @@ import org.apache.log4j.Logger;
  *  {@link #setHasChanged(boolean)} method (see below).
  * 
  *  @author  Stephen Edwards
- *  @version $Id: MutableDictionary.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: MutableDictionary.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
  */
 public class MutableDictionary
     extends er.extensions.ERXMutableDictionary
@@ -177,7 +177,7 @@ public class MutableDictionary
                 exception = new ClassCastException( "objectWithArchiveData(): "
                     + "cannot cast " + o.getClass().getName() + " to "
                     + MutableDictionary.class.getName() );
-                result = null;
+                // result is already null
             }
         }
         catch ( IOException ioe )

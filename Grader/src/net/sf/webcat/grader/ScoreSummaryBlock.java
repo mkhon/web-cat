@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.2 2007/01/30 02:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: ScoreSummaryBlock.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ *  @version $Id: ScoreSummaryBlock.java,v 1.2 2007/01/30 02:24:30 stedwar2 Exp $
  */
 public class ScoreSummaryBlock
     extends GraderComponent
@@ -108,7 +108,7 @@ public class ScoreSummaryBlock
         {
             return "&lt;Awaiting TA&gt;";
         }
-        double taPts = ( taPtsNum == null ) ? 0.0 : taPtsNum.doubleValue();
+        double taPts = taPtsNum.doubleValue();
         return FinalReportPage.meter( taPts / taPossible );
     }
 

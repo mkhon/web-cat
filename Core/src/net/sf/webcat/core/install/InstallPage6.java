@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage6.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
+ |  $Id: InstallPage6.java,v 1.5 2007/01/30 02:21:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage6.java,v 1.4 2006/12/04 03:02:16 stedwar2 Exp $
+ *  @version $Id: InstallPage6.java,v 1.5 2007/01/30 02:21:50 stedwar2 Exp $
  */
 public class InstallPage6
     extends InstallPage
@@ -164,7 +164,7 @@ public class InstallPage6
             log.debug( "takeFormValues(): middle = " );
             log.debug( configuration.configSettingsAsString() );
         }
-        if ( authDomainName == null && authDomainName.equals( "" ) )
+        if ( authDomainName == null || authDomainName.equals( "" ) )
         {
             error( "Cannot identify default institution's "
                 + "authentication configuration." );

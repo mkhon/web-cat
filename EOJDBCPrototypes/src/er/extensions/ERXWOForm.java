@@ -65,7 +65,7 @@ public class ERXWOForm extends com.webobjects.appserver._private.WOForm {
     public void appendToResponse(WOResponse response, WOContext context) {
         boolean shouldAppendFormTags = !context.isInForm();
         
-        if ( context != null && response != null )
+        if ( /*context != null && <-- assumed to be ^^ */ response != null )
         {
             String elementName = elementName();
             shouldAppendFormTags = shouldAppendFormTags 
@@ -96,7 +96,7 @@ public class ERXWOForm extends com.webobjects.appserver._private.WOForm {
             {
                 Object value = _fragmentIdentifier.valueInComponent(
                     context.component() );
-                if ( value != null )
+                if ( value != null && response != null )
                 {
                     response.appendContentString(
                         "<script language=\"javascript\">document.forms[document.forms.length-1].action+=\"#"

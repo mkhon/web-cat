@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UpdateSet.java,v 1.1 2006/02/19 18:42:28 stedwar2 Exp $
+ |  $Id: UpdateSet.java,v 1.2 2007/01/30 02:23:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -48,7 +48,7 @@ import org.apache.log4j.Logger;
  * in sequence.
  *
  * @author Stephen Edwards
- * @version $Id: UpdateSet.java,v 1.1 2006/02/19 18:42:28 stedwar2 Exp $
+ * @version $Id: UpdateSet.java,v 1.2 2007/01/30 02:23:15 stedwar2 Exp $
  */
 public abstract class UpdateSet
 {
@@ -158,7 +158,7 @@ public abstract class UpdateSet
             {
                 log.info( "applying " + subsystemName()
                           + " database update " + version );
-                update.invoke( this, null );
+                update.invoke( this, (Object[])null );
                 result = true;
             }
             catch ( Exception e )
@@ -198,7 +198,7 @@ public abstract class UpdateSet
         try
         {
             return this.getClass().getMethod( "updateIncrement" + version,
-                                              null );
+                                              (Class[])null );
         }
         catch ( Exception e )
         {

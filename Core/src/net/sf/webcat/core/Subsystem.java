@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.6 2006/12/04 03:21:00 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.7 2007/01/30 02:21:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  communicate with subsystems.
  *
  *  @author Stephen Edwards
- *  @version $Id: Subsystem.java,v 1.6 2006/12/04 03:21:00 stedwar2 Exp $
+ *  @version $Id: Subsystem.java,v 1.7 2007/01/30 02:21:50 stedwar2 Exp $
  */
 public class Subsystem
 {
@@ -183,6 +183,7 @@ public class Subsystem
      * @return the parameter definitions as an NSDictionary, or
      * null if none are found
      */
+    @SuppressWarnings( "deprecation" )
     public NSDictionary parameterDescriptions()
     {
         if ( options == null )
@@ -355,6 +356,7 @@ public class Subsystem
      * 
      * @return The Resources directory name as a string
      */
+    @SuppressWarnings( "deprecation" )
     protected String myResourcesDir()
     {
         if ( myResourcesDir == null )

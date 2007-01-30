@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UpdateEngineTest.java,v 1.1 2006/02/19 18:42:28 stedwar2 Exp $
+ |  $Id: UpdateEngineTest.java,v 1.2 2007/01/30 02:23:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import net.sf.webcat.dbupdate.*;
  * A simple test class to try out the basic methods of {@link UpdateEngine}.
  *
  * @author  Stephen Edwards
- * @version $Id: UpdateEngineTest.java,v 1.1 2006/02/19 18:42:28 stedwar2 Exp $
+ * @version $Id: UpdateEngineTest.java,v 1.2 2007/01/30 02:23:15 stedwar2 Exp $
  */
 public class UpdateEngineTest
     extends junit.framework.TestCase
@@ -169,6 +169,7 @@ public class UpdateEngineTest
             }
         }
 
+        @SuppressWarnings( "unchecked" )
         public void setVersionNumber( String subsystemName, int aVersionNumber )
             throws SQLException
         {
