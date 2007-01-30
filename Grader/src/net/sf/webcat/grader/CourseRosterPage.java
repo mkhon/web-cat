@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.3 2007/01/17 02:34:14 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.4 2007/01/30 00:51:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.3 2007/01/17 02:34:14 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.4 2007/01/30 00:51:00 stedwar2 Exp $
  */
 public class CourseRosterPage
     extends GraderComponent
@@ -386,6 +386,20 @@ public class CourseRosterPage
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Guess whether the current user is from VT, and should use the default
+     * of the banner format.
+     * @return always null
+     */
+    public boolean fromVT()
+    {
+        AuthenticationDomain myDomain =
+            wcSession().user().authenticationDomain();
+        return myDomain.displayableName().indexOf( "Virginia Tech" ) >= 0;
+    }
+
+
     //~ Instance/static variables .............................................
 
     /** Saves the state of the student batch navigator to detect setting
@@ -400,9 +414,9 @@ public class CourseRosterPage
     /** Saves the state of the staff batch navigator to detect setting
      * changes. */
     protected int oldBatchIndex2;
-    
-    private static final String BANNER_FORMAT  = "0";
-    private static final String GENERIC_FORMAT = "1";
+
+    private static final String GENERIC_FORMAT = "0";
+    private static final String BANNER_FORMAT  = "1";
 
     static Logger log = Logger.getLogger( CourseRosterPage.class );
 }
