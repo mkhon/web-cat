@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickStepPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: PickStepPage.java,v 1.3 2007/01/30 00:51:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: PickStepPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: PickStepPage.java,v 1.3 2007/01/30 00:51:37 stedwar2 Exp $
  */
 public class PickStepPage
     extends GraderComponent
@@ -274,7 +274,6 @@ public class PickStepPage
     // ----------------------------------------------------------
     public WOComponent next()
     {
-        WOComponent result = null;
         if ( log.isDebugEnabled() )
         {
             log.debug( "next():" );
