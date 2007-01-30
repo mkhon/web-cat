@@ -1,0 +1,14 @@
+{
+    "Reports" = {
+        accessLevel = 50;
+        priority = 300;
+        children = {
+            Generate = {
+                pageName = net.sf.webcat.reporter.GenerateReportPage;
+                accessLevel = 50;
+                priority = 1;
+                wantsStart = YES;
+            };
+        };
+    };
+}
