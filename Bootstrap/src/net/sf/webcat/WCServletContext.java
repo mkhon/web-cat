@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
+ |  $Id: WCServletContext.java,v 1.4 2007/01/30 02:20:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.3 2006/12/17 23:53:20 stedwar2 Exp $
+ *  @version $Id: WCServletContext.java,v 1.4 2007/01/30 02:20:48 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -245,6 +245,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#getServlet(java.lang.String)
      */
+    @Deprecated
     public Servlet getServlet( String arg0 )
         throws ServletException
     {
@@ -256,6 +257,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#getServlets()
      */
+    @Deprecated
     public Enumeration getServlets()
     {
         return innerContext.getServlets();
@@ -266,6 +268,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#getServletNames()
      */
+    @Deprecated
     public Enumeration getServletNames()
     {
         return innerContext.getServletNames();
@@ -286,6 +289,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#log(java.lang.Exception, java.lang.String)
      */
+    @Deprecated
     public void log( Exception arg0, String arg1 )
     {
         innerContext.log( arg0, arg1 );

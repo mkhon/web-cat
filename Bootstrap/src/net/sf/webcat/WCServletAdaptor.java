@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.4 2007/01/12 21:29:20 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.5 2007/01/30 02:20:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.4 2007/01/12 21:29:20 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.5 2007/01/30 02:20:48 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -549,11 +549,11 @@ public class WCServletAdaptor
     /**
      * Scan the update directory for any downloaded update files, apply
      * them, and then delete them.
-     * @param frameworkDir The place to unpack updates
+     * @param aFrameworkDir The place to unpack updates
      * @param appDir The application directory, which is where any top-level
      *     updates (e.g., "webcat_*" files) are unpacked
      */
-    private void applyPendingUpdates( File frameworkDir, File appDir )
+    private void applyPendingUpdates( File aFrameworkDir, File appDir )
     {
         if ( updateDir.exists() && updateDir.isDirectory() )
         {
@@ -564,7 +564,7 @@ public class WCServletAdaptor
                 for ( int j = 0; j < extensions.length; j++ )
                 if ( jars[i].getName().endsWith( extensions[j] ) )
                 {
-                    File unpackDir = frameworkDir;
+                    File unpackDir = aFrameworkDir;
                     if ( jars[i].getName().startsWith( APP_JAR_PREFIX ) )
                     {
                         unpackDir = appDir;
@@ -601,15 +601,15 @@ public class WCServletAdaptor
     /**
      * If automatic updates are turned on, scan all current subsystems and
      * download any new versions of update files that are available.
-     * @param frameworkDir The directory where all subsystems are located
+     * @param aFrameworkDir The directory where all subsystems are located
      * @param mainBundle The main bundle location
      */
-    private void downloadNewUpdates( File frameworkDir, File mainBundle )
+    private void downloadNewUpdates( File aFrameworkDir, File mainBundle )
     {
         // Simply return if no updates should be automatically downloaded
         if ( !willUpdateAutomatically() ) return;
 
-        File[] subdirs = frameworkDir.listFiles();
+        File[] subdirs = aFrameworkDir.listFiles();
         for ( int i = 0; i < subdirs.length; i++ )
         {
             downloadUpdateIfNecessary( getUpdaterFor( subdirs[i], true ) );
