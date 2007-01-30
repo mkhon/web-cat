@@ -398,7 +398,7 @@ public class ERXSession extends WOSession implements Serializable {
 
         WORequest request=context()!=null ? context().request() : null;
         if (request!=null && log.isDebugEnabled() && request.headerForKey("content-type") != null) {
-            if(((String)request.headerForKey("content-type")).toLowerCase().indexOf("multipart/form-data") == -1)
+            if(request.headerForKey("content-type").toLowerCase().indexOf("multipart/form-data") == -1)
                 log.debug("Form values "+request.formValues());
             else
                 log.debug("Multipart Form values found");
