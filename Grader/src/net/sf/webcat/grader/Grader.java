@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.5 2006/11/20 16:37:05 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.6 2007/01/30 00:52:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.5 2006/11/20 16:37:05 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.6 2007/01/30 00:52:15 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -712,8 +712,6 @@ public class Grader
 
     /** this is the queue processor for processing grader jobs */
     private static GraderQueueProcessor graderQueueProcessor;
-
-    static final private int    BUFFER_SIZE = 8192;
 
     static Logger log = Logger.getLogger( Grader.class );
 }

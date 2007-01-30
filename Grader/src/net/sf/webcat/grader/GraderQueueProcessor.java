@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.6 2007/01/17 02:31:49 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.7 2007/01/30 00:52:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.6 2007/01/17 02:31:49 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.7 2007/01/30 00:52:43 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -226,6 +226,11 @@ public class GraderQueueProcessor
                     try
                     {
                         AssignmentOffering ao = submission.assignmentOffering();
+                        if ( ao == null )
+                        {
+                            throw new Exception(
+                                "null assignment offering in submission!" );
+                        }
                     }
                     catch ( Exception e )
                     {
