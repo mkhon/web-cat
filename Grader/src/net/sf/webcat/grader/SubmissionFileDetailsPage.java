@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.4 2007/01/17 02:37:36 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.5 2007/02/02 01:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * of the source code.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileDetailsPage.java,v 1.4 2007/01/17 02:37:36 stedwar2 Exp $
+ * @version $Id: SubmissionFileDetailsPage.java,v 1.5 2007/02/02 01:48:08 stedwar2 Exp $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -84,7 +84,7 @@ public class SubmissionFileDetailsPage
         }
         codeWithComments = initializeCodeWithComments();
         filesDisplayGroup.setObjectArray(
-            prefs().submission().result().submissionFileStats() );
+            thisFile.submissionResult().submissionFileStats() );
         super.appendToResponse( response, context );
         codeWithComments = null;
         log.debug( "ending appendToResponse()" );
@@ -123,6 +123,8 @@ public class SubmissionFileDetailsPage
         else
         {
             prefs().setSubmissionFileStatsRelationship( selectedFile );
+            prefs().setSubmission(
+                selectedFile.submissionResult().submission() );
             SubmissionFileDetailsPage statsPage = (SubmissionFileDetailsPage)
                 pageWithName(
                     SubmissionFileDetailsPage.class.getName() );
