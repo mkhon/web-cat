@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowserRow.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: FileBrowserRow.java,v 1.2 2007/02/04 21:13:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  One row in a directory contents table.
  *
  *  @author  Stephen Edwards
- *  @version $Id: FileBrowserRow.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: FileBrowserRow.java,v 1.2 2007/02/04 21:13:30 stedwar2 Exp $
  */
 public class FileBrowserRow
     extends WOComponent
@@ -74,6 +74,7 @@ public class FileBrowserRow
     public boolean allowSelectDir        = false;
     public NSArray allowSelectExtensions = null;
     public boolean applyChangesOnMod     = false;
+    public String  currentSelection;
 
     // For the spacer repetition
     public int     spacerIndex;
@@ -669,10 +670,29 @@ public class FileBrowserRow
 
     
     // ----------------------------------------------------------
+    public boolean isSelected()
+    {
+        boolean result = false;
+        if ( currentSelection != null )
+        {
+            String myPath = file.getPath().replaceAll( "\\\\", "/" );
+            result = myPath.endsWith( currentSelection );
+            log.debug( "comparing " + myPath + " with " + currentSelection
+                + " = " + result );
+        }
+        else
+        {
+            log.debug( "isSelected(): current selection is null" );
+        }
+        return result;
+    }
+
+    
+    // ----------------------------------------------------------
     public boolean canSelectThis()
     {
         boolean result = false;
-        if ( allowSelection )
+        if ( allowSelection && !isSelected() )
         {
             if ( file.isDirectory() )
             {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowser.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: FileBrowser.java,v 1.2 2007/02/04 21:13:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  *  A directory contents table.
  *
  *  @author  Stephen Edwards
- *  @version $Id: FileBrowser.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ *  @version $Id: FileBrowser.java,v 1.2 2007/02/04 21:13:30 stedwar2 Exp $
  */
 public class FileBrowser
     extends WOComponent
@@ -69,6 +69,7 @@ public class FileBrowser
     public FileSelectionListener fileSelectionListener = null;
     public boolean               allowSelectDir        = false;
     public NSArray               allowSelectExtensions = null;
+    public String                currentSelection;
 
     public EditFilePage.FileEditListener fileEditListener = null;
 
