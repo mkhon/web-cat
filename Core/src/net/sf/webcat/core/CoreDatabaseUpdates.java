@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.3 2007/02/20 19:30:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.3 2007/02/20 19:30:34 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -114,6 +114,18 @@ public class CoreDatabaseUpdates
     {
         database().executeSQL(
             "alter table TDEPARTMENT add CINSTITUTIONID INTEGER" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Changes login session ids to text.
+     * @throws SQLException on error
+     */
+    public void updateIncrement4() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TLOGINSESSION change CSESSIONID CSESSIONID TINYTEXT" );
     }
 
 
