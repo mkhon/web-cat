@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.9 2007/01/30 18:55:49 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.10 2007/02/20 19:54:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.9 2007/01/30 18:55:49 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.10 2007/02/20 19:54:54 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -123,9 +123,11 @@ public class GraderQueueProcessor
             {
                 if ( editingContext != null )
                 {
+                    editingContext.unlock();
                     Application.releasePeerEditingContext( editingContext );
                 }
                 editingContext = Application.newPeerEditingContext();
+                editingContext.lock();
                 
                 // Clear discarded jobs
                 NSArray jobList = null;
