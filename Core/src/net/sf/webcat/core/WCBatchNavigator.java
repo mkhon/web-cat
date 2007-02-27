@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBatchNavigator.java,v 1.4 2007/02/13 03:36:35 stedwar2 Exp $
+ |  $Id: WCBatchNavigator.java,v 1.5 2007/02/27 14:41:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  the one in WOExtensions.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCBatchNavigator.java,v 1.4 2007/02/13 03:36:35 stedwar2 Exp $
+ *  @version $Id: WCBatchNavigator.java,v 1.5 2007/02/27 14:41:20 stedwar2 Exp $
  */
 public class WCBatchNavigator
     extends WCComponent
@@ -118,7 +118,7 @@ public class WCBatchNavigator
             // index is the one-based index of the first object shown in
             // the current batch
             int index = ( group.currentBatchIndex() - 1 ) * curSize + 1;
-            if ( number < 0 )
+            if ( number <= 0 )
             {
                 group.setNumberOfObjectsPerBatch( number );
             }
