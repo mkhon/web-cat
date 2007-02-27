@@ -44,7 +44,7 @@ ERTimeToKill = 180
 # Configure WebObjects settings
 # -------------------------------------------------------------------
 WODefaultUndoStackLimit           = 0
-WOSessionTimeout                  = 1800
+WOSessionTimeOut                  = 1800
 WOAllowsConcurrentRequestHandling = true
 
 
