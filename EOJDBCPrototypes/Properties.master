@@ -22,3 +22,9 @@ EOJDBCPrototypes.description=\
 	providing the common mappings from data types that Web-CAT deals with \
 	into those supported by the underlying database (MySQL).  This framework \
 	localizes this information so that porting to new databases will be easier.
+
+
+# -------------------------------------------------------------------
+# Tell WONDER that this framework contains our prototypes
+# -------------------------------------------------------------------
+er.extensions.ERXModelGroup.prototypeModelName=EOJDBCPrototypes
