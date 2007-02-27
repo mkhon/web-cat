@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
+ |  $Id: PageWithNavigation.java,v 1.3 2007/02/27 16:04:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Level;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
+ * @version $Id: PageWithNavigation.java,v 1.3 2007/02/27 16:04:57 stedwar2 Exp $
  */
 public class PageWithNavigation
     extends BarePage
@@ -405,6 +405,18 @@ public class PageWithNavigation
     public String tertiaryNumeral()
     {
         return "" + ( tertiaryTabIndex + 1 );
+    }
+
+
+    // ----------------------------------------------------------
+    public void pushValuesToParent()
+    {
+        // Make sure to handle logout actions on form pages correctly
+        // by blocking value pushing if the session is terminating
+        if ( hasSession() && !session().isTerminating() )
+        {
+            super.pushValuesToParent();
+        }
     }
 
 

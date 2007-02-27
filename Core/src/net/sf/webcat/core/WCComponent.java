@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.5 2006/12/07 02:00:41 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.6 2007/02/27 16:04:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -28,6 +28,7 @@ package net.sf.webcat.core;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import com.webobjects.foundation.NSValidation.*;
 
 import org.apache.log4j.Logger;
 
@@ -60,7 +61,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.5 2006/12/07 02:00:41 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.6 2007/02/27 16:04:57 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -513,6 +514,18 @@ public class WCComponent
         }
         else
             return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public void pushValuesToParent()
+    {
+        // Make sure to handle logout actions on form pages correctly
+        // by blocking value pushing if the session is terminating
+        if ( hasSession() && !session().isTerminating() )
+        {
+            super.pushValuesToParent();
+        }
     }
 
 
