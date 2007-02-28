@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.11 2007/01/30 02:21:50 stedwar2 Exp $
+ |  $Id: Application.java,v 1.12 2007/02/28 14:38:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.11 2007/01/30 02:21:50 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.12 2007/02/28 14:38:13 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -369,9 +369,16 @@ public class Application
     public WORedirect gotoLoginPage( WOContext context )
     {
         WORedirect redirect = (WORedirect)pageWithName( "WORedirect", context );
-        // TODO: fix this
-        String dest = completeURLWithRequestHandlerKey(
-            context, null, null, null, false, 0 );
+        String dest = configurationProperties().getProperty(  "login.url" );
+        if ( dest == null )
+        {
+            dest = configurationProperties().getProperty( "base.url" );
+        }
+        if ( dest == null )
+        {
+            dest = completeURLWithRequestHandlerKey(
+                context, null, null, null, false, 0 );
+        }
         log.debug( "gotoLoginPage: " + dest );
         redirect.setUrl( dest );
         return redirect;
