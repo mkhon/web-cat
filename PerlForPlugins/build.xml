@@ -109,6 +109,14 @@
                 <patternset>
                   <includesfile name="woproject/resources.include.patternset"/>
                   <excludesfile name="woproject/resources.exclude.patternset"/>
+                  <exclude name="Resources/**"/> <!-- handled in next item -->
+                </patternset>
+            </resources>
+            <resources dir="Resources">
+                <patternset>
+                    <include name="**"/>
+                    <exclude name="**/CVS/"/>
+                    <exclude name="**/*~"/>
                 </patternset>
             </resources>
             <resources dir="${PerlForPlugins.Resources}">
@@ -119,9 +127,9 @@
                     <include name="lib/File/Which.pm"/>
                     <include name="lib/HTML/SimpleParse.pm"/>
                     <include name="lib/Object/**"/>
-                    <include name="lib/Web_CAT/**"/>
                     <include name="lib/XML/**"/>
                     <include name="lib/Proc/**"/>
+                    <include name="lib/Lisp/**"/>
                     <exclude name="lib/XML/Simple/**"/>
                     <exclude name="lib/XML/Simple.pm"/>
                     <exclude name="**/*~"/>
@@ -161,6 +169,9 @@
         <jar destfile="${export.jar.name}"
             basedir="${install.dir}"
             includes="${framework.name}.framework/**"/>
+        <copy todir="${PerlForPlugins.Resources}">
+            <fileset dir="Resources/lib"/>
+        </copy>
     </target>
 
     <!-- ...............................................................
