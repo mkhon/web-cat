@@ -65,7 +65,7 @@ sub addHint
 {
     my $self     = shift;
     my $category = shift;
-    my $hint     = shift || croak( "hint text required" );
+    my $hint     = shift; croak( "hint text required" ) if !defined( $hint );
     my $trace    = shift;
     croak( "category required" ) if !defined( $category );
 

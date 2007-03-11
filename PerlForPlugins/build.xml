@@ -170,7 +170,7 @@
             basedir="${install.dir}"
             includes="${framework.name}.framework/**"/>
         <copy todir="${PerlForPlugins.Resources}">
-            <fileset dir="Resources/lib"/>
+            <fileset dir="Resources"/>
         </copy>
     </target>
 
