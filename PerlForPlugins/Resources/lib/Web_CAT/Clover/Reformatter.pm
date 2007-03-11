@@ -41,17 +41,19 @@ sub new
 {
     my $proto = shift;
     my $commentList = shift;
+    my $stripEmptyCoverage = shift || 0;
     my $class = ref( $proto )  ||  $proto;
     my $self = $class->SUPER::new( @_ );
-    $self->{commentList}   = $commentList;
-    $self->{commentId}     = 0;
-    $self->{killNL}        = 0;
-    $self->{killAll}       = 0;
-    $self->{tableDepth}    = 0;
-    $self->{spanDepth}     = [0];
-#    $self->{spansInPRE}    = 0;
-    $self->{lineNo}        = 0;
-    $self->{recording}     = 0;
+    $self->{commentList}        = $commentList;
+    $self->{commentId}          = 0;
+    $self->{killNL}             = 0;
+    $self->{killAll}            = 0;
+    $self->{tableDepth}         = 0;
+    $self->{spanDepth}          = [0];
+#    $self->{spansInPRE}        = 0;
+    $self->{lineNo}             = 0;
+    $self->{recording}          = 0;
+    $self->{stripEmptyCoverage} = $stripEmptyCoverage;
     bless( $self, $class );
     $self->advanceComment;
     return $self;
@@ -309,12 +311,25 @@ sub output_starttag
     elsif ( $word eq "td" || $word eq "a" )
     {
         $tag .= ' id="O:' . $self->{lineNo} . '"';
+        if ( $self->{stripEmptyCoverage} )
+        {
+            $tag =~ s/"([^"]*)Hilight"/"$1"/o;
+            if ( $word eq "a" )
+            {
+                $tag =~ s/title="[^"]*"\s*//o;
+            }
+        }
+        
         my $spanCountList = $self->{spanDepth};
         push( @{$spanCountList}, 0 );
     }
     elsif ( $word eq "span" )
     {
         $tag .= ' id="O:' . $self->{lineNo} . '"';
+        if ( $self->{stripEmptyCoverage} )
+        {
+            $tag =~ s/"srcLineHilight"/"srcLine"/o;
+        }
         my $spanCountList = $self->{spanDepth};
         $spanCountList->[$#{@{$spanCountList}}]++;
 #       if ( defined( $args{class} ) && $args{class} eq "srcHilight" )
