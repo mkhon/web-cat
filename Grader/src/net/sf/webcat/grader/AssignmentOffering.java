@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.4 2006/11/10 18:01:37 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.5 2007/03/15 02:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.4 2006/11/10 18:01:37 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.5 2007/03/15 02:43:17 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -92,18 +92,6 @@ public class AssignmentOffering
 
 
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    /**
-     * Determine whether this assignment offering has any jobs
-     * or grading activities suspended.
-     * @return true if any jobs or grading activities have been suspended
-     */
-    public boolean suspendedWarning()
-    {
-        return gradingSuspended() || hasSuspendedSubs();
-    }
-
 
     // ----------------------------------------------------------
     /**
@@ -736,6 +724,19 @@ public class AssignmentOffering
         {
             return false;
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Check whether this assignment is past the due date.
+     * 
+     * @return true if any submissions to this assignment will be counted
+     *         as late
+     */
+    public boolean isLate()
+    {
+        return dueDate().before( new NSTimestamp() );
     }
 
 

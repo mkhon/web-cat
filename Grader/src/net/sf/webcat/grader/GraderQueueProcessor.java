@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.10 2007/02/20 19:54:54 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.11 2007/03/15 02:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.10 2007/02/20 19:54:54 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.11 2007/03/15 02:43:17 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -456,8 +456,6 @@ public class GraderQueueProcessor
                   log.error( "halt requested in step " + thisStep
                              + "\n\tfor job " + job );
                   job.setPaused( true );
-                  job.submission().assignmentOffering()
-                      .setHasSuspendedSubs( true );
                   return;
                 }
             }
@@ -479,7 +477,6 @@ public class GraderQueueProcessor
                   AssignmentOffering assignment =
                       job.submission().assignmentOffering();
                   assignment.setGradingSuspended( true );
-                  assignment.setHasSuspendedSubs( true );
                   return;
                 }
             }
@@ -1110,11 +1107,6 @@ public class GraderQueueProcessor
     {
         job.setPaused( true );
         faultOccurredInStep = true;
-
-        // Suspend grading for the assignment
-        AssignmentOffering assignment = job.submission().assignmentOffering();
-        // assignment.setSuspended( true );
-        assignment.setHasSuspendedSubs( true );
 
         Vector attachments = null;
         if ( attachmentsDir != null  &&  attachmentsDir.exists() )

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToEditPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: PickAssignmentToEditPage.java,v 1.3 2007/03/15 02:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToEditPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToEditPage.java,v 1.3 2007/03/15 02:43:17 stedwar2 Exp $
  */
 public class PickAssignmentToEditPage
     extends GraderComponent
@@ -180,6 +180,23 @@ public class PickAssignmentToEditPage
         return config != null &&
             ERXValueUtilities.booleanValueWithDefault(
                 config.objectForKey( "allowCreate" ), false );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Determine if the current assignment has suspended submissions (that
+     * this user can see).
+     * 
+     * @return true if the user can see this assignment's status and this
+     * assignment has suspended submissions
+     */
+    public boolean assignmentHasSuspendedSubs()
+    {
+        return ( wcSession().user().hasAdminPrivileges()
+                 || anAssignmentOffering.courseOffering().instructors()
+                     .containsObject( wcSession().user() ) )
+               && anAssignmentOffering.getSuspendedSubs().count() > 0;
     }
 
 
