@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.3 2007/02/27 16:04:57 stedwar2 Exp $
+ |  $Id: PageWithNavigation.java,v 1.4 2007/03/27 20:36:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Level;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.3 2007/02/27 16:04:57 stedwar2 Exp $
+ * @version $Id: PageWithNavigation.java,v 1.4 2007/03/27 20:36:24 stedwar2 Exp $
  */
 public class PageWithNavigation
     extends BarePage
@@ -295,6 +295,32 @@ public class PageWithNavigation
 
     // ----------------------------------------------------------
     /**
+     * Determine if the current primary tab can be seen by this user
+     * (enforce tab hiding when user has toggled to student-only view).
+     * @return True if this primary tab can be seen
+     */
+    public boolean primaryTabIsVisible()
+    {
+        return primaryTabItem.accessLevel() == 0
+            || !( (Session)session() ).user().restrictToStudentView();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Determine if the current secondary tab can be seen by this user
+     * (enforce tab hiding when user has toggled to student-only view).
+     * @return True if this secondary tab can be seen
+     */
+    public boolean secondaryTabIsVisible()
+    {
+        return secondaryTabItem.accessLevel() == 0
+            || !( (Session)session() ).user().restrictToStudentView();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve the CSS class to use for the list item for a secondary tab.
      * @return The CSS class
      */
@@ -417,6 +443,48 @@ public class PageWithNavigation
         {
             super.pushValuesToParent();
         }
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean hasVisibleSecondaryTabs()
+    {
+        boolean result = false;
+        if ( ( (Session)session() ).user().restrictToStudentView() )
+        {
+            NSArray secondaries = ( (Session)session() ).tabs.selectedChild()
+                .children();
+            for ( int i = 0; i < secondaries.count(); i++ )
+            {
+                TabDescriptor secondary =
+                    (TabDescriptor)secondaries.objectAtIndex( i );
+                if ( secondary.accessLevel() == 0 )
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            result = ( (Session)session() ).tabs.selectedChild().children()
+                .count() > 0;
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Toggle the student view setting for this user.
+     * @return Returns null, to force reloading of the calling page
+     * (if desired)
+     */
+    public WOComponent toggleStudentView()
+    {
+        ( (Session)session() ).toggleStudentView();
+        return pageWithName(
+            ( (Session)session() ).tabs.selectedDescendant().pageName() );
     }
 
 
