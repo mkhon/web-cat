@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileComment.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: SubmissionFileComment.java,v 1.2 2007/03/28 02:14:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Represents one TA comment on one source file in a submission.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileComment.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: SubmissionFileComment.java,v 1.2 2007/03/28 02:14:39 stedwar2 Exp $
  */
 public class SubmissionFileComment
     extends _SubmissionFileComment
@@ -154,7 +154,7 @@ public class SubmissionFileComment
                 return i;
             }
         }
-        return -1;
+        return 0;
     }
 
 
