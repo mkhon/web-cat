@@ -28,3 +28,4 @@ EOJDBCPrototypes.description=\
 # Tell WONDER that this framework contains our prototypes
 # -------------------------------------------------------------------
 er.extensions.ERXModelGroup.prototypeModelName=EOJDBCPrototypes
+dbConnectPluginGLOBAL=MySQL
