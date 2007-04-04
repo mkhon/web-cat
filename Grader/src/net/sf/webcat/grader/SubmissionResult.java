@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.4 2007/01/30 18:55:49 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.4 2007/01/30 18:55:49 stedwar2 Exp $
+ *  @version $Id: SubmissionResult.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -578,6 +578,28 @@ public class SubmissionResult
             setIsMostRecent( true );
         }
         ec.saveChanges();
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean hasCoverageData()
+    {
+        boolean result = false;
+        NSArray files = submissionFileStats();
+        if ( files.count() > 0 )
+        {
+            for ( int i = 0; i < files.count(); i++ )
+            {
+                SubmissionFileStats sfs = (SubmissionFileStats)
+                    files.objectAtIndex( i );
+                if ( sfs.elementsRaw() != null )
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
 

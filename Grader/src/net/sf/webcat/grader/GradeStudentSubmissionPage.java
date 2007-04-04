@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.4 2007/01/30 00:51:59 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author Stephen Edwards
- * @version $Id: GradeStudentSubmissionPage.java,v 1.4 2007/01/30 00:51:59 stedwar2 Exp $
+ * @version $Id: GradeStudentSubmissionPage.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -383,6 +383,17 @@ public class GradeStudentSubmissionPage
             }
         }
         return showCoverageData;
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent fullPrintableReport()
+    {
+        FullPrintableReport report = (FullPrintableReport)
+            pageWithName( FullPrintableReport.class.getName() );
+        report.result = result;
+        report.nextPage = this;
+        return report;
     }
 
 

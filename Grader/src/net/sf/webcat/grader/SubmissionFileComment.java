@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileComment.java,v 1.2 2007/03/28 02:14:39 stedwar2 Exp $
+ |  $Id: SubmissionFileComment.java,v 1.3 2007/04/04 02:07:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Represents one TA comment on one source file in a submission.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileComment.java,v 1.2 2007/03/28 02:14:39 stedwar2 Exp $
+ * @version $Id: SubmissionFileComment.java,v 1.3 2007/04/04 02:07:48 stedwar2 Exp $
  */
 public class SubmissionFileComment
     extends _SubmissionFileComment
@@ -147,6 +147,7 @@ public class SubmissionFileComment
     // ----------------------------------------------------------
     public static int targetIntFromString( String value )
     {
+        value = value.trim();
         for ( int i = 0; i < toName.length; i++ )
         {
             if ( value.equals( toName[i] ) )
