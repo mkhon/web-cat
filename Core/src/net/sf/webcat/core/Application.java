@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.12 2007/02/28 14:38:13 stedwar2 Exp $
+ |  $Id: Application.java,v 1.13 2007/04/04 02:06:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.12 2007/02/28 14:38:13 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.13 2007/04/04 02:06:23 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1481,19 +1481,28 @@ public class Application
      */
     public void killInstance()
     {
-        String killAction = configurationProperties().getProperty( "coreKillAction" );
+        String killAction =
+            configurationProperties().getProperty( "coreKillAction" );
         if ( killAction == null )
         {
+            log.fatal( "Using default kill action",
+                new Exception( "from here" ) );
             super.killInstance();            
         }
         else
         {
             String cmd = cmdShell() + killAction;
+            log.fatal( "Killing application using: " + cmd,
+                new Exception( "from here" ) );
             Process proc = null;
             try
             {
                 proc = Runtime.getRuntime().exec( cmd );
                 proc.waitFor();
+                // wait for ten seconds to give the kill command time to
+                // work externally, since immediate return of the process
+                // may not always mean its work is complete
+                Thread.currentThread().sleep( 10000 );
             }
             catch ( Exception e )
             {
@@ -1502,7 +1511,8 @@ public class Application
                 {
                     proc.destroy();
                 }
-                log.fatal( "exception executing kill action '" + cmd + "'", e );
+                log.fatal( "exception executing kill action '" + cmd + "'",
+                    e );
                 super.killInstance();
             }
         }
