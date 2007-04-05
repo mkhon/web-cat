@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.6 2007/03/27 20:36:24 stedwar2 Exp $
+ |  $Id: Session.java,v 1.7 2007/04/05 03:20:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.6 2007/03/27 20:36:24 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.7 2007/04/05 03:20:31 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -708,14 +708,56 @@ public class Session
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Get the user's preferred timestamp formatter.  This method generates
+     * and caches a formatter from the user's preferences on first access.
+     * Later accesses use the cached value.  If the user's time formatting
+     * preferences change, use {@link #clearCachedTimeFormatter()}.
+     * @return a formatter
+     */
+    public NSTimestampFormatter timeFormatter()
+    {
+        if ( timeFormatter == null )
+        {
+            String formatString =
+                user().dateFormat() + " " + user().timeFormat();
+            timeFormatter = new NSTimestampFormatter( formatString );
+            NSTimeZone zone =
+                NSTimeZone.timeZoneWithName( user().timeZoneName(), true );
+            timeFormatter.setDefaultFormatTimeZone( zone );
+            timeFormatter.setDefaultParseTimeZone( zone );
+            if ( log.isDebugEnabled() )
+            {
+                log.debug( "timeFormatter( ): format = " + formatString );
+                log.debug( "timeFormatter( ): zone = " + zone );
+            }
+        }
+        return timeFormatter;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Clear the cached timestamp formatter in this session so that a fresh
+     * one will be created from user preferences the next time one is needed.
+     */
+    public void clearCachedTimeFormatter()
+    {
+        log.debug( "clearCachedTimeFormatter()" );
+        timeFormatter = null;
+    }
+
+
     //~ Instance/static variables .............................................
 
-    private User             primeUser      = null;
-    private User             localUser      = null;
-    private LoginSession     loginSession   = null;
+    private User             primeUser         = null;
+    private User             localUser         = null;
+    private LoginSession     loginSession      = null;
 //    private EOEditingContext childContext   = null;
-    private CoreSelections   coreSelections = null;
-    
+    private CoreSelections   coreSelections    = null;
+    private NSTimestampFormatter timeFormatter = null;
+
     private static final Integer zero = new Integer( 0 );
     private static final Integer one  = new Integer( 1 );
 

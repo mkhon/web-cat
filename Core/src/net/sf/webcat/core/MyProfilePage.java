@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.3 2007/04/05 03:20:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.*;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.2 2006/12/04 03:02:16 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.3 2007/04/05 03:20:31 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -63,6 +63,10 @@ public class MyProfilePage
     public WODisplayGroup      teachingDisplayGroup;
     public CourseOffering      courseOffering;
     public int                 index;
+    public AuthenticationDomain.TimeZoneDescriptor zone;
+    public AuthenticationDomain.TimeZoneDescriptor selectedZone;
+    public String              aFormat;
+    public NSTimestamp         now;
 
 
     //~ Methods ...............................................................
@@ -70,16 +74,50 @@ public class MyProfilePage
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse response, WOContext context )
     {
+        now = new NSTimestamp();
         enrolledInDisplayGroup.setMasterObject( wcSession().user() );
         teachingDisplayGroup.setMasterObject( wcSession().user() );
         TADisplayGroup.setMasterObject( wcSession().user() );
+        if ( selectedZone == null )
+        {
+            selectedZone = AuthenticationDomain.descriptorForZone(
+                wcSession().user().timeZoneName() );
+            if ( selectedZone == null )
+            {
+                // !!!
+                selectedZone = AuthenticationDomain.descriptorForZone(
+                    NSTimeZone.getDefault().getID() );
+            }
+        }
         super.appendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent applyTimeFormats()
+    {
+        log.debug( "applyTimeFormats()" );
+        wcSession().user().setTimeZoneName( selectedZone.id );
+        wcSession().commitLocalChanges();
+        wcSession().clearCachedTimeFormatter();
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public String formattedCurrentTime()
+    {
+        NSTimestampFormatter formatter = new NSTimestampFormatter( aFormat );
+        formatter.setDefaultFormatTimeZone(
+            wcSession().timeFormatter().defaultFormatTimeZone() );
+        return formatter.format( now );
     }
 
 
     // ----------------------------------------------------------
     public boolean applyLocalChanges()
     {
+        log.debug( "applyLocalChanges()" );
         User u = wcSession().localUser();
         String lcPassword = ( newPassword1 == null )
             ? null
