@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.3 2007/04/07 03:31:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.3 2007/04/07 03:31:23 stedwar2 Exp $
  */
 public class UploadSubmissionPage
     extends GraderComponent
@@ -172,7 +172,8 @@ public class UploadSubmissionPage
             log.debug( "next():" );
             log.debug(" request = " + context().request() );
             log.debug(" form values = " + context().request().formValues() );
-            log.debug(" multipart = " + context().request().isMultipartFormData() );
+            log.debug(" multipart = "
+                + context().request().isMultipartFormData() );
         }
         if ( okayToSubmit )
         {
@@ -300,6 +301,26 @@ public class UploadSubmissionPage
             wcSession().setLocalUser( wcSession().primeUser() );
         }
         super.cancelLocalChanges();
+    }
+
+
+    // ----------------------------------------------------------
+    public void takeValuesFromRequest( WORequest arg0, WOContext arg1 )
+    {
+        try
+        {
+            super.takeValuesFromRequest( arg0, arg1 );
+        }
+        catch ( Exception e )
+        {
+            error( e.getMessage() );
+            Application.emailExceptionToAdmins( e, arg1,
+                "In UploadSubmissionPage:takeValuesFromRequest(), a post "
+                + "request without an attached file submission was received\n."
+                + "Browser info = \n"
+                + wcSession().browser()
+                );
+        }
     }
 
 
