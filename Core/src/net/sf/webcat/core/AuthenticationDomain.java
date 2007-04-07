@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.3 2007/04/05 03:20:31 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.4 2007/04/07 03:44:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author Stephen Edwards
- * @version $Id: AuthenticationDomain.java,v 1.3 2007/04/05 03:20:31 stedwar2 Exp $
+ * @version $Id: AuthenticationDomain.java,v 1.4 2007/04/07 03:44:28 stedwar2 Exp $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -479,6 +479,7 @@ public class AuthenticationDomain
     /**
      * Get the {@link TimeZoneDescriptor} associated with the specified
      * time zone name (id).
+     * @param id the time zone name (id) to look for
      * @return The matching descriptor from the {@link #availableTimeZones()}
      * list
      */
