@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.6 2007/04/07 03:46:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.6 2007/04/07 03:46:26 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderComponent
@@ -218,11 +218,11 @@ public class FinalReportPage
     // ----------------------------------------------------------
     public WOComponent fullPrintableReport()
     {
-        FullPrintableReport report = (FullPrintableReport)
+        FullPrintableReport fullReport = (FullPrintableReport)
             pageWithName( FullPrintableReport.class.getName() );
-        report.result = result;
-        report.nextPage = this;
-        return report;
+        fullReport.result = result;
+        fullReport.nextPage = this;
+        return fullReport;
     }
 
 
