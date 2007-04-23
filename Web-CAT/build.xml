@@ -86,7 +86,7 @@
     <!-- ==============================================================  -->
 
     <!-- ............................................................... -->
-    <target name="build.subsystems">
+    <target name="build.subsystems" if="reallyDoIt">
         <echo>
 ------------------------------
 building Bootstrap
@@ -107,6 +107,27 @@ building DBUpdateEngine
 ------------------------------
         </echo>
         <ant dir="../DBUpdateEngine"/>
+
+        <echo>
+------------------------------
+building Core
+------------------------------
+        </echo>
+        <ant dir="../WebObjectsUpdater"/>
+
+        <echo>
+------------------------------
+building Core
+------------------------------
+        </echo>
+        <ant dir="../WonderUpdater"/>
+
+        <echo>
+------------------------------
+building Core
+------------------------------
+        </echo>
+        <ant dir="../ExternalJars"/>
 
         <echo>
 ------------------------------
@@ -225,7 +246,7 @@ building Grader
                 <includesfile name="woproject/ant.classpaths.wo.wosystemroot"/>
                 </patternset>
             </otherclasspath>
-            <lib dir="../extra-jars">
+            <lib dir=".">
                 <include name="**/*.jar"/>
                 <exclude name="**/*.woa/**"/>
             </lib>
@@ -310,6 +331,11 @@ building Grader
             <lib dir="../Bootstrap">
                 <include name="Bootstrap.jar"/>
             </lib>
+            <exclude name="WEB-INF/${project.name}.woa/Contents/MacOS/**"/>
+            <exclude name="WEB-INF/${project.name}.woa/Contents/Windows/**"/>
+            <exclude name="WEB-INF/${project.name}.woa/Contents/UNIX/**"/>
+            <exclude name="WEB-INF/${project.name}.woa/${project.name}"/>
+            <exclude name="WEB-INF/${project.name}.woa/${project.name}.cmd"/>
         </war>
     </target>
 
@@ -366,12 +392,21 @@ building Grader
          be used for Web-CAT server updates.
     -->
     <target name="export.jar" depends="war">
-        <!-- need to jar framework up somewhere, based on version number -->
-        <property name="export.jar.name"
-            value="../webcat_${webcat.version.major}.${webcat.version.minor}.${webcat.version.revision}.jar"/>
-        <jar destfile="${export.jar.name}"
-        basedir="${dest.dir}/${project.name}"
-        excludes="WEB-INF/${project.name}.woa/Contents/Frameworks/**"/>
+      <!-- need to jar framework up somewhere, based on version number -->
+      <property name="export.jar.name"
+          value="../webcat_${webcat.version.major}.${webcat.version.minor}.${webcat.version.revision}.jar"/>
+      <war destfile="${export.jar.name}"
+          webxml="web.xml"
+          basedir="${dest.dir}/${project.name}">
+      <!--jar destfile="${export.jar.name}"
+          basedir="${dest.dir}/${project.name}"-->
+        <exclude name="WEB-INF/${project.name}.woa/Contents/Library/**"/>
+        <exclude name="WEB-INF/${project.name}.woa/Contents/MacOS/**"/>
+        <exclude name="WEB-INF/${project.name}.woa/Contents/Windows/**"/>
+        <exclude name="WEB-INF/${project.name}.woa/Contents/UNIX/**"/>
+        <exclude name="WEB-INF/${project.name}.woa/${project.name}"/>
+        <exclude name="WEB-INF/${project.name}.woa/${project.name}.cmd"/>
+      </war>
     </target>
 
 

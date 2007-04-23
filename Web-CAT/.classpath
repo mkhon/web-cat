@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="lib" path="/EOJDBCPrototypes/build/EOJDBCPrototypes.framework/Resources/Java" sourcepath="/EOJDBCPrototypes/src"/>
-	<classpathentry kind="src" path="/EOJDBCPrototypes"/>
 	<classpathentry kind="lib" path="/DBUpdateEngine/build/DBUpdateEngine.framework/Resources/Java" sourcepath="/DBUpdateEngine/src"/>
-	<classpathentry kind="src" path="/DBUpdateEngine"/>
 	<classpathentry kind="lib" path="/Core/build/Core.framework/Resources/Java" sourcepath="/Core/src"/>
-	<classpathentry kind="src" path="/Core"/>
 	<classpathentry kind="lib" path="/Grader/build/Grader.framework/Resources/Java" sourcepath="/Grader/src"/>
-	<classpathentry kind="src" path="/Grader"/>
 	<classpathentry kind="lib" path="/Admin/build/Admin.framework/Resources/Java" sourcepath="/Admin/src"/>
-	<classpathentry kind="src" path="/Admin"/>
 	<classpathentry kind="lib" path="/PerlForPlugins/build/PerlForPlugins.framework/Resources/Java"/>
-	<classpathentry kind="src" path="/PerlForPlugins"/>
 	<classpathentry kind="lib" path="/ANTForPlugins/build/ANTForPlugins.framework/Resources/Java"/>
-	<classpathentry kind="src" path="/ANTForPlugins"/>
 	<classpathentry kind="lib" path="/CheckstyleForPlugins/build/CheckstyleForPlugins.framework/Resources/Java"/>
-	<classpathentry kind="src" path="/CheckstyleForPlugins"/>
 	<classpathentry kind="lib" path="/PMDForPlugins/build/PMDForPlugins.framework/Resources/Java"/>
-	<classpathentry kind="src" path="/PMDForPlugins"/>
 	<classpathentry kind="lib" path="/CloverForPlugins/build/CloverForPlugins.framework/Resources/Java"/>
-	<classpathentry kind="src" path="/CloverForPlugins"/>
 	<classpathentry kind="lib" path="/Bootstrap/bin"/>
-	<classpathentry kind="src" path="/Bootstrap"/>
-	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CheckstyleForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/Grader/JavaWOExtensions/PerlForPlugins/PMDForPlugins/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaWOJSPServlet/JavaXML/JDBCEOAdaptor"/>
+	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CheckstyleForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/ExternalJars/Grader/JavaWOExtensions/PerlForPlugins/PMDForPlugins/WebObjectsUpdater/WonderUpdater/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaWebObjects/JavaWOJSPServlet/JavaXML"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="build/Web-CAT.woa/Contents/Resources/Java" sourcepath="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Web-CAT-externals"/>
 	<classpathentry kind="lib" path="C:/Apple/Library/Frameworks/JavaWOJSPServlet.framework/WebServerResources/Java/JavaWOJSPServlet_client.jar"/>
 	<classpathentry kind="lib" path="C:/www/Tomcat5/common/lib/servlet-api.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Reporter"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Admin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ANTForPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Bootstrap"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CheckstyleForPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CloverForPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DBUpdateEngine"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/EOJDBCPrototypes"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ExternalJars"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Grader"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PerlForPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PMDForPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/WebObjectsUpdater"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/WonderUpdater"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
