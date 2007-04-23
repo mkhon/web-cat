@@ -9,7 +9,8 @@ ANTForPlugins.version.revision=0
 ANTForPlugins.requires=Core
 ANTForPlugins.provides=env, pluginProperties
 
-ANTForPlugins.copyright=(c) 2006 Virginia Tech Department of Computer Science
+ANTForPlugins.copyright=\
+	(c) 2006, 2007 Virginia Tech Department of Computer Science
 ANTForPlugins.provider=Virginia Tech Computer Science
 ANTForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 ANTForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/AntForPluginsSubsystem
