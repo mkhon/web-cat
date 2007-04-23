@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ZipArchiveHandler.java,v 1.2 2006/11/09 16:55:12 stedwar2 Exp $
+ |  $Id: ZipArchiveHandler.java,v 1.3 2007/04/23 01:45:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -107,8 +107,9 @@ public class ZipArchiveHandler
                 {
 					destParent.mkdirs();
                 }
-				
-				FileUtilities.copyStreamToFile( zipStream, destFile );
+
+				FileUtilities.copyStreamToFile(
+                    zipStream, destFile, zipEntry.getTime() );
 			}
 
 			zipStream.closeEntry();

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TarUtil.java,v 1.2 2006/11/09 16:55:12 stedwar2 Exp $
+ |  $Id: TarUtil.java,v 1.3 2007/04/23 01:45:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -101,6 +101,7 @@ public class TarUtil
 				tarStream.copyEntryContents( destStream );
 				destStream.flush();
 				destStream.close();
+                destFile.setLastModified( tarEntry.getModTime().getTime() );
 			}
 
 			tarEntry = tarStream.getNextEntry();
