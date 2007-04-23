@@ -7,7 +7,8 @@ DBUpdateEngine.version.major=1
 DBUpdateEngine.version.minor=1
 DBUpdateEngine.version.revision=1
 
-DBUpdateEngine.copyright=(c) 2006 Virginia Tech Department of Computer Science
+DBUpdateEngine.copyright=\
+	(c) 2006, 2007 Virginia Tech Department of Computer Science
 DBUpdateEngine.provider=Virginia Tech Computer Science
 DBUpdateEngine.provider.url=http\://web-cat.cs.vt.edu/updates
 DBUpdateEngine.info.url=http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine

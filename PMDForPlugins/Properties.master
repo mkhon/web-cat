@@ -9,7 +9,8 @@ PMDForPlugins.version.revision=0
 PMDForPlugins.requires=Core, ANTForPlugins
 PMDForPlugins.provides=pluginProperties
 
-PMDForPlugins.copyright=(c) 2006 Virginia Tech Department of Computer Science
+PMDForPlugins.copyright=\
+	(c) 2006, 2007 Virginia Tech Department of Computer Science
 PMDForPlugins.provider=Virginia Tech Computer Science
 PMDForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 PMDForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem

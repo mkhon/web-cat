@@ -11,7 +11,7 @@ CheckstyleForPlugins.requires=Core, ANTForPlugins
 CheckstyleForPlugins.provides=pluginProperties
 
 CheckstyleForPlugins.copyright=\
-	(c) 2006 Virginia Tech Department of Computer Science
+	(c) 2006, 2007 Virginia Tech Department of Computer Science
 CheckstyleForPlugins.provider=Virginia Tech Computer Science
 CheckstyleForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 CheckstyleForPlugins.info.url=\
