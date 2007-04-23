@@ -4,6 +4,5 @@
 	<classpathentry kind="src" path="/Core"/>
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Core/ERExtensions/ERJars/JavaEOAccess/JavaEOControl/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaXML"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Web-CAT-externals"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
