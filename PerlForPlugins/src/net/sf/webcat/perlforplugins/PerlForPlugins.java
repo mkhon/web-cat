@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PerlForPlugins.java,v 1.1 2006/11/09 19:40:20 stedwar2 Exp $
+ |  $Id: PerlForPlugins.java,v 1.2 2007/04/23 01:17:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import net.sf.webcat.core.Subsystem;
  *  </ul>
  *
  *  @author  stedwar2
- *  @version $Id: PerlForPlugins.java,v 1.1 2006/11/09 19:40:20 stedwar2 Exp $
+ *  @version $Id: PerlForPlugins.java,v 1.2 2007/04/23 01:17:45 stedwar2 Exp $
  */
 public class PerlForPlugins
     extends Subsystem
@@ -60,7 +60,6 @@ public class PerlForPlugins
     public PerlForPlugins()
     {
         super();
-        System.out.println( "PerlForPlugins loaded" );
     }
 
 
