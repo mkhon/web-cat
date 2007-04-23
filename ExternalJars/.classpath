@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="jars/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/eddo-1_3.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/edldap-1_5.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/gnujaxp.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/jcommon-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/jdom.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/jfreechart-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/mail.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/mysql-connector-java-3.1.13-bin.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/OpenBaseJDBC.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/tar.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/utils.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/xerces.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/xml-apis.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
