@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.4 2007/04/05 03:20:31 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.5 2007/04/27 17:27:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.4 2007/04/05 03:20:31 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.5 2007/04/27 17:27:18 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -143,6 +143,21 @@ public class CoreDatabaseUpdates
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Adds timeZoneName keys to AuthenticationDomain.
+     * @throws SQLException on error
+     */
+    public void updateIncrement6() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TAUTHENTICATIONDOMAIN add CTIMEZONENAME TINYTEXT" );
+        database().executeSQL(
+            "alter table TAUTHENTICATIONDOMAIN "
+            + "change CTINYTEXT CDEFAULTURLPATTERN TINYTEXT" );
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -176,7 +191,7 @@ public class CoreDatabaseUpdates
                 "CREATE TABLE TAUTHENTICATIONDOMAIN "
                 + "(CDEFAULTEMAILDOMAIN TINYTEXT , CTINYTEXT TINYTEXT , "
                 + "CDISPLAYABLENAME TINYTEXT , OID INTEGER NOT NULL, "
-                + "CPROPERTYNAME TINYTEXT , c )" );
+                + "CPROPERTYNAME TINYTEXT )" );
             database().executeSQL(
                 "ALTER TABLE TAUTHENTICATIONDOMAIN ADD PRIMARY KEY (OID)" );
 
