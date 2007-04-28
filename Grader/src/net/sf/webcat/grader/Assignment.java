@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.2 2007/04/28 02:56:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * An assignment that can be given in one or more classes.
  *
  * @author Stephen Edwards
- * @version $Id: Assignment.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: Assignment.java,v 1.2 2007/04/28 02:56:48 stedwar2 Exp $
  */
 public class Assignment
     extends _Assignment
@@ -322,7 +322,7 @@ public class Assignment
     public static boolean namesAreSimilar( String name1, String name2 )
     {
         boolean result = false;
-        int limit = Math.max( name1.length(), name2.length() );
+        int limit = Math.min( name1.length(), name2.length() );
         for ( int i = 0; i < limit; i++ )
         {
             if ( Character.isLetter( name1.charAt( i ) ) )
