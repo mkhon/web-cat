@@ -1,4 +1,5 @@
-Library\Frameworks\Core.framework
-Library\Frameworks\ERExtensions.framework
-Library\Frameworks\ERJars.framework
+Library/Frameworks/Core.framework
+Library/Frameworks/ERExtensions.framework
+Library/Frameworks/ERJars.framework
+Library/Java/Extensions/OpenBaseJDBC.jar
 Library/Frameworks/Core.framework
