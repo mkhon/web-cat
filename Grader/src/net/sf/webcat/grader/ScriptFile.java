@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.7 2007/01/22 00:14:57 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.8 2007/05/02 18:28:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.7 2007/01/22 00:14:57 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.8 2007/05/02 18:28:48 stedwar2 Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -149,7 +149,8 @@ public class ScriptFile
             log.debug( "execute(): args = '" + args + "', cwd = " + cwd );
         }
         Runtime runtime = Runtime.getRuntime();
-        String  command = "";
+        String  command   = "";
+        String[] cmdArray = null;
         if ( configDescription().containsKey( "interpreter.prefix" ) )
         {
             // Look up the associated value, perform property substitution
@@ -177,21 +178,46 @@ public class ScriptFile
             {
                 if ( shell.charAt( shell.length() - 1 ) == '"' )
                 {
-                    command = command.replaceAll("\"", "\\\"" );
-                    command += '"';
+                    cmdArray = shell.split( "\\s+" );
+                    cmdArray[cmdArray.length - 1] = command;
                 }
-                command = shell + command;
+                else
+                {
+                    command = shell + command;
+                }
             }
         }
 
         try
         {
-            log.debug( "execute(): " + command );
-            proc = runtime.exec( command,
-                ( (Application) Application.application() )
-                    .subsystemManager().envp(),
-                cwd );
-            proc.waitFor();
+            if ( log.isDebugEnabled() )
+            {
+                if ( cmdArray != null )
+                {
+                    command = cmdArray[0];
+                    for ( int i = 1; i < cmdArray.length; i++ )
+                    {
+                        command += " " + cmdArray[i];
+                    }
+                }
+                log.debug( "execute(): " + command );
+            }
+            if ( cmdArray != null )
+            {
+                proc = runtime.exec( cmdArray,
+                    ( (Application) Application.application() )
+                        .subsystemManager().envp(),
+                    cwd );
+            }
+            else
+            {
+                proc = runtime.exec( command,
+                    ( (Application) Application.application() )
+                        .subsystemManager().envp(),
+                    cwd );
+            }
+            int exitCode = proc.waitFor();
+            log.debug( "external plug-in returned exit code: " + exitCode );
         }
         catch ( InterruptedException e )
         {
