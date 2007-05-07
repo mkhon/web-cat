@@ -125,8 +125,6 @@
                     <include name="lib/Config/**"/>
                     <include name="lib/Data/Dump.pm"/>
                     <include name="lib/File/Which.pm"/>
-                    <include name="lib/File/Spec.pm"/>
-                    <include name="lib/File/Spec/**"/>
                     <include name="lib/File/HomeDir.pm"/>
                     <include name="lib/File/HomeDir/**"/>
                     <include name="lib/HTML/SimpleParse.pm"/>
