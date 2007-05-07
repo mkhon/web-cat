@@ -17,7 +17,7 @@ AttributeValue: WOBrowser {
 
 ButtonForm: WOForm {
     multipleSubmit = true;
-    otherTagString="enctype=\"multipart/form-data\"";    
+    enctype="multipart/form-data";
 }
 
 DisplayList: WOConditional {

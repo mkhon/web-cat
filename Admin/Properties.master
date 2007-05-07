@@ -5,7 +5,7 @@ subsystem.Admin=net.sf.webcat.admin.Admin
 
 Admin.version.major=1
 Admin.version.minor=1
-Admin.version.revision=7
+Admin.version.revision=8
 Admin.requires=Core
 
 Admin.copyright=(c) 2006, 2007 Virginia Tech Department of Computer Science

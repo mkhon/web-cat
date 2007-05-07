@@ -181,7 +181,7 @@ NavBar: net.sf.webcat.core.WCBatchNavigator {
 
 NavBarForm: WOForm {
     multipleSubmit = true;
-    otherTagString = "enctype=\"multipart/form-data\"";
+    enctype="multipart/form-data";
 }
 
 NumberOfItems: WOString {
