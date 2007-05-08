@@ -6,7 +6,8 @@
 
     <!-- ............................................................... -->
     <target name="build.redistributable.war"
-        depends="build.subsystems, build, export.jar, install.pending.updates"
+        depends="build.subsystems, build, export.jar, install.pending.updates,
+                 javadoc"
         description="Build a publishable copy of the WAR distribution."/>
 
 
@@ -86,13 +87,34 @@
     <!-- ==============================================================  -->
 
     <!-- ............................................................... -->
-    <target name="build.subsystems" if="reallyDoIt">
+    <target name="build.subsystems">
         <echo>
 ------------------------------
 building Bootstrap
 ------------------------------
         </echo>
         <ant dir="../Bootstrap"/>
+
+        <echo>
+------------------------------
+building WebObjectsUpdater
+------------------------------
+        </echo>
+        <ant dir="../WebObjectsUpdater"/>
+
+        <echo>
+------------------------------
+building WonderUpdater
+------------------------------
+        </echo>
+        <ant dir="../WonderUpdater"/>
+
+        <echo>
+------------------------------
+building ExternalJars
+------------------------------
+        </echo>
+        <ant dir="../ExternalJars"/>
 
         <echo>
 ------------------------------
@@ -107,27 +129,6 @@ building DBUpdateEngine
 ------------------------------
         </echo>
         <ant dir="../DBUpdateEngine"/>
-
-        <echo>
-------------------------------
-building Core
-------------------------------
-        </echo>
-        <ant dir="../WebObjectsUpdater"/>
-
-        <echo>
-------------------------------
-building Core
-------------------------------
-        </echo>
-        <ant dir="../WonderUpdater"/>
-
-        <echo>
-------------------------------
-building Core
-------------------------------
-        </echo>
-        <ant dir="../ExternalJars"/>
 
         <echo>
 ------------------------------
@@ -184,13 +185,6 @@ building PMDForPlugins
 ------------------------------
         </echo>
         <ant dir="../PMDForPlugins"/>
-
-        <echo>
-------------------------------
-building Grader
-------------------------------
-        </echo>
-        <ant dir="../Grader"/>
     </target>
 
 
@@ -419,6 +413,87 @@ building Grader
         if="pending.updates.dir"
         depends="export.jar">
         <copy todir="${pending.updates.dir}" file="${export.jar.name}"/>
+    </target>
+
+
+    <!-- javadoc ....................................................... -->
+    <target name="javadoc" depends="setProps">
+      <property file="Properties"/>
+      <property environment="env"/>
+      <tstamp>
+          <format property="updated.date" pattern="EEE, MMM d, yyyy"/>
+          <format property="updated.time" pattern="hh:mm aa z"/>
+      </tstamp>
+      <mkdir dir="api"/>
+      <javadoc
+          packagenames="net.sf.webcat.*"
+          destdir="api"
+          author="true"
+          version="true"
+          use="true"
+          verbose="false"
+          useexternalfile="true"
+          source="1.5"
+          stylesheetfile="javadoc.css"
+          windowtitle="Web-CAT Reference Documentation">
+        <classpath>
+          <!-- these values should come from the woproject/ant.frameworks.wo.*
+               files, but that is too hard to do at the moment. -->
+          <fileset dir="${wo.wolocalroot}">
+            <include name="Library/Frameworks/Admin.framework/**/*.jar"/>
+            <include name="Library/Frameworks/ANTForPlugins.framework/**/*.jar"/>
+            <include name="Library/Frameworks/CheckstyleForPlugins.framework/**/*.jar"/>
+            <include name="Library/Frameworks/CloverForPlugins.framework/**/*.jar"/>
+            <include name="Library/Frameworks/Core.framework/**/*.jar"/>
+            <include name="Library/Frameworks/DBUpdateEngine.framework/**/*.jar"/>
+            <include name="Library/Frameworks/EOJDBCPrototypes.framework/**/*.jar"/>
+            <include name="Library/Frameworks/ERDirectToWeb.framework/**/*.jar"/>
+            <include name="Library/Frameworks/ERExtensions.framework/**/*.jar"/>
+            <include name="Library/Frameworks/ERJars.framework/**/*.jar"/>
+            <include name="Library/Frameworks/Grader.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaWOExtensions.framework/**/*.jar"/>
+            <include name="Library/Frameworks/PerlForPlugins.framework/**/*.jar"/>
+            <include name="Library/Frameworks/PMDForPlugins.framework/**/*.jar"/>
+            <include name="Library/Frameworks/ExternalJars.framework/**/*.jar"/>
+            <include name="Library/Frameworks/WebObjectsUpdater.framework/**/*.jar"/>
+            <include name="Library/Frameworks/WonderUpdater.framework/**/*.jar"/>
+            <include name="Library/Frameworks/WOUnitTest.framework/**/*.jar"/>
+          </fileset>
+          <fileset dir="${wo.wosystemroot}">
+            <include name="Library/Frameworks/JavaDirectToWeb.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaDTWGeneration.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaEOAccess.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaEOControl.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaEOProject.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaJDBCAdaptor.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaFoundation.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaWebObjects.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaWOJSPServlet.framework/**/*.jar"/>
+            <include name="Library/Frameworks/JavaXML.framework/**/*.jar"/>
+          </fileset>
+          <fileset dir="${servlet.jar.dir}">
+              <include name="servlet-api.jar"/>
+          </fileset>
+        </classpath>
+        <sourcepath>
+          <dirset dir="..">
+            <include name="*/src/" />
+          </dirset>
+        </sourcepath>
+        <!--fileset dir="../DBUpdateEngine/src">
+            <include name="**/*.java"/>
+        </fileset-->
+        <doctitle><![CDATA[<h2>Web-CAT Reference Documentation</h2>]]></doctitle>
+        <header><![CDATA[<em>Web-CAT ${webcat.version.major}.${webcat.version.minor}.${webcat.version.revision}</em>]]></header>
+        <bottom><![CDATA[Copyright &#169; 2006 &#8211; 2007  Virginia Tech.]]></bottom>
+        <footer><![CDATA[Last updated: ${updated.date} &#149; ${updated.time}]]></footer>
+        <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+        <link href="http://developer.apple.com/documentation/WebObjects/Reference/API/"/>
+        <link href="http://jakarta.apache.org/log4j/docs/api/"/>
+        <link href="http://www.junit.org/junit/javadoc/3.7/"/>
+        <link href="http://webobjects.mdimension.com/wonder/api/"/>
+      </javadoc>
+      <zip destfile="../api.zip" basedir="." includes="api/"/>
     </target>
 
 </project>
