@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreSelections.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: CoreSelections.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -30,10 +30,11 @@ import com.webobjects.eocontrol.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * This class represents persistent navigation choices a user has made
+ * for entities in the Core subsystem.
  *
- * @author 
- * @version $Id: CoreSelections.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @author stedwar2
+ * @version $Id: CoreSelections.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class CoreSelections
     extends _CoreSelections

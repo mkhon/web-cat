@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MutableArray.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
+ |  $Id: MutableArray.java,v 1.3 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *  usage details.
  * 
  *  @author  Stephen Edwards
- *  @version $Id: MutableArray.java,v 1.2 2007/01/30 02:21:50 stedwar2 Exp $
+ *  @version $Id: MutableArray.java,v 1.3 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class MutableArray
     extends er.extensions.ERXMutableArray
@@ -180,7 +180,7 @@ public class MutableArray
      */
     public Object clone()
     {
-        return new MutableArray( (NSArray)this );
+        return new MutableArray( this );
     }
 
 

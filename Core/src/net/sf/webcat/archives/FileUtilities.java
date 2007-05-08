@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.2 2007/04/23 01:45:00 stedwar2 Exp $
+ |  $Id: FileUtilities.java,v 1.3 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -290,7 +290,7 @@ public class FileUtilities
     public static void copyStream( InputStream in, OutputStream out )
         throws IOException
     {
-        final int BUFFER_SIZE = 8192;
+        final int BUFFER_SIZE = 65536;
 
         // read in increments of BUFFER_SIZE
         byte[] b = new byte[BUFFER_SIZE];

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InterpolatingLongResponseTask.java,v 1.1 2007/04/04 02:06:23 stedwar2 Exp $
+ |  $Id: InterpolatingLongResponseTask.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -29,13 +29,13 @@ import com.webobjects.foundation.NSTimestamp;
 
 //-------------------------------------------------------------------------
 /**
- * A version of the {@link LongResponseWithProgress} that supports discrete
- * "steps" in the action to be performed, automatically updates progress
- * bar information, and uses elapsed time for each step to "interpolate"
- * progress bar information between long-running steps.
+ * A version of the {@link LongResponseTaskWithProgress} that supports
+ * discrete "steps" in the action to be performed, automatically updates
+ * progress bar information, and uses elapsed time for each step to
+ * "interpolate" progress bar information between long-running steps.
  *
  * @author Stephen Edwards
- * @version $Id: InterpolatingLongResponseTask.java,v 1.1 2007/04/04 02:06:23 stedwar2 Exp $
+ * @version $Id: InterpolatingLongResponseTask.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public abstract class InterpolatingLongResponseTask
     extends LongResponseTaskWithProgress

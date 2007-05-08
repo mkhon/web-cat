@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.14 2007/04/08 03:02:34 stedwar2 Exp $
+ |  $Id: Application.java,v 1.15 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.14 2007/04/08 03:02:34 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.15 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -71,7 +71,7 @@ public class Application
     public Application()
     {
         super();
-        
+
         // Set UTF-8 encoding, to support localization
         WOMessage.setDefaultEncoding( "UTF-8" );
         WOMessage.setDefaultURLEncoding( "UTF-8" );
@@ -82,6 +82,12 @@ public class Application
         // restoring sessions through the WCServletSessionStore doesn't
         // really work.
         setSessionStoreClassName( "WOServerSessionStore" );
+
+        // I'm not sure these do anything, since the corresponding
+        // notifications should have occurred before this constructor
+        // ever executes :-(.  I put them in to replicate features in
+        // ERXApplication.main(), which isn't executed for servlets, but
+        // that is broken.
         NSNotificationCenter.defaultCenter().addObserver(
             this, 
             new NSSelector( "logNotification", 
@@ -96,6 +102,7 @@ public class Application
             NSBundle.LoadedClassesNotification,
             null
         );
+
         if ( log.isInfoEnabled() )
         {
             log.info( "Web-CAT v" + version()
@@ -1623,6 +1630,11 @@ public class Application
         File staticResourceBaseDir = appBase;
         File frameworkDir =
             new File( woaDir, "Contents/Frameworks/Library/Frameworks" );
+        if ( !frameworkDir.exists() )
+        {
+            frameworkDir =
+                new File( woaDir, "Contents/Library/Frameworks" );
+        }
         String lastUpdated = configurationProperties().getProperty(
             "static.HTML.date", "00000000" );
         String staticHtmlDirName = configurationProperties()

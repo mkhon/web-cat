@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BarePage.java,v 1.4 2007/01/17 03:09:12 stedwar2 Exp $
+ |  $Id: BarePage.java,v 1.5 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * contents.
  *
  * @author Stephen Edwards
- * @version $Id: BarePage.java,v 1.4 2007/01/17 03:09:12 stedwar2 Exp $
+ * @version $Id: BarePage.java,v 1.5 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class BarePage
     extends WOComponent
@@ -226,6 +226,15 @@ public class BarePage
                     "Core.framework/WebServerResources/wc.js",
                     context().request() )
                 + "\"></script>";
+            if ( !Application.configurationProperties()
+                            .booleanForKey( "installComplete" ) )
+            {
+                // Prevent self-installation wizard values from being
+                // cached here; only cache when installation is complete.
+                String result = overlibLink;
+                overlibLink = null;
+                return result;
+            }
         }
         return overlibLink;
     }

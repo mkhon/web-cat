@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.7 2007/04/05 03:20:31 stedwar2 Exp $
+ |  $Id: Session.java,v 1.8 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.7 2007/04/05 03:20:31 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.8 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -64,7 +64,8 @@ public class Session
      */
     public Session( String sessionID )
     {
-        super( sessionID );
+        super();
+        _setSessionID( sessionID );
         initSession();
     }
 

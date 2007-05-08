@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.3 2007/01/30 17:38:30 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.4 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  frameworksBaseURL() setting.
  *
  *  @author  stedwar2
- *  @version $Id: WCResourceManager.java,v 1.3 2007/01/30 17:38:30 stedwar2 Exp $
+ *  @version $Id: WCResourceManager.java,v 1.4 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class WCResourceManager
     extends WOResourceManager
@@ -55,8 +55,6 @@ public class WCResourceManager
     public WCResourceManager()
     {
         super();
-        // Force evaluation of this field
-        developmentBaseURL();
     }
 
 
@@ -102,7 +100,7 @@ public class WCResourceManager
             // The default developmentBaseURL should provide this for us
             // until static HTML resources have been initialized correctly
             // after the self-installation wizard completes.
-            return developmentBaseURL + aResourceName;
+            return developmentBaseURL() + aResourceName;
         }
         String result =
             (String)frameworkPrefixedCache.valueForKey( aResourceName );
@@ -158,7 +156,7 @@ public class WCResourceManager
         {
             developmentBaseURL = Application.configurationProperties()
                 .getProperty( "WCResourceManager.developmentBaseURL",
-                    "http://web-cat.cs.vt.edu/wcstatic/");
+                    "http://web-cat.cs.vt.edu/wcstatic/" );
             if ( !developmentBaseURL.endsWith( "/" ) )
             {
                 developmentBaseURL += "/";
@@ -214,7 +212,7 @@ public class WCResourceManager
             if ( useDevelopmentURLsIfNecessary &&
                  net.sf.webcat.WCServletAdaptor.getInstance() == null )
             {
-                result = developmentBaseURL + aResourceName;
+                result = developmentBaseURL() + aResourceName;
             }
             else
             {

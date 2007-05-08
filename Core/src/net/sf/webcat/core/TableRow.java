@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TableRow.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: TableRow.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * row.
  *
  * @author Stephen Edwards
- * @version $Id: TableRow.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: TableRow.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
  */
 public class TableRow
     extends WOComponent
@@ -57,9 +57,9 @@ public class TableRow
     //~ KVC Attributes (must be public) .......................................
 
     public  int     index;
-    public  boolean showError   = false;
-    public  boolean showCaution = false;
-    public  boolean increment   = false;
+    public  Boolean showError   = Boolean.FALSE;
+    public  Boolean showCaution = Boolean.FALSE;
+    public  Boolean increment   = Boolean.FALSE;
     public  String  id;
 
 
@@ -85,8 +85,8 @@ public class TableRow
     public String cssClass()
     {
         int tag = index % 2;
-        if ( showCaution ) tag += 2;
-        if ( showError   ) tag += 4;
+        if ( Boolean.TRUE.equals( showCaution ) ) tag += 2;
+        if ( Boolean.TRUE.equals( showError   ) ) tag += 4;
         return cssTag[tag];
     }
 
@@ -108,9 +108,9 @@ public class TableRow
     // ----------------------------------------------------------
     public void reset()
     {
-        showError   = false;
-        showCaution = false;
-        increment   = false;
+        showError   = Boolean.FALSE;
+        showCaution = Boolean.FALSE;
+        increment   = Boolean.FALSE;
         id          = null;
     }
 
