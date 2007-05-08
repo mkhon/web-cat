@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.3 2007/01/14 03:19:38 stedwar2 Exp $
+ |  $Id: FeatureDescriptor.java,v 1.4 2007/05/08 04:36:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import java.util.*;
  *  web.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureDescriptor.java,v 1.3 2007/01/14 03:19:38 stedwar2 Exp $
+ *  @version $Id: FeatureDescriptor.java,v 1.4 2007/05/08 04:36:20 stedwar2 Exp $
  */
 public class FeatureDescriptor
 {
@@ -336,7 +336,7 @@ public class FeatureDescriptor
             }
             catch ( IOException e )
             {
-                logError( "Error attempting to download " + update + ":", e );
+                logError( "unable to download " + update + ":", e );
             }
         }
         return null;
@@ -397,7 +397,7 @@ public class FeatureDescriptor
         }
         catch ( NumberFormatException e )
         {
-            logError( "Error: Non-numeric property " + propName
+            logError( "Non-numeric property " + propName
                 + " for feature " + name );
         }
         return val;
@@ -428,7 +428,13 @@ public class FeatureDescriptor
      */
     protected void logError( String msg )
     {
-        System.out.println( "Error:" + msg );
+        String className = getClass().getName();
+        int pos = className.lastIndexOf( '.' );
+        if ( pos >= 0 )
+        {
+            className = className.substring( pos + 1 );
+        }
+        System.out.println( className + ": ERROR: " + msg );
     }
 
 
@@ -443,8 +449,8 @@ public class FeatureDescriptor
      */
     protected void logError( String msg, Throwable exception )
     {
-        System.out.println( "Error:" + msg );
-        System.out.println( exception.getMessage() );
+        logError( msg );
+        System.out.println( exception );
     }
 
 

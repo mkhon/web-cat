@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.1 2006/06/16 14:56:27 stedwar2 Exp $
+ |  $Id: FileUtilities.java,v 1.2 2007/05/08 04:36:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -93,6 +93,11 @@ public class FileUtilities
                 copyStream( in, out );
                 in.close();
                 out.close();
+                long modTime = entry.getTime();
+                if ( modTime != -1 )
+                {
+                    entryFile.setLastModified( modTime );
+                }
             }
         }
     }
@@ -123,7 +128,94 @@ public class FileUtilities
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Return a canonical version of the file name, using "/" as the path
+     * seperator instead of "\".
+     * 
+     * @param name the File with the name to convert
+     * @return the canonical version of the file's name
+     */
+    public static String normalizeFileName( File name )
+    {
+        try
+        {
+            return name.getCanonicalPath().replace( '\\', '/' );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Return a canonical version of the file name, using "/" as the path
+     * seperator instead of "\".
+     * 
+     * @param name the name to convert
+     * @return the canonical version of the file's name
+     */
+    public static String normalizeFileName( String name )
+    {
+        return normalizeFileName( new File( name ) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Recursively deletes a directory
+     * 
+     * @param dir the File object for the directory
+     * @param preserve an array of File objects indicating elements within
+     *        the target directory to keep (that is, not to delete); this
+     *        parameter can be null if none are to be preserved.
+     * @return true if the directory was removed, false if it was not
+     *  (because at least some of its contents were preserved).
+     */
+    public static boolean deleteDirectory( File dir, String[] preserve )
+    {
+        if ( dir == null || !dir.exists() ) return true;
+        File[] files = dir.listFiles();
+        boolean deletedAll = true;
+        for ( int i = 0; i < files.length; i++ )
+        {
+            boolean skipMe = false;
+            if ( preserve != null )
+            {
+                // This is just a linear search, because the preserve
+                // lists are so short in general that it is not worth the
+                // effort to speed them up.
+                String normalizedName = normalizeFileName(  files[i] );
+                for ( int j = 0; j < preserve.length; j++ )
+                {
+                    if ( normalizedName.equals( preserve[j] ) )
+                    {
+                        skipMe = true;
+                        deletedAll = false;
+                        break;
+                    }
+                }
+            }
+            if ( skipMe ) continue;
+
+            if ( files[i].isDirectory() )
+            {
+                deletedAll = deleteDirectory( files[i], preserve )
+                    && deletedAll;
+            }
+            files[i].delete();
+        }
+        if ( deletedAll )
+        {
+            dir.delete();
+        }
+        return deletedAll;
+    }
+
+
     //~ Instance/static variables .............................................
 
-    static final private int BUFFER_SIZE = 8192;
+    static final private int BUFFER_SIZE = 65536;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.5 2007/01/30 02:20:48 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.6 2007/05/08 04:36:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.5 2007/01/30 02:20:48 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.6 2007/05/08 04:36:20 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -347,6 +347,17 @@ public class WCServletAdaptor
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Get the version for the Bootstrap build containing this class.
+     * @return the version number as a string
+     */
+    public String version()
+    {
+        return VERSION;
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -380,9 +391,10 @@ public class WCServletAdaptor
                 }
                 catch ( Exception e )
                 {
-                    System.out.println( "Exception reading from "
-                        + license.getAbsolutePath() + ": " + e.getMessage() );
-                    msg = "Error reading license key file: '" + e.getMessage();
+                    System.out.println( "WCServletAdaptor: ERROR: Exception "
+                        + "reading from " + license.getAbsolutePath()
+                        + ": " + e );
+                    msg = "Error reading license key file: '" + e;
                 }
                 msg += "'";
             }
@@ -526,13 +538,20 @@ public class WCServletAdaptor
                     mainBundle = new File( bundleSearchDirs[i], "Contents" );
                     frameworkDir = new File(
                         bundleSearchDirs[i].getAbsolutePath()
-                        + FRAMEWORK_SUBDIR );
+                        + FRAMEWORK_SUBDIR1 );
+                    if ( !frameworkDir.exists() )
+                    {
+                        frameworkDir = new File(
+                            bundleSearchDirs[i].getAbsolutePath()
+                            + FRAMEWORK_SUBDIR2 );
+                    }
                     break;
                 }
             }
             File appDir = webInfDir.getParentFile();
             downloadNewUpdates( frameworkDir, mainBundle );
             applyPendingUpdates( frameworkDir, appDir );
+            refreshSubsystemUpdaters( frameworkDir, mainBundle );
         }
         if ( frameworkDir != null && frameworkDir.isDirectory() )
         {
@@ -562,37 +581,162 @@ public class WCServletAdaptor
             for ( int i = 0; i < jars.length; i++ )
             {
                 for ( int j = 0; j < extensions.length; j++ )
-                if ( jars[i].getName().endsWith( extensions[j] ) )
                 {
-                    File unpackDir = aFrameworkDir;
-                    if ( jars[i].getName().startsWith( APP_JAR_PREFIX ) )
+                    if ( jars[i].getName().endsWith( extensions[j] ) )
                     {
-                        unpackDir = appDir;
-                    }
-                    try
-                    {
-                        System.out.println( "Applying update from "
-                            + jars[i].getName() );
-                        ZipFile zipFile = new ZipFile( jars[i] );
-                        FileUtilities.unZip( zipFile, unpackDir );
-                        zipFile.close();
-                        if ( !jars[i].delete() )
+                        File unpackDir = aFrameworkDir;
+                        if ( jars[i].getName().startsWith( APP_JAR_PREFIX ) )
                         {
-                            System.out.println( "unable to delete "
+                            unpackDir = appDir;
+                        }
+                        try
+                        {
+                            prepareUnpackingDir( unpackDir, jars[i] );
+                            System.out.println( "Applying update from "
+                                + jars[i].getName() );
+                            ZipFile zipFile = new ZipFile( jars[i] );
+                            FileUtilities.unZip( zipFile, unpackDir );
+                            zipFile.close();
+                            if ( !jars[i].delete() )
+                            {
+                                System.out.println(
+                                    "WCServletAdaptor: ERROR: unable to delete "
+                                    + jars[i].getAbsolutePath() );
+                            }
+                        }
+                        catch ( java.io.IOException e )
+                        {
+                            System.out.println( "WCServletAdaptor: ERROR: "
+                                + "unpacking update bundle: "
+                                + e );
+                            System.out.println( "on file: "
                                 + jars[i].getAbsolutePath() );
                         }
                     }
-                    catch ( java.io.IOException e )
-                    {
-                        System.out.println( "IO error trying to unpack "
-                            + "update bundle: " + e.getMessage() );
-                        System.out.println( "on file: "
-                            + jars[i].getAbsolutePath() );
-                    }
                 }
             }
-            
-            refreshSubsystemUpdaters();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Perform any pre-cleaning steps needed before unpacking a subsystem
+     * update jar.  This method will delete the old contents of the subsystem
+     * if necessary, based on the properties stored in the
+     * {@link SubsystemUpdater} corresponding to this jar file.
+     *
+     * @param unpackDir the directory where the jar will be unpacked
+     * @param jar the jar file that will be unpacked
+     */
+    private void prepareUnpackingDir( File unpackDir, File jar )
+    {
+        String frameworkName = jar.getName().replaceFirst(
+            "_[0-9]+(\\.[0-9]+)*\\..*$", "" );
+        boolean isAppWrapper = APP_JAR_PREFIX.equals( frameworkName );
+        File thisFrameworkDir = new File( unpackDir,
+            isAppWrapper
+                ? "WEB-INF/Web-CAT.woa/Contents"
+                : frameworkName + ".framework" );
+        SubsystemUpdater updater = getUpdaterFor( thisFrameworkDir );
+
+        String[] alsoContains = null;
+        {
+            String alsoContainsRaw = updater.getProperty( "alsoContains" );
+            if ( alsoContainsRaw != null )
+            {
+                alsoContains = alsoContainsRaw.split( ",\\s*" );
+            }
+        }
+
+        String[] removeUnused = null;
+        {
+            String removeUnusedRaw = updater.getProperty( "removeUnused" );
+            if ( removeUnusedRaw != null )
+            {
+                removeUnused = removeUnusedRaw.split( ",\\s*" );
+            }
+        }
+
+        String[] preserveOnUpdate = null;
+        {
+            String preserveOnUpdateRaw =
+                updater.getProperty( "preserveOnUpdate" );
+            if ( isAppWrapper && preserveOnUpdateRaw == null )
+            {
+                preserveOnUpdateRaw = "WEB-INF/lib,"
+                    + "WEB-INF/web.xml,"
+                    + "WEB-INF/update.properties,"
+                    + "WEB-INF/Web-CAT.woa/Contents/Frameworks,"
+                    + "WEB-INF/Web-CAT.woa/configuration.properties,"
+                    + "WEB-INF/pending-updates";
+            }
+            if ( preserveOnUpdateRaw != null )
+            {
+                preserveOnUpdate = preserveOnUpdateRaw.split( ",\\s*" );
+                for ( int i = 0; i < preserveOnUpdate.length; i++ )
+                {
+                    preserveOnUpdate[i] = FileUtilities.normalizeFileName(
+                        new File( unpackDir, preserveOnUpdate[i] ) );
+                }
+            }
+        }
+        FileUtilities.deleteDirectory(
+            isAppWrapper ? unpackDir : thisFrameworkDir, preserveOnUpdate );
+        if ( isAppWrapper )
+        {
+            // Examine configuration.properties to see if we just deleted
+            // local copies of the static HTML resources
+            File config = new File( unpackDir,
+                "Web-INF/Web-CAT.woa/configuration.properties" );
+            if ( config.exists() )
+            {
+                try
+                {
+                    InputStream is = new FileInputStream( config );
+                    Properties configProps = new Properties();
+                    configProps.load( is );
+                    is.close();
+                    if ( configProps.getProperty( "static.html.dir" ) == null )
+                    {
+                        // If this property is not set, then static resources
+                        // are stored in the root of the web app and they
+                        // were just deleted.  Force re-copying of them.
+                        configProps.setProperty(
+                            "static.HTML.date", "00000000" );
+                        OutputStream out = new FileOutputStream( config );
+                        configProps.store(
+                            out, "Web-CAT configuration settings" );
+                        out.close();
+                    }
+                }
+                catch ( IOException e )
+                {
+                    // We're not using log4j, since that may be within a
+                    // subsystem that needs updating
+                    System.out.println( "WCServletAdaptor: ERROR: IO error "
+                        + "updating properties in "
+                        + config.getAbsolutePath()
+                        + ":"
+                        + e );
+                }
+            }
+        }
+        if ( alsoContains != null )
+        {
+            for ( int i = 0; i < alsoContains.length; i++ )
+            {
+                FileUtilities.deleteDirectory(
+                    new File( unpackDir, alsoContains[i] ), preserveOnUpdate );
+            }
+        }
+        if ( removeUnused != null )
+        {
+            for ( int i = 0; i < removeUnused.length; i++ )
+            {
+                FileUtilities.deleteDirectory(
+                    new File( unpackDir, removeUnused[i] ), preserveOnUpdate );
+            }
         }
     }
 
@@ -612,11 +756,82 @@ public class WCServletAdaptor
         File[] subdirs = aFrameworkDir.listFiles();
         for ( int i = 0; i < subdirs.length; i++ )
         {
-            downloadUpdateIfNecessary( getUpdaterFor( subdirs[i], true ) );
+            downloadUpdateIfNecessary( getUpdaterFor( subdirs[i] ) );
         }
         
         // Now handle the application update, if available
-        downloadUpdateIfNecessary( getUpdaterFor( mainBundle, false ) );
+        downloadUpdateIfNecessary( getUpdaterFor( mainBundle ) );
+        
+        // Now check through existing subsystems and check for any required
+        // subsystems that are not yet installed
+        for ( Iterator i = subsystems.entrySet().iterator(); i.hasNext(); )
+        {
+            SubsystemUpdater thisUpdater =
+                (SubsystemUpdater)( (Map.Entry)i.next() ).getValue();
+            String requires = thisUpdater.getProperty( "requires" );
+            if ( thisUpdater.providerVersion() != null )
+            {
+                requires = thisUpdater.providerVersion()
+                    .getProperty( "requires" );
+            }
+            if ( requires != null )
+            {
+                String[] requiredSubsystems = requires.split( ",\\s*" );
+                for ( int j = 0; j < requiredSubsystems.length; j++ )
+                {
+                    if ( !subsystemsByName.containsKey( requiredSubsystems[j] ))
+                    {
+                        // A required subsystem is not present, so find it
+                        // and download it
+                        System.out.println( "WCServletAdaptor: ERROR: "
+                            + "Installed subsystem "
+                            + thisUpdater.name() + " requires subsystem "
+                            + requiredSubsystems[j]
+                            + ", which is not installed." );
+                        // First, look in the subsystem's provider
+                        FeatureDescriptor newSubsystem =
+                            thisUpdater.provider().subsystemDescriptor(
+                                requiredSubsystems[j] );
+                        if ( newSubsystem == null )
+                        {
+                            // OK, look in all providers for it
+                            for ( Iterator k = FeatureProvider.providers()
+                                    .iterator(); k.hasNext(); )
+                            {
+                                FeatureProvider fp = (FeatureProvider)k.next();
+                                newSubsystem = fp.subsystemDescriptor(
+                                    requiredSubsystems[j] );
+                                if ( newSubsystem != null )
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        if ( newSubsystem == null )
+                        {
+                            System.out.println(
+                                "Cannot identify provider for subsystem "
+                                + requiredSubsystems[j] );
+                        }
+                        else
+                        {
+                            if ( !updateDir.exists() )
+                            {
+                                updateDir.mkdirs();
+                            }
+                            String msg = newSubsystem.downloadTo( updateDir );
+                            if ( msg != null )
+                            {
+                                System.out.println(
+                                    "Error downloading update for "
+                                    + newSubsystem.name() + ":" );
+                                System.out.println( msg );
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -686,11 +901,11 @@ public class WCServletAdaptor
                     subdir = localSubdir;
                 }
             }
-            getUpdaterFor( subdir, true ).addToClasspath( buffer );
+            getUpdaterFor( subdir ).addToClasspath( buffer );
         }
 
         // Now handle the main bundle itself
-        getUpdaterFor( mainBundle, true ).addToClasspath( buffer );
+        getUpdaterFor( mainBundle ).addToClasspath( buffer );
 
         return buffer.toString();
     }
@@ -718,7 +933,7 @@ public class WCServletAdaptor
                 System.out.println( "Error loading properties from "
                            + propertiesFile.getAbsolutePath()
                            + ":"
-                           + e.getMessage() );
+                           + e );
             }
         }
     }
@@ -741,7 +956,7 @@ public class WCServletAdaptor
             System.out.println( "Error saving WCServletAdaptor properties to "
                        + propertiesFile.getAbsolutePath()
                        + ":"
-                       + e.getMessage() );
+                       + e );
         }
     }
 
@@ -751,12 +966,9 @@ public class WCServletAdaptor
      * Get the {@link SubsystemUpdater} for the specified subsystem location.
      * Creates a new updater on demand, if necessary.
      * @param dir the subsystem location to look up
-     * @param deleteBeforeUpdate passed to the SubsystemUpdater if one must
-     *     be constructed
      * @return the corresponding updater
      */
-    private SubsystemUpdater getUpdaterFor( File    dir,
-                                            boolean deleteBeforeUpdate )
+    private SubsystemUpdater getUpdaterFor( File dir )
     {
         SubsystemUpdater updater = null;
         if ( dir != null )
@@ -764,8 +976,12 @@ public class WCServletAdaptor
             updater = (SubsystemUpdater)subsystems.get( dir );
             if ( updater == null )
             {
-                updater = new SubsystemUpdater( dir /*, deleteBeforeUpdate*/ );
+                updater = new SubsystemUpdater( dir );
                 subsystems.put( dir, updater );
+                if ( updater.name() != null )
+                {
+                    subsystemsByName.put( updater.name(), updater );
+                }
             }
         }
         return updater;
@@ -777,18 +993,24 @@ public class WCServletAdaptor
      * Refresh the subsystems collection so that it reflects the new
      * updates (intended to be called after downloading/applying pending
      * updates).
+     * @param aFrameworkDir The directory where all subsystems are located
+     * @param mainBundle The main bundle location
      */
-    private void refreshSubsystemUpdaters()
+    private void refreshSubsystemUpdaters( File aFrameworkDir, File mainBundle )
     {
-        Map oldSubsystems = subsystems;
+        // Clear out old values
         subsystems = new HashMap();
-        for ( Iterator i = oldSubsystems.keySet().iterator(); i.hasNext(); )
+        subsystemsByName = new HashMap();
+
+        // Look up the updater for each framework
+        File[] subdirs = aFrameworkDir.listFiles();
+        for ( int i = 0; i < subdirs.length; i++ )
         {
-            File dir = (File)i.next();
-            // TODO: read delete param from current updater 
-            getUpdaterFor( dir, true );
+            getUpdaterFor( subdirs[i] );
         }
-        oldSubsystems.clear();
+
+        // Now create the updater for the main bundle
+        getUpdaterFor( mainBundle );        
     }
 
 
@@ -841,19 +1063,23 @@ public class WCServletAdaptor
     private File                         propertiesFile;
     private File                         updateDir;
     private File                         frameworkDir;
-    private Map                          subsystems     = new HashMap();
-    private boolean                      needsLicense   = false;
+    private Map                          subsystems       = new HashMap();
+    private Map                          subsystemsByName = new HashMap();
+    private boolean                      needsLicense     = false;
 
     private static WCServletAdaptor instance;
 
-    private static final String FRAMEWORK_SUBDIR =
+    private static final String FRAMEWORK_SUBDIR1 =
         "/Contents/Frameworks/Library/Frameworks";
+    private static final String FRAMEWORK_SUBDIR2 =
+        "/Contents/Library/Frameworks";
     private static final String[] PRIORITY_FRAMEWORKS = {
         "EOJDBCPrototypes.framework",
         "ERJars.framework",
         "ERExtensions.framework"
     };
     private static final String UPDATE_SUBDIR    = "pending-updates";
-    private static final String APP_JAR_PREFIX   = "webcat_";
+    private static final String APP_JAR_PREFIX   = "webcat";
     private static final String INSTALLED_WOROOT = "installed.woroot";
+    private static final String VERSION          = "1.3";
 }
