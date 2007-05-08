@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingCriteria.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: GradingCriteria.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -30,10 +30,10 @@ import com.webobjects.eocontrol.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * An EO representing settings for an output comparison grading engine.
  *
- * @author 
- * @version $Id: GradingCriteria.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @author stedwar2
+ * @version $Id: GradingCriteria.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class GradingCriteria
     extends _GradingCriteria

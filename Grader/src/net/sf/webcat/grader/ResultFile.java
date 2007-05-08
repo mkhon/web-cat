@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ResultFile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: ResultFile.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -32,10 +32,11 @@ import com.webobjects.eocontrol.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * An EO representing a generated feedback file that is presented to
+ * the user as part of grading results (often for download).
  *
- * @author 
- * @version $Id: ResultFile.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @author stedwar2
+ * @version $Id: ResultFile.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class ResultFile
     extends _ResultFile

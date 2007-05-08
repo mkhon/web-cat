@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseTaughtPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: PickCourseTaughtPage.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  courses taught or TA'ed for.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseTaughtPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ *  @version $Id: PickCourseTaughtPage.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class PickCourseTaughtPage
     extends GraderComponent
@@ -74,7 +74,6 @@ public class PickCourseTaughtPage
     // ----------------------------------------------------------
     public void awake()
     {
-        log.debug( "awake()" );
         selectedStaffIndex = -1;
         selectedAdminIndex = -1;
     }

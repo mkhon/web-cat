@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.1 2007/04/04 02:07:48 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Present a complete, printable view of all feedback about this submission.
  *
  * @author Stephen Edwards
- * @version $Id: FullPrintableReport.java,v 1.1 2007/04/04 02:07:48 stedwar2 Exp $
+ * @version $Id: FullPrintableReport.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -213,6 +213,12 @@ public class FullPrintableReport
 
                     setStepWeights( weights );
                 }
+            }
+            catch ( Exception e )
+            {
+                Application.emailExceptionToAdmins( e, context(),
+                    "Exception in setUpTask() preparing full printable report."
+                    );
             }
             finally
             {

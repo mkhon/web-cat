@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderPrefs.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: GraderPrefs.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -32,10 +32,11 @@ import java.io.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * A simple EO to record persistent user choices for assignments and
+ * so on used in navigation.
  *
- * @author 
- * @version $Id: GraderPrefs.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @author stedwar2
+ * @version $Id: GraderPrefs.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class GraderPrefs
     extends _GraderPrefs

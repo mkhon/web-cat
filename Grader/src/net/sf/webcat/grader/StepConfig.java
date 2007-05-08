@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: StepConfig.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -31,10 +31,10 @@ import net.sf.webcat.core.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Custom settings for a single grading {@link Step}.
  *
- * @author 
- * @version $Id: StepConfig.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ * @author stedwar2
+ * @version $Id: StepConfig.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class StepConfig
     extends _StepConfig

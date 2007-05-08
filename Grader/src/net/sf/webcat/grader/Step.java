@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.3 2007/01/21 21:57:36 stedwar2 Exp $
+ |  $Id: Step.java,v 1.4 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -33,10 +33,11 @@ import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Represents a single step (plug-in entry) in the grading pipeline or
+ * processing sequence for handling a given assignment.
  *
- * @author 
- * @version $Id: Step.java,v 1.3 2007/01/21 21:57:36 stedwar2 Exp $
+ * @author stedwar2
+ * @version $Id: Step.java,v 1.4 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class Step
     extends _Step

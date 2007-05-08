@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MiniBarGraph.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: MiniBarGraph.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import net.sf.webcat.core.*;
  * A dynamic element used to generate tiny bar graphs.
  *
  * @author  Stephen Edwards
- * @version $Id: MiniBarGraph.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ * @version $Id: MiniBarGraph.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
  */
 public class MiniBarGraph
     extends DynamicElement
@@ -186,8 +186,8 @@ public class MiniBarGraph
     {
         if ( _markerUrlPrefix == null )
         {
-            _markerUrlPrefix = Application.application().resourceManager()
-                .urlForResourceNamed(
+            _markerUrlPrefix = ((WCResourceManager)Application.application()
+                .resourceManager() ).urlForStaticHtmlResourceNamed(
                     "images/marker0.gif", "Grader", null, null );
             if ( _markerUrlPrefix != null )
             {
@@ -196,7 +196,8 @@ public class MiniBarGraph
             }
             else
             {
-                _markerUrlPrefix = "http://web-cat.cs.vt.edu/images/marker";
+                _markerUrlPrefix = "http://web-cat.cs.vt.edu/wcstatic/"
+                    + "Grader.framework/WebServerResources/images/marker";
             }
         }
         return _markerUrlPrefix;
