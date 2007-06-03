@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentSummary.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: AssignmentSummary.java,v 1.3 2007/06/03 04:26:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.jfree.data.xy.IntervalXYDataset;
  * submissions to an assignment offering or an assignment.
  *
  * @author  Stephen Edwards
- * @version $Id: AssignmentSummary.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ * @version $Id: AssignmentSummary.java,v 1.3 2007/06/03 04:26:54 stedwar2 Exp $
  */
 public class AssignmentSummary
     implements net.sf.webcat.core.MutableContainer,
@@ -151,6 +151,20 @@ public class AssignmentSummary
             log.debug( "frequencyDataset():\n" + printable() );
         }
         return dataset;
+    }
+
+
+    //----------------------------------------------------------
+    /**
+     * Generate a small, human-readable representation.
+     * @return A printable summary
+     */
+    public String toString()
+    {
+        float mean = mean();
+        int start = (int)mean;
+        int tenth = (int)( ( mean - start ) * 10 );
+        return "" + start + "." + tenth + "(" + students() + ")";
     }
 
 
@@ -413,8 +427,8 @@ public class AssignmentSummary
     {
         this.parent = parent;
     }
-    
-    
+
+
     //----------------------------------------------------------
     /**
      * Examine all contained objects for mutable containers, and reset
@@ -688,7 +702,7 @@ public class AssignmentSummary
                 buffer.append( percentages[i] );
             buffer.append( "\n" );
         }
-        
+
         return buffer.toString();
     }
 
@@ -795,7 +809,7 @@ public class AssignmentSummary
         {
             return getYValue( series, item );
         }
-        
+
 
         // ----------------------------------------------------------
         public Number getStartX( int series, int item )
@@ -870,7 +884,7 @@ public class AssignmentSummary
 
     private transient float[] percentages;
     private transient boolean percentagesAreUpToDate;
-    
+
     private           boolean               hasChanged = false;
     private           MutableContainer      parent     = null;
     private transient MutableContainerOwner owner      = null;
