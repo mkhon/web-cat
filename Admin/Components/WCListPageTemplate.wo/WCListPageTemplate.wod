@@ -19,10 +19,6 @@ AttributeRepetition: WORepetition {
 	list = d2wContext.displayPropertyKeys;
 }
 
-NumColumns: WOString {
-    value = d2wContext.displayPropertyKeys.count;
-}
-
 AttributeSorter: net.sf.webcat.core.WCSortOrder {
 	displayGroup = displayGroup;
 	displayKey = d2wContext.displayNameForProperty;
@@ -35,15 +31,6 @@ BackLink2: WOHyperlink {
 
 BackLink: WOHyperlink {
 	action = backAction;
-}
-
-BackgroundColor: WOString {
-	_unroll = YES;
-	value = d2wContext.backgroundColorForTable;
-}
-
-BatchForm: WOForm {
-	_unroll = YES;
 }
 
 ColumnLabelRepetition: WORepetition {
@@ -179,13 +166,14 @@ NavBar: net.sf.webcat.core.WCBatchNavigator {
 	persistentKey = "WCListPageTemplate.batchSize";
 }
 
+NavBarTD: WOGenericContainer {
+    elementName = "td";
+    colspan = d2wContext.displayPropertyKeys.count;
+}
+
 NavBarForm: WOForm {
     multipleSubmit = true;
     enctype="multipart/form-data";
-}
-
-NumberOfItems: WOString {
-	value = listSize;
 }
 
 PageWrapper: WOSwitchComponent {

@@ -35,9 +35,6 @@ DisplayQuery: WOConditional {
 EditingForm2: WOForm {
 }
 
-EditingForm3: WOForm {
-}
-
 EditingForm: WOForm {
 }
 
