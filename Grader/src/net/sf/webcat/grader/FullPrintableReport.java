@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.3 2007/06/03 05:17:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Present a complete, printable view of all feedback about this submission.
  *
  * @author Stephen Edwards
- * @version $Id: FullPrintableReport.java,v 1.2 2007/05/08 04:58:10 stedwar2 Exp $
+ * @version $Id: FullPrintableReport.java,v 1.3 2007/06/03 05:17:22 stedwar2 Exp $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -164,7 +164,7 @@ public class FullPrintableReport
     public class LongResponseTask
         extends InterpolatingLongResponseTask
     {
-        
+
         // ----------------------------------------------------------
         public LongResponseTask( User viewer, SubmissionResult theResult )
         {
@@ -184,13 +184,14 @@ public class FullPrintableReport
             }
         }
 
-        
+
         // ----------------------------------------------------------
         protected Object setUpTask()
         {
+            setUnweightedNumberOfSteps( 1 );
             Pair[] pairs = null;
             try
-            {                
+            {
                 ec.lock();
                 NSArray files = ERXArrayUtilities.sortedArraySortedWithKey(
                     submissionResult.submissionFileStats(),
@@ -231,6 +232,7 @@ public class FullPrintableReport
         // ----------------------------------------------------------
         protected Object nextStep( int stepNumber, Object resultSoFar )
         {
+            if ( resultSoFar == null ) return resultSoFar;
             Pair[] pairs = (Pair[])resultSoFar;
             try
             {
