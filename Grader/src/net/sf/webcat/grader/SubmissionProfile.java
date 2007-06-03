@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.4 2006/12/19 03:40:12 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.5 2007/06/03 04:25:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.4 2006/12/19 03:40:12 stedwar2 Exp $
+ * @version $Id: SubmissionProfile.java,v 1.5 2007/06/03 04:25:20 stedwar2 Exp $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -58,6 +58,36 @@ public class SubmissionProfile
     {
         super.awakeFromInsertion( ec );
         setSubmissionMethod( (byte)0 );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a short (no longer than 60 characters) description of this profile,
+     * which currently returns its {@link #name()} and its author's uid.
+     * @return the description
+     */
+    public String userPresentableDescription()
+    {
+        String result = name();
+        net.sf.webcat.core.User author = author();
+        if ( author != null )
+        {
+            result += " (" + author.userName() + ")";
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a human-readable representation of this profile, which is
+     * the same as {@link #userPresentableDescription()}.
+     * @return this profile's name and owner
+     */
+    public String toString()
+    {
+        return userPresentableDescription();
     }
 
 
@@ -122,7 +152,7 @@ public class SubmissionProfile
     /**
      * Change the value of this object's <code>submissionMethod</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setSubmissionMethodAsString( String value )
@@ -144,7 +174,7 @@ public class SubmissionProfile
      * Retrieve all submission profiles used by assignments associated
      * with the given course.  Also guarantees that an additional
      * submission profile, if specified, is included in the list.
-     * 
+     *
      * @param context The editing context to use
      * @param user   The user who's profiles should be listed
      * @param course The course to match against
@@ -164,7 +194,7 @@ public class SubmissionProfile
         NSMutableArray results =
             objectsForCourse( context, course ).mutableClone();
         er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
-            results, 
+            results,
             objectsForUser( context, user ) );
         if ( mine != null && !results.containsObject( mine ) )
         {
@@ -211,7 +241,7 @@ public class SubmissionProfile
         {
             return raw / factor;
         }
-        
+
         public long rawFromUnits( long units )
         {
             return units * factor;
@@ -221,7 +251,7 @@ public class SubmissionProfile
         {
             return ( raw % factor ) == 0;
         }
-        
+
         private String name;
         private long   factor;
     }

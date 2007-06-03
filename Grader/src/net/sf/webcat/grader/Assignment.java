@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.2 2007/04/28 02:56:48 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.3 2007/06/03 04:25:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * An assignment that can be given in one or more classes.
  *
  * @author Stephen Edwards
- * @version $Id: Assignment.java,v 1.2 2007/04/28 02:56:48 stedwar2 Exp $
+ * @version $Id: Assignment.java,v 1.3 2007/06/03 04:25:21 stedwar2 Exp $
  */
 public class Assignment
     extends _Assignment
@@ -106,6 +106,38 @@ public class Assignment
 
 
     // ----------------------------------------------------------
+    /**
+     * Get a short (no longer than 60 characters) description of this
+     * assignment.
+     * @return the description
+     */
+    public String userPresentableDescription()
+    {
+        String result = name();
+        if ( offerings().count() > 0 )
+        {
+            result += " (" +
+                ( (AssignmentOffering)offerings().objectAtIndex( 0 ) )
+                    .courseOffering().course().deptNumber()
+                + ")";
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a human-readable representation of this assignment, which is
+     * the same as {@link #userPresentableDescription()}.
+     * @return this user's name
+     */
+    public String toString()
+    {
+        return userPresentableDescription();
+    }
+
+
+    // ----------------------------------------------------------
     public void setName( String value )
     {
         // TODO[low]: Need to rename the corresponding directory as well
@@ -125,7 +157,7 @@ public class Assignment
         {
             log.debug( "conflict exists, throwing exception" );
             throw new ValidationException(
-                "Please provide an assignment name." );            
+                "Please provide an assignment name." );
         }
         String result = value.toString().trim();
         String newSubdirName = subdirNameOf( result );

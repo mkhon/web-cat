@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.3 2007/06/03 04:25:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.2 2006/11/09 17:55:51 stedwar2 Exp $
+ *  @version $Id: Submission.java,v 1.3 2007/06/03 04:25:21 stedwar2 Exp $
  */
 public class Submission
     extends _Submission
@@ -59,6 +59,18 @@ public class Submission
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Get a short (no longer than 60 characters) description of this
+     * submission, which currently returns {@link #dirName()}.
+     * @return the description
+     */
+    public String userPresentableDescription()
+    {
+        return dirName();
+    }
+
 
     // ----------------------------------------------------------
     /**
@@ -129,7 +141,7 @@ public class Submission
      * Converts a time to its human-readable format.  Most useful
      * when the time is "small," like a difference between two
      * other time stamps.
-     * 
+     *
      * @param time The time to convert
      * @return     A human-readable version of the time
      */
@@ -267,7 +279,7 @@ public class Submission
         return newSubmission;
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Delete all the result information for this submission, including
@@ -298,7 +310,7 @@ public class Submission
         }
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Delete all the result information for this submission, including
@@ -352,7 +364,7 @@ public class Submission
             + submitNumber()
             + ( assignment == null
                 ? ""
-                : ( ", " + assignment.titleString() ) ), 
+                : ( ", " + assignment.titleString() ) ),
             studentMsg.toString() );
     }
 

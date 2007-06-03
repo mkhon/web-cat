@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.4 2007/05/08 04:58:10 stedwar2 Exp $
+ |  $Id: Step.java,v 1.5 2007/06/03 04:25:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * processing sequence for handling a given assignment.
  *
  * @author stedwar2
- * @version $Id: Step.java,v 1.4 2007/05/08 04:58:10 stedwar2 Exp $
+ * @version $Id: Step.java,v 1.5 2007/06/03 04:25:21 stedwar2 Exp $
  */
 public class Step
     extends _Step
@@ -60,6 +60,18 @@ public class Step
     public String toString()
     {
         return "(" + order() + "): " + script();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a short (no longer than 60 characters) description of this
+     * step, which currently returns {@link #toString()}.
+     * @return the description
+     */
+    public String userPresentableDescription()
+    {
+        return order() + ": " + script();
     }
 
 
@@ -133,7 +145,7 @@ public class Step
     // ----------------------------------------------------------
     /**
      * Execute this step with the given command line argument(s).
-     * 
+     *
      * @param args the arguments to pass to the script
      * @param cwd  the working directory to use
      * @param stdout the file where the script's standard output should
