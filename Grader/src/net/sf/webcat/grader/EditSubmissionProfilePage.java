@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.3 2007/06/03 04:26:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditSubmissionProfilePage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: EditSubmissionProfilePage.java,v 1.3 2007/06/03 04:26:07 stedwar2 Exp $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -45,7 +45,7 @@ public class EditSubmissionProfilePage
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public EditSubmissionProfilePage( WOContext context )
@@ -103,7 +103,7 @@ public class EditSubmissionProfilePage
                   i >= 0; i-- )
             {
                 availableTimeDeltaUnit = SubmissionProfile.timeUnits[ i ];
-                if ( availableTimeDeltaUnit.isUnitFor( 
+                if ( availableTimeDeltaUnit.isUnitFor(
                          storedAvailableTimeDelta ) ||
                      i == 0 )
                 {
@@ -221,7 +221,7 @@ public class EditSubmissionProfilePage
         saveTimeFields();
         return super.next();
     }
-    
+
 
     // ----------------------------------------------------------
     public boolean applyLocalChanges()
@@ -229,14 +229,14 @@ public class EditSubmissionProfilePage
         saveTimeFields();
         return super.applyLocalChanges();
     }
-    
+
 
     // ----------------------------------------------------------
     public Number maxFileUploadSize()
     {
         return submissionProfile.maxFileUploadSizeRaw();
     }
-    
+
 
     // ----------------------------------------------------------
     public void setMaxFileUploadSize( Number value )
@@ -279,7 +279,32 @@ public class EditSubmissionProfilePage
     }
 
 
+    // ----------------------------------------------------------
+    public String inlineJavaScript()
+    {
+        return INLINE_JAVASCRIPT;
+    }
+
+
     //~ Instance/static variables .............................................
+
+    private static final String INLINE_JAVASCRIPT =
+        "<script type=\"text/javascript\">\n"
+        + "<!-- Begin\n"
+        + "function startCalc(){\n"
+        + "  interval = setInterval(\"calc()\",1);\n"
+        + "}\n"
+        + "function calc(){\n"
+        + "  document.WizardForm.total.value =\n"
+        + "      ( document.WizardForm.taPoints.value * 1 )\n"
+        + "      + ( document.WizardForm.toolPoints.value * 1 )\n"
+        + "      + ( document.WizardForm.correctnessPoints.value * 1 );\n"
+        + "}\n"
+        + "function stopCalc(){\n"
+        + "  clearInterval(interval);\n"
+        + "}\n"
+        + "// End -->\n"
+        + "</script>";
 
     static Logger log = Logger.getLogger( EditSubmissionProfilePage.class );
 }
