@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.16 2007/05/11 16:37:08 stedwar2 Exp $
+ |  $Id: Application.java,v 1.17 2007/06/03 04:15:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -33,6 +33,8 @@ import com.webobjects.woextensions.*;
 import net.sf.webcat.dbupdate.*;
 import er.extensions.*;
 import java.io.File;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.net.*;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -49,7 +51,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.16 2007/05/11 16:37:08 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.17 2007/06/03 04:15:52 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1308,19 +1310,37 @@ public class Application
            }
 
            // Get the stack trace for the exception
-           errorBuffer.append( "\nStack trace:\n-----------------" );
-           WOExceptionParser exParser = new WOExceptionParser( anException );
-           Enumeration traceEnum =
-               ( exParser.stackTrace() ).objectEnumerator();
-
-           // Append each trace line
-           while ( traceEnum.hasMoreElements() )
+           errorBuffer.append( "\nStack trace:\n-----------------\n" );
+           if ( net.sf.webcat.WCServletAdaptor.getInstance() == null )
            {
-               WOParsedErrorLine aLine =
-                   (WOParsedErrorLine)traceEnum.nextElement();
-               errorBuffer.append( "\nat " + aLine.methodName() + "("
-                                   + aLine.fileName() + ":"
-                                   + aLine.lineNumber() + ")" );
+               // If we're not running as a servlet, then assume we're in
+               // a developer environment and generate fully compliant
+               // stack trace info for IDE parsing:
+               StringWriter writer = new StringWriter();
+               PrintWriter pwriter = new PrintWriter( writer );
+               anException.printStackTrace( pwriter );
+               pwriter.close();
+               errorBuffer.append( writer.getBuffer() );
+           }
+           else
+           {
+               // For deployment, use a simplified stack trace presentation
+               // to make e-mail messages lighter (and also somewhat more
+               // readable).
+               WOExceptionParser exParser =
+                   new WOExceptionParser( anException );
+               Enumeration traceEnum =
+                   ( exParser.stackTrace() ).objectEnumerator();
+
+               // Append each trace line
+               while ( traceEnum.hasMoreElements() )
+               {
+                   WOParsedErrorLine aLine =
+                       (WOParsedErrorLine)traceEnum.nextElement();
+                   errorBuffer.append( "at " + aLine.methodName() + "("
+                                       + aLine.fileName() + ":"
+                                       + aLine.lineNumber() + ")\n" );
+               }
            }
        }
        else
