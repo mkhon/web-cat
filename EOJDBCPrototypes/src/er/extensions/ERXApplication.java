@@ -112,8 +112,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	public static final String ApplicationDidCreateNotification = "NSApplicationDidCreateNotification";
 
 	private static Properties allBundleProps;
-	
-    private static NSDictionary propertiesFromArgv; 
+
+    private static NSDictionary propertiesFromArgv;
 
 	private static Properties readProperties(File file) {
 		Properties result = null;
@@ -131,7 +131,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		}
 		return result;
 	}
-    
+
 	/**
 	 * Copies the props from the command line to the static dict propertiesFromArgv.
 	 *
@@ -153,7 +153,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * get loaded last. So in order to set the properties correctly, we first
 	 * add all the props that are not already set, then we add the main bundle
 	 * and the WebObjects.properties and finally the command line props.
-	 * 
+	 *
 	 * @param n
 	 */
 	public static void bundleDidLoad(NSNotification n) {
@@ -190,9 +190,9 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 					Field ClassPath = NSBundle.class.getDeclaredField("ClassPath");
 					ClassPath.setAccessible(true);
 					if(ClassPath.get(NSBundle.class) != null) {
-						Method init = NSBundle.class.getDeclaredMethod("InitMainBundle", null);
+						Method init = NSBundle.class.getDeclaredMethod("InitMainBundle", (Class[])null);
 						init.setAccessible(true);
-						init.invoke(NSBundle.class, null);
+						init.invoke(NSBundle.class, (Object[])null);
 					}
 				}
 				catch (Exception e) {
@@ -212,7 +212,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 				}
 				mainProps = readProperties(new File(woUserDir, "Contents" + File.separator + "Resources" + File.separator + "Properties"));
 			}
-			
+
 			if(mainProps == null) {
 				throw new IllegalStateException("Main bundle 'Properties' file can't be read.\nPlease post your deployment configuration in the Wonder mailing list.");
 			}
@@ -225,7 +225,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 					allBundleProps.putAll(userProps);
 				}
 			}
-			
+
 			Properties props = NSProperties._getProperties();
 			props.putAll(allBundleProps);
 			NSProperties._setProperties(props);
@@ -249,7 +249,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 					urls[i] = new File(string).toURL();
 				}
 				catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
+					// ERXTODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -298,7 +298,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		}
 		return false;
 	}
-	
+
 	private static String stringFromJar(String jar, String path) {
 		JarFile f;
 		try {
@@ -322,10 +322,10 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 			throw NSForwardException._runtimeExceptionForThrowable(e1);
 		}
 	}
-	
+
 	/**
 	 * Called when the application starts up and saves the command line arguments for {@link ERXConfigurationManager}.
-	 * 
+	 *
 	 * @see WOApplication#main(String[], Class)
 	 */
 	public static void main(String argv[], Class applicationClass) {
@@ -386,7 +386,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		}
 		Class arrayClass = NSMutableArray.class;
 		try {
-			Field f = arrayClass.getField("ERX_MARKER");
+			arrayClass.getField("ERX_MARKER");
 		}
 		catch (NoSuchFieldException e) {
 			System.err.println("No ERX_MARKER field in NSMutableArray found. \nThis means your class path is incorrect. Adjust it so that ERExtensions come before JavaFoundation.");
@@ -447,7 +447,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
     public WOResourceManager createResourceManager() {
         return new ERXResourceManager();
     }
-    
+
 	/**
 	 * The ERXApplication contructor.
 	 */
@@ -511,7 +511,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Decides whether to use editing context unlocking.
-	 * 
+	 *
 	 * @return true if ECs should be unlocked after each RR-loop
 	 */
 	public boolean useEditingContextUnlocker() {
@@ -520,7 +520,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Decides whether or not to keep track of open editing context locks.
-	 * 
+	 *
 	 * @return true if editing context locks should be tracked
 	 */
 	public boolean traceOpenEditingContextLocks() {
@@ -543,7 +543,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 			if (log.isDebugEnabled()) {
 				log.debug("Configured statistics logging to file path \"" + logPath + "\" with rotation frequency: " + rotationFrequency);
 			}
-			statisticsStore().setLogFile(logPath, (long) rotationFrequency);
+			statisticsStore().setLogFile(logPath, rotationFrequency);
 		}
 	}
 
@@ -551,7 +551,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * Notification method called when the application posts the notification
 	 * {@link WOApplication#ApplicationWillFinishLaunchingNotification}. This method calls subclasse's
 	 * {@link #finishInitialization} method.
-	 * 
+	 *
 	 * @param n
 	 *            notification that is posted after the WOApplication has been constructed, but before the application
 	 *            is ready for accepting requests.
@@ -567,7 +567,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * Notification method called when the application posts the notification
 	 * {@link WOApplication#ApplicationDidFinishLaunchingNotification}. This method calls subclasse's
 	 * {@link #didFinishLaunching} method.
-	 * 
+	 *
 	 * @param n
 	 *            notification that is posted after the WOApplication has finished launching and is ready for accepting
 	 *            requests.
@@ -598,7 +598,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * The ERXApplication singleton.
-	 * 
+	 *
 	 * @return returns the <code>WOApplication.application()</code> cast as an ERXApplication
 	 */
 	public static ERXApplication erxApplication() {
@@ -648,7 +648,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	/**
 	 * Creates the request object for this loop. Overridden to use an {@link ERXRequest} object that fixes a bug with
 	 * localization.
-	 * 
+	 *
 	 * @param aMethod
 	 *            the HTTP method object used to send the request, must be one of "GET", "POST" or "HEAD"
 	 * @param aURL -
@@ -677,7 +677,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Used to instanciate a WOComponent when no context is available, typically ouside of a session
-	 * 
+	 *
 	 * @param pageName -
 	 *            The name of the WOComponent that must be instanciated.
 	 * @return created WOComponent with the given name
@@ -744,7 +744,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * via the System property <b>ERApplicationNameSuffix</b>.<br/> <br/> For example if the name of an application is
 	 * Buyer and you want to have a training instance appear with the name BuyerTraining then you would set the
 	 * ERApplicationNameSuffix to Training.<br/> <br/>
-	 * 
+	 *
 	 * @return the System property <b>ERApplicationNameSuffix</b> or <code>null</code>
 	 */
 	public String nameSuffix() {
@@ -762,7 +762,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	/**
 	 * Adds the ability to completely change the applications name by setting the System property <b>ERApplicationName</b>.
 	 * Will also append the <code>nameSuffix</code> if one is set.<br/> <br/>
-	 * 
+	 *
 	 * @return the computed name of the application.
 	 */
 	public String name() {
@@ -781,7 +781,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * This method returns {@link WOApplication}'s <code>name</code> method.<br/>
-	 * 
+	 *
 	 * @return the name of the application executable.
 	 */
 	public String rawName() {
@@ -801,7 +801,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * </ol>
 	 * Also, in case the top-level exception was a EOGeneralAdaptorException, then you also get the failed ops and the
 	 * sql exception. <br/>
-	 * 
+	 *
 	 * @return dictionary containing extra information for the current context.
 	 */
 	public NSMutableDictionary extraInformationForExceptionInContext(Exception e, WOContext context) {
@@ -869,6 +869,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 					}
 				}
 				catch (Exception ex) {
+                    // do nothing?
 				}
 			}
 			if (context.hasSession() && context.session().statistics() != null) {
@@ -890,7 +891,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Reports an exception. This method only logs the error and could be overriden to return a valid error page.
-	 * 
+	 *
 	 * @param exception
 	 *            to be reported
 	 * @param extraInfo
@@ -908,7 +909,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	/**
 	 * Workaround for WO 5.2 DirectAction lock-ups. As the super-implementation is empty, it is fairly safe to override
 	 * here to call the normal exception handling earlier than usual.
-	 * 
+	 *
 	 * @see WOApplication#handleActionRequestError(WORequest, Exception, String, WORequestHandler, String, String,
 	 *      Class, WOAction)
 	 */
@@ -930,7 +931,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Logs extra information about the current state.
-	 * 
+	 *
 	 * @param exception
 	 *            to be handled
 	 * @param context
@@ -964,7 +965,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Standard exception page. Also logs error to standard out.
-	 * 
+	 *
 	 * @param exception
 	 *            to be handled
 	 * @param context
@@ -978,7 +979,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	/**
 	 * Handles the potentially fatal OutOfMemoryError by quiting the application ASAP. Broken out into a separate method
 	 * to make custom error handling easier, ie generating your own error pages in production, etc.
-	 * 
+	 *
 	 * @param exception
 	 *            to check if it is a fatal exception.
 	 */
@@ -1031,7 +1032,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	/**
 	 * Set the <code>er.extensions.ERXComponentActionRedirector.enabled=true</code> property to actually the redirect
 	 * feature.
-	 * 
+	 *
 	 * @return flag if to use the redirect feature
 	 */
 	public boolean useComponentActionRedirection() {
@@ -1043,7 +1044,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Overridden to allow for redirected responses.
-	 * 
+	 *
 	 * @param request
 	 *            object
 	 * @param context
@@ -1059,7 +1060,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Overridden to allow for redirected responses.
-	 * 
+	 *
 	 * @param response
 	 *            object
 	 * @param context
@@ -1077,7 +1078,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * Overridden to allow for redirected responses and null the thread local storage.
-	 * 
+	 *
 	 * @param request
 	 *            object
 	 * @return response
@@ -1118,7 +1119,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		if (requestHandlingLog.isDebugEnabled()) {
 			requestHandlingLog.debug("Returning, encoding: " + response.contentEncoding() + " response: " + response);
 		}
-		
+
 		if (responseCompressionEnabled()) {
 			String contentType = response.headerForKey("content-type");
 			if ((contentType != null) && (contentType.startsWith("text/") || contentType.equals("application/x-javascript"))) {
@@ -1147,7 +1148,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 	/**
 	 * When a context is created we push it into thread local storage. This handles the case for direct actions.
-	 * 
+	 *
 	 * @param request
 	 *            the request
 	 * @return the newly created context
@@ -1204,7 +1205,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * useful to find cases when a session is checked out twice in a single RR-loop, which will lead to a session store
 	 * lockup. Set the <code>er.extensions.ERXApplication.useSessionStoreDeadlockDetection=true</code> property to
 	 * actually the this feature.
-	 * 
+	 *
 	 * @return flag if to use the this feature
 	 */
 	public boolean useSessionStoreDeadlockDetection() {
@@ -1352,7 +1353,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	public ERXMigrator migrator() {
 		return new ERXMigrator(name() + "-" + number());
 	}
-	
+
 	/**
 	 * This method is called by ERXWOContext and provides the application a hook to rewrite generated URLs.
 	 * @param url the URL to rewrite

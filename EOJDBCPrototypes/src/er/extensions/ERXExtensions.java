@@ -58,16 +58,17 @@ import er.extensions.remoteSynchronizer.ERXRemoteSynchronizer;
  * for creating editing contexts with the default delegates set.
  */
 public class ERXExtensions extends ERXFrameworkPrincipal {
-    
+
     /** Notification name, posted before object will change in an editing context */
     public final static String objectsWillChangeInEditingContext= "ObjectsWillChangeInEditingContext";
-    
+
     /** logging support */
     private static Logger _log;
-    
+
     private static boolean _initialized;
 
     public ERXExtensions() {
+        // do nothing
     }
 
     /** holds the default model group */
@@ -84,7 +85,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         }
         return defaultModelGroup;
     }
-   
+
    /**
      * Configures the framework. All the bits and pieces that need
      * to be configured are configured, those that need to happen
@@ -102,7 +103,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * the {@link ERXCompilerProxy} and {@link ERXValidationFactory}.
      * This delegate is configured when this framework is loaded.
      */
-   
+
     protected void initialize() {
     	NSNotificationCenter.defaultCenter().addObserver(this,
     			new NSSelector("bundleDidLoad", ERXConstant.NotificationClassArray),
@@ -113,9 +114,9 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     public void bundleDidLoad(NSNotification n) {
     	if(_initialized) return;
     	_initialized = true;
-    	
+
     	try {
-    		// This will load any optional configuration files, 
+    		// This will load any optional configuration files,
     		ERXConfigurationManager.defaultManager().initialize();
     		// ensures that WOOutputPath's was processed with this @@
     		// variable substitution. WOApplication uses WOOutputPath in
@@ -128,11 +129,11 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         	// WOEncodingDetector.sharedInstance().setFallbackEncoding("UTF-8");
         	ERXLogger.configureLoggingWithSystemProperties();
             ERXArrayUtilities.initialize();
-            
+
     		// False by default
     		if (ERXValueUtilities.booleanValue(System.getProperty(ERXSharedEOLoader.PatchSharedEOLoadingPropertyKey))) {
     			ERXSharedEOLoader.patchSharedEOLoading();
-    		}            
+    		}
     		ERXExtensions.configureAdaptorContextRapidTurnAround(this);
     		ERXJDBCAdaptor.registerJDBCAdaptor();
     		EODatabaseContext.setDefaultDelegate(ERXDatabaseContextDelegate.defaultDelegate());
@@ -149,7 +150,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     					new NSSelector("editingContextDidCreate",
     							ERXConstant.NotificationClassArray),
     							ERXEC.EditingContextDidCreateNotification,
-    							null);                    
+    							null);
     		}
     	} catch (Exception e) {
     		throw NSForwardException._runtimeExceptionForThrowable(e);
@@ -167,27 +168,27 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     	ERXJDBCAdaptor.registerJDBCAdaptor();
         ERXConfigurationManager.defaultManager().loadOptionalConfigurationFiles();
         ERXProperties.populateSystemProperties();
-        
+
         ERXConfigurationManager.defaultManager().configureRapidTurnAround();
         ERXLocalizer.initialize();
         ERXValidationFactory.defaultFactory().configureFactory();
         // update configuration with system properties that might depend
-        // on others like 
+        // on others like
         // log4j.appender.SQL.File=@@loggingBasePath@@/@@port@@.sql
         // loggingBasePath=/var/log/@@name@@
         // name and port are resolved via WOApplication.application()
         // ERXLogger.configureLoggingWithSystemProperties();
-        
+
         _log = Logger.getLogger(ERXExtensions.class);
 
-        registerSQLSupportForSelector(new NSSelector(ERXPrimaryKeyListQualifier.IsContainedInArraySelectorName), 
+        registerSQLSupportForSelector(new NSSelector(ERXPrimaryKeyListQualifier.IsContainedInArraySelectorName),
                 EOQualifierSQLGeneration.Support.supportForClass(ERXPrimaryKeyListQualifier.class));
-        registerSQLSupportForSelector(new NSSelector(ERXToManyQualifier.MatchesAllInArraySelectorName), 
+        registerSQLSupportForSelector(new NSSelector(ERXToManyQualifier.MatchesAllInArraySelectorName),
                 EOQualifierSQLGeneration.Support.supportForClass(ERXToManyQualifier.class));
-        registerSQLSupportForSelector(new NSSelector(ERXRegExQualifier.MatchesSelectorName), 
+        registerSQLSupportForSelector(new NSSelector(ERXRegExQualifier.MatchesSelectorName),
                 EOQualifierSQLGeneration.Support.supportForClass(ERXRegExQualifier.class));
         EOQualifierSQLGeneration.Support.setSupportForClass(new ERXInOrQualifierSupport(), EOOrQualifier._CLASS);
-		
+
 		// ERXObjectStoreCoordinatorPool has a static initializer, so just load the class if
 		// the configuration setting exists
         if (ERXRemoteSynchronizer.remoteSynchronizerEnabled()) {
@@ -195,9 +196,9 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         }
 		ERXObjectStoreCoordinatorPool.initializeIfNecessary();
     }
-    
+
     private static Map _qualifierKeys;
-    
+
     public static synchronized void registerSQLSupportForSelector(NSSelector selector, EOQualifierSQLGeneration.Support support) {
         if(_qualifierKeys == null) {
             _qualifierKeys = new HashMap();
@@ -206,7 +207,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         }
         _qualifierKeys.put(selector.name(), support);
     }
-    
+
     /**
      * Support class that listens for EOKeyValueQualifiers that have a selector
      * that was registered and uses their support instead.
@@ -214,9 +215,9 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * @author ak
      */
     public static class KeyValueQualifierSQLGenerationSupport extends EOQualifierSQLGeneration.Support {
-        
+
         private EOQualifierSQLGeneration.Support _old;
-        
+
         public KeyValueQualifierSQLGenerationSupport(EOQualifierSQLGeneration.Support old) {
             _old = old;
         }
@@ -233,7 +234,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
             }
             return support;
         }
-        
+
         public String sqlStringForSQLExpression(EOQualifier eoqualifier, EOSQLExpression e) {
             return supportForQualifier(eoqualifier).sqlStringForSQLExpression(eoqualifier, e);
         }
@@ -258,7 +259,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     public void configureAdaptorContext(NSNotification n) {
         ERXExtensions.configureAdaptorContext();
     }
-    
+
     /**
      * This method is called every time a session times
      * out. It allows us to release references to all the
@@ -291,15 +292,15 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     /** flag to indicate if adaptor channel logging is enabled */
     private static Boolean adaptorEnabled;
 
-    /** 
+    /**
      * flag to inidicate if rapid turn around is enabled for the
-     * adaptor channel logging. 
+     * adaptor channel logging.
      */
     private static boolean _isConfigureAdaptorContextRapidTurnAround = false;
 
     /**
-     * Configures the passed in observer to register a call back 
-     * when the configuration file is changed. This allows one to 
+     * Configures the passed in observer to register a call back
+     * when the configuration file is changed. This allows one to
      * change a logger's setting and have that changed value change
      * the NSLog setting to log the generated SQL. This method is
      * called as part of the framework initialization process.
@@ -310,14 +311,15 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     //		to do something like this, but much more generic, i.e. have a mapping
     //		between logger names and NSLog groups, for example
     //		com.webobjects.logging.DebugGroupSQLGeneration we should
-    //		be able to get the last part of the logger name and look up that log group and turn 
+    //		be able to get the last part of the logger name and look up that log group and turn
+    @SuppressWarnings("deprecation")
     public static void configureAdaptorContextRapidTurnAround(Object anObserver) {
         if (!_isConfigureAdaptorContextRapidTurnAround) {
             // This allows enabling from the log4j system.
             adaptorLogger = Logger.getLogger("er.transaction.adaptor.EOAdaptorDebugEnabled");
-            
+
             sharedEOadaptorLogger = Logger.getLogger("er.transaction.adaptor.EOSharedEOAdaptorDebugEnabled");
-            if ((adaptorLogger.isDebugEnabled() 
+            if ((adaptorLogger.isDebugEnabled()
             		&& !NSLog.debugLoggingAllowedForGroups(NSLog.DebugGroupSQLGeneration|NSLog.DebugGroupDatabaseAccess))
             		|| ERXProperties.booleanForKey("EOAdaptorDebugEnabled")) {
                 NSLog.allowDebugLoggingForGroups(NSLog.DebugGroupSQLGeneration|NSLog.DebugGroupDatabaseAccess);
@@ -387,7 +389,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * message to EO whose EditingContext is gone. Only used in pre-5.2 systems.
      */
     private static NSMutableDictionary _editingContextsPerSession;
-    
+
     /**
      * This method is called when a session times out.
      * Calling this method will release references to
@@ -410,7 +412,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
                     for (Enumeration ecEnumerator = ecs.objectEnumerator(); ecEnumerator.hasMoreElements();) {
                         ((EOEditingContext)ecEnumerator.nextElement()).dispose();
                     }
-                }                
+                }
             }
         }
     }
@@ -452,7 +454,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * @return string with all of its html tags removed
      */
     // FIXME: this is so simplistic it will break if you sneeze
-    // MOVEME: ERXStringUtilities 
+    // MOVEME: ERXStringUtilities
     public static String removeHTMLTagsFromString(String s) {
         StringBuffer result=new StringBuffer();
         if (s != null && s.length()>0) {
@@ -573,7 +575,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         v1==v2 ? false :
         v1==null && v2!=null ||
         v1!=null && v2==null ||
-        !v1.equals(v2);
+        (v1 != null && !v1.equals(v2) );  // Just to make javac null checking happy
     }
 
     /**
@@ -652,7 +654,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
                 from.takeValueForKeyPath(to,keyPath);
         }
     }
-    
+
     /**
      * Returns the byte array for a given file.
      * @param f file to get the bytes from
@@ -680,7 +682,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * @param encoding to be used, null will use the default
      * @return string representation of the file.
      */
-    // MOVEME: ERXFileUtilities    
+    // MOVEME: ERXFileUtilities
     public static String stringFromFile(File f, String encoding) throws IOException {
         return ERXFileUtilities.stringFromFile(f, encoding);
     }
@@ -860,7 +862,8 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
             NSArray fetchSpecNames = entity.sharedObjectFetchSpecificationNames();
             int count =  (fetchSpecNames != null) ? fetchSpecNames.count() : 0;
 
-            if ( count > 0 ) { //same check as ERXEOAccessUtilities.entityWithNamedIsShared(), but avoids duplicate work
+            if ( fetchSpecNames != null // to make javac null checker happy
+                 && count > 0 ) { //same check as ERXEOAccessUtilities.entityWithNamedIsShared(), but avoids duplicate work
                 for (int index = 0 ; index < count ; ++index) {
                     String oneFetchSpecName = (String)fetchSpecNames.objectAtIndex(index);
                     EOFetchSpecification fs = entity.fetchSpecificationNamed(oneFetchSpecName);
@@ -930,7 +933,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
 	}
     }
     /**
-     * Adds the session ID (wosid) for a given session to a given url. 
+     * Adds the session ID (wosid) for a given session to a given url.
      * @param url to add wosid form value to.
      * @return url with the addition of wosid form value
      */
@@ -946,7 +949,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     }
 
     /**
-     * Given an initial string and an array of substrings, 
+     * Given an initial string and an array of substrings,
      * Removes any occurances of any of the substrings
      * from the initial string. Used in conjunction with
      * fuzzy matching.
@@ -976,7 +979,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * to have a boolean instance variable corresponding to the given
      * key on your session object. This flag can be retrieved using
      * the method <code>booleanFlagOnSessionForKeyWithDefault</code>.
-     * @param s session object on which to set the boolean flag 
+     * @param s session object on which to set the boolean flag
      * @param key to be used in the session's dictionary
      * @param newValue boolean value to be set on the session
      */
@@ -1028,7 +1031,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * Constructs a unique key based on a context.
      * A method used by the preferences mechanism from ERDirectToWeb which
      * needs to be here because it is shared by ERDirectToWeb and ERCoreBusinessLogic.
-     * 
+     *
      * @param key preference key
      * @param context most likely a d2wContext object
      * @return a unique preference key for storing and retriving preferences
@@ -1064,10 +1067,10 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
                 if (p.getOutputStream()!=null) p.getOutputStream().close();
                 if (p.getErrorStream()!=null) p.getErrorStream().close();
                 p.destroy();
-            } catch (IOException e) {}
+            } catch (IOException e) { /* do nothing */ }
         }
     }
-    
+
     /**
      * Determines if a given object implements a method given
      * the name and the array of input parameters.
