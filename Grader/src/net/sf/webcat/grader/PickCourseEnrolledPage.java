@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.3 2007/06/03 04:26:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.3 2007/06/03 04:26:34 stedwar2 Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent
@@ -47,7 +47,7 @@ public class PickCourseEnrolledPage
     // ----------------------------------------------------------
     /**
      * Creates a new PickCourseTaughtPage object.
-     * 
+     *
      * @param context The context to use
      */
     public PickCourseEnrolledPage( WOContext context )
@@ -109,7 +109,7 @@ public class PickCourseEnrolledPage
         if ( selectedCourse != null )
         {
             selectedCourseIndex =
-                courseDisplayGroup.displayedObjects().indexOfIdenticalObject( 
+                courseDisplayGroup.displayedObjects().indexOfIdenticalObject(
                         selectedCourse );
             if ( selectedCourseIndex == NSArray.NotFound )
             {
@@ -299,7 +299,7 @@ public class PickCourseEnrolledPage
     // ----------------------------------------------------------
     public int index4()
     {
-        return index3() + coursesAdmined.count();
+        return index3() + coursesTaught.count();
     }
 
 
