@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.4 2007/05/08 04:47:12 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.5 2007/06/03 04:16:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  frameworksBaseURL() setting.
  *
  *  @author  stedwar2
- *  @version $Id: WCResourceManager.java,v 1.4 2007/05/08 04:47:12 stedwar2 Exp $
+ *  @version $Id: WCResourceManager.java,v 1.5 2007/06/03 04:16:12 stedwar2 Exp $
  */
 public class WCResourceManager
     extends WOResourceManager
@@ -212,7 +212,12 @@ public class WCResourceManager
             if ( useDevelopmentURLsIfNecessary &&
                  net.sf.webcat.WCServletAdaptor.getInstance() == null )
             {
-                result = developmentBaseURL() + aResourceName;
+                result = developmentBaseURL();
+                if ( aFrameworkName != null )
+                {
+                    result += aFrameworkName + ".framework/WebServerResources/";
+                }
+                result += aResourceName;
             }
             else
             {
