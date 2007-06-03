@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Department.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ |  $Id: Department.java,v 1.2 2007/06/03 04:15:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -28,12 +28,14 @@ package net.sf.webcat.core;
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
 
+import sun.security.krb5.internal.*;
+
 // -------------------------------------------------------------------------
 /**
  * Represents one department within an institution.
  *
  * @author Stephen Edwards
- * @version $Id: Department.java,v 1.1 2006/02/19 19:03:09 stedwar2 Exp $
+ * @version $Id: Department.java,v 1.2 2007/06/03 04:15:22 stedwar2 Exp $
  */
 public class Department
     extends _Department
@@ -51,6 +53,30 @@ public class Department
 
 
     //~ Methods ...............................................................
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a short (no longer than 60 characters) description of this
+     * department.
+     * @return the description
+     */
+    public String userPresentableDescription()
+    {
+        return abbreviation() + " (" + institution() + ")";
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a human-readable representation of this department, which is
+     * the same as {@link #userPresentableDescription()}.
+     * @return this user's name
+     */
+    public String toString()
+    {
+        return userPresentableDescription();
+    }
 
 
 // If you add instance variables to store property values you
