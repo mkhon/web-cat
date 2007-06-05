@@ -3,7 +3,6 @@ Library\Frameworks\JavaDTWGeneration.framework
 Library\Frameworks\JavaEOAccess.framework
 Library\Frameworks\JavaEOControl.framework
 Library\Frameworks\JavaEOProject.framework
-Library\Frameworks\JavaJDBCAdaptor.framework
 Library\Frameworks\JavaFoundation.framework
 Library\Frameworks\JavaWebObjects.framework
 Library\Frameworks\JavaWOJSPServlet.framework
