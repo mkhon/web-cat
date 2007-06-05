@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.2 2007/06/05 13:24:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * results).
  *
  * @author Stephen Edwards
- * @version $Id: EditStaffPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: EditStaffPage.java,v 1.2 2007/06/05 13:24:35 stedwar2 Exp $
  */
 public class EditStaffPage
     extends GraderComponent
@@ -92,6 +92,13 @@ public class EditStaffPage
                                         ? User.INSTRUCTOR_PRIVILEGES
                                         : User.STUDENT_PRIVILEGES ),
                         "accessLevel" );
+        if ( firstLoad )
+        {
+            potentialDisplayGroup.queryMatch().takeValueForKey(
+                wcSession().user().authenticationDomain().propertyName(),
+                "authenticationDomain.propertyName" );
+            firstLoad = false;
+        }
         potentialDisplayGroup.qualifyDataSource();
         potentialDisplayGroup.fetch();
         potentialDisplayGroup.setNumberOfObjectsPerBatch( oldBatchSize );
@@ -177,6 +184,7 @@ public class EditStaffPage
 
     protected int oldBatchSize;
     protected int oldBatchIndex;
+    protected boolean firstLoad = true;
 
     static Logger log = Logger.getLogger( EditStaffPage.class );
 }
