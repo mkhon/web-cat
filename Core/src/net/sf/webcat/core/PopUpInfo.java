@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PopUpInfo.java,v 1.1 2007/04/05 03:10:09 stedwar2 Exp $
+ |  $Id: PopUpInfo.java,v 1.2 2007/06/11 19:11:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * info/help message.
  *
  * @author Stephen Edwards
- * @version $Id: PopUpInfo.java,v 1.1 2007/04/05 03:10:09 stedwar2 Exp $
+ * @version $Id: PopUpInfo.java,v 1.2 2007/06/11 19:11:33 stedwar2 Exp $
  */
 public class PopUpInfo
     extends WOComponent
@@ -44,18 +44,13 @@ public class PopUpInfo
     // ----------------------------------------------------------
     /**
      * Creates a new object.
-     * 
+     *
      * @param context The page's context
      */
     public PopUpInfo( WOContext context )
     {
         super( context );
     }
-
-
-    //~ KVC Attributes (must be public) .......................................
-
-    public  String message;
 
 
     //~ Methods ...............................................................
@@ -68,8 +63,20 @@ public class PopUpInfo
 
 
     // ----------------------------------------------------------
-    public boolean synchronizesVariablesWithBindings()
+    public String message()
     {
-        return true;
+        return (String)valueForBinding( "message" );
+    }
+
+
+    // ----------------------------------------------------------
+    public String title()
+    {
+        String title = "Information";
+        if ( hasBinding( "title" ) )
+        {
+            title = (String)valueForBinding( "title" );
+        }
+        return title;
     }
 }
