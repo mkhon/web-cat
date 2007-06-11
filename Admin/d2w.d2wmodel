@@ -10,6 +10,15 @@
             };
         },
         {
+            author = 50;
+            class = com.webobjects.directtoweb.Rule;
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment;
+                keyPath = editTime;
+                value = 1;
+            };
+        },
+        {
             author = 60;
             class = com.webobjects.directtoweb.Rule;
             lhs = {
@@ -335,8 +344,6 @@
                 value = net.sf.webcat.admin.WCQueryAllEntitiesPageTemplate;
             };
         },
-
-
         {
             class = com.webobjects.directtoweb.Rule;
             author = 50;
@@ -349,12 +356,6 @@
                         selectorName = "isEqualTo:";
                         value = edit;
                     },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
                     {
                         class = EOKeyValueQualifier;
                         key = smartRelationship.isToMany;
@@ -366,12 +367,12 @@
             rhs = {
                 class = com.webobjects.directtoweb.Assignment;
                 keyPath = componentName;
-                value = ERD2WEditToManyRelationship;
+                value = D2WEditToManyFault;
             };
         },
         {
             class = com.webobjects.directtoweb.Rule;
-            author = 50;
+            author = 45;
             lhs = {
                 class = EOAndQualifier;
                 qualifiers = (
@@ -401,7 +402,106 @@
             rhs = {
                 class = com.webobjects.directtoweb.Assignment;
                 keyPath = componentName;
+                value = D2WQueryToOneFault;
+            };
+        },
+        {
+            class = com.webobjects.directtoweb.Rule;
+            author = 50;
+            lhs = {
+                class = EOAndQualifier;
+                qualifiers = (
+                    {
+                        class = EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo:";
+                        value = query;
+                    },
+                    {
+                        class = EOKeyValueQualifier;
+                        key = smartRelationship;
+                        selectorName = "isNotEqualTo:";
+                        value = { class = EONull; };
+                    },
+                    {
+                        class = EONotQualifier;
+                        qualifier = {
+                            class = EOKeyValueQualifier;
+                            key = smartRelationship.isToMany;
+                            selectorName = "isEqualTo:";
+                            value = { class = NSNumber; value = 1; };
+                        };
+                    },
+                    {
+                        class = EOOrQualifier;
+                        qualifiers = (
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "authenticationDomain";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "course";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "department";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "semester";
+                            }
+                        );
+                    }
+                );
+            };
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment;
+                keyPath = componentName;
                 value = ERD2WQueryToOneRelationship;
+            };
+        },
+        {
+            class = com.webobjects.directtoweb.Rule;
+            author = 45;
+            lhs = {
+                class = EOAndQualifier;
+                qualifiers = (
+                    {
+                        class = EOKeyValueQualifier;
+                        key = task;
+                        selectorName = "isEqualTo:";
+                        value = edit;
+                    },
+                    {
+                        class = EOKeyValueQualifier;
+                        key = smartRelationship;
+                        selectorName = "isNotEqualTo:";
+                        value = { class = EONull; };
+                    },
+                    {
+                        class = EONotQualifier;
+                        qualifier = {
+                            class = EOKeyValueQualifier;
+                            key = smartRelationship.isToMany;
+                            selectorName = "isEqualTo:";
+                            value = { class = NSNumber; value = 1; };
+                        };
+                    }
+                );
+            };
+            rhs = {
+                class = com.webobjects.directtoweb.Assignment;
+                keyPath = componentName;
+                value = D2WEditToOneFault;
             };
         },
         {
@@ -422,12 +522,6 @@
                         selectorName = "isNotEqualTo:";
                         value = { class = EONull; };
                     },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
                     {
                         class = EONotQualifier;
                         qualifier = {
@@ -436,6 +530,35 @@
                             selectorName = "isEqualTo:";
                             value = { class = NSNumber; value = 1; };
                         };
+                    },
+                    {
+                        class = EOOrQualifier;
+                        qualifiers = (
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "authenticationDomain";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "course";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "department";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "semester";
+                            }
+                        );
                     }
                 );
             };
@@ -447,7 +570,7 @@
         },
         {
             class = com.webobjects.directtoweb.Rule;
-            author = 60;
+            author = 45;
             lhs = {
                 class = EOAndQualifier;
                 qualifiers = (
@@ -480,12 +603,6 @@
                         selectorName = "isNotEqualTo:";
                         value = { class = EONull; };
                     },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
                     {
                         class = EONotQualifier;
                         qualifier = {
@@ -505,7 +622,7 @@
         },
         {
             class = com.webobjects.directtoweb.Rule;
-            author = 65;
+            author = 50;
             lhs = {
                 class = EOAndQualifier;
                 qualifiers = (
@@ -532,70 +649,6 @@
                             }
                         );
                     },
-                    {
-                        class = EOKeyValueQualifier;
-                        key = smartRelationship;
-                        selectorName = "isNotEqualTo:";
-                        value = { class = EONull; };
-                    },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
-                    {
-                        class = EONotQualifier;
-                        qualifier = {
-                            class = EOKeyValueQualifier;
-                            key = smartRelationship.isToMany;
-                            selectorName = "isEqualTo:";
-                            value = { class = NSNumber; value = 1; };
-                        };
-                    }
-                );
-            };
-            rhs = {
-                class = com.webobjects.directtoweb.Assignment;
-                keyPath = componentName;
-                value = D2WDisplayToOneFault;
-            };
-        },
-        {
-            class = com.webobjects.directtoweb.Rule;
-            author = 60;
-            lhs = {
-                class = EOAndQualifier;
-                qualifiers = (
-                    {
-                        class = EOOrQualifier;
-                        qualifiers = (
-                            {
-                                class = EOKeyValueQualifier;
-                                key = task;
-                                selectorName = "isEqualTo:";
-                                value = list;
-                            },
-                            {
-                                class = EOKeyValueQualifier;
-                                key = task;
-                                selectorName = "isEqualTo:";
-                                value = select;
-                            },
-                            {
-                                class = EOKeyValueQualifier;
-                                key = task;
-                                selectorName = "isEqualTo:";
-                                value = inspect;
-                            }
-                        );
-                    },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
                     {
                         class = EOKeyValueQualifier;
                         key = smartRelationship.isToMany;
@@ -639,12 +692,6 @@
                             }
                         );
                     },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
                     {
                         class = EOKeyValueQualifier;
                         key = smartRelationship.isToMany;
@@ -712,12 +759,6 @@
                         selectorName = "isNotEqualTo:";
                         value = { class = EONull; };
                     },
-//                  {
-//                      class = EOKeyValueQualifier;
-//                      key = smartRelationship.destinationEntity.sharedObjectFetchSpecificationNames.count;
-//                      selectorName = "isGreaterThan:";
-//                      value = { class = NSNumber; value = 0; };
-//                  },
                     {
                         class = EONotQualifier;
                         qualifier = {
@@ -929,6 +970,8 @@
                 keyPath = componentName;
                 value = D2WQueryBoolean;
             };
-        }
+        },
+    	{"class" = "com.webobjects.directtoweb.Rule"; "author" = "45"; "lhs" = {"class" = "EOAndQualifier"; "qualifiers" = ({"class" = "EOOrQualifier"; "qualifiers" = ({"class" = "EOKeyValueQualifier"; "key" = "task"; "selectorName" = "isEqualTo:"; "value" = "list"; }, {"class" = "EOKeyValueQualifier"; "key" = "task"; "selectorName" = "isEqualTo:"; "value" = "select"; }, {"class" = "EOKeyValueQualifier"; "key" = "task"; "selectorName" = "isEqualTo:"; "value" = "inspect"; }); }, {"class" = "EOKeyValueQualifier"; "key" = "smartAttribute.className"; "selectorName" = "isEqualTo:"; "value" = "com.webobjects.foundation.NSTimestamp"; }); }; "rhs" = {"class" = "com.webobjects.directtoweb.Assignment"; "keyPath" = "componentName"; "value" = "net.sf.webcat.admin.d2w.DisplayDate"; }; },
+        {"class" = "com.webobjects.directtoweb.Rule"; "author" = "45"; "lhs" = {"class" = "EOAndQualifier"; "qualifiers" = ({"class" = "EOKeyValueQualifier"; "key" = "task"; "selectorName" = "isEqualTo:"; "value" = "edit"; }, {"class" = "EOKeyValueQualifier"; "key" = "session.javaScriptEnabled"; "selectorName" = "isEqualTo:"; "value" = {"class" = "NSNumber"; "value" = "1"; }; }, {"class" = "EOKeyValueQualifier"; "key" = "smartAttribute.className"; "selectorName" = "isEqualTo:"; "value" = "com.webobjects.foundation.NSTimestamp"; }); }; "rhs" = {"class" = "com.webobjects.directtoweb.Assignment"; "keyPath" = "componentName"; "value" = "net.sf.webcat.admin.d2w.EditDate"; }; }
     );
 }
