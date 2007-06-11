@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWrapper.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ |  $Id: WCPageWrapper.java,v 1.2 2007/06/11 15:50:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * The page wrapper for direct-to-web pages.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCPageWrapper.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ *  @version $Id: WCPageWrapper.java,v 1.2 2007/06/11 15:50:39 stedwar2 Exp $
  */
 public class WCPageWrapper
     extends WOComponent
@@ -48,7 +48,7 @@ public class WCPageWrapper
     // ----------------------------------------------------------
     /**
      * Creates a new WCPageWrapper object.
-     * 
+     *
      * @param aContext The context to use
      */
     public WCPageWrapper( WOContext aContext )
@@ -56,6 +56,13 @@ public class WCPageWrapper
         super( aContext );
         log.debug( "constructor" );
     }
+
+
+    //~ KVC Attributes (must be public) .......................................
+
+    public String  stylesheet;
+    public String  externalJavascript;
+    public String  inlineHeaderContents;
 
 
     //~ Methods ...............................................................

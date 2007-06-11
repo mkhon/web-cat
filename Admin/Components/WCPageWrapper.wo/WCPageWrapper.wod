@@ -3,7 +3,10 @@ Body: WOComponentContent {
 }
 
 PlainPage: net.sf.webcat.core.PageWithNavigation {
-	title = "Edit Database";
+	title 				 = "Edit Database";
+    stylesheet           = stylesheet;
+    externalJavascript   = externalJavascript;
+    inlineHeaderContents = inlineHeaderContents;
 }
 
 Header: net.sf.webcat.admin.WCMenuHeader {
