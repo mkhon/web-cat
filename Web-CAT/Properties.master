@@ -53,6 +53,10 @@ WOAllowsConcurrentRequestHandling = true
 # -------------------------------------------------------------------
 dbConnectDriverGLOBAL = com.mysql.jdbc.Driver
 er.extensions.ERXEC.defaultAutomaticLockUnlock = true
+ognl.active          = true
+ognl.helperFunctions = true
+ognl.inlineBindings  = true
+er.extensions.ERXNSLogLog4jBridge.ignoreNSLogSettings = true
 
 
 # -------------------------------------------------------------------
@@ -68,6 +72,7 @@ er.extensions.ERXEC.defaultAutomaticLockUnlock = true
 # are available, and enable them by symbolic names as shown below.
 # -------------------------------------------------------------------
 # NSDebugGroups=(:3, com.webobjects.foundation.NSLog.DebugGroupComponents)
+log4j.logger.NSLog = WARN
 
 
 # ===================================================================
