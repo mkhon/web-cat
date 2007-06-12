@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.2 2007/05/08 04:36:20 stedwar2 Exp $
+ |  $Id: FileUtilities.java,v 1.3 2007/06/12 02:55:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -13,7 +13,7 @@
  |  Web-CAT is distributed in the hope that it will be useful,
  |  but WITHOUT ANY WARRANTY; without even the implied warranty of
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- |  GNU General Public License for more details. 
+ |  GNU General Public License for more details.
  |
  |  You should have received a copy of the GNU General Public License
  |  along with Web-CAT; if not, write to the Free Software
@@ -62,7 +62,7 @@ public class FileUtilities
      * provided purely for use by the Bootstrap code.  All other code
      * should use the net.sf.webcat.archives.ArchiveManager
      * class instead.
-     * 
+     *
      * @param zipFile the zip file
      * @param outputDir full path of the output directory
      * @throws java.io.IOException if occurs during unzipping
@@ -108,7 +108,7 @@ public class FileUtilities
      * Copies the contents of an input stream onto an existing output
      * stream.  The output stream is flushed when the operation
      * is complete.
-     * 
+     *
      * @param in  the input stream to copy
      * @param out the destination
      * @throws IOException if there are IO errors
@@ -132,7 +132,7 @@ public class FileUtilities
     /**
      * Return a canonical version of the file name, using "/" as the path
      * seperator instead of "\".
-     * 
+     *
      * @param name the File with the name to convert
      * @return the canonical version of the file's name
      */
@@ -153,7 +153,7 @@ public class FileUtilities
     /**
      * Return a canonical version of the file name, using "/" as the path
      * seperator instead of "\".
-     * 
+     *
      * @param name the name to convert
      * @return the canonical version of the file's name
      */
@@ -166,39 +166,32 @@ public class FileUtilities
     // ----------------------------------------------------------
     /**
      * Recursively deletes a directory
-     * 
+     *
      * @param dir the File object for the directory
-     * @param preserve an array of File objects indicating elements within
+     * @param preserve a Map with String keys indicating elements within
      *        the target directory to keep (that is, not to delete); this
      *        parameter can be null if none are to be preserved.
      * @return true if the directory was removed, false if it was not
      *  (because at least some of its contents were preserved).
      */
-    public static boolean deleteDirectory( File dir, String[] preserve )
+    public static boolean deleteDirectory( File dir, Map preserve )
     {
         if ( dir == null || !dir.exists() ) return true;
         File[] files = dir.listFiles();
         boolean deletedAll = true;
         for ( int i = 0; i < files.length; i++ )
         {
-            boolean skipMe = false;
             if ( preserve != null )
             {
                 // This is just a linear search, because the preserve
                 // lists are so short in general that it is not worth the
                 // effort to speed them up.
-                String normalizedName = normalizeFileName(  files[i] );
-                for ( int j = 0; j < preserve.length; j++ )
+                if ( preserve.containsKey( normalizeFileName(  files[i] ) ) )
                 {
-                    if ( normalizedName.equals( preserve[j] ) )
-                    {
-                        skipMe = true;
-                        deletedAll = false;
-                        break;
-                    }
+                    deletedAll = false;
+                    continue;
                 }
             }
-            if ( skipMe ) continue;
 
             if ( files[i].isDirectory() )
             {
