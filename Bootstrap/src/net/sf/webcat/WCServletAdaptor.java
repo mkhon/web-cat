@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.6 2007/05/08 04:36:20 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.7 2007/06/12 02:56:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.6 2007/05/08 04:36:20 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.7 2007/06/12 02:56:50 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -412,7 +412,7 @@ public class WCServletAdaptor
         if ( System.getProperty( "os.name" ).indexOf( "Windows" ) >= 0 )
         {
             defaultDir = "C:/Apple";
-            File f = new File( defaultDir ); 
+            File f = new File( defaultDir );
             if ( !f.exists() || !f.isDirectory() )
             {
                 // Not found
@@ -422,7 +422,7 @@ public class WCServletAdaptor
         else if ( System.getProperty( "os.name" ).indexOf( "Mac" ) >= 0 )
         {
             defaultDir = "/System";
-            File f = new File( defaultDir ); 
+            File f = new File( defaultDir );
             if ( !f.exists() || !f.isDirectory() )
             {
                 // Not found
@@ -432,12 +432,12 @@ public class WCServletAdaptor
         else
         {
             defaultDir = "/opt/Apple";
-            File f = new File( defaultDir ); 
+            File f = new File( defaultDir );
             if ( !f.exists() || !f.isDirectory() )
             {
                 // Not found, so try /usr/local
                 defaultDir = "/usr/local/Apple";
-                f = new File( defaultDir ); 
+                f = new File( defaultDir );
                 if ( !f.exists() || !f.isDirectory() )
                 {
                     // Not found
@@ -658,7 +658,7 @@ public class WCServletAdaptor
             }
         }
 
-        String[] preserveOnUpdate = null;
+        Map preserveOnUpdate = null;
         {
             String preserveOnUpdateRaw =
                 updater.getProperty( "preserveOnUpdate" );
@@ -668,16 +668,18 @@ public class WCServletAdaptor
                     + "WEB-INF/web.xml,"
                     + "WEB-INF/update.properties,"
                     + "WEB-INF/Web-CAT.woa/Contents/Frameworks,"
+                    + "WEB-INF/Web-CAT.woa/Contents/Library,"
                     + "WEB-INF/Web-CAT.woa/configuration.properties,"
                     + "WEB-INF/pending-updates";
             }
             if ( preserveOnUpdateRaw != null )
             {
-                preserveOnUpdate = preserveOnUpdateRaw.split( ",\\s*" );
-                for ( int i = 0; i < preserveOnUpdate.length; i++ )
+                preserveOnUpdate = new HashMap();
+                for ( String entry : preserveOnUpdateRaw.split( ",\\s*" ) )
                 {
-                    preserveOnUpdate[i] = FileUtilities.normalizeFileName(
-                        new File( unpackDir, preserveOnUpdate[i] ) );
+                    String key = FileUtilities.normalizeFileName(
+                        new File( unpackDir, entry ) );
+                    preserveOnUpdate.put( key, key );
                 }
             }
         }
@@ -758,10 +760,10 @@ public class WCServletAdaptor
         {
             downloadUpdateIfNecessary( getUpdaterFor( subdirs[i] ) );
         }
-        
+
         // Now handle the application update, if available
         downloadUpdateIfNecessary( getUpdaterFor( mainBundle ) );
-        
+
         // Now check through existing subsystems and check for any required
         // subsystems that are not yet installed
         for ( Iterator i = subsystems.entrySet().iterator(); i.hasNext(); )
@@ -909,7 +911,7 @@ public class WCServletAdaptor
 
         return buffer.toString();
     }
-    
+
 
     // ----------------------------------------------------------
     /**
@@ -1010,7 +1012,7 @@ public class WCServletAdaptor
         }
 
         // Now create the updater for the main bundle
-        getUpdaterFor( mainBundle );        
+        getUpdaterFor( mainBundle );
     }
 
 
