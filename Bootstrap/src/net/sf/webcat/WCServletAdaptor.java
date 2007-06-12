@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.7 2007/06/12 02:56:50 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.8 2007/06/12 03:32:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.7 2007/06/12 02:56:50 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.8 2007/06/12 03:32:53 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -95,8 +95,8 @@ public class WCServletAdaptor
         }
         catch ( javax.servlet.UnavailableException e )
         {
-            // License key must be missing or invalid
-            needsLicense = true;
+            // Failure during startup
+            initFailed = e;
         }
     }
 
@@ -132,164 +132,13 @@ public class WCServletAdaptor
         throws IOException,
             ServletException
     {
-        if ( needsLicense )
+        if ( initFailed != null )
         {
-            sendLicenseForm( arg1, null );
+            sendExceptionNotice( arg1 );
         }
         else
         {
             super.doGet( arg0, arg1 );
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    public void doPost( HttpServletRequest  request,
-                        HttpServletResponse response )
-        throws IOException,
-            ServletException
-    {
-        if ( needsLicense )
-        {
-            String kind = request.getParameter( "kind" );
-            if ( kind == null )
-            {
-                sendLicenseForm( response,
-                    "You must choose a deployment license method." );
-            }
-            else if ( kind.equals( "key" ) )
-            {
-                String key = request.getParameter( "key" );
-                if ( key == null || key.equals( "" ) )
-                {
-                    sendLicenseForm( response,
-                        "You must enter a deployment license key." );
-                }
-                else
-                {
-                    // Try to install license
-                    File license = licenseKeyFile();
-                    if ( license.exists() )
-                    {
-                        license.delete();
-                    }
-                    try
-                    {
-                        properties.remove( INSTALLED_WOROOT );
-                        commitProperties();
-
-                        PrintWriter out = new PrintWriter(
-                            new FileWriter( license ) );
-                        out.println( key );
-                        out.close();
-                        // Try to re-initialize with new license
-                        super.init();
-                        needsLicense = false;
-                    }
-                    catch ( javax.servlet.UnavailableException e )
-                    {
-                        sendLicenseForm( response, null );
-                    }
-                    catch ( IOException e )
-                    {
-                        sendLicenseForm( response,
-                            "Error writing license key file: "
-                            + e.getMessage() );
-                    }
-                    if ( !needsLicense )
-                    {
-                        sendLicenseAcknowledgement( response );
-                    }
-                }
-            }
-            else
-            {
-                String woroot = request.getParameter( "woroot" );
-                if ( woroot == null )
-                {
-                    sendLicenseForm( response,
-                        "You must enter a directory for the local "
-                        + "WebObjects installation." );
-                }
-                else
-                {
-                    File woRoot = new File( woroot );
-                    if ( !woRoot.exists() )
-                    {
-                        sendLicenseForm( response,
-                            "The local WebObjects root you specified "
-                            + "could not be found." );
-                    }
-                    else if ( !woRoot.isDirectory() )
-                    {
-                        sendLicenseForm( response,
-                            "The local WebObjects root you specified "
-                            + "is not a directory." );
-                    }
-                    else
-                    {
-                        // Save woroot in the properties file
-                        properties.setProperty( INSTALLED_WOROOT, woroot );
-                        commitProperties();
-
-                        // Force classpath to be reloaded
-                        String webInfRoot = super.getServletContext()
-                            .getRealPath( "WEB-INF" );
-                        File webInfDir = new File( webInfRoot );
-                        applyNecessaryUpdates( webInfDir );
-                        if ( wrappedContext != null )
-                        {
-                            ( (WCServletContext)wrappedContext )
-                                .setWOClasspath( woClasspath );
-                        }
-                        try
-                        {
-                            // Try to clear installed wo application wrapper
-                            // via reflection (need to access a private
-                            // field!)
-                            Class parent = com.webobjects.jspservlet
-                                .WOServletAdaptor.class;
-                            java.lang.reflect.Field field = parent
-                                .getDeclaredField( "woApplicationWrapper" );
-                            field.setAccessible( true );
-                            field.set( this, null );
-                            field = parent
-                                .getDeclaredField( "classLoader" );
-                            field.setAccessible( true );
-                            field.set( this, null );
-
-                            // Now, try to restart WO
-                            super.init();
-                            needsLicense = false;
-                        }
-                        catch ( Exception e )
-                        {
-                            e.printStackTrace();
-                            response.setContentType( "text/html" );
-                            PrintWriter out = new PrintWriter(
-                                response.getOutputStream() );
-                            out.println( "<html><head>" );
-                            out.println(
-                                "<title>WebObjects License Set</title>" );
-                            out.println( "</head><body>" );
-                            out.println( "<h1>WebObjects License Has Been " );
-                            out.println( "Set</h1>" );
-                            out.println( "<p>Web-CAT has been configured to " );
-                            out.println( "use your locally installed copy " );
-                            out.println( "of WebObjects.</p><p>Please " );
-                            out.println( "restart Web-CAT (or its servlet " );
-                            out.println( "container) to continue.</p>" );
-                            out.println( "</body></html>" );
-                            out.flush();
-                            out.close();
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            super.doPost( request, response );
         }
     }
 
@@ -362,160 +211,41 @@ public class WCServletAdaptor
 
     // ----------------------------------------------------------
     /**
-     * Build a license entry form as the designated http response.
+     * Build an exception notification message as the designated http response.
      * @param response the http response being generated
-     * @param msg an optional error message to display
      * @throws IOException if one arises while writing the response
      */
-    private void sendLicenseForm( HttpServletResponse response, String msg )
+    private void sendExceptionNotice( HttpServletResponse response )
         throws IOException
     {
         response.setContentType( "text/html" );
         PrintWriter out = new PrintWriter( response.getOutputStream() );
         out.println( "<html><head>" );
-        out.println( "<title>WebObjects License Required</title>" );
+        out.println( "<title>Web-CAT Startup Failure</title>" );
         out.println( "</head><body>" );
-        out.println( "<h1>WebObjects License Required</h1>" );
-        if ( msg == null )
-        {
-            File license = licenseKeyFile();
-            if ( license.exists() )
-            {
-                msg = "Invalid license: '";
-                try
-                {
-                    BufferedReader in = new BufferedReader(
-                        new FileReader( license ) );
-                    msg += in.readLine();
-                    in.close();
-                }
-                catch ( Exception e )
-                {
-                    System.out.println( "WCServletAdaptor: ERROR: Exception "
-                        + "reading from " + license.getAbsolutePath()
-                        + ": " + e );
-                    msg = "Error reading license key file: '" + e;
-                }
-                msg += "'";
-            }
-            else
-            {
-                msg = "No license installed.";
-            }
-        }
-        out.print( "<p><b style=\"color:red\">" );
-        out.print( msg );
-        out.print( "</b></p>" );
-
-        // Check for possible local WO install
-        String defaultDir = null;
-        if ( System.getProperty( "os.name" ).indexOf( "Windows" ) >= 0 )
-        {
-            defaultDir = "C:/Apple";
-            File f = new File( defaultDir );
-            if ( !f.exists() || !f.isDirectory() )
-            {
-                // Not found
-                defaultDir = null;
-            }
-        }
-        else if ( System.getProperty( "os.name" ).indexOf( "Mac" ) >= 0 )
-        {
-            defaultDir = "/System";
-            File f = new File( defaultDir );
-            if ( !f.exists() || !f.isDirectory() )
-            {
-                // Not found
-                defaultDir = null;
-            }
-        }
-        else
-        {
-            defaultDir = "/opt/Apple";
-            File f = new File( defaultDir );
-            if ( !f.exists() || !f.isDirectory() )
-            {
-                // Not found, so try /usr/local
-                defaultDir = "/usr/local/Apple";
-                f = new File( defaultDir );
-                if ( !f.exists() || !f.isDirectory() )
-                {
-                    // Not found
-                    defaultDir = null;
-                }
-            }
-        }
-
-        out.println( "<p>This application requires a valid <b>WebObjects " );
-        out.println( "Deployment License</b>.  Please enter your deployment " );
-        out.println( "license key.</p>" );
-        out.println( "<form method=\"post\" action=\"\">" );
-        out.println( "<input type=\"radio\" name=\"kind\" value=\"key\"" );
-        if ( defaultDir == null )
-        {
-            out.println( " checked" );
-        }
-        out.println( "> " );
-        out.println( "Install license key: <input type=\"text\" name=\"key\"");
-        out.println( " size=\"40\"/><blockquote><p>\n" );
-        out.println( "Enter a WebObjects 5.2.x deployment license key to\n" );
-        out.println( "use the built-in WebObjects run-time contained in the\n");
-        out.println( "WAR.</p></blockquote>\n" );
-        out.println( "<input type=\"radio\" name=\"kind\" value=\"local\"" );
-        if ( defaultDir != null )
-        {
-            out.println( " checked" );
-        }
-        out.println( "> " );
-        out.println( " Use existing WO installation: <input type=\"text\" " );
-        out.println( "name=\"woroot\" size=\"60\"" );
-        if ( defaultDir != null )
-        {
-            out.println( " value=\"" + defaultDir + "\"" );
-        }
-        out.println( "/><blockquote><p>\n" );
-        out.println( "Enter the local path to an existing WebObjects\n" );
-        out.println( "installation (your local WOROOT) to use your existing\n");
-        out.println( "license if you have one.</p></blockquote>\n" );
-        out.println( " <input type=\"submit\" " );
-        out.println( "value=\"Set License\"/>" );
-        out.println( "</form></body></html>" );
-        out.flush();
-        out.close();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Build a license acknowledgement message as the designated http response.
-     * @param response the http response being generated
-     * @throws IOException if one arises while writing the response
-     */
-    private void sendLicenseAcknowledgement( HttpServletResponse response )
-        throws IOException
-    {
-        response.setContentType( "text/html" );
-        PrintWriter out = new PrintWriter( response.getOutputStream() );
-        out.println( "<html><head>" );
-        out.println( "<title>WebObjects License Installed</title>" );
-        out.println( "</head><body>" );
-        out.println( "<h1>WebObjects License Installed</h1>" );
-        out.println( "<p>Your WebObjects Deployment License has been " );
-        out.println( "installed.  Now <a href=\"\">install Web-CAT</a>.</p>" );
+        out.println( "<h1>Web-CAT Startup Failure</h1>" );
+        out.println( "<p>Web-CAT threw an unexpected exception during " );
+        out.println( "initialization.  Please shut down the web application " );
+        out.println( "and fix the problem.</p>" );
+        out.println( "<p>For more information, locate your " );
+        out.println( "servlet container's <b>stdout log file</b> and " );
+        out.println( "examine it to identify the exception stack trace.</p>" );
+        out.println( "<p>For assistance, send the stdout log file to " );
+        out.println( "the Web-CAT project team at " );
+        out.println( "<a href=\"mailto:webcat@vt.edu\">webcat@vt.edu</a>.</p>" );
+//        out.println( "<pre>" );
+//        initFailed.printStackTrace( out );
+//        Throwable nested = initFailed.getCause();
+//        while ( nested != null )
+//        {
+//            out.println( "\nCaused by:" );
+//            nested.printStackTrace( out );
+//            nested = nested.getCause();
+//        }
+//        out.println( "</pre>" );
         out.println( "</body></html>" );
         out.flush();
         out.close();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get the file storing the license key.
-     */
-    private File licenseKeyFile()
-    {
-        return new File( frameworkDir,
-            "JavaWebObjects.framework/Resources/License.key" );
     }
 
 
@@ -1067,7 +797,7 @@ public class WCServletAdaptor
     private File                         frameworkDir;
     private Map                          subsystems       = new HashMap();
     private Map                          subsystemsByName = new HashMap();
-    private boolean                      needsLicense     = false;
+    private Throwable                    initFailed;
 
     private static WCServletAdaptor instance;
 
