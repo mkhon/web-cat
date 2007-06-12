@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.8 2007/06/12 03:32:53 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.9 2007/06/12 04:12:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.8 2007/06/12 03:32:53 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.9 2007/06/12 04:12:11 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -813,5 +813,5 @@ public class WCServletAdaptor
     private static final String UPDATE_SUBDIR    = "pending-updates";
     private static final String APP_JAR_PREFIX   = "webcat";
     private static final String INSTALLED_WOROOT = "installed.woroot";
-    private static final String VERSION          = "1.3";
+    private static final String VERSION          = "1.4";
 }
