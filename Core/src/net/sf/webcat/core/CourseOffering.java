@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.3 2007/06/03 04:15:22 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.4 2007/06/12 04:23:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.eocontrol.*;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.3 2007/06/03 04:15:22 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.4 2007/06/12 04:23:42 stedwar2 Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -93,7 +93,17 @@ public class CourseOffering
     {
         if ( cachedCompactName == null )
         {
-            cachedCompactName = course().deptNumber() + "(" + crn() + ")";
+            if ( course() == null )
+            {
+                // !!!
+                log.error(
+                    "course offering with no associated course: " + this );
+                cachedCompactName = course() + "(" + crn() + ")";
+            }
+            else
+            {
+                cachedCompactName = course().deptNumber() + "(" + crn() + ")";
+            }
         }
         return cachedCompactName;
     }
