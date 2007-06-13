@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.6 2007/06/03 04:15:22 stedwar2 Exp $
+ |  $Id: User.java,v 1.7 2007/06/13 14:33:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.6 2007/06/03 04:15:22 stedwar2 Exp $
+ * @version $Id: User.java,v 1.7 2007/06/13 14:33:49 stedwar2 Exp $
  */
 public class User
     extends _User
@@ -675,7 +675,7 @@ public class User
                     ERXArrayUtilities.filteredArrayWithEntityFetchSpecification(
                         taFor_cache,
                         CourseOffering.ENTITY_NAME,
-                        "withoutStudent",
+                        CourseOffering.WITHOUT_STUDENT_FSPEC,
                         userFilteringDictionary()
                         );
             }
@@ -720,7 +720,7 @@ public class User
                     ERXArrayUtilities.filteredArrayWithEntityFetchSpecification(
                         teaching_cache,
                         CourseOffering.ENTITY_NAME,
-                        "withoutStudentOrTA",
+                        CourseOffering.WITHOUT_STUDENT_OR_TA_FSPEC,
                         userFilteringDictionary()
                         );
             }
@@ -789,7 +789,7 @@ public class User
                     EOUtilities.objectsForEntityNamed( editingContext(),
                         CourseOffering.ENTITY_NAME ),
                     CourseOffering.ENTITY_NAME,
-                    "withoutUserAsStaff",
+                    CourseOffering.WITHOUT_USER_AS_STAFF_FSPEC,
                     userFilteringDictionary()
                     );
         }
@@ -834,7 +834,7 @@ public class User
                     EOUtilities.objectsForEntityNamed( editingContext(),
                         CourseOffering.ENTITY_NAME ),
                     CourseOffering.ENTITY_NAME,
-                    "withoutAnyRelationshipToUser",
+                    CourseOffering.WITHOUT_ANY_RELATIONSHIP_TO_USER_FSPEC,
                     userFilteringDictionary()
                     );
         }
