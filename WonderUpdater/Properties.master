@@ -5,7 +5,7 @@ subsystem.WonderUpdater=
 
 WonderUpdater.version.major=1
 WonderUpdater.version.minor=0
-WonderUpdater.version.revision=1
+WonderUpdater.version.revision=2
 
 WonderUpdater.copyright=\
 	(c) 2007 Virginia Tech Department of Computer Science
@@ -23,6 +23,7 @@ WonderUpdater.alsoContains=\
     ERExtensions.framework,\
     ERDirectToWeb.framework,\
     JavaWOExtensions.framework,\
+    WOOgnl.framework,\
     WOUnitTest.framework
 
 WonderUpdater.description=\

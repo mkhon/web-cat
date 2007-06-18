@@ -21,6 +21,7 @@
         <include name="ERExtensions.framework/**"/>
         <include name="ERDirectToWeb.framework/**"/>
         <include name="JavaWOExtensions.framework/**"/>
+        <include name="WOOgnl.framework/**"/>
         <include name="WOUnitTest.framework/**"/>
       </fileset>
     </jar>
