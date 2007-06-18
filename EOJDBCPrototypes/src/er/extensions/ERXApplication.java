@@ -54,6 +54,7 @@ import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSForwardException;
 import com.webobjects.foundation.NSKeyValueCoding;
+import com.webobjects.foundation.NSKeyValueCodingAdditions;
 import com.webobjects.foundation.NSLog;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
@@ -329,10 +330,19 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * @see WOApplication#main(String[], Class)
 	 */
 	public static void main(String argv[], Class applicationClass) {
+		setup(argv);
+		WOApplication.main(argv, applicationClass);
+	}
+
+	/**
+	 * Called prior to actually initing the app. Defines framework load order,
+	 * class path order, checks patches etc.
+	 */
+	public static void setup(String[] argv) {
 		_wasERXApplicationMainInvoked = true;
 		String cps[] = new String[] {"java.class.path", "com.webobjects.classpath"};
         propertiesFromArgv = NSProperties.valuesFromArgv(argv);
-        //allFrameworks = new HashSet();
+        // allFrameworks = new HashSet();
 		for (int var = 0; var < cps.length; var++) {
 			String cpName = cps[var];
 			String cp = System.getProperty(cpName);
@@ -398,7 +408,13 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		NSNotificationCenter.defaultCenter().addObserver(ERXApplication.class, new NSSelector("bundleDidLoad", new Class[] { NSNotification.class }), "NSBundleDidLoadNotification", null);
 		ERXConfigurationManager.defaultManager().setCommandLineArguments(argv);
 		ERXFrameworkPrincipal.setUpFrameworkPrincipalClass(ERXExtensions.class);
-		WOApplication.main(argv, applicationClass);
+	}
+
+	public void installDefaultEncoding(String encoding) {
+		WOMessage.setDefaultEncoding(encoding);
+		WOMessage.setDefaultURLEncoding(encoding);
+		ERXMessageEncoding.setDefaultEncoding(encoding);
+		ERXMessageEncoding.setDefaultEncodingForAllLanguages(encoding);
 	}
 
 	/**
@@ -805,87 +821,9 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * @return dictionary containing extra information for the current context.
 	 */
 	public NSMutableDictionary extraInformationForExceptionInContext(Exception e, WOContext context) {
-		NSMutableDictionary extraInfo = new NSMutableDictionary();
-
-		if (e instanceof EOGeneralAdaptorException) {
-			// AK NOTE: you might have sensitive info in your failed ops...
-			NSDictionary dict = ((EOGeneralAdaptorException) e).userInfo();
-			if (dict != null) {
-				Object value;
-				// this one is a little bit heavyweight...
-				// value = NSPropertyListSerialization.stringFromPropertyList(dict);
-				value = dict.objectForKey(EODatabaseContext.FailedDatabaseOperationKey);
-				if (value != null) {
-					extraInfo.setObjectForKey(value.toString(), EODatabaseContext.FailedDatabaseOperationKey);
-				}
-				value = dict.objectForKey(EOAdaptorChannel.AdaptorFailureKey);
-				if (value != null) {
-					extraInfo.setObjectForKey(value.toString(), EOAdaptorChannel.AdaptorFailureKey);
-				}
-				value = dict.objectForKey(EOAdaptorChannel.FailedAdaptorOperationKey);
-				if (value != null) {
-					extraInfo.setObjectForKey(value.toString(), EOAdaptorChannel.FailedAdaptorOperationKey);
-				}
-				if (e instanceof JDBCAdaptorException) {
-					value = ((JDBCAdaptorException) e).sqlException();
-					if (value != null) {
-						extraInfo.setObjectForKey(value.toString(), "SQLException");
-					}
-				}
-			}
-		}
-		if (context != null && context.page() != null) {
-			extraInfo.setObjectForKey(context.page().name(), "CurrentPage");
-			if (context.component() != null) {
-				extraInfo.setObjectForKey(context.component().name(), "CurrentComponent");
-				if (context.component().parent() != null) {
-					WOComponent component = context.component();
-					NSMutableArray hierarchy = new NSMutableArray(component.name());
-					while (component.parent() != null) {
-						component = component.parent();
-						hierarchy.addObject(component.name());
-					}
-					extraInfo.setObjectForKey(hierarchy, "CurrentComponentHierarchy");
-				}
-			}
-			extraInfo.setObjectForKey(context.request().uri(), "uri");
-			NSSelector d2wSelector = new NSSelector("d2wContext");
-			if (d2wSelector.implementedByObject(context.page())) {
-				try {
-					NSKeyValueCoding c = (NSKeyValueCoding) d2wSelector.invoke(context.page());
-					if (c != null) {
-						String pageConfiguration = (String) c.valueForKey("pageConfiguration");
-						if (pageConfiguration != null) {
-							extraInfo.setObjectForKey(pageConfiguration, "D2W-PageConfiguration");
-						}
-						String propertyKey = (String) c.valueForKey("propertyKey");
-						if (propertyKey != null) {
-							extraInfo.setObjectForKey(propertyKey, "D2W-PropertyKey");
-						}
-						NSArray displayPropertyKeys = (NSArray) c.valueForKey("displayPropertyKeys");
-						if (displayPropertyKeys != null) {
-							extraInfo.setObjectForKey(displayPropertyKeys, "D2W-DisplayPropertyKeys");
-						}
-					}
-				}
-				catch (Exception ex) {
-                    // do nothing?
-				}
-			}
-			if (context.hasSession() && context.session().statistics() != null) {
-				extraInfo.setObjectForKey(context.session().statistics(), "PreviousPageList");
-			}
-			NSMutableDictionary bundleVersions = new NSMutableDictionary();
-			for (Enumeration bundles = NSBundle._allBundlesReally().objectEnumerator(); bundles.hasMoreElements();) {
-				NSBundle bundle = (NSBundle) bundles.nextElement();
-				String version = ERXProperties.versionStringForFrameworkNamed(bundle.name());
-				if(version == null) {
-					version = "No version provided";
-				}
-				bundleVersions.setObjectForKey(version, bundle.name());
-			}
-			extraInfo.setObjectForKey(bundleVersions, "Bundles");
-		}
+		NSMutableDictionary extraInfo = ERXRuntimeUtilities.informationForException(e);
+		extraInfo.addEntriesFromDictionary(ERXRuntimeUtilities.informationForContext(context));
+		extraInfo.addEntriesFromDictionary(ERXRuntimeUtilities.informationForBundles());
 		return extraInfo;
 	}
 
@@ -1102,7 +1040,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 			else {
 				response = super.dispatchRequest(request);
 			}
-			WOContext context = (WOContext) ERXThreadStorage.valueForKey("wocontext");
+			WOContext context = ERXWOContext.currentContext();
 			if (context != null && context.request() != null) {
 				if (ERXApplication.requestHandlingLog.isDebugEnabled()) {
 					ERXApplication.requestHandlingLog.debug(context.request());
@@ -1158,8 +1096,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		// We only want to push in the context the first time it is
 		// created, ie we don't want to lose the current context
 		// when we create a context for an error page.
-		if (ERXThreadStorage.valueForKey("wocontext") == null) {
-			ERXThreadStorage.takeValueForKey(context, "wocontext");
+		if (ERXWOContext.currentContext() == null) {
+			ERXWOContext.setCurrentContext(context);
 		}
 		return context;
 	}
@@ -1220,10 +1158,34 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	}
 
 	/**
+	 * Returns whether or not this application is in development mode.  This one is
+	 * named "Safe" because it does not require you to be running an ERXApplication (and
+	 * because you can't have a static and not-static method of the same name. bah).  If
+	 * you are using ERXApplication, this will call isDevelopmentMode on your application.
+	 * If not, it will call ERXApplication_defaultIsDevelopmentMode() which checks
+	 * for the system properties "er.extensions.ERXApplication.developmentMode"
+	 * and/or "WOIDE".
+	 *
+	 * @return whether or not the current application is in development mode
+	 */
+	public static boolean isDevelopmentModeSafe() {
+		boolean developmentMode;
+		WOApplication application = WOApplication.application();
+		if (application instanceof ERXApplication) {
+			ERXApplication erxApplication = (ERXApplication)application;
+			developmentMode = erxApplication.isDevelopmentMode();
+		}
+		else {
+			developmentMode = ERXApplication._defaultIsDevelopmentMode();
+		}
+		return developmentMode;
+	}
+
+	/**
 	 * Returns whether or not this application is running in development-mode. If you are using Xcode, you should add a
 	 * WOIDE=Xcode setting to your launch parameters.
 	 */
-	public boolean isDevelopmentMode() {
+	protected static boolean _defaultIsDevelopmentMode() {
 		boolean developmentMode = false;
 		if (ERXProperties.stringForKey("er.extensions.ERXApplication.developmentMode") != null) {
 			developmentMode = ERXProperties.booleanForKey("er.extensions.ERXApplication.developmentMode");
@@ -1234,7 +1196,18 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 				developmentMode = true;
 			}
 		}
+		// AK: these are for quickly uncommenting while testing
+		// if(true) return false;
+		// if(true) return true;
 		return developmentMode;
+	}
+
+	/**
+	 * Returns whether or not this application is running in development-mode. If you are using Xcode, you should add a
+	 * WOIDE=Xcode setting to your launch parameters.
+	 */
+	public boolean isDevelopmentMode() {
+		return ERXApplication._defaultIsDevelopmentMode();
 	}
 
 	/** holds the info on checked-out sessions */
@@ -1361,5 +1334,38 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 */
 	public String _rewriteURL(String url) {
 		return url;
+	}
+
+	/**
+	 * Set the default endocing of the app (message encodings)
+	 * @param encoding
+	 */
+	public void setDefaultEncoding(String encoding) {
+        WOMessage.setDefaultEncoding(encoding);
+        WOMessage.setDefaultURLEncoding(encoding);
+        ERXMessageEncoding.setDefaultEncoding(encoding);
+        ERXMessageEncoding.setDefaultEncodingForAllLanguages(encoding);
+	}
+
+	public NSKeyValueCodingAdditions constants() {
+		return new NSKeyValueCodingAdditions() {
+
+			public void takeValueForKey(Object value, String key) {
+				throw new IllegalArgumentException("Can't set constant");
+			}
+
+			public Object valueForKey(String key) {
+				return ERXConstant.constantsForClassName(key);
+			}
+
+			public void takeValueForKeyPath(Object value, String keyPath) {
+				throw new IllegalArgumentException("Can't set constant");
+			}
+
+			public Object valueForKeyPath(String keyPath) {
+				return valueForKey(keyPath);
+			}
+
+		};
 	}
 }
