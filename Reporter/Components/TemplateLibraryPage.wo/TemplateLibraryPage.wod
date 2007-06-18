@@ -1,0 +1,195 @@
+CanEdit: WOConditional {
+    condition = canEditTemplate;
+}
+
+CanDownload: WOConditional {
+	condition = canDownload;
+}
+
+Date: WOString {
+	dateformat = "%m/%d/%y %I:%M%p";
+	value      = reportTemplate.lastModified;
+}
+
+Description: WOString {
+	value = reportTemplate.description;
+	escapeHTML = false;
+}
+
+DownloadNow: WOActiveImage {
+	border    = "0";
+	filename  = "icons/download.gif";
+	framework = "Core";
+	height    = "18";
+	width     = "18";
+	alt       = "Download and re-install now";
+	title     = "Download and re-install now";
+	action    = download;
+}
+
+Form1: WOForm {
+    multipleSubmit = true;
+    enctype = "multipart/form-data";
+}
+
+HasAdminPrivileges: WOConditional {
+    condition = session.user.hasAdminPrivileges;
+}
+
+HasNoAdminPrivileges: WOConditional {
+    condition = session.user.hasAdminPrivileges;
+    negate = true;
+}
+
+HasNoPersonalTemplates: WOConditional {
+    condition = personalTemplateGroup.displayedObjects.count;
+    negate = true;
+}
+
+HasNoPublishedTemplates: WOConditional {
+    condition = publishedTemplateGroup.displayedObjects.count;
+    negate = true;
+}
+
+HasNoUnpublishedTemplates: WOConditional {
+    condition = unpublishedTemplateGroup.displayedObjects.count;
+    negate = true;
+}
+
+HasPersonalTemplates: WOConditional {
+    condition = personalTemplateGroup.displayedObjects.count;
+}
+
+HasPublishedTemplates: WOConditional {
+    condition = publishedTemplateGroup.displayedObjects.count;
+}
+
+HasUnpublishedTemplates: WOConditional {
+    condition = unpublishedTemplateGroup.displayedObjects.count;
+}
+
+InstalledBy: WOString {
+    value = reportTemplate.author.nameAndUid;
+}
+
+IsNotPublished: WOConditional {
+    condition = reportTemplate.isPublished;
+    negate = true;
+}
+
+IsPublished: WOConditional {
+    condition = reportTemplate.isPublished;
+}
+
+IsTerse: WOConditional {
+    condition = terse;
+}
+
+IsVerbose: WOConditional {
+    condition = terse;
+    negate    = true;
+}
+
+Name: WOString {
+	value = reportTemplate.name;
+//	href   = pluginInfoUrl;
+//    target = "_blank";
+}
+
+Page : net.sf.webcat.core.PageWithNavigation {
+    title = "Report Template Library";
+}
+
+PersonalTemplateRepetition: WORepetition {
+	item  = reportTemplate;
+	list  = personalTemplateGroup.displayedObjects;
+	index = index;
+}
+
+TemplateUpload: WOFileUpload {
+	data     = uploadedData;
+	filePath = uploadedName;
+}
+
+Publish: WOActiveImage {
+	border    = "0";
+	filename  = "icons/show.gif";
+	framework = "Grader";
+	height    = "11";
+	width     = "11";
+	alt       = "Publish report template (make visible to others)";
+	title     = "Publish report template (make visible to others)";
+	action    = togglePublished;
+}
+
+Delete: WOActiveImage {
+	border    = "0";
+	filename  = "icons/trash.gif";
+	framework = "Core";
+	height    = "17";
+	width     = "14";
+	alt       = "Delete report template";
+	title     = "Delete report template";
+	action    = deleteTemplate;
+}
+
+Edit: WOActiveImage {
+	border    = "0";
+	filename  = "icons/edit.gif";
+	framework = "Core";
+	height    = "17";
+	width     = "18";
+	alt       = "Edit report template";
+	title     = "Edit report template";
+	action    = editTemplate;
+}
+
+PublishedTemplateRepetition: WORepetition {
+	item  = reportTemplate;
+	list  = publishedTemplateGroup.displayedObjects;
+	index = index;
+}
+
+TerseDescriptions: WOSubmitButton {
+    value  = "Hide Descriptions";
+    action = toggleVerboseDescriptions;
+}
+
+Title: WOString {
+	value = reportTemplate.name;
+}
+
+TR: net.sf.webcat.core.TableRow {
+    index = index;
+}
+
+Unpublish: WOActiveImage {
+	border    = "0";
+	filename  = "icons/hide.gif";
+	framework = "Grader";
+	height    = "11";
+	width     = "11";
+	alt       = "Unpublish report template (hide from others)";
+	title     = "Unpublish report template (hide from others)";
+	action    = togglePublished;
+}
+
+UnpublishedTemplateRepetition: WORepetition {
+	item  = reportTemplate;
+	list  = unpublishedTemplateGroup.displayedObjects;
+	index = index;
+}
+
+Upload: WOSubmitButton {
+    value = "Upload File & Install";
+    action = upload;
+}
+
+VerboseDescriptions: WOSubmitButton {
+    value  = "Show Descriptions";
+    action = toggleVerboseDescriptions;
+}
+
+Version: WOString {
+	value = "0.0.0"; //template.descriptor.currentVersion;
+}

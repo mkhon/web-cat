@@ -1,0 +1,35 @@
+HasErrors: WOConditional {
+	condition = hasMessages;
+}
+
+HasNoErrors: WOConditional {
+	condition = hasMessages;
+	negate = true;
+}
+
+Errors: net.sf.webcat.core.ErrorDictionaryPanel {
+	errorMessages          = messagesIfPresent;
+	shouldShowNewlineBelow = true;
+}
+
+Checkbox: WOCheckBox {
+	id = observeeId;
+	checked = checked;
+}
+
+ParameterName: WOString {
+	value = parameter.displayName;
+}
+
+ParameterDescription: WOString {
+	value = parameter.description;
+	escapeHTML = false;
+}
+
+ParameterBusy: WOImage {
+	id = busyIndicatorIdForParameter;
+	filename = "images/busy.gif";
+	width = 16;
+	height = 16;
+	style = "visibility: hidden";
+}

@@ -1,0 +1,60 @@
+HasAssignments: WOConditional {
+    condition = assignments.count;
+}
+
+HasNoAssignments: WOConditional {
+    condition = assignments.count;
+    negate = true;
+}
+
+SingleSelection: WOConditional {
+	condition = parameter.multipleSelectionOption;
+	negate = true;
+}
+
+MultipleSelection: WOConditional {
+	condition = parameter.multipleSelectionOption;
+}
+
+AssignmentRepetition: WORepetition {
+	item  = assignment;
+	list  = assignments;
+	index = index;
+}
+
+AllSelectionCheckbox: WOCheckBox {
+	id        = allSelectionFormControlId;
+	checked   = allAssignmentsSelected;
+	onClick   = allCheckStateChangedMethodInvocation;
+}
+
+Checkbox: WOCheckBox {
+	name      = parameter.binding;
+	id        = indexedFormControlId;
+	checked   = assignmentSelected;
+	onClick   = checkStateChangedMethodInvocation;
+}
+
+RadioButton: WORadioButton {
+	name      = parameter.binding;
+	id = indexedFormControlId;
+	//selection = selectedIndex;
+	value     = index;
+}
+
+Observee: WOHiddenField {
+	id = observeeId;
+	value = observeeValue;
+}
+
+Name: WOString {
+	value = assignment.name;
+}
+
+Description: WOString {
+	value = assignment.shortDescription;
+}
+
+TR: net.sf.webcat.core.TableRow {
+    index = index;
+}

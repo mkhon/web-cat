@@ -1,0 +1,93 @@
+{
+    attributes = (
+        {
+            columnName = CUSERID; 
+            name = userId; 
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CREPORTNAME; 
+            name = name;
+            prototypeName = tinyText;
+        },
+        {
+            columnName = CTEMPLATEID; 
+            name = reportTemplateId;
+            prototypeName = foreignId;
+        },
+        { name = id; prototypeName = id; },
+        {
+        	columnName = CUUID;
+        	name = uuid;
+        	prototypeName = mediumText;
+        },
+        {
+            columnName = CGENERATEDTIME; 
+            name = generatedTime; 
+            prototypeName = dateTime; 
+        },
+        {
+            columnName = CPARAMETERSELECTIONS; 
+            name = parameterSelections; 
+            prototypeName = mutableDictionary; 
+            userInfo = {
+                adaptorValueConversionMethodName = archiveData; 
+                valueFactoryMethodName = objectWithArchiveData; 
+                isMutable = true; 
+                valueClassName = net.sf.webcat.core.MutableDictionary; 
+            };
+        },
+        {
+            name = updateMutableFields; 
+            prototypeName = updateMutableFields; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        }
+    ); 
+    attributesUsedForLocking = (
+    	userId,
+    	reportTemplateId,
+    	name,
+    	uuid,
+    	updateMutableFields,
+    );
+    className = net.sf.webcat.reporter.GeneratedReport;
+    classProperties = (
+    	name,
+    	user,
+    	reportTemplate,
+    	generatedTime,
+    	uuid,
+    	parameterSelections,
+    	updateMutableFields
+    );
+    externalName = TGENERATEDREPORT;
+    name = GeneratedReport;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = User;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = userId; });
+            name = user;
+        },
+        {
+            destination = ReportTemplate;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = reportTemplateId; });
+            name = reportTemplate;
+        },
+        {
+            destination = ReportParameter; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = templateId; sourceAttribute = id; });
+            name = parameters;
+        }
+    );
+}

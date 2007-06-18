@@ -1,0 +1,258 @@
+<webobject name="Page"><webobject name="Form">
+<div id="clientArea">
+
+<div id="toolbar">
+<webobject name="SaveAndReturn"/>
+</div>
+
+<!-- begin master panel -->
+<div id="masterPanel">
+	<div id="masterHead">
+	<h3>Parameters</h3>
+	<p>Choose a parameter from the list below to edit its properties.</p>
+	</div>
+	
+	<div class="floodChildren" id="masterList" style="height: 100%">
+		<webobject name="ParameterListContainer">
+		<webobject name="ParameterTree"/>
+		<webobject name="ParameterTreeEditor"/>
+<!--		<div id="parameterTree"></div>
+		<script>
+		Ext.onReady(function() {
+			var tree = new Ext.tree.TreePanel("parameterTree", {
+				animate: true,
+				loader: new Ext.tree.TreeLoader({
+					dataUrl: "<webobject name="TreeDataURL"/>"
+				}),
+				containerScroll: true
+			});
+			
+			var root = new Ext.tree.AsyncTreeNode({
+				text: "Parameters",
+				draggable: false,
+				id: "source"
+			});
+			
+			tree.setRootNode(root);
+			tree.getSelectionModel().on("selectionchange", <webobject name="ParameterEditorUpdater"/>);
+			tree.render();
+			root.expand();
+		});
+		</script> -->
+		</webobject>
+	</div>
+	
+	<div id="masterControls">
+		<webobject name="AddParameter"/><br/>
+		<webobject name="DeleteParameter"/>
+	</div>
+</div>
+<!-- end master panel -->
+
+<!-- begin detail panel -->
+<div id="detailPanel">
+	<webobject name="ParameterEditContainer">
+	<webobject name="ParameterSelected">
+	<table>
+	<tr><td>Binding:</td><td><b><webobject name="ParameterBinding"/></b></td></tr>
+	<tr><td>Display Name:</td><td><webobject name="ParameterDisplayName"/></td></tr>
+	<tr><td>Description:</td><td><webobject name="ParameterDescription"/></td></tr>
+	<tr><td>Specification:</td><td><webobject name="ParameterSpec"/></td></tr>
+	</table>
+	</webobject>
+	<webobject name="NoParameterSelected">
+	<p>Please select a parameter from the list to the left to edit it.</p>
+	</webobject>
+	</webobject>
+</div>
+<!-- end detail panel -->
+
+</div>
+</webobject>
+</webobject>
+
+<webobject name="HeadInserter">
+<style>
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+div#contents {
+	height: 100%;
+}
+
+div#clientArea {
+	position: relative;
+}
+
+div.toolbar {
+	overflow: auto;
+	clear: both;
+	width: 98%;
+	background-color: #ddd;
+	border: 1px solid gray;
+	padding: 2px;
+}
+
+div.floodChildren div {
+	width: inherit;
+	height: inherit;
+}
+
+div#area {
+	margin-top: 4px;
+	overflow: auto;
+	width: 98%;
+}
+
+div#area h3 {
+	margin: 0px;
+	font-size: large;
+}
+
+div#area p {
+	font-size: small;
+	margin-top: 2px; margin-bottom: 2px;
+}
+
+div#masterPanel {
+	margin: 0px; padding: 0px; float: left; width: 20%;
+}
+
+div#masterDetailButtonPanel {
+	padding-left: 4px; padding-right: 4px; float: left;
+}
+
+div#masterDetailButtonPanel input {
+	width: 100%;
+}
+
+div#detailPanel {
+	padding: 0px; float: left;
+}
+
+div.listbox {
+	border: 1px solid gray;
+	margin: 0px;
+	padding: 2px;
+	overflow: auto;
+}
+
+div.listbox ul {
+	display: table;
+	list-style-type: none;
+	font-size: small;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+div.listbox ul li {
+	display: table-row;
+}
+
+div.listbox ul li span {
+	display: table-cell;
+	margin: 0px;
+	padding: 2px;
+}
+
+div.listbox ul li span[selected="true"] {
+	display: table-cell;
+	border: 1px solid #228;
+	background-color: #88C;
+	margin: 0px;
+	padding: 1px;
+}
+
+div.listbox ul li span a {
+	color: black;
+	text-decoration: none;
+}
+
+div.listbox ul li span[selected="true"] a {
+	color: white;
+	text-decoration: none;
+}
+
+</style>
+<webobject name="Trigger"/>
+<script type="text/javascript">
+function disableButtons()
+{
+	$("addParameter").disable();
+	$("deleteParameter").disable();
+	$("saveAndReturn").disable();
+}
+
+function enableButtons()
+{
+	$("addParameter").enable();
+	$("deleteParameter").enable();
+	$("saveAndReturn").enable();
+}
+
+Layout = function() {
+	return {
+	resizePage: function() {
+		var bodyBottom = document.getElementsByTagName("body")[0].clientHeight - 16;
+		var bannerBottom = $("banner").offsetHeight;
+		var height = (bodyBottom - bannerBottom - $("footer").offsetHeight) + "px";
+		$("page").style.height = height;
+		
+		height = $("contents").offsetTop + $("contents").offsetHeight - $("clientArea").offsetTop - 32;
+		$("clientArea").style.height = height + "px";
+	},
+
+	init: function() {
+		var layout = new Ext.BorderLayout("clientArea", {
+			north: {
+				split: false,
+			},
+			west: {
+				split: true,
+				initialSize: "33%"
+			},
+			center: {
+				autoScroll: true
+			}
+		});
+		
+		layout.beginUpdate();
+		layout.add("north", new Ext.ContentPanel("toolbar", { fitToFrame: true }));
+		
+		var westLayout = new Ext.BorderLayout("masterPanel", {
+			north: { split: false },
+			east: { split: false },
+			center: { autoScroll: false }
+		});
+		westLayout.add("north", new Ext.ContentPanel("masterHead"));
+		westLayout.add("center", new Ext.ContentPanel("masterList", { fitContainer: true }));
+		westLayout.add("east", new Ext.ContentPanel("masterControls"));
+		
+		layout.add("west", new Ext.NestedLayoutPanel(westLayout));
+
+		layout.add("center", new Ext.ContentPanel("detailPanel", { fitToFrame: true }));
+		layout.endUpdate();
+		$("clientArea").show();
+	}
+};
+}();
+
+Ext.EventManager.onWindowResize(Layout.resizePage, Layout, true);
+Ext.EventManager.onDocumentReady(Layout.resizePage, Layout, true);
+Ext.EventManager.onDocumentReady(Layout.init, Layout, true);
+
+WebCAT = { };
+WebCAT.registeredControls = { };
+
+WebCAT.registerControl = function(id, control) {
+	WebCAT.registeredControls[id] = control;
+};
+
+WebCAT.getRegisteredControl = function(id) {
+	return WebCAT.registeredControls[id];
+};
+</script>
+</webobject>

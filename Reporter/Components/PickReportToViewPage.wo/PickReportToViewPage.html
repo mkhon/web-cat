@@ -1,0 +1,39 @@
+<webobject name="Page">
+<h2>Reports Currently Queued</h2>
+<webobject name="HasQueued">
+<p>Click on a report below to view its progress.</p>
+<div class="shadow"><table>
+  <tr><td colspan="4" class="batchnav"><webobject name="BatchNavigatorQueue"/></td></tr>
+  <tr><th>Report Title<webobject name="WCSortOrderTitleQueue"/></th>
+    <th>Date Requested<webobject name="WCSortOrderDateQueue"/></th>
+    <th>Progress</th></tr>
+  <webobject name="RepetitionQueue"><webobject name="TRQueue">
+    <td><webobject name="ReportNameQueue"/></td>
+    <td><webobject name="ReportQueuedTime"/></td>
+    <td><webobject name="ReportQueueProgress"/></td>
+  </webobject></webobject>
+</tbody></table></div>
+</webobject>
+
+<webobject name="HasNoQueued">
+<p>You do not currently have any reports waiting to be generated <b>in the queue.</b></p>
+</webobject>
+<div class="spacer">&nbsp;</div>
+
+<h2>Previously Generated Reports</h2>
+<webobject name="HasReports">
+<p>Click on a previously generated report below to view it.</p>
+<div class="shadow"><table>
+  <tr><td colspan="4" class="batchnav"><webobject name="BatchNavigator"/></td></tr>
+  <tr><th>Report Title<webobject name="WCSortOrderTitle"/></th>
+    <th>Date Generated<webobject name="WCSortOrderDate"/></th></tr>
+  <webobject name="Repetition1"><webobject name="TR">
+    <td><webobject name="ReportName"/></td>
+    <td><webobject name="ReportGeneratedTime"/></td>
+  </webobject></webobject>
+</tbody></table></div>
+</webobject>
+<webobject name="HasNoReports">
+<p>There are currently no <b>generated reports</b> available for you to view.</p>
+</webobject>
+</webobject>

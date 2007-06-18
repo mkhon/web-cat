@@ -1,1 +1,17 @@
-An empty file result in a full filesystem scan
+eclipse/plugins/org.junit4_4.1.0.1/junit-4.1.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/js.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/chartengineapi.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/dteapi.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/commons-cli-1.0.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/commons-codec-1.3.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/modelapi.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/sac.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/org.eclipse.emf.ecore_2.3.0.v200702121527.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/flute.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/com.ibm.icu_3.6.0.20061215.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/engineapi.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/coreapi.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200702121527.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/scriptapi.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/org.eclipse.emf.common_2.3.0.v200702121527.jar
+eclipse/Web-CAT/Reporter/Resources/ReportEngine/lib/dataadapterapi.jar

@@ -1,0 +1,26 @@
+{
+    uuid = {
+        class = EOFetchSpecification; 
+        entityName = GeneratedReport; 
+        fetchLimit = 0; 
+        isDeep = YES; 
+        qualifier = {
+            class = EOKeyValueQualifier; 
+            key = uuid; 
+            selectorName = "isEqualTo:"; 
+            value = {_key = uuid; class = EOQualifierVariable; }; 
+        }; 
+    }; 
+    user = {
+        class = EOFetchSpecification; 
+        entityName = GeneratedReport; 
+        fetchLimit = 0; 
+        isDeep = YES; 
+        qualifier = {
+            class = EOKeyValueQualifier; 
+            key = user; 
+            selectorName = "isEqualTo:"; 
+            value = {_key = user; class = EOQualifierVariable; }; 
+        }; 
+    }; 
+}

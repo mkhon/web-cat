@@ -1,0 +1,64 @@
+<html><head><title>CheckItem.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>CheckItem.js</h1><pre class="highlighted"><code><i>/**
+ * @class Ext.menu.CheckItem
+ * @extends Ext.menu.Item
+ * @constructor
+ */</i>
+Ext.menu.CheckItem = <b>function</b>(config){
+    Ext.menu.CheckItem.superclass.constructor.call(<b>this</b>, config);
+    <b>this</b>.addEvents({
+        &quot;beforecheckchange&quot; : true,
+        &quot;checkchange&quot; : true
+    });
+    <b>if</b>(this.checkHandler){
+        <b>this</b>.on('checkchange', <b>this</b>.checkHandler, <b>this</b>.scope);
+    }
+};
+Ext.extend(Ext.menu.CheckItem, Ext.menu.Item, {
+    itemCls : &quot;x-menu-item x-menu-check-item&quot;,
+    groupClass : &quot;x-menu-group-item&quot;,
+    checked: false,
+    ctype: &quot;Ext.menu.CheckItem&quot;,
+    
+    onRender : <b>function</b>(c){
+        Ext.menu.CheckItem.superclass.onRender.apply(<b>this</b>, arguments);
+        <b>if</b>(this.group){
+            <b>this</b>.el.addClass(<b>this</b>.groupClass);
+        }
+        Ext.menu.MenuMgr.registerCheckable(<b>this</b>);
+        <b>if</b>(this.checked){
+            <b>this</b>.checked = false;
+            <b>this</b>.setChecked(true, true);
+        }
+    },
+
+    destroy : <b>function</b>(){
+        <b>if</b>(this.rendered){
+            Ext.menu.MenuMgr.unregisterCheckable(<b>this</b>);
+        }
+        Ext.menu.CheckItem.superclass.destroy.apply(<b>this</b>, arguments);
+    },
+
+    <i>/**
+     * Set the checked state of <b>this</b> item
+     */</i>
+    setChecked : <b>function</b>(state, suppressEvent){
+        <b>if</b>(this.checked != state &amp;&amp; <b>this</b>.fireEvent(&quot;beforecheckchange&quot;, <b>this</b>, state) !== false){
+            <b>if</b>(this.container){
+                <b>this</b>.container[state ? &quot;addClass&quot; : &quot;removeClass&quot;](&quot;x-menu-item-checked&quot;);
+            }
+            <b>this</b>.checked = state;
+            <b>if</b>(suppressEvent !== true){
+                <b>this</b>.fireEvent(&quot;checkchange&quot;, <b>this</b>, state);
+            }
+        }
+    },
+
+    handleClick : <b>function</b>(e){
+       <b>if</b>(!<b>this</b>.disabled &amp;&amp; !(<b>this</b>.checked &amp;&amp; <b>this</b>.group)){<i>// disable unselect on radio item</i>
+           <b>this</b>.setChecked(!<b>this</b>.checked);
+       }
+       Ext.menu.CheckItem.superclass.handleClick.apply(<b>this</b>, arguments);
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

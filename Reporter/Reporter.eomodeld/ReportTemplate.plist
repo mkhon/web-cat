@@ -1,0 +1,77 @@
+{
+    attributes = (
+        {
+            columnName = CAUTHORID; 
+            name = authorId; 
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CTEMPLATENAME; 
+            name = name;
+            prototypeName = tinyText;
+        },
+        {
+            columnName = CTEMPLATEDESCRIPTION; 
+            name = description;
+            prototypeName = mediumText;
+        },
+        { name = id; prototypeName = id; },
+        {
+            columnName = CISPUBLISHED; 
+            name = isPublished; 
+            prototypeName = boolean; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        },
+        {
+            columnName = CUPLOADEDFILENAME; 
+            name = uploadedFileName; 
+            prototypeName = tinyText; 
+        },
+        {
+            columnName = CLASTMODIFIEDTIME; 
+            name = lastModified; 
+            prototypeName = dateTime; 
+        }, 
+    ); 
+    attributesUsedForLocking = (
+    	authorId,
+    	name,
+    	description,
+    	isPublished,
+    	uploadedFileName,
+    );
+    className = net.sf.webcat.reporter.ReportTemplate;
+    classProperties = (
+    	name,
+    	description,
+    	author,
+    	parameters,
+    	isPublished,
+    	uploadedFileName,
+    	lastModified
+    );
+    externalName = TREPORTTEMPLATE;
+    name = ReportTemplate;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = User;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = authorId; });
+            name = author;
+        },
+        {
+ 			deleteRule = EODeleteRuleCascade;
+            destination = ReportParameter; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = templateId; sourceAttribute = id; });
+            name = parameters;
+        }
+    );
+}

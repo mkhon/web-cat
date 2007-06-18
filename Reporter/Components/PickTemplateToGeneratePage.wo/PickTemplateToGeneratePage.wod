@@ -1,0 +1,34 @@
+Page: net.sf.webcat.core.WizardPage {
+}
+
+HasTemplates: WOConditional {
+    condition = reportTemplates.count;
+}
+
+HasNoTemplates: WOConditional {
+    condition = reportTemplates.count;
+    negate    = true;
+}
+
+TemplateRepetition: WORepetition {
+	item  = reportTemplate;
+	list  = reportTemplates;
+	index = index;
+}
+
+TemplateName: WOHyperlink {
+	action = next;
+	string = reportTemplate.name;
+}
+
+TemplateVersion: WOString {
+	value = "1.0.0";
+}
+
+TemplateInstalledBy: WOString {
+	value = reportTemplate.author.name;
+}
+
+TR: net.sf.webcat.core.TableRow {
+    index = index;
+}

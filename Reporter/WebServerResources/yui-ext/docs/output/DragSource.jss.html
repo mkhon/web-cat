@@ -1,0 +1,221 @@
+<html><head><title>DragSource.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>DragSource.js</h1><pre class="highlighted"><code>Ext.dd.DragSource = <b>function</b>(el, config){
+    <b>this</b>.el = Ext.get(el);
+    <b>this</b>.dragData = {};
+    
+    Ext.apply(<b>this</b>, config);
+    
+    <b>if</b>(!<b>this</b>.proxy){
+        <b>this</b>.proxy = <b>new</b> Ext.dd.StatusProxy();
+    }
+    <b>this</b>.el.on(&quot;mouseup&quot;, <b>this</b>.handleMouseUp);
+    Ext.dd.DragSource.superclass.constructor.call(<b>this</b>, <b>this</b>.el.dom, <b>this</b>.ddGroup || <b>this</b>.group, 
+          {dragElId : <b>this</b>.proxy.id, resizeFrame: false, isTarget: false, scroll: <b>this</b>.scroll === true});
+    
+    <b>this</b>.dragging = false;
+};
+
+Ext.extend(Ext.dd.DragSource, Ext.dd.DDProxy, {
+    dropAllowed : &quot;x-dd-drop-ok&quot;,
+    dropNotAllowed : &quot;x-dd-drop-nodrop&quot;,
+    
+    getDragData : <b>function</b>(e){
+        <b>return</b> this.dragData;
+    },
+    
+    onDragEnter : <b>function</b>(e, id){
+        <b>var</b> target = Ext.dd.DragDropMgr.getDDById(id);
+        <b>this</b>.cachedTarget = target;
+        <b>if</b>(this.beforeDragEnter(target, e, id) !== false){
+            <b>if</b>(target.isNotifyTarget){
+                <b>var</b> status = target.notifyEnter(<b>this</b>, e, <b>this</b>.dragData);
+                <b>this</b>.proxy.setStatus(status);
+            }<b>else</b>{
+                <b>this</b>.proxy.setStatus(<b>this</b>.dropAllowed);
+            }
+            
+            <b>if</b>(this.afterDragEnter){
+                <b>this</b>.afterDragEnter(target, e, id);
+            }
+        }
+    },
+    
+    beforeDragEnter : <b>function</b>(target, e, id){
+        <b>return</b> true;
+    },
+    
+    alignElWithMouse: <b>function</b>() {
+        Ext.dd.DragSource.superclass.alignElWithMouse.apply(<b>this</b>, arguments);
+        <b>this</b>.proxy.sync();
+    },
+    
+    onDragOver : <b>function</b>(e, id){
+        <b>var</b> target = <b>this</b>.cachedTarget || Ext.dd.DragDropMgr.getDDById(id);
+        <b>if</b>(this.beforeDragOver(target, e, id) !== false){
+            <b>if</b>(target.isNotifyTarget){
+                <b>var</b> status = target.notifyOver(<b>this</b>, e, <b>this</b>.dragData);
+                <b>this</b>.proxy.setStatus(status);
+            }
+                        
+            <b>if</b>(this.afterDragOver){
+                <b>this</b>.afterDragOver(target, e, id);
+            }
+        }
+    },
+    
+    beforeDragOver : <b>function</b>(target, e, id){
+        <b>return</b> true;
+    },
+    
+    onDragOut : <b>function</b>(e, id){
+        <b>var</b> target = <b>this</b>.cachedTarget || Ext.dd.DragDropMgr.getDDById(id);
+        <b>if</b>(this.beforeDragOut(target, e, id) !== false){
+            <b>if</b>(target.isNotifyTarget){
+                target.notifyOut(<b>this</b>, e, <b>this</b>.dragData);
+            }
+            <b>this</b>.proxy.reset();
+            <b>if</b>(this.afterDragOut){
+                <b>this</b>.afterDragOut(target, e, id);
+            }
+        }
+        <b>this</b>.cachedTarget = null;
+    },
+    
+    beforeDragOut : <b>function</b>(target, e, id){
+        <b>return</b> true;
+    },
+    
+    
+    onDragDrop : <b>function</b>(e, id){
+        <b>var</b> target = <b>this</b>.cachedTarget || Ext.dd.DragDropMgr.getDDById(id);
+        <b>if</b>(this.beforeDragDrop(target, e, id) !== false){
+            <b>if</b>(target.isNotifyTarget){
+                <b>if</b>(target.notifyDrop(<b>this</b>, e, <b>this</b>.dragData)){ <i>// valid drop?</i>
+                    <b>this</b>.onValidDrop(target, e, id);
+                }<b>else</b>{
+                    <b>this</b>.onInvalidDrop(target, e, id);
+                }
+            }<b>else</b>{
+                <b>this</b>.onValidDrop(target, e, id);
+            }
+            
+            <b>if</b>(this.afterDragDrop){
+                <b>this</b>.afterDragDrop(target, e, id);
+            }
+        }
+    },
+    
+    beforeDragDrop : <b>function</b>(target, e, id){
+        <b>return</b> true;
+    },
+    
+    onValidDrop : <b>function</b>(target, e, id){
+        <b>this</b>.hideProxy();
+    },
+    
+    getRepairXY : <b>function</b>(e, data){
+        <b>return</b> this.el.getXY();  
+    },
+    
+    onInvalidDrop : <b>function</b>(target, e, id){
+        <b>this</b>.beforeInvalidDrop(target, e, id);
+        <b>if</b>(this.cachedTarget){
+            <b>if</b>(this.cachedTarget.isNotifyTarget){
+                <b>this</b>.cachedTarget.notifyOut(<b>this</b>, e, <b>this</b>.dragData);
+            }
+            <b>this</b>.cacheTarget = null;
+        }
+        <b>this</b>.proxy.repair(<b>this</b>.getRepairXY(e, <b>this</b>.dragData), <b>this</b>.afterRepair, <b>this</b>);
+        <b>if</b>(this.afterInvalidDrop){
+            <b>this</b>.afterInvalidDrop(e, id);
+        }
+    },
+    
+    afterRepair : <b>function</b>(){
+        <b>if</b>(Ext.enableFx){
+            <b>this</b>.el.highlight(<b>this</b>.hlColor || &quot;c3daf9&quot;);
+        }
+        <b>this</b>.dragging = false;
+    },
+
+    beforeInvalidDrop : <b>function</b>(target, e, id){
+        <b>return</b> true;
+    },
+    
+    handleMouseDown : <b>function</b>(e){
+        <b>if</b>(this.dragging) {
+            <b>return</b>;
+        }
+        <b>if</b>(Ext.QuickTips){
+            Ext.QuickTips.disable();
+        }
+        <b>var</b> data = <b>this</b>.getDragData(e);
+        <b>if</b>(data &amp;&amp; <b>this</b>.onBeforeDrag(data, e) !== false){
+            <b>this</b>.dragData = data;
+            <b>this</b>.proxy.stop();
+            Ext.dd.DragSource.superclass.handleMouseDown.apply(<b>this</b>, arguments);
+        } 
+    },
+    
+    handleMouseUp : <b>function</b>(e){
+        <b>if</b>(Ext.QuickTips){
+            Ext.QuickTips.enable();
+        }
+    },
+    
+    onBeforeDrag : <b>function</b>(data, e){
+        <b>return</b> true;
+    },
+
+    onStartDrag : Ext.emptyFn,
+
+    startDrag : <b>function</b>(e){
+        <b>this</b>.proxy.reset();
+        <b>this</b>.dragging = true;
+        <b>this</b>.proxy.update(&quot;&quot;);
+        <b>this</b>.onInitDrag(e);
+        <b>this</b>.proxy.show();
+    },
+    
+    onInitDrag : <b>function</b>(e){
+        <b>var</b> clone = <b>this</b>.el.dom.cloneNode(true);
+        clone.id = Ext.id(); <i>// prevent duplicate ids</i>
+        <b>this</b>.proxy.update(clone);
+        <b>this</b>.onStartDrag(e);
+        <b>return</b> true;
+    },
+       
+    
+    getProxy : <b>function</b>(){
+        <b>return</b> this.proxy;  
+    },
+    
+    hideProxy : <b>function</b>(){
+        <b>this</b>.proxy.hide();  
+        <b>this</b>.proxy.reset(true);
+        <b>this</b>.dragging = false;
+    },
+    
+    triggerCacheRefresh : <b>function</b>(){
+        Ext.dd.DDM.refreshCache(<b>this</b>.groups);
+    },
+    
+    <i>// override to prevent hiding</i>
+    b4EndDrag: <b>function</b>(e) {
+    },
+         
+    <i>// override to prevent moving</i>
+    endDrag : <b>function</b>(e){
+        <b>this</b>.onEndDrag(<b>this</b>.dragData, e);
+    },
+    
+    onEndDrag : <b>function</b>(data, e){
+          
+    },
+    
+    <i>// pin to cursor</i>
+    autoOffset : <b>function</b>(x, y) {
+        <b>this</b>.setDelta(-12, -20);
+    }    
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

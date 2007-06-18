@@ -1,0 +1,257 @@
+<html><head><title>MessageBox.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>MessageBox.js</h1><pre class="highlighted"><code>Ext.MessageBox = <b>function</b>(){
+    <b>var</b> dlg, opt, mask;
+    <b>var</b> bodyEl, msgEl, textboxEl, textareaEl, progressEl, pp;
+    <b>var</b> buttons, activeTextEl, bwidth;
+    
+    <b>var</b> handleButton = <b>function</b>(button){
+        dlg.hide();
+        Ext.callback(opt.fn, opt.scope||window, [button, activeTextEl.dom.value], 1);
+    };
+    
+    <b>var</b> handleHide = <b>function</b>(){
+        <b>if</b>(opt &amp;&amp; opt.cls){
+            dlg.el.removeClass(cls);
+        }    
+    };
+    
+    <b>var</b> updateButtons = <b>function</b>(b){
+        <b>var</b> width = 0;
+        <b>if</b>(!b){
+            buttons[&quot;ok&quot;].hide();
+            buttons[&quot;cancel&quot;].hide();
+            buttons[&quot;yes&quot;].hide();
+            buttons[&quot;no&quot;].hide();
+            <b>return</b> width;
+        }
+        <b>for</b>(var k <b>in</b> buttons){
+            <b>if</b>(typeof buttons[k] != &quot;<b>function</b>&quot;){
+                <b>if</b>(b[k]){
+                    buttons[k].show();
+                    buttons[k].setText(<b>typeof</b> b[k] == &quot;string&quot; ? b[k] : Ext.MessageBox.buttonText[k]);
+                    width += buttons[k].el.getWidth()+15;
+                }<b>else</b>{
+                    buttons[k].hide();
+                }
+            }
+        }
+        <b>return</b> width;
+    };
+    
+    <b>return</b> {
+        getDialog : <b>function</b>(){
+           <b>if</b>(!dlg){
+                dlg = <b>new</b> Ext.BasicDialog(&quot;x-msg-box&quot;, {
+                    autoCreate : true,
+                    shadow: true,
+                    draggable: true,
+                    resizable:false,
+                    constraintoviewport:false,
+                    fixedcenter:true,
+                    collapsible : false,
+                    shim:true,
+                    modal: true,
+                    width:400, height:100,
+                    buttonAlign:&quot;center&quot;,
+                    closeClick : <b>function</b>(){
+                        <b>if</b>(opt &amp;&amp; opt.buttons &amp;&amp; opt.buttons.no &amp;&amp; !opt.buttons.cancel){
+                            handleButton(&quot;no&quot;);
+                        }<b>else</b>{
+                            handleButton(&quot;cancel&quot;);
+                        }
+                    }
+                });
+                dlg.on(&quot;hide&quot;, handleHide);
+                mask = dlg.mask;
+                dlg.addKeyListener(27, dlg.hide, dlg);
+                buttons = {};
+                <b>var</b> bt = <b>this</b>.buttonText;
+                buttons[&quot;ok&quot;] = dlg.addButton(bt[&quot;ok&quot;], handleButton.createCallback(&quot;ok&quot;));
+                buttons[&quot;yes&quot;] = dlg.addButton(bt[&quot;yes&quot;], handleButton.createCallback(&quot;yes&quot;));
+                buttons[&quot;no&quot;] = dlg.addButton(bt[&quot;no&quot;], handleButton.createCallback(&quot;no&quot;));
+                buttons[&quot;cancel&quot;] = dlg.addButton(bt[&quot;cancel&quot;], handleButton.createCallback(&quot;cancel&quot;));
+                bodyEl = dlg.body.createChild({
+                    tag:&quot;div&quot;,
+                    html:'&lt;span class=&quot;ext-mb-text&quot;&gt;&lt;/span&gt;&lt;br /&gt;&lt;input type=&quot;text&quot; class=&quot;ext-mb-input&quot;&gt;&lt;textarea class=&quot;ext-mb-textarea&quot;&gt;&lt;/textarea&gt;&lt;div class=&quot;ext-mb-progress-wrap&quot;&gt;&lt;div class=&quot;ext-mb-progress&quot;&gt;&lt;div class=&quot;ext-mb-progress-bar&quot;&gt;&amp;#160;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'
+                });
+                msgEl = bodyEl.dom.firstChild;
+                textboxEl = Ext.get(bodyEl.dom.childNodes[2]);
+                textboxEl.enableDisplayMode();
+                textboxEl.addKeyListener([10,13], <b>function</b>(){
+                    <b>if</b>(dlg.isVisible() &amp;&amp; opt &amp;&amp; opt.buttons){
+                        <b>if</b>(opt.buttons.ok){
+                            handleButton(&quot;ok&quot;);
+                        }<b>else</b> if(opt.buttons.yes){
+                            handleButton(&quot;yes&quot;);
+                        }
+                    }
+                });
+                textareaEl = Ext.get(bodyEl.dom.childNodes[3]);
+                textareaEl.enableDisplayMode();
+                progressEl = Ext.get(bodyEl.dom.childNodes[4]);
+                progressEl.enableDisplayMode();
+                <b>var</b> pf = progressEl.dom.firstChild;
+                pp = Ext.get(pf.firstChild);
+                pp.setHeight(pf.offsetHeight);
+            }
+            <b>return</b> dlg;
+        },
+        
+        updateText : <b>function</b>(text){
+            <b>if</b>(!dlg.isVisible() &amp;&amp; !opt.width){
+                dlg.resizeTo(<b>this</b>.maxWidth, 100); <i>// resize first so content is never clipped from previous shows</i>
+            }
+            msgEl.innerHTML = text;
+            <b>var</b> w = Math.max(Math.min(opt.width || msgEl.offsetWidth, <b>this</b>.maxWidth), 
+                        Math.max(opt.minWidth || <b>this</b>.minWidth, bwidth));
+            <b>if</b>(opt.prompt){
+                activeTextEl.setWidth(w);
+            }
+            <b>if</b>(dlg.isVisible()){
+                dlg.fixedcenter = false;
+            }
+            dlg.setContentSize(w, bodyEl.getHeight());
+            <b>if</b>(dlg.isVisible()){
+                dlg.fixedcenter = true;
+            }
+            <b>return</b> this;
+        },        
+        
+        updateProgress : <b>function</b>(value, text){
+            <b>if</b>(text){
+                <b>this</b>.updateText(text);
+            }
+            pp.setWidth(Math.floor(value*progressEl.dom.firstChild.offsetWidth));
+            <b>return</b> this;
+        },        
+        
+        isVisible : <b>function</b>(){
+            <b>return</b> dlg &amp;&amp; dlg.isVisible();  
+        },
+        
+        hide : <b>function</b>(){
+            <b>if</b>(this.isVisible()){
+                dlg.hide();
+            }  
+        },
+        
+        show : <b>function</b>(options){
+            <b>var</b> d = <b>this</b>.getDialog();
+            opt = options;
+            d.setTitle(opt.title || &quot;&amp;#160;&quot;);
+            d.close.setDisplayed(opt.closable !== false);
+            activeTextEl = textboxEl;
+            opt.prompt = opt.prompt || (opt.multiline ? true : false);
+            <b>if</b>(opt.prompt){
+                <b>if</b>(opt.multiline){
+                    textboxEl.hide();
+                    textareaEl.show();
+                    textareaEl.setHeight(<b>typeof</b> opt.multiline == &quot;number&quot; ?
+                        opt.multiline : <b>this</b>.defaultTextHeight);
+                    activeTextEl = textareaEl;
+                }<b>else</b>{
+                    textboxEl.show();
+                    textareaEl.hide();
+                }
+            }<b>else</b>{
+                textboxEl.hide();
+                textareaEl.hide();
+            }
+            progressEl.setDisplayed(opt.progress === true);
+            <b>this</b>.updateProgress(0);
+            activeTextEl.dom.value = opt.value || &quot;&quot;;
+            <b>if</b>(opt.prompt){
+                dlg.setDefaultButton(activeTextEl);
+            }<b>else</b>{
+                <b>var</b> bs = opt.buttons;
+                <b>var</b> db = null;
+                <b>if</b>(bs &amp;&amp; bs.ok){
+                    db = buttons[&quot;ok&quot;];
+                }<b>else</b> if(bs &amp;&amp; bs.yes){
+                    db = buttons[&quot;yes&quot;];
+                }
+                dlg.setDefaultButton(db);
+            }
+            bwidth = updateButtons(opt.buttons);
+            <b>this</b>.updateText(opt.msg);
+            <b>if</b>(opt.cls){
+                d.el.addClass(opt.cls);
+            }
+            d.proxyDrag = opt.proxyDrag === true;
+            d.modal = opt.modal !== false;
+            d.mask = opt.modal !== false ? mask : false;
+            <b>if</b>(!d.isVisible()){
+                d.animateTarget = null;
+                d.show(options.animEl);
+            }
+            <b>return</b> this;
+        },
+        
+        progress : <b>function</b>(title, msg){
+            <b>this</b>.show({
+                title : title,
+                msg : msg,
+                buttons: false,
+                progress:true,
+                closable:false,
+                minWidth: <b>this</b>.minProgressWidth
+            });
+            <b>return</b> this;
+        },
+        
+        alert : <b>function</b>(title, msg, fn, scope){
+            <b>this</b>.show({
+                title : title,
+                msg : msg,
+                buttons: <b>this</b>.OK,
+                fn: fn,
+                scope : scope
+            });
+            <b>return</b> this;
+        },
+        
+        confirm : <b>function</b>(title, msg, fn, scope){
+            <b>this</b>.show({
+                title : title,
+                msg : msg,
+                buttons: <b>this</b>.YESNO,
+                fn: fn,
+                scope : scope
+            });
+            <b>return</b> this;
+        },
+        
+        prompt : <b>function</b>(title, msg, fn, scope, multiline){
+            <b>this</b>.show({
+                title : title,
+                msg : msg,
+                buttons: <b>this</b>.OKCANCEL,
+                fn: fn,
+                minWidth:250,
+                scope : scope,
+                prompt:true,
+                multiline: multiline
+            });
+            <b>return</b> this;
+        },
+        
+        OK : {ok:true},
+        YESNO : {yes:true, no:true},
+        OKCANCEL : {ok:true, cancel:true},
+        YESNOCANCEL : {yes:true, no:true, cancel:true},
+        
+        defaultTextHeight:75,
+        maxWidth : 600,
+        minWidth : 100,
+        minProgressWidth : 250,
+        buttonText : {
+            ok : &quot;OK&quot;,
+            cancel : &quot;Cancel&quot;,
+            yes : &quot;Yes&quot;,
+            no : &quot;No&quot;
+        }
+    };
+}();
+
+Ext.Msg = Ext.MessageBox;</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

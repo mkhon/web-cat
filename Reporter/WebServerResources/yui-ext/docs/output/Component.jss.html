@@ -1,0 +1,217 @@
+<html><head><title>Component.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>Component.js</h1><pre class="highlighted"><code>Ext.ComponentMgr = <b>function</b>(){
+    <b>var</b> all = <b>new</b> Ext.util.MixedCollection();
+
+    <b>return</b> {
+        register : <b>function</b>(c){
+            all.add(c);
+        },
+
+        unregister : <b>function</b>(c){
+            all.remove(c);
+        },
+
+        get : <b>function</b>(id){
+            <b>return</b> all.get(id);
+        },
+
+        onAvailable : <b>function</b>(id, fn, scope){
+            all.on(&quot;add&quot;, <b>function</b>(index, o){
+                <b>if</b>(o.id == id){
+                    fn.call(scope || o, o);
+                    all.un(&quot;add&quot;, fn, scope);
+                }
+            });
+        }
+    };
+}();
+
+Ext.Component = <b>function</b>(config){
+    config = config || {};
+    <b>if</b>(config.tagName || config.dom || <b>typeof</b> config == &quot;string&quot;){ <i>// element object</i>
+        config = {el: config, id: config.id || config};
+    }
+    Ext.apply(<b>this</b>, config);
+    <b>this</b>.addEvents({
+        disable : true,
+        enable : true,
+        beforeshow : true,
+        show : true,
+        beforehide : true,
+        hide : true,
+        beforerender : true,
+        render : true,
+        beforedestroy : true,
+        destroy : true
+    });
+    <b>if</b>(!<b>this</b>.id){
+        <b>this</b>.id = &quot;ext-comp-&quot; + (++Ext.Component.AUTO_ID);
+    }
+    Ext.ComponentMgr.register(<b>this</b>);
+};
+
+Ext.Component.AUTO_ID = 1000;
+
+Ext.extend(Ext.Component, Ext.util.Observable, {
+    <i>/**
+     * true <b>if</b> this component is hidden. Read-only.
+     */</i>
+    hidden : false,
+    <i>/**
+     * true <b>if</b> this component is disabled. Read-only.
+     */</i>
+    disabled : false,
+    <i>/**
+     * CSS class added to the component when it is disabled.
+     */</i>
+    disabledClass : &quot;x-item-disabled&quot;,
+    <i>/**
+     * true <b>if</b> this component has been rendered. Read-only.
+     */</i>
+    rendered : false,
+
+    ctype : &quot;Ext.Component&quot;,
+
+    actionMode : &quot;el&quot;,
+
+    getActionEl : <b>function</b>(){
+        <b>return</b> this[<b>this</b>.actionMode];
+    },
+
+    render : <b>function</b>(container){
+        <b>if</b>(!<b>this</b>.rendered &amp;&amp; <b>this</b>.fireEvent(&quot;beforerender&quot;, <b>this</b>) !== false){
+            <b>this</b>.container = Ext.get(container);
+            <b>this</b>.rendered = true;
+            <b>this</b>.onRender(<b>this</b>.container);
+            <b>if</b>(this.cls){
+                <b>this</b>.el.addClass(<b>this</b>.cls);
+                <b>delete</b> this.cls;
+            }
+            <b>this</b>.fireEvent(&quot;render&quot;, <b>this</b>);
+            <b>if</b>(this.hidden){
+                <b>this</b>.hide();
+            }
+            <b>if</b>(this.disabled){
+                <b>this</b>.disable();
+            }
+            <b>this</b>.afterRender(<b>this</b>.container);
+        }
+    },
+
+    <i>// <b>default</b> function is not really useful</i>
+    onRender : <b>function</b>(ct){
+        <b>this</b>.el = Ext.get(<b>this</b>.el);
+        ct.dom.appendChild(<b>this</b>.el.dom);
+    },
+
+    afterRender : Ext.emptyFn,
+
+    destroy : <b>function</b>(){
+        <b>if</b>(this.fireEvent(&quot;beforedestroy&quot;, <b>this</b>) !== false){
+            <b>this</b>.purgeListeners();
+            <b>if</b>(this.rendered){
+                <b>this</b>.el.removeAllListeners();
+                <b>this</b>.el.remove();
+                <b>if</b>(this.actionMode == &quot;container&quot;){
+                    <b>this</b>.container.remove();
+                }
+            }
+            Ext.ComponentMgr.unregister(<b>this</b>);
+            <b>this</b>.fireEvent(&quot;destroy&quot;, <b>this</b>);
+        }
+    },
+
+    getEl : <b>function</b>(){
+        <b>return</b> this.el;
+    },
+
+<i>/**
+ * Try to focus <b>this</b> component
+ */</i>
+    focus : <b>function</b>(selectText){
+        <b>if</b>(this.rendered){
+            <b>this</b>.el.focus();
+            <b>if</b>(selectText === true){
+                <b>this</b>.el.dom.select();
+            }
+        }
+    },
+
+    blur : <b>function</b>(){
+        <b>if</b>(this.rendered){
+            <b>this</b>.el.blur();
+        }
+    },
+<i>/**
+ * Disable <b>this</b> component
+ */</i>
+    disable : <b>function</b>(){
+        <b>if</b>(this.rendered){
+            <b>this</b>.getActionEl().addClass(<b>this</b>.disabledClass);
+            <b>this</b>.el.dom.disabled = true;
+        }
+        <b>this</b>.disabled = true;
+        <b>this</b>.fireEvent(&quot;disable&quot;, <b>this</b>);
+    },
+
+<i>/**
+ * Enable <b>this</b> component
+ */</i>
+    enable : <b>function</b>(){
+        <b>if</b>(this.rendered){
+            <b>this</b>.getActionEl().removeClass(<b>this</b>.disabledClass);
+            <b>this</b>.el.dom.disabled = false;
+        }
+        <b>this</b>.disabled = false;
+        <b>this</b>.fireEvent(&quot;enable&quot;, <b>this</b>);
+    },
+
+    setDisabled : <b>function</b>(disabled){
+        <b>this</b>[disabled ? &quot;disable&quot; : &quot;enable&quot;]();
+    },
+
+<i>/**
+ * Show <b>this</b> component
+ */</i>
+    show: <b>function</b>(){
+        <b>if</b>(this.fireEvent(&quot;beforeshow&quot;, <b>this</b>) !== false){
+            <b>this</b>.hidden = false;
+            <b>if</b>(this.rendered){
+                <b>this</b>.onShow();
+            }
+            <b>this</b>.fireEvent(&quot;show&quot;, <b>this</b>);
+        }
+    },
+
+    onShow : <b>function</b>(){
+        <b>var</b> st = <b>this</b>.getActionEl().dom.style;
+        st.display = &quot;&quot;;
+        st.visibility = &quot;visible&quot;;
+    },
+
+<i>/**
+ * Hide <b>this</b> component
+ */</i>
+    hide: <b>function</b>(){
+        <b>if</b>(this.fireEvent(&quot;beforehide&quot;, <b>this</b>) !== false){
+            <b>this</b>.hidden = true;
+            <b>if</b>(this.rendered){
+                <b>this</b>.onHide();
+            }
+            <b>this</b>.fireEvent(&quot;hide&quot;, <b>this</b>);
+        }
+    },
+
+    onHide : <b>function</b>(){
+        <b>this</b>.getActionEl().dom.style.display = &quot;none&quot;;
+    },
+
+    setVisible: <b>function</b>(visible){
+        <b>if</b>(visible) {
+            <b>this</b>.show();
+        }<b>else</b>{
+            <b>this</b>.hide();
+        }
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

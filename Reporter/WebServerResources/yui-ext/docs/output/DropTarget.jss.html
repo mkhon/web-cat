@@ -1,0 +1,43 @@
+<html><head><title>DropTarget.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>DropTarget.js</h1><pre class="highlighted"><code>Ext.dd.DropTarget = <b>function</b>(el, config){
+    <b>this</b>.el = Ext.get(el);
+    
+    Ext.apply(<b>this</b>, config);
+    
+    <b>if</b>(this.containerScroll){
+        Ext.dd.ScrollManager.register(<b>this</b>.el);
+    }
+    
+    Ext.dd.DropTarget.superclass.constructor.call(<b>this</b>, <b>this</b>.el.dom, <b>this</b>.ddGroup || <b>this</b>.group, 
+          {isTarget: true});
+
+};
+
+Ext.extend(Ext.dd.DropTarget, Ext.dd.DDTarget, {
+    isTarget : true,
+    isNotifyTarget : true,
+    dropAllowed : &quot;x-dd-drop-ok&quot;,
+    dropNotAllowed : &quot;x-dd-drop-nodrop&quot;,
+    
+    notifyEnter : <b>function</b>(dd, e, data){
+        <b>if</b>(this.overClass){
+            <b>this</b>.el.addClass(<b>this</b>.overClass);
+        }
+        <b>return</b> this.dropAllowed;
+    },
+    
+    notifyOver : <b>function</b>(dd, e, data){
+        <b>return</b> this.dropAllowed;
+    },
+    
+    notifyOut : <b>function</b>(dd, e, data){
+        <b>if</b>(this.overClass){
+            <b>this</b>.el.removeClass(<b>this</b>.overClass);
+        }
+    },
+    
+    notifyDrop : <b>function</b>(dd, e, data){
+        <b>return</b> false;
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

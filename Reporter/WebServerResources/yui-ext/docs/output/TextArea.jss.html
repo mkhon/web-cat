@@ -1,0 +1,74 @@
+<html><head><title>TextArea.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>TextArea.js</h1><pre class="highlighted"><code>Ext.form.TextArea = <b>function</b>(config){
+    Ext.form.TextArea.superclass.constructor.call(<b>this</b>, config);
+    <b>this</b>.addEvents({
+        autosize : true
+    });
+};
+
+Ext.extend(Ext.form.TextArea, Ext.form.TextField,  {
+    minHeight : 60,
+    maxHeight: 1000,
+    preventScrollbars: false,
+
+    initEvents : <b>function</b>(){
+        Ext.form.TextArea.superclass.initEvents.call(<b>this</b>);
+        <b>if</b>(this.grow){
+            <b>this</b>.el.on(&quot;keyup&quot;, <b>this</b>.onKeyUp,  <b>this</b>, {buffer:50});
+            <b>this</b>.el.on(&quot;click&quot;, <b>this</b>.autoSize,  <b>this</b>);
+        }
+    },
+
+    onRender : <b>function</b>(ct){
+        <b>if</b>(!<b>this</b>.el){
+            <b>this</b>.defaultAutoCreate = {
+                tag: &quot;textarea&quot;,
+                style:&quot;width:300px;height:60px;&quot;,
+                autocomplete: &quot;off&quot;
+            };
+        }
+        Ext.form.TextArea.superclass.onRender.call(<b>this</b>, ct);
+        <b>if</b>(this.grow){
+            <b>this</b>.textSizeEl = Ext.DomHelper.append(document.body, {
+                tag: &quot;pre&quot;, cls: &quot;x-form-grow-sizer&quot;
+            });
+            <b>if</b>(this.preventScrollbars){
+                <b>this</b>.el.setStyle(&quot;overflow&quot;, &quot;hidden&quot;);
+            }
+        }
+    },
+
+    onKeyUp : <b>function</b>(e){
+        <b>if</b>(!e.isNavKeyPress() || e.getKey() == e.ENTER){
+            <b>this</b>.autoSize();
+        }
+    },
+
+    autoSize : <b>function</b>(){
+        <b>if</b>(!<b>this</b>.grow || !<b>this</b>.textSizeEl){
+            <b>return</b>;
+        }
+        <b>var</b> el = <b>this</b>.el;
+        <b>var</b> v = el.dom.value;
+        <b>var</b> ts = <b>this</b>.textSizeEl;
+        Ext.fly(ts).setWidth(<b>this</b>.el.getWidth());
+        <b>if</b>(v.length &lt; 1){
+            v = &quot;&amp;#160;&amp;#160;&quot;;
+        }<b>else</b>{
+            v += &quot;&amp;#160;\n&amp;#160;&quot;;
+        }
+        <b>if</b>(Ext.isIE){
+            v = v.replace(/\n/g, '&lt;br /&gt;');
+        }
+        ts.innerHTML = v;
+        <b>var</b> h = Math.min(<b>this</b>.maxHeight, Math.max(ts.offsetHeight, <b>this</b>.minHeight));
+        <b>this</b>.el.setHeight(h);
+        <b>this</b>.fireEvent(&quot;autosize&quot;, <b>this</b>, h);
+    },
+
+    setValue : <b>function</b>(v){
+        Ext.form.TextArea.superclass.setValue.call(<b>this</b>, v);
+        <b>this</b>.autoSize();
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

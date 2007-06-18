@@ -1,0 +1,56 @@
+{
+    "WebObjects Release" = "WebObjects 5.1"; 
+	encoding = NSUTF8StringEncoding; 
+    variables = {
+        generatedReportsDisplayGroup = {
+            class = WODisplayGroup; 
+            dataSource = {
+                class = EODatabaseDataSource; 
+                editingContext = session.defaultEditingContext; 
+                fetchSpecification = {
+			        class = EOFetchSpecification; 
+			        entityName = GeneratedReport; 
+			        fetchLimit = 0; 
+			        isDeep = YES; 
+			        qualifier = {
+			            class = EOKeyValueQualifier; 
+			            key = user;
+			            selectorName = "isEqualTo:"; 
+			            value = { _key = user; class = EOQualifierVariable; }; 
+			        }; 
+			    };
+            }; 
+            fetchesOnLoad = YES; 
+            formatForLikeQualifier = "%@*"; 
+            localKeys = (); 
+            numberOfObjectsPerBatch = 15; 
+            selectsFirstObjectAfterFetch = YES; 
+            sortOrdering = ({class = EOSortOrdering; key = generatedTime; selectorName = "compareDescending:"; }); 
+        }; 
+        enqueuedReportsDisplayGroup = {
+            class = WODisplayGroup; 
+            dataSource = {
+                class = EODatabaseDataSource; 
+                editingContext = session.defaultEditingContext; 
+                fetchSpecification = {
+			        class = EOFetchSpecification; 
+			        entityName = EnqueuedReportJob; 
+			        fetchLimit = 0; 
+			        isDeep = YES; 
+			        qualifier = {
+			            class = EOKeyValueQualifier; 
+			            key = user;
+			            selectorName = "isEqualTo:"; 
+			            value = { _key = user; class = EOQualifierVariable; }; 
+			        }; 
+			    };
+            }; 
+            fetchesOnLoad = YES; 
+            formatForLikeQualifier = "%@*"; 
+            localKeys = (); 
+            numberOfObjectsPerBatch = 15; 
+            selectsFirstObjectAfterFetch = YES; 
+            sortOrdering = ({class = EOSortOrdering; key = queueTime; selectorName = "compareAscending:"; }); 
+        }; 
+    }; 
+}

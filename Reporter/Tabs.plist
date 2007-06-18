@@ -4,10 +4,48 @@
         priority = 300;
         children = {
             Generate = {
-                pageName = net.sf.webcat.reporter.GenerateReportPage;
+//                pageName = net.sf.webcat.reporter.GenerateReportPage;
                 accessLevel = 50;
                 priority = 1;
                 wantsStart = YES;
+        		children = {
+            		"Pick the Template" = {
+                		pageName   = net.sf.webcat.reporter.PickTemplateToGeneratePage;
+		                accessLevel = 50;
+                		priority   = 1;
+                		wantsStart = YES;
+            		};
+            		"Enter the Report Parameters" = {
+                		pageName = net.sf.webcat.reporter.EnterReportParametersPage;
+		                accessLevel = 50;
+                		priority = 2;
+            		};
+            		"View the Report" = {
+                		pageName = net.sf.webcat.reporter.DisplayReportPage;
+		                accessLevel = 50;
+                		priority = 3;
+            		};
+            	};
+            };
+            View = {
+                pageName = net.sf.webcat.reporter.PickReportToViewPage;
+                accessLevel = 50;
+                priority = 2;
+            };
+            Schedule = {
+                pageName = net.sf.webcat.reporter.ScheduleReportPage;
+                accessLevel = 50;
+                priority = 3;
+            };
+            "Template Library" = {
+                pageName = net.sf.webcat.reporter.TemplateLibraryPage;
+                accessLevel = 50;
+                priority = 4;
+            };
+            "Debug" = {
+                pageName = net.sf.webcat.reporter.DebugPage;
+                accessLevel = 50;
+                priority = 5;
             };
         };
     };

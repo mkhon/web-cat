@@ -1,0 +1,131 @@
+{
+    attributes = (
+        { name = id; prototypeName = id; }, 
+        {
+            columnName = CUSERID; 
+            name = userId; 
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CPAUSED; 
+            name = paused; 
+            prototypeName = boolean; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        }, 
+        {
+            columnName = CDISCARDED; 
+            name = discarded; 
+            prototypeName = boolean; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        }, 
+        {
+            columnName = CQUEUETIME;
+            name = queueTime;
+            prototypeName = dateTime;
+        }, 
+        {
+        	columnName = CUUID;
+        	name = uuid;
+        	prototypeName = mediumText;
+        },
+        {
+            columnName = CTEMPLATEID; 
+            name = reportTemplateId; 
+            prototypeName = foreignId; 
+        },
+        {
+        	columnName = CREPORTNAME;
+        	name = reportName;
+        	prototypeName = mediumText;
+        },
+        {
+        	columnName = CRENDEREDRESOURCEACTIONURL;
+        	name = renderedResourceActionUrl;
+        	prototypeName = mediumText;
+        },
+        {
+            columnName = CPARAMETERSELECTIONS; 
+            name = parameterSelections; 
+            prototypeName = mutableDictionary; 
+            userInfo = {
+                adaptorValueConversionMethodName = archiveData; 
+                valueFactoryMethodName = objectWithArchiveData; 
+                isMutable = true; 
+                valueClassName = net.sf.webcat.core.MutableDictionary; 
+            };
+        },
+        {
+            allowsNull = Y; 
+            externalType = BLOB; 
+            columnName = CJOBPROGRESS; 
+            name = jobProgress;
+            userInfo = {
+                adaptorValueConversionMethodName = archiveData; 
+                valueFactoryMethodName = objectWithArchiveData; 
+                isMutable = true; 
+                valueClassName = net.sf.webcat.reporter.JobProgressInfo; 
+            };
+            valueClassName = NSData;
+        },
+        {
+            name = updateMutableFields; 
+            prototypeName = updateMutableFields; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        }
+    ); 
+    attributesUsedForLocking = (
+    	reportTemplateId,
+    	userId,
+    	paused,
+    	discarded,
+    	uuid,
+    	renderedResourceActionUrl,
+    	reportName,
+		updateMutableFields
+    ); 
+    className = net.sf.webcat.reporter.EnqueuedReportJob; 
+    classProperties = (
+    	reportTemplate,
+    	user,
+    	paused,
+    	discarded,
+    	queueTime,
+    	uuid,
+    	renderedResourceActionUrl,
+    	reportName,
+    	parameterSelections,
+    	jobProgress,
+		updateMutableFields
+    ); 
+    externalName = TENQUEUEDREPORTJOB; 
+    name = EnqueuedReportJob; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = ReportTemplate; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = reportTemplateId; }); 
+            name = reportTemplate; 
+        },
+        {
+            destination = User; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
+            name = user; 
+        }
+    ); 
+}

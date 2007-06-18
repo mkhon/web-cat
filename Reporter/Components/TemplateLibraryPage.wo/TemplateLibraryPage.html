@@ -1,0 +1,75 @@
+<webobject name="Page"><webobject name="Form1">
+<h2>Published Report Templates (Available to All)</h2>
+<webobject name="HasPublishedTemplates">
+<div class="shadow"><table><tbody><tr><th>Published Report Templates
+<webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
+<webobject name="IsTerse"><webobject name="VerboseDescriptions"/></webobject>
+</th><th class="sm">Last Modified</th><th>Will Update?</th><th>Action</th></tr>
+<webobject name="PublishedTemplateRepetition">
+<webobject name="TR">
+<td><b><webobject name="Name"/> <webobject name="Version"/></b>
+<webobject name="IsVerbose"><br/><b>Title:</b> <webobject name="Title"/><br/>
+<b>Installed by:</b> <webobject name="InstalledBy"/><br/><b>Description:</b>
+<webobject name="Description"/></webobject></td>
+<td><webobject name="Date"/></td>
+<td class="s">&nbsp;</td>
+<td style="white-space:nowrap"><webobject name="CanEdit"><webobject name="DownloadNow"/><webobject name="Unpublish"/></webobject></td>
+</webobject></webobject></tbody></table></div>
+<div class="spacer">&nbsp;</div>
+</webobject><webobject name="HasNoPublishedTemplates">
+<p><span class="hl">No published report templates</span> have been installed.</p>
+</webobject>
+
+<webobject name="HasAdminPrivileges">
+<h2>Unpublished Report Templates (for Individual Use)</h2>
+<webobject name="HasUnpublishedTemplates">
+<div class="shadow"><table><tbody><tr><th>Unpublished Report Templates
+<webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
+<webobject name="IsTerse"><webobject name="VerboseDescriptions"/></webobject>
+</th><th class="sm">Last Modified</th><th>Will Update?</th><th>Action</th></tr>
+<webobject name="UnpublishedTemplateRepetition">
+<webobject name="TR">
+<td><b><webobject name="Name"/> <webobject name="Version"/></b>
+<webobject name="IsVerbose"><br/><b>Title:</b> <webobject name="Title"/><br/>
+<b>Installed by:</b> <webobject name="InstalledBy"/><br/><b>Description:</b>
+<webobject name="Description"/></webobject></td>
+<td><webobject name="Date"/></td>
+<td class="s">&nbsp;</td>
+<td style="white-space:nowrap"><webobject name="CanEdit"><webobject name="Publish"/><webobject name="Edit"/><webobject name="Delete"/></webobject></td>
+</webobject></webobject></tbody></table></div>
+<div class="spacer">&nbsp;</div>
+</webobject><webobject name="HasNoUnpublishedTemplates">
+<p><span class="hl">No unpublished report templates</span> have been installed.</p>
+</webobject>
+</webobject>
+
+<webobject name="HasNoAdminPrivileges">
+<h2>Personal Report Templates (for Your Individual Use)</h2>
+<webobject name="HasPersonalTemplates">
+<div class="shadow"><table><tbody><tr><th>Your Personal Report Templates
+<webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
+<webobject name="IsTerse"><webobject name="VerboseDescriptions"/></webobject>
+</th><th class="sm">Last Modified</th><th>Will Update?</th><th>Action</th></tr>
+<webobject name="PersonalTemplateRepetition">
+<webobject name="TR">
+<td><b><webobject name="Name"/> <webobject name="Version"/></b>
+<webobject name="IsVerbose"><br/><b>Title:</b> <webobject name="Title"/><br/>
+<b>Installed by:</b> <webobject name="InstalledBy"/><br/><b>Description:</b>
+<webobject name="Description"/></webobject></td>
+<td><webobject name="Date"/></td>
+<td class="s">&nbsp;</td>
+<td style="white-space:nowrap"><webobject name="IsNotPublished"><webobject name="Publish"/></webobject><webobject name="IsPublished"><webobject name="Unpublish"/></webobject></td>
+</webobject></webobject></tbody></table></div>
+<div class="spacer">&nbsp;</div>
+</webobject><webobject name="HasNoPersonalTemplates">
+<p>You have not yet installed any personal report templates.</p>
+</webobject>
+</webobject>
+
+<h2>Manually Upload a New Report Template</h2>
+<p>Upload a new plug-in: <webobject name="TemplateUpload"/>
+<webobject name="Upload"/></p>
+<p>A report template is a <b>.rptdesign</b> file that contains the report layout,
+data set definitions, and meta-data describing the template's input parameters.</p>
+
+</webobject></webobject>

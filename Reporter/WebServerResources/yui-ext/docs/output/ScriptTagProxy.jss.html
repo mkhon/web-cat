@@ -1,0 +1,114 @@
+<html><head><title>ScriptTagProxy.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>ScriptTagProxy.js</h1><pre class="highlighted"><code>Ext.data.ScriptTagProxy = <b>function</b>(config){
+    Ext.data.ScriptTagProxy.superclass.constructor.call(<b>this</b>);
+    Ext.apply(<b>this</b>, config);
+    <b>this</b>.head = document.getElementsByTagName(&quot;head&quot;)[0];
+};
+
+Ext.data.ScriptTagProxy.TRANS_ID = 1000;
+
+Ext.extend(Ext.data.ScriptTagProxy, Ext.data.DataProxy, {
+    timeout : 30000,
+    callbackParam : &quot;callback&quot;,
+    nocache : true,
+    
+    load : <b>function</b>(params, reader, callback, scope, arg){
+        <b>if</b>(this.fireEvent(&quot;beforeload&quot;, <b>this</b>, params) !== false){
+            
+            <b>var</b> p = Ext.urlEncode(Ext.apply(params, <b>this</b>.extraParams));
+            
+            <b>var</b> url = <b>this</b>.url;
+            url += (url.indexOf(&quot;?&quot;) != -1 ? &quot;&amp;&quot; : &quot;?&quot;) + p;
+            <b>if</b>(this.nocache){
+                url += &quot;&amp;_dc=&quot; + (<b>new</b> Date().getTime());
+            }
+            <b>var</b> transId = ++Ext.data.ScriptTagProxy.TRANS_ID;
+            <b>var</b> trans = {
+                id : transId,
+                cb : &quot;stcCallback&quot;+transId,
+                scriptId : &quot;stcScript&quot;+transId,
+                params : params,
+                arg : arg,
+                url : url,
+                callback : callback,
+                scope : scope,
+                reader : reader
+            };
+            <b>var</b> conn = <b>this</b>;
+            
+            window[trans.cb] = <b>function</b>(o){
+                conn.handleResponse(o, trans);
+            };
+            
+            url += String.format(&quot;&amp;{0}={1}&quot;, <b>this</b>.callbackParam, trans.cb);
+            
+            <b>if</b>(this.autoAbort !== false){
+                <b>this</b>.abort();
+            }
+            
+            trans.timeoutId = <b>this</b>.handleFailure.defer(<b>this</b>.timeout, <b>this</b>, [trans]);
+            
+            <b>var</b> script = document.createElement(&quot;script&quot;);
+            script.setAttribute(&quot;src&quot;, url);
+            script.setAttribute(&quot;type&quot;, &quot;text/javascript&quot;);
+            script.setAttribute(&quot;id&quot;, trans.scriptId);
+            <b>this</b>.head.appendChild(script);
+            
+            <b>this</b>.trans = trans;
+        }<b>else</b>{
+            callback.call(scope||<b>this</b>, null, arg, false);
+        }
+    },
+    
+    isLoading : <b>function</b>(){
+        <b>return</b> this.trans ? true : false;  
+    },
+    
+    abort : <b>function</b>(){
+        <b>if</b>(this.isLoading()){
+            <b>this</b>.destroyTrans(<b>this</b>.trans);
+        }
+    },
+    
+    destroyTrans : <b>function</b>(trans, isLoaded){
+        <b>this</b>.head.removeChild(document.getElementById(trans.scriptId));
+        clearTimeout(trans.timeoutId);
+        <b>if</b>(isLoaded){
+            window[trans.cb] = undefined;
+            try{
+                <b>delete</b> window[trans.cb];
+            }catch(e){}
+        }<b>else</b>{
+            <i>// <b>if</b> hasn't been loaded, wait <b>for</b> load to remove it to prevent script error</i>
+            window[trans.cb] = <b>function</b>(){
+                window[trans.cb] = undefined;
+                try{
+                    <b>delete</b> window[trans.cb];
+                }catch(e){}
+            }; 
+        }
+    },
+    
+    handleResponse : <b>function</b>(o, trans){
+        <b>this</b>.trans = false;
+        <b>this</b>.destroyTrans(trans, true);
+        <b>var</b> result;
+        try {
+            result = trans.reader.readRecords(o);
+        }catch(e){
+            <b>this</b>.fireEvent(&quot;loadexception&quot;, <b>this</b>, o, trans.arg, e);
+            trans.callback.call(trans.scope||window, null, trans.arg, false);
+            <b>return</b>;
+        }
+        <b>this</b>.fireEvent(&quot;load&quot;, <b>this</b>, o, trans.arg);
+        trans.callback.call(trans.scope||window, result, trans.arg, true);
+    },
+    
+    handleFailure : <b>function</b>(trans){
+        <b>this</b>.trans = false;
+        <b>this</b>.destroyTrans(trans, false);
+        <b>this</b>.fireEvent(&quot;loadexception&quot;, <b>this</b>, null, trans.arg);
+        trans.callback.call(trans.scope||window, null, trans.arg, false);
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

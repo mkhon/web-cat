@@ -1,0 +1,264 @@
+<html><head><title>Field.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>Field.js</h1><pre class="highlighted"><code>Ext.form.Field = <b>function</b>(config){
+    Ext.form.Field.superclass.constructor.call(<b>this</b>, config);
+    <b>this</b>.addEvents({
+        focus : true,
+        blur : true,
+        specialkey: true,
+        change:true,
+        invalid : true,
+        valid : true
+    });
+};
+
+Ext.extend(Ext.form.Field, Ext.Component,  {
+    invalidClass : &quot;x-form-invalid&quot;,
+    invalidText : &quot;The value <b>in</b> this field is invalid&quot;,
+    focusClass : &quot;x-form-focus&quot;,
+    validationEvent : &quot;keyup&quot;,
+    validationDelay : 250,
+    defaultAutoCreate : {tag: &quot;input&quot;, type: &quot;text&quot;, size: &quot;20&quot;, autocomplete: &quot;off&quot;},
+    fieldClass: &quot;x-form-field&quot;,
+    hasFocus : false,
+    msgTarget: 'qtip', <i>// qtip, title, under, or element id</i>
+    msgFx : 'normal',
+
+    applyTo : <b>function</b>(target){
+        <b>this</b>.target = target;
+        <b>this</b>.el = Ext.get(target);
+        <b>this</b>.render(<b>this</b>.el.dom.parentNode);
+        <b>return</b> this;
+    },
+
+    onRender : <b>function</b>(ct){
+        <b>if</b>(this.el){
+            <b>this</b>.el = Ext.get(<b>this</b>.el);
+            <b>if</b>(!<b>this</b>.target){
+                ct.dom.appendChild(<b>this</b>.el.dom);
+            }
+        }<b>else</b> {
+            <b>var</b> cfg = <b>typeof</b> this.autoCreate == &quot;object&quot; ?
+                      <b>this</b>.autoCreate : <b>this</b>.defaultAutoCreate;
+            <b>if</b>(this.id &amp; !cfg.id){
+                cfg.id = <b>this</b>.id;
+            }
+            <b>if</b>(!cfg.name){
+                cfg.name = <b>this</b>.name || <b>this</b>.id;
+            }
+            <b>this</b>.el = ct.createChild(cfg);
+        }
+        <b>var</b> type = <b>this</b>.el.dom.type;
+        <b>if</b>(type){
+            <b>if</b>(type == 'password'){
+                type = 'text';
+            }
+            <b>this</b>.el.addClass('x-form-'+type);
+        }
+        <b>if</b>(!<b>this</b>.customSize &amp;&amp; (<b>this</b>.width || <b>this</b>.height)){
+            <b>this</b>.setSize(<b>this</b>.width || &quot;&quot;, <b>this</b>.height || &quot;&quot;);
+        }
+        <b>if</b>(this.style){
+            <b>this</b>.el.applyStyles(<b>this</b>.style);
+            <b>delete</b> this.style;
+        }
+        <b>if</b>(this.readOnly){
+            <b>this</b>.el.dom.readOnly = true;
+        }
+
+        <b>this</b>.el.addClass([<b>this</b>.fieldClass, <b>this</b>.cls]);
+        <b>this</b>.initValue();
+    },
+
+    initValue : <b>function</b>(){
+        <b>if</b>(this.value !== undefined){
+            <b>this</b>.setValue(<b>this</b>.value);
+        }<b>else</b> if(<b>this</b>.el.dom.value.length &gt; 0){
+            <b>this</b>.setValue(<b>this</b>.el.dom.value);
+        }
+    },
+
+    afterRender : <b>function</b>(){
+        <b>this</b>.initEvents();
+    },
+
+    fireKey : <b>function</b>(e){
+        <b>if</b>(e.isNavKeyPress()){
+            <b>this</b>.fireEvent(&quot;specialkey&quot;, <b>this</b>, e);
+        }
+    },
+
+    initEvents : <b>function</b>(){
+        <b>this</b>.el.on(Ext.isIE ? &quot;keydown&quot; : &quot;keypress&quot;, <b>this</b>.fireKey,  <b>this</b>);
+        <b>this</b>.el.on(&quot;focus&quot;, <b>this</b>.onFocus,  <b>this</b>);
+        <b>this</b>.el.on(&quot;blur&quot;, <b>this</b>.onBlur,  <b>this</b>);
+    },
+
+    onFocus : <b>function</b>(){
+        <b>if</b>(!Ext.isOpera){ <i>// don't touch <b>in</b> Opera</i>
+            <b>this</b>.el.addClass(<b>this</b>.focusClass);
+        }
+        <b>this</b>.hasFocus = true;
+        <b>this</b>.startValue = <b>this</b>.getValue();
+        <b>this</b>.fireEvent(&quot;focus&quot;, <b>this</b>);
+    },
+
+    onBlur : <b>function</b>(){
+        <b>this</b>.el.removeClass(<b>this</b>.focusClass);
+        <b>this</b>.hasFocus = false;
+        <b>if</b>(this.validationEvent != &quot;blur&quot;){
+            <b>this</b>.validate();
+        }
+        <b>var</b> v = <b>this</b>.getValue();
+        <b>if</b>(v != <b>this</b>.startValue){
+            <b>this</b>.fireEvent('change', <b>this</b>, v, <b>this</b>.startValue);
+        }
+        <b>this</b>.fireEvent(&quot;blur&quot;, <b>this</b>);
+    },
+
+    setSize : <b>function</b>(w, h){
+        <b>if</b>(!<b>this</b>.rendered){
+            <b>this</b>.width = w;
+            <b>this</b>.height = h;
+            <b>return</b>;
+        }
+        <b>if</b>(w){
+            <b>this</b>.el.setWidth(w);
+        }
+        <b>if</b>(h){
+            <b>this</b>.el.setHeight(h);
+        }
+        <b>var</b> h = <b>this</b>.el.dom.offsetHeight; <i>// force browser recalc</i>
+    },
+
+    isValid : <b>function</b>(){
+        <b>return</b> this.validateValue(<b>this</b>.getValue());
+    },
+
+    validate : <b>function</b>(){
+        <b>if</b>(this.validateValue(<b>this</b>.getRawValue())){
+            <b>this</b>.clearInvalid();
+        }
+    },
+
+    validateValue : <b>function</b>(value){
+        <b>return</b> true;
+    },
+    
+    markInvalid : <b>function</b>(msg){
+        <b>if</b>(!<b>this</b>.rendered){ <i>// not rendered</i>
+            <b>return</b>;
+        }
+        <b>this</b>.el.addClass(<b>this</b>.invalidClass);
+        msg = msg || <b>this</b>.invalidText;
+        <b>switch</b>(this.msgTarget){
+            <b>case</b> 'qtip':
+                <b>this</b>.el.dom.qtip = msg;
+                <b>break</b>;
+            <b>case</b> 'title':
+                <b>this</b>.el.dom.title = msg;
+                <b>break</b>;
+            <b>case</b> 'under':
+                <b>if</b>(!<b>this</b>.errorEl){
+                    <b>var</b> elp = <b>this</b>.el.findParent('.x-form-element', 5, true);
+                    <b>this</b>.errorEl = elp.createChild({cls:'x-form-invalid-msg'});
+                    <b>this</b>.errorEl.setWidth(elp.getWidth()-20);
+                }
+                <b>this</b>.errorEl.update(msg);
+                Ext.form.Field.msgFx[<b>this</b>.msgFx].show(<b>this</b>.errorEl, <b>this</b>);
+                <b>break</b>;
+            <b>default</b>:
+                <b>var</b> t = Ext.getDom(<b>this</b>.msgTarget);
+                t.innerHTML = msg;
+                t.style.display = <b>this</b>.msgDisplay;
+                <b>break</b>;
+        }
+        <b>this</b>.fireEvent('invalid', <b>this</b>, msg);
+    },
+
+    clearInvalid : <b>function</b>(){
+        <b>if</b>(!<b>this</b>.rendered){ <i>// not rendered</i>
+            <b>return</b>;
+        }
+        <b>this</b>.el.removeClass(<b>this</b>.invalidClass);
+        <b>switch</b>(this.msgTarget){
+            <b>case</b> 'qtip':
+                <b>this</b>.el.dom.qtip = '';
+                <b>break</b>;
+            <b>case</b> 'title':
+                <b>this</b>.el.dom.title = '';
+                <b>break</b>;
+            <b>case</b> 'under':
+                <b>if</b>(this.errorEl){
+                    <b>var</b> p = <b>this</b>.el.findParent('.x-form-item', 5, true);
+                    <b>if</b>(p){
+                        p.removeClass('x-form-item-msg');
+                        Ext.form.Field.msgFx[<b>this</b>.msgFx].hide(<b>this</b>.errorEl, <b>this</b>);
+                    }
+                }
+                <b>break</b>;
+            <b>default</b>:
+                <b>var</b> t = Ext.getDom(<b>this</b>.msgTarget);
+                t.innerHTML = '';
+                t.style.display = 'none';
+                <b>break</b>;
+        }
+        <b>this</b>.fireEvent('valid', <b>this</b>);
+    },
+
+    getRawValue : <b>function</b>(){
+        <b>return</b> this.el.getValue();
+    },
+
+    getValue : <b>function</b>(){
+        <b>return</b> this.el.getValue();
+    },
+
+    setRawValue : <b>function</b>(v){
+        <b>return</b> this.el.dom.value = v;
+    },
+
+    setValue : <b>function</b>(v){
+        <b>this</b>.value = v;
+        <b>if</b>(this.rendered){
+            <b>this</b>.el.dom.value = v;
+            <b>this</b>.validate();
+        }
+    }
+});
+
+
+<i>// anything other than normal should be considered experimental</i>
+Ext.form.Field.msgFx = {
+    normal : {
+        show: <b>function</b>(msgEl, f){
+            msgEl.setDisplayed('block');
+        },
+
+        hide : <b>function</b>(msgEl, f){
+            msgEl.setDisplayed(false).update('');
+        }
+    },
+
+    slide : {
+        show: <b>function</b>(msgEl, f){
+            msgEl.slideIn('t', {stopFx:true});
+        },
+
+        hide : <b>function</b>(msgEl, f){
+            msgEl.slideOut('t', {stopFx:true,useDisplay:true});
+        }
+    },
+
+    slideRight : {
+        show: <b>function</b>(msgEl, f){
+            msgEl.fixDisplay();
+            msgEl.alignTo(f.el, 'tl-tr');
+            msgEl.slideIn('l', {stopFx:true});
+        },
+
+        hide : <b>function</b>(msgEl, f){
+            msgEl.slideOut('l', {stopFx:true,useDisplay:true});
+        }
+    }
+};</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

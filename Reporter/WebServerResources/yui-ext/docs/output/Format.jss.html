@@ -1,0 +1,89 @@
+<html><head><title>Format.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>Format.js</h1><pre class="highlighted"><code><i>/**
+ * @class Ext.util.Format
+ * Reusable format functions usable <b>in</b> yui-ext components.
+ * @singleton
+ */</i>
+Ext.util.Format = <b>function</b>(){
+    <b>var</b> trimRe = /^\s*(.*)\s*$/;
+    <b>return</b> {
+        ellipsis : <b>function</b>(value, len){
+            <b>if</b>(value &amp;&amp; value.length &gt; len){
+                <b>return</b> value.substr(0, len-3)+&quot;...&quot;;
+            }
+            <b>return</b> value;
+        },
+        
+        undef : <b>function</b>(value){
+            <b>return</b> typeof value != &quot;undefined&quot; ? value : &quot;&quot;;
+        },
+        
+        htmlEncode : <b>function</b>(value){
+            <b>return</b> !value ? value : String(value).replace(/&amp;/g, &quot;&amp;amp;&quot;).replace(/&gt;/g, &quot;&amp;gt;&quot;).replace(/&lt;/g, &quot;&amp;lt;&quot;).replace(/&quot;/g, &quot;&amp;quot;&quot;);
+        },
+        
+        trim : <b>function</b>(value){
+            <b>return</b> String(value).replace(trimRe, &quot;$1&quot;);
+        },
+        
+        substr : <b>function</b>(value, start, length){
+            <b>return</b> String(value).substr(start, length);
+        },
+        
+        lowercase : <b>function</b>(value){
+            <b>return</b> String(value).toLowerCase();
+        },
+        
+        uppercase : <b>function</b>(value){
+            <b>return</b> String(value).toUpperCase();
+        },
+        
+        capitalize : <b>function</b>(value){
+            <b>return</b> !value ? value : value.charAt(0).toUpperCase() + value.substr(1).toLowerCase();
+        },
+        
+        call : <b>function</b>(value, fn){
+            <b>if</b>(arguments.length &gt; 2){
+                <b>var</b> args = Array.prototype.slice.call(arguments, 2);
+                args.unshift(value);
+                <b>return</b> eval(fn).apply(window, args);
+            }<b>else</b>{
+                <b>return</b> eval(fn).call(window, value);
+            }
+        },
+        
+        usMoney : <b>function</b>(v){
+            v = (Math.round((v-0)*100))/100;
+            v = (v == Math.floor(v)) ? v + &quot;.00&quot; : ((v*10 == Math.floor(v*10)) ? v + &quot;0&quot; : v);
+            <b>return</b> &quot;$&quot; + v ;
+        },
+        
+        date : <b>function</b>(v, format){
+            <b>if</b>(!v){
+                <b>return</b> &quot;&quot;;
+            }
+            <b>if</b>(!(v instanceof Date)){
+                v = <b>new</b> Date(Date.parse(v));
+            }
+            <b>return</b> v.dateFormat(format || &quot;m/d/Y&quot;);
+        },
+
+        dateRenderer : <b>function</b>(format){
+            <b>return</b> function(v){
+                <b>return</b> Ext.util.Format.date(v, format);  
+            };
+        },
+
+        stripTagsRE : /&lt;\/?[^&gt;]+&gt;/gi,
+        
+        <i>/**
+         * Strips all HTML tags
+         * @param {Mixed} s The text
+         * @<b>return</b> {String} The stripped text
+         */</i>
+        stripTags : <b>function</b>(v){
+            <b>return</b> !v ? v : String(v).replace(<b>this</b>.stripTagsRE, &quot;&quot;);
+        }
+    };
+}();</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

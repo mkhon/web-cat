@@ -1,0 +1,49 @@
+CancelButton: AjaxSubmitButton {
+	value = "Cancel";
+	id = "longResponseCancelButton";
+	onClick = "$('longResponseCancelButton').disable(); $('longResponseCancelButton').value = 'Canceling...';";
+	action = cancelJob;
+}
+
+CancelledMessage: WOString {
+    value = "cancelled!";
+}
+
+Cancelled: WOConditional {
+    condition = isCancelled;
+}
+
+Content: WOComponentContent {
+}
+
+Form: WOForm {
+}
+
+Finished: WOConditional {
+    condition = isDone;
+}
+
+InProgress: WOConditional {
+    condition = isDone;
+    negate    = true;
+}
+
+Message: WOString {
+    value = message;
+}
+
+NotCancelled: WOConditional {
+    condition = isCancelled;
+    negate    = true;
+}
+
+PeriodicUpdater: net.sf.webcat.reporter.controls.AjaxUpdateContainer2 {
+	id = "periodicUpdater";
+	frequency = 3;
+	decay = 1;
+}
+
+ProgressBar: net.sf.webcat.reporter.AjaxProgressBar {
+    fractionDone = percentOfWorkDone;
+    taskDescription = taskDescription;
+}

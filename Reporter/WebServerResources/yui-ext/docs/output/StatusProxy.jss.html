@@ -1,0 +1,108 @@
+<html><head><title>StatusProxy.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>StatusProxy.js</h1><pre class="highlighted"><code>Ext.dd.StatusProxy = <b>function</b>(config){
+    Ext.apply(<b>this</b>, config);
+    <b>this</b>.id = <b>this</b>.id || Ext.id();
+    <b>this</b>.el = <b>new</b> Ext.Layer({
+        dh: {
+            id: <b>this</b>.id, tag: &quot;div&quot;, cls: &quot;x-dd-drag-proxy &quot;+<b>this</b>.dropNotAllowed, children: [
+                {tag: &quot;div&quot;, cls: &quot;x-dd-drop-icon&quot;},
+                {tag: &quot;div&quot;, cls: &quot;x-dd-drag-ghost&quot;}
+            ]
+        }, 
+        shadow: !config || config.shadow !== false
+    });
+    <b>this</b>.ghost = Ext.get(<b>this</b>.el.dom.childNodes[1]);
+    <b>this</b>.dropStatus = <b>this</b>.dropNotAllowed;
+};
+
+Ext.dd.StatusProxy.prototype = {
+    dropAllowed : &quot;x-dd-drop-ok&quot;,
+    dropNotAllowed : &quot;x-dd-drop-nodrop&quot;,
+    <i>/**
+     * Updates the DD visual element to allow/not allow a drop
+     * @param {String} cssClass The css class <b>for</b> the <b>new</b> drop status indicator image
+     */</i>
+    setStatus : <b>function</b>(cssClass){
+        cssClass = cssClass || <b>this</b>.dropNotAllowed;
+        <b>if</b>(this.dropStatus != cssClass){
+            <b>this</b>.el.replaceClass(<b>this</b>.dropStatus, cssClass);
+            <b>this</b>.dropStatus = cssClass;
+        }
+    },
+    
+    reset : <b>function</b>(clearGhost){
+        <b>this</b>.el.dom.className = &quot;x-dd-drag-proxy &quot; + <b>this</b>.dropNotAllowed;
+        <b>this</b>.dropStatus = <b>this</b>.dropNotAllowed;
+        <b>if</b>(clearGhost){
+            <b>this</b>.ghost.update(&quot;&quot;);
+        }
+    },
+    
+    update : <b>function</b>(html){
+        <b>if</b>(typeof html == &quot;string&quot;){
+            <b>this</b>.ghost.update(html);
+        }<b>else</b>{
+            <b>this</b>.ghost.update(&quot;&quot;);
+            html.style.margin = &quot;0&quot;;
+            <b>this</b>.ghost.dom.appendChild(html);
+        }        
+    },
+    
+    getEl : <b>function</b>(){
+        <b>return</b> this.el;
+    },
+    
+    getGhost : <b>function</b>(){
+        <b>return</b> this.ghost;
+    },
+    
+    hide : <b>function</b>(clear){
+        <b>this</b>.el.hide();
+        <b>if</b>(clear){
+            <b>this</b>.reset(true);
+        }
+    },
+    
+    stop : <b>function</b>(){
+        <b>if</b>(this.anim &amp;&amp; <b>this</b>.anim.isAnimated &amp;&amp; <b>this</b>.anim.isAnimated()){
+            <b>this</b>.anim.stop();
+        }
+    },
+    
+    show : <b>function</b>(){
+        <b>this</b>.el.show();
+    },
+    
+    sync : <b>function</b>(){
+        <b>this</b>.el.sync();
+    },
+    
+    repair : <b>function</b>(xy, callback, scope){
+        <b>this</b>.callback = callback;
+        <b>this</b>.scope = scope;
+        <b>if</b>(xy &amp;&amp; <b>this</b>.animRepair !== false){
+            <b>this</b>.el.addClass(&quot;x-dd-drag-repair&quot;);
+            <b>this</b>.el.hideUnders(true);
+            <b>this</b>.anim = <b>this</b>.el.shift({
+                duration: <b>this</b>.repairDuration || .5,
+                easing: 'easeOut',
+                xy: xy,
+                stopFx: true,
+                callback: <b>this</b>.afterRepair,
+                scope: <b>this</b>
+            });
+        }<b>else</b>{
+            <b>this</b>.afterRepair();
+        }
+    },
+    
+    afterRepair : <b>function</b>(){
+        <b>this</b>.hide(true);
+        <b>if</b>(typeof <b>this</b>.callback == &quot;<b>function</b>&quot;){
+            <b>this</b>.callback.call(<b>this</b>.scope || <b>this</b>);
+        }
+        <b>this</b>.callback == null;
+        <b>this</b>.scope == null;
+    }
+};</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

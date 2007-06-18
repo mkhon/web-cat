@@ -1,0 +1,216 @@
+<html><head><title>CSS.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>CSS.js</h1><pre class="highlighted"><code><i>/**
+ * @class Ext.util.CSS
+ * Class <b>for</b> manipulating CSS Rules
+ * @singleton
+ */</i>
+Ext.util.CSS = <b>function</b>(){
+	<b>var</b> rules = null;
+   	<b>var</b> doc = document;
+   	
+   	<b>var</b> toCamel = <b>function</b>(property) {
+      <b>var</b> convert = <b>function</b>(prop) {
+         <b>var</b> test = /(-[a-z])/i.exec(prop);
+         <b>return</b> prop.replace(RegExp.$1, RegExp.$1.substr(1).toUpperCase());
+      };
+      <b>while</b>(property.indexOf(&quot;-&quot;) &gt; -1) {
+         property = convert(property);
+      }
+      <b>return</b> property;
+   };
+   
+   <b>return</b> {
+   <i>/**
+    * Very simple dynamic creation of stylesheets from a text blob of rules.
+    * @param {String} cssText The text containing the css rules
+    * @<b>return</b> {StyleSheet} 
+    */</i>
+   createStyleSheet : <b>function</b>(cssText){
+       <b>var</b> ss;
+       <b>if</b>(Ext.isIE){
+           ss = doc.createStyleSheet();
+           ss.cssText = cssText;
+       }<b>else</b>{
+           <b>var</b> head = doc.getElementsByTagName(&quot;head&quot;)[0];
+           <b>var</b> rules = doc.createElement(&quot;style&quot;);
+           rules.setAttribute(&quot;type&quot;, &quot;text/css&quot;);
+           try{
+                rules.appendChild(doc.createTextNode(cssText));
+           }catch(e){
+               rules.cssText = cssText; 
+           }
+           head.appendChild(rules);
+           ss = rules.styleSheet ? rules.styleSheet : (rules.sheet || doc.styleSheets[doc.styleSheets.length-1]);
+       }
+       <b>this</b>.cacheStyleSheet(ss);
+       <b>return</b> ss;
+   },
+   
+   removeStyleSheet : <b>function</b>(id){
+       <b>var</b> existing = doc.getElementById(id);
+       <b>if</b>(existing){
+           existing.parentNode.removeChild(existing);
+       }
+   },
+   
+   swapStyleSheet : <b>function</b>(id, url){
+       <b>this</b>.removeStyleSheet(id);
+       <b>var</b> ss = doc.createElement(&quot;link&quot;);
+       ss.setAttribute(&quot;rel&quot;, &quot;stylesheet&quot;);
+       ss.setAttribute(&quot;type&quot;, &quot;text/css&quot;);
+       ss.setAttribute(&quot;id&quot;, id);
+       ss.setAttribute(&quot;href&quot;, url);
+       doc.getElementsByTagName(&quot;head&quot;)[0].appendChild(ss);
+   },
+   
+   <i>/**
+    * Refresh the rule cache <b>if</b> you have dynamically added stylesheets
+    * @<b>return</b> {Object} An object (hash) of rules indexed by selector
+    */</i>
+   refreshCache : <b>function</b>(){
+       <b>return</b> this.getRules(true);
+   },
+   
+   cacheStyleSheet : <b>function</b>(ss){
+       <b>if</b>(!rules){
+           rules = {};
+       }
+       try{<i>// try catch <b>for</b> cross domain access issue</i>
+           <b>var</b> ssRules = ss.cssRules || ss.rules;
+           <b>for</b>(var j = ssRules.length-1; j &gt;= 0; --j){
+               rules[ssRules[j].selectorText] = ssRules[j];
+           }
+       }catch(e){}
+   },
+   
+   <i>/**
+    * Gets all css rules <b>for</b> the document
+    * @param {Boolean} refreshCache true to refresh the internal cache
+    * @<b>return</b> {Object} An object (hash) of rules indexed by selector
+    */</i>
+   getRules : <b>function</b>(refreshCache){
+   		<b>if</b>(rules == null || refreshCache){
+   			rules = {};
+   			<b>var</b> ds = doc.styleSheets;
+   			<b>for</b>(var i =0, len = ds.length; i &lt; len; i++){
+   			    try{
+    		        <b>this</b>.cacheStyleSheet(ds[i]);
+    		    }catch(e){} 
+	        }
+   		}
+   		<b>return</b> rules;
+   	},
+   	
+   	<i>/**
+    * Gets an an individual CSS rule by selector(s)
+    * @param {String/Array} selector The CSS selector or an array of selectors to try. The first selector that is found is returned.
+    * @param {Boolean} refreshCache true to refresh the internal cache
+    * @<b>return</b> {CSSRule} The CSS rule or null <b>if</b> one is not found
+    */</i>
+   getRule : <b>function</b>(selector, refreshCache){
+   		<b>var</b> rs = <b>this</b>.getRules(refreshCache);
+   		<b>if</b>(!(selector instanceof Array)){
+   		    <b>return</b> rs[selector];
+   		}
+   		<b>for</b>(var i = 0; i &lt; selector.length; i++){
+			<b>if</b>(rs[selector[i]]){
+				<b>return</b> rs[selector[i]];
+			}
+		}
+		<b>return</b> null;
+   	},
+   	
+   	
+   	<i>/**
+    * Updates a rule property
+    * @param {String/Array} selector If it's an array it tries each selector until it finds one. Stops immediately once one is found.
+    * @param {String} property The css property
+    * @param {String} value The <b>new</b> value <b>for</b> the property
+    * @<b>return</b> {Boolean} true <b>if</b> a rule was found and updated 
+    */</i>
+   updateRule : <b>function</b>(selector, property, value){
+   		<b>if</b>(!(selector instanceof Array)){
+   			<b>var</b> rule = <b>this</b>.getRule(selector);
+   			<b>if</b>(rule){
+   				rule.style[toCamel(property)] = value;
+   				<b>return</b> true;
+   			}
+   		}<b>else</b>{
+   			<b>for</b>(var i = 0; i &lt; selector.length; i++){
+   				<b>if</b>(this.updateRule(selector[i], property, value)){
+   					<b>return</b> true;
+   				}
+   			}
+   		}
+   		<b>return</b> false;
+   	},
+   	
+   	<i>/**
+    * Applies a rule to an element without adding the class
+    * @param {HTMLElement} el The element
+    * @param {String/Array} selector If it's an array it tries each selector until it finds one. Stops immediately once one is found.
+    * @<b>return</b> {Boolean} true <b>if</b> a rule was found and applied 
+    */</i>
+   apply : <b>function</b>(el, selector){
+   		<b>if</b>(!(selector instanceof Array)){
+   			<b>var</b> rule = <b>this</b>.getRule(selector);
+   			<b>if</b>(rule){
+   			    <b>var</b> s = rule.style;
+   				<b>for</b>(var key <b>in</b> s){
+   				    <b>if</b>(typeof s[key] != &quot;<b>function</b>&quot;){
+       					<b>if</b>(s[key] &amp;&amp; String(s[key]).indexOf(&quot;:&quot;) &lt; 0 &amp;&amp; s[key] != &quot;false&quot;){
+       						try{el.style[key] = s[key];}catch(e){}
+       					}
+   				    }
+   				}
+   				<b>return</b> true;
+   			}
+   		}<b>else</b>{
+   			<b>for</b>(var i = 0; i &lt; selector.length; i++){
+   				<b>if</b>(this.apply(el, selector[i])){
+   					<b>return</b> true;
+   				}
+   			}
+   		}
+   		<b>return</b> false;
+   	},
+   	
+   	applyFirst : <b>function</b>(el, id, selector){
+   		<b>var</b> selectors = [
+   			&quot;#&quot; + id + &quot; &quot; + selector,
+   			selector
+   		];
+   		<b>return</b> this.apply(el, selectors);
+   	},
+   	
+   	revert : <b>function</b>(el, selector){
+   		<b>if</b>(!(selector instanceof Array)){
+   			<b>var</b> rule = <b>this</b>.getRule(selector);
+   			<b>if</b>(rule){
+   				<b>for</b>(key <b>in</b> rule.style){
+   					<b>if</b>(rule.style[key] &amp;&amp; String(rule.style[key]).indexOf(&quot;:&quot;) &lt; 0 &amp;&amp; rule.style[key] != &quot;false&quot;){
+   						try{el.style[key] = &quot;&quot;;}catch(e){}
+   					}
+   				}
+   				<b>return</b> true;
+   			}
+   		}<b>else</b>{
+   			<b>for</b>(var i = 0; i &lt; selector.length; i++){
+   				<b>if</b>(this.revert(el, selector[i])){
+   					<b>return</b> true;
+   				}
+   			}
+   		}
+   		<b>return</b> false;
+   	},
+   	
+   	revertFirst : <b>function</b>(el, id, selector){
+   		<b>var</b> selectors = [
+   			&quot;#&quot; + id + &quot; &quot; + selector,
+   			selector
+   		];
+   		<b>return</b> this.revert(el, selectors);
+   	}
+   };	
+}();</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

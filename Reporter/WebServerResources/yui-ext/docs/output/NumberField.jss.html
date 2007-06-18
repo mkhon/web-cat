@@ -1,0 +1,88 @@
+<html><head><title>NumberField.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>NumberField.js</h1><pre class="highlighted"><code>Ext.form.NumberField = <b>function</b>(config){
+    Ext.form.NumberField.superclass.constructor.call(<b>this</b>, config);
+};
+
+Ext.extend(Ext.form.NumberField, Ext.form.TextField,  {
+    fieldClass: &quot;x-form-field x-form-num-field&quot;,
+    
+    initEvents : <b>function</b>(){
+        Ext.form.NumberField.superclass.initEvents.call(<b>this</b>);
+        <b>var</b> allowed = &quot;0123456789&quot;;
+        <b>if</b>(this.allowDecimals){
+            allowed += <b>this</b>.decimalSeparator;
+        }
+        <b>if</b>(this.allowNegative){
+            allowed += &quot;-&quot;;
+        }
+        <b>var</b> keyPress = <b>function</b>(e){
+            <b>var</b> k = e.getKey();
+            <b>if</b>(!Ext.isIE &amp;&amp; (e.isNavKeyPress() || k == e.BACKSPACE || k == e.DELETE)){
+                <b>return</b>;
+            }
+            <b>var</b> c = e.getCharCode();
+            <b>if</b>(allowed.indexOf(String.fromCharCode(c)) === -1){
+                e.stopEvent();
+            }
+        };
+        <b>this</b>.el.on(&quot;keypress&quot;, keyPress, <b>this</b>);
+    },
+
+    validateValue : <b>function</b>(value){
+        <b>if</b>(!Ext.form.NumberField.superclass.validateValue.call(<b>this</b>, value)){
+            <b>return</b> false;
+        }
+        <b>if</b>(value.length &lt; 1){ <i>// <b>if</b> it&quot;s blank and textfield didn&quot;t flag it then it's valid</i>
+             <b>return</b> true;
+        }
+        <b>if</b>(!(/\d+/.test(value))){
+            <b>this</b>.markInvalid(String.format(<b>this</b>.nanText, value));
+            <b>return</b> false;
+        }
+        <b>var</b> num = <b>this</b>.parseValue(value);
+        <b>if</b>(num &lt; <b>this</b>.minValue){
+            <b>this</b>.markInvalid(String.format(<b>this</b>.minText, <b>this</b>.minValue));
+            <b>return</b> false;
+        }
+        <b>if</b>(num &gt; <b>this</b>.maxValue){
+            <b>this</b>.markInvalid(String.format(<b>this</b>.maxText, <b>this</b>.maxValue));
+            <b>return</b> false;
+        }
+        <b>return</b> true;
+    },
+
+
+    parseValue : <b>function</b>(value){
+        <b>return</b> parseFloat(String(value).replace(<b>this</b>.decimalSeparator, &quot;.&quot;));
+    },
+
+    fixPrecision : <b>function</b>(value){
+       <b>if</b>(!<b>this</b>.allowDecimals || <b>this</b>.decimalPrecision == -1 || isNaN(value) || value == 0 || !value){
+           <b>return</b> value;
+       }
+       <i>// <b>this</b> should work but doesn't due to precision error <b>in</b> JS</i>
+       <i>// <b>var</b> scale = Math.pow(10, <b>this</b>.decimalPrecision);</i>
+       <i>// <b>var</b> fixed = <b>this</b>.decimalPrecisionFcn(value * scale);</i>
+       <i>// <b>return</b> fixed / scale;</i>
+       <i>//</i>
+       <i>// so here's our workaround:</i>
+       <b>var</b> scale = Math.pow(10, <b>this</b>.decimalPrecision+1);
+       <b>var</b> fixed = <b>this</b>.decimalPrecisionFcn(value * scale);
+       fixed = <b>this</b>.decimalPrecisionFcn(fixed/10);
+       <b>return</b> fixed / (scale/10);
+    },
+
+    allowDecimals : true,
+    decimalSeparator : &quot;.&quot;,
+    decimalPrecision : 2,
+    decimalPrecisionFcn : <b>function</b>(v){
+        <b>return</b> Math.floor(v);
+    },
+    allowNegative : true,
+    minValue : Number.NEGATIVE_INFINITY,
+    maxValue : Number.MAX_VALUE,
+    minText : &quot;The minimum value <b>for</b> this field is {0}&quot;,
+    maxText : &quot;The maximum value <b>for</b> this field is {0}&quot;,
+    nanText : &quot;{0} is not a valid number&quot;
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

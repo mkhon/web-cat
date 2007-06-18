@@ -1,0 +1,40 @@
+{
+    attributes = (
+        {
+            columnName = CID; 
+            externalType = INT; 
+            name = id; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }, 
+        {
+            columnName = CDEPENDSONID; 
+            externalType = INT; 
+            name = dependsOnId; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }
+    ); 
+    attributesUsedForLocking = (id, dependsOnId); 
+    className = EOGenericRecord;
+    externalName = TREPORTPARAMETERDEPENDS; 
+    fetchSpecificationDictionary = {}; 
+    name = ReportParameterDependencies; 
+    primaryKeyAttributes = (id, dependsOnId); 
+    relationships = (
+        {
+            destination = ReportParameter; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = id; }); 
+            name = needyParameter; 
+        }, 
+        {
+            destination = ReportParameter; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = dependsOnId; }); 
+            name = dependsOn; 
+        }
+    ); 
+}

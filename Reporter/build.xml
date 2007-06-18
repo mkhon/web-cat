@@ -128,10 +128,10 @@
                     <excludesfile name="woproject/resources.exclude.patternset"/> 
                 </patternset>
             </resources>
-            <lib dir="Libraries">
+            <!-- lib dir="Libraries">
                 <include name="*.jar"/>
                 <exclude name="**/*.framework/**"/>
-            </lib>
+            </lib -->
         </woframework>
         <!-- older, to handle WebServerResources
         <copy todir="${dest.dir}/${framework.name}.framework">
@@ -187,7 +187,7 @@
         <!-- need to jar framework up somewhere, based on version number -->
         <property file="Properties"/>
         <property name="export.jar.name"
-            value="../${framework.name}_${Grader.version.major}.${Grader.version.minor}.${Grader.version.revision}.jar"/>
+            value="../${framework.name}_${Reporter.version.major}.${Reporter.version.minor}.${Reporter.version.revision}.jar"/>
         <jar destfile="${export.jar.name}"
             basedir="${install.dir}"
             includes="${framework.name}.framework/**"/>

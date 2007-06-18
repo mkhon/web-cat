@@ -1,0 +1,18 @@
+<html><head><title>Container.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>Container.js</h1><pre class="highlighted"><code>Ext.Container = <b>function</b>(config){
+    Ext.Container.superclass.constructor.call(<b>this</b>, config);
+    <b>this</b>.items = <b>new</b> Ext.util.MixedCollection(false, <b>this</b>.getComponentId);
+};
+
+Ext.extend(Ext.Container, Ext.Component, {
+    getComponentId : <b>function</b>(comp){
+        <b>return</b> comp.id;
+    },
+
+    add : Ext.emptyFn,
+
+    remove : Ext.emptyFn,
+
+    insert : Ext.emptyFn
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

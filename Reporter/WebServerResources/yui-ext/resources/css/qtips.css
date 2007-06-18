@@ -1,0 +1,47 @@
+/*
+ * Ext - JS Library 1.0 Alpha 3 - Rev 4
+ * Copyright(c) 2006-2007, Jack Slocum.
+ * jack.slocum@yahoo.com
+ * 
+ * http://www.extjs.com/license.txt
+ */
+
+.x-tip{
+	position: absolute;
+	top: 0;
+	visibility: hidden;
+	z-index: 20000;
+}
+.x-tip .x-tip-bd{
+	background: #e0e8f3 url(../images/default/qtip/bg.gif) repeat-x;
+	border: 1px solid #a3bad9;
+	font: normal 11px arial,helvetica,sans-serif;
+	padding: 5px;
+}
+.x-tip .x-tip-close{
+	background-image: url(../images/default/basic-dialog/close.gif);
+	height: 15px;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	width: 15px;
+}
+.x-tip .x-tip-hd {
+	background: url(../images/default/basic-dialog/hd-sprite.gif) repeat-x 0 -82px;
+	background-color: navy;
+	color: #FFF;
+	display: block;
+	font: bold 11px tahoma, arial, verdana, helvetica;
+	padding: 4px;
+}
+.x-tip .x-tip-hd-left {
+	background: url(../images/default/basic-dialog/hd-sprite.gif) no-repeat 0 -41px;
+	display: block;
+	margin: 0;
+	padding-left: 3px;
+}
+.x-tip .x-tip-hd-right {
+	background: url(../images/default/basic-dialog/hd-sprite.gif) no-repeat right 0;
+	display: block;
+	padding-right: 3px;
+}

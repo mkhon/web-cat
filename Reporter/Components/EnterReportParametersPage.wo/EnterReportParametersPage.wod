@@ -1,0 +1,47 @@
+Page : net.sf.webcat.core.PageWithNavigation {
+}
+
+Form : WOForm {
+	multipleSubmit = true;
+}
+
+ParameterRepetition: WORepetition {
+	list = parameters;
+	item = parameter;
+	index = index;
+}
+
+DependencyRepetition: WORepetition {
+	item = dependency;
+	list = parameter.neededBy;
+}
+
+DependencyObserver: AjaxObserveField {
+	updateContainerID = updateContainerIdForNeededParameter;
+	observeFieldID = observeFieldIdForParameter;
+	observeFieldFrequency = "0.5";
+	fullSubmit = true;
+	onLoading = busyIndicatorStartForNeededParameter;
+	onComplete = busyIndicatorCompleteForNeededParameter;
+}
+
+GenerateReport: WOSubmitButton {
+	value = "Generate Report";
+	action = generateReport;
+}
+
+ParameterPanelContainer: AjaxUpdateContainer {
+	elementName = "div";
+	id = updateContainerIdForParameter;
+}
+
+ParameterPanel: WOSwitchComponent {
+	WOComponentName = componentNameForParameter;
+	parameter = parameter;
+	owner = self;
+}
+
+ReportName: WOTextField {
+	value = reportName;
+	style = "width: 100%";
+}

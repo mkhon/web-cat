@@ -1,0 +1,25 @@
+<html><head><title>MemoryProxy.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>MemoryProxy.js</h1><pre class="highlighted"><code>Ext.data.MemoryProxy = <b>function</b>(data){
+    Ext.data.MemoryProxy.superclass.constructor.call(<b>this</b>);
+    <b>this</b>.data = data;
+};
+
+Ext.extend(Ext.data.MemoryProxy, Ext.data.DataProxy, {
+    load : <b>function</b>(params, reader, callback, scope, arg){
+        params = params || {};
+        <b>var</b> result;
+        try {
+            result = reader.readRecords(<b>this</b>.data);
+        }catch(e){
+            <b>this</b>.fireEvent(&quot;loadexception&quot;, <b>this</b>, arg, null, e);
+            callback.call(scope, null, arg, false);
+            <b>return</b>;
+        }
+        callback.call(scope, result, arg, true);
+    },
+    
+    update : <b>function</b>(params, records){
+        
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

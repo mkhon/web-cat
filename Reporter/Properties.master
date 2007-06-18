@@ -1,7 +1,7 @@
 # ===================================================================
 # Reporter subsystem characteristics
 # ===================================================================
-subsystem.Reporter=
+subsystem.Reporter=net.sf.webcat.reporter.Reporter
 
 Reporter.version.major=0
 Reporter.version.minor=1

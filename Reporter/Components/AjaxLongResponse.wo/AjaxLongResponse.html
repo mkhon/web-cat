@@ -1,0 +1,18 @@
+<webobject name="Form">
+<webobject name="PeriodicUpdater">
+<webobject name="InProgress"><webobject name="NotCancelled">
+<webobject name="ProgressBar"/>
+<p><webobject name="CancelButton"/></p>
+</webobject><webobject name="Cancelled">
+<script>
+periodicUpdaterUpdater.stop();
+</script>
+<p><webobject name="CancelledMessage"/></p>
+</webobject></webobject><webobject name="Finished">
+<script>
+periodicUpdaterUpdater.stop();
+</script>
+<webobject name="Content"/>
+</webobject>
+</webobject>
+</webobject>

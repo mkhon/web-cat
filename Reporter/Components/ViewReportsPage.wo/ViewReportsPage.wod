@@ -1,0 +1,71 @@
+Page : net.sf.webcat.core.PageWithNavigation {
+}
+
+Form : WOForm {
+}
+
+QueryString: WOText {
+	value = queryString;
+	rows = 10;
+	cols = 80;
+}
+
+QElapsedTime: WOString {
+	value = qualifierElapsed;
+}
+
+MElapsedTime: WOString {
+	value = manualElapsed;
+}
+
+Column1: WOTextField {
+	value = column1;
+}
+
+Column2: WOTextField {
+	value = column2;
+}
+
+Column3: WOTextField {
+	value = column3;
+}
+
+Column4: WOTextField {
+	value = column4;
+}
+
+Submit: WOSubmitButton {
+	action = executeQuery;
+}
+
+ResultSetRepetition: WORepetition {
+	item = resultSetRow;
+	list = resultSetRows;
+	index = index;
+}
+
+ColumnRepetition: WORepetition {
+	item = resultSetColumn;
+	list = resultSetRow;
+}
+
+ResultSetValue: WOString {
+	value = resultSetColumn;
+}
+
+TR: net.sf.webcat.core.TableRow {
+    index = index;
+}
+
+NoError: WOConditional {
+	condition = error;
+	negate = true;
+}
+
+Error: WOConditional {
+	condition = error;
+}
+
+ErrorMsg: WOString {
+	value = error;
+}

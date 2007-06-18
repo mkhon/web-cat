@@ -1,0 +1,84 @@
+<html><head><title>TriggerField.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>TriggerField.js</h1><pre class="highlighted"><code>Ext.form.TriggerField = <b>function</b>(config){
+    Ext.form.TriggerField.superclass.constructor.call(<b>this</b>, config);
+    <b>this</b>.mimicing = false;
+};
+
+Ext.extend(Ext.form.TriggerField, Ext.form.TextField,  {
+    defaultAutoCreate : {tag: &quot;input&quot;, type: &quot;text&quot;, size: &quot;16&quot;, autocomplete: &quot;off&quot;},
+    customSize : true,
+    hideTrigger:false,
+    
+    setSize : <b>function</b>(w, h){
+        <b>if</b>(!<b>this</b>.wrap){
+            <b>this</b>.width = w;
+            <b>this</b>.height = h;
+            <b>return</b>;
+        }
+        <b>if</b>(w){
+            <b>var</b> wrapWidth = w;
+            w = w - <b>this</b>.trigger.getWidth();
+            Ext.form.TriggerField.superclass.setSize.call(<b>this</b>, w, h);
+            <b>this</b>.wrap.setWidth(wrapWidth);
+            <b>if</b>(this.onResize){
+                <b>this</b>.onResize(wrapWidth, h);
+            }
+        }<b>else</b>{
+            Ext.form.TriggerField.superclass.setSize.call(<b>this</b>, w, h);
+            <b>this</b>.wrap.setWidth(<b>this</b>.el.getWidth()+<b>this</b>.trigger.getWidth());
+        }
+    },
+
+    onRender : <b>function</b>(ct){
+        Ext.form.TriggerField.superclass.onRender.call(<b>this</b>, ct);
+        <b>this</b>.wrap = <b>this</b>.el.wrap({cls: &quot;x-form-field-wrap&quot;});
+        <b>this</b>.trigger = <b>this</b>.wrap.createChild({
+            tag: &quot;img&quot;, src: Ext.BLANK_IMAGE_URL, cls: &quot;x-form-trigger &quot;+<b>this</b>.triggerClass});
+        <b>this</b>.trigger.on(&quot;click&quot;, <b>this</b>.onTriggerClick, <b>this</b>, {preventDefault:true});
+        <b>this</b>.trigger.addClassOnOver('x-form-trigger-over');
+        <b>this</b>.trigger.addClassOnClick('x-form-trigger-click');
+        <b>if</b>(this.hideTrigger){
+            <b>this</b>.trigger.setDisplayed(false);
+        }
+        <b>this</b>.setSize(<b>this</b>.width||'', <b>this</b>.height||'');
+    },
+
+    onFocus : <b>function</b>(){
+        Ext.form.TriggerField.superclass.onFocus.call(<b>this</b>);
+        <b>if</b>(!<b>this</b>.mimicing){
+            <b>this</b>.mimicing = true;
+            Ext.get(document).on(&quot;mousedown&quot;, <b>this</b>.mimicBlur, <b>this</b>);
+            <b>this</b>.el.on(&quot;keydown&quot;, <b>this</b>.checkTab, <b>this</b>);
+        }
+    },
+
+    checkTab : <b>function</b>(e){
+        <b>if</b>(e.getKey() == e.TAB){
+            <b>this</b>.triggerBlur();
+        }
+    },
+
+    onBlur : <b>function</b>(){
+        <i>// <b>do</b> nothing</i>
+    },
+
+    mimicBlur : <b>function</b>(e, t){
+        <b>if</b>(!<b>this</b>.wrap.contains(t) &amp;&amp; <b>this</b>.validateBlur()){
+            <b>this</b>.triggerBlur();
+        }
+    },
+
+    triggerBlur : <b>function</b>(){
+        <b>this</b>.mimicing = false;
+        Ext.get(document).un(&quot;mousedown&quot;, <b>this</b>.mimicBlur);
+        <b>this</b>.el.un(&quot;keydown&quot;, <b>this</b>.checkTab, <b>this</b>);
+        Ext.form.TriggerField.superclass.onBlur.call(<b>this</b>);
+    },
+
+    validateBlur : <b>function</b>(e, t){
+        <b>return</b> true;
+    },
+
+    onTriggerClick : Ext.emptyFn
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

@@ -1,0 +1,106 @@
+<html><head><title>Record.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>Record.js</h1><pre class="highlighted"><code>Ext.data.Record = <b>function</b>(data, id){
+    <b>this</b>.id = (id || id === 0) ? id : ++Ext.data.Record.AUTO_ID;
+    <b>this</b>.data = data;
+};
+
+Ext.data.Record.create = <b>function</b>(o){
+    <b>var</b> f = <b>function</b>(){
+        f.superclass.constructor.apply(<b>this</b>, arguments);
+    };
+    Ext.extend(f, Ext.data.Record);
+    <b>var</b> p = f.prototype;
+    p.fields = <b>new</b> Ext.util.MixedCollection(false, <b>function</b>(field){
+        <b>return</b> field.name;
+    });
+    <b>for</b>(var i = 0, len = o.length; i &lt; len; i++){
+        p.fields.add(<b>new</b> Ext.data.Field(o[i]));
+    }
+    f.getField = <b>function</b>(name){
+        <b>return</b> p.fields.get(name);  
+    };
+    <b>return</b> f;
+};
+
+Ext.data.Record.AUTO_ID = 1000;
+Ext.data.Record.EDIT = 'edit';
+Ext.data.Record.REJECT = 'reject';
+Ext.data.Record.COMMIT = 'commit';
+
+Ext.data.Record.prototype = {
+    dirty : false,
+    editing : false,
+    error: null,
+    modified: null,
+    
+    join : <b>function</b>(store){
+        <b>this</b>.store = store;
+    },
+    
+    set : <b>function</b>(name, value){
+        <b>if</b>(this.data[name] == value){
+            <b>return</b>;
+        }
+        <b>this</b>.dirty = true;
+        <b>if</b>(!<b>this</b>.modified){
+            <b>this</b>.modified = {};
+        }
+        <b>if</b>(typeof <b>this</b>.modified[name] == 'undefined'){
+            <b>this</b>.modified[name] = <b>this</b>.data[name];
+        }
+        <b>this</b>.data[name] = value;
+        <b>if</b>(!<b>this</b>.editing){
+            <b>this</b>.store.afterEdit(<b>this</b>);
+        }       
+    },
+    
+    get : <b>function</b>(name){
+        <b>return</b> this.data[name]; 
+    },
+    
+    beginEdit : <b>function</b>(){
+        <b>this</b>.editing = true;
+        <b>this</b>.modified = {}; 
+    },
+    
+    cancelEdit : <b>function</b>(){
+        <b>this</b>.editing = false;
+        <b>delete</b> this.modified;
+    },
+    
+    endEdit : <b>function</b>(){
+        <b>this</b>.editing = false;
+        <b>if</b>(this.dirty){
+            <b>this</b>.store.afterEdit(<b>this</b>);
+        }
+    },
+    
+    reject : <b>function</b>(){
+        <b>var</b> m = <b>this</b>.modified;
+        <b>for</b>(var n <b>in</b> m){
+            <b>if</b>(typeof m[n] != &quot;<b>function</b>&quot;){
+                <b>this</b>.data[n] = m[n];
+            }
+        }
+        <b>this</b>.dirty = false;
+        <b>delete</b> this.modified;
+        <b>this</b>.editing = false;
+        <b>this</b>.store.afterReject(<b>this</b>);
+    },
+    
+    commit : <b>function</b>(){
+        <b>this</b>.dirty = false;
+        <b>delete</b> this.modified;
+        <b>this</b>.editing = false;
+        <b>this</b>.store.afterCommit(<b>this</b>);
+    },
+    
+    hasError : <b>function</b>(){
+        <b>return</b> this.error != null;
+    },
+    
+    clearError : <b>function</b>(){
+        <b>this</b>.error = null;
+    }
+};</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>

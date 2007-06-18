@@ -5,3 +5,4 @@
 **/*.api
 **/*.strings
 **/*.plist
+**/ReportEngine

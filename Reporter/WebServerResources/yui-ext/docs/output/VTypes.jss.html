@@ -1,0 +1,36 @@
+<html><head><title>VTypes.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>VTypes.js</h1><pre class="highlighted"><code>Ext.form.VTypes = <b>function</b>(){
+    <i>// closure these <b>in</b> so they are only created once.</i>
+    <b>var</b> alpha = /^[a-zA-Z_]+$/;
+    <b>var</b> alphanum = /^[a-zA-Z0-9_]+$/;
+    <b>var</b> email = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/;
+    <b>var</b> url = /(((https?)|(ftp)):\/\/([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([\w\-\.\?\\\/+@&amp;#;`~=%!]*)(\.\w{2,})?)*\/?)/i;
+
+    <i>// All these messages and functions are configurable</i>
+    <b>return</b> {
+        'email' : <b>function</b>(v){
+            <b>return</b> email.test(v);
+        },
+        'emailText' : 'This field should be an e-mail address <b>in</b> the format &quot;user@domain.com&quot;',
+        'emailMask' : /[a-z0-9_\.\-@]/i,
+
+        'url' : <b>function</b>(v){
+            <b>return</b> url.test(v);
+        },
+        'urlText' : 'This field should be a URL <b>in</b> the format &quot;http:/'+'/www.domain.com&quot;',
+        
+
+        'alpha' : <b>function</b>(v){
+            <b>return</b> alpha.test(v);
+        },
+        'alphaText' : 'This field should only contain letters and _',
+        'alphaMask' : /[a-z_]/i,
+
+        'alphanum' : <b>function</b>(v){
+            <b>return</b> alphanum.test(v);
+        },
+        'alphanumText' : 'This field should only contain letters, numbers and _',
+        'alphanumMask' : /[a-z0-9_]/i
+    };
+}();</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">yui-ext - Copyright &copy; 2006 Jack Slocum.  |
+    Yahoo! UI - Copyright &copy; 2006 Yahoo! Inc.<br />All rights reserved.</div>
+    </body></html>
