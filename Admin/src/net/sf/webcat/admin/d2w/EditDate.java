@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditDate.java,v 1.1 2007/06/11 15:52:09 stedwar2 Exp $
+ |  $Id: EditDate.java,v 1.2 2007/06/22 03:13:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,10 +36,10 @@ import com.webobjects.foundation.*;
  * and also uses Web-CAT's preferred date picker widget.
  *
  *  @author edwards
- *  @version $Id: EditDate.java,v 1.1 2007/06/11 15:52:09 stedwar2 Exp $
+ *  @version $Id: EditDate.java,v 1.2 2007/06/22 03:13:10 stedwar2 Exp $
  */
 public class EditDate
-    extends er.directtoweb.ERDEditDateJavascript
+    extends er.directtoweb.ERDCustomEditComponent
 {
     //~ Constructors ..........................................................
 
