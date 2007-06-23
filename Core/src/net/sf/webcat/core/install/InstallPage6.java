@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage6.java,v 1.5 2007/01/30 02:21:50 stedwar2 Exp $
+ |  $Id: InstallPage6.java,v 1.6 2007/06/23 02:09:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage6.java,v 1.5 2007/01/30 02:21:50 stedwar2 Exp $
+ *  @version $Id: InstallPage6.java,v 1.6 2007/06/23 02:09:49 stedwar2 Exp $
  */
 public class InstallPage6
     extends InstallPage
@@ -49,7 +49,7 @@ public class InstallPage6
     // ----------------------------------------------------------
     /**
      * Creates a new PreCheckPage object.
-     * 
+     *
      * @param context The context to use
      */
     public InstallPage6( WOContext context )
@@ -138,6 +138,7 @@ public class InstallPage6
             }
             Application.releasePeerEditingContext( ec );
         }
+        setConfigDefault( configuration, "adminNotifyAddrs", "webcat@vt.edu" );
     }
 
 
@@ -157,7 +158,7 @@ public class InstallPage6
         String authDomainName =
             configuration.getProperty( "authenticator.default" );
         String username =
-            storeFormValueToConfig( formValues, "AdminUsername", 
+            storeFormValueToConfig( formValues, "AdminUsername",
                 "Please specify the administrator's user name." );
         if ( log.isDebugEnabled() )
         {
@@ -208,7 +209,7 @@ public class InstallPage6
             else
             {
                 String password =
-                    storeFormValueToConfig( formValues, "AdminPassword", 
+                    storeFormValueToConfig( formValues, "AdminPassword",
                     "An administrator password is required." );
                 if ( authDomainName.equals(
                     DatabaseAuthenticator.class.getName() )
@@ -237,7 +238,7 @@ public class InstallPage6
                     ec.saveChanges();
                 }
             }
-            Application.releasePeerEditingContext( ec );            
+            Application.releasePeerEditingContext( ec );
         }
         if ( log.isDebugEnabled() )
         {
