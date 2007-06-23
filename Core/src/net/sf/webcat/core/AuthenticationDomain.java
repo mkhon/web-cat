@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.5 2007/06/03 04:15:22 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.6 2007/06/23 02:14:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author Stephen Edwards
- * @version $Id: AuthenticationDomain.java,v 1.5 2007/06/03 04:15:22 stedwar2 Exp $
+ * @version $Id: AuthenticationDomain.java,v 1.6 2007/06/23 02:14:19 stedwar2 Exp $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -177,14 +177,17 @@ public class AuthenticationDomain
                             String displayableName =
                                 properties.getProperty( base + "."
                                     + AuthenticationDomain.DISPLAYABLE_NAME_KEY );
-                            if ( domain.displayableName() != displayableName )
+                            if ( displayableName != null
+                                 && domain.displayableName()
+                                    != displayableName )
                             {
                                 domain.setDisplayableName( displayableName );
                             }
                             String emailDomain =
                                 properties.getProperty( base + "."
                                     + AuthenticationDomain.DEFAULT_EMAIL_DOMAIN_KEY );
-                            if ( domain.defaultEmailDomain() != emailDomain )
+                            if ( emailDomain != null
+                                 && domain.defaultEmailDomain() != emailDomain )
                             {
                                 domain.setDefaultEmailDomain( emailDomain );
                             }
