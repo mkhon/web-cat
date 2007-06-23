@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.5 2007/04/27 17:27:18 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.6 2007/06/23 02:13:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.5 2007/04/27 17:27:18 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.6 2007/06/23 02:13:11 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -151,8 +151,6 @@ public class CoreDatabaseUpdates
     public void updateIncrement6() throws SQLException
     {
         database().executeSQL(
-            "alter table TAUTHENTICATIONDOMAIN add CTIMEZONENAME TINYTEXT" );
-        database().executeSQL(
             "alter table TAUTHENTICATIONDOMAIN "
             + "change CTINYTEXT CDEFAULTURLPATTERN TINYTEXT" );
     }
@@ -191,7 +189,7 @@ public class CoreDatabaseUpdates
                 "CREATE TABLE TAUTHENTICATIONDOMAIN "
                 + "(CDEFAULTEMAILDOMAIN TINYTEXT , CTINYTEXT TINYTEXT , "
                 + "CDISPLAYABLENAME TINYTEXT , OID INTEGER NOT NULL, "
-                + "CPROPERTYNAME TINYTEXT )" );
+                + "CPROPERTYNAME TINYTEXT , CTIMEZONENAME TINYTEXT )" );
             database().executeSQL(
                 "ALTER TABLE TAUTHENTICATIONDOMAIN ADD PRIMARY KEY (OID)" );
 
