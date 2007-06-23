@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.18 2007/06/12 14:16:10 stedwar2 Exp $
+ |  $Id: Application.java,v 1.19 2007/06/23 02:36:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -51,7 +51,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.18 2007/06/12 14:16:10 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.19 2007/06/23 02:36:01 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -973,7 +973,18 @@ public class Application
                     configurationProperties().getProperty( "adminNotifyAddrs" );
                 if ( adminList == null )
                 {
-                    adminList = configurationProperties().getProperty( "coreAdminEmail" );
+                    adminList = configurationProperties()
+                        .getProperty( "coreAdminEmail" );
+                }
+                else
+                {
+                    String primaryAdmin = configurationProperties()
+                        .getProperty( "coreAdminEmail" );
+                    if ( primaryAdmin != null
+                         && !adminList.contains( primaryAdmin ) )
+                    {
+                        adminList = primaryAdmin + "," + adminList;
+                    }
                 }
                 if ( adminList == null )
                 {
