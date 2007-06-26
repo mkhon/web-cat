@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UpdateEngine.java,v 1.2 2006/02/25 07:53:03 stedwar2 Exp $
+ |  $Id: UpdateEngine.java,v 1.3 2007/06/26 02:12:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,19 +34,19 @@ import org.apache.log4j.Logger;
  * The core idea for this framework was inspired by a stepwise article by
  * James Seigel (wo_james@paddlethis.com) and Christian Pekeler
  * (christian@pekeler.org):
- * 
+ *
  * http://www.stepwise.com/Articles/2005/DBChanges/index.html
- * 
+ *
  * The original article's code was also modified and posted on WOCode by
  * Helge Staedtler (lgxxl@web.de) in July 2005:
- * 
+ *
  * http://wocode.com/cgi-bin/WebObjects/WOCode.woa/2/wa/ShareCodeItem?itemId=424
- * 
+ *
  * The code in this framework uses ideas from both of these sources, together
  * with some additional redesign work.
  *
  * @author Stephen Edwards
- * @version $Id: UpdateEngine.java,v 1.2 2006/02/25 07:53:03 stedwar2 Exp $
+ * @version $Id: UpdateEngine.java,v 1.3 2007/06/26 02:12:46 stedwar2 Exp $
  */
 public final class UpdateEngine
 {
@@ -97,8 +97,14 @@ public final class UpdateEngine
             if ( database.tryToLock( updates.subsystemName() ) )
             {
                 // here all the action takes place...
-                executeUpdates( updates );
-                database.unlock( updates.subsystemName() );
+                try
+                {
+                    executeUpdates( updates );
+                }
+                finally
+                {
+                    database.unlock( updates.subsystemName() );
+                }
             }
             else {
                 waitUntilDBUnlocked( updates.subsystemName() );
