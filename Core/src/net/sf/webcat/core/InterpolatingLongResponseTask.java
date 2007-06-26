@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InterpolatingLongResponseTask.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
+ |  $Id: InterpolatingLongResponseTask.java,v 1.3 2007/06/26 02:11:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSTimestamp;
  * "interpolate" progress bar information between long-running steps.
  *
  * @author Stephen Edwards
- * @version $Id: InterpolatingLongResponseTask.java,v 1.2 2007/05/08 04:47:12 stedwar2 Exp $
+ * @version $Id: InterpolatingLongResponseTask.java,v 1.3 2007/06/26 02:11:09 stedwar2 Exp $
  */
 public abstract class InterpolatingLongResponseTask
     extends LongResponseTaskWithProgress
@@ -145,7 +145,7 @@ public abstract class InterpolatingLongResponseTask
                     additionalTime = System.currentTimeMillis() -
                         timeCurrent.getTime();
                 }
-                int additionalUnits = 
+                int additionalUnits =
                     (int)( additionalTime / timePerWeightedUnit );
                 if ( additionalUnits < 0 )
                 {
@@ -203,7 +203,7 @@ public abstract class InterpolatingLongResponseTask
             timeCurrent = new NSTimestamp();
             currentStep++;
         }
-        tearDownTask();
+        result = tearDownTask( result );
         return result;
     }
 
@@ -256,10 +256,14 @@ public abstract class InterpolatingLongResponseTask
      * task.  This base implementation does nothing.  Subclasses that wish
      * to use this feature can override this method to do something
      * appropriate.
+     * @param resultSoFar The working result returned by the last call
+     * to nextStep()
+     * @return The final result
      */
-    protected void tearDownTask()
+    protected Object tearDownTask( Object resultSoFar )
     {
         // Nothing to do as the default; subclasses can override as necessary
+        return resultSoFar;
     }
 
 
