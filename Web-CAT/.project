@@ -15,7 +15,6 @@
 		<project>Grader</project>
 		<project>PerlForPlugins</project>
 		<project>PMDForPlugins</project>
-		<project>Reporter</project>
 		<project>WebObjectsUpdater</project>
 		<project>WonderUpdater</project>
 	</projects>
