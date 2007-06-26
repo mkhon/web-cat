@@ -10,9 +10,14 @@
 
   <!-- ............................................................... -->
   <target name="build.redistributable.war"
-    depends="build.subsystems, build, export.jar, install.pending.updates,
-             javadoc"
+    depends="build, export.jar, install.pending.updates"
     description="Build a publishable copy of the WAR distribution."/>
+
+
+  <!-- ............................................................... -->
+  <target name="install.subsystems.and.build"
+    depends="build.subsystems, build.redistributable.war, javadoc"
+    description="Install all subsystems and build a publishable copy of the WAR."/>
 
 
   <!-- ............................................................... -->
