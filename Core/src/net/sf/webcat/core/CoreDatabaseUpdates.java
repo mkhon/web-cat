@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.7 2007/06/26 02:11:47 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.8 2007/07/08 01:44:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.7 2007/06/26 02:11:47 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.8 2007/07/08 01:44:42 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -153,6 +153,18 @@ public class CoreDatabaseUpdates
         database().executeSQL(
             "alter table TAUTHENTICATIONDOMAIN "
             + "change CTINYTEXT CDEFAULTURLPATTERN TINYTEXT" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds LoggedError and PasswordChangeRequest tables.
+     * @throws SQLException on error
+     */
+    public void updateIncrement7() throws SQLException
+    {
+        createLoggedErrorTable();
+        createPasswordChangeRequestTable();
     }
 
 
@@ -394,6 +406,7 @@ public class CoreDatabaseUpdates
         }
     }
 
+
     // ----------------------------------------------------------
     /**
      * Create the TUSER table, if needed.
@@ -416,6 +429,50 @@ public class CoreDatabaseUpdates
                 + "CUSERNAME TINYTEXT NOT NULL)" );
             database().executeSQL(
                 "ALTER TABLE TUSER ADD PRIMARY KEY (OID)" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create the LoggedError table, if needed.
+     * @throws SQLException on error
+     */
+    private void createLoggedErrorTable() throws SQLException
+    {
+        if ( !database().hasTable( "LoggedError" ) )
+        {
+            log.info( "creating table LoggedError" );
+            database().executeSQL(
+                "CREATE TABLE LoggedError "
+                + "(component TINYTEXT , exceptionName TINYTEXT , "
+                + "OID INTEGER NOT NULL, inClass TINYTEXT , "
+                + "inMethod TINYTEXT , line INTEGER NOT NULL, "
+                + "message TINYTEXT , mostRecent DATETIME , "
+                + "occurrences INTEGER NOT NULL, page TINYTEXT , "
+                + "stackTrace MEDIUMTEXT)" );
+            database().executeSQL(
+                "ALTER TABLE LoggedError ADD PRIMARY KEY (OID)" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create the PasswordChangeRequest table, if needed.
+     * @throws SQLException on error
+     */
+    private void createPasswordChangeRequestTable() throws SQLException
+    {
+        if ( !database().hasTable( "PasswordChangeRequest" ) )
+        {
+            log.info( "creating table PasswordChangeRequest" );
+            database().executeSQL(
+                "CREATE TABLE PasswordChangeRequest "
+                + "(code TINYTEXT , expireTime DATETIME , "
+                + "OID INTEGER NOT NULL, userId INTEGER NOT NULL)" );
+            database().executeSQL(
+                "ALTER TABLE PasswordChangeRequest ADD PRIMARY KEY (OID)" );
         }
     }
 
