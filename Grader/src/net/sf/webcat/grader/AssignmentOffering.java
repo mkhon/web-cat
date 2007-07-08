@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.6 2007/06/03 04:25:21 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.7 2007/07/08 02:00:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.6 2007/06/03 04:25:21 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.7 2007/07/08 02:00:09 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -555,9 +555,12 @@ public class AssignmentOffering
                 ENTITY_NAME );
         // Set up the qualifier
         NSMutableDictionary restrictions = new NSMutableDictionary();
-        restrictions.setObjectForKey(
-            ERXConstant.integerForInt( submitterEngine ),
-            SUBMISSION_METHOD_KEY );
+        if ( submitterEngine > 0 )
+        {
+            restrictions.setObjectForKey(
+                ERXConstant.integerForInt( submitterEngine ),
+                SUBMISSION_METHOD_KEY );
+        }
         Object valueObj = formValueForKey( formValues, "institution" );
         if ( valueObj != null )
         {
@@ -619,6 +622,32 @@ public class AssignmentOffering
             spec.setSortOrderings( orderings );
         }
         NSArray results = context.objectsWithFetchSpecification( spec );
+        valueObj = formValueForKey( formValues, "courses" );
+        if ( valueObj != null )
+        {
+            // filter down to the given list of courses
+            log.debug( "before courses filter: " + results );
+            NSArray courses = new NSArray( valueObj.toString().split( "\\s*,\\s*" ) );
+            log.debug( "courses filter = " + courses );
+            results = EOQualifier.filteredArrayWithQualifier( results,
+                new InQualifier( COURSE_NUMBER_KEY + ".toString",
+                    courses
+                )
+            );
+            log.debug( "after courses filter: " + results );
+        }
+        valueObj = formValueForKey( formValues, "crns" );
+        if ( valueObj != null )
+        {
+            // filter down to the given list of crns
+            log.debug( "before crns filter: " + results );
+            results = EOQualifier.filteredArrayWithQualifier( results,
+                new InQualifier( COURSE_OFFERING_CRN_KEY + ".toString",
+                    new NSArray( valueObj.toString().split( "\\s*,\\s*" ) )
+                )
+            );
+            log.debug( "after crns filter: " + results );
+        }
         if ( !forStaff )
         {
             NSMutableArray qualifiers = new NSMutableArray(
@@ -653,6 +682,24 @@ public class AssignmentOffering
             results = filteredResults;
         }
         return results;
+    }
+
+    private static class InQualifier
+        extends ERXInQualifier
+    {
+        public InQualifier( String key, NSArray values )
+        {
+            super( key, values, 1 );
+        }
+
+        /** Tests if the given object's key is in the supplied values */
+        public boolean evaluateWithObject(Object object)
+        {
+            Object value = NSKeyValueCodingAdditions.Utility
+                .valueForKeyPath(object, key());
+            return value != null && values().containsObject(value);
+        }
+
     }
 
 
