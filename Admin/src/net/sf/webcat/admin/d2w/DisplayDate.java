@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DisplayDate.java,v 1.1 2007/06/11 15:52:08 stedwar2 Exp $
+ |  $Id: DisplayDate.java,v 1.2 2007/07/08 01:51:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -29,11 +29,11 @@ import com.webobjects.appserver.*;
 
 //-------------------------------------------------------------------------
 /**
- * A customized versuib of {@link er.directtoweb.ERD2WDisplayDateOrNull}
+ * A customized version of {@link er.directtoweb.ERD2WDisplayDateOrNull}
  * that uses the user's specified date formatting and selected time zone.
  *
  *  @author edwards
- *  @version $Id: DisplayDate.java,v 1.1 2007/06/11 15:52:08 stedwar2 Exp $
+ *  @version $Id: DisplayDate.java,v 1.2 2007/07/08 01:51:36 stedwar2 Exp $
  */
 public class DisplayDate
     extends er.directtoweb.ERD2WDisplayDateOrNull
