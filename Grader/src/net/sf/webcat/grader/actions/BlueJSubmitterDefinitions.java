@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BlueJSubmitterDefinitions.java,v 1.1 2006/02/19 19:15:21 stedwar2 Exp $
+ |  $Id: BlueJSubmitterDefinitions.java,v 1.2 2007/07/08 01:57:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @version $Id: BlueJSubmitterDefinitions.java,v 1.1 2006/02/19 19:15:21 stedwar2 Exp $
+ * @version $Id: BlueJSubmitterDefinitions.java,v 1.2 2007/07/08 01:57:17 stedwar2 Exp $
  */
 public class BlueJSubmitterDefinitions
     extends WOComponent
@@ -85,7 +85,8 @@ public class BlueJSubmitterDefinitions
         {
             ec.lock();
             groupByCRN = ERXValueUtilities.booleanValue(
-                context().request().formValueForKey( "groupByCRN" ) );
+                context().request().formValueForKey( "groupByCRN" ) )
+                || ( context().request().formValueForKey( "crns" ) != null );
             assignmentsToDisplay =
                 AssignmentOffering.objectsForSubmitterEngine(
                     ec,
@@ -107,7 +108,7 @@ public class BlueJSubmitterDefinitions
                   != last.courseOffering().course().department().institution();
             }
             response.setHeader( mimeType(), "content-type" );
-            super.appendToResponse( response, context );        
+            super.appendToResponse( response, context );
         }
         finally
         {
