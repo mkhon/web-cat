@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.20 2007/07/08 01:44:26 stedwar2 Exp $
+ |  $Id: Application.java,v 1.21 2007/07/08 02:44:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -51,7 +51,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.20 2007/07/08 01:44:26 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.21 2007/07/08 02:44:28 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -273,6 +273,17 @@ public class Application
         try
         {
             ec.lock();
+            // First, attempt to force the initial JNDI exception because
+            // the name jdbc is not bound
+            try
+            {
+                EOUtilities.objectsForEntityNamed(
+                    ec, LoginSession.ENTITY_NAME );
+            }
+            catch ( Exception e )
+            {
+                // Silently swallow it, then retry on the next line
+            }
             NSArray old_sessions = EOUtilities.objectsForEntityNamed(
                 ec, LoginSession.ENTITY_NAME );
             for ( int i = 0; i < old_sessions.count(); i++ )
