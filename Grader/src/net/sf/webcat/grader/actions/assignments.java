@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: assignments.java,v 1.1 2006/02/19 19:15:21 stedwar2 Exp $
+ |  $Id: assignments.java,v 1.2 2007/07/08 01:57:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import er.extensions.*;
  * definitions published for the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @version $Id: assignments.java,v 1.1 2006/02/19 19:15:21 stedwar2 Exp $
+ * @version $Id: assignments.java,v 1.2 2007/07/08 01:57:40 stedwar2 Exp $
  */
 public class assignments
     extends ERXDirectAction
@@ -78,6 +78,19 @@ public class assignments
     public WOActionResults eclipseAction()
     {
         return pageWithName( EclipseSubmitterDefinitions.class.getName() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Generate a list of assignment submission targets, in the format
+     * used by the Eclipse project submitter extension.
+     *
+     * @return A new EclipseSubmitterDefinitions page
+     */
+    public WOActionResults icalAction()
+    {
+        return pageWithName( ICalView.class.getName() );
     }
 
 
