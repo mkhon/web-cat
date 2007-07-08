@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.8 2007/07/08 01:45:23 stedwar2 Exp $
+ |  $Id: User.java,v 1.9 2007/07/08 02:43:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.8 2007/07/08 01:45:23 stedwar2 Exp $
+ * @version $Id: User.java,v 1.9 2007/07/08 02:43:57 stedwar2 Exp $
  */
 public class User
     extends _User
@@ -203,7 +203,7 @@ public class User
         // Look up by user name
         User user = lookupUser( ec, userName, domain );
         // Check that the located user has the correct e-mail address
-        if ( !email.equals( user.email() ) )
+        if ( user != null && !email.equals( user.email() ) )
         {
             // What? e-mail addresses didn't match, so ignore that user
             user = null;
