@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.8 2007/07/08 01:44:42 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.9 2007/07/08 14:32:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.8 2007/07/08 01:44:42 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.9 2007/07/08 14:32:30 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -165,6 +165,18 @@ public class CoreDatabaseUpdates
     {
         createLoggedErrorTable();
         createPasswordChangeRequestTable();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds label key to CourseOffering.
+     * @throws SQLException on error
+     */
+    public void updateIncrement8() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TCOURSEOFFERING add CLABEL TINYTEXT" );
     }
 
 

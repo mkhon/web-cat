@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.4 2007/06/12 04:23:42 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.5 2007/07/08 14:32:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.eocontrol.*;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.4 2007/06/12 04:23:42 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.5 2007/07/08 14:32:30 stedwar2 Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -93,16 +93,21 @@ public class CourseOffering
     {
         if ( cachedCompactName == null )
         {
+            String label = label();
+            if ( label == null || label.equals( "" ) )
+            {
+                label = crn();
+            }
             if ( course() == null )
             {
                 // !!!
                 log.error(
                     "course offering with no associated course: " + this );
-                cachedCompactName = course() + "(" + crn() + ")";
+                cachedCompactName = course() + "(" + label + ")";
             }
             else
             {
-                cachedCompactName = course().deptNumber() + "(" + crn() + ")";
+                cachedCompactName = course().deptNumber() + "(" + label + ")";
             }
         }
         return cachedCompactName;
@@ -204,6 +209,21 @@ public class CourseOffering
         cachedCompactName = null;
         cachedDeptNumberAndName = null;
         super.setCrn( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>label</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setLabel( String value )
+    {
+        cachedCompactName = null;
+        cachedDeptNumberAndName = null;
+        super.setLabel( value );
     }
 
 
