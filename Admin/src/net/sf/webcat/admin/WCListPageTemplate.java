@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCListPageTemplate.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ |  $Id: WCListPageTemplate.java,v 1.2 2007/07/08 01:50:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,6 +27,7 @@ package net.sf.webcat.admin;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
+import com.webobjects.directtoweb.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.eoaccess.*;
 import er.directtoweb.*;
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  * The template for D2W list pages in Web-CAT.
  *
  * @author edwards
- * @version $Id: WCListPageTemplate.java,v 1.1 2006/02/19 19:06:50 stedwar2 Exp $
+ * @version $Id: WCListPageTemplate.java,v 1.2 2007/07/08 01:50:08 stedwar2 Exp $
  */
 public class WCListPageTemplate
     extends er.directtoweb.ERD2WListPage
@@ -47,7 +48,7 @@ public class WCListPageTemplate
     // ----------------------------------------------------------
     /**
      * Creates a new WCListPageTemplate object.
-     * 
+     *
      * @param context The page's context
      */
     public WCListPageTemplate( WOContext context )
@@ -72,4 +73,27 @@ public class WCListPageTemplate
     {
         return "white";
     }
+
+
+    // ----------------------------------------------------------
+    public void setLocalContext( D2WContext arg0 )
+    {
+        super.setLocalContext( arg0 );
+        if ( setUpSortOrdering )
+        {
+            // override default sort ordering with a new one from the
+            // d2w properties
+            NSArray sortOrderings = (NSArray)d2wContext().valueForKey(
+                "defaultSortOrdering" );
+            if ( sortOrderings != null )
+            {
+                displayGroup().setSortOrderings( sortOrderings );
+            }
+            setUpSortOrdering = false;
+        }
+    }
+
+
+    //~ Instance/static variables .............................................
+    private boolean setUpSortOrdering = true;
 }
