@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LoginPage.java,v 1.3 2007/07/08 01:43:52 stedwar2 Exp $
+ |  $Id: LoginPage.java,v 1.4 2007/07/09 15:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: LoginPage.java,v 1.3 2007/07/08 01:43:52 stedwar2 Exp $
+ *  @version $Id: LoginPage.java,v 1.4 2007/07/09 15:43:17 stedwar2 Exp $
  */
 public class LoginPage
     extends WOComponent
@@ -63,6 +63,8 @@ public class LoginPage
     public WODisplayGroup       domainDisplayGroup;
     public AuthenticationDomain domain;
     public AuthenticationDomain domainItem;
+    public NSDictionary         extraKeys;
+    public String               aKey;
 
 
     //~ Methods ...............................................................
@@ -167,6 +169,22 @@ public class LoginPage
             }
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    public Object aKeyValue()
+    {
+        Object value = extraKeys.valueForKey( aKey );
+        if ( value instanceof NSArray )
+        {
+            NSArray array = (NSArray)value;
+            if ( array.count() == 1 )
+            {
+                value = array.objectAtIndex( 0 );
+            }
+        }
+        return value;
     }
 
 
