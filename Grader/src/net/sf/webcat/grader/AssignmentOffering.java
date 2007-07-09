@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.8 2007/07/09 15:49:15 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.9 2007/07/09 18:52:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.8 2007/07/09 15:49:15 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.9 2007/07/09 18:52:28 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -170,6 +170,20 @@ public class AssignmentOffering
     {
         return (Number)EOUtilities.primaryKeyForObject(
             editingContext() , this ).objectForKey( "id" );
+    }
+
+
+    // ----------------------------------------------------------
+    public String permalink()
+    {
+        if ( cachedPermalink == null )
+        {
+            cachedPermalink = Application.configurationProperties()
+                .getProperty( "base.url" )
+                + "?page=UploadSubmission&"
+                + ID_FORM_KEY + "=" + id();
+        }
+        return cachedPermalink;
     }
 
 
@@ -869,5 +883,6 @@ public class AssignmentOffering
 
     //~ Instance/static variables .............................................
 
+    private String cachedPermalink;
     static Logger log = Logger.getLogger( AssignmentOffering.class );
 }
