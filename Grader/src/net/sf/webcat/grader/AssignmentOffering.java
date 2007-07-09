@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.7 2007/07/08 02:00:09 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.8 2007/07/09 15:49:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.7 2007/07/08 02:00:09 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.8 2007/07/09 15:49:15 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -56,6 +56,49 @@ public class AssignmentOffering
     public AssignmentOffering()
     {
         super();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an AssignmentOffering by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The assignment offering, or null if no such id exists
+     */
+    public static AssignmentOffering offeringForId(
+        EOEditingContext ec, int id )
+    {
+        AssignmentOffering offering = null;
+        NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+            ENTITY_NAME, "id", new Integer( id ) );
+        if ( results != null && results.count() > 0 )
+        {
+            offering = (AssignmentOffering)results.objectAtIndex( 0 );
+        }
+        return offering;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an AssignmentOffering by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The assignment offering, or null if no such id exists
+     */
+    public static AssignmentOffering offeringForId(
+        EOEditingContext ec, String id )
+    {
+        AssignmentOffering offering = null;
+        int idNumber = er.extensions.ERXValueUtilities.intValue( id );
+        if ( idNumber > 0 )
+        {
+            offering = offeringForId( ec, idNumber );
+        }
+        return offering;
     }
 
 
@@ -89,6 +132,7 @@ public class AssignmentOffering
         + Course.DEPARTMENT_KEY + "."
         + Department.INSTITUTION_KEY + "."
         + AuthenticationDomain.PROPERTY_NAME_KEY;
+    public static final String ID_FORM_KEY = "aoid";
 
 
     //~ Methods ...............................................................
@@ -114,6 +158,18 @@ public class AssignmentOffering
     public String toString()
     {
         return userPresentableDescription();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        return (Number)EOUtilities.primaryKeyForObject(
+            editingContext() , this ).objectForKey( "id" );
     }
 
 
