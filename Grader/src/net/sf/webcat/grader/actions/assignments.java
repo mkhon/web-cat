@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: assignments.java,v 1.2 2007/07/08 01:57:40 stedwar2 Exp $
+ |  $Id: assignments.java,v 1.3 2007/07/09 15:47:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,6 +26,7 @@
 package net.sf.webcat.grader.actions;
 
 import com.webobjects.appserver.*;
+
 import er.extensions.*;
 
 // -------------------------------------------------------------------------
@@ -34,7 +35,7 @@ import er.extensions.*;
  * definitions published for the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @version $Id: assignments.java,v 1.2 2007/07/08 01:57:40 stedwar2 Exp $
+ * @version $Id: assignments.java,v 1.3 2007/07/09 15:47:06 stedwar2 Exp $
  */
 public class assignments
     extends ERXDirectAction
@@ -103,5 +104,21 @@ public class assignments
     public WOActionResults defaultAction()
     {
         return bluejAction();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Dispatch an action.
+     * @param actionName The name of the action to dispatch
+     * @return the action's result
+     */
+    public WOActionResults performActionNamed( String actionName )
+    {
+        if ( "ical.ics".equals( actionName ) )
+        {
+            actionName = "ical";
+        }
+        return super.performActionNamed( actionName );
     }
 }
