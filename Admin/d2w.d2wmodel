@@ -402,7 +402,7 @@
             rhs = {
                 class = com.webobjects.directtoweb.Assignment;
                 keyPath = componentName;
-                value = D2WQueryToOneFault;
+                value = D2WQueryToOneRelationship;
             };
         },
         {
