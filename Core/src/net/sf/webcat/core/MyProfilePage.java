@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.3 2007/04/05 03:20:31 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.4 2007/07/09 15:41:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,6 +27,9 @@ package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
+import er.extensions.ERXArrayUtilities;
+import java.net.URLEncoder;
+import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
 /**
@@ -34,7 +37,7 @@ import com.webobjects.foundation.*;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.3 2007/04/05 03:20:31 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.4 2007/07/09 15:41:28 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -169,4 +172,125 @@ public class MyProfilePage
 //                             .selectedPageName() );
         return super.applyLocalChanges();
     }
+
+
+    // ----------------------------------------------------------
+    public String bluejUrl()
+    {
+        String institution = wcSession().user().authenticationDomain().name();
+        try
+        {
+            institution = URLEncoder.encode( institution, "UTF-8" );
+        }
+        catch ( java.io.UnsupportedEncodingException e )
+        {
+            log.error( "Cannot encode in UTF-8", e );
+        }
+        return Application.completeURLWithRequestHandlerKey(
+            context(),
+            Application.application().directActionRequestHandlerKey(),
+            "assignments/bluej?institution=" + institution
+                + ( ( wcSession().user().accessLevel() > 0 )
+                                ? "&staff=true" : "" ),
+            null,
+            false,
+            0
+            );
+    }
+
+
+    // ----------------------------------------------------------
+    public String eclipseUrl()
+    {
+        String institution = wcSession().user().authenticationDomain().name();
+        try
+        {
+            institution = URLEncoder.encode( institution, "UTF-8" );
+        }
+        catch ( java.io.UnsupportedEncodingException e )
+        {
+            log.error( "Cannot encode in UTF-8", e );
+        }
+        return Application.completeURLWithRequestHandlerKey(
+            context(),
+            Application.application().directActionRequestHandlerKey(),
+            "assignments/bluej?institution=" + institution
+                + ( ( wcSession().user().accessLevel() > 0 )
+                                ? "&staff=true" : "" ),
+            null,
+            true,
+            0
+            );
+    }
+
+
+    // ----------------------------------------------------------
+    public String icalUrl()
+    {
+        if ( icalUrl == null )
+        {
+            String crnList = null;
+            User me = wcSession().user();
+            NSMutableArray offerings = me.enrolledIn().mutableClone();
+            ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates( offerings,
+                me.TAFor() );
+            ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates( offerings,
+                me.teaching() );
+            for ( int i = 0; i < offerings.count(); i++ )
+            {
+                if ( i == 0 )
+                {
+                    crnList = "";
+                }
+                else
+                {
+                    crnList += ',';
+                }
+                crnList +=
+                    ( (CourseOffering)offerings.objectAtIndex( i ) ).crn();
+            }
+            if ( crnList!= null )
+            {
+                try
+                {
+                    crnList = URLEncoder.encode( crnList, "UTF-8" );
+                }
+                catch ( java.io.UnsupportedEncodingException e )
+                {
+                    log.error( "Cannot encode in UTF-8", e );
+                }
+                crnList = "?crns=" + crnList;
+                if ( me.accessLevel() > 0
+                     && ( me.TAFor().count() > 0 || me.teaching().count() > 0 ) )
+                {
+                    crnList += "&staff=true";
+                }
+            }
+            icalUrl = Application.completeURLWithRequestHandlerKey(
+                context(),
+                Application.application().directActionRequestHandlerKey(),
+                "assignments/ical.ics" + crnList,
+                null,
+                true,
+                0
+                );
+        }
+        return icalUrl;
+    }
+
+
+    // ----------------------------------------------------------
+    public String webcalUrl()
+    {
+        String url = icalUrl();
+        int pos = url.indexOf( ':' );
+        url = "webcal" + url.substring( pos );
+        return url;
+    }
+
+
+    //~ Instance/static variables .............................................
+
+    private String icalUrl;
+    static Logger log = Logger.getLogger( MyProfilePage.class );
 }
