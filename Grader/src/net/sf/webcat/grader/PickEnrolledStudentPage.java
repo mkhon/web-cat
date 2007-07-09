@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickEnrolledStudentPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: PickEnrolledStudentPage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,10 +38,10 @@ import org.apache.log4j.Logger;
  * Allow the user to select an enrolled student from the current course.
  *
  * @author Stephen Edwards
- * @version $Id: PickEnrolledStudentPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: PickEnrolledStudentPage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class PickEnrolledStudentPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 

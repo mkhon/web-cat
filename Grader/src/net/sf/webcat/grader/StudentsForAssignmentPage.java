@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.6 2006/12/07 01:57:55 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,10 +39,10 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.6 2006/12/07 01:57:55 stedwar2 Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class StudentsForAssignmentPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 

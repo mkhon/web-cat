@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.6 2007/04/07 03:46:26 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,17 +46,17 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.6 2007/04/07 03:46:26 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class FinalReportPage
-    extends GraderComponent
+    extends GraderSubmissionComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public FinalReportPage( WOContext context )
@@ -88,7 +88,7 @@ public class FinalReportPage
     public ResultFile selectedReport = null;
     /** Array of all the downloadable report files */
     public NSArray reportArray;
-    
+
     public boolean showReturnToGrading = false;
 
 
@@ -97,7 +97,7 @@ public class FinalReportPage
     // ----------------------------------------------------------
     /**
      * Adds to the response of the page
-     * 
+     *
      * @param response The response being built
      * @param context  The context of the request
      */
@@ -388,7 +388,7 @@ public class FinalReportPage
     // ----------------------------------------------------------
     /**
      * Determine if user can submit to this assignment.
-     * 
+     *
      * @return true if the user can make another submission
      */
     public boolean canSubmitAgain()
@@ -406,7 +406,7 @@ public class FinalReportPage
     // ----------------------------------------------------------
     /**
      * An action to go to the submission page for this assignment.
-     * 
+     *
      * @return the submission page for this assignment
      */
     public WOComponent submitAgain()

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.3 2007/04/07 03:31:23 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.4 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,17 +40,17 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.3 2007/04/07 03:31:23 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.4 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class UploadSubmissionPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public UploadSubmissionPage( WOContext context )
@@ -75,7 +75,7 @@ public class UploadSubmissionPage
     // ----------------------------------------------------------
     /**
      * Adds to the response of the page
-     * 
+     *
      * @param response The response being built
      * @param context  The context of the request
      */
@@ -122,13 +122,13 @@ public class UploadSubmissionPage
         log.debug( "grace = " +
                    prefs().assignmentOffering().assignment()
                        .submissionProfile().deadTimeDelta() );
-        
+
         NSTimestamp deadline = new NSTimestamp(
                 prefs().assignmentOffering().dueDate().getTime()
                 + prefs().assignmentOffering().assignment()
                    .submissionProfile().deadTimeDelta() );
         log.debug( "time = " + deadline );
-        
+
         super.appendToResponse( response, context );
         oldBatchSize  = submissionDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex = submissionDisplayGroup.currentBatchIndex();
@@ -143,7 +143,7 @@ public class UploadSubmissionPage
      * A predicate that indicates whether the user can proceed.
      * As a side-effect, it sets the error message if the user cannot
      * proceed.
-     * 
+     *
      * @return true if the user can proceed
      */
     public boolean okayToSubmit()

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.6 2007/03/15 02:43:17 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,17 +42,17 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.6 2007/03/15 02:43:17 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class EditAssignmentPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public EditAssignmentPage( WOContext context )
@@ -112,7 +112,7 @@ public class EditAssignmentPage
             catch ( MalformedURLException e )
             {
                 error( "The specified URL is not valid." );
-                log.error( "Error in validateURL()", e ); 
+                log.error( "Error in validateURL()", e );
             }
         }
         log.debug( "url validation = " + result );
@@ -531,7 +531,7 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     /**
      * Check whether the selected assignment is past the due date.
-     * 
+     *
      * @return true if any submissions to this assignment will be counted
      *         as late
      */

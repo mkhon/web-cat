@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.3 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,17 +39,17 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @version $Id: PickSubmissionPage.java,v 1.2 2006/12/04 03:17:52 stedwar2 Exp $
+ * @version $Id: PickSubmissionPage.java,v 1.3 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class PickSubmissionPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public PickSubmissionPage( WOContext context )
@@ -66,10 +66,10 @@ public class PickSubmissionPage
 
     /** index of selected submission. */
     public int selectedIndex;
-    
+
     /** true if previous submissions exist */
     public boolean previousSubmissions;
-    
+
     public String sideStepTitle;
 
 
@@ -78,7 +78,7 @@ public class PickSubmissionPage
     // ----------------------------------------------------------
     /**
      * Adds to the response of the page
-     * 
+     *
      * @param response The response being built
      * @param context  The context of the request
      */

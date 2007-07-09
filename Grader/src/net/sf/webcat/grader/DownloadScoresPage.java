@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.2 2006/12/07 01:57:55 stedwar2 Exp $
+ |  $Id: DownloadScoresPage.java,v 1.3 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,10 +44,10 @@ import org.apache.log4j.Logger;
  * as a CSV file.
  *
  * @author Stephen Edwards
- * @version $Id: DownloadScoresPage.java,v 1.2 2006/12/07 01:57:55 stedwar2 Exp $
+ * @version $Id: DownloadScoresPage.java,v 1.3 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class DownloadScoresPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 
@@ -141,7 +141,7 @@ public class DownloadScoresPage
         out.print( "" );
         out.println( new NSTimestamp().toString() );
         out.println( "" );
-        
+
         // Column titles
         out.print( "ID No." );
         out.print( "User" );
@@ -182,7 +182,7 @@ public class DownloadScoresPage
                 out.println( Double.toString( result.finalScore() ) );
             }
         }
-        
+
         return outBytes.toByteArray();
     }
 
@@ -264,7 +264,7 @@ public class DownloadScoresPage
             {
                 User student = (User)students.objectAtIndex( i );
                 log.debug( "checking " + student.userName() );
-                
+
                 Submission thisSubmission = null;
                 Submission gradedSubmission = null;
                 // Find the submission
@@ -351,14 +351,14 @@ public class DownloadScoresPage
         {
             rawData = exportAsBlackboardCSV( useMoodleFormat );
         }
-        
+
         DeliverFile csvFile =
             (DeliverFile)pageWithName( DeliverFile.class.getName() );
         csvFile.setFileData( new NSData( rawData ) );
         csvFile.setFileName( new File( ""
            + wcSession().courseOffering().crnSubdirName()
            + "-"
-           + prefs().assignmentOffering().assignment().subdirName() 
+           + prefs().assignmentOffering().assignment().subdirName()
            + ".csv" ) );
         csvFile.setContentType( "application/octet-stream" );
         csvFile.setStartDownload( true );

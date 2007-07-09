@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditCoursePage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,17 +37,17 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: EditCoursePage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+*  @version $Id: EditCoursePage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
 */
 public class EditCoursePage
-    extends WCComponent
+    extends GraderCourseComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
      * Creates a new TBDPage object.
-     * 
+     *
      * @param context The context to use
      */
     public EditCoursePage( WOContext context )

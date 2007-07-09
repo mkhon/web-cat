@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentGraphPage.java,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+ |  $Id: AssignmentGraphPage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,10 +36,10 @@ import net.sf.webcat.grader.*;
  * Presents graphs of this assignment's data.
  *
  * @author  Stephen Edwards
- * @version $Id: AssignmentGraphPage.java,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+ * @version $Id: AssignmentGraphPage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
  */
 public class AssignmentGraphPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 
