@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.5 2007/07/08 14:32:30 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.6 2007/07/09 15:42:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,6 +26,7 @@
 package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
+import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 
 
@@ -35,7 +36,7 @@ import com.webobjects.eocontrol.*;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.5 2007/07/08 14:32:30 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.6 2007/07/09 15:42:32 stedwar2 Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -49,6 +50,28 @@ public class CourseOffering
     public CourseOffering()
     {
         super();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up a CourseOffering by CRN.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param crn The CRN to look up
+     * @return The course offering, or null if no such CRN exists
+     */
+    public static CourseOffering offeringForCrn(
+        EOEditingContext ec, String crn )
+    {
+        CourseOffering offering = null;
+        NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+            ENTITY_NAME, CRN_KEY, crn );
+        if ( results != null && results.count() > 0 )
+        {
+            offering = (CourseOffering)results.objectAtIndex( 0 );
+        }
+        return offering;
     }
 
 
