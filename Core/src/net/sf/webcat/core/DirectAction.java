@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.7 2007/07/09 15:43:17 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.8 2007/07/25 14:00:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: DirectAction.java,v 1.7 2007/07/09 15:43:17 stedwar2 Exp $
+ * @version $Id: DirectAction.java,v 1.8 2007/07/25 14:00:07 stedwar2 Exp $
  */
 public class DirectAction
     extends ERXDirectAction
@@ -165,7 +165,9 @@ public class DirectAction
              || ( request.formValues().count() == 1
                   && request.stringFormValueForKey( "institution" ) != null )
              || ( request.formValues().count() > 0
+                  && request.formValueForKey( "u" ) == null
                   && request.formValueForKey( "UserName" ) == null
+                  && request.formValueForKey( "p" ) == null
                   && request.formValueForKey( "UserPassword" ) == null
                   && request.formValueForKey( "AuthenticationDomain" ) == null
                 ) )
