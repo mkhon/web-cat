@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ICalView.java,v 1.1 2007/07/09 15:47:06 stedwar2 Exp $
+ |  $Id: ICalView.java,v 1.2 2007/07/25 14:14:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.grader.*;
  * This page generates an ical-compatible list of assignment due dates.
  *
  * @author Stephen Edwards
- * @version $Id: ICalView.java,v 1.1 2007/07/09 15:47:06 stedwar2 Exp $
+ * @version $Id: ICalView.java,v 1.2 2007/07/25 14:14:24 stedwar2 Exp $
  */
 public class ICalView
     extends BlueJSubmitterDefinitions
@@ -56,11 +56,6 @@ public class ICalView
 
     //~ Methods ...............................................................
 
-    // TODO: add customized, assignment-specific URLs
-    // TODO: add URLs in My Profile preferences
-    // TODO: add UIDs
-    // TODO: add filtering for list of courses and list of CRNs
-
     // Was using this template for events:
     // ------------------------
 //    BEGIN:VEVENT
@@ -74,7 +69,7 @@ public class ICalView
     // ----------------------------------------------------------
     public String mimeType()
     {
-        return "text/plain"; // "text/calendar";
+        return "text/calendar";
     }
 
 
