@@ -5,16 +5,16 @@ subsystem.WonderUpdater=
 
 WonderUpdater.version.major=1
 WonderUpdater.version.minor=0
-WonderUpdater.version.revision=2
+WonderUpdater.version.revision=3
 
 WonderUpdater.copyright=\
 	(c) 2007 Virginia Tech Department of Computer Science
 WonderUpdater.provider=Virginia Tech Computer Science
 WonderUpdater.provider.url=http\://web-cat.cs.vt.edu/updates
 WonderUpdater.info.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/WebObjectsUpdater
+	http\://web-cat.cs.vt.edu/WCWiki/WonderUpdater
 WonderUpdater.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/WebObjectsUpdater/ChangeHistory
+	http\://web-cat.cs.vt.edu/WCWiki/WonderUpdater/ChangeHistory
 WonderUpdater.license=GNU General Public License v.2
 WonderUpdater.license.url=http\://www.gnu.org/copyleft/gpl.html
 
