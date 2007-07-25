@@ -5,7 +5,7 @@ subsystem.DBUpdateEngine
 
 DBUpdateEngine.version.major=1
 DBUpdateEngine.version.minor=1
-DBUpdateEngine.version.revision=1
+DBUpdateEngine.version.revision=2
 
 DBUpdateEngine.copyright=\
 	(c) 2006, 2007 Virginia Tech Department of Computer Science
