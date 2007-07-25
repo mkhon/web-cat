@@ -12,7 +12,7 @@ subsystem.webcat
 
 webcat.version.major=1
 webcat.version.minor=3
-webcat.version.revision=0
+webcat.version.revision=1
 
 webcat.copyright=(c) 2006 Virginia Tech Department of Computer Science
 webcat.provider=Virginia Tech Computer Science
