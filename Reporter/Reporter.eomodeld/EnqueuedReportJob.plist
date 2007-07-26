@@ -52,6 +52,11 @@
         	prototypeName = mediumText;
         },
         {
+        	columnName = CRENDERINGMETHOD;
+        	name = renderingMethod;
+        	prototypeName = mediumText;
+        },
+        {
             columnName = CPARAMETERSELECTIONS; 
             name = parameterSelections; 
             prototypeName = mutableDictionary; 
@@ -61,19 +66,6 @@
                 isMutable = true; 
                 valueClassName = net.sf.webcat.core.MutableDictionary; 
             };
-        },
-        {
-            allowsNull = Y; 
-            externalType = BLOB; 
-            columnName = CJOBPROGRESS; 
-            name = jobProgress;
-            userInfo = {
-                adaptorValueConversionMethodName = archiveData; 
-                valueFactoryMethodName = objectWithArchiveData; 
-                isMutable = true; 
-                valueClassName = net.sf.webcat.reporter.JobProgressInfo; 
-            };
-            valueClassName = NSData;
         },
         {
             name = updateMutableFields; 
@@ -91,6 +83,7 @@
     	paused,
     	discarded,
     	uuid,
+    	renderingMethod,
     	renderedResourceActionUrl,
     	reportName,
 		updateMutableFields
@@ -103,6 +96,7 @@
     	discarded,
     	queueTime,
     	uuid,
+    	renderingMethod,
     	renderedResourceActionUrl,
     	reportName,
     	parameterSelections,

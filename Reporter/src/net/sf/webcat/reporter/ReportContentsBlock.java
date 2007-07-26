@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSData;
 
-public class ReportContentsBlock extends WOComponent
+public class ReportContentsBlock extends ReporterComponent
 {
 	public GeneratedReport generatedReport;
 	
@@ -22,15 +22,12 @@ public class ReportContentsBlock extends WOComponent
 
     public void appendToResponse(WOResponse response, WOContext context)
     {
-    	String htmlPath = GeneratedReport.renderedResourcePath(
-    			generatedReport.uuid(), Reporter.REPORT_ROOT_HTML);
-    	File htmlFile = new File(htmlPath);
-    	
     	try
     	{
-			NSData htmlData = new NSData(new FileInputStream(htmlFile),
-					(int)htmlFile.length());
-			response.appendContentData(htmlData);
+        	IRenderingMethod method =
+        		Reporter.getInstance().renderingMethodWithName(
+        			renderingMethodInSession());
+        	method.appendContentToResponse(generatedReport, response, context);
 		}
     	catch (IOException e)
 		{

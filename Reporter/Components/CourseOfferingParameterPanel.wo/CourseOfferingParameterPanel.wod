@@ -37,9 +37,10 @@ Checkbox: WOCheckBox {
 
 RadioButton: WORadioButton {
 	name      = parameter.binding;
-	id = indexedFormControlId;
-	//selection = selectedIndex;
+	id        = indexedFormControlId;
+	selection = radioSelectedIndex;
 	value     = index;
+	onClick   = checkStateChangedMethodInvocation;
 }
 
 Observee: WOHiddenField {

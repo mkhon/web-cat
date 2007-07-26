@@ -3,6 +3,7 @@ package net.sf.webcat.reporter;
 
 import java.io.File;
 
+import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.grader.FinalReportPage;
 
 import org.apache.log4j.Logger;
@@ -21,10 +22,11 @@ import er.extensions.ERXConstant;
 
 public class GeneratedReportPage extends ReporterComponent
 {
-//	public GeneratedReport generatedReport;
-
     /** The associated refresh interval for this page */
     public int refreshTimeout = 15;
+
+	public IRenderingMethod renderingMethod;
+	public IRenderingMethod selectedRenderingMethod;
 
     public GeneratedReportPage(WOContext context)
     {
@@ -33,8 +35,6 @@ public class GeneratedReportPage extends ReporterComponent
 
     public void appendToResponse(WOResponse response, WOContext context)
     {
-//    	checkIfReportGenerated();
-    	
     	super.appendToResponse(response, context);
     }
     
@@ -53,7 +53,7 @@ public class GeneratedReportPage extends ReporterComponent
     		
     		GeneratedReport report = (GeneratedReport)reports.objectAtIndex(0);
     		
-    		if(report.isRendered())
+    		if(report.isRenderedWithMethod(renderingMethodInSession()))
     		{
     			return report;
     		}
@@ -92,6 +92,20 @@ public class GeneratedReportPage extends ReporterComponent
     
     public void setLongResponseHandler(AjaxLongResponseHandler handler)
     {    	
+    }
+
+    public NSArray renderingMethods()
+    {
+    	return Reporter.getInstance().allRenderingMethods();
+    }
+
+    public WOComponent rerenderReport()
+    {
+    	setRenderingMethodInSession(selectedRenderingMethod.methodName());
+
+    	commitReportRendering();
+    	
+    	return pageWithName(GeneratedReportPage.class.getName());
     }
 
     // ----------------------------------------------------------

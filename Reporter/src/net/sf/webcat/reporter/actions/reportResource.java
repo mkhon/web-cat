@@ -45,5 +45,67 @@ public class reportResource extends DirectAction
 		return response;
 	}
 	
+	public WOActionResults csvAction()
+	{
+		WOResponse response = new WOResponse();
+		
+		String uuid = request().stringFormValueForKey("uuid");
+		String name = request().stringFormValueForKey("name");
+
+		String filename = name + ".csv";
+
+		response.setHeader("text/csv", "Content-Type");
+		response.setHeader("attachment; filename=\"" + filename + "\"",
+				"Content-Disposition");
+		
+		File file = new File(GeneratedReport.renderedResourcePath(uuid,
+				filename));
+		
+		try
+		{
+			NSData data = new NSData(new FileInputStream(file),
+					(int)file.length());
+			
+			response.appendContentData(data);
+		}
+		catch (IOException e)
+		{
+			log.error(e);
+		}
+		
+		return response;
+	}
+	
+	public WOActionResults genericAction()
+	{
+		WOResponse response = new WOResponse();
+		
+		String uuid = request().stringFormValueForKey("uuid");
+		String name = request().stringFormValueForKey("name");
+		String type = request().stringFormValueForKey("contentType");
+		String filename = name;
+
+		response.setHeader(type, "Content-Type");
+		response.setHeader("attachment; filename=\"" + filename + "\"",
+				"Content-Disposition");
+		
+		File file = new File(GeneratedReport.renderedResourcePath(uuid,
+				filename));
+		
+		try
+		{
+			NSData data = new NSData(new FileInputStream(file),
+					(int)file.length());
+			
+			response.appendContentData(data);
+		}
+		catch (IOException e)
+		{
+			log.error(e);
+		}
+		
+		return response;
+	}
+
 	private static Logger log = Logger.getLogger(reportResource.class);
 }

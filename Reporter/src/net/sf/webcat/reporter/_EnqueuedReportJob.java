@@ -61,11 +61,11 @@ public abstract class _EnqueuedReportJob
 
     // Attributes ---
     public static final String DISCARDED_KEY = "discarded";
-    public static final String JOB_PROGRESS_KEY = "jobProgress";
     public static final String PARAMETER_SELECTIONS_KEY = "parameterSelections";
     public static final String PAUSED_KEY = "paused";
     public static final String QUEUE_TIME_KEY = "queueTime";
     public static final String RENDERED_RESOURCE_ACTION_URL_KEY = "renderedResourceActionUrl";
+    public static final String RENDERING_METHOD_KEY = "renderingMethod";
     public static final String REPORT_NAME_KEY = "reportName";
     public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
     public static final String UUID_KEY = "uuid";
@@ -129,100 +129,6 @@ public abstract class _EnqueuedReportJob
     public void setDiscardedRaw( Number value )
     {
         takeStoredValueForKey( value, "discarded" );
-    }
-
-
-    //-- Local mutable cache --
-    private net.sf.webcat.reporter.JobProgressInfo jobProgressCache;
-    private NSData jobProgressRawCache;
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>jobProgress</code> value.
-     * @return the value of the attribute
-     */
-    public net.sf.webcat.reporter.JobProgressInfo jobProgress()
-    {
-    	NSData dbValue = 
-            (NSData)storedValueForKey( "jobProgress" );
-        if ( jobProgressRawCache != dbValue )
-        {
-            if ( dbValue != null && dbValue.equals( jobProgressRawCache ) )
-            {
-                // They are still equal, so just update the raw cache
-                jobProgressRawCache = dbValue;
-            }
-            else
-            {
-                // Underlying attribute may have changed because
-                // of a concurrent update through another editing
-                // context, so throw away current values.
-                jobProgressRawCache = dbValue;
-                net.sf.webcat.reporter.JobProgressInfo newValue =
-                    net.sf.webcat.reporter.JobProgressInfo
-                    .objectWithArchiveData( dbValue );
-                if ( jobProgressCache != null )
-                {
-                    jobProgressCache.copyFrom( newValue );
-                }
-                else
-                {
-                    jobProgressCache = newValue;
-                }
-                jobProgressCache.setOwner( this );
-                setUpdateMutableFields( true );
-            }
-        }
-        else if ( dbValue == null && jobProgressCache == null )
-        { 
-            jobProgressCache = 
-                net.sf.webcat.reporter.JobProgressInfo
-                .objectWithArchiveData( dbValue );
-             jobProgressCache.setOwner( this );
-             setUpdateMutableFields( true );
-        }
-        return jobProgressCache;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>jobProgress</code>
-     * property.
-     * 
-     * @param value The new value for this property
-     */
-    public void setJobProgress( net.sf.webcat.reporter.JobProgressInfo value )
-    {
-        if ( jobProgressCache == null )
-        {
-            jobProgressCache = value;
-            value.setHasChanged( false );
-            jobProgressRawCache = value.archiveData();
-            takeStoredValueForKey( jobProgressRawCache, "jobProgress" );
-        }
-        else if ( jobProgressCache != value )  // ( jobProgressCache != null )
-        {
-            jobProgressCache.copyFrom( value );
-            setUpdateMutableFields( true );
-        }
-        else  // ( jobProgressCache == non-null value )
-        {
-            // no nothing
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Clear the value of this object's <code>jobProgress</code>
-     * property.
-     */
-    public void clearJobProgress()
-    {
-        takeStoredValueForKey( null, "jobProgress" );
-        jobProgressRawCache = null;
-        jobProgressCache = null;
     }
 
 
@@ -424,6 +330,30 @@ public abstract class _EnqueuedReportJob
 
     // ----------------------------------------------------------
     /**
+     * Retrieve this object's <code>renderingMethod</code> value.
+     * @return the value of the attribute
+     */
+    public String renderingMethod()
+    {
+        return (String)storedValueForKey( "renderingMethod" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>renderingMethod</code>
+     * property.
+     * 
+     * @param value The new value for this property
+     */
+    public void setRenderingMethod( String value )
+    {
+        takeStoredValueForKey( value, "renderingMethod" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve this object's <code>reportName</code> value.
      * @return the value of the attribute
      */
@@ -530,13 +460,6 @@ public abstract class _EnqueuedReportJob
      */
     public void saveMutables()
     {
-        if ( jobProgressCache != null
-            && jobProgressCache.hasChanged() )
-        {
-            jobProgressRawCache = jobProgressCache.archiveData();
-            takeStoredValueForKey( jobProgressRawCache, "jobProgress" );
-            jobProgressCache.setHasChanged( false );
-        }
         if ( parameterSelectionsCache != null
             && parameterSelectionsCache.hasChanged() )
         {
@@ -577,8 +500,6 @@ public abstract class _EnqueuedReportJob
      */
     public void flushCaches()
     {
-        jobProgressCache = null;
-        jobProgressRawCache  = null;
         parameterSelectionsCache = null;
         parameterSelectionsRawCache  = null;
         setUpdateMutableFields( false );

@@ -246,7 +246,7 @@ public class ReportQueueProcessor extends Thread
 								
                                 processReportJobWithProtection( job );
 
-                                ProgressManager.getInstance().completeCurrentTaskForJob(job.uuid());
+                                ProgressManager.getInstance().forceJobComplete(job.uuid());
 
                                 NSTimestamp now = new NSTimestamp();
                                 if ( job.queueTime() != null )
@@ -395,7 +395,7 @@ public class ReportQueueProcessor extends Thread
 	        editingContext.saveChanges();
         }
 
-        if(!report.isRendered())
+        if(!report.isRenderedWithMethod(job.renderingMethod()))
         {
 	        // Set up the rendered resources directory first
 	        try
@@ -416,7 +416,7 @@ public class ReportQueueProcessor extends Thread
 	        {
 	        	wasCanceled = renderReportDocument(job, report);
 	        }
-	        catch( EngineException e )
+	        catch( Exception e )
 	        {
 	        	technicalFault( job,
 	        			"while generating report", e, null );
@@ -425,11 +425,7 @@ public class ReportQueueProcessor extends Thread
 	
 	        if ( wasCanceled )
 	        {
-/*	            technicalFault( job,
-	                            "report rendering time limit exceeded",
-	                            null,
-	                            null );
-*/	            return;
+	            return;
 	        }
         }
 
@@ -533,7 +529,7 @@ public class ReportQueueProcessor extends Thread
 				message.append("Error ");
 				message.append(i);
 				message.append(":\n");
-				message.append(((EngineException)errors.get(i)).getCause().toString());
+				message.append(((Throwable)errors.get(i)).getCause().toString());
 				message.append("\n\n");
 			}
 			
@@ -542,7 +538,7 @@ public class ReportQueueProcessor extends Thread
 	}
 
 	private boolean renderReportDocument( EnqueuedReportJob job,
-			GeneratedReport report ) throws EngineException
+			GeneratedReport report ) throws Exception
 	{
 		EOGlobalID jobId = editingContext.globalIDForObject(job);
 		EOGlobalID reportId = editingContext.globalIDForObject(report);
@@ -609,7 +605,7 @@ public class ReportQueueProcessor extends Thread
 	        	runTask = Reporter.getInstance().setupRunTaskForTemplate(
 	        				job.reportTemplate(),
 	        				resolveParameterSelections(job),
-	        				job.uuid(), context);
+	        				job.uuid());
 	        	runTask.setErrorHandlingOption(IEngineTask.CANCEL_ON_ERROR);
 	        	
         		runTask.run(reportPath);
@@ -693,38 +689,42 @@ public class ReportQueueProcessor extends Thread
         	GeneratedReport report =
         		(GeneratedReport)context.faultForGlobalID(reportId, context);
 
-            try
-            {
-        		renderTask =
-        			Reporter.getInstance().setupRenderTaskForReport(report,
-        					job.renderedResourceActionUrl());
+        	IRenderingMethod method =
+        		Reporter.getInstance().renderingMethodWithName(
+        			job.renderingMethod());
 
-        		org.mozilla.javascript.Context.enter();
-                renderTask.render();
-                org.mozilla.javascript.Context.exit();
+        	if(method != null)
+        	{
+            	NSMutableDictionary options = new NSMutableDictionary();
+            	options.setObjectForKey(job.renderedResourceActionUrl(),
+            			IRenderingMethod.OPTION_ACTION_URL);
+            	controller = method.prepareToRender(report, options);
 
-                renderTask.close();
-                renderTask = null;
-                
-                report.markAsRendered();
-                ProgressManager.getInstance().stepJob(jobUuid());
-            }
-            catch ( EngineException e )
-            {
-                // Error creating process, so record it
-                log.error("Exception rendering report: " + report.name() +
-                		"(uuid: " + report.uuid() + ")", e);
-                exception = e;
-            }
+            	try
+            	{
+            		controller.render();
+            		controller = null;
+
+            		report.markAsRenderedWithMethod(job.renderingMethod());
+            	}
+            	catch(Exception e)
+            	{
+                    log.error("Exception rendering report: " + report.name() +
+                     		"(uuid: " + report.uuid() + ")", e);
+                    exception = e;
+            	}
+        	}
+
+    		ProgressManager.getInstance().stepJob(jobUuid());
 
             Application.releasePeerEditingContext(context);
         }
 
 	    public void interrupt()
 	    {
-	    	if(renderTask != null)
+	    	if(controller != null)
 	    	{
-	    		renderTask.cancel();
+	    		controller.cancel();
 	    		wasCanceled = true;
 
 	    		log.info("Reporter job with uuid " + jobUuid() + " canceled during rendering stage");
@@ -736,8 +736,8 @@ public class ReportQueueProcessor extends Thread
         public boolean wasCanceled = false;
         private EOGlobalID	jobId;
         private EOGlobalID	reportId;
-        private IRenderTask renderTask;
-        public  EngineException exception = null;
+        private IRenderingMethod.Controller controller;
+        public  Exception exception = null;
     }
 
     

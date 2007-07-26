@@ -17,6 +17,8 @@ public class CourseOfferingParameterPanel extends AbstractChooseTypePanel
 
 	public NSMutableArray selectedCourseOfferings;
 
+	public int radioSelectedIndex;
+
 	// Used during repetition when generating the visual list
 	public CourseOffering courseOffering;
 
@@ -30,6 +32,8 @@ public class CourseOfferingParameterPanel extends AbstractChooseTypePanel
     	courseOfferings = getChoicesBasedOnDependents();
 
         selectedCourseOfferings = new NSMutableArray();
+        
+        radioSelectedIndex = -1;
 
     	super.appendToResponse(response, context);
     }
@@ -66,8 +70,7 @@ public class CourseOfferingParameterPanel extends AbstractChooseTypePanel
     	}
     	else
     	{
-    		// return the single selected course
-    		return null;
+    		return courseOfferings.objectAtIndex(radioSelectedIndex);
     	}
     }
 }

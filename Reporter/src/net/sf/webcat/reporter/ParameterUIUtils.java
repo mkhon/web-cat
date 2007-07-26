@@ -91,8 +91,9 @@ public class ParameterUIUtils
     	NSDictionary depSelection =
     		owner.currentSelectionsForDependents(parameter);
 
-    	ReferenceEnvironment env = new ReferenceEnvironment(depSelection, ec,
+    	ReferenceEnvironment env = new ReferenceEnvironment(depSelection,
     			null);
+    	env.forceEditingContext(ec);
 
     	NSMutableDictionary options = parameter.optionsToEvaluate();
     	options.setObjectForKey("self", "binding");
@@ -107,8 +108,9 @@ public class ParameterUIUtils
     	NSDictionary depSelection =
     		owner.currentSelectionsForDependents(parameter);
 
-    	ReferenceEnvironment env = new ReferenceEnvironment(depSelection, ec,
+    	ReferenceEnvironment env = new ReferenceEnvironment(depSelection,
     			null);
+    	env.forceEditingContext(ec);
 
     	NSMutableDictionary options = parameter.optionsToEvaluate();
 

@@ -29,8 +29,7 @@ public class DebugPage extends WCComponent
     {
     	if(expression != null && expression.length() > 0)
     	{
-    		ReferenceEnvironment env = new ReferenceEnvironment(null,
-    				wcSession().localContext(), null);
+    		ReferenceEnvironment env = new ReferenceEnvironment(null, null);
     		
     		try
     		{

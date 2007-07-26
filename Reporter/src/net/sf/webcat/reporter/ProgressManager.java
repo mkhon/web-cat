@@ -132,8 +132,6 @@ public class ProgressManager
 	    	int lastIndex = tasks.count() - 1;
 	    	Task task = (Task)tasks.objectAtIndex(lastIndex);
 	    	task.step(delta);
-	    	
-	    	logTaskStack("Step");
 		}
 		
 		public void completeCurrentTask()

@@ -44,6 +44,18 @@ QueuePosition: WOString {
 	value = queuePosition;
 }
 
+RenderingMethod: WOPopUpButton {
+	list = renderingMethods;
+	item = renderingMethod;
+	selection = selectedRenderingMethod;
+	displayString = renderingMethod.displayName;
+}
+
+Rerender: WOSubmitButton {
+	value = "Re-render Report";
+	action = rerenderReport;
+}
+
 ReportContents: net.sf.webcat.reporter.ReportContentsBlock {
 	generatedReport = generatedReport;
 }

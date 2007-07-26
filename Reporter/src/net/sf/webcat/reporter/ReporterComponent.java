@@ -54,6 +54,8 @@ public class ReporterComponent extends WCComponent
     	"reporter.reportTemplate";
     public static final String SESSION_GENERATED_REPORT =
     	"reporter.generatedReport";
+    public static final String SESSION_RENDERING_METHOD =
+    	"reporter.renderingMethod";
 
     
     //~ Methods ...............................................................
@@ -135,7 +137,15 @@ public class ReporterComponent extends WCComponent
     	wcSession().setObjectForKey(value, SESSION_GENERATED_REPORT);
     }
 
+    public String renderingMethodInSession()
+    {
+    	return (String)wcSession().objectForKey(SESSION_RENDERING_METHOD);
+    }
     
+    public void setRenderingMethodInSession(String value)
+    {
+    	wcSession().setObjectForKey(value, SESSION_RENDERING_METHOD);
+    }
 
     public String commitReportGeneration()
     {
@@ -164,6 +174,7 @@ public class ReporterComponent extends WCComponent
 		job.setQueueTime(queueTime);
 		job.setUuid(reportUuidInSession());
 		job.setRenderedResourceActionUrl(actionUrl);
+		job.setRenderingMethod(renderingMethodInSession());
 		job.setUserRelationship(wcSession().user());
 		wcSession().commitLocalChanges();
 
@@ -193,15 +204,26 @@ public class ReporterComponent extends WCComponent
 		wcSession().localContext().insertObject(job);
 		job.setUuid(uuidString);
 		job.setRenderedResourceActionUrl(actionUrl);
+		
+		String method = renderingMethodInSession();
+		if(method == null)
+		{
+			method = "html";
+			setRenderingMethodInSession(method);
+		}
+		
+		job.setRenderingMethod(method);
 		job.setUserRelationship(wcSession().user());
 		job.setParameterSelections(new MutableDictionary());
 		wcSession().commitLocalChanges();
 
+		ProgressManager progress = ProgressManager.getInstance();
+ 		progress.beginJobWithToken(reportUuidInSession());
+ 		progress.beginTaskForJob(reportUuidInSession(), 1,
+ 				"Rendering report");
+
 		setEnqueuedJobInSession(job);
 		Reporter.getInstance().reportQueue().enqueue(null);
-
-//		prefs().clearUpload();
-//		prefs().setSubmissionInProcess(false);
 
 		return errorMessage;
 	}

@@ -5,6 +5,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableDictionary;
+
+import er.extensions.ERXFetchSpecificationBatchIterator;
 
 /**
  * A RunnableStatement is a "runnable" version of a query statement.
@@ -71,8 +74,10 @@ public class RunnableIterationStatement extends RunnableStatement
 		/**
 		 * The list of elements being traversed at this level of the query.
 		 */
-		private List elements;
+		private ERXFetchSpecificationBatchIterator iterator;
 		
+		private NSArray currentBatch;
+
 		/**
 		 * The current element being traversed at this level of the query.
 		 */
@@ -123,10 +128,13 @@ public class RunnableIterationStatement extends RunnableStatement
 	        // that is the result.
 	        if (state == STATE_INITIALIZE)
 	        {
-	            Object result = refEnv().evaluate(
-	            		iterationStatement().options());
+	        	NSMutableDictionary options = new NSMutableDictionary();
+	        	options.addEntriesFromDictionary(iterationStatement().options());
+	        	options.setObjectForKey(Boolean.TRUE, "useIterator");
+	        	
+	            Object result = refEnv().evaluate(options);
 
-	            if (!(result instanceof List))
+	            if (!(result instanceof ERXFetchSpecificationBatchIterator))
 	            {
 	            	// If the key path does not evaluate to an List, this
 	            	// is an error since we can't iterate over it. Throw an
@@ -156,10 +164,10 @@ public class RunnableIterationStatement extends RunnableStatement
 	            			"List.");
 	            }
 
-	            elements = (List)result;
+	            iterator = (ERXFetchSpecificationBatchIterator)result;
 	            index = 0;
 	            
-	            refEnv().startProgressTask(elements.size());
+	            refEnv().startProgressTask(iterator.count());
 	        }
 
 	        // This flag is required for proper looping when the state is one
@@ -169,11 +177,14 @@ public class RunnableIterationStatement extends RunnableStatement
 	        // top.
 	        boolean firstRun = true;
 
-	        while (index < elements.size())
+	        while (iterator.hasNext())
 	        {
 	            if (!firstRun || (firstRun && state == STATE_INITIALIZE))
 	            {
-	                Object childRef = elements.get(index);
+	            	if(index % iterator.batchSize() == 0)
+	            		refEnv().recycleEditingContext(iterator);
+	            	
+	                Object childRef = iterator.next();
 	                
 	                // Add the current reference to the reference environment
 	                // so that it can be used as the root of key paths in

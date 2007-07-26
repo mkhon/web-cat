@@ -23,6 +23,9 @@ public class EnterReportParametersPage extends ReporterComponent
 	public String reportName;
 	public ReportParameter dependency;
 
+	public IRenderingMethod renderingMethod;
+	public IRenderingMethod selectedRenderingMethod;
+
 	private NSMutableDictionary childPanels;
 
     public EnterReportParametersPage(WOContext context)
@@ -112,6 +115,11 @@ public class EnterReportParametersPage extends ReporterComponent
     	return this;
     }
     
+    public NSArray renderingMethods()
+    {
+    	return Reporter.getInstance().allRenderingMethods();
+    }
+
     public WOComponent generateReport()
     {
     	MutableDictionary selections = new MutableDictionary();
@@ -130,6 +138,7 @@ public class EnterReportParametersPage extends ReporterComponent
 
     	setParameterSelectionsInSession(selections);
     	setReportNameInSession(reportName);
+    	setRenderingMethodInSession(selectedRenderingMethod.methodName());
 
     	commitReportGeneration();
     	

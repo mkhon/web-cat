@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import net.sf.webcat.core.Application;
 import net.sf.webcat.reporter.EnqueuedReportJob;
 import net.sf.webcat.reporter.ProgressManager;
 import net.sf.webcat.reporter.ReportParameter;
@@ -33,6 +34,8 @@ import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSValidation;
 
+import er.extensions.ERXFetchSpecificationBatchIterator;
+
 /**
  * The reference environment for a query stores the "symbol table" of object
  * references that can be accessed in the statements of a query and in result
@@ -54,7 +57,6 @@ public class ReferenceEnvironment
 	private EOEditingContext context;
 
 	private String progressUuid;
-//	private EnqueuedReportJob enqueuedJob;
 
 	/**
 	 * Creates a new reference environment and populates its bindings table
@@ -66,23 +68,34 @@ public class ReferenceEnvironment
 	 *     model
 	 */
 	public ReferenceEnvironment(NSDictionary initialBindings,
-			EOEditingContext context, String progressUuid)
+			String progressUuid)
 	{
+		this.context = Application.newPeerEditingContext();
+
 		bindings = new NSMutableDictionary();
 		bindings.setObjectForKey(context, "context");
 		bindings.addEntriesFromDictionary(initialBindings);
 		
-		this.context = context;
-		
 		this.progressUuid = progressUuid;
-/*		if(jobs.size() == 1)
-		{
-			enqueuedJob = (EnqueuedReportJob)jobs.objectAtIndex(0);
-		}
-		else
-		{
-			enqueuedJob = null;
-		}*/
+	}
+	
+	public void forceEditingContext(EOEditingContext context)
+	{
+		Application.releasePeerEditingContext(this.context);
+		this.context = context;
+
+		bindings.setObjectForKey(context, "context");
+}
+
+	public void recycleEditingContext(ERXFetchSpecificationBatchIterator iter)
+	{
+		Application.releasePeerEditingContext(context);
+		context = Application.newPeerEditingContext();
+		
+		bindings.setObjectForKey(context, "context");
+
+		if(iter != null)
+			iter.setEditingContext(context);
 	}
 	
 	/**
@@ -205,19 +218,31 @@ public class ReferenceEnvironment
 
 			EOFetchSpecification spec = new EOFetchSpecification(entity,
 					qualifier, sortOrderings);
-			if(entity.equals("Submission"))
+/*			if(entity.equals("Submission"))
 			{
 				NSMutableArray keyPaths = new NSMutableArray();
-			keyPaths.addObject("user");
-			keyPaths.addObject("result");
-			spec.setPrefetchingRelationshipKeyPaths(keyPaths);
-			}
-			NSArray result = context.objectsWithFetchSpecification(spec);
+				keyPaths.addObject("user");
+				keyPaths.addObject("result");
+				spec.setPrefetchingRelationshipKeyPaths(keyPaths);
+			}*/
+			Boolean useIterator = (Boolean)options.objectForKey("useIterator");
+			Object result;
 			
-			Object filter = options.objectForKey(ReportParameter.OPTION_FILTER);
-			if(filter != null)
+			if(useIterator != null && useIterator.booleanValue())
 			{
-				result = filterArrayWithOgnlExpression(binding, result, filter);
+				result = new ERXFetchSpecificationBatchIterator(spec, context);
+			}
+			else
+			{
+				NSArray _result = context.objectsWithFetchSpecification(spec);
+				
+				Object filter = options.objectForKey(ReportParameter.OPTION_FILTER);
+				if(filter != null)
+				{
+					_result = filterArrayWithOgnlExpression(binding, _result, filter);
+				}
+				
+				result = _result;
 			}
 
 			return result;
@@ -282,6 +307,9 @@ public class ReferenceEnvironment
 		}
 		catch (OgnlException e)
 		{
+			if(e.getMessage().startsWith("source is null"))
+				return null;
+
 			log.error("Failed to evaluate OGNL expression", e);
 			
 			throw new IllegalArgumentException(

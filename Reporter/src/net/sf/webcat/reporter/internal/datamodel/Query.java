@@ -25,7 +25,7 @@ public class Query
 	/**
 	 * The editing context used to access entities in the EO model.
 	 */
-	private EOEditingContext context;
+//	private EOEditingContext context;
 	
 	private String uuid;
 	
@@ -37,19 +37,18 @@ public class Query
 	 * @param context the editing context used to access entities in the EO
 	 *     model.
 	 */
-	public Query(NSDictionary initialBindings, EOEditingContext context,
-			String uuid)
+	public Query(NSDictionary initialBindings, String uuid)
 	{
 		this.initialBindings = initialBindings;
 		this.statements = new NSMutableArray();
-		this.context = context;
+//		this.context = context;
 		this.uuid = uuid;
 	}
 
 	public Query(String queryString, NSDictionary initialBindings,
-			EOEditingContext context, String uuid)
+			String uuid)
 	{
-		this(initialBindings, context, uuid);
+		this(initialBindings, uuid);
 		
 		QueryParser parser = new QueryParser(queryString, this);
 		parser.processQueryString();
@@ -63,7 +62,7 @@ public class Query
 	public IResultSet execute()
 	{
 		ReferenceEnvironment refEnv =
-			new ReferenceEnvironment(initialBindings, context, uuid);
+			new ReferenceEnvironment(initialBindings, uuid);
 
 		return new ResultSet(refEnv, statements);
 	}

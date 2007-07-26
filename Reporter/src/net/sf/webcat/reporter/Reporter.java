@@ -14,11 +14,15 @@ import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Session;
 import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.core.TabDescriptor;
+import net.sf.webcat.dbupdate.UpdateEngine;
 import net.sf.webcat.grader.EnqueuedJob;
 import net.sf.webcat.grader.GraderQueue;
 import net.sf.webcat.grader.GraderQueueProcessor;
 import net.sf.webcat.reporter.datamodel.IResultSet;
 import net.sf.webcat.reporter.internal.datamodel.DataSource;
+import net.sf.webcat.reporter.internal.rendering.CSVRenderingMethod;
+import net.sf.webcat.reporter.internal.rendering.ExcelRenderingMethod;
+import net.sf.webcat.reporter.internal.rendering.HTMLRenderingMethod;
 
 import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
@@ -30,6 +34,7 @@ import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.birt.report.engine.api.EngineConfig;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.HTMLRenderOption;
+import org.eclipse.birt.report.engine.api.IDataExtractionTask;
 import org.eclipse.birt.report.engine.api.IGetParameterDefinitionTask;
 import org.eclipse.birt.report.engine.api.IRenderTask;
 import org.eclipse.birt.report.engine.api.IReportDocument;
@@ -52,12 +57,11 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSBundle;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 
 public class Reporter extends Subsystem
 {
-	public static final String REPORT_ROOT_HTML = "report.html";
-
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
@@ -94,6 +98,11 @@ public class Reporter extends Subsystem
     public void init()
     {
         super.init();
+
+        // Apply any pending database updates for the grader
+        UpdateEngine.instance().applyNecessaryUpdates(
+                        new ReporterDatabaseUpdates() );
+
         NSBundle myBundle = NSBundle.bundleForClass( Reporter.class );
 
         // TODO merge the tab template loading support into the Subsystem
@@ -197,7 +206,6 @@ public class Reporter extends Subsystem
         osgiConfig.put("osgi.configuration.area", configArea);
         osgiConfig.put("osgi.instance.area", instanceArea);
         config.setOSGiConfig(osgiConfig);
-
         dConfig.setOSGiConfig(osgiConfig);
 
         try
@@ -220,6 +228,13 @@ public class Reporter extends Subsystem
         {
         	log.fatal("Error initializing BIRT reporting engine", e);
 		}
+     
+        // Initialize the available report rendering methods.
+        NSMutableArray methods = new NSMutableArray();
+        methods.addObject(new HTMLRenderingMethod(reportEngine));
+        methods.addObject(new CSVRenderingMethod(reportEngine));
+        methods.addObject(new ExcelRenderingMethod(reportEngine));
+        renderingMethods = methods;
     }
     
     
@@ -260,8 +275,7 @@ public class Reporter extends Subsystem
     }
 
     public IRunTask setupRunTaskForTemplate(ReportTemplate template,
-    		NSDictionary selections, String reportUuid,
-    		EOEditingContext editingContext)
+    		NSDictionary selections, String reportUuid)
     {
     	IReportRunnable runnable = openReportTemplate(template.filePath());
     	IRunTask task = reportEngine.createRunTask(runnable);
@@ -279,7 +293,7 @@ public class Reporter extends Subsystem
         // This object will be registered as a scriptable object for
         // JavaScript in the reporting engine.
         DataSource webcatObject = new DataSource(
-        		editingContext, initialBindings, reportUuid);
+        		initialBindings, reportUuid);
 
     	appContext.put(DataSource.SCRIPTABLE_OBJECT_NAME, webcatObject);
     	
@@ -288,36 +302,43 @@ public class Reporter extends Subsystem
     	return task;
     }
     
-    public IRenderTask setupRenderTaskForReport(GeneratedReport report,
-    		String renderedResourceActionUrl)
-    {
-    	IReportDocument document = openReportDocument(
-    			report.generatedReportFile());
-    	
-    	HTMLRenderOption option = new HTMLRenderOption();
-    	option.setEmbeddable(true);
-    	option.setImageHandler(new ReporterHTMLImageHandler(report,
-    			renderedResourceActionUrl));
-    	option.setOutputFileName(GeneratedReport.renderedResourcePath(
-    			report.uuid(), REPORT_ROOT_HTML));
-    	
-    	IRenderTask task = reportEngine.createRenderTask(document);
-    	task.setRenderOption(option);
-    	
-    	return task;
-    }
-   
     public IGetParameterDefinitionTask createGetParameterDefinitionTask(
     		IReportRunnable runnable)
     {
     	return reportEngine.createGetParameterDefinitionTask(runnable);
     }
 
+    public IDataExtractionTask createDataExtractionTask(
+    		IReportDocument document)
+    {
+    	return reportEngine.createDataExtractionTask(document);
+    }
+   
+    public NSArray allRenderingMethods()
+    {
+    	return renderingMethods;
+    }
+
+    public IRenderingMethod renderingMethodWithName(String name)
+    {
+    	for(int i = 0; i < renderingMethods.count(); i++)
+    	{
+    		IRenderingMethod method =
+    			(IRenderingMethod)renderingMethods.objectAtIndex(i);
+    		
+    		if(method.methodName().equals(name))
+    			return method;
+    	}
+    	
+    	log.error("Could not find a report rendering method with name " +
+    			name + "!");
+    	return null;
+    }
+
     // TODO this is for debugging purposes. Kill it when we're done.
     public IResultSet executeReporterQuery(String queryString, NSDictionary vars)
     {
-        DataSource webcatObject = new DataSource(
-        		Application.newPeerEditingContext(), vars, null);
+        DataSource webcatObject = new DataSource(vars, null);
 
         return webcatObject.executeQuery(queryString);
     }
@@ -357,6 +378,8 @@ public class Reporter extends Subsystem
     
     private IDesignEngine designEngine;
     
+    private NSArray renderingMethods;
+
     /** this is the main single report queue */
     private static ReportQueue reportQueue;
 

@@ -31,17 +31,16 @@ public class DataSource implements IDataSource
 	 * 
 	 * @param context the EOEditingContext to use
 	 */
-	public DataSource(EOEditingContext context,
-			NSDictionary initialBindings, String uuid)
+	public DataSource(NSDictionary initialBindings, String uuid)
 	{
-		this.context = context;
+//		this.context = context;
 		this.initialBindings = initialBindings;
 		this.uuid = uuid;
 	}
 
 	public IResultSet executeQuery(String queryString)
 	{
-		Query newQuery = new Query(queryString, initialBindings, context, uuid);
+		Query newQuery = new Query(queryString, initialBindings, uuid);
 		return newQuery.execute();
 	}
 
@@ -56,7 +55,7 @@ public class DataSource implements IDataSource
 	 * report processing queue creates, rather than generating a new one
 	 * for each operation.
 	 */
-	private EOEditingContext context;
+//	private EOEditingContext context;
 	
 	private NSDictionary initialBindings;
 	

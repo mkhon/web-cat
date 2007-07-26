@@ -60,7 +60,7 @@ import com.webobjects.eocontrol.*;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: ReportTemplate.java,v 1.1 2007/06/18 20:48:06 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.2 2007/07/26 15:22:50 aallowat Exp $
  */
 public class ReportTemplate
     extends _ReportTemplate
@@ -515,12 +515,22 @@ public class ReportTemplate
     {
         SessionHandle designSession = Reporter.getInstance().newDesignSession();
         int count = 0;
-
+        
         try
         {
             ReportDesignHandle reportHandle = designSession.openDesign(
             		filePath());
-            count = countOfDataSetReferencesRecursive(reportHandle.getBody());
+ 
+            SlotHandle slot = reportHandle.getBody();
+        	Iterator it = slot.iterator();
+        	while(it.hasNext())
+        	{
+        		DesignElementHandle element = (DesignElementHandle)it.next();
+        		Object dataSetValue = element.getProperty("dataSet");
+        		
+        		if(dataSetValue != null)
+        			count++;
+        	}
         }
         catch(BirtException e)
         {
@@ -529,23 +539,7 @@ public class ReportTemplate
         
         return count;
     }
-    
-    private int countOfDataSetReferencesRecursive(SlotHandle slot)
-    {
-    	int count = 0;
 
-    	Iterator it = slot.iterator();
-    	while(it.hasNext())
-    	{
-    		DesignElementHandle element = (DesignElementHandle)it.next();
-    		Object dataSetValue = element.getProperty("dataSet");
-    		System.out.print(element.toString() + ", ");
-    		System.out.println(dataSetValue);
-    		count++;
-    	}
-
-    	return count;
-    }
     
 // If you add instance variables to store property values you
 // should add empty implementions of the Serialization methods
