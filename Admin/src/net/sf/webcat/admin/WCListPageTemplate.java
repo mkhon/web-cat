@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCListPageTemplate.java,v 1.2 2007/07/08 01:50:08 stedwar2 Exp $
+ |  $Id: WCListPageTemplate.java,v 1.3 2007/07/31 19:22:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * The template for D2W list pages in Web-CAT.
  *
  * @author edwards
- * @version $Id: WCListPageTemplate.java,v 1.2 2007/07/08 01:50:08 stedwar2 Exp $
+ * @version $Id: WCListPageTemplate.java,v 1.3 2007/07/31 19:22:23 stedwar2 Exp $
  */
 public class WCListPageTemplate
     extends er.directtoweb.ERD2WListPage
@@ -81,16 +81,38 @@ public class WCListPageTemplate
         super.setLocalContext( arg0 );
         if ( setUpSortOrdering )
         {
-            // override default sort ordering with a new one from the
-            // d2w properties
-            NSArray sortOrderings = (NSArray)d2wContext().valueForKey(
-                "defaultSortOrdering" );
+          // override default sort ordering with a new one from the
+          // d2w properties
+          NSArray sortOrderings = sortOrderings();
             if ( sortOrderings != null )
             {
                 displayGroup().setSortOrderings( sortOrderings );
             }
             setUpSortOrdering = false;
         }
+    }
+
+
+    // ----------------------------------------------------------
+    public NSArray sortOrderings()
+    {
+        NSArray sortOrderings = null;
+        if ( userPreferencesCanSpecifySorting() )
+        {
+            sortOrderings = (NSArray)
+                userPreferencesValueForPageConfigurationKey("sortOrdering");
+            if ( log.isDebugEnabled() )
+                log.debug(
+                    "Found sort Orderings in user prefs " + sortOrderings);
+        }
+        if (sortOrderings == null)
+        {
+            sortOrderings = (NSArray)d2wContext().valueForKey(
+                "defaultSortOrdering" );
+            if (log.isDebugEnabled())
+                log.debug("Found sort Orderings in rules " + sortOrderings);
+        }
+        return sortOrderings;
     }
 
 
