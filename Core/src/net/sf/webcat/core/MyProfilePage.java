@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.4 2007/07/09 15:41:28 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.5 2007/08/05 00:48:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.4 2007/07/09 15:41:28 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.5 2007/08/05 00:48:19 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -194,7 +194,8 @@ public class MyProfilePage
                                 ? "&staff=true" : "" ),
             null,
             false,
-            0
+            0,
+            true // force to use http, not https
             );
     }
 
@@ -214,7 +215,7 @@ public class MyProfilePage
         return Application.completeURLWithRequestHandlerKey(
             context(),
             Application.application().directActionRequestHandlerKey(),
-            "assignments/bluej?institution=" + institution
+            "assignments/eclipse?institution=" + institution
                 + ( ( wcSession().user().accessLevel() > 0 )
                                 ? "&staff=true" : "" ),
             null,
