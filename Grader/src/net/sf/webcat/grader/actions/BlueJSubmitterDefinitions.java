@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BlueJSubmitterDefinitions.java,v 1.2 2007/07/08 01:57:17 stedwar2 Exp $
+ |  $Id: BlueJSubmitterDefinitions.java,v 1.3 2007/08/05 01:22:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @version $Id: BlueJSubmitterDefinitions.java,v 1.2 2007/07/08 01:57:17 stedwar2 Exp $
+ * @version $Id: BlueJSubmitterDefinitions.java,v 1.3 2007/08/05 01:22:41 stedwar2 Exp $
  */
 public class BlueJSubmitterDefinitions
     extends WOComponent
@@ -230,8 +230,8 @@ public class BlueJSubmitterDefinitions
             "submit",
             null,
             useSecureSubmissionURLs(),
-            0
-            // ,true
+            0,
+            !useSecureSubmissionURLs()
             );
         // unfortunately, we can't force HTTPS here, since not all
         // installations will necessarily support SSL
