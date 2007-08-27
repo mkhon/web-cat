@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/eddo-1_3.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/edldap-1_5.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/gnujaxp.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jdom.jar"/>
@@ -16,6 +15,9 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/utils.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/xerces.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/xml-apis.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/edldap1_6_1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="Libraries/bcprov-jdk15-129.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
