@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.5 2007/08/05 00:48:19 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.6 2007/08/28 01:57:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.5 2007/08/05 00:48:19 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.6 2007/08/28 01:57:31 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -146,8 +146,10 @@ public class MyProfilePage
                     "Your password must be at least six characters long." );
             }
             else if (  lcPassword.equals( u.userName().toLowerCase() )
-                    || lcPassword.equals( u.firstName().toLowerCase() )
-                    || lcPassword.equals( u.lastName().toLowerCase() ) )
+                    || ( u.firstName() != null
+                         && lcPassword.equals( u.firstName().toLowerCase() ) )
+                    || ( u.lastName() != null
+                         && lcPassword.equals( u.lastName().toLowerCase() ) ) )
             {
                 error(
                     "You may not use your name as a password.  "
