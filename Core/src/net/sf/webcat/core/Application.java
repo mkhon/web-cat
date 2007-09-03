@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.22 2007/08/05 00:50:46 stedwar2 Exp $
+ |  $Id: Application.java,v 1.23 2007/09/03 14:29:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.22 2007/08/05 00:50:46 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.23 2007/09/03 14:29:24 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1481,7 +1481,10 @@ public class Application
         }
         finally
         {
-            errorLoggingContext.unlock();
+            if (errorLoggingContext != null)
+            {
+                errorLoggingContext.unlock();
+            }
         }
 
         // Return the information
