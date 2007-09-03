@@ -208,9 +208,9 @@ sub generateHighlightOutputFile
             my @dirPath = split( "/", $outFileName );
             pop( @dirPath );
             mkpath( join( "/", @dirPath ) );
-        }       
+        }
         # print "    attempting to open output file\n";
-        open( BEAUTIFIERFILEOUT, ">$outFileName" ) or return;
+        open( BEAUTIFIERFILEOUT, ">:utf8", $outFileName ) or return;
         my @lines = $self->highlightFile;
         print BEAUTIFIERFILEOUT @lines;
         close( BEAUTIFIERFILEOUT );
@@ -305,7 +305,7 @@ sub beautifyCwd
     {
         delete $self->{codeMarkupIds};
     }
-    
+
     if ( defined $codeMessages )
     {
         $self->{codeMessages} = $codeMessages;
@@ -314,7 +314,7 @@ sub beautifyCwd
     {
         delete $self->{codeMessages};
     }
-    
+
     foreach my $f ( <*> )
     {
         $self->beautify( $f, $outBase, $outPrefix, \$numCodeMarkups,

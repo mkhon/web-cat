@@ -129,7 +129,7 @@ sub highlight_text
         {
             $out .= $self->{context}->{prepro_parts}[0];
             $self->{context}->{prepro} = 1;
-        }   
+        }
         $self->{context}->{inwhitespace} = 1;
         $self->{context}->{incomment} = 0;
         if (defined($self->{highlightfile}->{lineselect}) && !($self->{context}->{inselection}) && substr($line, 0, length($self->{highlightfile}->{lineselect}))==$self->{highlightfile}->{lineselect})
@@ -320,7 +320,7 @@ if ($DEBUG) { print "Closing Block Comment!\n"; }
             # TODO: Zones
 
             # If we're in a comment, skip keyword checks, cache comments, and continue.
-        
+
             if ($self->{context}->{incomment} || $self->{context}->{inbcomment})
             {
 if ($DEBUG) { print "Skipping checks.\n"; }
@@ -333,7 +333,7 @@ if ($DEBUG) { print "Skipping checks.\n"; }
                     }
                     $self->{context}->{newline} = 0;
                 }
-                if (defined($self->{statobj}) && $self->{statobj}->{harvest_comments}) 
+                if (defined($self->{statobj}) && $self->{statobj}->{harvest_comments})
                 {
                     $self->{statobj}->{comment_cache} .= $currchar;
                 }
@@ -341,7 +341,7 @@ if ($DEBUG) { print "Skipping checks.\n"; }
             }
             # Indent has to be either preceded by, or be, a delimiter.
             my $delim = ($j == 0 || in_array($currchar, $self->{context}->{alldelims}) || ($j>0 && in_array(substr($lineorig, $j-1, 1), $self->{context}->{alldelims})));
-            
+
             # Handle quotes
             if (!$self->{context}->{lineselect} && !$self->{context}->{inselection} && !$self->{context}->{escaping} &&
                 ((in_array($currchar, $self->{highlightfile}->{stringchars}) && $self->{context}->{inquote} && $currchar eq $self->{context}->{currquotechar}) || (in_array($currchar, $self->{highlightfile}->{stringchars}) && !$self->{context}->{inquote})))
@@ -411,9 +411,9 @@ if ($DEBUG) { print "String checks\nAdding $currchar..."; }
                 {
                     $self->{statobj}->{string_cache} .= $currchar;
                 }
-                if ($self->{output_module}->{html}) 
+                if ($self->{output_module}->{html})
                 {
-                    $lineout .= html_entities($currchar); 
+                    $lineout .= html_entities($currchar);
                 }
                 else
                 {
@@ -537,7 +537,7 @@ sub munge
     s/&gt;/>/g;
     s/&lt;/</g;
     $munge = $_;
-    
+
     my $inword  = 0;
     my $currword    = "";
     my $oldword = "";
@@ -619,83 +619,12 @@ sub munge
     return $strout;
 }
 
-my %windows_1252 = (
-  '\x00'  => '',
-  '\x01'  => '',
-  '\x02'  => '',
-  '\x03'  => '',
-  '\x04'  => '',
-  '\x05'  => '',
-  '\x06'  => '',
-  '\x07'  => '',
-  '\x08'  => '',
-  '\x0B'  => '',
-  '\x0C'  => '',
-  '\x0E'  => '',
-  '\x0F'  => '',
-  '\x10'  => '',
-  '\x11'  => '',
-  '\x12'  => '',
-  '\x13'  => '',
-  '\x14'  => '',
-  '\x15'  => '',
-  '\x16'  => '',
-  '\x17'  => '',
-  '\x18'  => '',
-  '\x19'  => '',
-  '\x1A'  => '',
-  '\x1B'  => '',
-  '\x1C'  => '',
-  '\x1D'  => '',
-  '\x1E'  => '',
-  '\x1F'  => '',
-  '\x7F'  => '',
-  '\x80' => '&#x20AC;',
-  '\x81' => '',
-  '\x82' => '&#x201A;',
-  '\x83' => '&#x192;',
-  '\x84' => '&#x201E;',
-  '\x85' => '&#x2026;',
-  '\x86' => '&#x2020;',
-  '\x87' => '&#x2021;',
-  '\x88' => '&#x2C6;',
-  '\x89' => '&#x2030;',
-  '\x8A' => '&#x160;',
-  '\x8B' => '&#x2039;',
-  '\x8C' => '&#x152;',
-  '\x8D' => '',
-  '\x8E' => '&#x17D;',
-  '\x8F' => '',
-  '\x90' => '',
-  '\x91' => '&#x2018;',
-  '\x92' => '&#x2019;',
-  '\x93' => '&#x201C;',
-  '\x94' => '&#x201D;',
-  '\x95' => '&#x2022;',
-  '\x96' => '&#x2013;',
-  '\x97' => '&#x2014;',
-  '\x98' => '&#x2DC;',
-  '\x99' => '&#x2122;',
-  '\x9A' => '&#x161;',
-  '\x9B' => '&#x203A;',
-  '\x9C' => '&#x153;',
-  '\x9D' => '',
-  '\x9E' => '&#x17E;',
-  '\x9F' => '&#x178;'
-);
-
-my @chars_need_escaping = sort keys %windows_1252;
-
 sub html_entities
 {
     my( $text ) = @_;
     $text =~ s/&/&amp;/g;
     $text =~ s/</&lt;/g;
     $text =~ s/>/&gt;/g;
-    foreach my $controlchar ( @chars_need_escaping )
-    {
-    $text =~ s/$controlchar/$windows_1252{$controlchar}/g;
-    }
     return $text;
 }
 
