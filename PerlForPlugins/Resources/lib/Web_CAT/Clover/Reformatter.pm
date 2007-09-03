@@ -174,7 +174,7 @@ sub commentBody
     }
 
     # still need to place icon
-    
+
     my $result = <<EOF;
 ><tr id="$id"><td colspan="3" id="$id"><img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" alt="" border="0" id="$id"/></td></tr>
 <tr id="$id"><td id="$id">&#160;</td><td id="$id">&#160;</td><td id="$id">
@@ -319,12 +319,13 @@ sub output_starttag
                 $tag =~ s/title="[^"]*"\s*//o;
             }
         }
-        
+
         my $spanCountList = $self->{spanDepth};
         push( @{$spanCountList}, 0 );
     }
     elsif ( $word eq "span" )
     {
+        $tag =~ s/SPAN/span/io;
         $tag .= ' id="O:' . $self->{lineNo} . '"';
         if ( $self->{stripEmptyCoverage} )
         {
@@ -417,6 +418,8 @@ sub output_endtag
     }
     elsif ( $word eq "span" )
     {
+
+        $tag =~ s/SPAN/span/io;
         my $spanCountList = $self->{spanDepth};
         $spanCountList->[$#{@{$spanCountList}}]--;
 #       if ( $self->{spanDepth} )
