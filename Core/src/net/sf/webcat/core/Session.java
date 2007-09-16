@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.8 2007/05/08 04:47:12 stedwar2 Exp $
+ |  $Id: Session.java,v 1.9 2007/09/16 21:34:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.8 2007/05/08 04:47:12 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.9 2007/09/16 21:34:29 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -101,7 +101,7 @@ public class Session
     // ----------------------------------------------------------
     /**
      * Determine whether the user is currently logged in.
-     * 
+     *
      * @return True if the user is logged in
      */
     public boolean isLoggedIn()
@@ -116,7 +116,7 @@ public class Session
      *
      * Returns the appropriate login <code>Session</code> object.
      * Note that this may return a <code>Session</code> other than the
-     * recipient of this message, in which case the user has 
+     * recipient of this message, in which case the user has
      * another session open, which they must go to.
      *
      * @param u The user loggin in
@@ -347,7 +347,7 @@ public class Session
     // ----------------------------------------------------------
     /**
      * Returns the name of the page the session is currently viewing.
-     * 
+     *
      * @return The page name
      */
     public String currentPageName()
@@ -399,7 +399,7 @@ public class Session
         }
     }
 
-  
+
     // ----------------------------------------------------------
     /**
      * Set the user to null and erase the login session info from
@@ -496,11 +496,11 @@ public class Session
         log.debug( "commitLocalChanges()" );
 //        childContext.saveChanges();
         defaultEditingContext().saveChanges();
-        defaultEditingContext().revert();
-        defaultEditingContext().refaultAllObjects();
+//        defaultEditingContext().revert();
+//        defaultEditingContext().refaultAllObjects();
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Cancel all local changes and revert to the default editing context
@@ -511,7 +511,8 @@ public class Session
 //        childContext.revert();
 //        childContext.refaultAllObjects();
         defaultEditingContext().revert();
-        defaultEditingContext().refaultAllObjects();
+//        defaultEditingContext().refaultAllObjects();
+        defaultEditingContext().invalidateAllObjects();
     }
 
 
