@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowserRow.java,v 1.2 2007/02/04 21:13:30 stedwar2 Exp $
+ |  $Id: FileBrowserRow.java,v 1.3 2007/09/16 21:32:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  One row in a directory contents table.
  *
  *  @author  Stephen Edwards
- *  @version $Id: FileBrowserRow.java,v 1.2 2007/02/04 21:13:30 stedwar2 Exp $
+ *  @version $Id: FileBrowserRow.java,v 1.3 2007/09/16 21:32:28 stedwar2 Exp $
  */
 public class FileBrowserRow
     extends WOComponent
@@ -103,8 +103,8 @@ public class FileBrowserRow
     }
     private static final FilenameFilter notDotOrDotDot = new NotDotOrDotDot();
     private static final NSArray emptyContents = new NSArray();
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Adds to the response of the page
@@ -348,7 +348,7 @@ public class FileBrowserRow
         return depth + 1;
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * <!-- DOCUMENT ME! -->
@@ -360,7 +360,7 @@ public class FileBrowserRow
         return ( subFileIndex == contents.count() - 1 );
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * A mutable boolean value holder for storing in the
@@ -371,7 +371,7 @@ public class FileBrowserRow
         public boolean last = false;
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Return this row's number.
@@ -393,7 +393,7 @@ public class FileBrowserRow
         return spacerIndex == depth;
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Return true if this file represents an archive file.
@@ -406,7 +406,7 @@ public class FileBrowserRow
             ( name.endsWith( ".zip" ) || name.endsWith( ".jar" ) );
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Return true if this file represents an archive or a directory.
@@ -587,7 +587,7 @@ public class FileBrowserRow
         return nextPage;
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Return the URL for the download icon to use for this file.
@@ -606,7 +606,7 @@ public class FileBrowserRow
         }
     }
 
-    
+
 //    // ----------------------------------------------------------
 //    public WOActionResults invokeAction( WORequest arg0, WOContext arg1 )
 //    {
@@ -645,7 +645,7 @@ public class FileBrowserRow
         return result;
     }
 
-    
+
     // ----------------------------------------------------------
     public WOComponent select()
     {
@@ -653,6 +653,7 @@ public class FileBrowserRow
         log.debug( "select = " + file.getPath() );
         if ( fileSelectionListener != null )
         {
+            log.debug("notifying fileSelectionListener");
             String selection = file.getPath();
             if ( baseFile != null )
             {
@@ -665,10 +666,14 @@ public class FileBrowserRow
             selection = selection.replaceAll( "\\\\", "/" );
             result = fileSelectionListener.selectFile( selection );
         }
+        else
+        {
+            log.debug("no fileSelectionListener registered");
+        }
         return result;
     }
 
-    
+
     // ----------------------------------------------------------
     public boolean isSelected()
     {
@@ -687,7 +692,7 @@ public class FileBrowserRow
         return result;
     }
 
-    
+
     // ----------------------------------------------------------
     public boolean canSelectThis()
     {
@@ -696,7 +701,7 @@ public class FileBrowserRow
         {
             if ( file.isDirectory() )
             {
-                result = allowSelectDir;                
+                result = allowSelectDir;
             }
             else if ( allowSelectExtensions == null )
             {

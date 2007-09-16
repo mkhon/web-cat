@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionSetEditor.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
+ |  $Id: OptionSetEditor.java,v 1.3 2007/09/16 21:33:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *  current page will be reloaded on basic form submissions.
  *
  *  @author  stedwar2
- *  @version $Id: OptionSetEditor.java,v 1.2 2006/11/09 16:55:11 stedwar2 Exp $
+ *  @version $Id: OptionSetEditor.java,v 1.3 2007/09/16 21:33:02 stedwar2 Exp $
  */
 public class OptionSetEditor
     extends WCComponent
@@ -79,7 +79,6 @@ public class OptionSetEditor
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse response, WOContext context )
     {
-        log.debug( "appendToResponse()" );
         if ( isFirstView
              && categories != null
              && categories.count() > 0 )
@@ -89,6 +88,21 @@ public class OptionSetEditor
         isFirstView = false;
         terse = null;
         displayedCategory = chosenCategory;
+        if (log.isDebugEnabled())
+        {
+            log.debug( "appendToResponse()" );
+            if (optionValues == null)
+            {
+                log.debug("option values = null");
+            }
+            else
+            {
+                log.debug( "option values ("
+                    + optionValues.hashCode()
+                    + ") =\n" + optionValues );
+
+            }
+        }
         super.appendToResponse( response, context );
     }
 
