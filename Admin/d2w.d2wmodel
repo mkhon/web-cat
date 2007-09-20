@@ -130,7 +130,7 @@
                 class = com.webobjects.eocontrol.EOKeyValueQualifier;
                 key = session.user.accessLevel;
                 selectorName = "isLessThan";
-                value = {class = java.lang.Number; value = 90; };
+                value = {class = java.lang.Number; value = 100; };
             };
             rhs = {
                 class = net.sf.webcat.admin.WCD2WNoPWAssignment;
@@ -445,6 +445,12 @@
                                 class = EOKeyValueQualifier;
                                 key = propertyKey;
                                 selectorName = "isEqualTo:";
+                                value = "institution";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
                                 value = "course";
                             },
                             {
@@ -539,6 +545,12 @@
                                 key = propertyKey;
                                 selectorName = "isEqualTo:";
                                 value = "authenticationDomain";
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = propertyKey;
+                                selectorName = "isEqualTo:";
+                                value = "institution";
                             },
                             {
                                 class = EOKeyValueQualifier;
