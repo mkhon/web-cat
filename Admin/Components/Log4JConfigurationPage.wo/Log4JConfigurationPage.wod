@@ -188,7 +188,7 @@ Form7: WOForm {
        multipleSubmit = true;
 }
 
- 
+
 TextFieldFilterString2: WOTextField {
        value = conversionPattern;
        size = 70;
