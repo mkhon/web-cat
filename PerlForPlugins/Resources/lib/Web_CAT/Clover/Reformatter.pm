@@ -502,7 +502,7 @@ sub save
     my $fileName = $_[0];
     my $fh;
 
-    open( $fh, ">$fileName" ) ||
+    open( $fh, ">:utf8", $fileName ) ||
         die "Cannot open file for output '$fileName': $!";
     print $fh $self->get_output;
     close( $fh );
