@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BarePage.java,v 1.5 2007/05/08 04:47:12 stedwar2 Exp $
+ |  $Id: BarePage.java,v 1.6 2007/09/25 18:43:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * contents.
  *
  * @author Stephen Edwards
- * @version $Id: BarePage.java,v 1.5 2007/05/08 04:47:12 stedwar2 Exp $
+ * @version $Id: BarePage.java,v 1.6 2007/09/25 18:43:20 stedwar2 Exp $
  */
 public class BarePage
     extends WOComponent
@@ -78,6 +78,8 @@ public class BarePage
                    + context.request().stringFormValueForKey( "nowrap" ) );
         includePageWrapping =
             ( context.request().stringFormValueForKey( "nowrap" ) == null );
+        response.appendHeader("no-cache", "pragma");
+        response.appendHeader("no-cache", "cache-control");
         super.appendToResponse( response, context );
     }
 
@@ -168,7 +170,7 @@ public class BarePage
     private void oneJavaScriptLink( StringBuffer buffer, String url )
     {
         buffer.append( "<script type=\"text/javascript\" src=\"" );
-        buffer.append( 
+        buffer.append(
             WCResourceManager.frameworkPrefixedResourceURLFor( url,
                 context().request() ) );
         buffer.append( "\"></script>" );
