@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.8 2007/07/25 14:00:07 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.9 2007/09/27 14:54:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: DirectAction.java,v 1.8 2007/07/25 14:00:07 stedwar2 Exp $
+ * @version $Id: DirectAction.java,v 1.9 2007/09/27 14:54:59 stedwar2 Exp $
  */
 public class DirectAction
     extends ERXDirectAction
@@ -485,7 +485,25 @@ public class DirectAction
         String actionName )
     {
         log.debug( "performSynchronousActionNamed( " + actionName + " )" );
-        WOActionResults result = super.performActionNamed( actionName );
+        WOActionResults result = null;
+        try
+        {
+            result = super.performActionNamed( actionName );
+        }
+        catch (NSForwardException e)
+        {
+            if (e.originalException() instanceof
+                java.lang.NoSuchMethodException)
+            {
+                // assume this was a bad request with an invalid action
+                // name, and just go to the login page instead.
+                result = defaultAction();
+            }
+            else
+            {
+                throw e;
+            }
+        }
         saveSession();
         return result;
     }
