@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.23 2007/09/03 14:29:24 stedwar2 Exp $
+ |  $Id: Application.java,v 1.24 2007/09/27 14:54:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.23 2007/09/03 14:29:24 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.24 2007/09/27 14:54:21 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -884,7 +884,9 @@ public class Application
         Throwable t = exception instanceof NSForwardException
             ? ( (NSForwardException) exception ).originalException()
             : exception;
+
         emailExceptionToAdmins( t, extraInfo, context, null );
+
         // Return a "clean" error page
         WOComponent errorPage =
             pageWithName( ErrorPage.class.getName(), context );
@@ -1327,6 +1329,13 @@ public class Application
         NSTimestamp now = new NSTimestamp();
         errorBuffer.append( "\nDate/time:   " );
         errorBuffer.append(  now.toString() );
+        if ( aContext != null && aContext.request() != null)
+        {
+            errorBuffer.append( "\nRequest: " );
+            errorBuffer.append(aContext.request().uri());
+            errorBuffer.append( "\nReferer: " );
+            errorBuffer.append(aContext.request().headerForKey("referer"));
+        }
 
         if ( errorLoggingContext == null )
         {
