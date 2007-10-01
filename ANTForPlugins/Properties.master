@@ -5,7 +5,7 @@ subsystem.ANTForPlugins=net.sf.webcat.antforplugins.ANTForPlugins
 
 ANTForPlugins.version.major=1
 ANTForPlugins.version.minor=1
-ANTForPlugins.version.revision=0
+ANTForPlugins.version.revision=1
 ANTForPlugins.requires=Core
 ANTForPlugins.provides=env, pluginProperties
 
@@ -23,3 +23,5 @@ ANTForPlugins.description=\
     This subsystem provides <a href\="http\://ant.apache.org/">ANT</a> \
     to support grading plug-ins that use ANT to manage building, executing, \
     and testing student work.
+
+ANTForPlugins.chmodx=Resources/ant/bin/ant, Resources/ant/bin/antRun
