@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.9 2007/09/16 21:34:29 stedwar2 Exp $
+ |  $Id: Session.java,v 1.10 2007/10/02 02:34:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.9 2007/09/16 21:34:29 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.10 2007/10/02 02:34:50 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -496,8 +496,8 @@ public class Session
         log.debug( "commitLocalChanges()" );
 //        childContext.saveChanges();
         defaultEditingContext().saveChanges();
-//        defaultEditingContext().revert();
-//        defaultEditingContext().refaultAllObjects();
+        defaultEditingContext().revert();
+        defaultEditingContext().refaultAllObjects();
     }
 
 
@@ -511,8 +511,8 @@ public class Session
 //        childContext.revert();
 //        childContext.refaultAllObjects();
         defaultEditingContext().revert();
-//        defaultEditingContext().refaultAllObjects();
         defaultEditingContext().invalidateAllObjects();
+        defaultEditingContext().refaultAllObjects();
     }
 
 
