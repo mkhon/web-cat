@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.4 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.5 2007/10/11 13:33:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.4 2007/07/09 15:49:41 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.5 2007/10/11 13:33:40 stedwar2 Exp $
  */
 public class UploadSubmissionPage
     extends GraderAssignmentComponent
@@ -318,7 +318,7 @@ public class UploadSubmissionPage
                 "In UploadSubmissionPage:takeValuesFromRequest(), a post "
                 + "request without an attached file submission was received\n."
                 + "Browser info = \n"
-                + wcSession().browser()
+                + context().request().headerForKey("user-agent")
                 );
         }
     }
