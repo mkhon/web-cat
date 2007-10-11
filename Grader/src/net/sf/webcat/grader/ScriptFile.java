@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.9 2007/06/03 04:25:21 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.10 2007/10/11 13:32:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.9 2007/06/03 04:25:21 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.10 2007/10/11 13:32:10 stedwar2 Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -148,9 +148,7 @@ public class ScriptFile
         {
             log.debug( "execute(): args = '" + args + "', cwd = " + cwd );
         }
-        Runtime runtime = Runtime.getRuntime();
         String  command   = "";
-        String[] cmdArray = null;
         if ( configDescription().containsKey( "interpreter.prefix" ) )
         {
             // Look up the associated value, perform property substitution
@@ -164,70 +162,13 @@ public class ScriptFile
                 + " ";
         }
         command += mainFilePath();
-        Process proc = null;
         if ( args != null )
         {
             command = command + " " + args;
         }
 
-        // Tack on the command shell prefix to the beginning, quoting the
-        // whole argument sequence if necessary
-        {
-            String shell = net.sf.webcat.core.Application.cmdShell();
-            if ( shell != null && shell.length() > 0 )
-            {
-                if ( shell.charAt( shell.length() - 1 ) == '"' )
-                {
-                    cmdArray = shell.split( "\\s+" );
-                    cmdArray[cmdArray.length - 1] = command;
-                }
-                else
-                {
-                    command = shell + command;
-                }
-            }
-        }
-
-        try
-        {
-            if ( log.isDebugEnabled() )
-            {
-                if ( cmdArray != null )
-                {
-                    command = cmdArray[0];
-                    for ( int i = 1; i < cmdArray.length; i++ )
-                    {
-                        command += " " + cmdArray[i];
-                    }
-                }
-                log.debug( "execute(): " + command );
-            }
-            if ( cmdArray != null )
-            {
-                proc = runtime.exec( cmdArray,
-                    ( (Application) Application.application() )
-                        .subsystemManager().envp(),
-                    cwd );
-            }
-            else
-            {
-                proc = runtime.exec( command,
-                    ( (Application) Application.application() )
-                        .subsystemManager().envp(),
-                    cwd );
-            }
-            int exitCode = proc.waitFor();
-            log.debug( "external plug-in returned exit code: " + exitCode );
-        }
-        catch ( InterruptedException e )
-        {
-            // stopped by timeout
-            if ( proc != null )
-            {
-                proc.destroy();
-            }
-            throw e;
-        }
+        ( (Application)Application.application() )
+            .executeExternalCommand( command, cwd );
     }
 
 
