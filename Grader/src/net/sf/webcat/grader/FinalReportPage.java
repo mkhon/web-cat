@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.8 2007/10/11 13:31:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.7 2007/07/09 15:49:41 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.8 2007/10/11 13:31:15 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -141,6 +141,10 @@ public class FinalReportPage
      */
     public WOComponent fileDeliveryAction()
     {
+        if (selectedReport == null)
+        {
+            error("Please select a file to download first.");
+        }
         DeliverFile download =
             (DeliverFile)pageWithName( DeliverFile.class.getName() );
         download.setFileName(
@@ -396,8 +400,46 @@ public class FinalReportPage
         boolean answer = false;
         if ( result != null && !showReturnToGrading )
         {
-            answer = result.submission().assignmentOffering().userCanSubmit(
-                wcSession().localUser() );
+//            answer = result.submission().assignmentOffering().userCanSubmit(
+//                wcSession().localUser() );
+
+            // This is all debugging code to figure out why we occasionally
+            // get NPEs on the original line commented out above.
+            Submission sub = result.submission();
+            if (sub == null)
+            {
+                log.error("null submission for result found!");
+                try
+                {
+                    log.error("result = " + result);
+                }
+                catch (Exception e)
+                {
+                    log.error("unable to print result details:", e);
+                }
+            }
+            else
+            {
+                AssignmentOffering ao = sub.assignmentOffering();
+                if (ao == null)
+                {
+                    log.error("null assignment offering for submission found!");
+                    try
+                    {
+                        log.error("result = " + result);
+                        log.error("submission = " + sub);
+                    }
+                    catch (Exception e)
+                    {
+                        log.error(
+                            "unable to print submission/result details:", e);
+                    }
+                }
+                else
+                {
+                    answer = ao.userCanSubmit( wcSession().localUser() );
+                }
+            }
         }
         return answer;
     }
