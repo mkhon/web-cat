@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HistogramChart.java,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+ |  $Id: HistogramChart.java,v 1.2 2007/10/11 13:27:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.jfree.chart.title.TextTitle;
  * A histogram component, implemented using JFreeChart.
  *
  * @author  Stephen Edwards
- * @version $Id: HistogramChart.java,v 1.1 2006/02/19 19:15:20 stedwar2 Exp $
+ * @version $Id: HistogramChart.java,v 1.2 2007/10/11 13:27:45 stedwar2 Exp $
  */
 public class HistogramChart
     extends WOComponent
@@ -82,10 +82,10 @@ public class HistogramChart
         if ( pngChart == null )
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            
+
             // adjust chart height
             double maxItems = 2;
-            IntervalXYDataset dataset = dataset();            
+            IntervalXYDataset dataset = dataset();
             for ( int i = 0; i < dataset.getItemCount( 0 ); i++ )
             {
                 double x = dataset.getYValue( 0, i );
