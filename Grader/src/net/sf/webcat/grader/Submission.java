@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.5 2007/07/09 18:52:28 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.6 2007/10/11 13:33:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.5 2007/07/09 18:52:28 stedwar2 Exp $
+ *  @version $Id: Submission.java,v 1.6 2007/10/11 13:33:07 stedwar2 Exp $
  */
 public class Submission
     extends _Submission
@@ -179,8 +179,27 @@ public class Submission
      */
     public Number id()
     {
-        return (Number)EOUtilities.primaryKeyForObject(
-            editingContext() , this ).objectForKey( "id" );
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            String subInfo = null;
+            try
+            {
+                subInfo = toString();
+            }
+            catch (Exception ee)
+            {
+                subInfo = ee.toString();
+            }
+            ((Application)Application.application()).emailExceptionToAdmins(
+                e, null, "An exception was generated trying to retrieve the "
+                + "id for a submission.\n\nSubmission = " + subInfo );
+            return 0;
+        }
     }
 
 
