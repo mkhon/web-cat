@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStepPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ |  $Id: EditStepPage.java,v 1.3 2007/10/11 13:29:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditStepPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ * @version $Id: EditStepPage.java,v 1.3 2007/10/11 13:29:16 stedwar2 Exp $
  */
 public class EditStepPage
     extends GraderComponent
@@ -53,7 +53,7 @@ public class EditStepPage
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public EditStepPage( WOContext context )
@@ -91,12 +91,23 @@ public class EditStepPage
         }
         if ( log.isDebugEnabled() )
         {
-            log.debug( "assignment option values =\n" + step.configSettings() );
+            log.debug( "assignment option values ("
+                + (step.configSettings() == null
+                       ? "null"
+                       : step.configSettings().hashCode())
+                + ") =\n" + step.configSettings() );
             if ( step.config() == null )
+            {
                 log.debug( "shared option values = null\n" );
+            }
             else
-                log.debug( "shared option values = \n"
-                    + step.config().configSettings() );
+            {
+                log.debug( "shared option values ("
+                    + (step.config().configSettings() == null
+                           ? "null"
+                           : step.config().configSettings().hashCode())
+                    + ") =\n" + step.config().configSettings() );
+            }
         }
         super.appendToResponse( response, context );
     }
@@ -107,10 +118,23 @@ public class EditStepPage
     {
         if ( log.isDebugEnabled() )
         {
-            log.debug( "new assignment option values =\n"
-                       + step.configSettings() );
-            log.debug( "new shared option values =\n"
-                       + step.config().configSettings() );
+            log.debug( "new assignment option values ("
+                + (step.configSettings() == null
+                       ? "null"
+                       : step.configSettings().hashCode())
+                + ") =\n" + step.configSettings() );
+            if ( step.config() == null )
+            {
+                log.debug( "new shared option values = null\n" );
+            }
+            else
+            {
+                log.debug( "new shared option values ("
+                    + (step.config().configSettings() == null
+                           ? "null"
+                           : step.config().configSettings().hashCode())
+                    + ") =\n" + step.config().configSettings() );
+            }
         }
         return super.next();
     }
@@ -140,7 +164,7 @@ public class EditStepPage
     {
         return null;
     }
-    
+
 
     //~ Instance/static variables .............................................
 
