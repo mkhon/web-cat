@@ -29,12 +29,16 @@ use Carp;
     "pro"    => "prolog",
     "prolog" => "prolog",
     "readme" => "ascii",
+    "rss"    => "xml",
     "scm"    => "scheme",
     "scheme" => "scheme",
     "script" => "ascii",
     "txt"    => "ascii",
     "text"   => "ascii",
-    "xml"    => "xml"
+    "xml"    => "xml",
+    "xul"    => "xml",
+    "zhtml"  => "html",
+    "zul"    => "xml"
     );
 
 
