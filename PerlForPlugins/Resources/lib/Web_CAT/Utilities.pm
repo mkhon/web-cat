@@ -28,18 +28,65 @@ use File::Copy;
 use HTML::Entities;
 use Text::Tabs;
 use Carp qw( carp confess );
-use vars qw( @ISA @EXPORT_OK );
+use vars qw( @ISA @EXPORT_OK $PATH_SEPARATOR $FILE_SEPARATOR $SHELL );
 use Exporter qw( import );
 
 @ISA = qw( Exporter );
-@EXPORT_OK = qw( confirmExists filePattern copyHere htmlEscape addReportFile
+@EXPORT_OK = qw( initFromConfig
+                 confirmExists filePattern copyHere htmlEscape addReportFile
                  scanTo scanThrough printableSize linesFromFile
-                 ltrim rtrim trim );
+                 ltrim rtrim trim
+                 $PATH_SEPARATOR
+                 $FILE_SEPARATOR
+                 $SHELL
+                 );
+
+$PATH_SEPARATOR = ':';
+$FILE_SEPARATOR = '/';
+$SHELL = '';
+
+my %shells = (
+    'MSWin32' => ['cmd.exe /c ', '\\', ';'],
+    'dos'     => ['cmd.exe /c ', '\\', ';'],
+    'NetWare' => ['cmd.exe /c ', '\\', ';']
+);
+
+
+#========================================================================
+#                      -----  INITIALIZATION -----
+#========================================================================
+INIT
+{
+    if ( defined $shells{$^O})
+    {
+        ($SHELL, $FILE_SEPARATOR, $PATH_SEPARATOR) = @{$shells{$^O}};
+    }
+}
 
 
 #========================================================================
 #                      -----  PUBLIC METHODS -----
 #========================================================================
+
+#========================================================================
+sub initFromConfig
+{
+
+=head2 initFromConfig($cfg)
+
+Pulls any overriding definitions of exported vars from supplied
+config file.
+
+=cut
+
+    my $cfg = shift || confess "initFromConfig: cfg object required";
+
+    $PATH_SEPARATOR = $cfg->getProperty(
+        'PerlForPlugins.path.separator', $PATH_SEPARATOR );
+    $FILE_SEPARATOR = $cfg->getProperty(
+        'PerlForPlugins.file.separator', $FILE_SEPARATOR );
+}
+
 
 #========================================================================
 sub confirmExists
@@ -458,4 +505,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.2 2007/09/15 14:49:14 stedwar2 Exp $
+$Id: Utilities.pm,v 1.3 2007/12/05 19:36:47 stedwar2 Exp $
