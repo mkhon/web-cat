@@ -19,10 +19,12 @@
 
   <import file="../Core/framework.xml"/>
 
-  <target name="export.jar" depends="common.export.jar">
+  <target name="local.copy" depends="setProps" if="PerlForPlugins.Resources">
     <copy todir="${PerlForPlugins.Resources}">
       <fileset dir="Resources"/>
     </copy>
   </target>
+
+  <target name="export.jar" depends="common.export.jar,local.copy"/>
 
 </project>
