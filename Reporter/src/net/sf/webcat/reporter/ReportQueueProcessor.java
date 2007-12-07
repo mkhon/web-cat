@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -15,8 +16,11 @@ import java.util.Vector;
 import net.sf.webcat.archives.FileUtilities;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.DirectAction;
+import net.sf.webcat.core.MutableArray;
+import net.sf.webcat.core.MutableDictionary;
 
 import org.apache.log4j.Logger;
+import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.IEngineTask;
 import org.eclipse.birt.report.engine.api.IRenderTask;
@@ -231,7 +235,7 @@ public class ReportQueueProcessor extends Thread
 									log.info( "generating and rendering report with template "
 											+ reportTemplate.name() );
 
-							 		int dataSetRefs = reportTemplate.countOfDataSetReferences();
+							 		int dataSetRefs = reportTemplate.dataSets().count();
 							 		ProgressManager.getInstance().beginTaskForJob(
 							 				job.uuid(), dataSetRefs, "Gathering data for report");
 								}
@@ -363,35 +367,59 @@ public class ReportQueueProcessor extends Thread
 	            return;
 	        }
 
+	        MutableArray exceptions = null;
+
 	        try
 	        {
 	        	wasCanceled = generateReportDocument( job );
 	        }
-	        catch( Exception e )
+	        catch( ReportGenerationException e )
 	        {
-	        	technicalFault( job,
-	        			"while generating report", e, null );
-	        	return;
+	        	exceptions = new MutableArray();
+
+	        	for(Exception ex : e.errors())
+	        		exceptions.addObject(ex);
 	        }
 	
 	        if ( wasCanceled )
 	        {
-/*	            technicalFault( job,
-	                            "report generation time limit exceeded",
-	                            null,
-	                            null );
-*/	            return;
+	            return;
 	        }
-	        
+
+	        MutableArray errors = translateExceptions(exceptions);
+
 	        report = new GeneratedReport();
 	        editingContext.insertObject(report);
 	        
 	        report.setGeneratedTime(job.queueTime());
 	        report.setUuid(job.uuid());
-	        report.setName(job.reportName());
+	        report.setDescription(job.description());
 	        report.setUserRelationship(job.user());
 	        report.setReportTemplateRelationship(job.reportTemplate());
-	        report.setParameterSelections(job.parameterSelections());
+	        report.setErrors(errors);
+	        
+	        editingContext.saveChanges();
+
+	        // Associate the data set queries with the generated report now
+	        // instead of the enqueued job. We have to do this copy weirdness
+	        // because the NSArray returned by job.dataSetQueries() is really a
+	        // proxy object that represents the current state of
+	        // the relationship, which is being modified in the loop.
+	        NSMutableArray<ReportDataSetQuery> dsqCopy =
+	        	new NSMutableArray<ReportDataSetQuery>();
+	        NSArray<ReportDataSetQuery> dataSetQueries = job.dataSetQueries();
+	        
+	        for(ReportDataSetQuery dataSetQuery : dataSetQueries)
+	        {
+	        	dsqCopy.addObject(dataSetQuery);
+	        }
+
+	        for(ReportDataSetQuery dataSetQuery : dsqCopy)
+	        {
+	        	dataSetQuery.setEnqueuedReportJobRelationship(null);
+	        	dataSetQuery.setGeneratedReportRelationship(report);
+	        }
+
 	        editingContext.saveChanges();
         }
 
@@ -418,9 +446,9 @@ public class ReportQueueProcessor extends Thread
 	        }
 	        catch( Exception e )
 	        {
-	        	technicalFault( job,
-	        			"while generating report", e, null );
-	        	return;
+//	        	technicalFault( job,
+//	        			"while generating report", e, null );
+//	        	return;
 	        }
 	
 	        if ( wasCanceled )
@@ -433,6 +461,48 @@ public class ReportQueueProcessor extends Thread
         editingContext.saveChanges();
     }
 
+
+    private MutableArray translateExceptions(NSArray<Exception> exceptions)
+    {
+    	if(exceptions == null)
+    		return new MutableArray();
+
+    	MutableArray array = new MutableArray();
+    	
+    	for(Exception e : exceptions)
+    	{
+    		MutableDictionary errorInfo = new MutableDictionary();
+
+    		if(e instanceof BirtException)
+    		{
+    			errorInfo.setObjectForKey(
+    					new Integer(((BirtException)e).getSeverity()),
+    					"severity");
+    		}
+    		else
+    		{
+    			errorInfo.setObjectForKey(new Integer(BirtException.ERROR),
+    					"severity");
+    		}
+
+    		if(e.getCause() != null)
+    		{
+    			if(e.getCause().getMessage() != null)
+    			{
+    				errorInfo.setObjectForKey(e.getCause().getMessage(), "cause");
+    			}
+    			else
+    			{
+    				errorInfo.setObjectForKey(e.getCause().toString(), "cause");
+    			}
+    		}
+
+    		errorInfo.setObjectForKey(e.getMessage(), "message");
+    		array.addObject(errorInfo);
+    	}
+
+    	return array;
+    }
 
     public void cancelJobWithUuid(EOEditingContext context, String uuid)
     {
@@ -479,7 +549,7 @@ public class ReportQueueProcessor extends Thread
 
 	
 	private boolean generateReportDocument( EnqueuedReportJob job )
-	throws Exception
+	throws ReportGenerationException
 	{
 		EOGlobalID jobId = editingContext.globalIDForObject(job);
 		
@@ -497,11 +567,6 @@ public class ReportQueueProcessor extends Thread
 		{
 		}
 		
-		if ( exeThread.exception != null )
-		{
-			throw exeThread.exception;
-		}
-		
 		if(exeThread.generationErrors() != null)
 		{
 			throw new ReportGenerationException(exeThread.generationErrors());
@@ -513,13 +578,18 @@ public class ReportQueueProcessor extends Thread
 	
 	private class ReportGenerationException extends Exception
 	{
-		private List errors;
+		private List<Exception> errors;
 		
-		public ReportGenerationException(List errors)
+		public ReportGenerationException(List<Exception> errors)
 		{
 			this.errors = errors;
 		}
 		
+		public List<Exception> errors()
+		{
+			return errors;
+		}
+
 		public String toString()
 		{
 			StringBuilder message = new StringBuilder();
@@ -602,10 +672,7 @@ public class ReportQueueProcessor extends Thread
 
         	try
 	        {
-	        	runTask = Reporter.getInstance().setupRunTaskForTemplate(
-	        				job.reportTemplate(),
-	        				resolveParameterSelections(job),
-	        				job.uuid());
+	        	runTask = Reporter.getInstance().setupRunTaskForJob(job);
 	        	runTask.setErrorHandlingOption(IEngineTask.CANCEL_ON_ERROR);
 	        	
         		runTask.run(reportPath);
@@ -626,9 +693,12 @@ public class ReportQueueProcessor extends Thread
 	        catch ( EngineException e )
 	        {
 	            // Error creating process, so record it
-	            log.error( "Exception generating " + reportPath,
-	                       e );
-	            exception = e;
+	            log.error( "Exception generating " + reportPath, e );
+
+	            if(generationErrors == null)
+	            	generationErrors = new ArrayList<Exception>();
+
+	            generationErrors.add(0, e);
 	        }
 
         	org.mozilla.javascript.Context.exit();
@@ -649,15 +719,7 @@ public class ReportQueueProcessor extends Thread
 	    	super.interrupt();
 	    }
 
-	    private NSDictionary resolveParameterSelections( EnqueuedReportJob job )
-		{
-			NSDictionary selections = job.parameterSelections();
-			
-			return EOGlobalIDUtils.enterpriseObjectsForIdDictionary(selections,
-					job.editingContext());
-		}
-
-		public List generationErrors()
+		public List<Exception> generationErrors()
 		{
 			return generationErrors;
 		}
@@ -665,8 +727,7 @@ public class ReportQueueProcessor extends Thread
 	    public boolean wasCanceled = false;
 	    private EOGlobalID	jobId;
 	    private IRunTask runTask;
-	    public  EngineException exception = null;
-	    private List		generationErrors = null;
+	    private List<Exception> generationErrors = null;
 	}
 
 
@@ -709,7 +770,7 @@ public class ReportQueueProcessor extends Thread
             	}
             	catch(Exception e)
             	{
-                    log.error("Exception rendering report: " + report.name() +
+                    log.error("Exception rendering report: " + report.description() +
                      		"(uuid: " + report.uuid() + ")", e);
                     exception = e;
             	}

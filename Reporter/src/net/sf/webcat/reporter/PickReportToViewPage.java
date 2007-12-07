@@ -46,7 +46,7 @@ public class PickReportToViewPage extends ReporterComponent
     
     public WOComponent viewReport()
     {
-		setParameterSelectionsInSession(new MutableDictionary());
+//		setParameterSelectionsInSession(new MutableDictionary());
     	setReportUuidInSession(generatedReport.uuid());
 
     	commitReportRendering();
@@ -56,7 +56,7 @@ public class PickReportToViewPage extends ReporterComponent
 
     public WOComponent viewReportProgress()
     {
-		setParameterSelectionsInSession(new MutableDictionary());
+//		setParameterSelectionsInSession(new MutableDictionary());
     	setReportUuidInSession(enqueuedReport.uuid());
 
     	return pageWithName(GeneratedReportPage.class.getName());

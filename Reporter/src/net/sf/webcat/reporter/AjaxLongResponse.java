@@ -93,7 +93,7 @@ public class AjaxLongResponse extends WOComponent
     	// Keep KVC happy.
     }
     
-    public void setTaskDescription()
+    public void setTaskDescription(String value)
     {
     	// Keep KVC happy.
     }

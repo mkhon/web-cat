@@ -1,25 +1,25 @@
 {
     attributes = (
+        { name = id; prototypeName = id; },
         {
             columnName = CUSERID; 
             name = userId; 
             prototypeName = foreignId;
         },
         {
-            columnName = CREPORTNAME; 
-            name = name;
-            prototypeName = tinyText;
+            columnName = CDESCRIPTION; 
+            name = description;
+            prototypeName = mediumText;
         },
         {
-            columnName = CTEMPLATEID; 
+            columnName = CREPORTTEMPLATEID; 
             name = reportTemplateId;
             prototypeName = foreignId;
         },
-        { name = id; prototypeName = id; },
         {
         	columnName = CUUID;
         	name = uuid;
-        	prototypeName = mediumText;
+        	prototypeName = tinyText;
         },
         {
             columnName = CGENERATEDTIME; 
@@ -27,14 +27,14 @@
             prototypeName = dateTime; 
         },
         {
-            columnName = CPARAMETERSELECTIONS; 
-            name = parameterSelections; 
-            prototypeName = mutableDictionary; 
+            columnName = CERRORS; 
+            name = errors; 
+            prototypeName = mutableArray; 
             userInfo = {
                 adaptorValueConversionMethodName = archiveData; 
                 valueFactoryMethodName = objectWithArchiveData; 
                 isMutable = true; 
-                valueClassName = net.sf.webcat.core.MutableDictionary; 
+                valueClassName = net.sf.webcat.core.MutableArray; 
             };
         },
         {
@@ -50,19 +50,20 @@
     attributesUsedForLocking = (
     	userId,
     	reportTemplateId,
-    	name,
+    	description,
     	uuid,
     	updateMutableFields,
     );
     className = net.sf.webcat.reporter.GeneratedReport;
     classProperties = (
-    	name,
+    	description,
     	user,
     	reportTemplate,
     	generatedTime,
     	uuid,
-    	parameterSelections,
-    	updateMutableFields
+    	errors,
+    	updateMutableFields,
+    	dataSetQueries
     );
     externalName = TGENERATEDREPORT;
     name = GeneratedReport;
@@ -83,11 +84,12 @@
             name = reportTemplate;
         },
         {
-            destination = ReportParameter; 
-            isToMany = Y; 
-            joinSemantic = EOInnerJoin; 
-            joins = ({destinationAttribute = templateId; sourceAttribute = id; });
-            name = parameters;
-        }
+        	deleteRule = EODeleteRuleCascade;
+            destination = ReportDataSetQuery;
+            isToMany = Y;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = generatedReportId; sourceAttribute = id; });
+            name = dataSetQueries;
+        },
     );
 }

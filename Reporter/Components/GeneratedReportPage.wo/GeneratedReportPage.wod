@@ -1,47 +1,7 @@
-EstimatedWait: WOString {
-	value      = estimatedWait;
-	dateformat = estimatedWaitFormat;
-}
-
-RefreshLink: WOHyperlink {
-	action = refreshAction;
-}
-
-Image: WOImage {
-	filename = "images/evaluating.gif";
-	framework = "Grader";
-	width    = 64;
-	height   = 64;
-	alt      = "Still Generating Report";
-}
-
 LongResponse: net.sf.webcat.reporter.AjaxLongResponse {
 	jobToken = jobToken;
 	refreshInterval = 3;
 	handler = longResponseHandler;
-}
-
-MetaRefresh: WOMetaRefresh {
-	action = refreshAction;
-	seconds = refreshTimeout;
-}
-
-MostRecentJobWait: WOString {
-	value      = mostRecentJobWait;
-	dateformat = mostRecentJobWaitFormat;
-}
-
-Page: net.sf.webcat.core.PageWithNavigation {
-    title = "Your Generated Report";
-    hideSteps = true;
-}
-
-QueuedJobCount: WOString {
-	value = queuedJobCount;
-}
-
-QueuePosition: WOString {
-	value = queuePosition;
 }
 
 RenderingMethod: WOPopUpButton {
@@ -58,17 +18,4 @@ Rerender: WOSubmitButton {
 
 ReportContents: net.sf.webcat.reporter.ReportContentsBlock {
 	generatedReport = generatedReport;
-}
-
-ReportNotReady: WOConditional {
-	condition = generatedReport;
-	negate = true;
-}
-
-ReportReady: WOConditional {
-	condition = generatedReport;
-}
-
-RefreshTimeout: WOString {
-	value = refreshTimeout;
 }

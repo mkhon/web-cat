@@ -1,6 +1,16 @@
 <div style="width: 100%; text-align:center">
-<div style="width: 50%; text-align: left; border: 1px solid blue; padding: 8px">
-<div><webobject name="HasTaskDescription"><p><webobject name="TaskDescription"/></p></webobject></div>
-<div class="progressbarback"><webobject name="Bar"/></div><div class="progresslabel"><webobject name="Indicator"/>
-<webobject name="Percent"/>%</div>
-</div></div>
+	<div style="width: 50%; text-align: left; padding: 8px">
+		<div>
+			<wo:if condition="$taskDescription">
+				<p><wo:str value="$taskDescription"/></p>
+			</wo:if>
+		</div>
+		<div class="progressbarback">
+			<webobject name="Bar"/>
+		</div>
+		<div class="progresslabel">
+			<webobject name="Indicator"/>
+			<wo:str value="$percent"/>%
+		</div>
+	</div>
+</div>

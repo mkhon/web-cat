@@ -15,15 +15,3 @@ Indicator: WOImage {
     height    = "16";
     alt       = "Working...";
 }
-
-Percent: WOString {
-    value = percent;
-}
-
-HasTaskDescription: WOConditional {
-	condition = taskDescription;
-}
-
-TaskDescription: WOString {
-	value = taskDescription;
-}

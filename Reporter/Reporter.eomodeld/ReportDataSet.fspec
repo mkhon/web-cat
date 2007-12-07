@@ -1,0 +1,14 @@
+{
+    uuid = {
+        class = EOFetchSpecification; 
+        entityName = ReportDataSet; 
+        fetchLimit = 0; 
+        isDeep = YES; 
+        qualifier = {
+            class = EOKeyValueQualifier; 
+            key = uuid; 
+            selectorName = "isEqualTo:"; 
+            value = {_key = uuid; class = EOQualifierVariable; }; 
+        }; 
+    }; 
+}

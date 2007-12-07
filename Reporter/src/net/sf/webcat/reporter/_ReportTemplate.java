@@ -67,7 +67,7 @@ public abstract class _ReportTemplate
     // To-one relationships ---
     public static final String AUTHOR_KEY = "author";
     // To-many relationships ---
-    public static final String PARAMETERS_KEY = "parameters";
+    public static final String DATA_SETS_KEY = "dataSets";
     public static final String ENTITY_NAME = "ReportTemplate";
 
 
@@ -231,7 +231,7 @@ public abstract class _ReportTemplate
      * @param context The editing context to use
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForAllTemplates(
+    public static NSArray<ReportTemplate> objectsForAllTemplates(
             EOEditingContext context
         )
     {
@@ -295,41 +295,41 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entities pointed to by the <code>parameters</code>
+     * Retrieve the entities pointed to by the <code>dataSets</code>
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray parameters()
+    public NSArray<net.sf.webcat.reporter.ReportDataSet> dataSets()
     {
-        return (NSArray)storedValueForKey( "parameters" );
+        return (NSArray<net.sf.webcat.reporter.ReportDataSet>)storedValueForKey( "dataSets" );
     }
 
 
     // ----------------------------------------------------------
     /**
      * Replace the list of entities pointed to by the
-     * <code>parameters</code> relationship.
+     * <code>dataSets</code> relationship.
      * 
      * @param value The new set of entities to relate to
      */
-    public void setParameters( NSMutableArray value )
+    public void setDataSets( NSMutableArray<net.sf.webcat.reporter.ReportDataSet> value )
     {
-        takeStoredValueForKey( value, "parameters" );
+        takeStoredValueForKey( value, "dataSets" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Add a new entity to the <code>parameters</code>
+     * Add a new entity to the <code>dataSets</code>
      * relationship (DO NOT USE--instead, use
-     * <code>addToParametersRelationship()</code>.
+     * <code>addToDataSetsRelationship()</code>.
      * This method is provided for WebObjects use.
      * 
      * @param value The new entity to relate to
      */
-    public void addToParameters( net.sf.webcat.reporter.ReportParameter value )
+    public void addToDataSets( net.sf.webcat.reporter.ReportDataSet value )
     {
-        NSMutableArray array = (NSMutableArray)parameters();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSet> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSet>)dataSets();
         willChange();
         array.addObject( value );
     }
@@ -337,16 +337,16 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Remove a specific entity from the <code>parameters</code>
+     * Remove a specific entity from the <code>dataSets</code>
      * relationship (DO NOT USE--instead, use
-     * <code>removeFromParametersRelationship()</code>.
+     * <code>removeFromDataSetsRelationship()</code>.
      * This method is provided for WebObjects use.
      * 
      * @param value The entity to remove from the relationship
      */
-    public void removeFromParameters( net.sf.webcat.reporter.ReportParameter value )
+    public void removeFromDataSets( net.sf.webcat.reporter.ReportDataSet value )
     {
-        NSMutableArray array = (NSMutableArray)parameters();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSet> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSet>)dataSets();
         willChange();
         array.removeObject( value );
     }
@@ -354,63 +354,63 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Add a new entity to the <code>parameters</code>
+     * Add a new entity to the <code>dataSets</code>
      * relationship.
      * 
      * @param value The new entity to relate to
      */
-    public void addToParametersRelationship( net.sf.webcat.reporter.ReportParameter value )
+    public void addToDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
     {
         addObjectToBothSidesOfRelationshipWithKey(
-            value, "parameters" );
+            value, "dataSets" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Remove a specific entity from the <code>parameters</code>
+     * Remove a specific entity from the <code>dataSets</code>
      * relationship.
      * 
      * @param value The entity to remove from the relationship
      */
-    public void removeFromParametersRelationship( net.sf.webcat.reporter.ReportParameter value )
+    public void removeFromDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
     {
         removeObjectFromBothSidesOfRelationshipWithKey(
-            value, "parameters" );
+            value, "dataSets" );
     }
 
 
     // ----------------------------------------------------------
     /**
      * Create a brand new object that is a member of the
-     * <code>parameters</code> relationship.
+     * <code>dataSets</code> relationship.
      * 
      * @return The new entity
      */
-    public net.sf.webcat.reporter.ReportParameter createParametersRelationship()
+    public net.sf.webcat.reporter.ReportDataSet createDataSetsRelationship()
     {
         EOClassDescription eoClassDesc = EOClassDescription
-            .classDescriptionForEntityName( "ReportParameter" );
+            .classDescriptionForEntityName( "ReportDataSet" );
         EOEnterpriseObject eoObject = eoClassDesc
             .createInstanceWithEditingContext( editingContext(), null );
         editingContext().insertObject( eoObject );
         addObjectToBothSidesOfRelationshipWithKey(
-            eoObject, "parameters" );
-        return (net.sf.webcat.reporter.ReportParameter)eoObject;
+            eoObject, "dataSets" );
+        return (net.sf.webcat.reporter.ReportDataSet)eoObject;
     }
 
 
     // ----------------------------------------------------------
     /**
      * Remove and then delete a specific entity that is a member of the
-     * <code>parameters</code> relationship.
+     * <code>dataSets</code> relationship.
      * 
      * @param value The entity to remove from the relationship and then delete
      */
-    public void deleteParametersRelationship( net.sf.webcat.reporter.ReportParameter value )
+    public void deleteDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
     {
         removeObjectFromBothSidesOfRelationshipWithKey(
-            value, "parameters" );
+            value, "dataSets" );
         editingContext().deleteObject( value );
     }
 
@@ -418,14 +418,13 @@ public abstract class _ReportTemplate
     // ----------------------------------------------------------
     /**
      * Remove (and then delete, if owned) all entities that are members of the
-     * <code>parameters</code> relationship.
+     * <code>dataSets</code> relationship.
      */
-    public void deleteAllParametersRelationships()
+    public void deleteAllDataSetsRelationships()
     {
-        Enumeration objects = parameters().objectEnumerator();
+        Enumeration<net.sf.webcat.reporter.ReportDataSet> objects = dataSets().objectEnumerator();
         while ( objects.hasMoreElements() )
-            deleteParametersRelationship(
-                (net.sf.webcat.reporter.ReportParameter)objects.nextElement() );
+            deleteDataSetsRelationship( objects.nextElement() );
     }
 
 

@@ -1,9 +1,0 @@
-DependencyObserver: net.sf.webcat.reporter.ajax.MultipleUpdateContainer {
-	observeFieldIDs = observeesForDependentParameters;
-}
-
-TypeSpecificPanel: WOSwitchComponent {
-	WOComponentName = componentNameForParameter;
-	parameter = parameter;
-	owner = owner;
-}

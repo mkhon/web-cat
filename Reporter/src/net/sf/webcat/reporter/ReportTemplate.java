@@ -40,6 +40,7 @@ import org.eclipse.birt.report.engine.api.IGetParameterDefinitionTask;
 import org.eclipse.birt.report.engine.api.IParameterDefn;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.script.element.IReportDesign;
+import org.eclipse.birt.report.model.api.DataSetHandle;
 import org.eclipse.birt.report.model.api.DesignElementHandle;
 import org.eclipse.birt.report.model.api.ParameterHandle;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
@@ -49,8 +50,7 @@ import org.eclipse.birt.report.model.api.SlotHandle;
 
 import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.core.User;
-import net.sf.webcat.grader.ScriptFile;
-import net.sf.webcat.reporter.internal.parser.ParameterParser;
+import net.sf.webcat.oda.RelationInformation;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
@@ -60,7 +60,7 @@ import com.webobjects.eocontrol.*;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: ReportTemplate.java,v 1.2 2007/07/26 15:22:50 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.3 2007/12/07 21:48:21 aallowat Exp $
  */
 public class ReportTemplate
     extends _ReportTemplate
@@ -163,7 +163,7 @@ public class ReportTemplate
      * @return the ReportParameter if it exists, or null if no parameter with
      *     the specified binding is in this report template
      */
-    public ReportParameter parameterWithBinding(String binding)
+/*    public ReportParameter parameterWithBinding(String binding)
     {
     	Enumeration e = parameters().objectEnumerator();
     	while(e.hasMoreElements())
@@ -175,7 +175,7 @@ public class ReportTemplate
     	}
     	
     	return null;
-    }
+    }*/
     
 
     // ----------------------------------------------------------
@@ -187,11 +187,11 @@ public class ReportTemplate
      * 
      * @return the array of parameters sorted in dependency order
      */
-    public NSArray sortedParameters()
+/*    public NSArray sortedParameters()
     {
     	ReverseTopologicalSort rts = new ReverseTopologicalSort(parameters());
     	return rts.sortedParameters();
-    }
+    }*/
     
     // ----------------------------------------------------------
     /**
@@ -226,6 +226,7 @@ public class ReportTemplate
 
         ReportTemplate template = new ReportTemplate();
         ec.insertObject( template );
+        template.setName("");
         ec.saveChanges();
 
         template.setUploadedFileName( uploadedName );
@@ -258,9 +259,16 @@ public class ReportTemplate
             ReportDesignHandle reportHandle = designSession.openDesign(
             		template.filePath());
 
-	        template.initializeAttributes(reportHandle);
-	
-	        String msg = template.processParameters(ec, reportHandle);
+	        String msg = template.initializeAttributes(reportHandle);
+	        if (msg != null )
+	        {
+	            errors.setObjectForKey( msg, msg );
+	            ec.deleteObject( template );
+	            scriptPath.delete();
+	            return null;
+	        }
+	        
+	        msg = template.processDataSets(ec, reportHandle);
 	        if ( msg != null )
 	        {
 	            errors.setObjectForKey( msg, msg );
@@ -298,6 +306,7 @@ public class ReportTemplate
     	  
         ReportTemplate template = new ReportTemplate();
         ec.insertObject( template );
+        template.setName("");
         ec.saveChanges();
 
         template.setUploadedFileName( scriptPath.getName() );
@@ -311,9 +320,16 @@ public class ReportTemplate
 	        ReportDesignHandle reportHandle = designSession.openDesign(
 	        		template.filePath());
 
-	        template.initializeAttributes(reportHandle);
+	        String msg = template.initializeAttributes(reportHandle);
+	        if (msg != null )
+	        {
+	            errors.setObjectForKey( msg, msg );
+	            ec.deleteObject( template );
+	            scriptPath.delete();
+	            return null;
+	        }
 	
-	        String msg = template.processParameters(ec, reportHandle);
+	        msg = template.processDataSets(ec, reportHandle);
 	        if ( msg != null )
 	        {
 	            errors.setObjectForKey( msg, msg );
@@ -353,14 +369,52 @@ public class ReportTemplate
     /**
      * Initializes various report template attributes in the EO model.
      */
-    private void initializeAttributes(ReportDesignHandle reportHandle)
+    private String initializeAttributes(ReportDesignHandle reportHandle)
     {
     	String title = reportHandle.getStringProperty(
     			ReportDesignHandle.TITLE_PROP);
+    	
+    	if(title == null || title.trim().length() == 0)
+    	{
+    		String msg = "The report template you tried to upload does not have a title. " +
+    			"Please enter one in the <b>Title</b> field of the General Properties " +
+    			"section of the report designer and then upload it again.";
+    		
+    		return msg;
+    	}
+
     	String description = reportHandle.getDescription();
 
     	setName(title);
     	setDescription(description);
+    	
+    	return null;
+    }
+    
+    
+    // ----------------------------------------------------------
+    private String processDataSets(EOEditingContext ec, ReportDesignHandle reportHandle)
+    {
+    	Iterator<DataSetHandle> it = reportHandle.getAllDataSets().iterator();
+    	while(it.hasNext())
+    	{
+    		DataSetHandle dataSetHandle = it.next();
+    		String extensionID = dataSetHandle.getStringProperty("extensionID");
+    		
+    		if("net.sf.webcat.oda.dataSet".equals(extensionID))
+    		{
+    			String description = dataSetHandle.getComments();
+    			String queryText = dataSetHandle.getStringProperty("queryText");
+    			RelationInformation relation = new RelationInformation(queryText);
+
+    			ReportDataSet.createNewReportDataSet(ec, this,
+    					relation.getDataSetUuid(),
+    					relation.getEntityType(),
+    					description);
+    		}
+    	}
+    	
+    	return null;
     }
     
     
@@ -369,7 +423,7 @@ public class ReportTemplate
      * Adds the parameters of the report template to the EO model and sets up
      * the appropriate associations and dependencies.
      */
-    private String processParameters(EOEditingContext ec,
+/*    private String processParameters(EOEditingContext ec,
     		ReportDesignHandle reportHandle)
     {
     	Iterator it = reportHandle.getAllParameters().iterator();
@@ -410,7 +464,7 @@ public class ReportTemplate
 			return msg;
 
     	return null;
-    }
+    }*/
 
     
     // ----------------------------------------------------------
@@ -418,7 +472,7 @@ public class ReportTemplate
      * Computes the dependencies among all the parameters in the report
      * template.
      */
-    private String computeAllParameterDependencies()
+/*    private String computeAllParameterDependencies()
     {
     	Enumeration e = parameters().objectEnumerator();
     	while(e.hasMoreElements())
@@ -431,7 +485,7 @@ public class ReportTemplate
     	}
 
     	return null;
-    }
+    }*/
     
     
     // ----------------------------------------------------------
@@ -439,7 +493,7 @@ public class ReportTemplate
      * Computes the dependencies for the specified parameter in the report
      * template.
      */
-    private String computeDependenciesForParameter(ReportParameter param)
+/*    private String computeDependenciesForParameter(ReportParameter param)
     {
     	NSMutableArray dependentBindings = new NSMutableArray();
 
@@ -508,10 +562,10 @@ public class ReportTemplate
     	}
     	
     	return null;
-    }
+    }*/
 
     
-    public int countOfDataSetReferences()
+/*    public int countOfDataSetReferences()
     {
         SessionHandle designSession = Reporter.getInstance().newDesignSession();
         int count = 0;
@@ -538,7 +592,7 @@ public class ReportTemplate
         }
         
         return count;
-    }
+    }*/
 
     
 // If you add instance variables to store property values you
@@ -576,7 +630,7 @@ public class ReportTemplate
      * sort the parameters of a report in dependency order (parameters occur
      * before those that depend on them).
      */
-    private static class ReverseTopologicalSort
+/*    private static class ReverseTopologicalSort
     {
     	private NSArray parameters;
 
@@ -590,7 +644,7 @@ public class ReportTemplate
     	 * 
     	 * @param parameters an NSArray of ReportParameter objects to sort
     	 */
-    	public ReverseTopologicalSort(NSArray parameters)
+/*    	public ReverseTopologicalSort(NSArray parameters)
     	{
     		this.parameters = parameters;
     		int paramCount = parameters.count();
@@ -635,7 +689,7 @@ public class ReportTemplate
     	 * 
     	 * @return
     	 */
-    	public NSArray sortedParameters()
+/*    	public NSArray sortedParameters()
     	{
     		NSMutableArray sorted = new NSMutableArray();
 
@@ -644,7 +698,7 @@ public class ReportTemplate
     		
     		return sorted;
     	}
-    }
+    }*/
 
     
     static private String templateRoot = null;

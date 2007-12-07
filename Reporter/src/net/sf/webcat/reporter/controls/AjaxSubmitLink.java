@@ -82,7 +82,7 @@ public class AjaxSubmitLink extends AjaxDynamicElement {
     parametersBuffer.append("&" + AjaxSubmitLink.KEY_AJAX_SUBMIT_BUTTON_NAME + "=" + name);
 	String updateContainerID = (String)valueForBinding("updateContainerID", component);
 	if (updateContainerID != null) {
-		parametersBuffer.append("&" + AjaxUpdateContainer.UPDATE_CONTAINER_ID_KEY + "=" + updateContainerID);
+//		parametersBuffer.append("&" + AjaxUpdateContainer.UPDATE_CONTAINER_ID_KEY + "=" + updateContainerID);
 	}
     parametersBuffer.append("'");
     options.setObjectForKey(parametersBuffer.toString(), "parameters");
@@ -207,8 +207,8 @@ public class AjaxSubmitLink extends AjaxDynamicElement {
 			WCResourceManager.frameworkPrefixedResourceURLFor( path,
                 context.request() ) + "\"></script>";
 
-		AjaxUtils.insertInResponseBeforeTag(response,
-				script, AjaxUtils.htmlCloseHead());
+//		AjaxUtils.insertInResponseBeforeTag(response,
+//				script, "</head>");
 	}
 	
   public WOActionResults invokeAction(WORequest worequest, WOContext wocontext) {

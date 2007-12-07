@@ -6,15 +6,29 @@ import java.io.StringWriter;
 
 import ognl.webobjects.WOOgnl;
 import net.sf.webcat.core.WCComponent;
-import net.sf.webcat.reporter.internal.datamodel.ReferenceEnvironment;
+import net.sf.webcat.grader.Submission;
 
 import com.webobjects.appserver.*;
+import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableArray;
+import com.webobjects.foundation.NSMutableDictionary;
 
-public class DebugPage extends WCComponent
+import er.extensions.ERXEOControlUtilities;
+
+public class DebugPage extends ReporterComponent
 {
-	public String expression;
-	public String result;
+	public NSArray<Submission> results;
+	
+	public Submission result;
 
+	public NSMutableArray<String> columns;
+	
+	public String column;
+	
+	public int index;
+	
     public DebugPage(WOContext context)
     {
         super(context);
@@ -22,34 +36,39 @@ public class DebugPage extends WCComponent
     
     public void appendToResponse(WOResponse response, WOContext context)
     {
+    	columns = new NSMutableArray<String>();
+    	columns.addObject("user.userName");
+    	columns.addObject("result.finalScore");
+    	columns.addObject("assignmentOffering.courseOffering.compactName");
+    	columns.addObject("assignmentOffering.assignment.titleString");
+
+    	String uuid = dataSetUuidsInSession().objectAtIndex(0);
+    	System.out.println("Getting qualifier for dataset " + uuid);
+ /*   	EOQualifier q = qualifierForDataSetUuidInSession(uuid);
+
+    	// Partition qualifier into fetch and non-fetch.
+    	EOQualifier[] quals = QualifierUtils.partitionQualifier(q, "Submission");
+    	
+    	results = ERXEOControlUtilities.objectsWithQualifier(
+    			wcSession().localContext(), "Submission", quals[0], null, false);
+    	
+    	if(quals[1] != null)
+    	{
+    		results = EOQualifier.filteredArrayWithQualifier(results, quals[1]);
+    	}
+*/
     	super.appendToResponse(response, context);
     }
     
-    public WOActionResults updateAction()
+    public String currentRowColumnValue()
     {
-    	if(expression != null && expression.length() > 0)
+    	try
     	{
-    		ReferenceEnvironment env = new ReferenceEnvironment(null, null);
-    		
-    		try
-    		{
-    			Object res = env.evaluate(expression);
-    			
-    			if(res == null)
-    				result = "<null>";
-    			else
-    				result = res.getClass().getName() + ": " + res.toString();
-    		}
-    		catch(Exception e)
-    		{
-    			StringWriter sw = new StringWriter();
-    			PrintWriter pw = new PrintWriter(sw);
-    			e.printStackTrace(pw);
-    			pw.flush();
-    			result = sw.toString();
-    		}
+    		return result.valueForKeyPath(column).toString();
     	}
-    	
-    	return null;
+    	catch(Exception e)
+    	{
+    		return "<error>";
+    	}
     }
 }

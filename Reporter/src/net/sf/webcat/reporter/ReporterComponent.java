@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
@@ -40,50 +41,49 @@ public class ReporterComponent extends WCComponent
 
     //~ KVC Attributes (must be public) .......................................
 
-    public static final String REPORTER_PREFS_KEY = "reporterPrefs";
-
-    public static final String SESSION_PARAMETER_SELECTIONS =
-    	"reporter.parameterSelections";
-    public static final String SESSION_REPORT_NAME =
-    	"reporter.reportName";
+    public static final String SESSION_REPORT_DESCRIPTION =
+    	"net.sf.webcat.reporter.reportDescription";
     public static final String SESSION_REPORT_UUID =
-    	"reporter.reportUuid";
+    	"net.sf.webcat.reporter.reportUuid";
     public static final String SESSION_ENQUEUED_JOB =
-    	"reporter.enqueuedJob";
+    	"net.sf.webcat.reporter.enqueuedJob";
     public static final String SESSION_REPORT_TEMPLATE =
-    	"reporter.reportTemplate";
+    	"net.sf.webcat.reporter.reportTemplate";
     public static final String SESSION_GENERATED_REPORT =
-    	"reporter.generatedReport";
+    	"net.sf.webcat.reporter.generatedReport";
     public static final String SESSION_RENDERING_METHOD =
-    	"reporter.renderingMethod";
-
+    	"net.sf.webcat.reporter.renderingMethod";
+    public static final String SESSION_CURRENT_DATASET =
+    	"net.sf.webcat.reporter.currentDataSet";
+    public static final String SESSION_QUERIES =
+    	"net.sf.webcat.reporter.queries";
     
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
    
-    public NSMutableDictionary parameterSelectionsInSession()
+    public void clearSessionData()
     {
-    	return (NSMutableDictionary)wcSession().objectForKey(
-    			SESSION_PARAMETER_SELECTIONS);
+    	wcSession().removeObjectForKey(SESSION_REPORT_DESCRIPTION);
+    	wcSession().removeObjectForKey(SESSION_REPORT_UUID);
+    	wcSession().removeObjectForKey(SESSION_ENQUEUED_JOB);
+    	wcSession().removeObjectForKey(SESSION_REPORT_TEMPLATE);
+    	wcSession().removeObjectForKey(SESSION_GENERATED_REPORT);
+    	wcSession().removeObjectForKey(SESSION_RENDERING_METHOD);
+    	wcSession().removeObjectForKey(SESSION_CURRENT_DATASET);
+    	wcSession().removeObjectForKey(SESSION_QUERIES);
     }
     
-    
-    public void setParameterSelectionsInSession(NSMutableDictionary value)
-    {
-    	wcSession().setObjectForKey(value, SESSION_PARAMETER_SELECTIONS);
-    }
 
-    
-    public String reportNameInSession()
+    public String reportDescriptionInSession()
     {
-    	return (String)wcSession().objectForKey(SESSION_REPORT_NAME);
+    	return (String)wcSession().objectForKey(SESSION_REPORT_DESCRIPTION);
     }
     
     
-    public void setReportNameInSession(String value)
+    public void setReportDescriptionInSession(String value)
     {
-    	wcSession().setObjectForKey(value, SESSION_REPORT_NAME);
+    	wcSession().setObjectForKey(value, SESSION_REPORT_DESCRIPTION);
     }
 
  
@@ -125,6 +125,18 @@ public class ReporterComponent extends WCComponent
     }
 
     
+    public int currentReportDataSetInSession()
+    {
+    	return (Integer)wcSession().objectForKey(SESSION_CURRENT_DATASET);
+    }
+    
+    
+    public void setCurrentReportDataSetInSession(int value)
+    {
+    	wcSession().setObjectForKey(value, SESSION_CURRENT_DATASET);
+    }
+    
+   
     public GeneratedReport generatedReportInSession()
     {
     	return (GeneratedReport)wcSession().objectForKey(
@@ -137,29 +149,171 @@ public class ReporterComponent extends WCComponent
     	wcSession().setObjectForKey(value, SESSION_GENERATED_REPORT);
     }
 
+
     public String renderingMethodInSession()
     {
     	return (String)wcSession().objectForKey(SESSION_RENDERING_METHOD);
     }
     
+
     public void setRenderingMethodInSession(String value)
     {
     	wcSession().setObjectForKey(value, SESSION_RENDERING_METHOD);
     }
+
+    
+    public String componentForDataSetUuidInSession(String uuid)
+    {
+    	NSDictionary<String, NSDictionary<String, Object>> queryMap =
+    		(NSDictionary<String, NSDictionary<String, Object>>)
+    		wcSession().objectForKey(SESSION_QUERIES);
+    	
+    	if(queryMap == null)
+    		return null;
+
+    	NSDictionary<String, Object> queryInfo = queryMap.objectForKey(uuid);
+    	
+    	if(queryInfo == null)
+    		return null;
+    	
+    	return (String)queryInfo.objectForKey("componentName");
+    }
+    
+    
+    public void setComponentForDataSetUuidInSession(String value, String uuid)
+    {
+    	NSMutableDictionary<String, NSMutableDictionary<String, Object>> queryMap =
+    		(NSMutableDictionary<String, NSMutableDictionary<String, Object>>)
+    		wcSession().objectForKey(SESSION_QUERIES);
+    	
+    	if(queryMap == null)
+    	{
+    		queryMap = new NSMutableDictionary<String,
+    			NSMutableDictionary<String, Object>>();
+    		wcSession().setObjectForKey(queryMap, SESSION_QUERIES);
+    	}
+
+    	NSMutableDictionary<String, Object> queryInfo =
+    		queryMap.objectForKey(uuid);
+    	
+    	if(queryInfo == null)
+    	{
+    		queryInfo = new NSMutableDictionary<String, Object>();
+    		queryMap.setObjectForKey(queryInfo, uuid);
+    	}
+    	
+   		queryInfo.setObjectForKey(value, "componentName");
+    }
+
+
+    public NSArray<String> dataSetUuidsInSession()
+    {
+    	NSDictionary<String, NSDictionary<String, Object>> queryMap =
+    		(NSDictionary<String, NSDictionary<String, Object>>)
+    		wcSession().objectForKey(SESSION_QUERIES);
+    	
+    	if(queryMap == null)
+    		return NSArray.EmptyArray;
+    	else
+    		return queryMap.allKeys();
+    }
+
+
+    public ReportQuery queryForDataSetUuid(String uuid)
+    {
+    	NSDictionary<String, NSDictionary<String, Object>> queryMap =
+    		(NSDictionary<String, NSDictionary<String, Object>>)
+    		wcSession().objectForKey(SESSION_QUERIES);
+    	
+    	if(queryMap == null)
+    		return null;
+
+    	NSDictionary<String, Object> queryInfo = queryMap.objectForKey(uuid);
+    	
+    	if(queryInfo == null)
+    		return null;
+    	
+    	return (ReportQuery)queryInfo.objectForKey("query");
+    }
+    
+
+    public ReportQuery rollbackQueryForDataSet(ReportDataSet dataSet)
+    {
+    	NSDictionary<String, NSDictionary<String, Object>> queryMap =
+    		(NSDictionary<String, NSDictionary<String, Object>>)
+    		wcSession().objectForKey(SESSION_QUERIES);
+    	
+    	if(queryMap == null)
+    		return null;
+
+    	String uuid = dataSet.uuid();
+    	NSDictionary<String, Object> queryInfo = queryMap.objectForKey(uuid);
+    	
+    	if(queryInfo == null)
+    		return null;
+    	
+    	ReportQuery query = (ReportQuery)queryInfo.objectForKey("query");
+
+    	if(query != null)
+    	{
+    		// Only remove the query from the database if it isn't being used
+    		// by any other ReportDataSetQueries.
+    		NSArray<ReportDataSetQuery> uses = query.dataSetQueries();
+    		if(uses != null && uses.count() > 0)
+    		{
+    			wcSession().localContext().deleteObject(query);
+    			wcSession().commitLocalChanges();
+    		}
+    	}
+
+    	return query;
+    }
+
+
+    public void commitQueryForDataSet(ReportDataSet dataSet, String description,
+    		EOQualifier qualifier)
+    {
+    	NSMutableDictionary<String, NSMutableDictionary<String, Object>> queryMap =
+    		(NSMutableDictionary<String, NSMutableDictionary<String, Object>>)
+    		wcSession().objectForKey(SESSION_QUERIES);
+    	
+    	if(queryMap == null)
+    	{
+    		queryMap = new NSMutableDictionary<String,
+    			NSMutableDictionary<String, Object>>();
+    		wcSession().setObjectForKey(queryMap, SESSION_QUERIES);
+    	}
+
+    	String uuid = dataSet.uuid();
+    	NSMutableDictionary<String, Object> queryInfo =
+    		queryMap.objectForKey(uuid);
+    	
+    	if(queryInfo == null)
+    	{
+    		queryInfo = new NSMutableDictionary<String, Object>();
+    		queryMap.setObjectForKey(queryInfo, uuid);
+    	}
+
+    	ReportQuery query = new ReportQuery();
+    	wcSession().localContext().insertObject(query);
+    	query.setDescription(description);
+    	query.setQualifier(qualifier);
+    	query.setUserRelationship(wcSession().user());
+    	query.setWcEntityName(dataSet.wcEntityName());
+    	wcSession().commitLocalChanges();
+
+   		queryInfo.setObjectForKey(query, "query");
+    }
+
 
     public String commitReportGeneration()
     {
 		String errorMessage = null;
 		log.debug("committing report generation");
 
-		ReportTemplate reportTemplate = reportTemplateInSession();
+		EOEditingContext ec = wcSession().localContext();
 
-		// Convert any EOModel objects to global IDs before adding the job to
-		// the database.
-		MutableDictionary selections = new MutableDictionary(
-				EOGlobalIDUtils.idsForEnterpriseObjectDictionary(
-						parameterSelectionsInSession(),
-						wcSession().localContext()));
+		ReportTemplate reportTemplate = reportTemplateInSession();
 
 		// Queue it up for the reporter
 		NSTimestamp queueTime = new NSTimestamp();
@@ -167,20 +321,46 @@ public class ReporterComponent extends WCComponent
 				"reportResource/image", null);
 
 		EnqueuedReportJob job = new EnqueuedReportJob();
-		wcSession().localContext().insertObject(job);
-		job.setReportName(reportNameInSession());
+		ec.insertObject(job);
+
+		job.setDescription(reportDescriptionInSession());
 		job.setReportTemplateRelationship(reportTemplate);
-		job.setParameterSelections(selections);
 		job.setQueueTime(queueTime);
 		job.setUuid(reportUuidInSession());
 		job.setRenderedResourceActionUrl(actionUrl);
 		job.setRenderingMethod(renderingMethodInSession());
 		job.setUserRelationship(wcSession().user());
-		wcSession().commitLocalChanges();
+
+		ec.saveChanges();
+
+		// Create ReportDataSetQuery objects to map all of the data sets in
+		// the session to the queries that were created for them.
+		NSArray<String> dataSetUuids = dataSetUuidsInSession();
+		for(String uuid : dataSetUuids)
+		{
+			NSArray<ReportDataSet> dataSets = ReportDataSet.objectsForUuid(
+					ec, uuid);
+			
+			if(dataSets.count() == 1)
+			{
+				ReportDataSet dataSet = dataSets.objectAtIndex(0);
+				ReportQuery query = queryForDataSetUuid(uuid);
+				
+				ReportDataSetQuery dataSetQuery = job.createDataSetQueriesRelationship();
+				dataSetQuery.setDataSetRelationship(dataSet);
+				dataSetQuery.setReportQueryRelationship(query);
+				wcSession().commitLocalChanges();
+			}
+			else
+			{
+				throw new IllegalStateException("There should only be one " +
+						"data set for a particular uuid in the database!");
+			}
+		}
 
 		ProgressManager progress = ProgressManager.getInstance();
  		progress.beginJobWithToken(reportUuidInSession());
- 		progress.beginTaskForJob(reportUuidInSession(), 2,
+ 		progress.beginTaskForJob(reportUuidInSession(), new int[] { 95, 5 },
  				"Generating report");
 
 		setEnqueuedJobInSession(job);
@@ -214,7 +394,7 @@ public class ReporterComponent extends WCComponent
 		
 		job.setRenderingMethod(method);
 		job.setUserRelationship(wcSession().user());
-		job.setParameterSelections(new MutableDictionary());
+//		job.setParameterSelections(new MutableDictionary());
 		wcSession().commitLocalChanges();
 
 		ProgressManager progress = ProgressManager.getInstance();

@@ -1,0 +1,39 @@
+<wo:if condition="$isValueTypeString">
+	<wo:if condition="$multipleSelect"><wo name="StringFieldMulti"/></wo:if>
+	<wo:else><wo name="StringFieldSingle"/></wo:else>
+</wo:if><wo:else>
+	<wo:if condition="$isValueTypeInteger">
+		<wo:if condition="$multipleSelect"><wo name="IntegerFieldMulti"/></wo:if>
+		<wo:else><wo name="IntegerFieldSingle"/></wo:else>
+	</wo:if><wo:else>
+		<wo:if condition="$isValueTypeDouble">
+			<wo:if condition="$multipleSelect"><wo name="DoubleFieldMulti"/></wo:if>
+			<wo:else><wo name="DoubleFieldSingle"/></wo:else>
+		</wo:if><wo:else>
+			<wo:if condition="$isValueTypeBoolean">
+				<wo name="BooleanFieldSingle"/>
+			</wo:if><wo:else>
+				<wo:if condition="$isValueTypeTimestamp">
+					<wo name="TimestampFieldSingle"/>&nbsp;<webobject name="TimestampSelector"/>
+						<script type="text/javascript">
+						    Calendar.setup({
+						        inputField     :    "<wo:str value="$calendarFieldId"/>",
+						        ifFormat       :    "<wo:str value="~session.timeFormatter.pattern"/>",
+						        button         :    "<wo:str value="$calendarButtonId"/>",
+						        align          :    "bl",
+						        showsTime      :    true,
+						        timeFormat     :    12,
+						        singleClick    :    false
+						    });
+						</script>
+				</wo:if><wo:else>
+					<wo:if condition="$isValueTypeEntity">
+						<wo:if condition="$multipleSelect"><wo name="EntityFieldMulti"/></wo:if>
+						<wo:else><wo name="EntityFieldSingle"/></wo:else>
+					</wo:if>
+				</wo:else>
+			</wo:else>
+		</wo:else>
+	</wo:else>
+</wo:else>
+<script>Behaviour.apply();</script>

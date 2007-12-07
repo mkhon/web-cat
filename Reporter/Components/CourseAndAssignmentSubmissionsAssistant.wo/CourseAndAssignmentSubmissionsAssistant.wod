@@ -1,0 +1,31 @@
+CourseOfferingTree: AjaxTree {
+	id = "courseOfferingTree";
+	class = "tree";
+	delegate = courseDelegate;
+	root = courseRoot;
+	item = currentNode;
+	showRoot = false;
+}
+
+
+CourseNodeCheckbox: WOCheckBox {
+	id = "~'checkbox_' + currentNode.id";
+	checked = currentNode.checked;
+	onClick = "startBusy();";
+}
+
+CourseNodeCheckboxObserver: AjaxObserveField {
+	fullSubmit = true;
+	action = currentNode.toggle;
+	observeFieldID = "~'checkbox_' + currentNode.id";
+	// Since courseTreeContainer contains an update trigger, this optionally
+	// also refreshes the assignment list if the check state is changed.
+	updateContainerID = "courseTreeContainer";
+}
+
+AssignmentRadio: WORadioButton {
+	name = "selectedAssignment";
+	value = assignment;
+	selection = model.assignment;
+}
+

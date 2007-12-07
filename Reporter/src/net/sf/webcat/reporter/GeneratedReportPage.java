@@ -7,6 +7,7 @@ import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.grader.FinalReportPage;
 
 import org.apache.log4j.Logger;
+import org.eclipse.birt.core.exception.BirtException;
 
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.EOAndQualifier;
@@ -25,8 +26,13 @@ public class GeneratedReportPage extends ReporterComponent
     /** The associated refresh interval for this page */
     public int refreshTimeout = 15;
 
+    public GeneratedReport cachedGeneratedReport;
+
 	public IRenderingMethod renderingMethod;
+	
 	public IRenderingMethod selectedRenderingMethod;
+	
+	public MutableDictionary error;
 
     public GeneratedReportPage(WOContext context)
     {
@@ -35,34 +41,122 @@ public class GeneratedReportPage extends ReporterComponent
 
     public void appendToResponse(WOResponse response, WOContext context)
     {
+    	cachedGeneratedReport = null;
+
     	super.appendToResponse(response, context);
     }
     
     public GeneratedReport generatedReport()
     {
-    	NSArray reports = GeneratedReport.objectsForUuid(
-    			wcSession().localContext(), reportUuidInSession());
-    	
-    	if(reports.count() > 0)
+    	if(cachedGeneratedReport == null)
     	{
-    		if(reports.count() != 1)
-    		{
-    			log.warn("There is more than one report with uuid " +
-    					reportUuidInSession() + "!");
-    		}
-    		
-    		GeneratedReport report = (GeneratedReport)reports.objectAtIndex(0);
-    		
-    		if(report.isRenderedWithMethod(renderingMethodInSession()))
-    		{
-    			return report;
-    		}
+	    	NSArray<GeneratedReport> reports = GeneratedReport.objectsForUuid(
+	    			wcSession().localContext(), reportUuidInSession());
+	    	
+	    	if(reports.count() > 0)
+	    	{
+	    		if(reports.count() != 1)
+	    		{
+	    			log.warn("There is more than one report with uuid " +
+	    					reportUuidInSession() + "!");
+	    		}
+	    		
+	    		cachedGeneratedReport = reports.objectAtIndex(0);
+	    	}
     	}
 
-    	return null;
+    	return cachedGeneratedReport;
     }
     
     
+    public boolean isReportRendered()
+    {
+    	GeneratedReport report = generatedReport();
+    	
+    	return (report != null &&
+    			report.isRenderedWithMethod(renderingMethodInSession()));
+    }
+
+
+    public NSArray<MutableDictionary> generatedReportErrors()
+    {
+    	if(generatedReport() == null)
+    	{
+    		return null;
+    	}
+    	else
+    	{
+    		return generatedReport().errors();
+    	}
+    }
+    
+    
+    public String reportUuid()
+    {
+    	return reportUuidInSession();
+    }
+    
+    
+    public String errorSeverity()
+    {
+    	int severity = (Integer)error.objectForKey("severity");
+
+		switch(severity)
+		{
+		case BirtException.OK:
+			return "OK";
+
+		case BirtException.INFO:
+			return "INFO";
+			
+		case BirtException.WARNING:
+			return "WARNING";
+			
+		case BirtException.ERROR:
+			return "ERROR";
+			
+		case BirtException.CANCEL:
+			return "CANCEL";
+		}
+		
+		return "ERROR";
+    }
+   
+
+    public String errorCssClass()
+    {
+    	int severity = (Integer)error.objectForKey("severity");
+
+		switch(severity)
+		{
+		case BirtException.OK:
+		case BirtException.INFO:
+		case BirtException.CANCEL:
+			return "infoBox";
+			
+		case BirtException.WARNING:
+			return "warningBox";
+			
+		case BirtException.ERROR:
+			return "errorBox";
+		}
+
+    	return "errorBox";
+    }
+
+    
+    public String errorMessage()
+    {
+    	return (String)error.objectForKey("message");
+    }
+
+
+    public String errorCause()
+    {
+    	return (String)error.objectForKey("cause");
+    }
+
+
     // ----------------------------------------------------------
     /**
      * Returns null to force a reload of the current page.
@@ -94,7 +188,7 @@ public class GeneratedReportPage extends ReporterComponent
     {    	
     }
 
-    public NSArray renderingMethods()
+    public NSArray<IRenderingMethod> renderingMethods()
     {
     	return Reporter.getInstance().allRenderingMethods();
     }

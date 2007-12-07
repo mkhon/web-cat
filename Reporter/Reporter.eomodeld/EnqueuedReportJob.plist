@@ -34,16 +34,16 @@
         {
         	columnName = CUUID;
         	name = uuid;
-        	prototypeName = mediumText;
+        	prototypeName = tinyText;
         },
         {
-            columnName = CTEMPLATEID; 
+            columnName = CREPORTTEMPLATEID; 
             name = reportTemplateId; 
             prototypeName = foreignId; 
         },
         {
-        	columnName = CREPORTNAME;
-        	name = reportName;
+        	columnName = CDESCRIPTION;
+        	name = description;
         	prototypeName = mediumText;
         },
         {
@@ -54,27 +54,7 @@
         {
         	columnName = CRENDERINGMETHOD;
         	name = renderingMethod;
-        	prototypeName = mediumText;
-        },
-        {
-            columnName = CPARAMETERSELECTIONS; 
-            name = parameterSelections; 
-            prototypeName = mutableDictionary; 
-            userInfo = {
-                adaptorValueConversionMethodName = archiveData; 
-                valueFactoryMethodName = objectWithArchiveData; 
-                isMutable = true; 
-                valueClassName = net.sf.webcat.core.MutableDictionary; 
-            };
-        },
-        {
-            name = updateMutableFields; 
-            prototypeName = updateMutableFields; 
-            userInfo = {
-                isScalar = true;
-                scalarDefault = false;
-                type = boolean; 
-            }; 
+        	prototypeName = tinyText;
         }
     ); 
     attributesUsedForLocking = (
@@ -85,8 +65,7 @@
     	uuid,
     	renderingMethod,
     	renderedResourceActionUrl,
-    	reportName,
-		updateMutableFields
+    	description
     ); 
     className = net.sf.webcat.reporter.EnqueuedReportJob; 
     classProperties = (
@@ -98,10 +77,8 @@
     	uuid,
     	renderingMethod,
     	renderedResourceActionUrl,
-    	reportName,
-    	parameterSelections,
-    	jobProgress,
-		updateMutableFields
+    	description,
+    	dataSetQueries
     ); 
     externalName = TENQUEUEDREPORTJOB; 
     name = EnqueuedReportJob; 
@@ -120,6 +97,14 @@
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
             name = user; 
+        },
+        {
+ //       	deleteRule = EODeleteRuleNullify;
+            destination = ReportDataSetQuery;
+            isToMany = Y;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = enqueuedReportJobId; sourceAttribute = id; });
+            name = dataSetQueries;
         }
     ); 
 }

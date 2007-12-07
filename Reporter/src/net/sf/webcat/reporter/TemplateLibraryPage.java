@@ -121,11 +121,12 @@ public class TemplateLibraryPage extends WCComponent
 
     public WOComponent editTemplate()
     {
-    	EditTemplatePage page =
+/*    	EditTemplatePage page =
     		(EditTemplatePage)pageWithName(EditTemplatePage.class.getName());
     	page.reportTemplate = reportTemplate;
     	
-    	return page;
+    	return page;*/
+    	return null;
     }
     
     

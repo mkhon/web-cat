@@ -1,18 +1,22 @@
-<webobject name="Form">
-<webobject name="PeriodicUpdater">
-<webobject name="InProgress"><webobject name="NotCancelled">
-<webobject name="ProgressBar"/>
-<p><webobject name="CancelButton"/></p>
-</webobject><webobject name="Cancelled">
-<script>
-periodicUpdaterUpdater.stop();
-</script>
-<p><webobject name="CancelledMessage"/></p>
-</webobject></webobject><webobject name="Finished">
-<script>
-periodicUpdaterUpdater.stop();
-</script>
-<webobject name="Content"/>
-</webobject>
-</webobject>
-</webobject>
+<wo:form>
+<wo name="PeriodicUpdater">
+
+<wo:if condition="$isDone">
+	<script>
+	periodicUpdaterUpdater.stop();
+	</script>
+	<wo:content/>
+</wo:if><wo:else>
+	<wo:if condition="$isCancelled">
+		<script>
+		periodicUpdaterUpdater.stop();
+		</script>
+		<p><b>Canceled!</b></p>
+	</wo:if><wo:else>
+		<wo name="ProgressBar"/>
+		<p><wo name="CancelButton"/></p>
+	</wo:else>
+</wo:else>
+
+</wo>
+</wo:form>

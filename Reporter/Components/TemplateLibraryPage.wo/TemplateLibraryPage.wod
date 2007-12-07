@@ -1,19 +1,7 @@
-CanEdit: WOConditional {
-    condition = canEditTemplate;
-}
-
-CanDownload: WOConditional {
-	condition = canDownload;
-}
 
 Date: WOString {
 	dateformat = "%m/%d/%y %I:%M%p";
 	value      = reportTemplate.lastModified;
-}
-
-Description: WOString {
-	value = reportTemplate.description;
-	escapeHTML = false;
 }
 
 DownloadNow: WOActiveImage {
@@ -25,85 +13,6 @@ DownloadNow: WOActiveImage {
 	alt       = "Download and re-install now";
 	title     = "Download and re-install now";
 	action    = download;
-}
-
-Form1: WOForm {
-    multipleSubmit = true;
-    enctype = "multipart/form-data";
-}
-
-HasAdminPrivileges: WOConditional {
-    condition = session.user.hasAdminPrivileges;
-}
-
-HasNoAdminPrivileges: WOConditional {
-    condition = session.user.hasAdminPrivileges;
-    negate = true;
-}
-
-HasNoPersonalTemplates: WOConditional {
-    condition = personalTemplateGroup.displayedObjects.count;
-    negate = true;
-}
-
-HasNoPublishedTemplates: WOConditional {
-    condition = publishedTemplateGroup.displayedObjects.count;
-    negate = true;
-}
-
-HasNoUnpublishedTemplates: WOConditional {
-    condition = unpublishedTemplateGroup.displayedObjects.count;
-    negate = true;
-}
-
-HasPersonalTemplates: WOConditional {
-    condition = personalTemplateGroup.displayedObjects.count;
-}
-
-HasPublishedTemplates: WOConditional {
-    condition = publishedTemplateGroup.displayedObjects.count;
-}
-
-HasUnpublishedTemplates: WOConditional {
-    condition = unpublishedTemplateGroup.displayedObjects.count;
-}
-
-InstalledBy: WOString {
-    value = reportTemplate.author.nameAndUid;
-}
-
-IsNotPublished: WOConditional {
-    condition = reportTemplate.isPublished;
-    negate = true;
-}
-
-IsPublished: WOConditional {
-    condition = reportTemplate.isPublished;
-}
-
-IsTerse: WOConditional {
-    condition = terse;
-}
-
-IsVerbose: WOConditional {
-    condition = terse;
-    negate    = true;
-}
-
-Name: WOString {
-	value = reportTemplate.name;
-//	href   = pluginInfoUrl;
-//    target = "_blank";
-}
-
-Page : net.sf.webcat.core.PageWithNavigation {
-    title = "Report Template Library";
-}
-
-PersonalTemplateRepetition: WORepetition {
-	item  = reportTemplate;
-	list  = personalTemplateGroup.displayedObjects;
-	index = index;
 }
 
 TemplateUpload: WOFileUpload {
@@ -144,23 +53,9 @@ Edit: WOActiveImage {
 	action    = editTemplate;
 }
 
-PublishedTemplateRepetition: WORepetition {
-	item  = reportTemplate;
-	list  = publishedTemplateGroup.displayedObjects;
-	index = index;
-}
-
 TerseDescriptions: WOSubmitButton {
     value  = "Hide Descriptions";
     action = toggleVerboseDescriptions;
-}
-
-Title: WOString {
-	value = reportTemplate.name;
-}
-
-TR: net.sf.webcat.core.TableRow {
-    index = index;
 }
 
 Unpublish: WOActiveImage {
@@ -174,12 +69,6 @@ Unpublish: WOActiveImage {
 	action    = togglePublished;
 }
 
-UnpublishedTemplateRepetition: WORepetition {
-	item  = reportTemplate;
-	list  = unpublishedTemplateGroup.displayedObjects;
-	index = index;
-}
-
 Upload: WOSubmitButton {
     value = "Upload File & Install";
     action = upload;
@@ -188,8 +77,4 @@ Upload: WOSubmitButton {
 VerboseDescriptions: WOSubmitButton {
     value  = "Show Descriptions";
     action = toggleVerboseDescriptions;
-}
-
-Version: WOString {
-	value = "0.0.0"; //template.descriptor.currentVersion;
 }

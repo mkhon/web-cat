@@ -18,8 +18,6 @@ import net.sf.webcat.dbupdate.UpdateEngine;
 import net.sf.webcat.grader.EnqueuedJob;
 import net.sf.webcat.grader.GraderQueue;
 import net.sf.webcat.grader.GraderQueueProcessor;
-import net.sf.webcat.reporter.datamodel.IResultSet;
-import net.sf.webcat.reporter.internal.datamodel.DataSource;
 import net.sf.webcat.reporter.internal.rendering.CSVRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.ExcelRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.HTMLRenderingMethod;
@@ -274,9 +272,10 @@ public class Reporter extends Subsystem
 		}
     }
 
-    public IRunTask setupRunTaskForTemplate(ReportTemplate template,
-    		NSDictionary selections, String reportUuid)
+    public IRunTask setupRunTaskForJob(EnqueuedReportJob job)
     {
+    	ReportTemplate template = job.reportTemplate();
+
     	IReportRunnable runnable = openReportTemplate(template.filePath());
     	IRunTask task = reportEngine.createRunTask(runnable);
 
@@ -286,20 +285,12 @@ public class Reporter extends Subsystem
     	else
     		appContext = new Hashtable(appContext);
     	
-    	NSMutableDictionary initialBindings = new NSMutableDictionary();
-    	initialBindings.setObjectForKey(selections, "selected");
-
-        // Initialize the data source.
-        // This object will be registered as a scriptable object for
-        // JavaScript in the reporting engine.
-        DataSource webcatObject = new DataSource(
-        		initialBindings, reportUuid);
-
-    	appContext.put(DataSource.SCRIPTABLE_OBJECT_NAME, webcatObject);
+    	OdaResultSetProvider resultProvider = new OdaResultSetProvider(job);
+    	appContext.put("net.sf.webcat.oda.resultSetProvider", resultProvider);
     	
     	task.setAppContext(appContext);
 
-    	return task;
+	  	return task;
     }
     
     public IGetParameterDefinitionTask createGetParameterDefinitionTask(
@@ -336,12 +327,12 @@ public class Reporter extends Subsystem
     }
 
     // TODO this is for debugging purposes. Kill it when we're done.
-    public IResultSet executeReporterQuery(String queryString, NSDictionary vars)
+/*    public IResultSet executeReporterQuery(String queryString, NSDictionary vars)
     {
         DataSource webcatObject = new DataSource(vars, null);
 
         return webcatObject.executeQuery(queryString);
-    }
+    }*/
 
     public ReportQueue reportQueue()
     {

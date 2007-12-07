@@ -43,7 +43,6 @@ import java.util.Enumeration;
  */
 public abstract class _EnqueuedReportJob
     extends er.extensions.ERXGenericRecord
-    implements net.sf.webcat.core.MutableContainer.MutableContainerOwner
 {
     //~ Constructors ..........................................................
 
@@ -60,23 +59,46 @@ public abstract class _EnqueuedReportJob
     //~ Constants (for key names) .............................................
 
     // Attributes ---
+    public static final String DESCRIPTION_KEY = "description";
     public static final String DISCARDED_KEY = "discarded";
-    public static final String PARAMETER_SELECTIONS_KEY = "parameterSelections";
     public static final String PAUSED_KEY = "paused";
     public static final String QUEUE_TIME_KEY = "queueTime";
     public static final String RENDERED_RESOURCE_ACTION_URL_KEY = "renderedResourceActionUrl";
     public static final String RENDERING_METHOD_KEY = "renderingMethod";
-    public static final String REPORT_NAME_KEY = "reportName";
-    public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
     public static final String UUID_KEY = "uuid";
     // To-one relationships ---
     public static final String REPORT_TEMPLATE_KEY = "reportTemplate";
     public static final String USER_KEY = "user";
     // To-many relationships ---
+    public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
     public static final String ENTITY_NAME = "EnqueuedReportJob";
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>description</code> value.
+     * @return the value of the attribute
+     */
+    public String description()
+    {
+        return (String)storedValueForKey( "description" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>description</code>
+     * property.
+     * 
+     * @param value The new value for this property
+     */
+    public void setDescription( String value )
+    {
+        takeStoredValueForKey( value, "description" );
+    }
+
 
     // ----------------------------------------------------------
     /**
@@ -129,100 +151,6 @@ public abstract class _EnqueuedReportJob
     public void setDiscardedRaw( Number value )
     {
         takeStoredValueForKey( value, "discarded" );
-    }
-
-
-    //-- Local mutable cache --
-    private net.sf.webcat.core.MutableDictionary parameterSelectionsCache;
-    private NSData parameterSelectionsRawCache;
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>parameterSelections</code> value.
-     * @return the value of the attribute
-     */
-    public net.sf.webcat.core.MutableDictionary parameterSelections()
-    {
-    	NSData dbValue = 
-            (NSData)storedValueForKey( "parameterSelections" );
-        if ( parameterSelectionsRawCache != dbValue )
-        {
-            if ( dbValue != null && dbValue.equals( parameterSelectionsRawCache ) )
-            {
-                // They are still equal, so just update the raw cache
-                parameterSelectionsRawCache = dbValue;
-            }
-            else
-            {
-                // Underlying attribute may have changed because
-                // of a concurrent update through another editing
-                // context, so throw away current values.
-                parameterSelectionsRawCache = dbValue;
-                net.sf.webcat.core.MutableDictionary newValue =
-                    net.sf.webcat.core.MutableDictionary
-                    .objectWithArchiveData( dbValue );
-                if ( parameterSelectionsCache != null )
-                {
-                    parameterSelectionsCache.copyFrom( newValue );
-                }
-                else
-                {
-                    parameterSelectionsCache = newValue;
-                }
-                parameterSelectionsCache.setOwner( this );
-                setUpdateMutableFields( true );
-            }
-        }
-        else if ( dbValue == null && parameterSelectionsCache == null )
-        { 
-            parameterSelectionsCache = 
-                net.sf.webcat.core.MutableDictionary
-                .objectWithArchiveData( dbValue );
-             parameterSelectionsCache.setOwner( this );
-             setUpdateMutableFields( true );
-        }
-        return parameterSelectionsCache;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>parameterSelections</code>
-     * property.
-     * 
-     * @param value The new value for this property
-     */
-    public void setParameterSelections( net.sf.webcat.core.MutableDictionary value )
-    {
-        if ( parameterSelectionsCache == null )
-        {
-            parameterSelectionsCache = value;
-            value.setHasChanged( false );
-            parameterSelectionsRawCache = value.archiveData();
-            takeStoredValueForKey( parameterSelectionsRawCache, "parameterSelections" );
-        }
-        else if ( parameterSelectionsCache != value )  // ( parameterSelectionsCache != null )
-        {
-            parameterSelectionsCache.copyFrom( value );
-            setUpdateMutableFields( true );
-        }
-        else  // ( parameterSelectionsCache == non-null value )
-        {
-            // no nothing
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Clear the value of this object's <code>parameterSelections</code>
-     * property.
-     */
-    public void clearParameterSelections()
-    {
-        takeStoredValueForKey( null, "parameterSelections" );
-        parameterSelectionsRawCache = null;
-        parameterSelectionsCache = null;
     }
 
 
@@ -354,84 +282,6 @@ public abstract class _EnqueuedReportJob
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>reportName</code> value.
-     * @return the value of the attribute
-     */
-    public String reportName()
-    {
-        return (String)storedValueForKey( "reportName" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>reportName</code>
-     * property.
-     * 
-     * @param value The new value for this property
-     */
-    public void setReportName( String value )
-    {
-        takeStoredValueForKey( value, "reportName" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>updateMutableFields</code> value.
-     * @return the value of the attribute
-     */
-    public boolean updateMutableFields()
-    {
-        Number result =
-            (Number)storedValueForKey( "updateMutableFields" );
-        return ( result == null )
-            ? false
-            : ( result.intValue() > 0 );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>updateMutableFields</code>
-     * property.
-     * 
-     * @param value The new value for this property
-     */
-    public void setUpdateMutableFields( boolean value )
-    {
-        Number actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        takeStoredValueForKey( actual, "updateMutableFields" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>updateMutableFields</code> value.
-     * @return the value of the attribute
-     */
-    public Number updateMutableFieldsRaw()
-    {
-        return (Number)storedValueForKey( "updateMutableFields" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>updateMutableFields</code>
-     * property.
-     * 
-     * @param value The new value for this property
-     */
-    public void setUpdateMutableFieldsRaw( Number value )
-    {
-        takeStoredValueForKey( value, "updateMutableFields" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Retrieve this object's <code>uuid</code> value.
      * @return the value of the attribute
      */
@@ -456,69 +306,6 @@ public abstract class _EnqueuedReportJob
 
     // ----------------------------------------------------------
     /**
-     * Called just before this object is saved to the database.
-     */
-    public void saveMutables()
-    {
-        if ( parameterSelectionsCache != null
-            && parameterSelectionsCache.hasChanged() )
-        {
-            parameterSelectionsRawCache = parameterSelectionsCache.archiveData();
-            takeStoredValueForKey( parameterSelectionsRawCache, "parameterSelections" );
-            parameterSelectionsCache.setHasChanged( false );
-        }
-
-        setUpdateMutableFields( false );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Called just before this object is saved to the database.
-     */
-    public void willUpdate()
-    {
-        saveMutables();
-        super.willUpdate();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Called just before this object is inserted into the database.
-     */
-    public void willInsert()
-    {
-        saveMutables();
-        super.willInsert();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Called when the object is invalidated.
-     */
-    public void flushCaches()
-    {
-        parameterSelectionsCache = null;
-        parameterSelectionsRawCache  = null;
-        setUpdateMutableFields( false );
-        super.flushCaches();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Called when an owned mutable container object is changed.
-     */
-    public void mutableContainerHasChanged()
-    {
-        setUpdateMutableFields( true );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Retrieve object according to the <code>User</code>
      * fetch specification.
      * 
@@ -526,7 +313,7 @@ public abstract class _EnqueuedReportJob
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForUser(
+    public static NSArray<EnqueuedReportJob> objectsForUser(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
         )
@@ -534,7 +321,7 @@ public abstract class _EnqueuedReportJob
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "user", "EnqueuedReportJob" );
 
-        NSMutableDictionary bindings = new NSMutableDictionary();
+        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
 
         if ( userBinding != null )
             bindings.setObjectForKey( userBinding,
@@ -554,7 +341,7 @@ public abstract class _EnqueuedReportJob
      * @param uuidBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForUuid(
+    public static NSArray<EnqueuedReportJob> objectsForUuid(
             EOEditingContext context,
             String uuidBinding
         )
@@ -562,7 +349,7 @@ public abstract class _EnqueuedReportJob
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "uuid", "EnqueuedReportJob" );
 
-        NSMutableDictionary bindings = new NSMutableDictionary();
+        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
 
         if ( uuidBinding != null )
             bindings.setObjectForKey( uuidBinding,
@@ -672,6 +459,141 @@ public abstract class _EnqueuedReportJob
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "user" );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entities pointed to by the <code>dataSetQueries</code>
+     * relationship.
+     * @return an NSArray of the entities in the relationship
+     */
+    public NSArray<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries()
+    {
+        return (NSArray<net.sf.webcat.reporter.ReportDataSetQuery>)storedValueForKey( "dataSetQueries" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Replace the list of entities pointed to by the
+     * <code>dataSetQueries</code> relationship.
+     * 
+     * @param value The new set of entities to relate to
+     */
+    public void setDataSetQueries( NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> value )
+    {
+        takeStoredValueForKey( value, "dataSetQueries" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>dataSetQueries</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>addToDataSetQueriesRelationship()</code>.
+     * This method is provided for WebObjects use.
+     * 
+     * @param value The new entity to relate to
+     */
+    public void addToDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
+    {
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        willChange();
+        array.addObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>dataSetQueries</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>removeFromDataSetQueriesRelationship()</code>.
+     * This method is provided for WebObjects use.
+     * 
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
+    {
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        willChange();
+        array.removeObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>dataSetQueries</code>
+     * relationship.
+     * 
+     * @param value The new entity to relate to
+     */
+    public void addToDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
+    {
+        addObjectToBothSidesOfRelationshipWithKey(
+            value, "dataSetQueries" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>dataSetQueries</code>
+     * relationship.
+     * 
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
+    {
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "dataSetQueries" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create a brand new object that is a member of the
+     * <code>dataSetQueries</code> relationship.
+     * 
+     * @return The new entity
+     */
+    public net.sf.webcat.reporter.ReportDataSetQuery createDataSetQueriesRelationship()
+    {
+        EOClassDescription eoClassDesc = EOClassDescription
+            .classDescriptionForEntityName( "ReportDataSetQuery" );
+        EOEnterpriseObject eoObject = eoClassDesc
+            .createInstanceWithEditingContext( editingContext(), null );
+        editingContext().insertObject( eoObject );
+        addObjectToBothSidesOfRelationshipWithKey(
+            eoObject, "dataSetQueries" );
+        return (net.sf.webcat.reporter.ReportDataSetQuery)eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove and then delete a specific entity that is a member of the
+     * <code>dataSetQueries</code> relationship.
+     * 
+     * @param value The entity to remove from the relationship and then delete
+     */
+    public void deleteDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
+    {
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "dataSetQueries" );
+        editingContext().deleteObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove (and then delete, if owned) all entities that are members of the
+     * <code>dataSetQueries</code> relationship.
+     */
+    public void deleteAllDataSetQueriesRelationships()
+    {
+        Enumeration<net.sf.webcat.reporter.ReportDataSetQuery> objects = dataSetQueries().objectEnumerator();
+        while ( objects.hasMoreElements() )
+            deleteDataSetQueriesRelationship( objects.nextElement() );
     }
 
 

@@ -1,0 +1,57 @@
+{
+    attributes = (
+        { name = id; prototypeName = id; },
+        {
+            columnName = CUUID; 
+            name = uuid; 
+            prototypeName = tinyText;
+        },
+        {
+            columnName = CENTITYNAME; 
+            name = wcEntityName;
+            prototypeName = tinyText;
+        },
+        {
+        	columnName = CNAME;
+        	name = name;
+        	prototypeName = tinyText;
+        },
+        {
+            columnName = CDESCRIPTION; 
+            name = description;
+            prototypeName = mediumText;
+        },
+        {
+            columnName = CREPORTTEMPLATEID; 
+            name = reportTemplateId; 
+            prototypeName = foreignId; 
+        },
+    ); 
+    attributesUsedForLocking = (
+    	uuid,
+    	wcEntityName,
+    	name,
+    	description,
+    	reportTemplateId,
+    );
+    className = net.sf.webcat.reporter.ReportDataSet;
+    classProperties = (
+    	uuid,
+    	wcEntityName,
+    	name,
+    	description,
+    	reportTemplate
+    );
+    externalName = TREPORTDATASET;
+    name = ReportDataSet;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = ReportTemplate; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = reportTemplateId; });
+            name = reportTemplate;
+        }
+    );
+}

@@ -1,0 +1,46 @@
+<wo:PageWithNavigation title="Report Generation Summary">
+<wo:form id="summaryForm" multipleSubmit="$true" action="$goNext">
+
+<!--
+<h2>Data Set Query Summary</h2>
+
+<wo:if condition="$dataSets.count">
+<p>Below is a summary of the queries that will be used to select data for this
+report. If you would like to make any changes, please click the <b>Back</b>
+button below.</p>
+<ul>
+<wo:loop list="$dataSets" item="$dataSet" index="$index">
+	<li>
+		<b><wo:str value="$dataSet.name"/>:</b>
+		<wo:str value="$querySummaryForDataSet"/>
+	</li>
+</wo:loop>
+</ul>
+</wo:if><wo:else>
+<p>There are no queries used in this report.</p>
+</wo:else>
+-->
+
+<h2>Description of Generated Report Document</h2>
+
+<p>You may enter a short description of this report below; this description
+will be used to identify the report in the list of all generated reports. If
+you leave this field blank, then a default description consisting of the name
+of the report template and the current time will be used.</p>
+
+<b>Description:</b>&nbsp;
+<wo:textfield size="50" value="$reportDescription" default="$defaultDescription"/>
+
+<div class="spacer">&nbsp;</div>
+
+<h2>Rendering Method</h2>
+
+<p>Render this report as: <webobject name="RenderingMethod"/><br/></p>
+
+<div class="spacer">&nbsp;</div>
+
+<wo:submit value="Back" action="$goBack"/>
+<wo:submit value="Next" action="$goNext"/>
+</wo:form>
+<wo:AjaxTextHinter form="summaryForm"/>
+</wo:pageWithNavigation>

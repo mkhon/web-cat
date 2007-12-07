@@ -12,7 +12,7 @@ import com.webobjects.foundation.NSMutableArray;
 
 public class PickTemplateToGeneratePage extends ReporterComponent {
 
-	public NSArray reportTemplates;
+	public NSArray<ReportTemplate> reportTemplates;
 	public ReportTemplate reportTemplate;
 	public int index;
 
@@ -26,10 +26,28 @@ public class PickTemplateToGeneratePage extends ReporterComponent {
     			wcSession().defaultEditingContext());
     }
     
-    public WOComponent next()
+    public WOComponent templateChosen()
     {
+    	clearSessionData();
+
     	setReportUuidInSession(UUID.randomUUID().toString());
         setReportTemplateInSession(reportTemplate);
-    	return super.next();
+        setCurrentReportDataSetInSession(0);
+
+        NSArray<ReportDataSet> dataSets = reportTemplate.dataSets();
+        if(dataSets == null || dataSets.isEmpty())
+        {
+        	return pageWithName(GenerationSummaryPage.class.getName());
+        }
+        else
+        {
+        	ConstructDataSetQueryPage page = (ConstructDataSetQueryPage)
+        		pageWithName(ConstructDataSetQueryPage.class.getName());
+
+        	page.takeValueForKey(dataSets, "dataSets");
+        	page.takeValueForKey(0, "currentDataSetIndex");
+
+        	return page;
+        }
     }
 }

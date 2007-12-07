@@ -23,7 +23,7 @@ public class HeadInserter extends WODynamicGroup
 		WOResponse childrenResponse = new WOResponse();
 		super.appendToResponse(childrenResponse, context);
 
-		AjaxUtils.insertInResponseBeforeTag(response,
-				childrenResponse.contentString(), AjaxUtils.htmlCloseHead());
+//		AjaxUtils.insertInResponseBeforeTag(response,
+//				childrenResponse.contentString(), AjaxUtils.htmlCloseHead());
 	}
 }

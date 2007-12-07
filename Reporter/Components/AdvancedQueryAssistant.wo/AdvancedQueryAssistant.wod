@@ -1,0 +1,114 @@
+RowBusyIndicator : WOImage {
+	filename = "images/busy.gif";
+	id = "~'busy_' + index";
+	style = "vertical-align: middle; visibility: hidden";
+}
+
+//KeyPath : WOTextField {
+//	id = "~'keyPath_' + index";
+//	value = currentKeyPath;
+//	default = "enter a key path";
+//}
+
+KeyPath : AjaxAutoComplete {
+	id = "~'keyPath_' + index";
+	default = "enter a key path";
+	list = keyPathCompletionItems;
+	item = keyPathCompletionItem;
+	value = currentKeyPath;
+	minChars = 0;
+}
+
+KeyPathDisplayString : WOString {
+	value = displayStringForKeyPathCompletionItem;
+}
+
+KeyPathChangeUpdater : AjaxSubmitButton {
+	fullSubmit = true;
+	functionName = "~'updateRowAfterKeyPath_' + index";
+	updateContainerID = idForCurrentCastTypeContainer;
+	onLoading = "~'function() { startBusyForRow(' + index + '); }'";
+	onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+}
+
+KeyPathCastType : WOPopUpButton {
+	id = "~'castType_' + index";
+	list = castTypes;
+	item = castType;
+	selection = currentCastType;
+	displayString = displayStringForCastType;
+}
+
+KeyPathCastTypeObserver : AjaxObserveField {
+	fullSubmit = true;
+	observeFieldID = "~'castType_' + index";
+	updateContainerID = idForCurrentComparisonContainer;
+	onLoading = "~'function() { startBusyForRow(' + index + '); }'";
+	onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+}
+
+OtherKeyPath : WOTextField {
+	id = "~'otherKeyPath_' + index";
+	value = currentRepresentedValue;
+	default = "enter a key path";
+}
+
+Comparison : WOPopUpButton {
+	id = "~'comparison_' + index";
+	list = comparisonsForCurrentKeyPath;
+	selection = currentComparison;
+}
+
+ComparisonObserver : AjaxObserveField {
+	fullSubmit = true;
+	observeFieldID = "~'comparison_' + index";
+	updateContainerID = idForCurrentComparandTypeContainer;
+	onLoading = "~'function() { startBusyForRow(' + index + '); }'";
+	onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+}
+
+ComparandType : WOPopUpButton {
+	id = "~'comparandType_' + index";
+	list = validComparandTypesForCurrentComparison;
+	item = comparandType;
+	displayString = displayStringForComparandType;
+	selection = currentComparandType;
+}
+
+ComparandTypeObserver : AjaxObserveField {
+	fullSubmit = true;
+	observeFieldID = "~'comparandType_' + index";
+	updateContainerID = idForCurrentValueContainer;
+	onLoading = "~'function() { startBusyForRow(' + index + '); }'";
+	onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+}
+
+Value : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponent {
+	multipleSelect = doesCurrentComparisonSupportMultipleValues;
+	valueType = typeOfCurrentKeyPath;
+	representedValue = currentRepresentedValue;
+}
+
+MinimumValue : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponent {
+	multipleSelect = false;
+	valueType = typeOfCurrentKeyPath;
+	representedValue = minimumValueOfCurrentRepresentedValue;
+}
+
+MaximumValue : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponent {
+	multipleSelect = false;
+	valueType = typeOfCurrentKeyPath;
+	representedValue = maximumValueOfCurrentRepresentedValue;
+}
+
+AddCriterion: AjaxSubmitButton {
+	button = false;
+	action = addCriterion;
+	updateContainerID = "criteriaContainer";
+}
+
+RemoveCriterion: AjaxSubmitButton {
+	button = false;
+	action = removeCriterion;
+	updateContainerID = "criteriaContainer";
+}

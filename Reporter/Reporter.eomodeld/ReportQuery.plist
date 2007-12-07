@@ -1,0 +1,74 @@
+{
+    attributes = (
+        { name = id; prototypeName = id; },
+        {
+            columnName = CENTITYNAME; 
+            name = wcEntityName;
+            prototypeName = tinyText;
+        },
+        {
+        	columnName = CDESCRIPTION;
+        	name = description;
+        	prototypeName = mediumText;
+        },
+        {
+        	columnName = CUSERID;
+        	name = userId;
+        	prototypeName = foreignId;
+        },
+        {
+            columnName = CQUERYINFO; 
+            name = queryInfo; 
+            prototypeName = mutableDictionary; 
+            userInfo = {
+                adaptorValueConversionMethodName = archiveData; 
+                valueFactoryMethodName = objectWithArchiveData; 
+                isMutable = true; 
+                valueClassName = net.sf.webcat.core.MutableDictionary; 
+            };
+        },
+        {
+            name = updateMutableFields; 
+            prototypeName = updateMutableFields; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        }
+    ); 
+    attributesUsedForLocking = (
+    	wcEntityName,
+    	description,
+    	userId,
+    	updateMutableFields
+    );
+    className = net.sf.webcat.reporter.ReportQuery;
+    classProperties = (
+    	wcEntityName,
+    	description,
+    	user,
+    	queryInfo,
+    	updateMutableFields,
+    	dataSetQueries
+    );
+    externalName = TREPORTQUERY;
+    name = ReportQuery;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = User; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userId; });
+            name = user;
+        },
+        {
+        	destination = ReportDataSetQuery;
+        	isToMany = Y;
+        	joinSemantic = EOInnerJoin;
+        	joins = ({destinationAttribute = reportQueryId; sourceAttribute = id; });
+        	name = dataSetQueries;
+        }
+    );
+}

@@ -23,13 +23,13 @@ public class ProgressManager
 
 	public ProgressManager()
 	{
-		jobs = new NSMutableDictionary();
+		jobs = new NSMutableDictionary<Object, Job>();
 	}
 
 	public synchronized void beginJobWithToken(Object token)
 	{
 		log.debug("Starting progress monitored job with token: " + token);
-		jobs.setObjectForKey(new ProgressManagerJob(), token);
+		jobs.setObjectForKey(new Job(), token);
 	}
 
 	public Object beginJobWithAutomaticToken()
@@ -49,6 +49,18 @@ public class ProgressManager
 	public void beginTaskForJob(Object token, int totalWork)
 	{
 		beginTaskForJob(token, totalWork, null);
+	}
+
+	public void beginTaskForJob(Object token, int[] weights)
+	{
+		beginTaskForJob(token, weights, null);
+	}
+
+	public synchronized void beginTaskForJob(Object token, int[] weights,
+			String description)
+	{
+		if(jobExists(token))
+			jobForToken(token).beginTask(weights, description);
 	}
 
 	public synchronized void beginTaskForJob(Object token, int totalWork,
@@ -104,22 +116,32 @@ public class ProgressManager
     	return jobForToken(token) != null;
     }
 
-	private ProgressManagerJob jobForToken(Object token)
+	private Job jobForToken(Object token)
 	{
-		return (ProgressManagerJob)jobs.objectForKey(token);
+		return (Job)jobs.objectForKey(token);
 	}
 
-	private class ProgressManagerJob
+	private class Job
 	{
-		public ProgressManagerJob()
+		public Job()
 		{
-			tasks = new NSMutableArray();
+			tasks = new NSMutableArray<Task>();
 			isDone = false;
+		}
+
+		public void beginTask(int[] weights, String description)
+		{
+			tasks.addObject(new Task(weights, weights.length, description));
+			
+	    	if(description == null)
+		    	logTaskStack("New task with " + weights.length + " units");
+	    	else
+		    	logTaskStack("New task (\"" + description + "\") with " + weights.length + " units");
 		}
 
 		public void beginTask(int totalWork, String description)
 		{
-	    	tasks.addObject(new Task(totalWork, description));
+	    	tasks.addObject(new Task(null, totalWork, description));
 	    	
 	    	if(description == null)
 		    	logTaskStack("New task with " + totalWork + " units");
@@ -175,12 +197,12 @@ public class ProgressManager
 
 	    	double workDone = 0, divisor = 1;
 	    	
-	    	Enumeration e = tasks.objectEnumerator();
+	    	Enumeration<Task> e = tasks.objectEnumerator();
 	    	while(e.hasMoreElements())
 	    	{
-	    		Task task = (Task)e.nextElement();
-	    		workDone += task.percentDone() / divisor;
-	    		divisor *= task.totalSteps; 
+	    		Task task = e.nextElement();
+	    		workDone += task.percentDone() * divisor;
+	    		divisor *= task.nextWeightPercent(); 
 	    	}
 	    	
 	    	return workDone;
@@ -202,10 +224,10 @@ public class ProgressManager
 			buffer.append(prefix);
 			buffer.append(": ");
 			
-	    	Enumeration e = tasks.objectEnumerator();
+	    	Enumeration<Task> e = tasks.objectEnumerator();
 	    	while(e.hasMoreElements())
 	    	{
-	    		Task task = (Task)e.nextElement();
+	    		Task task = e.nextElement();
 	    		buffer.append("(");
 	    		buffer.append(task.stepsDoneSoFar);
 	    		buffer.append(" of ");
@@ -218,36 +240,81 @@ public class ProgressManager
 
 		private class Task
 		{
+			public int weightSoFar;
 			public int stepsDoneSoFar;
+			public int[] weights;
+			public int totalWeight;
 			public int totalSteps;
 			public String description;
 
-			public Task(int total, String desc)
+			public Task(int[] weights, int total, String desc)
 			{
+				this.weights = weights;
+				totalWeight = 0;
+				
+				if(weights == null)
+				{
+					totalWeight = total;
+				}
+				else
+				{
+					for(int weight : weights)
+						totalWeight += weight;
+				}
+
+				weightSoFar = 0;
 				stepsDoneSoFar = 0;
 				totalSteps = total;
 				description = desc;
 			}
 
+			public double nextWeightPercent()
+			{
+				if(weights == null)
+				{
+					return 1.0 / totalWeight;
+				}
+				else
+				{
+					return (double)weights[stepsDoneSoFar] / totalWeight;
+				}
+			}
+
 			public void step(int delta)
 			{
+				int stop = Math.min(totalSteps, stepsDoneSoFar + delta);
+
+				if(weights == null)
+				{
+					weightSoFar += delta;
+				}
+				else
+				{
+					for(int i = stepsDoneSoFar; i < stop; i++)
+						weightSoFar += weights[i];
+				}
+
 				stepsDoneSoFar += delta;
+
 				if(stepsDoneSoFar > totalSteps)
+				{
 					stepsDoneSoFar = totalSteps;
+					weightSoFar = totalWeight;
+				}
 			}
 			
 			public double percentDone()
 			{
-				return (double)stepsDoneSoFar / (double)totalSteps;
+				return (double)weightSoFar / (double)totalWeight;
 			}
 		}
 
 		private boolean isDone;
 
-		private NSMutableArray tasks;
+		private NSMutableArray<Task> tasks;
 	}
 
-	private NSMutableDictionary jobs;
+	private NSMutableDictionary<Object, Job> jobs;
 
 	private static ProgressManager instance;
 	

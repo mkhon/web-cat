@@ -326,28 +326,30 @@
         username = ""; 
     }; 
     entities = (
-    	{
-			className = net.sf.webcat.reporter.ReportParameter;
-			name = ReportParameter;
-		},
-    	{
-			className = net.sf.webcat.reporter.ReportTemplate;
-			name = ReportTemplate;
-		},
 		{
-			className = net.sf.webcat.reporter.ReportParameterValue;
-			name = ReportParameterValue;
+			className = net.sf.webcat.reporter.EnqueuedReportJob;
+			name = EnqueuedReportJob;
 		},
 		{
 			className = net.sf.webcat.reporter.GeneratedReport;
 			name = GeneratedReport;
 		},
-		{
-			className = net.sf.webcat.reporter.EnqueuedReportJob;
-			name = EnqueuedReportJob;
+    	{
+			className = net.sf.webcat.reporter.ReportDataSet;
+			name = ReportDataSet;
 		},
-		{className = EOGenericRecord; name = ReportParameterDependencies; },
-		{className = EOGenericRecord; name = GeneratedReportParameterValue; }
+    	{
+			className = net.sf.webcat.reporter.ReportDataSetQuery;
+			name = ReportDataSetQuery;
+		},
+		{
+			className = net.sf.webcat.reporter.ReportQuery;
+			name = ReportQuery;
+		},
+    	{
+			className = net.sf.webcat.reporter.ReportTemplate;
+			name = ReportTemplate;
+		}
     );
     internalInfo = {
         _schemaSynchronizationOptions = {

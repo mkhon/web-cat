@@ -1,18 +1,3 @@
-Page: net.sf.webcat.core.PageWithNavigation {
-}
-
-Repetition1: WORepetition {
-	item = generatedReport;
-	list = generatedReportsDisplayGroup.displayedObjects;
-	index = index;
-}
-
-RepetitionQueue: WORepetition {
-	item = enqueuedReport;
-	list = enqueuedReportsDisplayGroup.displayedObjects;
-	index = enqueuedIndex;
-}
-
 BatchNavigator: net.sf.webcat.core.WCBatchNavigator {
     displayGroup = generatedReportsDisplayGroup;
     persistentKey = "PickReportToViewPage.generatedReportBatchSize";
@@ -45,62 +30,4 @@ WCSortOrderDateQueue: net.sf.webcat.core.WCSortOrder {
 	displayGroup = enqueuedReportsDisplayGroup;
 	displayKey = "Date Requested";
 	key = "queueTime";
-}
-
-HasReports: WOConditional {
-    condition = generatedReportsDisplayGroup.allObjects.count;
-}
-
-HasNoReports: WOConditional {
-    condition = generatedReportsDisplayGroup.allObjects.count;
-    negate    = true;
-}
-
-HasQueued: WOConditional {
-    condition = enqueuedReportsDisplayGroup.allObjects.count;
-}
-
-HasNoQueued: WOConditional {
-    condition = enqueuedReportsDisplayGroup.allObjects.count;
-    negate    = true;
-}
-
-ReportRepetition: WORepetition {
-	item  = generatedReport;
-	list  = generatedReports;
-	index = index;
-}
-
-ReportName: WOHyperlink {
-	action = viewReport;
-	string = generatedReport.name;
-}
-
-ReportGeneratedBy: WOString {
-	value = generatedReport.user.name;
-}
-
-ReportGeneratedTime: WOString {
-	value = generatedReport.generatedTime;
-}
-
-ReportNameQueue: WOHyperlink {
-	action = viewReportProgress;
-	string = enqueuedReport.reportName;
-}
-
-ReportQueuedTime: WOString {
-	value = enqueuedReport.queueTime;
-}
-
-ReportQueueProgress: WOString {
-	value = enqueuedReportProgress;
-}
-
-TR: net.sf.webcat.core.TableRow {
-    index = index;
-}
-
-TRQueue: net.sf.webcat.core.TableRow {
-    index = enqueuedIndex;
 }

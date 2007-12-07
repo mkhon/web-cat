@@ -6,12 +6,12 @@
             prototypeName = foreignId;
         },
         {
-            columnName = CTEMPLATENAME; 
+            columnName = CNAME; 
             name = name;
             prototypeName = tinyText;
         },
         {
-            columnName = CTEMPLATEDESCRIPTION; 
+            columnName = CDESCRIPTION; 
             name = description;
             prototypeName = mediumText;
         },
@@ -49,7 +49,7 @@
     	name,
     	description,
     	author,
-    	parameters,
+    	dataSets,
     	isPublished,
     	uploadedFileName,
     	lastModified
@@ -67,11 +67,11 @@
         },
         {
  			deleteRule = EODeleteRuleCascade;
-            destination = ReportParameter; 
+            destination = ReportDataSet; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
-            joins = ({destinationAttribute = templateId; sourceAttribute = id; });
-            name = parameters;
+            joins = ({destinationAttribute = reportTemplateId; sourceAttribute = id; });
+            name = dataSets;
         }
     );
 }

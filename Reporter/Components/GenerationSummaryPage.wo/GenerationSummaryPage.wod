@@ -1,0 +1,6 @@
+RenderingMethod: WOPopUpButton {
+	list = renderingMethods;
+	item = renderingMethod;
+	selection = selectedRenderingMethod;
+	displayString = renderingMethod.displayName;
+}

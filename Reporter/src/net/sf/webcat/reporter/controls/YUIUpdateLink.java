@@ -66,9 +66,9 @@ public class YUIUpdateLink extends AjaxDynamicElement
 		String updateContainerID = (String) valueForBinding(
 				"updateContainerID", component);
 		if (updateContainerID != null) {
-			parametersBuffer.append("&"
-					+ AjaxUpdateContainer.UPDATE_CONTAINER_ID_KEY + "="
-					+ updateContainerID);
+//			parametersBuffer.append("&"
+//					+ AjaxUpdateContainer.UPDATE_CONTAINER_ID_KEY + "="
+//					+ updateContainerID);
 		}
 		parametersBuffer.append("'");
 		options.setObjectForKey(parametersBuffer.toString(), "parameters");
@@ -158,8 +158,8 @@ public class YUIUpdateLink extends AjaxDynamicElement
 			WCResourceManager.frameworkPrefixedResourceURLFor( path,
                 context.request() ) + "\"></script>";
 
-		AjaxUtils.insertInResponseBeforeTag(response,
-				script, AjaxUtils.htmlCloseHead());
+//		AjaxUtils.insertInResponseBeforeTag(response,
+//				script, AjaxUtils.htmlCloseHead());
 	}
 
 	public WOActionResults invokeAction(WORequest worequest, WOContext wocontext) {

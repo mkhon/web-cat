@@ -1,0 +1,71 @@
+{
+    attributes = (
+        { name = id; prototypeName = id; },
+        {
+            columnName = CENQUEUEDREPORTJOBID; 
+            name = enqueuedReportJobId; 
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CGENERATEDREPORTID; 
+            name = generatedReportId;
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CDATASETID; 
+            name = dataSetId;
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CREPORTQUERYID; 
+            name = reportQueryId; 
+            prototypeName = foreignId; 
+        },
+    ); 
+    attributesUsedForLocking = (
+    	enqueuedReportJobId,
+    	generatedReportId,
+    	dataSetId,
+    	reportQueryId,
+    );
+    className = net.sf.webcat.reporter.ReportDataSetQuery;
+    classProperties = (
+    	enqueuedReportJob,
+    	generatedReport,
+    	dataSet,
+    	reportQuery
+    );
+    externalName = TREPORTDATASETQUERY;
+    name = ReportDataSetQuery;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = EnqueuedReportJob; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = enqueuedReportJobId; });
+            name = enqueuedReportJob;
+        },
+        {
+            destination = GeneratedReport; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = generatedReportId; });
+            name = generatedReport;
+        },
+        {
+            destination = ReportDataSet; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = dataSetId; });
+            name = dataSet;
+        },
+        {
+            destination = ReportQuery; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = reportQueryId; });
+            name = reportQuery;
+        }
+    );
+}

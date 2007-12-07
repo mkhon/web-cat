@@ -5,22 +5,3 @@ Form : WOForm {
 	multipleSubmit = true;
 }
 
-Expression: WOText {
-	value = expression;
-	rows = 10;
-	cols = 80;
-}
-
-ResultContainer: AjaxUpdateContainer {
-	id = "resultContainer";
-}
-
-Result: WOString {
-	value = result;
-}
-
-Submit: AjaxSubmitButton {
-	updateContainerID = "resultContainer";
-	value = "Evaluate";
-	action = updateAction;
-}

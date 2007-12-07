@@ -1,16 +1,54 @@
-<webobject name="Page">
-<!--	<div style="float:left;margin:2em;"><webobject name="Image"/></div>
-	<div class="shadow"><table>
-	<tr><th colspan="2">Report Generation Status</th></tr>
-    <tr class="o"><td>Queued jobs</td><td class="n"><webobject name="QueuedJobCount"/></td></tr>
-    <tr class="e"><td>Most recent job wait</td><td class="n"><webobject name="MostRecentJobWait"/></td></tr>
-    <tr class="o"><td>Your queue position</td><td class="n"><webobject name="QueuePosition"/></td></tr>
-    <tr class="e"><td>Your estimated wait</td><td class="n"><webobject name="EstimatedWait"/></td></tr>
-    </table></div>
-    <div class="spacer">&nbsp;</div>-->
-	<webobject name="LongResponse">
+<style>
+.infoBox {
+	background-color: white;
+	border: 1px solid gray;
+	padding: 5px;
+}
+
+.warningBox {
+	background-color: #FFFCCC;
+	border: 1px solid #999900;
+	padding: 5px;
+}
+
+.errorBox {
+	background-color: #FFCCCC;
+	border: 1px solid #990000;
+	padding: 5px;
+}
+
+.cause {
+	padding-left: 16px;
+	font-size: 80%;
+}
+
+</style>
+<wo:PageWithNavigation title="Your Generated Report" hideSteps="$true">
+	<wo name="LongResponse">
 		<p>Re-render this report as: <webobject name="RenderingMethod"/><webobject name="Rerender"/></p>
 		<hr style="width: 100%"/>
-		<webobject name="ReportContents"/>
-	</webobject>
-</webobject>
+		<wo:if condition="$generatedReportErrors.count">
+			<p>The following warnings and/or errors were produced during the
+			generation of this report:</p>
+			<wo:loop list="$generatedReportErrors" item="$error">
+				<div class="$errorCssClass">
+					<b><wo:str value="$errorSeverity"/>:</b>
+					<wo:str value="$errorMessage"/>
+					<wo:if condition="$errorCause">
+						<p class="cause">
+							<b>Cause:</b>
+							<wo:str value="$errorCause"/>
+						</p>
+					</wo:if>
+				</div>
+			</wo:loop>
+		</wo:if>
+		<wo:if condition="$isReportRendered">
+			<wo name="ReportContents"/>
+		</wo:if><wo:else>
+			<p>Web-CAT was unable to render the report. This is likely an
+			effect of the errors that are displayed above.</p>
+			<p><b>Report UUID:</b> <wo:str value="$reportUuid"/></p>
+		</wo:else>
+	</wo>
+</wo:PageWithNavigation>
