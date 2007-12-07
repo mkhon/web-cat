@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.13 2007/10/11 13:39:05 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.14 2007/12/07 02:17:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.13 2007/10/11 13:39:05 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.14 2007/12/07 02:17:23 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -290,7 +290,6 @@ public class GraderQueueProcessor
                                 try
                                 {
                                     editingContext.revert();
-                                    editingContext.invalidateAllObjects();
                                     editingContext.unlock();
                                     Application.releasePeerEditingContext(
                                         editingContext);
