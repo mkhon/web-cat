@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.8 2007/10/11 13:31:15 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.9 2007/12/07 02:23:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.8 2007/10/11 13:31:15 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.9 2007/12/07 02:23:56 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -386,6 +386,23 @@ public class FinalReportPage
             showCoverageData = Boolean.valueOf( result.hasCoverageData() );
         }
         return showCoverageData;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Determine if this assignment is just for collecting submissions,
+     * without any automated processing steps.
+     *
+     * @return true if the submission is just being collected
+     */
+    public boolean justCollecting()
+    {
+        NSArray steps =
+            result.submission().assignmentOffering().assignment().steps();
+        return !result.summaryFile().exists()
+            && !result.resultFile().exists()
+            && (steps == null || steps.count() == 0);
     }
 
 
