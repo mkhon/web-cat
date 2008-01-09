@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBatchNavigator.java,v 1.6 2007/06/05 04:24:07 stedwar2 Exp $
+ |  $Id: WCBatchNavigator.java,v 1.7 2008/01/09 19:49:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  the one in WOExtensions.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCBatchNavigator.java,v 1.6 2007/06/05 04:24:07 stedwar2 Exp $
+ *  @version $Id: WCBatchNavigator.java,v 1.7 2008/01/09 19:49:25 stedwar2 Exp $
  */
 public class WCBatchNavigator
     extends WCComponent
@@ -161,27 +161,13 @@ public class WCBatchNavigator
         {
             String key = (String)valueForBinding( "persistentKey" );
             User user = ( (Session)session() ).user();
-            EOEditingContext ec = Application.newPeerEditingContext();
             log.debug( "setNumberOfObjectsPerBatch(): key " + key + " <- "
                 + num + "(" + number + ")" );
-            ec.lock();
-            try
-            {
-                // Use a separate EC to store the changed preferences
-                User me = (User)EOUtilities.localInstanceOfObject( ec, user );
-                me.preferences().takeValueForKey(
-                    ( number == null )
-                    ? ERXConstant.integerForInt( num )
-                    : number, key );
-                ec.saveChanges();
-                // Now refresh the session's user object so that it loads
-                // this saved preferences value
-                user.editingContext().refreshObject( user );
-            }
-            finally
-            {
-                ec.unlock();
-            }
+            user.preferences().takeValueForKey(
+                ( number == null )
+                ? ERXConstant.integerForInt( num )
+                : number, key );
+            user.savePreferences();
         }
     }
 
