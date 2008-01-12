@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: EditCoursePage.java,v 1.3 2008/01/12 18:51:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,6 +26,7 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
+import com.webobjects.foundation.*;
 
 import net.sf.webcat.core.*;
 
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: EditCoursePage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
+*  @version $Id: EditCoursePage.java,v 1.3 2008/01/12 18:51:10 stedwar2 Exp $
 */
 public class EditCoursePage
     extends GraderCourseComponent
@@ -64,6 +65,8 @@ public class EditCoursePage
     public Course              course;
     public User                user;
     public int                 index;
+    public NSArray             semesters;
+    public Semester            aSemester;
 
 
     //~ Methods ...............................................................
@@ -71,6 +74,11 @@ public class EditCoursePage
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse arg0, WOContext arg1 )
     {
+        if ( semesters == null )
+        {
+            semesters =
+                Semester.objectsForFetchAll( wcSession().localContext() );
+        }
         instructorDisplayGroup.setMasterObject( wcSession().courseOffering() );
         TADisplayGroup.setMasterObject( wcSession().courseOffering() );
         super.appendToResponse( arg0, arg1 );
@@ -78,14 +86,14 @@ public class EditCoursePage
 
 
     // ----------------------------------------------------------
-    /**
-     * Makes the default action call apply.
-     * @see net.sf.webcat.core.WCComponent#defaultAction()
-     */
     public WOComponent defaultAction()
     {
-        apply();
-        return super.defaultAction();
+        // apply();
+        // return super.defaultAction();
+
+        // When semester list changes, make sure not to take the
+        // default action, which is to click "next".
+        return null;
     }
 
 
