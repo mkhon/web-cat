@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.6 2007/10/11 13:33:07 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.7 2008/01/12 18:53:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.6 2007/10/11 13:33:07 stedwar2 Exp $
+ *  @version $Id: Submission.java,v 1.7 2008/01/12 18:53:24 stedwar2 Exp $
  */
 public class Submission
     extends _Submission
@@ -132,11 +132,11 @@ public class Submission
         }
         else
         {
-            StringBuffer dir = AssignmentOffering.submissionBaseDirName(
-                                   user().authenticationDomain() );
+            StringBuffer dir =
+                user().authenticationDomain().submissionBaseDirBuffer();
             if ( assignmentOffering() != null )
             {
-                assignmentOffering().addSubdirNameForAssignment( dir, null );
+                assignmentOffering().addSubdirTo( dir );
             }
             else
             {
@@ -198,7 +198,7 @@ public class Submission
             ((Application)Application.application()).emailExceptionToAdmins(
                 e, null, "An exception was generated trying to retrieve the "
                 + "id for a submission.\n\nSubmission = " + subInfo );
-            return 0;
+            return er.extensions.ERXConstant.ZeroInteger;
         }
     }
 
