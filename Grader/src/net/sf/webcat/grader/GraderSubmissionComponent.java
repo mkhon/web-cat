@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionComponent.java,v 1.1 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: GraderSubmissionComponent.java,v 1.2 2008/01/12 23:27:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.*;
  *  the current submission selection from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSubmissionComponent.java,v 1.1 2007/07/09 15:49:41 stedwar2 Exp $
+ *  @version $Id: GraderSubmissionComponent.java,v 1.2 2008/01/12 23:27:59 stedwar2 Exp $
  */
 public class GraderSubmissionComponent
     extends GraderAssignmentComponent
@@ -65,7 +65,7 @@ public class GraderSubmissionComponent
     public boolean startWith( NSDictionary params )
     {
         boolean result = false;
-        String sid = stringValueForKey( params, "sid" );
+        String sid = stringValueForKey( params, Submission.ID_FORM_KEY );
         if ( sid != null )
         {
             result = startWith( Submission
