@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.2 2007/06/03 04:15:22 stedwar2 Exp $
+ |  $Id: Course.java,v 1.3 2008/01/12 18:25:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,6 +26,7 @@
 package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
+import com.webobjects.foundation.NSValidation.*;
 import com.webobjects.eocontrol.*;
 
 // -------------------------------------------------------------------------
@@ -34,7 +35,7 @@ import com.webobjects.eocontrol.*;
  * semesters (represented by separate course offerings).
  *
  * @author Stephen Edwards
- * @version $Id: Course.java,v 1.2 2007/06/03 04:15:22 stedwar2 Exp $
+ * @version $Id: Course.java,v 1.3 2008/01/12 18:25:53 stedwar2 Exp $
  */
 public class Course
     extends _Course
@@ -101,31 +102,15 @@ public class Course
     }
 
 
-// If you add instance variables to store property values you
-// should add empty implementions of the Serialization methods
-// to avoid unnecessary overhead (the properties will be
-// serialized for you in the superclass).
+    // ----------------------------------------------------------
+    public Object validateNumber( Object value )
+    {
+        if ( value == null )
+        {
+            throw new ValidationException(
+                "Please provide a course number." );
+        }
+        return value;
+    }
 
-//    // ----------------------------------------------------------
-//    /**
-//     * Serialize this object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param out the stream to write to
-//     */
-//    private void writeObject( java.io.ObjectOutputStream out )
-//        throws java.io.IOException
-//    {
-//    }
-//
-//
-//    // ----------------------------------------------------------
-//    /**
-//     * Read in a serialized object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param in the stream to read from
-//     */
-//    private void readObject( java.io.ObjectInputStream in )
-//        throws java.io.IOException, java.lang.ClassNotFoundException
-//    {
-//    }
 }
