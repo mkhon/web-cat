@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.3 2007/06/03 04:26:34 stedwar2 Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.4 2008/01/12 18:50:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -26,7 +26,10 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
+import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+
+import er.extensions.*;
 
 import net.sf.webcat.core.*;
 
@@ -37,7 +40,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.3 2007/06/03 04:26:34 stedwar2 Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.4 2008/01/12 18:50:13 stedwar2 Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent
@@ -68,6 +71,11 @@ public class PickCourseEnrolledPage
     public int                 selectedTAIndex;
     public int                 selectedInstructorIndex;
     public int                 selectedAdminIndex;
+    public NSArray             semesters;
+    public Semester            semester;
+    public Semester            aSemester;
+
+    public static final String SEMESTER_PREF_KEY = "semester";
 
 
     //~ Methods ...............................................................
@@ -86,10 +94,47 @@ public class PickCourseEnrolledPage
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse response, WOContext context )
     {
-        courseDisplayGroup.setMasterObject( wcSession().user() );
-        coursesTAed = wcSession().user().TAForButNotStudent();
-        coursesTaught = wcSession().user().instructorForButNotTAOrStudent();
-        coursesAdmined = wcSession().user().adminForButNoOtherRelationships();
+        User user = wcSession().user();
+        if ( semesters == null )
+        {
+            semesters =
+                Semester.objectsForFetchAll( wcSession().localContext() );
+            Object semesterPref =
+                user.preferences().valueForKey( SEMESTER_PREF_KEY );
+            if (semesterPref == null && semesters.count() > 0)
+            {
+                // Default to most recent semester, if no preference is set
+                semester = (Semester)semesters.objectAtIndex(0);
+            }
+            else
+            {
+                semester = Semester.semesterForId( wcSession().localContext(),
+                    ERXValueUtilities.intValue( semesterPref ) );
+            }
+        }
+        // Save selected semester
+        user.preferences().takeValueForKey(
+            semester == null ? ERXConstant.ZeroInteger : semester.id(),
+            SEMESTER_PREF_KEY );
+        user.savePreferences();
+
+        courseDisplayGroup.setMasterObject( user );
+        if (semester == null)
+        {
+            courseDisplayGroup.setQualifier( null );
+            courseDisplayGroup.updateDisplayedObjects();
+        }
+        else
+        {
+            courseDisplayGroup.setQualifier( new EOKeyValueQualifier(
+                CourseOffering.SEMESTER_KEY,
+                EOQualifier.QualifierOperatorEqual,
+                semester ));
+            courseDisplayGroup.updateDisplayedObjects();
+        }
+        coursesTAed = user.TAForButNotStudent(semester);
+        coursesTaught = user.instructorForButNotTAOrStudent(semester);
+        coursesAdmined = user.adminForButNoOtherRelationships(semester);
         if ( log.isDebugEnabled() )
         {
             log.debug( "TA list = " + coursesTAed );
@@ -272,6 +317,15 @@ public class PickCourseEnrolledPage
               || coursesTaught.count() > 0
               || coursesAdmined.count() > 0 )
             &&  super.nextEnabled();
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent defaultAction()
+    {
+        // When semester list changes, make sure not to take the
+        // default action, which is to click "next".
+        return null;
     }
 
 
