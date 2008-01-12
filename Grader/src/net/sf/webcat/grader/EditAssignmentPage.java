@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.8 2007/10/11 13:27:05 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.9 2008/01/12 23:27:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -31,9 +31,7 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import java.net.URL;
 import java.net.MalformedURLException;
-
 import net.sf.webcat.core.*;
-
 import org.apache.log4j.Logger;
 
 
@@ -42,7 +40,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.8 2007/10/11 13:27:05 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.9 2008/01/12 23:27:30 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
