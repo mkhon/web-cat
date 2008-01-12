@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.7 2007/07/09 15:43:17 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.8 2008/01/12 18:31:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -61,7 +61,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.7 2007/07/09 15:43:17 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.8 2008/01/12 18:31:12 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -402,6 +402,12 @@ public class WCComponent
             // TODO: fix this to handle general save validation failures
             wcSession().commitLocalChanges();
             return true;
+        }
+        catch ( com.webobjects.foundation.NSValidation.ValidationException e )
+        {
+            wcSession().cancelLocalChanges();
+            warning( e.getMessage() );
+            return false;
         }
         catch ( Exception e )
         {
