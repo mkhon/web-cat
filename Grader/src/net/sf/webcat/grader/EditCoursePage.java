@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.3 2008/01/12 18:51:10 stedwar2 Exp $
+ |  $Id: EditCoursePage.java,v 1.4 2008/01/13 00:12:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: EditCoursePage.java,v 1.3 2008/01/12 18:51:10 stedwar2 Exp $
+*  @version $Id: EditCoursePage.java,v 1.4 2008/01/13 00:12:36 stedwar2 Exp $
 */
 public class EditCoursePage
     extends GraderCourseComponent
@@ -67,6 +67,9 @@ public class EditCoursePage
     public int                 index;
     public NSArray             semesters;
     public Semester            aSemester;
+    public NSTimestamp         earliest;
+    public NSTimestamp         latest;
+    public boolean             earliestAndLatestComputed;
 
 
     //~ Methods ...............................................................
@@ -160,6 +163,30 @@ public class EditCoursePage
         addPage.editInstructors = false;
         addPage.nextPage = this;
         return addPage;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Find the dates of the earliest and latest submissions for
+     * any assignment associated with this course.
+     * @return null, to force a page refresh
+     */
+    public WOComponent computeSubmissionDateRange()
+    {
+        NSArray subs = Submission.objectsForEarliestForCourseOffering(
+            wcSession().localContext(),
+            wcSession().courseOffering());
+        if (subs.count() > 0)
+        {
+            earliest = ((Submission)subs.objectAtIndex(0)).submitTime();
+            subs = Submission.objectsForLatestForCourseOffering(
+                wcSession().localContext(),
+                wcSession().courseOffering());
+            latest = ((Submission)subs.objectAtIndex(0)).submitTime();
+        }
+        earliestAndLatestComputed = true;
+        return null;
     }
 
 
