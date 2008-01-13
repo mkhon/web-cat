@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ANTForPlugins.java,v 1.1 2006/11/09 18:12:02 stedwar2 Exp $
+ |  $Id: ANTForPlugins.java,v 1.2 2008/01/13 00:14:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import net.sf.webcat.core.Subsystem;
  *  This subsystem provides ANT, Checkstyle, and PMD for grading plug-ins.
  *
  *  @author  stedwar2
- *  @version $Id: ANTForPlugins.java,v 1.1 2006/11/09 18:12:02 stedwar2 Exp $
+ *  @version $Id: ANTForPlugins.java,v 1.2 2008/01/13 00:14:54 stedwar2 Exp $
  */
 public class ANTForPlugins
    extends Subsystem
@@ -78,16 +78,17 @@ public class ANTForPlugins
            ANT_HOME_KEY,
            SUBSYSTEM_PREFIX + ANT_HOME_KEY,
            "ant" );
-       
-       // Add ANT_HOME/bin to path
-       Object antHomeObj = env.valueForKey( ANT_HOME_KEY );
-       if ( antHomeObj != null )
+
+       // Add JAVA_HOME/bin to path
+       Object javaHomeObj = env.valueForKey( JAVA_HOME_KEY );
+       if ( javaHomeObj != null )
        {
-           String path = antHomeObj.toString()
+           String path = javaHomeObj.toString()
                + System.getProperty( "file.separator" ) + "bin";
-           File antBinDir = new File( path );
-           if ( antBinDir.exists() )
+           File javaBinDir = new File( path );
+           if ( javaBinDir.exists() )
            {
+               path = javaBinDir.getAbsolutePath();
                // Handle the fact that Windows variants often use "Path"
                // instead of "PATH"
                String pathKey = PATH_KEY2;
@@ -106,7 +107,42 @@ public class ANTForPlugins
            }
            else
            {
-               log.error( "Cannot locate ant/bin in Resources directory" );
+               log.error(
+                   "no bin directory found in JAVA_HOME: " + javaHomeObj );
+           }
+       }
+
+
+       // Add ANT_HOME/bin to path
+       Object antHomeObj = env.valueForKey( ANT_HOME_KEY );
+       if ( antHomeObj != null )
+       {
+           String path = antHomeObj.toString()
+               + System.getProperty( "file.separator" ) + "bin";
+           File antBinDir = new File( path );
+           if ( antBinDir.exists() )
+           {
+               path = antBinDir.getAbsolutePath();
+               // Handle the fact that Windows variants often use "Path"
+               // instead of "PATH"
+               String pathKey = PATH_KEY2;
+               Object valueObj = env.valueForKey( pathKey );
+               if ( valueObj == null )
+               {
+                   pathKey = PATH_KEY1;
+                   valueObj = env.valueForKey( pathKey );
+               }
+               if ( valueObj != null )
+               {
+                   path = path + System.getProperty( "path.separator" )
+                       + valueObj.toString();
+               }
+               env.takeValueForKey( path, pathKey );
+           }
+           else
+           {
+               log.error(
+                   "no bin directory found in ANT_HOME: " + antHomeObj );
            }
        }
    }
