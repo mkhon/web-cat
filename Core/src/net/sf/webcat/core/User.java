@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.10 2008/01/09 19:49:48 stedwar2 Exp $
+ |  $Id: User.java,v 1.11 2008/01/30 02:22:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.10 2008/01/09 19:49:48 stedwar2 Exp $
+ * @version $Id: User.java,v 1.11 2008/01/30 02:22:23 stedwar2 Exp $
  */
 public class User
     extends _User
@@ -209,6 +209,25 @@ public class User
             user = null;
         }
         return user;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            return er.extensions.ERXConstant.ZeroInteger;
+        }
     }
 
 
