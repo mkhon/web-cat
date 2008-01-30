@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.9 2008/01/12 23:27:30 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.10 2008/01/30 02:32:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.9 2008/01/12 23:27:30 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.10 2008/01/30 02:32:32 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -142,6 +142,7 @@ public class EditAssignmentPage
      */
     protected boolean saveAndCanProceed( boolean requireProfile )
     {
+        if (thisAssignment == null) return true;
         boolean offeringIsSuspended =
             thisAssignment.gradingSuspended();
         if ( offeringIsSuspended != isSuspended )
@@ -528,6 +529,52 @@ public class EditAssignmentPage
                     ao.assignment().submissionProfile() );
             }
         }
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent deleteActionOk()
+    {
+        prefs().setAssignmentOfferingRelationship( null );
+        wcSession().commitLocalChanges();
+        Assignment assignment = thisAssignment.assignment();
+        wcSession().localContext().deleteObject(thisAssignment);
+        wcSession().commitLocalChanges();
+        thisAssignment = null;
+        if (assignment.offerings().count() == 0)
+        {
+            wcSession().localContext().deleteObject(assignment);
+            wcSession().commitLocalChanges();
+        }
+        return finish();
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent delete()
+    {
+        ConfirmPage confirmPage = null;
+        if ( saveAndCanProceed() )
+        {
+            confirmPage =
+                (ConfirmPage)pageWithName( ConfirmPage.class.getName() );
+            confirmPage.nextPage       = this;
+            confirmPage.message        =
+                "This action will <b>delete the assignment offering</b>, "
+                + "together with any staff submissions that have been "
+                + "made to it.</p>";
+            if (thisAssignment.assignment().offerings().count() > 1)
+            {
+                confirmPage.message +=
+                    "<p>Since this is the only offering of the selected "
+                    + "assignment, this action will also <b>delete the "
+                    + "assignment altogether</b>.</p>";
+            }
+            confirmPage.actionReceiver = this;
+            confirmPage.actionOk       = "deleteActionOk";
+            confirmPage.setTitle( "Confirm Delete Request" );
+        }
+        return confirmPage;
     }
 
 
