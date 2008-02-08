@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.7 2007/06/07 20:18:17 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,10 +43,10 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.7 2007/06/07 20:18:17 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class CourseRosterPage
-    extends GraderComponent
+    extends GraderCourseEditComponent
 {
     //~ Constructors ..........................................................
 
@@ -88,16 +88,12 @@ public class CourseRosterPage
     public void appendToResponse( WOResponse response, WOContext context )
     {
         // Set up student list filters
-        studentDisplayGroup.queryBindings().setObjectForKey(
-                wcSession().courseOffering(),
-                "courseOffering"
-            );
-        studentDisplayGroup.fetch();
+        studentDisplayGroup.setObjectArray( courseOffering().students() );
         notStudentDisplayGroup.setQualifier( new EONotQualifier(
             new EOKeyValueQualifier(
                 User.ENROLLED_IN_KEY,
                 EOQualifier.QualifierOperatorContains,
-                wcSession().courseOffering()
+                courseOffering()
             ) ) );
         if ( firstLoad )
         {
@@ -193,8 +189,8 @@ public class CourseRosterPage
      */
     public WOComponent removeStudent()
     {
-        wcSession().courseOffering().removeFromStudentsRelationship( student );
-        wcSession().commitLocalChanges();
+        courseOffering().removeFromStudentsRelationship( student );
+        applyLocalChanges();
         return null;
     }
 
@@ -206,8 +202,8 @@ public class CourseRosterPage
      */
     public WOComponent addStudent()
     {
-        wcSession().courseOffering().addToStudentsRelationship( student );
-        wcSession().commitLocalChanges();
+        courseOffering().addToStudentsRelationship( student );
+        applyLocalChanges();
         return null;
     }
 

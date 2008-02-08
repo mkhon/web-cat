@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToSubmitPage.java,v 1.4 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: PickAssignmentToSubmitPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToSubmitPage.java,v 1.4 2007/07/09 15:49:41 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToSubmitPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class PickAssignmentToSubmitPage
     extends GraderCourseComponent
@@ -78,7 +78,7 @@ public class PickAssignmentToSubmitPage
         showHaltedMessage = false;
         NSTimestamp currentTime   = new NSTimestamp();
         NSMutableArray qualifiers = new NSMutableArray();
-        CourseOffering selectedCourse = wcSession().courseOffering();
+        CourseOffering selectedCourse = coreSelections().courseOffering();
         //
         // assignments for this course
         //

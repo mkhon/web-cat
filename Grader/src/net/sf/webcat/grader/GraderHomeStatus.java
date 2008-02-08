@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.3 2008/01/15 15:13:10 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.*;
  *  Generates the grader subsystem's rows in the system status block.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderHomeStatus.java,v 1.3 2008/01/15 15:13:10 stedwar2 Exp $
+ *  @version $Id: GraderHomeStatus.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -213,8 +213,7 @@ public class GraderHomeStatus
      */
     public WOComponent submitAssignment()
     {
-        wcSession().setCourseOfferingRelationship(
-            assignment.courseOffering() );
+        coreSelections().setCourseOffering( assignment.courseOffering() );
         prefs().setAssignmentOfferingRelationship( assignment );
         return pageWithName(
             wcSession().tabs.selectById( "UploadSubmission" ).pageName() );
@@ -229,8 +228,7 @@ public class GraderHomeStatus
      */
     public WOComponent viewResults()
     {
-        wcSession().setCourseOfferingRelationship(
-            assignment.courseOffering() );
+        coreSelections().setCourseOffering( assignment.courseOffering() );
         prefs().setAssignmentOfferingRelationship( assignment );
         SubmissionResult subResult = assignment.mostRecentSubmissionResultFor(
             wcSession().user() );
@@ -258,8 +256,7 @@ public class GraderHomeStatus
      */
     public WOComponent graphResults()
     {
-        wcSession().setCourseOfferingRelationship(
-            assignment.courseOffering() );
+        coreSelections().setCourseOffering( assignment.courseOffering() );
         prefs().setAssignmentOfferingRelationship( assignment );
         return pageWithName(
             wcSession().tabs.selectById( "GraphResults" ).pageName() );
@@ -274,8 +271,7 @@ public class GraderHomeStatus
      */
     public WOComponent editAssignment()
     {
-        wcSession().setCourseOfferingRelationship(
-            assignment.courseOffering() );
+        coreSelections().setCourseOffering( assignment.courseOffering() );
         prefs().setAssignmentOfferingRelationship( assignment );
         return pageWithName(
             wcSession().tabs.selectById( "AssignmentProperties" ).pageName() );
@@ -290,8 +286,7 @@ public class GraderHomeStatus
      */
     public WOComponent gradeAssignment()
     {
-        wcSession().setCourseOfferingRelationship(
-            assignment.courseOffering() );
+        coreSelections().setCourseOffering( assignment.courseOffering() );
         prefs().setAssignmentOfferingRelationship( assignment );
         return pageWithName(
             wcSession().tabs.selectById( "EnterGrades" ).pageName() );

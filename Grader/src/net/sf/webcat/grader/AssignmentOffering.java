@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.11 2008/01/30 02:32:32 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.12 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.11 2008/01/30 02:32:32 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.12 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -526,7 +526,9 @@ public class AssignmentOffering
      */
     public boolean isLate()
     {
-        return dueDate().before( new NSTimestamp() );
+        return ( dueDate() == null )
+            ? false
+            : dueDate().before( new NSTimestamp() );
     }
 
 

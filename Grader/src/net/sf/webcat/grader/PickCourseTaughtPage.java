@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseTaughtPage.java,v 1.4 2008/01/12 18:50:12 stedwar2 Exp $
+ |  $Id: PickCourseTaughtPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  courses taught or TA'ed for.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseTaughtPage.java,v 1.4 2008/01/12 18:50:12 stedwar2 Exp $
+ *  @version $Id: PickCourseTaughtPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class PickCourseTaughtPage
     extends GraderComponent
@@ -76,6 +76,7 @@ public class PickCourseTaughtPage
     // ----------------------------------------------------------
     public void awake()
     {
+        super.awake();
         selectedStaffIndex = -1;
         selectedAdminIndex = -1;
     }
@@ -118,7 +119,7 @@ public class PickCourseTaughtPage
                 + (semester == null ? "" : " in the selected semester")
                 + "." );
         }
-        CourseOffering selectedCourse = wcSession().courseOffering();
+        CourseOffering selectedCourse = coreSelections().courseOffering();
         if ( selectedCourse != null )
         {
             selectedStaffIndex =
@@ -136,7 +137,7 @@ public class PickCourseTaughtPage
         if ( selectedStaffIndex == NSArray.NotFound
              && selectedAdminIndex == NSArray.NotFound )
         {
-            wcSession().setCourseOfferingRelationship( null );
+            coreSelections().setCourseOffering( null );
             selectedCourse = null;
         }
         if ( selectedCourse == null  )
@@ -144,14 +145,14 @@ public class PickCourseTaughtPage
             if ( staffCourses.count() > 0 )
             {
                 selectedStaffIndex = 0;
-                wcSession().setCourseOfferingRelationship(
+                coreSelections().setCourseOffering(
                     (CourseOffering)staffCourses.objectAtIndex(
                         selectedStaffIndex ) );
             }
             else if ( adminCourses.count() > 0 )
             {
                 selectedAdminIndex = 0;
-                wcSession().setCourseOfferingRelationship(
+                coreSelections().setCourseOffering(
                     (CourseOffering)adminCourses.objectAtIndex(
                         selectedAdminIndex ) );
                 selectedAdminIndex += staffCourses.count();
@@ -167,7 +168,7 @@ public class PickCourseTaughtPage
     {
         if ( selectedStaffIndex >= 0 )
         {
-            wcSession().setCourseOfferingRelationship(
+            coreSelections().setCourseOffering(
                 (CourseOffering)staffCourses.objectAtIndex(
                     selectedStaffIndex ) );
             return super.next();
@@ -175,7 +176,7 @@ public class PickCourseTaughtPage
         else if ( selectedAdminIndex >= 0 )
         {
             selectedAdminIndex -= staffCourses.count();
-            wcSession().setCourseOfferingRelationship(
+            coreSelections().setCourseOffering(
                 (CourseOffering)adminCourses.objectAtIndex(
                     selectedAdminIndex ) );
             return super.next();

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.7 2007/10/28 02:20:39 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.7 2007/10/28 02:20:39 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -612,7 +612,8 @@ public class Grader
             return result.generateResponse();
         }
 
-        session.setCourseOfferingRelationship( assignment.courseOffering() );
+        genericGComp.coreSelections().setCourseOffering(
+            assignment.courseOffering() );
         genericGComp.prefs().setAssignmentOfferingRelationship( assignment );
         NSArray submissions = EOUtilities.objectsMatchingValues(
                 ec,

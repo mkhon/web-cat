@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderCourseComponent.java,v 1.1 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: GraderCourseComponent.java,v 1.2 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.core.*;
  *  selections from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderCourseComponent.java,v 1.1 2007/07/09 15:49:41 stedwar2 Exp $
+ *  @version $Id: GraderCourseComponent.java,v 1.2 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class GraderCourseComponent
     extends GraderComponent
@@ -93,8 +93,8 @@ public class GraderCourseComponent
                   || offering.isTA( user ) ) )
         {
             result = true;
-            wcSession().setCourse( offering.course() );
-            wcSession().setCourseOffering( offering );
+            coreSelections().setCourse( offering.course() );
+            coreSelections().setCourseOffering( offering );
         }
         return result;
     }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateAssignmentPage.java,v 1.2 2008/01/12 18:52:36 stedwar2 Exp $
+ |  $Id: CreateAssignmentPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CreateAssignmentPage.java,v 1.2 2008/01/12 18:52:36 stedwar2 Exp $
+ *  @version $Id: CreateAssignmentPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class CreateAssignmentPage
     extends GraderComponent
@@ -118,11 +118,11 @@ public class CreateAssignmentPage
                 ERXArrayUtilities.filteredArrayWithQualifierEvaluation(
                     Assignment.objectsForReuseInCourse(
                         wcSession().localContext(),
-                        wcSession().courseOffering().course(),
-                        wcSession().courseOffering()
+                        coreSelections().courseOffering().course(),
+                        coreSelections().courseOffering()
                     ),
                     new Assignment.NonDuplicateAssignmentNameQualifier(
-                        wcSession().courseOffering()
+                        coreSelections().courseOffering()
                     )
                 );
             assignmentDisplayGroup.setObjectArray( reusableAssignments );
@@ -210,7 +210,7 @@ public class CreateAssignmentPage
     public void configureNewAssignmentOffering( NSTimestamp commonDueDate )
     {
         AssignmentOffering newOffering = prefs().assignmentOffering();
-        newOffering.setCourseOffering( wcSession().courseOffering() );
+        newOffering.setCourseOffering( coreSelections().courseOffering() );
         if ( commonDueDate != null )
         {
             newOffering.setDueDate( commonDueDate );
@@ -262,7 +262,7 @@ public class CreateAssignmentPage
             NSMutableArray others =
                 AssignmentOffering.offeringsWithSimilarNames(
                     wcSession().localContext(), name1,
-                    wcSession().courseOffering(), 2 );
+                    coreSelections().courseOffering(), 2 );
             if ( others.count() > 1 )
             {
                 AssignmentOffering ao1 =

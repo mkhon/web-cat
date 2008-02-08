@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPartnersPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ |  $Id: EditPartnersPage.java,v 1.2 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * results).
  *
  * @author Stephen Edwards
- * @version $Id: EditPartnersPage.java,v 1.1 2006/02/19 19:15:19 stedwar2 Exp $
+ * @version $Id: EditPartnersPage.java,v 1.2 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class EditPartnersPage
     extends GraderComponent
@@ -86,7 +86,7 @@ public class EditPartnersPage
         }
         partnerDisplayGroup.setMasterObject( result );
         studentDisplayGroup.setMasterObject(
-            wcSession().courseOffering() );
+            coreSelections().courseOffering() );
         super.appendToResponse( response, context );
     }
 
@@ -128,7 +128,7 @@ public class EditPartnersPage
                          },
                     new Object[] { Submission.ASSIGNMENT_OFFERING_KEY,
                                    Submission.USER_KEY }
-                )                
+                )
             );
         for ( int i = 0; i < studentSubmissions.count(); i++ )
         {

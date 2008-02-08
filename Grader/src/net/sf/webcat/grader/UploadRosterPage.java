@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.3 2007/10/11 13:16:44 stedwar2 Exp $
+ |  $Id: UploadRosterPage.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,10 +41,10 @@ import net.sf.webcat.core.*;
  * This class allows a CSV file of new users to be added to a course.
  *
  * @author Stephen Edwards
- * @version $Id: UploadRosterPage.java,v 1.3 2007/10/11 13:16:44 stedwar2 Exp $
+ * @version $Id: UploadRosterPage.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
  */
 public class UploadRosterPage
-    extends GraderComponent
+    extends GraderCourseEditComponent
 {
     //~ Constructors ..........................................................
 
@@ -734,8 +734,7 @@ public class UploadRosterPage
                     {
                         NSArray enrolledIn = user.enrolledIn();
                         if ( enrolledIn != null
-                             && enrolledIn.containsObject(
-                                     wcSession().courseOffering() ) )
+                             && enrolledIn.containsObject( courseOffering() ) )
                         {
                             log.debug( "Relationship exists" );
                             numAlreadyEnrolled++;
@@ -745,7 +744,7 @@ public class UploadRosterPage
                         {
                             log.debug( "relationship does not exist" );
                             user.addToEnrolledInRelationship(
-                                wcSession().courseOffering() );
+                                courseOffering() );
                             if (isExistingUser)
                             {
                                 if (existingUserNames == null)
