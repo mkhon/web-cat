@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.11 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.12 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.11 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.12 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -280,8 +280,7 @@ public class EditAssignmentPage
         try
         {
             ec.lock();
-            AssignmentOffering localAO = (AssignmentOffering)EOUtilities
-                .localInstanceOfObject( ec, thisAssignment );
+            AssignmentOffering localAO = thisAssignment.localInstance( ec );
             NSArray jobList = localAO.getSuspendedSubs();
             for ( int i = 0; i < jobList.count(); i++ )
             {
@@ -310,8 +309,7 @@ public class EditAssignmentPage
         try
         {
             ec.lock();
-            AssignmentOffering localAO = (AssignmentOffering)EOUtilities
-                .localInstanceOfObject( ec, thisAssignment );
+            AssignmentOffering localAO = thisAssignment.localInstance( ec );
             log.info( "cancelling all paused assignments: "
                       + coreSelections().courseOffering().course().deptNumber()
                       + " "

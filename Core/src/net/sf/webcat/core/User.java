@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.12 2008/02/08 19:36:03 stedwar2 Exp $
+ |  $Id: User.java,v 1.13 2008/02/08 20:00:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.12 2008/02/08 19:36:03 stedwar2 Exp $
+ * @version $Id: User.java,v 1.13 2008/02/08 20:00:44 stedwar2 Exp $
  */
 public class User
     extends _User
@@ -209,25 +209,6 @@ public class User
             user = null;
         }
         return user;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>id</code> value.
-     * @return the value of the attribute
-     */
-    public Number id()
-    {
-        try
-        {
-            return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
-        }
-        catch (Exception e)
-        {
-            return er.extensions.ERXConstant.ZeroInteger;
-        }
     }
 
 
@@ -1165,8 +1146,7 @@ public class User
                 ec.lock();
                 CoreSelections newCoreSelections = new CoreSelections();
                 ec.insertObject( newCoreSelections );
-                newCoreSelections.setUserRelationship(
-                    (User)EOUtilities.localInstanceOfObject( ec, this ) );
+                newCoreSelections.setUserRelationship( localInstance( ec ) );
                 ec.saveChanges();
                 editingContext().refreshObject( this );
                 cs = coreSelections();
@@ -1198,7 +1178,7 @@ public class User
         try
         {
             // Use a separate EC to store the changed preferences
-            User me = (User)EOUtilities.localInstanceOfObject(ec, this);
+            User me = localInstance(ec);
             me.setPreferences(preferences());
             ec.saveChanges();
             // Now refresh the session's user object so that it loads

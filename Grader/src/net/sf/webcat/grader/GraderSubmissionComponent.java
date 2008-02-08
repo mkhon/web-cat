@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionComponent.java,v 1.2 2008/01/12 23:27:59 stedwar2 Exp $
+ |  $Id: GraderSubmissionComponent.java,v 1.3 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.*;
  *  the current submission selection from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSubmissionComponent.java,v 1.2 2008/01/12 23:27:59 stedwar2 Exp $
+ *  @version $Id: GraderSubmissionComponent.java,v 1.3 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class GraderSubmissionComponent
     extends GraderAssignmentComponent
@@ -69,7 +69,7 @@ public class GraderSubmissionComponent
         if ( sid != null )
         {
             result = startWith( Submission
-                .submissionForId( wcSession().localContext(), sid ) );
+                .forId( wcSession().localContext(), sid ) );
         }
         return result;
     }

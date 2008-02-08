@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.3 2007/06/03 05:17:22 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Present a complete, printable view of all feedback about this submission.
  *
  * @author Stephen Edwards
- * @version $Id: FullPrintableReport.java,v 1.3 2007/06/03 05:17:22 stedwar2 Exp $
+ * @version $Id: FullPrintableReport.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -98,9 +98,8 @@ public class FullPrintableReport
                 {
                     Pair pair = new Pair();
                     formattedFiles.addObject( pair );
-                    pair.file = (SubmissionFileStats)EOUtilities
-                        .localInstanceOfObject( wcSession().localContext(),
-                            rawPairs[i].file );
+                    pair.file = rawPairs[i].file
+                        .localInstance( wcSession().localContext() );
                     pair.html = rawPairs[i].html;
                 }
             }
@@ -174,9 +173,8 @@ public class FullPrintableReport
             try
             {
                 ec.lock();
-                submissionResult = (SubmissionResult)EOUtilities
-                    .localInstanceOfObject( ec, theResult );
-                user = (User)EOUtilities.localInstanceOfObject( ec, viewer );
+                submissionResult = theResult.localInstance( ec );
+                user = viewer.localInstance( ec );
             }
             finally
             {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreSelections.java,v 1.3 2008/02/08 19:36:03 stedwar2 Exp $
+ |  $Id: CoreSelections.java,v 1.4 2008/02/08 20:00:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.*;
  * for entities in the Core subsystem.
  *
  * @author stedwar2
- * @version $Id: CoreSelections.java,v 1.3 2008/02/08 19:36:03 stedwar2 Exp $
+ * @version $Id: CoreSelections.java,v 1.4 2008/02/08 20:00:44 stedwar2 Exp $
  */
 public class CoreSelections
     extends _CoreSelections
@@ -134,15 +134,13 @@ public class CoreSelections
         try
         {
             // Use a separate EC to store the changed preferences
-            CoreSelections me = (CoreSelections)EOUtilities
-                .localInstanceOfObject(ecForPrefs, this);
+            CoreSelections me = localInstance(ecForPrefs);
             // Transfer the course setting
             {
                 Course course = course();
                 if (course != null)
                 {
-                    course = (Course)EOUtilities
-                        .localInstanceOfObject(ecForPrefs, course);
+                    course = course.localInstance(ecForPrefs);
                 }
                 me.setCourseRelationship( course );
             }
@@ -151,8 +149,7 @@ public class CoreSelections
                 CourseOffering offering = courseOffering();
                 if (offering != null)
                 {
-                    offering = (CourseOffering)EOUtilities
-                        .localInstanceOfObject(ecForPrefs, offering);
+                    offering = offering.localInstance(ecForPrefs);
                 }
                 me.setCourseOfferingRelationship( offering );
             }

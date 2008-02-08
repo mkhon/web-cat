@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseTaughtPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: PickCourseTaughtPage.java,v 1.6 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  courses taught or TA'ed for.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseTaughtPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: PickCourseTaughtPage.java,v 1.6 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class PickCourseTaughtPage
     extends GraderComponent
@@ -99,7 +99,7 @@ public class PickCourseTaughtPage
             }
             else
             {
-                semester = Semester.semesterForId( wcSession().localContext(),
+                semester = Semester.forId( wcSession().localContext(),
                     ERXValueUtilities.intValue( semesterPref ) );
             }
         }

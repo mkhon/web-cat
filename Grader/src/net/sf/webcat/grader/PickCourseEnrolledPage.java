@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.6 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.6 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent
@@ -109,7 +109,7 @@ public class PickCourseEnrolledPage
             }
             else
             {
-                semester = Semester.semesterForId( wcSession().localContext(),
+                semester = Semester.forId( wcSession().localContext(),
                     ERXValueUtilities.intValue( semesterPref ) );
             }
         }

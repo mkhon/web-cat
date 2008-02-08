@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.5 2008/01/12 18:54:26 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.6 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * An assignment that can be given in one or more classes.
  *
  * @author Stephen Edwards
- * @version $Id: Assignment.java,v 1.5 2008/01/12 18:54:26 stedwar2 Exp $
+ * @version $Id: Assignment.java,v 1.6 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class Assignment
     extends _Assignment
@@ -53,48 +53,6 @@ public class Assignment
     public Assignment()
     {
         super();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Look up an Assignment by id number.  Assumes the editing
-     * context is appropriately locked.
-     * @param ec The editing context to use
-     * @param id The id to look up
-     * @return The assignment, or null if no such id exists
-     */
-    public static Assignment assignmentForId( EOEditingContext ec, int id )
-    {
-        Assignment assignment = null;
-        NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
-            ENTITY_NAME, "id", new Integer( id ) );
-        if ( results != null && results.count() > 0 )
-        {
-            assignment = (Assignment)results.objectAtIndex( 0 );
-        }
-        return assignment;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Look up an Assignment by id number.  Assumes the editing
-     * context is appropriately locked.  Converts the string parameter
-     * to an integer, then performs the search.
-     * @param ec The editing context to use
-     * @param id The id to look up
-     * @return The assignment, or null if no such id exists
-     */
-    public static Assignment assignmentForId( EOEditingContext ec, String id )
-    {
-        Assignment result = null;
-        int idNumber = er.extensions.ERXValueUtilities.intValue( id );
-        if ( idNumber > 0 )
-        {
-            result = assignmentForId( ec, idNumber );
-        }
-        return result;
     }
 
 
@@ -157,18 +115,6 @@ public class Assignment
     public String toString()
     {
         return userPresentableDescription();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>id</code> value.
-     * @return the value of the attribute
-     */
-    public Number id()
-    {
-        return (Number)EOUtilities.primaryKeyForObject(
-            editingContext() , this ).objectForKey( "id" );
     }
 
 

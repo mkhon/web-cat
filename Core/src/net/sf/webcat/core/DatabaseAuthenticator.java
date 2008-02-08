@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DatabaseAuthenticator.java,v 1.3 2007/06/23 02:11:28 stedwar2 Exp $
+ |  $Id: DatabaseAuthenticator.java,v 1.4 2008/02/08 20:00:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *  admitted.
  *
  *  @author Stephen Edwards
- *  @version $Id: DatabaseAuthenticator.java,v 1.3 2007/06/23 02:11:28 stedwar2 Exp $
+ *  @version $Id: DatabaseAuthenticator.java,v 1.4 2008/02/08 20:00:44 stedwar2 Exp $
  */
 public class DatabaseAuthenticator
     implements UserAuthenticator
@@ -224,8 +224,7 @@ public class DatabaseAuthenticator
         try
         {
             ec.lock();
-            User localUser =
-                (User)EOUtilities.localInstanceOfObject( ec, user );
+            User localUser = user.localInstance(ec);
             localUser.setPassword( newPassword );
             ec.saveChanges();
             result = true;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Semester.java,v 1.5 2008/01/13 03:19:05 stedwar2 Exp $
+ |  $Id: Semester.java,v 1.6 2008/02/08 20:00:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.*;
  * Represents a single school semester.
  *
  * @author Stephen Edwards
- * @version $Id: Semester.java,v 1.5 2008/01/13 03:19:05 stedwar2 Exp $
+ * @version $Id: Semester.java,v 1.6 2008/02/08 20:00:44 stedwar2 Exp $
  */
 public class Semester
     extends _Semester
@@ -56,67 +56,7 @@ public class Semester
     }
 
 
-    // ----------------------------------------------------------
-    /**
-     * Look up a Semester by id number.  Assumes the editing
-     * context is appropriately locked.
-     * @param ec The editing context to use
-     * @param id The id to look up
-     * @return The semester, or null if no such id exists
-     */
-    public static Semester semesterForId( EOEditingContext ec, int id )
-    {
-        Semester semester = null;
-        NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
-            ENTITY_NAME, "id", new Integer( id ) );
-        if ( results != null && results.count() > 0 )
-        {
-            semester = (Semester)results.objectAtIndex( 0 );
-        }
-        return semester;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Look up a Semester by id number.  Assumes the editing
-     * context is appropriately locked.
-     * @param ec The editing context to use
-     * @param id The id to look up
-     * @return The semester, or null if no such id exists
-     */
-    public static Semester semesterForId( EOEditingContext ec, String id )
-    {
-        Semester semester = null;
-        int idNumber = er.extensions.ERXValueUtilities.intValue( id );
-        if ( idNumber > 0 )
-        {
-            semester = semesterForId( ec, idNumber );
-        }
-        return semester;
-    }
-
-
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>id</code> value.
-     * @return the value of the attribute
-     */
-    public Number id()
-    {
-        try
-        {
-            return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
-        }
-        catch (Exception e)
-        {
-            return er.extensions.ERXConstant.ZeroInteger;
-        }
-    }
-
 
     // ----------------------------------------------------------
     /**

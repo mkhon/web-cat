@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateAssignmentPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: CreateAssignmentPage.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CreateAssignmentPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: CreateAssignmentPage.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class CreateAssignmentPage
     extends GraderComponent
@@ -101,7 +101,7 @@ public class CreateAssignmentPage
             }
             else
             {
-                semester = Semester.semesterForId( wcSession().localContext(),
+                semester = Semester.forId( wcSession().localContext(),
                     ERXValueUtilities.intValue( semesterPref ) );
             }
         }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderAssignmentComponent.java,v 1.1 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: GraderAssignmentComponent.java,v 1.2 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import net.sf.webcat.core.*;
  *  assignment selections from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderAssignmentComponent.java,v 1.1 2007/07/09 15:49:41 stedwar2 Exp $
+ *  @version $Id: GraderAssignmentComponent.java,v 1.2 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class GraderAssignmentComponent
     extends GraderCourseComponent
@@ -72,13 +72,13 @@ public class GraderAssignmentComponent
         if ( aoid != null )
         {
             result = startWith( AssignmentOffering
-                .offeringForId( wcSession().localContext(), aoid ) );
+                .forId( wcSession().localContext(), aoid ) );
         }
         else
         {
             String aid = stringValueForKey( params, Assignment.ID_FORM_KEY );
             result = startWith( Assignment
-                .assignmentForId( wcSession().localContext(), aid ) );
+                .forId( wcSession().localContext(), aid ) );
         }
         return result;
     }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -88,8 +88,7 @@ public class GraderComponent
             User prime = wcSession().primeUser();
             if ( prime.editingContext() != wcSession().localContext() )
             {
-                prime = (User)EOUtilities.localInstanceOfObject(
-                    wcSession().localContext(), prime );
+                prime = prime.localInstance( wcSession().localContext() );
             }
             NSArray results = null;
             try
@@ -116,12 +115,11 @@ public class GraderComponent
                 {
                     ec.lock();
                     ec.insertObject( newPrefs );
-                    User localPrime = (User)EOUtilities.localInstanceOfObject(
-                                ec, prime );
+                    User localPrime = prime.localInstance( ec );
                     newPrefs.setUserRelationship( localPrime );
                     ec.saveChanges();
-                    prefs = (GraderPrefs)EOUtilities.localInstanceOfObject(
-                        wcSession().localContext(), newPrefs );
+                    prefs =
+                        newPrefs.localInstance( wcSession().localContext() );
                 }
                 catch ( Exception e)
                 {
