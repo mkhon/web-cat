@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.7 2008/01/12 18:27:25 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.8 2008/02/08 19:34:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.*;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.7 2008/01/12 18:27:25 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.8 2008/02/08 19:34:25 stedwar2 Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -129,8 +129,10 @@ public class CourseOffering
             {
                 // !!!
                 log.error(
-                    "course offering with no associated course: " + this );
-                cachedCompactName = course() + "(" + label + ")";
+                    "course offering with no associated course: " + crn()
+                    + ((label() == null) ? "" : ("(" + label() + ")")));
+                // don't cache!
+                return "null(" + label + ")";
             }
             else
             {
