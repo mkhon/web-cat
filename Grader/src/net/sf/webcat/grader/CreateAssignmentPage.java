@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateAssignmentPage.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
+ |  $Id: CreateAssignmentPage.java,v 1.5 2008/02/09 00:35:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CreateAssignmentPage.java,v 1.4 2008/02/08 20:01:38 stedwar2 Exp $
+ *  @version $Id: CreateAssignmentPage.java,v 1.5 2008/02/09 00:35:34 stedwar2 Exp $
  */
 public class CreateAssignmentPage
     extends GraderComponent
@@ -167,10 +167,10 @@ public class CreateAssignmentPage
         log.debug( "next page = " + next );
         log.debug( "next page class = " + next.getClass().getName() );
         if ( next instanceof PickAssignmentToEditPage
-           && wcSession().currentTab().hasNextSibling() )
+           && currentTab().hasNextSibling() )
         {
-            next = pageWithName( wcSession().currentTab().nextSibling()
-                .select().pageName() );
+            next = pageWithName(
+                currentTab().nextSibling().select().pageName() );
         }
         return next;
     }
