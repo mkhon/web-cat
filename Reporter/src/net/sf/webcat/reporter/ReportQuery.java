@@ -35,7 +35,7 @@ import com.webobjects.eocontrol.*;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: ReportQuery.java,v 1.1 2007/12/07 21:48:22 aallowat Exp $
+ * @version $Id: ReportQuery.java,v 1.2 2008/02/17 20:22:17 aallowat Exp $
  */
 public class ReportQuery
     extends _ReportQuery
@@ -77,8 +77,15 @@ public class ReportQuery
     {
     	if(queryInfo() == null)
     		setQueryInfo(new MutableDictionary());
-    	
-    	queryInfo().setObjectForKey(q, "qualifier");
+
+    	if(q == null)
+    	{
+    		queryInfo().removeObjectForKey("qualifier");
+    	}
+    	else
+    	{
+    		queryInfo().setObjectForKey(q, "qualifier");
+    	}
     }
 
 

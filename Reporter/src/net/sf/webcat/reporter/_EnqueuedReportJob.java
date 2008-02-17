@@ -71,6 +71,9 @@ public abstract class _EnqueuedReportJob
     public static final String USER_KEY = "user";
     // To-many relationships ---
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
+    // Fetch specifications ---
+    public static final String USER_FSPEC = "user";
+    public static final String UUID_FSPEC = "uuid";
     public static final String ENTITY_NAME = "EnqueuedReportJob";
 
 
@@ -91,7 +94,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>description</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDescription( String value )
@@ -119,7 +122,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>discarded</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDiscarded( boolean value )
@@ -145,7 +148,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>discarded</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDiscardedRaw( Number value )
@@ -173,7 +176,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>paused</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setPaused( boolean value )
@@ -199,7 +202,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>paused</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setPausedRaw( Number value )
@@ -223,7 +226,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>queueTime</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setQueueTime( NSTimestamp value )
@@ -247,7 +250,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>renderedResourceActionUrl</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setRenderedResourceActionUrl( String value )
@@ -271,7 +274,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>renderingMethod</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setRenderingMethod( String value )
@@ -295,7 +298,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Change the value of this object's <code>uuid</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUuid( String value )
@@ -308,12 +311,12 @@ public abstract class _EnqueuedReportJob
     /**
      * Retrieve object according to the <code>User</code>
      * fetch specification.
-     * 
+     *
      * @param context The editing context to use
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<EnqueuedReportJob> objectsForUser(
+    public static NSArray objectsForUser(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
         )
@@ -321,7 +324,7 @@ public abstract class _EnqueuedReportJob
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "user", "EnqueuedReportJob" );
 
-        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
+        NSMutableDictionary bindings = new NSMutableDictionary();
 
         if ( userBinding != null )
             bindings.setObjectForKey( userBinding,
@@ -336,12 +339,12 @@ public abstract class _EnqueuedReportJob
     /**
      * Retrieve object according to the <code>Uuid</code>
      * fetch specification.
-     * 
+     *
      * @param context The editing context to use
      * @param uuidBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<EnqueuedReportJob> objectsForUuid(
+    public static NSArray objectsForUuid(
             EOEditingContext context,
             String uuidBinding
         )
@@ -349,7 +352,7 @@ public abstract class _EnqueuedReportJob
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "uuid", "EnqueuedReportJob" );
 
-        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
+        NSMutableDictionary bindings = new NSMutableDictionary();
 
         if ( uuidBinding != null )
             bindings.setObjectForKey( uuidBinding,
@@ -378,7 +381,7 @@ public abstract class _EnqueuedReportJob
      * relationship (DO NOT USE--instead, use
      * <code>setReportTemplateRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportTemplate( net.sf.webcat.reporter.ReportTemplate value )
@@ -392,7 +395,7 @@ public abstract class _EnqueuedReportJob
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportTemplateRelationship(
@@ -429,7 +432,7 @@ public abstract class _EnqueuedReportJob
      * relationship (DO NOT USE--instead, use
      * <code>setUserRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setUser( net.sf.webcat.core.User value )
@@ -443,7 +446,7 @@ public abstract class _EnqueuedReportJob
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setUserRelationship(
@@ -468,9 +471,9 @@ public abstract class _EnqueuedReportJob
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries()
+    public NSArray dataSetQueries()
     {
-        return (NSArray<net.sf.webcat.reporter.ReportDataSetQuery>)storedValueForKey( "dataSetQueries" );
+        return (NSArray)storedValueForKey( "dataSetQueries" );
     }
 
 
@@ -478,10 +481,10 @@ public abstract class _EnqueuedReportJob
     /**
      * Replace the list of entities pointed to by the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @param value The new set of entities to relate to
      */
-    public void setDataSetQueries( NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> value )
+    public void setDataSetQueries( NSMutableArray value )
     {
         takeStoredValueForKey( value, "dataSetQueries" );
     }
@@ -493,12 +496,12 @@ public abstract class _EnqueuedReportJob
      * relationship (DO NOT USE--instead, use
      * <code>addToDataSetQueriesRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.addObject( value );
     }
@@ -510,12 +513,12 @@ public abstract class _EnqueuedReportJob
      * relationship (DO NOT USE--instead, use
      * <code>removeFromDataSetQueriesRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.removeObject( value );
     }
@@ -525,7 +528,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Add a new entity to the <code>dataSetQueries</code>
      * relationship.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -539,7 +542,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Remove a specific entity from the <code>dataSetQueries</code>
      * relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -553,7 +556,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Create a brand new object that is a member of the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @return The new entity
      */
     public net.sf.webcat.reporter.ReportDataSetQuery createDataSetQueriesRelationship()
@@ -573,7 +576,7 @@ public abstract class _EnqueuedReportJob
     /**
      * Remove and then delete a specific entity that is a member of the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship and then delete
      */
     public void deleteDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -591,9 +594,10 @@ public abstract class _EnqueuedReportJob
      */
     public void deleteAllDataSetQueriesRelationships()
     {
-        Enumeration<net.sf.webcat.reporter.ReportDataSetQuery> objects = dataSetQueries().objectEnumerator();
+        Enumeration objects = dataSetQueries().objectEnumerator();
         while ( objects.hasMoreElements() )
-            deleteDataSetQueriesRelationship( objects.nextElement() );
+            deleteDataSetQueriesRelationship(
+                (net.sf.webcat.reporter.ReportDataSetQuery)objects.nextElement() );
     }
 
 

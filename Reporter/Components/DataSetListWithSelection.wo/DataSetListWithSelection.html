@@ -1,0 +1,25 @@
+<ol>
+<wo:loop list="$dataSets" item="$dataSet">
+	<li>
+		<wo:if condition="~selection == dataSet">
+			<b><wo:if condition="$dataSet.name">
+				<wo:str value="$dataSet.name"/>
+			</wo:if><wo:else>
+				(unnamed)
+			</wo:else>
+			:</b>
+			<wo:if condition="$dataSet.description">
+				<wo:str value="$dataSet.description"/>
+			</wo:if><wo:else>
+				(no descripton provided)
+			</wo:else>
+		</wo:if><wo:else>
+			<wo:if condition="$dataSet.name">
+				<wo:str value="$dataSet.name"/>
+			</wo:if><wo:else>
+				(unnamed)
+			</wo:else>
+		</wo:else>
+	</li>
+</wo:loop>
+</ol>

@@ -70,6 +70,9 @@ public abstract class _GeneratedReport
     public static final String USER_KEY = "user";
     // To-many relationships ---
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
+    // Fetch specifications ---
+    public static final String USER_FSPEC = "user";
+    public static final String UUID_FSPEC = "uuid";
     public static final String ENTITY_NAME = "GeneratedReport";
 
 
@@ -90,7 +93,7 @@ public abstract class _GeneratedReport
     /**
      * Change the value of this object's <code>description</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDescription( String value )
@@ -110,7 +113,7 @@ public abstract class _GeneratedReport
      */
     public net.sf.webcat.core.MutableArray errors()
     {
-    	NSData dbValue = 
+    	NSData dbValue =
             (NSData)storedValueForKey( "errors" );
         if ( errorsRawCache != dbValue )
         {
@@ -141,8 +144,8 @@ public abstract class _GeneratedReport
             }
         }
         else if ( dbValue == null && errorsCache == null )
-        { 
-            errorsCache = 
+        {
+            errorsCache =
                 net.sf.webcat.core.MutableArray
                 .objectWithArchiveData( dbValue );
              errorsCache.setOwner( this );
@@ -156,7 +159,7 @@ public abstract class _GeneratedReport
     /**
      * Change the value of this object's <code>errors</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setErrors( net.sf.webcat.core.MutableArray value )
@@ -208,7 +211,7 @@ public abstract class _GeneratedReport
     /**
      * Change the value of this object's <code>generatedTime</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setGeneratedTime( NSTimestamp value )
@@ -236,7 +239,7 @@ public abstract class _GeneratedReport
     /**
      * Change the value of this object's <code>updateMutableFields</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUpdateMutableFields( boolean value )
@@ -262,7 +265,7 @@ public abstract class _GeneratedReport
     /**
      * Change the value of this object's <code>updateMutableFields</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUpdateMutableFieldsRaw( Number value )
@@ -286,7 +289,7 @@ public abstract class _GeneratedReport
     /**
      * Change the value of this object's <code>uuid</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUuid( String value )
@@ -362,12 +365,12 @@ public abstract class _GeneratedReport
     /**
      * Retrieve object according to the <code>User</code>
      * fetch specification.
-     * 
+     *
      * @param context The editing context to use
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<GeneratedReport> objectsForUser(
+    public static NSArray objectsForUser(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
         )
@@ -375,7 +378,7 @@ public abstract class _GeneratedReport
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "user", "GeneratedReport" );
 
-        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
+        NSMutableDictionary bindings = new NSMutableDictionary();
 
         if ( userBinding != null )
             bindings.setObjectForKey( userBinding,
@@ -390,12 +393,12 @@ public abstract class _GeneratedReport
     /**
      * Retrieve object according to the <code>Uuid</code>
      * fetch specification.
-     * 
+     *
      * @param context The editing context to use
      * @param uuidBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<GeneratedReport> objectsForUuid(
+    public static NSArray objectsForUuid(
             EOEditingContext context,
             String uuidBinding
         )
@@ -403,7 +406,7 @@ public abstract class _GeneratedReport
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "uuid", "GeneratedReport" );
 
-        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
+        NSMutableDictionary bindings = new NSMutableDictionary();
 
         if ( uuidBinding != null )
             bindings.setObjectForKey( uuidBinding,
@@ -432,7 +435,7 @@ public abstract class _GeneratedReport
      * relationship (DO NOT USE--instead, use
      * <code>setReportTemplateRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportTemplate( net.sf.webcat.reporter.ReportTemplate value )
@@ -446,7 +449,7 @@ public abstract class _GeneratedReport
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportTemplateRelationship(
@@ -483,7 +486,7 @@ public abstract class _GeneratedReport
      * relationship (DO NOT USE--instead, use
      * <code>setUserRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setUser( net.sf.webcat.core.User value )
@@ -497,7 +500,7 @@ public abstract class _GeneratedReport
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setUserRelationship(
@@ -522,9 +525,9 @@ public abstract class _GeneratedReport
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries()
+    public NSArray dataSetQueries()
     {
-        return (NSArray<net.sf.webcat.reporter.ReportDataSetQuery>)storedValueForKey( "dataSetQueries" );
+        return (NSArray)storedValueForKey( "dataSetQueries" );
     }
 
 
@@ -532,10 +535,10 @@ public abstract class _GeneratedReport
     /**
      * Replace the list of entities pointed to by the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @param value The new set of entities to relate to
      */
-    public void setDataSetQueries( NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> value )
+    public void setDataSetQueries( NSMutableArray value )
     {
         takeStoredValueForKey( value, "dataSetQueries" );
     }
@@ -547,12 +550,12 @@ public abstract class _GeneratedReport
      * relationship (DO NOT USE--instead, use
      * <code>addToDataSetQueriesRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.addObject( value );
     }
@@ -564,12 +567,12 @@ public abstract class _GeneratedReport
      * relationship (DO NOT USE--instead, use
      * <code>removeFromDataSetQueriesRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.removeObject( value );
     }
@@ -579,7 +582,7 @@ public abstract class _GeneratedReport
     /**
      * Add a new entity to the <code>dataSetQueries</code>
      * relationship.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -593,7 +596,7 @@ public abstract class _GeneratedReport
     /**
      * Remove a specific entity from the <code>dataSetQueries</code>
      * relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -607,7 +610,7 @@ public abstract class _GeneratedReport
     /**
      * Create a brand new object that is a member of the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @return The new entity
      */
     public net.sf.webcat.reporter.ReportDataSetQuery createDataSetQueriesRelationship()
@@ -627,7 +630,7 @@ public abstract class _GeneratedReport
     /**
      * Remove and then delete a specific entity that is a member of the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship and then delete
      */
     public void deleteDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -645,9 +648,10 @@ public abstract class _GeneratedReport
      */
     public void deleteAllDataSetQueriesRelationships()
     {
-        Enumeration<net.sf.webcat.reporter.ReportDataSetQuery> objects = dataSetQueries().objectEnumerator();
+        Enumeration objects = dataSetQueries().objectEnumerator();
         while ( objects.hasMoreElements() )
-            deleteDataSetQueriesRelationship( objects.nextElement() );
+            deleteDataSetQueriesRelationship(
+                (net.sf.webcat.reporter.ReportDataSetQuery)objects.nextElement() );
     }
 
 

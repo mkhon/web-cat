@@ -68,6 +68,8 @@ public abstract class _ReportTemplate
     public static final String AUTHOR_KEY = "author";
     // To-many relationships ---
     public static final String DATA_SETS_KEY = "dataSets";
+    // Fetch specifications ---
+    public static final String ALL_TEMPLATES_FSPEC = "allTemplates";
     public static final String ENTITY_NAME = "ReportTemplate";
 
 
@@ -88,7 +90,7 @@ public abstract class _ReportTemplate
     /**
      * Change the value of this object's <code>description</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDescription( String value )
@@ -116,7 +118,7 @@ public abstract class _ReportTemplate
     /**
      * Change the value of this object's <code>isPublished</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setIsPublished( boolean value )
@@ -142,7 +144,7 @@ public abstract class _ReportTemplate
     /**
      * Change the value of this object's <code>isPublished</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setIsPublishedRaw( Number value )
@@ -166,7 +168,7 @@ public abstract class _ReportTemplate
     /**
      * Change the value of this object's <code>lastModified</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setLastModified( NSTimestamp value )
@@ -190,7 +192,7 @@ public abstract class _ReportTemplate
     /**
      * Change the value of this object's <code>name</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setName( String value )
@@ -214,7 +216,7 @@ public abstract class _ReportTemplate
     /**
      * Change the value of this object's <code>uploadedFileName</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUploadedFileName( String value )
@@ -227,11 +229,11 @@ public abstract class _ReportTemplate
     /**
      * Retrieve object according to the <code>AllTemplates</code>
      * fetch specification.
-     * 
+     *
      * @param context The editing context to use
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<ReportTemplate> objectsForAllTemplates(
+    public static NSArray objectsForAllTemplates(
             EOEditingContext context
         )
     {
@@ -260,7 +262,7 @@ public abstract class _ReportTemplate
      * relationship (DO NOT USE--instead, use
      * <code>setAuthorRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setAuthor( net.sf.webcat.core.User value )
@@ -274,7 +276,7 @@ public abstract class _ReportTemplate
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setAuthorRelationship(
@@ -299,9 +301,9 @@ public abstract class _ReportTemplate
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray<net.sf.webcat.reporter.ReportDataSet> dataSets()
+    public NSArray dataSets()
     {
-        return (NSArray<net.sf.webcat.reporter.ReportDataSet>)storedValueForKey( "dataSets" );
+        return (NSArray)storedValueForKey( "dataSets" );
     }
 
 
@@ -309,10 +311,10 @@ public abstract class _ReportTemplate
     /**
      * Replace the list of entities pointed to by the
      * <code>dataSets</code> relationship.
-     * 
+     *
      * @param value The new set of entities to relate to
      */
-    public void setDataSets( NSMutableArray<net.sf.webcat.reporter.ReportDataSet> value )
+    public void setDataSets( NSMutableArray value )
     {
         takeStoredValueForKey( value, "dataSets" );
     }
@@ -324,12 +326,12 @@ public abstract class _ReportTemplate
      * relationship (DO NOT USE--instead, use
      * <code>addToDataSetsRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSets( net.sf.webcat.reporter.ReportDataSet value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSet> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSet>)dataSets();
+        NSMutableArray array = (NSMutableArray)dataSets();
         willChange();
         array.addObject( value );
     }
@@ -341,12 +343,12 @@ public abstract class _ReportTemplate
      * relationship (DO NOT USE--instead, use
      * <code>removeFromDataSetsRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSets( net.sf.webcat.reporter.ReportDataSet value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSet> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSet>)dataSets();
+        NSMutableArray array = (NSMutableArray)dataSets();
         willChange();
         array.removeObject( value );
     }
@@ -356,7 +358,7 @@ public abstract class _ReportTemplate
     /**
      * Add a new entity to the <code>dataSets</code>
      * relationship.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
@@ -370,7 +372,7 @@ public abstract class _ReportTemplate
     /**
      * Remove a specific entity from the <code>dataSets</code>
      * relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
@@ -384,7 +386,7 @@ public abstract class _ReportTemplate
     /**
      * Create a brand new object that is a member of the
      * <code>dataSets</code> relationship.
-     * 
+     *
      * @return The new entity
      */
     public net.sf.webcat.reporter.ReportDataSet createDataSetsRelationship()
@@ -404,7 +406,7 @@ public abstract class _ReportTemplate
     /**
      * Remove and then delete a specific entity that is a member of the
      * <code>dataSets</code> relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship and then delete
      */
     public void deleteDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
@@ -422,9 +424,10 @@ public abstract class _ReportTemplate
      */
     public void deleteAllDataSetsRelationships()
     {
-        Enumeration<net.sf.webcat.reporter.ReportDataSet> objects = dataSets().objectEnumerator();
+        Enumeration objects = dataSets().objectEnumerator();
         while ( objects.hasMoreElements() )
-            deleteDataSetsRelationship( objects.nextElement() );
+            deleteDataSetsRelationship(
+                (net.sf.webcat.reporter.ReportDataSet)objects.nextElement() );
     }
 
 

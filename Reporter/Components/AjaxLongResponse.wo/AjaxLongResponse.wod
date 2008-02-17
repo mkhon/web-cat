@@ -5,7 +5,7 @@ CancelButton: AjaxSubmitButton {
 	action = cancelJob;
 }
 
-PeriodicUpdater: net.sf.webcat.reporter.controls.AjaxUpdateContainer2 {
+PeriodicUpdater: AjaxUpdateContainer {
 	id = "periodicUpdater";
 	frequency = 3;
 	decay = 1;

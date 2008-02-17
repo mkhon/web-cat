@@ -68,6 +68,8 @@ public abstract class _ReportQuery
     public static final String USER_KEY = "user";
     // To-many relationships ---
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
+    // Fetch specifications ---
+    public static final String USER_AND_ENTITY_SAVED_QUERIES_FSPEC = "userAndEntitySavedQueries";
     public static final String ENTITY_NAME = "ReportQuery";
 
 
@@ -88,7 +90,7 @@ public abstract class _ReportQuery
     /**
      * Change the value of this object's <code>description</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDescription( String value )
@@ -108,7 +110,7 @@ public abstract class _ReportQuery
      */
     public net.sf.webcat.core.MutableDictionary queryInfo()
     {
-    	NSData dbValue = 
+    	NSData dbValue =
             (NSData)storedValueForKey( "queryInfo" );
         if ( queryInfoRawCache != dbValue )
         {
@@ -139,8 +141,8 @@ public abstract class _ReportQuery
             }
         }
         else if ( dbValue == null && queryInfoCache == null )
-        { 
-            queryInfoCache = 
+        {
+            queryInfoCache =
                 net.sf.webcat.core.MutableDictionary
                 .objectWithArchiveData( dbValue );
              queryInfoCache.setOwner( this );
@@ -154,7 +156,7 @@ public abstract class _ReportQuery
     /**
      * Change the value of this object's <code>queryInfo</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setQueryInfo( net.sf.webcat.core.MutableDictionary value )
@@ -210,7 +212,7 @@ public abstract class _ReportQuery
     /**
      * Change the value of this object's <code>updateMutableFields</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUpdateMutableFields( boolean value )
@@ -236,7 +238,7 @@ public abstract class _ReportQuery
     /**
      * Change the value of this object's <code>updateMutableFields</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUpdateMutableFieldsRaw( Number value )
@@ -260,7 +262,7 @@ public abstract class _ReportQuery
     /**
      * Change the value of this object's <code>wcEntityName</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setWcEntityName( String value )
@@ -334,6 +336,39 @@ public abstract class _ReportQuery
 
     // ----------------------------------------------------------
     /**
+     * Retrieve object according to the <code>UserAndEntitySavedQueries</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @param wcEntityNameBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray objectsForUserAndEntitySavedQueries(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding,
+            String wcEntityNameBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "userAndEntitySavedQueries", "ReportQuery" );
+
+        NSMutableDictionary bindings = new NSMutableDictionary();
+
+        if ( userBinding != null )
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        if ( wcEntityNameBinding != null )
+            bindings.setObjectForKey( wcEntityNameBinding,
+                                      "wcEntityName" );
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        return context.objectsWithFetchSpecification( spec );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve the entity pointed to by the <code>user</code>
      * relationship.
      * @return the entity in the relationship
@@ -350,7 +385,7 @@ public abstract class _ReportQuery
      * relationship (DO NOT USE--instead, use
      * <code>setUserRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setUser( net.sf.webcat.core.User value )
@@ -364,7 +399,7 @@ public abstract class _ReportQuery
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setUserRelationship(
@@ -389,9 +424,9 @@ public abstract class _ReportQuery
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries()
+    public NSArray dataSetQueries()
     {
-        return (NSArray<net.sf.webcat.reporter.ReportDataSetQuery>)storedValueForKey( "dataSetQueries" );
+        return (NSArray)storedValueForKey( "dataSetQueries" );
     }
 
 
@@ -399,10 +434,10 @@ public abstract class _ReportQuery
     /**
      * Replace the list of entities pointed to by the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @param value The new set of entities to relate to
      */
-    public void setDataSetQueries( NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> value )
+    public void setDataSetQueries( NSMutableArray value )
     {
         takeStoredValueForKey( value, "dataSetQueries" );
     }
@@ -414,12 +449,12 @@ public abstract class _ReportQuery
      * relationship (DO NOT USE--instead, use
      * <code>addToDataSetQueriesRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.addObject( value );
     }
@@ -431,12 +466,12 @@ public abstract class _ReportQuery
      * relationship (DO NOT USE--instead, use
      * <code>removeFromDataSetQueriesRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
-        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array = (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
+        NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.removeObject( value );
     }
@@ -446,7 +481,7 @@ public abstract class _ReportQuery
     /**
      * Add a new entity to the <code>dataSetQueries</code>
      * relationship.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void addToDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -460,7 +495,7 @@ public abstract class _ReportQuery
     /**
      * Remove a specific entity from the <code>dataSetQueries</code>
      * relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship
      */
     public void removeFromDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -474,7 +509,7 @@ public abstract class _ReportQuery
     /**
      * Create a brand new object that is a member of the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @return The new entity
      */
     public net.sf.webcat.reporter.ReportDataSetQuery createDataSetQueriesRelationship()
@@ -494,7 +529,7 @@ public abstract class _ReportQuery
     /**
      * Remove and then delete a specific entity that is a member of the
      * <code>dataSetQueries</code> relationship.
-     * 
+     *
      * @param value The entity to remove from the relationship and then delete
      */
     public void deleteDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
@@ -512,9 +547,10 @@ public abstract class _ReportQuery
      */
     public void deleteAllDataSetQueriesRelationships()
     {
-        Enumeration<net.sf.webcat.reporter.ReportDataSetQuery> objects = dataSetQueries().objectEnumerator();
+        Enumeration objects = dataSetQueries().objectEnumerator();
         while ( objects.hasMoreElements() )
-            deleteDataSetQueriesRelationship( objects.nextElement() );
+            deleteDataSetQueriesRelationship(
+                (net.sf.webcat.reporter.ReportDataSetQuery)objects.nextElement() );
     }
 
 

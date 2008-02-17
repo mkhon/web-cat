@@ -36,6 +36,8 @@ public class AjaxLongResponse extends WOComponent
 
     public Object jobToken;
     public AjaxLongResponseHandler handler;
+    public String cancellationMessage;
+    public String workingMessage;
 
     // These two keys ensure that the task is only checked once, so that
     // all conditionals in the template always return consistent results,

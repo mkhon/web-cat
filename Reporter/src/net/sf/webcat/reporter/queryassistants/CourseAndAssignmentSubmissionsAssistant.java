@@ -192,9 +192,15 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     	{
     		CourseTreeNode ctn = new CourseTreeNode(courseRoot, c);
     		courseNodes.addObject(ctn);
-    		
-    		NSArray<CourseOffering> offerings = c.offerings();
-    		
+  
+    		// Why did this disappear?!
+//    		NSArray<CourseOffering> offerings = c.offerings();
+    		EOFetchSpecification fs = new EOFetchSpecification("CourseOffering",
+    				EOQualifier.qualifierWithQualifierFormat("course = %@",
+    						new NSArray<Object>(new Object[] { c })), null);
+    		NSArray<CourseOffering> offerings =
+    			wcSession().localContext().objectsWithFetchSpecification(fs);
+
     		NSMutableArray<CourseTreeNode> courseOfferingNodes =
     			new NSMutableArray<CourseTreeNode>();
     		for(CourseOffering co : offerings)

@@ -526,7 +526,7 @@ public class ReportQueueProcessor extends Thread
     		
     		// If a report document got generated, delete it.
     		NSArray reports = GeneratedReport.objectsForUuid(context, uuid);
-    		if(jobs.count() > 0)
+    		if(reports.count() > 0)
     		{
     			GeneratedReport report = (GeneratedReport)reports.objectAtIndex(0);
     			context.deleteObject(report);
@@ -937,6 +937,18 @@ public class ReportQueueProcessor extends Thread
         }
     }
 
+    public boolean isReportWithUuidRunning(String uuid)
+    {
+    	if(currentlyRunningThread != null)
+    	{
+    		if(currentlyRunningThread.jobUuid() == uuid)
+    		{
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
 
     //~ Instance/static variables .............................................
 

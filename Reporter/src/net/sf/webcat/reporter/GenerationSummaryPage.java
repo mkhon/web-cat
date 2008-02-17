@@ -37,7 +37,7 @@ public class GenerationSummaryPage extends ReporterComponent
 
     public String defaultDescription()
     {
-    	String time = new NSTimestampFormatter().format(new NSTimestamp());
+    	String time = wcSession().timeFormatter().format(new NSTimestamp());
     	return reportTemplate.name() + " - " + time;
     }
     
@@ -51,33 +51,13 @@ public class GenerationSummaryPage extends ReporterComponent
     {
     	return Reporter.getInstance().allRenderingMethods();
     }
-
-    public WOComponent goBack()
-    {
-        if(dataSets.count() == 0)
-        {
-        	return pageWithName(PickTemplateToGeneratePage.class.getName());
-        }
-        else
-        {
-        	ConstructDataSetQueryPage page = (ConstructDataSetQueryPage)
-        		pageWithName(ConstructDataSetQueryPage.class.getName());
-
-        	page.takeValueForKey(dataSets, "dataSets");
-        	page.takeValueForKey(dataSets.count() - 1, "currentDataSetIndex");
-
-        	return page;
-        }
-	}
     
     public WOComponent goNext()
     {
     	String desc = reportDescription;
     	if(desc == null)
     	{
-    		NSTimestampFormatter fmt = new NSTimestampFormatter();
-    		desc = reportTemplate.name() + " - " +
-    			fmt.format(new NSTimestamp());
+    		desc = defaultDescription();
     	}
     	
     	setReportDescriptionInSession(desc);

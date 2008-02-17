@@ -8,20 +8,24 @@ import org.apache.log4j.Logger;
 
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.eocontrol.EOKeyValueQualifier;
 import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSTimestamp;
+
+import er.extensions.ERXConstant;
 
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.core.User;
 import net.sf.webcat.core.WCComponent;
-import net.sf.webcat.grader.EnqueuedJob;
-import net.sf.webcat.grader.Grader;
-import net.sf.webcat.grader.Submission;
 
 public class ReporterComponent extends WCComponent
 {
@@ -57,6 +61,8 @@ public class ReporterComponent extends WCComponent
     	"net.sf.webcat.reporter.currentDataSet";
     public static final String SESSION_QUERIES =
     	"net.sf.webcat.reporter.queries";
+    public static final String SESSION_PAGE_CONTROLLER =
+    	"net.sf.webcat.reporter.pageController";
     
     //~ Methods ...............................................................
 
@@ -72,6 +78,7 @@ public class ReporterComponent extends WCComponent
     	wcSession().removeObjectForKey(SESSION_RENDERING_METHOD);
     	wcSession().removeObjectForKey(SESSION_CURRENT_DATASET);
     	wcSession().removeObjectForKey(SESSION_QUERIES);
+    	wcSession().removeObjectForKey(SESSION_PAGE_CONTROLLER);
     }
     
 
@@ -162,6 +169,22 @@ public class ReporterComponent extends WCComponent
     }
 
     
+    public void createPageControllerInSession()
+    {
+    	QueryPageController controller = new QueryPageController(this,
+    			reportTemplateInSession().dataSets());
+    	
+    	wcSession().setObjectForKey(controller, SESSION_PAGE_CONTROLLER);
+    }
+
+
+    public QueryPageController pageControllerInSession()
+    {
+    	return (QueryPageController)wcSession().objectForKey(
+    			SESSION_PAGE_CONTROLLER);
+    }
+
+
     public String componentForDataSetUuidInSession(String uuid)
     {
     	NSDictionary<String, NSDictionary<String, Object>> queryMap =
@@ -259,7 +282,7 @@ public class ReporterComponent extends WCComponent
     		// Only remove the query from the database if it isn't being used
     		// by any other ReportDataSetQueries.
     		NSArray<ReportDataSetQuery> uses = query.dataSetQueries();
-    		if(uses != null && uses.count() > 0)
+    		if(uses == null || uses.count() == 0)
     		{
     			wcSession().localContext().deleteObject(query);
     			wcSession().commitLocalChanges();
@@ -270,8 +293,22 @@ public class ReporterComponent extends WCComponent
     }
 
 
-    public void commitQueryForDataSet(ReportDataSet dataSet, String description,
-    		EOQualifier qualifier)
+    public void commitNewQueryForDataSet(ReportDataSet dataSet,
+    		String description, EOQualifier qualifier)
+    {
+    	ReportQuery query = new ReportQuery();
+    	wcSession().localContext().insertObject(query);
+    	query.setDescription(description);
+    	query.setQualifier(qualifier);
+    	query.setUserRelationship(wcSession().user());
+    	query.setWcEntityName(dataSet.wcEntityName());
+    	wcSession().commitLocalChanges();
+
+    	commitExistingQueryForDataSet(dataSet, query);
+    }
+
+    public void commitExistingQueryForDataSet(ReportDataSet dataSet,
+    		ReportQuery query)
     {
     	NSMutableDictionary<String, NSMutableDictionary<String, Object>> queryMap =
     		(NSMutableDictionary<String, NSMutableDictionary<String, Object>>)
@@ -294,17 +331,8 @@ public class ReporterComponent extends WCComponent
     		queryMap.setObjectForKey(queryInfo, uuid);
     	}
 
-    	ReportQuery query = new ReportQuery();
-    	wcSession().localContext().insertObject(query);
-    	query.setDescription(description);
-    	query.setQualifier(qualifier);
-    	query.setUserRelationship(wcSession().user());
-    	query.setWcEntityName(dataSet.wcEntityName());
-    	wcSession().commitLocalChanges();
-
    		queryInfo.setObjectForKey(query, "query");
     }
-
 
     public String commitReportGeneration()
     {
@@ -361,7 +389,7 @@ public class ReporterComponent extends WCComponent
 		ProgressManager progress = ProgressManager.getInstance();
  		progress.beginJobWithToken(reportUuidInSession());
  		progress.beginTaskForJob(reportUuidInSession(), new int[] { 95, 5 },
- 				"Generating report");
+ 				new ReportQueueStatusDescriptionProvider()); //"Generating report");
 
 		setEnqueuedJobInSession(job);
 		Reporter.getInstance().reportQueue().enqueue(null);
@@ -369,6 +397,112 @@ public class ReporterComponent extends WCComponent
 		return errorMessage;
 	}
 
+
+    private static class ReportQueueStatusDescriptionProvider
+    	implements IProgressManagerDescriptionProvider
+    {
+    	public ReportQueueStatusDescriptionProvider()
+    	{
+    		oldQueuePos = -1;
+    	}
+
+		public String description(Object jobToken)
+		{
+			ReportQueueProcessor rqp =
+				Reporter.getInstance().reportQueueProcessor();
+
+			String uuid = (String)jobToken;
+			String description;
+
+			if(rqp.isReportWithUuidRunning(uuid))
+			{
+				description = "Generating the report...";
+			}
+			else
+			{
+				description = updateJobData(uuid);
+			}
+
+			return description;
+		}
+		
+		private String updateJobData(String uuid)
+		{
+			if(jobData == null)
+				jobData = new JobData();
+			
+    		EOEditingContext ec = Application.newPeerEditingContext();
+
+            NSMutableArray qualifiers = new NSMutableArray();
+            qualifiers.addObject( new EOKeyValueQualifier(
+                            EnqueuedReportJob.DISCARDED_KEY,
+                            EOQualifier.QualifierOperatorEqual,
+                            ERXConstant.integerForInt( 0 )
+            ) );
+            qualifiers.addObject( new EOKeyValueQualifier(
+            		EnqueuedReportJob.PAUSED_KEY,
+                            EOQualifier.QualifierOperatorEqual,
+                            ERXConstant.integerForInt( 0 )
+            ) );
+            EOFetchSpecification fetchSpec =
+                new EOFetchSpecification(
+                		EnqueuedReportJob.ENTITY_NAME,
+                        new EOAndQualifier( qualifiers ),
+                        new NSArray( new Object[]{
+                                new EOSortOrdering(
+                                		EnqueuedReportJob.QUEUE_TIME_KEY,
+                                        EOSortOrdering.CompareAscending
+                                    )
+                            } )
+                    );
+
+            jobData.jobs =
+                ec.objectsWithFetchSpecification(
+                    fetchSpec
+                );
+
+            if ( oldQueuePos < 0
+                    || oldQueuePos >= jobData.jobs.count() )
+            {
+                oldQueuePos = jobData.jobs.count() - 1;
+            }
+            
+            jobData.queuePosition = jobData.jobs.count();
+            for ( int i = oldQueuePos; i >= 0; i-- )
+            {
+                EnqueuedReportJob job = (EnqueuedReportJob)jobData.jobs.objectAtIndex( i );
+                if(job.uuid() == uuid )
+                {
+                    jobData.queuePosition = i;
+                    break;
+                }
+            }
+            oldQueuePos = jobData.queuePosition;
+
+//            Grader grader = Grader.getInstance();
+//            jobData.mostRecentWait = grader.mostRecentJobWait();
+ //           jobData.estimatedWait =
+//                grader.estimatedJobTime() * ( jobData.queuePosition + 1 );
+            
+            Application.releasePeerEditingContext(ec);
+            
+            return "Your report will begin shortly (queue position " +
+            	jobData.queuePosition + ").";
+		}
+		
+		private JobData jobData;
+
+		private int oldQueuePos;
+
+		private static class JobData
+		{
+	        public NSArray jobs;
+//	        public int queueSize;
+	        public int queuePosition;
+	        long mostRecentWait;
+	        long estimatedWait;			
+		}
+    }
 
     public String commitReportRendering()
     {

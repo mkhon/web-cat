@@ -66,6 +66,8 @@ public abstract class _ReportDataSet
     // To-one relationships ---
     public static final String REPORT_TEMPLATE_KEY = "reportTemplate";
     // To-many relationships ---
+    // Fetch specifications ---
+    public static final String UUID_FSPEC = "uuid";
     public static final String ENTITY_NAME = "ReportDataSet";
 
 
@@ -86,7 +88,7 @@ public abstract class _ReportDataSet
     /**
      * Change the value of this object's <code>description</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setDescription( String value )
@@ -110,7 +112,7 @@ public abstract class _ReportDataSet
     /**
      * Change the value of this object's <code>name</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setName( String value )
@@ -134,7 +136,7 @@ public abstract class _ReportDataSet
     /**
      * Change the value of this object's <code>uuid</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setUuid( String value )
@@ -158,7 +160,7 @@ public abstract class _ReportDataSet
     /**
      * Change the value of this object's <code>wcEntityName</code>
      * property.
-     * 
+     *
      * @param value The new value for this property
      */
     public void setWcEntityName( String value )
@@ -171,12 +173,12 @@ public abstract class _ReportDataSet
     /**
      * Retrieve object according to the <code>Uuid</code>
      * fetch specification.
-     * 
+     *
      * @param context The editing context to use
      * @param uuidBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<ReportDataSet> objectsForUuid(
+    public static NSArray objectsForUuid(
             EOEditingContext context,
             String uuidBinding
         )
@@ -184,7 +186,7 @@ public abstract class _ReportDataSet
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "uuid", "ReportDataSet" );
 
-        NSMutableDictionary<String, Object> bindings = new NSMutableDictionary<String, Object>();
+        NSMutableDictionary bindings = new NSMutableDictionary();
 
         if ( uuidBinding != null )
             bindings.setObjectForKey( uuidBinding,
@@ -213,7 +215,7 @@ public abstract class _ReportDataSet
      * relationship (DO NOT USE--instead, use
      * <code>setReportTemplateRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportTemplate( net.sf.webcat.reporter.ReportTemplate value )
@@ -227,7 +229,7 @@ public abstract class _ReportDataSet
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportTemplateRelationship(

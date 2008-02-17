@@ -29,7 +29,7 @@ public class ProgressManager
 	public synchronized void beginJobWithToken(Object token)
 	{
 		log.debug("Starting progress monitored job with token: " + token);
-		jobs.setObjectForKey(new Job(), token);
+		jobs.setObjectForKey(new Job(token), token);
 	}
 
 	public Object beginJobWithAutomaticToken()
@@ -48,12 +48,12 @@ public class ProgressManager
 
 	public void beginTaskForJob(Object token, int totalWork)
 	{
-		beginTaskForJob(token, totalWork, null);
+		beginTaskForJob(token, totalWork, (String)null);
 	}
 
 	public void beginTaskForJob(Object token, int[] weights)
 	{
-		beginTaskForJob(token, weights, null);
+		beginTaskForJob(token, weights, (String)null);
 	}
 
 	public synchronized void beginTaskForJob(Object token, int[] weights,
@@ -68,6 +68,20 @@ public class ProgressManager
 	{
 		if(jobExists(token))
 			jobForToken(token).beginTask(totalWork, description);
+	}
+
+	public synchronized void beginTaskForJob(Object token, int[] weights,
+			IProgressManagerDescriptionProvider descriptionProvider)
+	{
+		if(jobExists(token))
+			jobForToken(token).beginTask(weights, descriptionProvider);
+	}
+
+	public synchronized void beginTaskForJob(Object token, int totalWork,
+			IProgressManagerDescriptionProvider descriptionProvider)
+	{
+		if(jobExists(token))
+			jobForToken(token).beginTask(totalWork, descriptionProvider);
 	}
 
 	public void stepJob(Object token)
@@ -123,8 +137,9 @@ public class ProgressManager
 
 	private class Job
 	{
-		public Job()
+		public Job(Object token)
 		{
+			jobToken = token;
 			tasks = new NSMutableArray<Task>();
 			isDone = false;
 		}
@@ -149,6 +164,20 @@ public class ProgressManager
 		    	logTaskStack("New task (\"" + description + "\") with " + totalWork + " units");
 		}
 		
+		public void beginTask(int[] weights, IProgressManagerDescriptionProvider descriptionProvider)
+		{
+			tasks.addObject(new Task(weights, weights.length, descriptionProvider));
+			
+	    	logTaskStack("New task with " + weights.length + " units");
+		}
+
+		public void beginTask(int totalWork, IProgressManagerDescriptionProvider descriptionProvider)
+		{
+	    	tasks.addObject(new Task(null, totalWork, descriptionProvider));
+	    	
+	    	logTaskStack("New task with " + totalWork + " units");
+		}
+
 		public void step(int delta)
 		{
 	    	int lastIndex = tasks.count() - 1;
@@ -181,8 +210,8 @@ public class ProgressManager
 			{
 				Task task = (Task)tasks.objectAtIndex(i);
 				
-				if(task.description != null)
-					return task.description;
+				if(task.description() != null)
+					return task.description();
 			}
 			
 			return null;
@@ -245,9 +274,25 @@ public class ProgressManager
 			public int[] weights;
 			public int totalWeight;
 			public int totalSteps;
-			public String description;
+			
+			private String description;
+			private IProgressManagerDescriptionProvider descriptionProvider;
 
 			public Task(int[] weights, int total, String desc)
+			{
+				initialize(weights, total);
+				
+				description = desc;
+			}
+
+			public Task(int[] weights, int total, IProgressManagerDescriptionProvider descProvider)
+			{
+				initialize(weights, total);
+				
+				descriptionProvider = descProvider;
+			}
+
+			private void initialize(int[] weights, int total)
 			{
 				this.weights = weights;
 				totalWeight = 0;
@@ -264,8 +309,7 @@ public class ProgressManager
 
 				weightSoFar = 0;
 				stepsDoneSoFar = 0;
-				totalSteps = total;
-				description = desc;
+				totalSteps = total;				
 			}
 
 			public double nextWeightPercent()
@@ -307,7 +351,19 @@ public class ProgressManager
 			{
 				return (double)weightSoFar / (double)totalWeight;
 			}
+			
+			public String description()
+			{
+				if(description != null)
+					return description;
+				else if(descriptionProvider != null)
+					return descriptionProvider.description(jobToken);
+				else
+					return null;
+			}
 		}
+		
+		private Object jobToken;
 
 		private boolean isDone;
 

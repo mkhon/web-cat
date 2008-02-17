@@ -1,0 +1,34 @@
+Page : net.sf.webcat.core.PageWithNavigation {
+	title = "Construct Data Set Query";
+    stylesheet = "Grader.framework/WebServerResources/jscalendar/skins/aqua/theme.css";
+    externalJavascript = "Grader.framework/WebServerResources/jscalendar/calendar.js,Grader.framework/WebServerResources/jscalendar/lang/calendar-en.js,Grader.framework/WebServerResources/jscalendar/calendar-setup.js"; 
+}
+
+DataSetList: DataSetListWithSelection {
+	dataSets = reportTemplateInSession.dataSets;
+	selection = dataSet;
+}
+
+ChooseQueryAssistant: WOHyperlink {
+	action = chooseQueryAssistant;
+}
+
+SavedQueries: WOPopUpButton {
+	list = savedQueries;
+	item = savedQuery;
+	displayString = savedQuery.description;
+}
+
+ChooseSavedQuery: WOSubmitButton {
+	value = "Use this query";
+	action = useSavedQuery;
+}
+
+Back: WOSubmitButton {
+	value = "Back";
+	action = pageControllerInSession.previousPage;
+}
+
+TextHinter : AjaxTextHinter {
+	form = "dataSetQueryForm";
+}

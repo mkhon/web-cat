@@ -4,3 +4,8 @@ RenderingMethod: WOPopUpButton {
 	selection = selectedRenderingMethod;
 	displayString = renderingMethod.displayName;
 }
+
+Back: WOSubmitButton {
+	value = "Back";
+	action = pageControllerInSession.previousPage;
+}

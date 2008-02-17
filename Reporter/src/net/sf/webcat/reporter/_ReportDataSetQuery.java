@@ -65,6 +65,7 @@ public abstract class _ReportDataSetQuery
     public static final String GENERATED_REPORT_KEY = "generatedReport";
     public static final String REPORT_QUERY_KEY = "reportQuery";
     // To-many relationships ---
+    // Fetch specifications ---
     public static final String ENTITY_NAME = "ReportDataSetQuery";
 
 
@@ -88,7 +89,7 @@ public abstract class _ReportDataSetQuery
      * relationship (DO NOT USE--instead, use
      * <code>setDataSetRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setDataSet( net.sf.webcat.reporter.ReportDataSet value )
@@ -102,7 +103,7 @@ public abstract class _ReportDataSetQuery
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setDataSetRelationship(
@@ -139,7 +140,7 @@ public abstract class _ReportDataSetQuery
      * relationship (DO NOT USE--instead, use
      * <code>setEnqueuedReportJobRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setEnqueuedReportJob( net.sf.webcat.reporter.EnqueuedReportJob value )
@@ -153,7 +154,7 @@ public abstract class _ReportDataSetQuery
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setEnqueuedReportJobRelationship(
@@ -190,7 +191,7 @@ public abstract class _ReportDataSetQuery
      * relationship (DO NOT USE--instead, use
      * <code>setGeneratedReportRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setGeneratedReport( net.sf.webcat.reporter.GeneratedReport value )
@@ -204,7 +205,7 @@ public abstract class _ReportDataSetQuery
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setGeneratedReportRelationship(
@@ -241,7 +242,7 @@ public abstract class _ReportDataSetQuery
      * relationship (DO NOT USE--instead, use
      * <code>setReportQueryRelationship()</code>.
      * This method is provided for WebObjects use.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportQuery( net.sf.webcat.reporter.ReportQuery value )
@@ -255,7 +256,7 @@ public abstract class _ReportDataSetQuery
      * Set the entity pointed to by the <code>authenticationDomain</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     * 
+     *
      * @param value The new entity to relate to
      */
     public void setReportQueryRelationship(

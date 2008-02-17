@@ -1,18 +1,10 @@
-<script>
-startBusy = function() {
-	$('assignmentContainer').hide();
-	$('assignmentContainerBusy').show();
-}
+<wo:ImportResource type="stylesheet" filename="queryassistants/course-and-assignment.css"/>
+<wo:ImportResource type="script" filename="queryassistants/course-and-assignment.js"/>
 
-stopBusy = function() {
-	$('assignmentContainerBusy').hide();
-	$('assignmentContainer').show();
-}
-</script>
 
-<div style="float: left; width: 45%; max-width: 45%">
-<p>1. Choose one or more course offerings.</p>
-<wo:adiv id="courseTreeContainer" class="scrollPane">
+<div style="float: left; width: 48%; max-width: 48%">
+<p>1. Choose one or more <b>course offerings.</b></p>
+<wo:adiv id="courseTreeContainer" class="scrollPane" style="height: 300px;">
 <wo name="CourseOfferingTree">
 	<wo name="CourseNodeCheckbox"/>
 	<wo:if condition="$isCurrentNodeCourse">
@@ -27,19 +19,19 @@ stopBusy = function() {
 </wo:adiv>
 </div>
 
-<div style="float: right; width: 45%; max-width: 45%">
-<p>2. Choose an assignment. The assignments shown below are those that are
-offered in all courses chosen in step 1.</p>
+<div style="float: right; width: 48%; max-width: 48%">
+<p>2. Choose an <b>assignment.</b> <wo name="AssignmentInfo"/></p>
+
 <wo:adiv id="assignmentContainer" onRefreshComplete="stopBusy();">
 <wo:if condition="$assignments.count">
-<div class="shadow"><table><tbody>
-	<wo:loop list="$assignments" item="$assignment" index="$index">
-		<wo:tr index="$index">
-			<td><wo name="AssignmentRadio"/></td>
-			<td><wo:str value="$assignment.titleString"/></td>
-		</wo:tr>
-	</wo:loop>
-</tbody></table></div>
+	<div class="scrollPane" style="height: 300px;"><table><tbody>
+		<wo:loop list="$assignments" item="$assignment" index="$index">
+			<wo:tr index="$index">
+				<td><wo name="AssignmentRadio"/></td>
+				<td><wo:str value="$assignment.titleString"/></td>
+			</wo:tr>
+		</wo:loop>
+	</tbody></table></div>
 </wo:if><wo:else>
 	<p style="border: 1px solid gray; padding: 16px"><b>
 	There are no assignments available that are offered in all of the courses

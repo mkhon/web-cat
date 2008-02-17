@@ -99,7 +99,6 @@
             name = user; 
         },
         {
- //       	deleteRule = EODeleteRuleNullify;
             destination = ReportDataSetQuery;
             isToMany = Y;
             joinSemantic = EOInnerJoin;

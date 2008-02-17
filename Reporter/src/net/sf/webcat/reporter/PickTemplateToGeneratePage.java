@@ -33,8 +33,11 @@ public class PickTemplateToGeneratePage extends ReporterComponent {
     	setReportUuidInSession(UUID.randomUUID().toString());
         setReportTemplateInSession(reportTemplate);
         setCurrentReportDataSetInSession(0);
+        createPageControllerInSession();
 
-        NSArray<ReportDataSet> dataSets = reportTemplate.dataSets();
+        return pageControllerInSession().nextPage();
+
+        /*NSArray<ReportDataSet> dataSets = reportTemplate.dataSets();
         if(dataSets == null || dataSets.isEmpty())
         {
         	return pageWithName(GenerationSummaryPage.class.getName());
@@ -48,6 +51,6 @@ public class PickTemplateToGeneratePage extends ReporterComponent {
         	page.takeValueForKey(0, "currentDataSetIndex");
 
         	return page;
-        }
+        }*/
     }
 }

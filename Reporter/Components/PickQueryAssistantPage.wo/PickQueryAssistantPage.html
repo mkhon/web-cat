@@ -1,0 +1,33 @@
+<wo name="Page">
+<wo:form multipleSubmit="$true">
+
+<h3>Data sets defined in this report</h3>
+<wo name="DataSetList"/>
+<hr/>
+
+<p>
+To assist in the construction of a query for the data set highlighted above,
+please choose how you would like to select the objects for the query:
+</p>
+<ul>
+<wo:loop list="$queryAssistants" item="$queryAssistant">
+	<li><p><wo name="ChooseQueryAssistant">
+	<wo:str value="$linkPartOfQueryAssistantDescription"/></wo>
+	<wo:str value="$nonLinkPartOfQueryAssistantDescription"/></p></li>
+</wo:loop>
+	<wo:if condition="$savedQueries.count">
+		<li><p>Or, choose a previously saved query:
+			<wo name="SavedQueries"/> <wo name="ChooseSavedQuery"/>
+		</p></li>
+	</wo:if>
+</ul>
+
+<div class="spacer">&nbsp;</div>
+
+<wo name="Back"/>
+<input type="button" disabled="true" value="Next"/>
+
+<div class="spacer">&nbsp;</div>
+
+</wo>
+</wo>
