@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ErrorPage.java,v 1.2 2007/06/18 17:55:58 stedwar2 Exp $
+ |  $Id: ErrorPage.java,v 1.3 2008/02/25 06:14:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  * occurs.
  *
  * @author Stephen Edwards
- * @version $Id: ErrorPage.java,v 1.2 2007/06/18 17:55:58 stedwar2 Exp $
+ * @version $Id: ErrorPage.java,v 1.3 2008/02/25 06:14:19 stedwar2 Exp $
  */
 public class ErrorPage
     extends WOExceptionPage
@@ -122,11 +122,7 @@ public class ErrorPage
         if ( hasSession() )
         {
             Session session = (Session)session();
-            session.cancelLocalChanges();
-//            session.defaultEditingContext().reset();
-//            session.localContext().reset();
-            session.defaultEditingContext().refaultAllObjects();
-            session.localContext().refaultAllObjects();
+            session.cancelSessionChanges();
             return session.isLoggedIn();
         }
         else

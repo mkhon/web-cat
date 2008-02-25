@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.5 2007/09/16 21:36:22 stedwar2 Exp $
+ |  $Id: OptionEditPanel.java,v 1.6 2008/02/25 06:14:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.5 2007/09/16 21:36:22 stedwar2 Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.6 2008/02/25 06:14:19 stedwar2 Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -431,7 +431,7 @@ public class OptionEditPanel
         optionValues =
             (NSKeyValueCodingAdditions)valueForBinding("optionValues");
 
-        setValue( wcSession().user().authenticationDomain().subdirName()
+        setValue( user().authenticationDomain().subdirName()
                 + "/" + filePath );
         if ( log.isDebugEnabled() )
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.5 2008/02/09 00:34:40 stedwar2 Exp $
+ |  $Id: PageWithNavigation.java,v 1.6 2008/02/25 06:14:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Level;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.5 2008/02/09 00:34:40 stedwar2 Exp $
+ * @version $Id: PageWithNavigation.java,v 1.6 2008/02/25 06:14:19 stedwar2 Exp $
  */
 public class PageWithNavigation
     extends BarePage
@@ -317,9 +317,9 @@ public class PageWithNavigation
      */
     public WOComponent primaryTabLink()
     {
-        if ( thisPage != null )
+        if (thisPage != null)
         {
-            thisPage.cancelLocalChanges();
+            thisPage.changeWorkflow();
         }
         return pageWithName( primaryTabItem.selectDefault().pageName() );
     }
@@ -332,10 +332,9 @@ public class PageWithNavigation
      */
     public WOComponent secondaryTabLink()
     {
-        if ( secondaryTabItem != secondLevelSelection
-             && thisPage != null )
+        if (thisPage != null)
         {
-            thisPage.cancelLocalChanges();
+            thisPage.changeWorkflow();
         }
         return pageWithName( secondaryTabItem.selectDefault().pageName() );
     }
@@ -462,6 +461,20 @@ public class PageWithNavigation
         ( (Session)session() ).toggleStudentView();
         return pageWithName(
             ( (Session)session() ).tabs.selectedDescendant().pageName() );
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public WOComponent pageWithName( String name )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug("pageWithName(" + name + ")");
+        }
+        return (thisPage == null)
+            ? super.pageWithName(name)
+            : thisPage.pageWithName(name);
     }
 
 

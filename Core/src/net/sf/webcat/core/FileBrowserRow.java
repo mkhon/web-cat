@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowserRow.java,v 1.3 2007/09/16 21:32:28 stedwar2 Exp $
+ |  $Id: FileBrowserRow.java,v 1.4 2008/02/25 06:14:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  One row in a directory contents table.
  *
  *  @author  Stephen Edwards
- *  @version $Id: FileBrowserRow.java,v 1.3 2007/09/16 21:32:28 stedwar2 Exp $
+ *  @version $Id: FileBrowserRow.java,v 1.4 2008/02/25 06:14:19 stedwar2 Exp $
  */
 public class FileBrowserRow
     extends WOComponent
@@ -476,7 +476,8 @@ public class FileBrowserRow
     {
         if ( applyChangesOnMod )
         {
-            ( (Session)session() ).commitLocalChanges();
+            // TODO: how should the call to commitLocalChanges() be fixed?
+            ( (Session)session() ).commitSessionChanges();
         }
         EditFilePage nextPage = (EditFilePage)pageWithName(
             EditFilePage.class.getName() );
@@ -497,7 +498,8 @@ public class FileBrowserRow
     {
         if ( applyChangesOnMod )
         {
-            ( (Session)session() ).commitLocalChanges();
+            // TODO: how should the call to commitLocalChanges() be fixed?
+            ( (Session)session() ).commitSessionChanges();
         }
         log.debug( "delete: " + file.getPath() );
         if ( file.isDirectory() )
