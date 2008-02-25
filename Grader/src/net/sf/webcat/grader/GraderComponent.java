@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.6 2008/02/25 14:53:21 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.7 2008/02/25 14:56:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.6 2008/02/25 14:53:21 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.7 2008/02/25 14:56:01 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -142,20 +142,6 @@ public class GraderComponent
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-    private IndependentEOManager.ECManager ecManager()
-    {
-        IndependentEOManager.ECManager result = (IndependentEOManager.ECManager)
-            transientState().valueForKey(ECMANAGER_KEY);
-        if (result == null)
-        {
-            result = new IndependentEOManager.ECManager();
-            transientState().takeValueForKey(result, ECMANAGER_KEY);
-        }
-        return result;
-    }
-
-
-    // ----------------------------------------------------------
     /**
      * Returns the currently selected assignment offering.
      * @return The assignment offering
@@ -214,7 +200,5 @@ public class GraderComponent
     private GraderPrefsManager prefs;
     private static final String GP_KEY =
         GraderPrefsManager.class.getName();
-    private static final String ECMANAGER_KEY =
-        IndependentEOManager.ECManager.class.getName();
     static Logger log = Logger.getLogger( GraderComponent.class );
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.3 2008/02/25 14:55:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @version $Id: WCCourseComponent.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
+ * @version $Id: WCCourseComponent.java,v 1.3 2008/02/25 14:55:22 stedwar2 Exp $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -115,7 +115,7 @@ public class WCCourseComponent
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-    private IndependentEOManager.ECManager ecManager()
+    protected IndependentEOManager.ECManager ecManager()
     {
         IndependentEOManager.ECManager result = (IndependentEOManager.ECManager)
             transientState().valueForKey(ECMANAGER_KEY);
