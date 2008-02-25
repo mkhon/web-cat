@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.8 2008/02/08 19:34:25 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.9 2008/02/25 05:43:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -29,9 +29,8 @@ import com.webobjects.foundation.*;
 import com.webobjects.foundation.NSValidation.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
-import er.extensions.*;
-import java.io.*;
-import org.apache.log4j.*;
+import java.io.File;
+import org.apache.log4j.Logger;
 
 
 // -------------------------------------------------------------------------
@@ -40,7 +39,7 @@ import org.apache.log4j.*;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.8 2008/02/08 19:34:25 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.9 2008/02/25 05:43:00 stedwar2 Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -365,7 +364,59 @@ public class CourseOffering
     }
 
 
+    // ----------------------------------------------------------
+    @Override
+    public void mightDelete()
+    {
+        log.debug("mightDelete()");
+        if (hasAssignmentOfferings())
+        {
+            log.debug("mightDelete(): offering has assignments");
+            throw new ValidationException("You may not delete a course "
+                + "offering that has assignment offerings.");
+        }
+        super.mightDelete();
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public boolean canDelete()
+    {
+        boolean result = (course() == null
+            || editingContext() == null
+            || !hasAssignmentOfferings());
+        log.debug("canDelete() = " + result);
+        return result;
+    }
+
+
     //~ Private Methods .......................................................
+
+    // ----------------------------------------------------------
+    private boolean hasAssignmentOfferings()
+    {
+        // This method introduces some minor conceptual coupling with
+        // the Grader subsystem.  However, it avoids all binary dependencies
+        // and it is necessary to preserve the integrity of the data
+        // model across the subsystems.
+
+        // This code is basically the same as that in
+        // _AssignmentOffering.objectsForCourseOffering()
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "courseOffering", "AssignmentOffering" );
+        NSMutableDictionary bindings = new NSMutableDictionary();
+        bindings.setObjectForKey( this, "courseOffering" );
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = editingContext().objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug("hasAssignmentOfferings(): fetch = " + result);
+        }
+        return result.count() > 0;
+    }
+
 
     // ----------------------------------------------------------
     private void renameSubdirs(
