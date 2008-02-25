@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.5 2007/01/17 21:25:09 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.6 2008/02/25 06:20:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.5 2007/01/17 21:25:09 stedwar2 Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.6 2008/02/25 06:20:16 stedwar2 Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -54,7 +54,7 @@ public class SubsystemManagerPage
     // ----------------------------------------------------------
     /**
      * Creates a new page object.
-     * 
+     *
      * @param context The context to use
      */
     public SubsystemManagerPage( WOContext context )
@@ -99,7 +99,7 @@ public class SubsystemManagerPage
         super.appendToResponse( response, context );
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Get the current servlet adaptor, if one is available.
@@ -168,7 +168,7 @@ public class SubsystemManagerPage
         {
             confirmationMessage( "The subsystem '" + subsystem.name()
                 + "' has been downloaded from its provider.  The downloaded "
-                + " version will replace the current version when " 
+                + " version will replace the current version when "
                 + "Web-CAT restarts." );
         }
         return null;
@@ -308,12 +308,11 @@ public class SubsystemManagerPage
     public void toggleVerboseDescriptions()
     {
         boolean verboseOptions = ERXValueUtilities.booleanValue(
-            wcSession().userPreferences.objectForKey(
-                TERSE_DESCRIPTIONS_KEY ) );
+            user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) );
         verboseOptions = !verboseOptions;
-        wcSession().userPreferences.setObjectForKey(
+        user().preferences().setObjectForKey(
             Boolean.valueOf( verboseOptions ), TERSE_DESCRIPTIONS_KEY );
-        wcSession().commitLocalChanges();
+        user().savePreferences();
     }
 
 
@@ -329,8 +328,7 @@ public class SubsystemManagerPage
         if ( terse == null )
         {
             terse = ERXValueUtilities.booleanValue(
-                wcSession().userPreferences.objectForKey(
-                    TERSE_DESCRIPTIONS_KEY ) )
+                user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) )
                 ? Boolean.TRUE : Boolean.FALSE;
         }
         return terse;
