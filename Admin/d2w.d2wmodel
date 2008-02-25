@@ -402,7 +402,7 @@
             rhs = {
                 class = com.webobjects.directtoweb.Assignment;
                 keyPath = componentName;
-                value = D2WQueryToOneRelationship;
+                value = ERD2WQueryToOneRelationship;
             };
         },
         {
@@ -760,10 +760,21 @@
                 class = EOAndQualifier;
                 qualifiers = (
                     {
-                        class = EOKeyValueQualifier;
-                        key = task;
-                        selectorName = "isEqualTo:";
-                        value = edit;
+                        class = EOOrQualifier;
+                        qualifiers = (
+                            {
+                                class = EOKeyValueQualifier;
+                                key = task;
+                                selectorName = "isEqualTo:";
+                                value = edit;
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = task;
+                                selectorName = "isEqualTo:";
+                                value = query;
+                            }
+                        );
                     },
                     {
                         class = EOKeyValueQualifier;
