@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToSubmitPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: PickAssignmentToSubmitPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToSubmitPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToSubmitPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class PickAssignmentToSubmitPage
     extends GraderCourseComponent
@@ -100,8 +100,8 @@ public class PickAssignmentToSubmitPage
             //
             // assigments which are still open
             //
-            if ( !(  selectedCourse.isInstructor( wcSession().user() )
-                            || selectedCourse.isTA( wcSession().user() ) ) )
+            if ( !(  selectedCourse.isInstructor( user() )
+                            || selectedCourse.isTA( user() ) ) )
             {
                 qualifiers.addObject( new EOKeyValueQualifier(
                                   AssignmentOffering.AVAILABLE_FROM_KEY,
@@ -124,8 +124,8 @@ public class PickAssignmentToSubmitPage
         //
         // assignments which are published
         //
-        if ( !(  selectedCourse.isInstructor( wcSession().user() )
-              || selectedCourse.isTA( wcSession().user() ) ) )
+        if ( !(  selectedCourse.isInstructor( user() )
+              || selectedCourse.isTA( user() ) ) )
         {
             log.debug( "hiding unpublished assignments" );
             qualifiers.addObject( new EOKeyValueQualifier(
@@ -227,9 +227,9 @@ public class PickAssignmentToSubmitPage
      */
     public boolean assignmentHasSuspendedSubs()
     {
-        return ( wcSession().user().hasAdminPrivileges()
+        return ( user().hasAdminPrivileges()
                  || anAssignmentOffering.courseOffering().instructors()
-                     .containsObject( wcSession().user() ) )
+                     .containsObject( user() ) )
                && anAssignmentOffering.getSuspendedSubs().count() > 0;
     }
 

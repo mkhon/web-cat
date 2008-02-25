@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionComponent.java,v 1.3 2008/02/08 20:01:38 stedwar2 Exp $
+ |  $Id: GraderSubmissionComponent.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.*;
  *  the current submission selection from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSubmissionComponent.java,v 1.3 2008/02/08 20:01:38 stedwar2 Exp $
+ *  @version $Id: GraderSubmissionComponent.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class GraderSubmissionComponent
     extends GraderAssignmentComponent
@@ -68,8 +68,7 @@ public class GraderSubmissionComponent
         String sid = stringValueForKey( params, Submission.ID_FORM_KEY );
         if ( sid != null )
         {
-            result = startWith( Submission
-                .forId( wcSession().localContext(), sid ) );
+            result = startWith( Submission.forId( localContext(), sid ) );
         }
         return result;
     }
@@ -85,7 +84,7 @@ public class GraderSubmissionComponent
     protected boolean startWith( Submission submission )
     {
         boolean result = false;
-        net.sf.webcat.core.User user = wcSession().user();
+        net.sf.webcat.core.User user = user();
         if ( submission != null
              && ( submission.user() == user
                   || submission.assignmentOffering().courseOffering()

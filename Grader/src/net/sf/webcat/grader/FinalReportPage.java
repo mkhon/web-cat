@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.9 2007/12/07 02:23:56 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.10 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.9 2007/12/07 02:23:56 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.10 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -454,7 +454,7 @@ public class FinalReportPage
                 }
                 else
                 {
-                    answer = ao.userCanSubmit( wcSession().localUser() );
+                    answer = ao.userCanSubmit( user() );
                 }
             }
         }
@@ -527,7 +527,7 @@ public class FinalReportPage
                             } )
                     );
             jobData.jobs =
-                wcSession().localContext().objectsWithFetchSpecification(
+                localContext().objectsWithFetchSpecification(
                     fetchSpec
                 );
             jobData.queueSize = jobData.jobs.count();

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateAssignmentPage.java,v 1.5 2008/02/09 00:35:34 stedwar2 Exp $
+ |  $Id: CreateAssignmentPage.java,v 1.6 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CreateAssignmentPage.java,v 1.5 2008/02/09 00:35:34 stedwar2 Exp $
+ *  @version $Id: CreateAssignmentPage.java,v 1.6 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class CreateAssignmentPage
     extends GraderComponent
@@ -87,11 +87,11 @@ public class CreateAssignmentPage
         selectedIndex = -1;
 
         // First, take care of semester list and preference
-        User user = wcSession().user();
+        User user = user();
         if ( semesters == null )
         {
             semesters =
-                Semester.objectsForFetchAll( wcSession().localContext() );
+                Semester.objectsForFetchAll( localContext() );
             Object semesterPref = user.preferences()
                 .valueForKey( SEMESTER_PREF_KEY );
             if (semesterPref == null && semesters.count() > 0)
@@ -101,7 +101,7 @@ public class CreateAssignmentPage
             }
             else
             {
-                semester = Semester.forId( wcSession().localContext(),
+                semester = Semester.forId( localContext(),
                     ERXValueUtilities.intValue( semesterPref ) );
             }
         }
@@ -117,7 +117,7 @@ public class CreateAssignmentPage
             reusableAssignments =
                 ERXArrayUtilities.filteredArrayWithQualifierEvaluation(
                     Assignment.objectsForReuseInCourse(
-                        wcSession().localContext(),
+                        localContext(),
                         coreSelections().courseOffering().course(),
                         coreSelections().courseOffering()
                     ),
@@ -184,7 +184,7 @@ public class CreateAssignmentPage
             .displayedObjects().objectAtIndex( selectedIndex );
         NSTimestamp common = selected.commonOfferingsDueDate();
         AssignmentOffering newOffering = new AssignmentOffering();
-        wcSession().localContext().insertObject( newOffering );
+        localContext().insertObject( newOffering );
         newOffering.setAssignmentRelationship( selected );
         prefs().setAssignmentOfferingRelationship( newOffering );
         configureNewAssignmentOffering( common );
@@ -196,12 +196,12 @@ public class CreateAssignmentPage
     {
         log.debug( "createNewAssignment()" );
         Assignment newAssignment = new Assignment();
-        wcSession().localContext().insertObject( newAssignment );
+        localContext().insertObject( newAssignment );
         AssignmentOffering newOffering = new AssignmentOffering();
-        wcSession().localContext().insertObject( newOffering );
+        localContext().insertObject( newOffering );
         newOffering.setAssignmentRelationship( newAssignment );
         prefs().setAssignmentOfferingRelationship( newOffering );
-        newAssignment.setAuthorRelationship( wcSession().user() );
+        newAssignment.setAuthorRelationship( user() );
         configureNewAssignmentOffering( null );
     }
 
@@ -261,7 +261,7 @@ public class CreateAssignmentPage
         {
             NSMutableArray others =
                 AssignmentOffering.offeringsWithSimilarNames(
-                    wcSession().localContext(), name1,
+                    localContext(), name1,
                     coreSelections().courseOffering(), 2 );
             if ( others.count() > 1 )
             {

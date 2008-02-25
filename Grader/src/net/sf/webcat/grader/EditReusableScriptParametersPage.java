@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditReusableScriptParametersPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ |  $Id: EditReusableScriptParametersPage.java,v 1.3 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditReusableScriptParametersPage.java,v 1.2 2006/07/14 17:04:35 stedwar2 Exp $
+ * @version $Id: EditReusableScriptParametersPage.java,v 1.3 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class EditReusableScriptParametersPage
     extends GraderComponent
@@ -53,7 +53,7 @@ public class EditReusableScriptParametersPage
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public EditReusableScriptParametersPage( WOContext context )
@@ -81,15 +81,15 @@ public class EditReusableScriptParametersPage
         if ( baseDir == null )
         {
             baseDir = new java.io.File ( ScriptFile.userScriptDirName(
-                wcSession().user(), true ).toString() );
+                user(), true ).toString() );
         }
         if ( step.config() == null )
         {
             log.debug( "null config detected, populating it" );
             StepConfig newConfig = new StepConfig();
-            wcSession().localContext().insertObject( newConfig );
+            localContext().insertObject( newConfig );
             step.setConfigRelationship( newConfig );
-            newConfig.setAuthor( wcSession().user() );
+            newConfig.setAuthor( user() );
         }
         assignmentStepGroup.setObjectArray( step.config().steps() );
         if ( log.isDebugEnabled() )

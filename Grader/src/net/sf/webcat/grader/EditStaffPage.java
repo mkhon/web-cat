@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * results).
  *
  * @author Stephen Edwards
- * @version $Id: EditStaffPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ * @version $Id: EditStaffPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -96,7 +96,7 @@ public class EditStaffPage
         if ( firstLoad )
         {
             potentialDisplayGroup.queryMatch().takeValueForKey(
-                wcSession().user().authenticationDomain().propertyName(),
+                user().authenticationDomain().propertyName(),
                 "authenticationDomain.propertyName" );
             firstLoad = false;
         }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSystemStatusRows.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ |  $Id: GraderSystemStatusRows.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.*;
  *  Generates the grader subsystem's rows in the system status block.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSystemStatusRows.java,v 1.2 2006/06/16 14:51:38 stedwar2 Exp $
+ *  @version $Id: GraderSystemStatusRows.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class GraderSystemStatusRows
     extends WOComponent
@@ -97,7 +97,7 @@ public class GraderSystemStatusRows
         try
         {
             haltedAssignments = EOUtilities.objectsMatchingValues(
-                ( (Session)session() ).localContext(),
+                ( (Session)session() ).sessionContext(),
                 AssignmentOffering.ENTITY_NAME,
                 new NSDictionary(
                     new Object[] { ERXConstant.integerForInt( 1 ) },
@@ -109,7 +109,7 @@ public class GraderSystemStatusRows
         {
             log.debug( "Retrying halted fetch" );
             haltedAssignments = EOUtilities.objectsMatchingValues(
-                            ( (Session)session() ).localContext(),
+                            ( (Session)session() ).sessionContext(),
                             AssignmentOffering.ENTITY_NAME,
                             new NSDictionary(
                                 new Object[] { ERXConstant.integerForInt( 1 ) },
@@ -135,7 +135,7 @@ public class GraderSystemStatusRows
             try
             {
                 jobs = EOUtilities.objectsMatchingValues(
-                    ( (Session)session() ).localContext(),
+                    ( (Session)session() ).sessionContext(),
                     EnqueuedJob.ENTITY_NAME,
                     new NSDictionary(
                         new Object[] { ERXConstant.integerForInt( 0 )  },
@@ -147,7 +147,7 @@ public class GraderSystemStatusRows
             {
                 log.debug( "Retrying queued job fetch" );
                 jobs = EOUtilities.objectsMatchingValues(
-                    ( (Session)session() ).localContext(),
+                    ( (Session)session() ).sessionContext(),
                     EnqueuedJob.ENTITY_NAME,
                     new NSDictionary(
                         new Object[] { ERXConstant.integerForInt( 0 )  },
@@ -172,7 +172,7 @@ public class GraderSystemStatusRows
         try
         {
             jobs = EOUtilities.objectsMatchingValues(
-                ( (Session)session() ).localContext(),
+                ( (Session)session() ).sessionContext(),
                 EnqueuedJob.ENTITY_NAME,
                 new NSDictionary(
                     new Object[] { ERXConstant.integerForInt( 1 )  },
@@ -184,7 +184,7 @@ public class GraderSystemStatusRows
         {
             log.debug( "Retrying queued job fetch" );
             jobs = EOUtilities.objectsMatchingValues(
-                ( (Session)session() ).localContext(),
+                ( (Session)session() ).sessionContext(),
                 EnqueuedJob.ENTITY_NAME,
                 new NSDictionary(
                     new Object[] { ERXConstant.integerForInt( 1 )  },

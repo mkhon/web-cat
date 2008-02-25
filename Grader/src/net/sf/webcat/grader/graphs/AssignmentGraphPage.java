@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentGraphPage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
+ |  $Id: AssignmentGraphPage.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,7 +36,7 @@ import net.sf.webcat.grader.*;
  * Presents graphs of this assignment's data.
  *
  * @author  Stephen Edwards
- * @version $Id: AssignmentGraphPage.java,v 1.2 2007/07/09 15:49:41 stedwar2 Exp $
+ * @version $Id: AssignmentGraphPage.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class AssignmentGraphPage
     extends GraderAssignmentComponent
@@ -68,14 +68,14 @@ public class AssignmentGraphPage
     public void appendToResponse( WOResponse response, WOContext context )
     {
         SubmissionResult subResult = prefs().assignmentOffering()
-            .mostRecentSubmissionResultFor( wcSession().user() );
+            .mostRecentSubmissionResultFor( user() );
         mostRecentScore = ( subResult == null )
             ? null
             : new Double( subResult.graphableScore() );
         pastSubResults = SubmissionResult.objectsForUser(
-            wcSession().localContext(),
+            localContext(),
             prefs().assignmentOffering(),
-            wcSession().user() );
+            user() );
         hasSubmissions = pastSubResults != null
             && pastSubResults.count() > 0;
         correctnessToolsDataset = new SubmissionResultDataset(
@@ -92,8 +92,8 @@ public class AssignmentGraphPage
     public boolean isStaff()
     {
         CourseOffering course = prefs().assignmentOffering().courseOffering();
-        boolean result = course.isInstructor( wcSession().user() )
-            || course.isTA( wcSession().user() );
+        boolean result = course.isInstructor( user() )
+            || course.isTA( user() );
         System.out.println( "isStaff = " + result );
         return result;
     }
@@ -106,8 +106,7 @@ public class AssignmentGraphPage
         {
             subResultsByNumber =
                 SubmissionResult.objectsForMostRecentSubmissionsByNumber(
-                    wcSession().localContext(),
-                    prefs().assignmentOffering() );
+                    localContext(), prefs().assignmentOffering() );
         }
         return subResultsByNumber;
     }

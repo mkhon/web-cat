@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: DownloadScoresPage.java,v 1.5 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  * as a CSV file.
  *
  * @author Stephen Edwards
- * @version $Id: DownloadScoresPage.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
+ * @version $Id: DownloadScoresPage.java,v 1.5 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class DownloadScoresPage
     extends GraderAssignmentComponent
@@ -269,7 +269,7 @@ public class DownloadScoresPage
                 Submission gradedSubmission = null;
                 // Find the submission
                 NSArray thisSubmissionSet = EOUtilities.objectsMatchingValues(
-                        wcSession().localContext(),
+                        localContext(),
                         Submission.ENTITY_NAME,
                         new NSDictionary(
                             new Object[] {

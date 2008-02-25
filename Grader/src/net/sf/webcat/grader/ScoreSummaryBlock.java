@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.3 2007/03/02 02:43:25 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: ScoreSummaryBlock.java,v 1.3 2007/03/02 02:43:25 stedwar2 Exp $
+ *  @version $Id: ScoreSummaryBlock.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class ScoreSummaryBlock
     extends GraderComponent
@@ -150,11 +150,12 @@ public class ScoreSummaryBlock
     public WOComponent toggleShowGraphs()
     {
         boolean showGraphs = ERXValueUtilities.booleanValue(
-            wcSession().userPreferences.objectForKey( showGraphsKey ) );
+            user().preferences().objectForKey( showGraphsKey ) );
         log.debug( "toggleShowGraphs: was " + showGraphs );
         showGraphs = !showGraphs;
-        wcSession().userPreferences.setObjectForKey(
+        user().preferences().setObjectForKey(
             Boolean.valueOf( showGraphs ), showGraphsKey );
+        user().savePreferences();
         return context().page();
     }
 
@@ -166,7 +167,7 @@ public class ScoreSummaryBlock
         {
             correctnessToolsDataset = new SubmissionResultDataset(
                 SubmissionResult.objectsForUser(
-                    wcSession().localContext(),
+                    localContext(),
                     submission.assignmentOffering(),
                     result.submission().user() ),
                 SubmissionResultDataset.TESTING_AND_STATIC_TOOLS_SCORE_SERIES );

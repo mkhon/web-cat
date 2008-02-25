@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderCourseEditComponent.java,v 1.1 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: GraderCourseEditComponent.java,v 1.2 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -102,7 +102,7 @@ public class GraderCourseEditComponent
         boolean result = super.applyLocalChanges();
         if (result && offering != null)
         {
-            coreSelections().setCourseOffering(offering);
+            coreSelections().setCourseOfferingRelationship(offering);
         }
         return result;
     }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.5 2007/02/02 01:48:08 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.6 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * of the source code.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileDetailsPage.java,v 1.5 2007/02/02 01:48:08 stedwar2 Exp $
+ * @version $Id: SubmissionFileDetailsPage.java,v 1.6 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -71,7 +71,7 @@ public class SubmissionFileDetailsPage
     // ----------------------------------------------------------
     /**
      * Adds to the response of the page
-     * 
+     *
      * @param response The response being built
      * @param context  The context of the request
      */
@@ -96,8 +96,8 @@ public class SubmissionFileDetailsPage
     {
         try
         {
-            String result = thisFile.codeWithComments( 
-                wcSession().user(), false );
+            String result = thisFile.codeWithComments(
+                user(), false );
             return result;
         }
         catch ( Exception e )
@@ -109,8 +109,8 @@ public class SubmissionFileDetailsPage
             return null;
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOComponent viewNextFile()
     {
@@ -123,7 +123,7 @@ public class SubmissionFileDetailsPage
         else
         {
             prefs().setSubmissionFileStatsRelationship( selectedFile );
-            prefs().setSubmission(
+            prefs().setSubmissionRelationship(
                 selectedFile.submissionResult().submission() );
             SubmissionFileDetailsPage statsPage = (SubmissionFileDetailsPage)
                 pageWithName(

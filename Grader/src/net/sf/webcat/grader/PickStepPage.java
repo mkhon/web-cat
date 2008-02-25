@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickStepPage.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: PickStepPage.java,v 1.5 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: PickStepPage.java,v 1.4 2008/02/08 19:37:16 stedwar2 Exp $
+ * @version $Id: PickStepPage.java,v 1.5 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class PickStepPage
     extends GraderComponent
@@ -100,7 +100,7 @@ public class PickStepPage
             "courseOffering"
         );
         assignmentGroup.queryBindings().setObjectForKey(
-            wcSession().user(),
+            user(),
             "user"
         );
         assignmentGroup.fetch();
@@ -110,7 +110,7 @@ public class PickStepPage
             "course"
         );
         scriptGroup.queryBindings().setObjectForKey(
-            wcSession().user(),
+            user(),
             "user"
         );
         scriptGroup.fetch();
@@ -292,8 +292,8 @@ public class PickStepPage
                 return null;
             }
             ScriptFile newScript = ScriptFile.createNewScriptFile(
-                wcSession().localContext(),
-                wcSession().user(),
+                localContext(),
+                user(),
                 uploadedName,
                 uploadedData,
                 false,

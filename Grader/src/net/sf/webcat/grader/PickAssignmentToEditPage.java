@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToEditPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: PickAssignmentToEditPage.java,v 1.6 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToEditPage.java,v 1.5 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToEditPage.java,v 1.6 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class PickAssignmentToEditPage
     extends GraderCourseComponent
@@ -159,7 +159,7 @@ public class PickAssignmentToEditPage
         if ( config != null
              && config.objectForKey( "resetPrimeUser" ) != null )
         {
-            wcSession().setLocalUser( wcSession().primeUser() );
+            setLocalUser( wcSession().primeUser() );
         }
         super.cancelLocalChanges();
     }
@@ -193,9 +193,9 @@ public class PickAssignmentToEditPage
      */
     public boolean assignmentHasSuspendedSubs()
     {
-        return ( wcSession().user().hasAdminPrivileges()
+        return ( user().hasAdminPrivileges()
                  || anAssignmentOffering.courseOffering().instructors()
-                     .containsObject( wcSession().user() ) )
+                     .containsObject( user() ) )
                && anAssignmentOffering.getSuspendedSubs().count() > 0;
     }
 

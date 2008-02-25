@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.9 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.9 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -111,7 +111,7 @@ public class StudentsForAssignmentPage
                 Submission gradedSubmission = null;
                 // Find the submission
                 NSArray thisSubmissionSet = EOUtilities.objectsMatchingValues(
-                        wcSession().localContext(),
+                        localContext(),
                         Submission.ENTITY_NAME,
                         new NSDictionary(
                             new Object[] {
@@ -255,9 +255,11 @@ public class StudentsForAssignmentPage
             if ( sub.result().status() == Status.UNFINISHED )
             {
                 sub.result().setStatus( Status.CHECK );
-                wcSession().commitLocalChanges();
-                sub.emailNotificationToStudent(
-                    "has been updated by the course staff" );
+                if (applyLocalChanges())
+                {
+                    sub.emailNotificationToStudent(
+                        "has been updated by the course staff" );
+                }
             }
         }
         return null;

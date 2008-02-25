@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderCourseComponent.java,v 1.2 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: GraderCourseComponent.java,v 1.3 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.core.*;
  *  selections from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderCourseComponent.java,v 1.2 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: GraderCourseComponent.java,v 1.3 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class GraderCourseComponent
     extends GraderComponent
@@ -70,7 +70,7 @@ public class GraderCourseComponent
         if ( crn != null )
         {
             result = startWith( CourseOffering
-                .offeringForCrn( wcSession().localContext(), crn ) );
+                .offeringForCrn( localContext(), crn ) );
         }
         return result;
     }
@@ -86,15 +86,15 @@ public class GraderCourseComponent
     protected boolean startWith( CourseOffering offering )
     {
         boolean result = false;
-        User user = wcSession().user();
+        User user = user();
         if ( offering != null
              && ( user.enrolledIn().contains(  offering )
                   || offering.isInstructor( user )
                   || offering.isTA( user ) ) )
         {
             result = true;
-            coreSelections().setCourse( offering.course() );
-            coreSelections().setCourseOffering( offering );
+            coreSelections().setCourseRelationship( offering.course() );
+            coreSelections().setCourseOfferingRelationship( offering );
         }
         return result;
     }

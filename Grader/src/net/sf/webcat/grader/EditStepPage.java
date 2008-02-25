@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStepPage.java,v 1.3 2007/10/11 13:29:16 stedwar2 Exp $
+ |  $Id: EditStepPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditStepPage.java,v 1.3 2007/10/11 13:29:16 stedwar2 Exp $
+ * @version $Id: EditStepPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class EditStepPage
     extends GraderComponent
@@ -79,15 +79,15 @@ public class EditStepPage
         log.debug( "appendToResponse()" );
         step = prefs().step();
         stepConfigList = StepConfig.configsForUserAndCourseScriptIncludingMine(
-            wcSession().localContext(),
-            wcSession().user(),
+            localContext(),
+            user(),
             step.script(),
             prefs().assignmentOffering().courseOffering().course(),
             step.config() );
         if ( baseDir == null )
         {
             baseDir = new java.io.File ( ScriptFile.userScriptDirName(
-                wcSession().user(), true ).toString() );
+                user(), true ).toString() );
         }
         if ( log.isDebugEnabled() )
         {

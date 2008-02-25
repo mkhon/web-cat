@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.7 2008/02/09 00:35:34 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.8 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditScriptFilesPage.java,v 1.7 2008/02/09 00:35:34 stedwar2 Exp $
+ * @version $Id: EditScriptFilesPage.java,v 1.8 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -176,7 +176,7 @@ public class EditScriptFilesPage
     // ----------------------------------------------------------
     public WOComponent createFolder()
     {
-        wcSession().commitLocalChanges();
+        if (!applyLocalChanges()) return null;
         if ( folderName == null || folderName.length() == 0 )
         {
             error( "Please enter a folder name." );
@@ -203,7 +203,7 @@ public class EditScriptFilesPage
     // ----------------------------------------------------------
     public WOComponent uploadFile()
     {
-        wcSession().commitLocalChanges();
+        if (!applyLocalChanges()) return null;
         if ( unzip && WCFile.isArchiveFile( uploadedFileName2 ) )
         {
             File target =
@@ -241,7 +241,7 @@ public class EditScriptFilesPage
         if ( scriptFile != null )
         {
             scriptFile.initializeConfigAttributes();
-            wcSession().commitLocalChanges();
+            applyLocalChanges();
         }
         return null;
     }
@@ -250,7 +250,7 @@ public class EditScriptFilesPage
     // ----------------------------------------------------------
     public WOComponent replaceEntireFolder()
     {
-        wcSession().commitLocalChanges();
+        if (!applyLocalChanges()) return null;
         if ( WCFile.isArchiveFile( uploadedFileName3 ) )
         {
             net.sf.webcat.archives.FileUtilities.deleteDirectory( base );
@@ -269,7 +269,7 @@ public class EditScriptFilesPage
             if ( scriptFile != null )
             {
                 scriptFile.initializeConfigAttributes();
-                wcSession().commitLocalChanges();
+                applyLocalChanges();
             }
             folderList = null;
         }
@@ -311,7 +311,7 @@ public class EditScriptFilesPage
         {
             scriptFile.initializeConfigAttributes();
             scriptFile.setLastModified( new NSTimestamp() );
-            wcSession().commitLocalChanges();
+            applyLocalChanges();
         }
     }
 

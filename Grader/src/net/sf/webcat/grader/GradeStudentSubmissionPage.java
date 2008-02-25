@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author Stephen Edwards
- * @version $Id: GradeStudentSubmissionPage.java,v 1.5 2007/04/04 02:07:48 stedwar2 Exp $
+ * @version $Id: GradeStudentSubmissionPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -125,7 +125,7 @@ public class GradeStudentSubmissionPage
         if ( comments != null && !comments.equals( priorComments ) )
         {
             // update author info:
-            String byLine = "-- last updated by " + wcSession().user().name();
+            String byLine = "-- last updated by " + user().name();
             if ( result.commentFormat() == SubmissionResult.FORMAT_HTML )
             {
                 byLine = "<p><span style=\"font-size:smaller\"><i>"
@@ -178,7 +178,7 @@ public class GradeStudentSubmissionPage
 //        return super.finish();
 //    }
 //
-//    
+//
 //    // ----------------------------------------------------------
 //    public WOComponent apply()
 //    {
@@ -199,7 +199,7 @@ public class GradeStudentSubmissionPage
 //        return super.invokeAction( arg0, arg1 );
 //    }
 
-    
+
     // ----------------------------------------------------------
     public boolean applyLocalChanges()
     {
@@ -316,11 +316,11 @@ public class GradeStudentSubmissionPage
     // ----------------------------------------------------------
     public WOComponent regradeActionOk()
     {
-        wcSession().commitLocalChanges();
+        if (!applyLocalChanges()) return null;
         Submission submission = prefs().submission();
-        submission.requeueForGrading( wcSession().localContext() );
-        prefs().setSubmission( null );
-        wcSession().commitLocalChanges();
+        submission.requeueForGrading( localContext() );
+        prefs().setSubmissionRelationship( null );
+        applyLocalChanges();
         Grader.getInstance().graderQueue().enqueue( null );
         return back();
     }

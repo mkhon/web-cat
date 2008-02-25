@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.13 2008/02/08 20:01:38 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.14 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.13 2008/02/08 20:01:38 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.14 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -585,7 +585,10 @@ public class AssignmentOffering
         // there are any at all
         spec.setFetchLimit(1);
         NSArray result = editingContext().objectsWithFetchSpecification( spec );
-        log.debug("fetch = " + result);
+        if (log.isDebugEnabled())
+        {
+            log.debug("hasStudentSubmissions(): fetch = " + result);
+        }
         return result.count() > 0;
     }
 

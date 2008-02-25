@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.9 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.8 2008/02/08 19:37:16 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.9 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -98,7 +98,7 @@ public class CourseRosterPage
         if ( firstLoad )
         {
             notStudentDisplayGroup.queryMatch().takeValueForKey(
-                wcSession().user().authenticationDomain().propertyName(),
+                user().authenticationDomain().propertyName(),
                 "authenticationDomain.propertyName" );
             firstLoad = false;
         }

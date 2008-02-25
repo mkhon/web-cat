@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPluginGlobalsPage.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: EditPluginGlobalsPage.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  rendering the page.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditPluginGlobalsPage.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ *  @version $Id: EditPluginGlobalsPage.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class EditPluginGlobalsPage
     extends GraderComponent
@@ -49,7 +49,7 @@ public class EditPluginGlobalsPage
     // ----------------------------------------------------------
     /**
      * This is the default constructor
-     * 
+     *
      * @param context The page's context
      */
     public EditPluginGlobalsPage( WOContext context )
@@ -73,7 +73,7 @@ public class EditPluginGlobalsPage
         if ( baseDir == null )
         {
             baseDir = new java.io.File ( ScriptFile.userScriptDirName(
-                wcSession().user(), true ).toString() );
+                user(), true ).toString() );
         }
         if ( log.isDebugEnabled() )
         {
@@ -82,7 +82,7 @@ public class EditPluginGlobalsPage
         }
         super.appendToResponse( response, context );
     }
-    
+
 
     // ----------------------------------------------------------
     public WOComponent defaultAction()

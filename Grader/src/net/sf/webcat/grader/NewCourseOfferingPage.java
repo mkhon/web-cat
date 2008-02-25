@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.core.*;
  * Allows the user to create a new course offering.
  *
  *  @author Stephen Edwards
- *  @version $Id: NewCourseOfferingPage.java,v 1.3 2008/02/08 19:37:16 stedwar2 Exp $
+ *  @version $Id: NewCourseOfferingPage.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -79,7 +79,7 @@ public class NewCourseOfferingPage
         if (institutions == null)
         {
             institutions = AuthenticationDomain.authDomains();
-            institution = wcSession().user().authenticationDomain();
+            institution = user().authenticationDomain();
         }
         if (institution == null)
         {
@@ -96,7 +96,7 @@ public class NewCourseOfferingPage
         courseDisplayGroup.updateDisplayedObjects();
         if ( coreSelections().courseOffering() != null )
         {
-            coreSelections().setCourse(
+            coreSelections().setCourseRelationship(
                 coreSelections().courseOffering().course() );
         }
         super.appendToResponse( response, context );
@@ -125,14 +125,14 @@ public class NewCourseOfferingPage
             return null;
         }
         CourseOffering newOffering = new CourseOffering();
-        wcSession().localContext().insertObject( newOffering );
+        localContext().insertObject( newOffering );
         newOffering.setCourseRelationship( coreSelections().course() );
         // TODO: use date-based search instead of just creation ordering
         NSArray semesters = EOUtilities.objectsForEntityNamed(
-                        wcSession().localContext(), Semester.ENTITY_NAME );
+                        localContext(), Semester.ENTITY_NAME );
         newOffering.setSemesterRelationship(
                         (Semester)semesters.lastObject() );
-        newOffering.addToInstructorsRelationship( wcSession().user() );
+        newOffering.addToInstructorsRelationship( user() );
         // wcSession().setCourseOfferingRelationship( newOffering );
         setCourseOffering(newOffering);
         return super.next();
