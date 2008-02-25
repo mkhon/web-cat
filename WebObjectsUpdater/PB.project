@@ -15,8 +15,7 @@
            JavaEOControl.framework, 
            JavaFoundation.framework, 
            JavaJDBCAdaptor.framework, 
-           JavaWebObjects.framework, 
-           JavaXML.framework
+           JavaWebObjects.framework
         );
         OTHER_SOURCES = 
         (

@@ -20,7 +20,6 @@
            JavaJDBCAdaptor.framework, 
            JavaWOExtensions.framework, 
            JavaWebObjects.framework, 
-           JavaXML.framework, 
            WOUnitTest.framework
         );
         OTHER_SOURCES = 

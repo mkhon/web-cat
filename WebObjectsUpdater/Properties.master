@@ -27,9 +27,10 @@ WebObjectsUpdater.alsoContains=\
     JavaFoundation.framework,\
     JavaJDBCAdaptor.framework,\
     JavaWebObjects.framework,\
-    JavaWOJSPServlet.framework,\
+    JavaWOJSPServlet.framework
+WebObjectsUpdater.removeUnused=\
+    JDBCEOAdaptor.framework,\
     JavaXML.framework
-WebObjectsUpdater.removeUnused=JDBCEOAdaptor.framework
 
 WebObjectsUpdater.description=\
 	This subsystem is a support wrapper that allows the embedded WebObjects \
