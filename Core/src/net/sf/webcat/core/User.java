@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.13 2008/02/08 20:00:44 stedwar2 Exp $
+ |  $Id: User.java,v 1.14 2008/02/25 03:22:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.13 2008/02/08 20:00:44 stedwar2 Exp $
+ * @version $Id: User.java,v 1.14 2008/02/25 03:22:14 stedwar2 Exp $
  */
 public class User
     extends _User
@@ -1135,7 +1135,7 @@ public class User
      * creating one if necessary.
      * @return This user's core selections object
      */
-    public CoreSelections getCoreSelections()
+    public CoreSelections getMyCoreSelections()
     {
         NSArray cs = coreSelections();
         if (cs.count() == 0)
