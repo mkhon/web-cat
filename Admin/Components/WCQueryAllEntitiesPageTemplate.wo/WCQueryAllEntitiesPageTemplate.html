@@ -1,23 +1,20 @@
-<webobject name="PageWrapper">
-    <webobject name="QueryTable">
-        <webobject name="BannerConditional">
-            <webobject name="QueryTableHeaderRow">
+<wo name="PageWrapper">
+    <wo name="QueryTable">
+        <wo name="BannerConditional">
+            <wo name="QueryTableHeaderRow">
                 <th colspan="2">Find...</th>
-            </webobject>
-        </webobject>
-        <webobject name="EntitiesRepetition">
-            <webobject name="RowContainer">
-                <!WOB-Tokenizer Allow-Marker="FORM" As-Child-Of="TR">
-                <webobject name="QueryForm">
-                    <!WOB-Tokenizer Allow-Marker="TD" As-Child-Of="FORM">
-                    <td align="right"><strong><webobject name="EntityName"/>:</strong></td>
+            </wo>
+        </wo>
+        <wo name="EntitiesRepetition">
+            <wo name="RowContainer">
+                <wo name="QueryForm">
+                    <td align="right"><strong><wo name="EntityName"/>:</strong></td>
                     <td align="right">
-                        <webobject name="QueryAnyField"/>
-                        <webobject name="SearchButtonImage"/>
-                        &nbsp; &nbsp; <font size="-1"><webobject name="RegularQueryHyperlink">more..</webobject><font></td>
-                </webobject>
-                <!WOB-Tokenizer Restore-Original-Grammar>
-            </webobject>
-        </webobject>
-    </webobject>
-</webobject>
+                        <wo name="QueryAnyField"/>
+                        <wo name="SearchButtonImage"/>
+                        &nbsp; &nbsp; <font size="-1"><wo name="RegularQueryHyperlink">more..</wo></font></td>
+                </wo>
+            </wo>
+        </wo>
+    </wo>
+</wo>
