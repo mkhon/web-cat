@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreSelectionsManager.java,v 1.1 2008/02/08 19:36:03 stedwar2 Exp $
+ |  $Id: CoreSelectionsManager.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -27,6 +27,14 @@ package net.sf.webcat.core;
 
 import com.webobjects.eocontrol.*;
 
+//-------------------------------------------------------------------------
+/**
+ *  An {@link IndependentEOManager} specialized for managing a
+ *  {@link CoreSelections} object.
+ *
+ *  @author  Stephen Edwards
+ *  @version $Id: CoreSelectionsManager.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
+ */
 public class CoreSelectionsManager
     extends IndependentEOManager
 {
@@ -66,7 +74,7 @@ public class CoreSelectionsManager
      * relationship.
      * @param value The new course
      */
-    public void setCourse( Course value )
+    public void setCourseRelationship( Course value )
     {
         addObjectToBothSidesOfRelationshipWithKey(
             value, CoreSelections.COURSE_KEY);
@@ -90,7 +98,7 @@ public class CoreSelectionsManager
      * relationship.
      * @param value The new course offering
      */
-    public void setCourseOffering( CourseOffering value )
+    public void setCourseOfferingRelationship( CourseOffering value )
     {
         addObjectToBothSidesOfRelationshipWithKey(
             value, CoreSelections.COURSE_OFFERING_KEY);

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.1 2008/02/08 19:36:03 stedwar2 Exp $
+ |  $Id: IndependentEOManager.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.*;
  * database, separate from all the other objects related to it.
  *
  * @author stedwar2
- * @version $Id: IndependentEOManager.java,v 1.1 2008/02/08 19:36:03 stedwar2 Exp $
+ * @version $Id: IndependentEOManager.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
  */
 public class IndependentEOManager
     implements NSKeyValueCoding,
@@ -92,7 +92,7 @@ public class IndependentEOManager
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-    protected Object clone()
+    public Object clone()
     {
         try
         {
