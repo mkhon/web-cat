@@ -18,7 +18,6 @@
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CheckstyleForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/ExternalJars/Grader/JavaWOExtensions/PerlForPlugins/PMDForPlugins/WebObjectsUpdater/WonderUpdater/WOOgnl/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaWebObjects/JavaWOJSPServlet/JavaXML"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Apple/Library/Frameworks/JavaWOJSPServlet.framework/WebServerResources/Java/JavaWOJSPServlet_client.jar"/>
-	<classpathentry kind="lib" path="C:/www/Tomcat5/common/lib/servlet-api.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Admin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ANTForPlugins"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Bootstrap"/>
