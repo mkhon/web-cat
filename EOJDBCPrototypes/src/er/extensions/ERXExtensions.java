@@ -18,12 +18,14 @@ import org.apache.log4j.Logger;
 
 import com.webobjects.appserver.WOSession;
 import com.webobjects.eoaccess.EOAttribute;
+import com.webobjects.eoaccess.EODatabase;
 import com.webobjects.eoaccess.EODatabaseContext;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModelGroup;
 import com.webobjects.eoaccess.EOQualifierSQLGeneration;
 import com.webobjects.eoaccess.EORelationship;
 import com.webobjects.eoaccess.EOSQLExpression;
+import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eoaccess.EOQualifierSQLGeneration.Support;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -42,7 +44,9 @@ import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSNotification;
 import com.webobjects.foundation.NSNotificationCenter;
 import com.webobjects.foundation.NSSelector;
+import com.webobjects.jdbcadaptor.JDBCAdaptorException;
 
+import er.extensions.partials.ERXPartialInitializer;
 import er.extensions.remoteSynchronizer.ERXRemoteSynchronizer;
 
 /**
@@ -51,10 +55,10 @@ import er.extensions.remoteSynchronizer.ERXRemoteSynchronizer;
  * loaded (even before the Application constructor is called)
  * This class has a boat-load of stuff in it that will hopefully
  * be finding better homes in the future. This class serves as
- * the initilization point of this framework, look in the static
+ * the initialization point of this framework, look in the static
  * initializer to see all the stuff that is initially setup when
  * this class is loaded. This class also has a boat load of
- * string, array and eof utilities as well as the factory methods
+ * string, array and EOF utilities as well as the factory methods
  * for creating editing contexts with the default delegates set.
  */
 public class ERXExtensions extends ERXFrameworkPrincipal {
@@ -68,7 +72,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     private static boolean _initialized;
 
     public ERXExtensions() {
-        // do nothing
+        // Nothing to do
     }
 
     /** holds the default model group */
@@ -127,7 +131,19 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
 
     		// AK: enable this when we're ready
         	// WOEncodingDetector.sharedInstance().setFallbackEncoding("UTF-8");
-        	ERXLogger.configureLoggingWithSystemProperties();
+
+        	// GN: configure logging with optional custom subclass of ERXLogger
+        	String className = ERXProperties.stringForKey("er.extensions.erxloggerclass");
+        	if (className != null) {
+	        	Class loggerClass = Class.forName(className);
+	        	Method method = loggerClass.getDeclaredMethod(ERXLogger.CONFIGURE_LOGGING_WITH_SYSTEM_PROPERTIES, (Class[]) null);
+	        	method.invoke(loggerClass, (Object[]) null);
+        	}
+        	else {
+        		// default behaviour:
+        		ERXLogger.configureLoggingWithSystemProperties();
+        	}
+
             ERXArrayUtilities.initialize();
 
     		// False by default
@@ -138,9 +154,10 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     		ERXJDBCAdaptor.registerJDBCAdaptor();
     		EODatabaseContext.setDefaultDelegate(ERXDatabaseContextDelegate.defaultDelegate());
     		ERXAdaptorChannelDelegate.setupDelegate();
-    		ERXEC.factory().setDefaultDelegateOnEditingContext(EOSharedEditingContext.defaultSharedEditingContext(), true);
+    		NSNotificationCenter.defaultCenter().addObserver(this, new NSSelector("sharedEditingContextWasInitialized", ERXConstant.NotificationClassArray), EOSharedEditingContext.DefaultSharedEditingContextWasInitializedNotification, null);
 
     		ERXEntityClassDescription.registerDescription();
+    		ERXPartialInitializer.registerModelGroupListener();
     		if (!ERXProperties.webObjectsVersionIs52OrHigher()) {
     			NSNotificationCenter.defaultCenter().addObserver(this,
     					new NSSelector("sessionDidTimeOut", ERXConstant.NotificationClassArray),
@@ -164,7 +181,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * validation template system is configured.
      */
     public void finishInitialization() {
-        bundleDidLoad( null );
+        bundleDidLoad(null);
     	ERXJDBCAdaptor.registerJDBCAdaptor();
         ERXConfigurationManager.defaultManager().loadOptionalConfigurationFiles();
         ERXProperties.populateSystemProperties();
@@ -187,12 +204,25 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
                 EOQualifierSQLGeneration.Support.supportForClass(ERXToManyQualifier.class));
         registerSQLSupportForSelector(new NSSelector(ERXRegExQualifier.MatchesSelectorName),
                 EOQualifierSQLGeneration.Support.supportForClass(ERXRegExQualifier.class));
-        EOQualifierSQLGeneration.Support.setSupportForClass(new ERXInOrQualifierSupport(), EOOrQualifier._CLASS);
+        registerSQLSupportForSelector(new NSSelector(ERXFullTextQualifier.FullTextContainsSelectorName),
+                EOQualifierSQLGeneration.Support.supportForClass(ERXFullTextQualifier.class));
+
+		if (!ERXApplication.isWO54()) {
+	        //AK: in 5.4 disable
+			EOQualifierSQLGeneration.Support.setSupportForClass(new ERXInOrQualifierSupport(), EOOrQualifier._CLASS);
+		}
+
+		EOQualifierSQLGeneration.Support.setSupportForClass(new ERXFullTextQualifierSupport(), ERXFullTextQualifier.class);
 
 		// ERXObjectStoreCoordinatorPool has a static initializer, so just load the class if
 		// the configuration setting exists
         if (ERXRemoteSynchronizer.remoteSynchronizerEnabled() || ERXProperties.booleanForKey("er.extensions.ERXDatabaseContext.activate")) {
-        	EODatabaseContext.setContextClassToRegister(ERXDatabaseContext.class);
+        	String className = ERXProperties.stringForKeyWithDefault("er.extensions.ERXDatabaseContext.className", ERXDatabaseContext.class.getName());
+        	Class c = ERXPatcher.classForName(className);
+        	if(c == null) {
+        		throw new IllegalStateException("er.extensions.ERXDatabaseContext.className not found: " + className);
+        	}
+        	EODatabaseContext.setContextClassToRegister(c);
         }
 		ERXObjectStoreCoordinatorPool.initializeIfNecessary();
     }
@@ -236,7 +266,13 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         }
 
         public String sqlStringForSQLExpression(EOQualifier eoqualifier, EOSQLExpression e) {
-            return supportForQualifier(eoqualifier).sqlStringForSQLExpression(eoqualifier, e);
+        	try {
+        		return supportForQualifier(eoqualifier).sqlStringForSQLExpression(eoqualifier, e);
+        	}
+        	catch (JDBCAdaptorException ex) {
+        		ERXExtensions._log.error("Failed to generate sql string for qualifier " + eoqualifier + " on entity " + e.entity() + ".");
+        		throw ex;
+        	}
         }
 
         public EOQualifier schemaBasedQualifierWithRootEntity(EOQualifier eoqualifier, EOEntity eoentity) {
@@ -283,6 +319,17 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
         ERXExtensions.retainEditingContextForCurrentSession(ec);
     }
 
+    /**
+     * This method is called for the following notification
+     * {@link EOSharedEditingContext#DefaultSharedEditingContextWasInitializedNotification}
+     *
+     * @param n the notification.
+     */
+    public void sharedEditingContextWasInitialized(NSNotification n) {
+    	EOSharedEditingContext sec = EOSharedEditingContext.defaultSharedEditingContext();
+    	ERXEC.factory().setDefaultDelegateOnEditingContext(sec, true);
+    }
+
     /** logging support for the adaptor channel */
     public static Logger adaptorLogger;
 
@@ -304,7 +351,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * change a logger's setting and have that changed value change
      * the NSLog setting to log the generated SQL. This method is
      * called as part of the framework initialization process.
-     * @param observer object to register the call back with.
+     * @param anObserver object to register the call back with.
      */
     // FIXME: This shouldn't be enabled when the application is in production.
     // FIXME: Now that all of the logging has been centralized, we should just be able
@@ -355,7 +402,6 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
 
     /**
      * Returns the current state of EOAdaptor logging.
-     * @return
      */
 	public static boolean adaptorLogging() {
 		return NSLog.debugLoggingAllowedForGroups(NSLog.DebugGroupSQLGeneration|NSLog.DebugGroupDatabaseAccess);
@@ -511,7 +557,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
             isFree = runtime.freeMemory();
             i++;
         } while (isFree > wasFree && (maxLoop<=0 || i<maxLoop) );
-        runtime.runFinalization();
+        runtime.runFinalization(); //TODO: should this be inside the loop?
     }
 
     /**
@@ -571,11 +617,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * @return treu if they are not equal, false if they are
      */
     public static boolean safeDifferent(Object v1, Object v2) {
-        return
-        v1==v2 ? false :
-        v1==null && v2!=null ||
-        v1!=null && v2==null ||
-        (v1 != null && !v1.equals(v2) );  // Just to make javac null checking happy
+        return v1 != v2 && (v1 == null || v2 == null || !v1.equals(v2));
     }
 
     /**
@@ -853,12 +895,20 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     // MOVEME: ERXEOFUtilities
     public static void refreshSharedObjectsWithName(String entityName) {
         if (entityName == null) {
-            throw new IllegalStateException("Entity name argument is null for method: refreshSharedObjectsWithName");
+            throw new IllegalArgumentException("Entity name argument is null for method: refreshSharedObjectsWithName");
         }
         EOSharedEditingContext sharedEC = EOSharedEditingContext.defaultSharedEditingContext();
         sharedEC.lock();
         try {
             EOEntity entity = ERXEOAccessUtilities.entityNamed(sharedEC, entityName);
+
+            //if entity caches objects, clear out the cache
+            if( entity.cachesObjects() ) {
+                EODatabaseContext databaseContext = EOUtilities.databaseContextForModelNamed(sharedEC, entity.model().name());
+                EODatabase database = databaseContext.database();
+                database.invalidateResultCacheForEntityNamed(entityName);
+            }
+
             NSArray fetchSpecNames = entity.sharedObjectFetchSpecificationNames();
             int count =  (fetchSpecNames != null) ? fetchSpecNames.count() : 0;
 
