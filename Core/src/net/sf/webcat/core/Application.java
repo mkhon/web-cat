@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.27 2007/10/08 14:40:41 stedwar2 Exp $
+ |  $Id: Application.java,v 1.28 2008/02/27 23:23:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -42,6 +42,8 @@ import java.util.regex.*;
 import javax.activation.*;
 import javax.mail.internet.*;
 import net.sf.webcat.archives.*;
+import ognl.helperfunction.WOHelperFunctionHTMLTemplateParser;
+
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -52,7 +54,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.27 2007/10/08 14:40:41 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.28 2008/02/27 23:23:03 aallowat Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -319,6 +321,22 @@ public class Application
         NSLog.debug.setAllowedDebugLevel( NSLog.DebugLevelInformational );
         NSLog.allowDebugLoggingForGroups( NSLog.DebugGroupMultithreading );
         setAllowsConcurrentRequestHandling( true );
+
+        // Add useful tag shortcuts for inline component tags.
+        WOHelperFunctionHTMLTemplateParser.registerTagShortcut(
+        		"net.sf.webcat.core.TableRow", "tr");
+        WOHelperFunctionHTMLTemplateParser.registerTagShortcut(
+        		"WOComponentContent", "content");
+        
+        AjaxUpdateContainerTagProcessor tp =
+        	new AjaxUpdateContainerTagProcessor();
+        
+        WOHelperFunctionHTMLTemplateParser.registerTagProcessorForElementType(
+        		tp, "adiv");
+        WOHelperFunctionHTMLTemplateParser.registerTagProcessorForElementType(
+        		tp, "aspan");
+
+        setIncludeCommentsInResponses(false);
 
         // Ensure subsystems are all loaded
         subsystemManager();
