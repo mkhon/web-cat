@@ -397,7 +397,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		WOApplication.main(argv, applicationClass);
 	}
 
-	private static JarChecker _checker;
+	private static JarChecker _checker = new JarChecker();
 
 	/**
 	 * Utility class to track down duplicate items in the class path. Reports
@@ -524,7 +524,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		String cps[] = new String[] { "java.class.path", "com.webobjects.classpath" };
 		propertiesFromArgv = NSProperties.valuesFromArgv(argv);
 		// allFrameworks = new HashSet<String>();
-		_checker = new JarChecker();
+		// _checker = new JarChecker();
 
 		for (int var = 0; var < cps.length; var++) {
 			String cpName = cps[var];
