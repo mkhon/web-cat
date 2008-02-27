@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/com.ibm.icu_3.6.1.v20070906.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/ognl-2.7.2.jar"/>
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/ERExtensions/ERJars/JavaEOAccess/JavaEOControl/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
