@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBatchNavigator.java,v 1.7 2008/01/09 19:49:25 stedwar2 Exp $
+ |  $Id: WCBatchNavigator.java,v 1.8 2008/02/28 18:47:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,10 +39,10 @@ import org.apache.log4j.Logger;
  *  the one in WOExtensions.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCBatchNavigator.java,v 1.7 2008/01/09 19:49:25 stedwar2 Exp $
+ *  @version $Id: WCBatchNavigator.java,v 1.8 2008/02/28 18:47:17 stedwar2 Exp $
  */
 public class WCBatchNavigator
-    extends WCComponent
+    extends WOComponent
 {
     //~ Constructors ..........................................................
 
