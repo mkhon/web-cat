@@ -119,7 +119,6 @@ public  class ERXRequest extends WORequest {
     @Override
 	public String stringFormValueForKey(String key) {
     	String result = super.stringFormValueForKey(key);
-        if ("wodata".equals(key) ) { log.error("stringFormValueForKey(\"wodata\") = " + result); }
     	if (result == null && "wodata".equals(key)) {
     	    // AK: yet another crappy 5.4 fix, WODynamicURL changed packages
     		String requestHandlerKey = (String)valueForKeyPath("_uriDecomposed.requestHandlerKey");
@@ -140,7 +139,6 @@ public  class ERXRequest extends WORequest {
     		}
     	}
 
-        if ("wodata".equals(key) ) { log.error("stringFormValueForKey(\"wodata\") final value = " + result); }
 		return result;
 	}
 
