@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.5 2008/02/25 06:23:27 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.6 2008/02/29 21:34:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Present a complete, printable view of all feedback about this submission.
  *
  * @author Stephen Edwards
- * @version $Id: FullPrintableReport.java,v 1.5 2008/02/25 06:23:27 stedwar2 Exp $
+ * @version $Id: FullPrintableReport.java,v 1.6 2008/02/29 21:34:16 stedwar2 Exp $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -236,7 +236,7 @@ public class FullPrintableReport
             {
                 ec.lock();
                 pairs[stepNumber].html = pairs[stepNumber].file
-                    .codeWithComments( user, false );
+                    .codeWithComments( user, false, context().request() );
             }
             catch ( Exception e )
             {

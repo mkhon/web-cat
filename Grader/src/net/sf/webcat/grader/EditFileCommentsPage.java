@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.6 2008/02/29 19:37:55 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.7 2008/02/29 21:34:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.jdom.output.XMLOutputter;
  * of the source code.
  *
  * @author Stephen Edwards, Hussein Vastani
- * @version $Id: EditFileCommentsPage.java,v 1.6 2008/02/29 19:37:55 stedwar2 Exp $
+ * @version $Id: EditFileCommentsPage.java,v 1.7 2008/02/29 21:34:16 stedwar2 Exp $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -586,7 +586,7 @@ public class EditFileCommentsPage
         try
         {
             codeWithComments = prefs().submissionFileStats()
-                .codeWithComments( user(), isGrading() );
+                .codeWithComments( user(), isGrading(), context().request() );
             if ( log.isDebugEnabled() )
             {
                 log.debug( "codeWithComments = "
