@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.10 2008/02/25 06:14:19 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.11 2008/02/29 21:32:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -61,7 +61,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.10 2008/02/25 06:14:19 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.11 2008/02/29 21:32:28 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -611,7 +611,7 @@ public class WCComponent
         {
             log.debug("awake(): " + getClass().getName());
         }
-        grabTaskECManagerIfNecessary();
+        localContext();
         super.awake();
         // Force currentTab to be initialized
         currentTab();
@@ -761,6 +761,23 @@ public class WCComponent
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
+    private WCComponent outermostWCComponent()
+    {
+        WCComponent result = null;
+        WOComponent ancestor = parent();
+        while (ancestor != null)
+        {
+            if (ancestor instanceof WCComponent)
+            {
+                result = (WCComponent)ancestor;
+            }
+            ancestor = ancestor.parent();
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
     private void grabTaskECManagerIfNecessary()
     {
         if (alreadyGrabbed)
@@ -771,17 +788,27 @@ public class WCComponent
         }
         else
         {
-            String managerKey  = Thread.currentThread().toString();
-
-            // set up nested ec for this task, if there is one
-            peerContextManager = (WOEC.PeerManager)wcSession()
-                .transientState().valueForKey(managerKey);
-            if (log.isDebugEnabled())
+            // First, check to see if the top-level ancestor has one
+            WCComponent outer = outermostWCComponent();
+            if (outer != null)
             {
-                log.debug("manager tag = " + managerKey );
-                log.debug("grabTaskECManagerIfNecessary(): "
-                    + getClass().getName() + "(" + hashCode() + ") "
-                    + "childContextManager = " + peerContextManager);
+                peerContextManager = outer.peerContextManager;
+            }
+
+            if (peerContextManager == null)
+            {
+                String managerKey  = Thread.currentThread().toString();
+
+                // set up nested ec for this task, if there is one
+                peerContextManager = (WOEC.PeerManager)wcSession()
+                    .transientState().valueForKey(managerKey);
+                if (log.isDebugEnabled())
+                {
+                    log.debug("manager tag = " + managerKey );
+                    log.debug("grabTaskECManagerIfNecessary(): "
+                        + getClass().getName() + "(" + hashCode() + ") "
+                        + "childContextManager = " + peerContextManager);
+                }
             }
             alreadyGrabbed = true;
         }
