@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.6 2008/02/29 14:30:28 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.7 2008/02/29 14:31:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *  frameworksBaseURL() setting.
  *
  *  @author  stedwar2
- *  @version $Id: WCResourceManager.java,v 1.6 2008/02/29 14:30:28 stedwar2 Exp $
+ *  @version $Id: WCResourceManager.java,v 1.7 2008/02/29 14:31:23 stedwar2 Exp $
  */
 public class WCResourceManager
     extends er.extensions.ERXResourceManager
@@ -72,10 +72,9 @@ public class WCResourceManager
             int pos = aResourceName.indexOf( FRAMEWORK_SUFFIX );
             if ( pos >= 0 )
             {
-                String resourceName = aResourceName.substring(
-                    pos + FRAMEWORK_SUFFIX.length() );
                 aFrameworkName = aResourceName.substring( 0, pos );
-                aResourceName = resourceName;
+                aResourceName = aResourceName.substring(
+                    pos + FRAMEWORK_SUFFIX.length() );
             }
         }
         return standardizeURL(super.urlForResourceNamed(
