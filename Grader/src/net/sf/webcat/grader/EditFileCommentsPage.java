@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.5 2008/02/25 06:23:27 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.6 2008/02/29 19:37:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.jdom.output.XMLOutputter;
  * of the source code.
  *
  * @author Stephen Edwards, Hussein Vastani
- * @version $Id: EditFileCommentsPage.java,v 1.5 2008/02/25 06:23:27 stedwar2 Exp $
+ * @version $Id: EditFileCommentsPage.java,v 1.6 2008/02/29 19:37:55 stedwar2 Exp $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -621,7 +621,7 @@ public class EditFileCommentsPage
         buffer.append( "editor = new HTMLArea(\"source\");\n" );
         {
             String url = WCResourceManager.resourceURLFor(
-                "htmlarea/htmlarea.js", "Grader", null, null );
+                "htmlarea/htmlarea.js", "Grader", null, context().request() );
             if ( url != null )
             {
                 buffer.append( "editor.config.editorURL = \"");
@@ -630,7 +630,7 @@ public class EditFileCommentsPage
                 buffer.append( "\";\n");
             }
             url = WCResourceManager.resourceURLFor(
-                "images/blank.gif", "Core", null, null );
+                "images/blank.gif", "Core", null, context().request() );
             if ( url != null )
             {
                 buffer.append( "editor.config.coreResourceURL = \"");
