@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/eddo-1_3.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/gnujaxp.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jdom.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jfreechart-1.0.1.jar"/>
