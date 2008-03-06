@@ -6,3 +6,4 @@ Properties
 **/*.strings
 **/*.plist
 **/ReportEngine
+Tabs.plist

@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Wed Feb 27 16:24:27 EST 2008
+#Thu Mar 06 15:14:32 EST 2008
 Reporter.provider=Virginia Tech Computer Science
 Reporter.version.major=0
 Reporter.version.revision=0
@@ -11,6 +11,6 @@ Reporter.copyright=(c) 2007 Virginia Tech Department of Computer Science
 Reporter.license.url=http\://www.gnu.org/copyleft/gpl.html
 Reporter.info.url=http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem
 Reporter.provider.url=http\://web-cat.cs.vt.edu/updates
-Reporter.license=GNU General Public License v.2
 Reporter.version.minor=1
-Reports.version.date=20080227
+Reporter.license=GNU General Public License v.2
+Reports.version.date=20080306
