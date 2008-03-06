@@ -6,20 +6,23 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 
+import com.webobjects.eocontrol.EOGenericRecord;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSComparator;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 
+import er.extensions.ERXGenericRecord;
+
 public class KVCAttributeFinder
 {
 	private static final NSMutableArray<Class<?>> acceptableTypes;
-	private static final NSMutableDictionary<Class<?>, NSArray<String>> cache;
+	private static final NSMutableDictionary<Class<?>, NSArray<KVCAttributeInfo>> cache;
 
 	static
 	{
-		cache = new NSMutableDictionary<Class<?>, NSArray<String>>();
+		cache = new NSMutableDictionary<Class<?>, NSArray<KVCAttributeInfo>>();
 		
 		acceptableTypes = new NSMutableArray<Class<?>>();
 /*		acceptableTypes.addObject(Number.class);
@@ -34,10 +37,10 @@ public class KVCAttributeFinder
 		acceptableTypes.addObject();*/
 	}
 
-	public static NSArray<String> attributesForClass(Class<?> klass,
+	public static NSArray<KVCAttributeInfo> attributesForClass(Class<?> klass,
 			String prefix)
 	{
-		NSArray<String> unfiltered;
+		NSArray<KVCAttributeInfo> unfiltered;
 
 		if(cache.containsKey(klass))
 		{
@@ -45,11 +48,12 @@ public class KVCAttributeFinder
 		}
 		else
 		{
-			NSMutableArray<String> attrs = new NSMutableArray<String>();
-	
+			NSMutableArray<KVCAttributeInfo> attrs =
+				new NSMutableArray<KVCAttributeInfo>();
+
 			if(NSKeyValueCoding.class.isAssignableFrom(klass))
 			{
-				addMethods(klass.getMethods(), attrs);
+				addMethods(klass, klass.getMethods(), attrs);
 				addFields(klass.getFields(), attrs);
 			}
 			
@@ -66,28 +70,113 @@ public class KVCAttributeFinder
 			unfiltered = attrs;
 		}
 		
-		NSMutableArray<String> filtered = new NSMutableArray<String>();
+		NSMutableArray<KVCAttributeInfo> filtered =
+			new NSMutableArray<KVCAttributeInfo>();
 
-		for(String key : unfiltered)
+		for(KVCAttributeInfo attr : unfiltered)
 		{
+			String key = attr.name();
+
 			if(key.toLowerCase().startsWith(prefix.toLowerCase()))
-				filtered.addObject(key);
+				filtered.addObject(attr);
 		}
 		
 		return filtered;
 	}
 	
-	private static void addMethods(Method[] methods,
-			NSMutableArray<String> attrs)
+	private static boolean methodIsFromSuperclass(Class<?> klass, Method method)
+	{
+		if("toString".equals(method.getName()))
+		{
+			// Special dispensation for the toString() method, since it returns
+			// a useful string representation of most objects that some report
+			// designers might find useful.
+
+			return false;
+		}
+
+		Class<?> methodClass = method.getDeclaringClass();
+
+		boolean isInGenericRecord =
+			methodClass.isAssignableFrom(ERXGenericRecord.class) ||
+			methodClass.isAssignableFrom(EOGenericRecord.class);
+	
+		if(!isInGenericRecord)
+		{
+			// The method might have been overridden, causing its declaring
+			// class to be the class itself. Check this by explicitly trying
+			// to find the method in a superclass.
+
+			try
+			{
+				ERXGenericRecord.class.getMethod(
+						method.getName(), method.getParameterTypes());
+				
+				isInGenericRecord = true;
+			}
+			catch (SecurityException e)
+			{
+			}
+			catch (NoSuchMethodException e)
+			{
+			}
+			
+			try
+			{
+				EOGenericRecord.class.getMethod(
+						method.getName(), method.getParameterTypes());
+				
+				isInGenericRecord = true;
+			}
+			catch (SecurityException e)
+			{
+			}
+			catch (NoSuchMethodException e)
+			{
+			}
+		}
+		
+		return isInGenericRecord;
+	}
+
+	private static boolean methodHasSpecialName(Method method)
+	{
+		boolean isSpecial = false;
+
+		String methodName = method.getName();
+		
+		if(methodName.startsWith("create") &&
+				methodName.endsWith("Relationship"))
+		{
+			isSpecial = true;
+		}
+		else if(methodName.equals("changedProperties"))
+		{
+			isSpecial = true;
+		}
+		else if(methodName.startsWith("updateMutableFields"))
+		{
+			isSpecial = true;
+		}
+
+		return isSpecial;
+	}
+
+	private static void addMethods(Class<?> klass, Method[] methods,
+			NSMutableArray<KVCAttributeInfo> attrs)
 	{
 		for(Method method : methods)
 		{
 			String name = method.getName();
 			int modifiers = method.getModifiers();
 
+			boolean isFromSuperclass = methodIsFromSuperclass(klass, method);
+			boolean isSpecialName = methodHasSpecialName(method);
+
 			if((modifiers & Modifier.PUBLIC) != 0 &&
 					(modifiers & Modifier.STATIC) == 0 &&
 					method.getParameterTypes().length == 0 &&
+					!isFromSuperclass && !isSpecialName &&
 					typeIsAcceptable(method.getReturnType()))
 			{
 				if(name.startsWith("_get"))
@@ -112,12 +201,17 @@ public class KVCAttributeFinder
 				}
 				
 				if(!attrs.containsObject(name))
-					attrs.addObject(name);
+				{
+					KVCAttributeInfo attr = new KVCAttributeInfo(name,
+							method.getReturnType().getSimpleName());
+					attrs.addObject(attr);
+				}
 			}
 		}
 	}
 
-	private static void addFields(Field[] fields, NSMutableArray<String> attrs)
+	private static void addFields(Field[] fields,
+			NSMutableArray<KVCAttributeInfo> attrs)
 	{
 		for(Field field : fields)
 		{
@@ -125,7 +219,8 @@ public class KVCAttributeFinder
 			int modifiers = field.getModifiers();
 
 			if((modifiers & Modifier.PUBLIC) != 0 &&
-					(modifiers & Modifier.STATIC) == 0)
+					(modifiers & Modifier.STATIC) == 0 &&
+					typeIsAcceptable(field.getType()))
 			{
 				if(name.startsWith("_is"))
 				{
@@ -141,7 +236,11 @@ public class KVCAttributeFinder
 				}
 
 				if(!attrs.containsObject(name))
-					attrs.addObject(name);
+				{
+					KVCAttributeInfo attr = new KVCAttributeInfo(name,
+							field.getType().getSimpleName());
+					attrs.addObject(attr);
+				}
 			}
 		}
 	}
@@ -156,7 +255,7 @@ public class KVCAttributeFinder
 	{
 		if(str != null && str.length() > 0)
 		{
-			return "" + Character.toUpperCase(str.charAt(0)) +
+			return "" + Character.toLowerCase(str.charAt(0)) +
 				str.substring(1);
 		}
 		else

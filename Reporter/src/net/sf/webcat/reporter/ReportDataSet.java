@@ -33,7 +33,7 @@ import com.webobjects.eocontrol.*;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: ReportDataSet.java,v 1.1 2007/12/07 21:48:22 aallowat Exp $
+ * @version $Id: ReportDataSet.java,v 1.2 2008/03/06 20:13:41 aallowat Exp $
  */
 public class ReportDataSet
     extends _ReportDataSet
@@ -59,9 +59,8 @@ public class ReportDataSet
     public static ReportDataSet createNewReportDataSet(
     		EOEditingContext ec,
     		ReportTemplate reportTemplate,
-    		String uuid,
-    		String entityName,
-    		String description)
+    		String uuid, String entityName,
+    		String name, String description, int referenceCount)
     {
         ReportDataSet dataSet = new ReportDataSet();
         ec.insertObject( dataSet );
@@ -69,7 +68,9 @@ public class ReportDataSet
         dataSet.setReportTemplateRelationship(reportTemplate);
         dataSet.setUuid(uuid);
         dataSet.setWcEntityName(entityName);
+        dataSet.setName(name);
         dataSet.setDescription(description);
+        dataSet.setReferenceCount(referenceCount);
 
         return dataSet;
     }

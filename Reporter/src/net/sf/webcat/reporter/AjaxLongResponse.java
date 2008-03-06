@@ -125,7 +125,4 @@ public class AjaxLongResponse extends WOComponent
     {
     	super.appendToResponse( response, context );
     }
-    
-    private static Logger log = Logger.getLogger(AjaxLongResponse.class);
-
 }

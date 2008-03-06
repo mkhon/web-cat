@@ -20,9 +20,8 @@
 	<wo:loop list="$publishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
 		<wo:tr index="$index">
 			<td>
-				<b><wo:str value="$reportTemplate.name"/> <wo:str value="0.0.0"/></b>
+				<b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.displayableVersion"/></b>
 				<wo:not condition="$terse"><br/>
-					<b>Title:</b> <wo:str value="$reportTemplate.name"/><br/>
 					<b>Installed by:</b> <wo:str value="$reportTemplate.author.nameAndUid"/><br/>
 					<b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
 				</wo:not>
@@ -46,7 +45,7 @@
 	Displays the list of all unpublished report templates if the current user
 	has administrator privileges.
 -->
-<wo:if condition="$session.user.hasAdminPrivileges">
+<wo:if condition="$user.hasAdminPrivileges">
 	<h2>Unpublished Report Templates (for Individual Use)</h2>
 	<wo:if condition="$unpublishedTemplateGroup.displayedObjects.count">
 		<div class="shadow"><table><tbody>
@@ -62,9 +61,8 @@
 		<wo:loop list="$unpublishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
 			<wo:tr index="$index">
 				<td>
-					<b><wo:str value="$reportTemplate.name"/> <wo:str value="0.0.0"/></b>
+					<b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.displayableVersion"/></b>
 					<wo:not condition="$terse"><br/>
-						<b>Title:</b> <wo:str value="$reportTemplate.name"/><br/>
 						<b>Installed by:</b> <wo:str value="$reportTemplate.author.nameAndUid"/><br/>
 						<b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
 					</wo:not>
@@ -73,7 +71,7 @@
 				<td class="s">&nbsp;</td>
 				<td style="white-space:nowrap">
 					<wo:if condition="$canEditTemplate">
-						<wo name="Publish"/><wo name="Edit"/><wo name="Delete"/>
+						<wo name="Publish"/><wo name="Delete"/>
 					</wo:if>
 				</td>
 			</wo:tr>
@@ -106,9 +104,8 @@
 		<wo:loop list="$personalTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
 			<wo:tr index="$index">
 				<td>
-					<b><wo:str value="$reportTemplate.name"/> <wo:str value="0.0.0"/></b>
+					<b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.displayableVersion"/></b>
 					<wo:not condition="$terse"><br/>
-						<b>Title:</b> <wo:str value="$reportTemplate.name"/><br/>
 						<b>Installed by:</b> <wo:str value="$reportTemplate.author.nameAndUid"/><br/>
 						<b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
 					</wo:not>

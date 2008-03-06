@@ -31,3 +31,13 @@ WCSortOrderDateQueue: net.sf.webcat.core.WCSortOrder {
 	displayKey = "Date Requested";
 	key = "queueTime";
 }
+
+EnqueuedReportTime: WOString {
+	value = enqueuedReport.queueTime;
+	formatter = session.timeFormatter;
+}
+
+GeneratedReportTime: WOString {
+	value = generatedReport.generatedTime;
+	formatter = session.timeFormatter;
+}

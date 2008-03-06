@@ -46,19 +46,26 @@ public class GeneratedReportPage extends ReporterComponent
     	super.appendToResponse(response, context);
     }
     
+
+    public ReporterComponent self()
+    {
+    	return this;
+    }
+
+
     public GeneratedReport generatedReport()
     {
     	if(cachedGeneratedReport == null)
     	{
 	    	NSArray<GeneratedReport> reports = GeneratedReport.objectsForUuid(
-	    			wcSession().localContext(), reportUuidInSession());
+	    			localContext(), localReportUuid());
 	    	
 	    	if(reports.count() > 0)
 	    	{
 	    		if(reports.count() != 1)
 	    		{
 	    			log.warn("There is more than one report with uuid " +
-	    					reportUuidInSession() + "!");
+	    					localReportUuid() + "!");
 	    		}
 	    		
 	    		cachedGeneratedReport = reports.objectAtIndex(0);
@@ -74,7 +81,7 @@ public class GeneratedReportPage extends ReporterComponent
     	GeneratedReport report = generatedReport();
     	
     	return (report != null &&
-    			report.isRenderedWithMethod(renderingMethodInSession()));
+    			report.isRenderedWithMethod(localRenderingMethod()));
     }
 
 
@@ -93,7 +100,7 @@ public class GeneratedReportPage extends ReporterComponent
     
     public String reportUuid()
     {
-    	return reportUuidInSession();
+    	return localReportUuid();
     }
     
     
@@ -170,7 +177,7 @@ public class GeneratedReportPage extends ReporterComponent
     
     public Object jobToken()
     {
-    	return reportUuidInSession();
+    	return localReportUuid();
     }
 
     public AjaxLongResponseHandler longResponseHandler()
@@ -179,7 +186,7 @@ public class GeneratedReportPage extends ReporterComponent
     		public void cancel()
     		{
     			Reporter.getInstance().reportQueueProcessor().cancelJobWithUuid(
-    					wcSession().localContext(), reportUuidInSession());
+    					localContext(), localReportUuid());
     		}
     	};
     }
@@ -195,7 +202,7 @@ public class GeneratedReportPage extends ReporterComponent
 
     public WOComponent rerenderReport()
     {
-    	setRenderingMethodInSession(selectedRenderingMethod.methodName());
+    	setLocalRenderingMethod(selectedRenderingMethod.methodName());
 
     	commitReportRendering();
     	
@@ -334,7 +341,7 @@ public class GeneratedReportPage extends ReporterComponent
                             } )
                     );
             jobData.jobs =
-                wcSession().localContext().objectsWithFetchSpecification(
+                localContext().objectsWithFetchSpecification(
                     fetchSpec
                 );
             jobData.queueSize = jobData.jobs.count();
@@ -347,7 +354,7 @@ public class GeneratedReportPage extends ReporterComponent
             for ( int i = oldQueuePos; i >= 0; i-- )
             {
                 if ( jobData.jobs.objectAtIndex( i )
-                     == enqueuedJobInSession() )
+                     == localEnqueuedJob() )
                 {
                     jobData.queuePosition = i;
                     break;
@@ -357,7 +364,7 @@ public class GeneratedReportPage extends ReporterComponent
             if ( jobData.queuePosition == jobData.queueSize )
             {
                 log.error( "cannot find job in queue for:"
-                           + enqueuedJobInSession() );
+                           + localEnqueuedJob() );
             }
 
             //Reporter reporter = Reporter.getInstance();

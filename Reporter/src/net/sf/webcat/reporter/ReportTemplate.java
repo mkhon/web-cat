@@ -44,6 +44,8 @@ import org.eclipse.birt.report.model.api.DataSetHandle;
 import org.eclipse.birt.report.model.api.DesignElementHandle;
 import org.eclipse.birt.report.model.api.ParameterHandle;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
+import org.eclipse.birt.report.model.api.ReportElementHandle;
+import org.eclipse.birt.report.model.api.ReportItemHandle;
 import org.eclipse.birt.report.model.api.ScalarParameterHandle;
 import org.eclipse.birt.report.model.api.SessionHandle;
 import org.eclipse.birt.report.model.api.SlotHandle;
@@ -60,7 +62,7 @@ import com.webobjects.eocontrol.*;
  * TODO: place a real description here.
  *
  * @author 
- * @version $Id: ReportTemplate.java,v 1.3 2007/12/07 21:48:21 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.4 2008/03/06 20:13:41 aallowat Exp $
  */
 public class ReportTemplate
     extends _ReportTemplate
@@ -154,6 +156,122 @@ public class ReportTemplate
     }
 
 
+    public String displayableVersion()
+    {
+    	return displayableVersion(version());    	
+    }
+
+    
+    public static String displayableVersion(int version)
+    {
+    	int major = (version >> 16) & 0xFF;
+    	int minor = (version >> 8) & 0xFF;
+    	int revision = version & 0xFF;
+    	
+    	return String.format("%d.%d.%d", major, minor, revision);
+    }
+
+    
+    public int versionByIncrementingMajor()
+    {
+    	return versionByIncrementingMajor(version());
+    }
+
+
+    public static int versionByIncrementingMajor(int version)
+    {
+    	int[] components = componentsFromVersion(version);
+    	return versionFromComponents(
+    			components[0] + 1, 0, 0);
+    }
+
+
+    public int versionByIncrementingMinor()
+    {
+    	return versionByIncrementingMinor(version());
+    }
+
+
+    public static int versionByIncrementingMinor(int version)
+    {
+    	int[] components = componentsFromVersion(version);
+    	return versionFromComponents(
+    			components[0], components[1] + 1, 0);
+    }
+
+    
+    public int versionByIncrementingRevision()
+    {
+    	return versionByIncrementingRevision(version());
+    }
+
+
+    public static int versionByIncrementingRevision(int version)
+    {
+    	int[] components = componentsFromVersion(version);
+    	return versionFromComponents(
+    			components[0], components[1], components[2] + 1);
+    }
+
+
+    public int versionMajor()
+    {
+    	return componentsFromVersion(version())[0];
+    }
+
+    
+    public int versionMinor()
+    {
+    	return componentsFromVersion(version())[1];
+    }
+
+    
+    public int versionRevision()
+    {
+    	return componentsFromVersion(version())[2];
+    }
+
+    
+    public void setVersion(int major, int minor, int revision)
+    {
+    	setVersion(versionFromComponents(major, minor, revision));
+    }
+
+
+    public static int[] componentsFromVersion(int version)
+    {
+    	int[] components = new int[3];
+    	components[0] = (version >> 16) & 0xFF;
+    	components[1] = (version >> 8) & 0xFF;
+    	components[2] = version & 0xFF;
+    	return components;
+    }
+
+
+    public static int versionFromComponents(int major, int minor, int revision)
+    {
+    	if(revision > 255)
+    	{
+    		revision = 0;
+    		minor++;
+    	}
+    	
+    	if(minor > 255)
+    	{
+    		minor = 0;
+    		major++;
+    	}
+    	
+    	if(major > 255)
+    	{
+    		// This will hopefully never happen!
+    		throw new IllegalArgumentException("No version numbers remaining!");
+    	}
+
+    	return (major << 16) | (minor << 8) | revision;
+    }
+
+
     // ----------------------------------------------------------
     /**
      * Gets the parameter with the specified binding in this report template.
@@ -209,10 +327,18 @@ public class ReportTemplate
             User                author,
             String              uploadedName,
             NSData              uploadedData,
+            int                 version,
             NSMutableDictionary errors)
     {
         String userTemplateDir = userTemplateDirName( author ).toString();
         uploadedName = ( new File( uploadedName ) ).getName();
+        if(uploadedName.endsWith(".rptdesign"))
+        {
+        	uploadedName = uploadedName.substring(0,
+        			uploadedName.length() - ".rptdesign".length());
+        	uploadedName += "_" + displayableVersion(version) + ".rptdesign";
+        }
+
         File toLookFor = new File( userTemplateDir + "/" + uploadedName );
 
         if ( toLookFor.exists() )
@@ -229,6 +355,7 @@ public class ReportTemplate
         template.setName("");
         ec.saveChanges();
 
+        template.setVersion(version);
         template.setUploadedFileName( uploadedName );
         template.setLastModified( new NSTimestamp() );
         template.setAuthorRelationship( author );
@@ -392,26 +519,76 @@ public class ReportTemplate
     }
     
     
+    private class DataSetCollector implements IDesignElementVisitor
+    {
+    	public DataSetCollector()
+    	{
+    		dataSetRefCounts =
+    			new NSMutableDictionary<DataSetHandle, Integer>();
+    	}
+
+		public void accept(DesignElementHandle handle)
+		{
+			if(handle instanceof ReportItemHandle)
+			{
+				ReportItemHandle repItem = (ReportItemHandle)handle;
+				DataSetHandle dataSet = repItem.getDataSet();
+
+				if(dataSet != null)
+				{
+					String extensionID =
+						dataSet.getStringProperty("extensionID");
+					
+		    		if("net.sf.webcat.oda.dataSet".equals(extensionID))
+		    		{
+		    			if(dataSetRefCounts.containsKey(dataSet))
+		    			{
+		    				int count = dataSetRefCounts.objectForKey(dataSet);
+		    				count++;
+		    				dataSetRefCounts.setObjectForKey(count, dataSet);
+		    			}
+		    			else
+		    			{
+		    				dataSetRefCounts.setObjectForKey(Integer.valueOf(1),
+		    						dataSet);
+		    			}
+		    		}
+				}
+			}
+		}
+		
+		public NSDictionary<DataSetHandle, Integer> dataSetsAndRefCounts()
+		{
+			return dataSetRefCounts;
+		}
+
+		private NSMutableDictionary<DataSetHandle, Integer> dataSetRefCounts;
+    }
+    
+
     // ----------------------------------------------------------
     private String processDataSets(EOEditingContext ec, ReportDesignHandle reportHandle)
     {
-    	Iterator<DataSetHandle> it = reportHandle.getAllDataSets().iterator();
-    	while(it.hasNext())
-    	{
-    		DataSetHandle dataSetHandle = it.next();
-    		String extensionID = dataSetHandle.getStringProperty("extensionID");
-    		
-    		if("net.sf.webcat.oda.dataSet".equals(extensionID))
-    		{
-    			String description = dataSetHandle.getComments();
-    			String queryText = dataSetHandle.getStringProperty("queryText");
-    			RelationInformation relation = new RelationInformation(queryText);
+    	ReportBodyWalker walker = new ReportBodyWalker(reportHandle);
+    	DataSetCollector collector = new DataSetCollector();
+    	walker.visit(collector);
+    	
+    	NSDictionary<DataSetHandle, Integer> sets =
+    		collector.dataSetsAndRefCounts();
 
-    			ReportDataSet.createNewReportDataSet(ec, this,
-    					relation.getDataSetUuid(),
-    					relation.getEntityType(),
-    					description);
-    		}
+    	for(DataSetHandle dataSetHandle : sets.allKeys())
+    	{
+    		int refCount = sets.objectForKey(dataSetHandle);
+
+			String name = dataSetHandle.getName();
+			String description = dataSetHandle.getComments();
+			String queryText = dataSetHandle.getStringProperty("queryText");
+			RelationInformation relation = new RelationInformation(queryText);
+
+			ReportDataSet.createNewReportDataSet(ec, this,
+					relation.getDataSetUuid(),
+					relation.getEntityType(),
+					name, description, refCount);    		
     	}
     	
     	return null;
@@ -562,36 +739,6 @@ public class ReportTemplate
     	}
     	
     	return null;
-    }*/
-
-    
-/*    public int countOfDataSetReferences()
-    {
-        SessionHandle designSession = Reporter.getInstance().newDesignSession();
-        int count = 0;
-        
-        try
-        {
-            ReportDesignHandle reportHandle = designSession.openDesign(
-            		filePath());
- 
-            SlotHandle slot = reportHandle.getBody();
-        	Iterator it = slot.iterator();
-        	while(it.hasNext())
-        	{
-        		DesignElementHandle element = (DesignElementHandle)it.next();
-        		Object dataSetValue = element.getProperty("dataSet");
-        		
-        		if(dataSetValue != null)
-        			count++;
-        	}
-        }
-        catch(BirtException e)
-        {
-        	log.error("Error counting data set references in template", e);
-        }
-        
-        return count;
     }*/
 
     

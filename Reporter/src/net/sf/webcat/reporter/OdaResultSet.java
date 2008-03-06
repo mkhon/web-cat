@@ -56,6 +56,12 @@ public class OdaResultSet implements IWebCATResultSet
 	private Object currentObject;
 	
 	private boolean wasNull;
+	
+	private long lastThrottleCheck;
+
+	private static final long MILLIS_BETWEEN_THROTTLE_CHECK = 3000;
+	
+	private static final long MILLIS_TO_THROTTLE = 5000;
 
 	private static final int PROGRESS_STEP_SIZE = 10;
 
@@ -65,6 +71,8 @@ public class OdaResultSet implements IWebCATResultSet
 		this.query = query;
 		currentRow = 0;
 		rawCurrentRow = 0;
+		
+		lastThrottleCheck = 0;
 	}
 
 
@@ -109,7 +117,7 @@ public class OdaResultSet implements IWebCATResultSet
 		iterator = new ERXFetchSpecificationBatchIterator(fetch, editingContext);
 
 		ProgressManager.getInstance().beginTaskForJob(
- 				jobUuid, iterator.count(), "Gathering data for report");
+ 				jobUuid, iterator.count());
 	}
 
 	public void prepare(String entityType, String[] expressions)
@@ -172,6 +180,8 @@ public class OdaResultSet implements IWebCATResultSet
 
 	public boolean moveToNextRow() throws WebCATDataException
 	{
+		throttleIfNecessary();
+
 		boolean hasNext = true;
 
 		rawCurrentRow++;
@@ -192,6 +202,28 @@ public class OdaResultSet implements IWebCATResultSet
 		return hasNext;
 	}
 
+
+	private void throttleIfNecessary()
+	{
+		long currentTime = System.currentTimeMillis();
+//		System.out.println("currentTime = " + currentTime);
+//		System.out.println("lastThrottleCheck = " + lastThrottleCheck);
+		if(currentTime - lastThrottleCheck > MILLIS_BETWEEN_THROTTLE_CHECK)
+		{
+			while(Reporter.getInstance().refreshThrottleStatus())
+			{
+				try
+				{
+					Thread.sleep(MILLIS_TO_THROTTLE);
+				}
+				catch(InterruptedException e) { }
+			}
+
+			lastThrottleCheck = System.currentTimeMillis();
+		}
+	}
+
+
 	public int rowCount() throws WebCATDataException
 	{
 		// This should be deprecated. It's not always possible to determine
@@ -200,7 +232,8 @@ public class OdaResultSet implements IWebCATResultSet
 		return 0;
 	}
 
-	private <T> T evaluate(int column, Class<T> destType) throws WebCATDataException
+	private <T> T evaluate(int column, Class<T> destType)
+	throws WebCATDataException
 	{
 		ExpressionAccessor accessor = accessors[column];
 		Object result = null;
@@ -221,10 +254,6 @@ public class OdaResultSet implements IWebCATResultSet
 			
 			throw new WebCATDataException(new IllegalArgumentException(msg));
 		}
-//		catch(OgnlException e)
-//		{
-//			return null;
-//		}
 		catch(Exception e)
 		{
 			if(e instanceof OgnlException)
@@ -284,7 +313,8 @@ public class OdaResultSet implements IWebCATResultSet
 		return evaluate(column, String.class);
 	}
 
-	public Timestamp timestampValueAtIndex(int column) throws WebCATDataException
+	public Timestamp timestampValueAtIndex(int column)
+	throws WebCATDataException
 	{
 		ExpressionAccessor accessor = accessors[column];
 		Object result = accessor.get(defaultContext, currentObject);

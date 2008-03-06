@@ -31,14 +31,14 @@ public class PickReportToViewPage extends ReporterComponent
     		generatedReportsDisplayGroup.dataSource();
     	
     	NSMutableDictionary bindings = new NSMutableDictionary();
-    	bindings.setObjectForKey(wcSession().user(), "user");
+    	bindings.setObjectForKey(user(), "user");
     	source.setQualifierBindings(bindings);
 
     	source = (EODatabaseDataSource)
 			enqueuedReportsDisplayGroup.dataSource();
 	
     	bindings = new NSMutableDictionary();
-    	bindings.setObjectForKey(wcSession().user(), "user");
+    	bindings.setObjectForKey(user(), "user");
     	source.setQualifierBindings(bindings);
 
     	super.appendToResponse(response, context);
@@ -46,8 +46,7 @@ public class PickReportToViewPage extends ReporterComponent
     
     public WOComponent viewReport()
     {
-//		setParameterSelectionsInSession(new MutableDictionary());
-    	setReportUuidInSession(generatedReport.uuid());
+    	setLocalReportUuid(generatedReport.uuid());
 
     	commitReportRendering();
 
@@ -56,8 +55,7 @@ public class PickReportToViewPage extends ReporterComponent
 
     public WOComponent viewReportProgress()
     {
-//		setParameterSelectionsInSession(new MutableDictionary());
-    	setReportUuidInSession(enqueuedReport.uuid());
+    	setLocalReportUuid(enqueuedReport.uuid());
 
     	return pageWithName(GeneratedReportPage.class.getName());
     }

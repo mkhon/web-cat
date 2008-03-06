@@ -30,7 +30,9 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.eoaccess.*;
 import java.util.Enumeration;
+import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
@@ -57,6 +59,87 @@ public abstract class _ReportQuery
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * A static factory method for creating a new
+     * _ReportQuery object given required
+     * attributes and relationships.
+     * @param editingContext The context in which the new object will be
+     * inserted
+     * @param updateMutableFields
+     * @return The newly created object
+     */
+    public static ReportQuery create(
+        EOEditingContext editingContext,
+        boolean updateMutableFields
+        )
+    {
+        ReportQuery eoObject = (ReportQuery)
+            EOUtilities.createAndInsertInstance(
+                editingContext,
+                _ReportQuery.ENTITY_NAME);
+        eoObject.setUpdateMutableFields(updateMutableFields);
+        return eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of the given object in another editing context.
+     * @param editingContext The target editing context
+     * @param eo The object to import
+     * @return An instance of the given object in the target editing context
+     */
+    public static ReportQuery localInstance(
+        EOEditingContext editingContext, ReportQuery eo)
+    {
+        return (eo == null)
+            ? null
+            : (ReportQuery)EOUtilities.localInstanceOfObject(
+                editingContext, eo);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportQuery forId(
+        EOEditingContext ec, int id )
+    {
+        ReportQuery obj = null;
+        if (id > 0)
+        {
+            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+                ENTITY_NAME, "id", new Integer( id ) );
+            if ( results != null && results.count() > 0 )
+            {
+                obj = (ReportQuery)results.objectAtIndex( 0 );
+            }
+        }
+        return obj;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportQuery forId(
+        EOEditingContext ec, String id )
+    {
+        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+    }
+
+
     //~ Constants (for key names) .............................................
 
     // Attributes ---
@@ -74,6 +157,50 @@ public abstract class _ReportQuery
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of this object in another editing context.
+     * @param editingContext The target editing context
+     * @return An instance of this object in the target editing context
+     */
+    public ReportQuery localInstance(EOEditingContext editingContext)
+    {
+        return (ReportQuery)EOUtilities.localInstanceOfObject(
+            editingContext, this);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a list of changes between this object's current state and the
+     * last committed version.
+     * @return a dictionary of the changes that have not yet been committed
+     */
+    public NSDictionary changedProperties()
+    {
+        return changesFromSnapshot(
+            editingContext().committedSnapshotForObject(this) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            return er.extensions.ERXConstant.ZeroInteger;
+        }
+    }
 
     // ----------------------------------------------------------
     /**
@@ -95,6 +222,11 @@ public abstract class _ReportQuery
      */
     public void setDescription( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDescription("
+                + value + "): was " + description() );
+        }
         takeStoredValueForKey( value, "description" );
     }
 
@@ -161,6 +293,11 @@ public abstract class _ReportQuery
      */
     public void setQueryInfo( net.sf.webcat.core.MutableDictionary value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setQueryInfo("
+                + value + ")" );
+        }
         if ( queryInfoCache == null )
         {
             queryInfoCache = value;
@@ -187,6 +324,10 @@ public abstract class _ReportQuery
      */
     public void clearQueryInfo()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "clearQueryInfo()" );
+        }
         takeStoredValueForKey( null, "queryInfo" );
         queryInfoRawCache = null;
         queryInfoCache = null;
@@ -217,9 +358,14 @@ public abstract class _ReportQuery
      */
     public void setUpdateMutableFields( boolean value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUpdateMutableFields("
+                + value + "): was " + updateMutableFields() );
+        }
         Number actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        takeStoredValueForKey( actual, "updateMutableFields" );
+        setUpdateMutableFieldsRaw( actual );
     }
 
 
@@ -243,6 +389,11 @@ public abstract class _ReportQuery
      */
     public void setUpdateMutableFieldsRaw( Number value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUpdateMutableFieldsRaw("
+                + value + "): was " + updateMutableFieldsRaw() );
+        }
         takeStoredValueForKey( value, "updateMutableFields" );
     }
 
@@ -267,6 +418,11 @@ public abstract class _ReportQuery
      */
     public void setWcEntityName( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setWcEntityName("
+                + value + "): was " + wcEntityName() );
+        }
         takeStoredValueForKey( value, "wcEntityName" );
     }
 
@@ -277,6 +433,7 @@ public abstract class _ReportQuery
      */
     public void saveMutables()
     {
+        log.debug("saveMutables()");
         if ( queryInfoCache != null
             && queryInfoCache.hasChanged() )
         {
@@ -295,6 +452,7 @@ public abstract class _ReportQuery
      */
     public void willUpdate()
     {
+        log.debug("willUpdate()");
         saveMutables();
         super.willUpdate();
     }
@@ -306,6 +464,7 @@ public abstract class _ReportQuery
      */
     public void willInsert()
     {
+        log.debug("willInsert()");
         saveMutables();
         super.willInsert();
     }
@@ -317,6 +476,7 @@ public abstract class _ReportQuery
      */
     public void flushCaches()
     {
+        log.debug("flushCaches()");
         queryInfoCache = null;
         queryInfoRawCache  = null;
         setUpdateMutableFields( false );
@@ -336,39 +496,6 @@ public abstract class _ReportQuery
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>UserAndEntitySavedQueries</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @param userBinding fetch spec parameter
-     * @param wcEntityNameBinding fetch spec parameter
-     * @return an NSArray of the entities retrieved
-     */
-    public static NSArray objectsForUserAndEntitySavedQueries(
-            EOEditingContext context,
-            net.sf.webcat.core.User userBinding,
-            String wcEntityNameBinding
-        )
-    {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "userAndEntitySavedQueries", "ReportQuery" );
-
-        NSMutableDictionary bindings = new NSMutableDictionary();
-
-        if ( userBinding != null )
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
-        if ( wcEntityNameBinding != null )
-            bindings.setObjectForKey( wcEntityNameBinding,
-                                      "wcEntityName" );
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
-
-        return context.objectsWithFetchSpecification( spec );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Retrieve the entity pointed to by the <code>user</code>
      * relationship.
      * @return the entity in the relationship
@@ -381,7 +508,7 @@ public abstract class _ReportQuery
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>user</code>
      * relationship (DO NOT USE--instead, use
      * <code>setUserRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -390,13 +517,18 @@ public abstract class _ReportQuery
      */
     public void setUser( net.sf.webcat.core.User value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUser("
+                + value + "): was " + user() );
+        }
         takeStoredValueForKey( value, "user" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>user</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -405,6 +537,11 @@ public abstract class _ReportQuery
     public void setUserRelationship(
         net.sf.webcat.core.User value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUserRelationship("
+                + value + "): was " + user() );
+        }
         if ( value == null )
         {
             net.sf.webcat.core.User object = user();
@@ -439,6 +576,11 @@ public abstract class _ReportQuery
      */
     public void setDataSetQueries( NSMutableArray value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDataSetQueries("
+                + value + "): was " + dataSetQueries() );
+        }
         takeStoredValueForKey( value, "dataSetQueries" );
     }
 
@@ -454,6 +596,11 @@ public abstract class _ReportQuery
      */
     public void addToDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToDataSetQueries("
+                + value + "): was " + dataSetQueries() );
+        }
         NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.addObject( value );
@@ -471,6 +618,11 @@ public abstract class _ReportQuery
      */
     public void removeFromDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromDataSetQueries("
+                + value + "): was " + dataSetQueries() );
+        }
         NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.removeObject( value );
@@ -486,6 +638,11 @@ public abstract class _ReportQuery
      */
     public void addToDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToDataSetQueriesRelationship("
+                + value + "): was " + dataSetQueries() );
+        }
         addObjectToBothSidesOfRelationshipWithKey(
             value, "dataSetQueries" );
     }
@@ -500,6 +657,11 @@ public abstract class _ReportQuery
      */
     public void removeFromDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromDataSetQueriesRelationship("
+                + value + "): was " + dataSetQueries() );
+        }
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, "dataSetQueries" );
     }
@@ -514,6 +676,10 @@ public abstract class _ReportQuery
      */
     public net.sf.webcat.reporter.ReportDataSetQuery createDataSetQueriesRelationship()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createDataSetQueriesRelationship()" );
+        }
         EOClassDescription eoClassDesc = EOClassDescription
             .classDescriptionForEntityName( "ReportDataSetQuery" );
         EOEnterpriseObject eoObject = eoClassDesc
@@ -534,6 +700,11 @@ public abstract class _ReportQuery
      */
     public void deleteDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteDataSetQueriesRelationship("
+                + value + "): was " + dataSetQueries() );
+        }
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, "dataSetQueries" );
         editingContext().deleteObject( value );
@@ -547,6 +718,11 @@ public abstract class _ReportQuery
      */
     public void deleteAllDataSetQueriesRelationships()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllDataSetQueriesRelationships(): was "
+                + dataSetQueries() );
+        }
         Enumeration objects = dataSetQueries().objectEnumerator();
         while ( objects.hasMoreElements() )
             deleteDataSetQueriesRelationship(
@@ -554,4 +730,49 @@ public abstract class _ReportQuery
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>UserAndEntitySavedQueries</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @param wcEntityNameBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray objectsForUserAndEntitySavedQueries(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding,
+            String wcEntityNameBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "userAndEntitySavedQueries", "ReportQuery" );
+
+        NSMutableDictionary bindings = new NSMutableDictionary();
+
+        if ( userBinding != null )
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        if ( wcEntityNameBinding != null )
+            bindings.setObjectForKey( wcEntityNameBinding,
+                                      "wcEntityName" );
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForUserAndEntitySavedQueries(ec"
+            
+                + ", " + userBinding
+                + ", " + wcEntityNameBinding
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    //~ Instance/static variables .............................................
+
+    static Logger log = Logger.getLogger( ReportQuery.class );
 }

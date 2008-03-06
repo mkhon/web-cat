@@ -6,7 +6,7 @@
             class = WODisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
-                editingContext = session.localContext; 
+                editingContext = localContext; 
                 fetchSpecification = {
                     class = EOFetchSpecification; 
                     entityName = ReportTemplate; 
@@ -37,7 +37,7 @@
             class = WODisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
-                editingContext = session.localContext; 
+                editingContext = localContext; 
                 fetchSpecification = {
                     class = EOFetchSpecification; 
                     entityName = ReportTemplate; 
@@ -68,7 +68,7 @@
             class = WODisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
-                editingContext = session.localContext; 
+                editingContext = localContext; 
                 fetchSpecification = {
                     class = EOFetchSpecification; 
                     entityName = ReportTemplate; 

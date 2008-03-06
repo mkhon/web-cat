@@ -20,8 +20,6 @@ public class AdvancedQueryModel extends AbstractQueryAssistantModel
 	@Override
 	public EOQualifier qualifierFromValues()
 	{
-    	System.out.println("qualifierFromValues = " + criteria);
-
     	NSMutableArray<EOQualifier> terms = new NSMutableArray<EOQualifier>();
     	
     	for(AdvancedQueryCriterion cri : criteria)
@@ -39,7 +37,6 @@ public class AdvancedQueryModel extends AbstractQueryAssistantModel
 	@Override
 	public void takeValuesFromQualifier(EOQualifier qualifier)
 	{
-    	System.out.println("takeStateFromQualifier = " + qualifier);
 		criteria = new NSMutableArray<AdvancedQueryCriterion>();
 
 		if(qualifier instanceof EOAndQualifier)
@@ -67,6 +64,11 @@ public class AdvancedQueryModel extends AbstractQueryAssistantModel
 		return criteria;
 	}
 
+	public void setCriteria(NSArray<AdvancedQueryCriterion> value)
+	{
+		criteria = value.mutableClone();
+	}
+
     public void insertNewCriterionAtIndex(int index)
     {
     	AdvancedQueryCriterion newCriterion = new AdvancedQueryCriterion();
@@ -76,8 +78,6 @@ public class AdvancedQueryModel extends AbstractQueryAssistantModel
     	newCriterion.setComparandType(AdvancedQueryCriterion.COMPARAND_LITERAL);
 
     	criteria.insertObjectAtIndex(newCriterion, index);
-    	
-    	System.out.println(criteria.count());
     }
     
     public void removeCriterionAtIndex(int index)

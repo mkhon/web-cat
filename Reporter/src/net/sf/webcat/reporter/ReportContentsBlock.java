@@ -14,7 +14,9 @@ import com.webobjects.foundation.NSData;
 public class ReportContentsBlock extends ReporterComponent
 {
 	public GeneratedReport generatedReport;
-	
+
+	public ReporterComponent owner;
+
     public ReportContentsBlock(WOContext context)
     {
         super(context);
@@ -26,7 +28,7 @@ public class ReportContentsBlock extends ReporterComponent
     	{
         	IRenderingMethod method =
         		Reporter.getInstance().renderingMethodWithName(
-        			renderingMethodInSession());
+        			localRenderingMethod());
         	method.appendContentToResponse(generatedReport, response, context);
 		}
     	catch (IOException e)

@@ -20,4 +20,5 @@ Rerender: WOSubmitButton {
 
 ReportContents: net.sf.webcat.reporter.ReportContentsBlock {
 	generatedReport = generatedReport;
+	owner = self;
 }

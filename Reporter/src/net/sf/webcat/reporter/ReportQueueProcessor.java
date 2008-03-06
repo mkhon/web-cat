@@ -235,9 +235,10 @@ public class ReportQueueProcessor extends Thread
 									log.info( "generating and rendering report with template "
 											+ reportTemplate.name() );
 
-							 		int dataSetRefs = reportTemplate.dataSets().count();
+							 		int dataSetRefs = countDataSetRefs(reportTemplate);
+
 							 		ProgressManager.getInstance().beginTaskForJob(
-							 				job.uuid(), dataSetRefs, "Gathering data for report");
+							 				job.uuid(), dataSetRefs);
 								}
 								else
 								{
@@ -311,6 +312,19 @@ public class ReportQueueProcessor extends Thread
     }
 
 
+    private int countDataSetRefs(ReportTemplate template)
+    {
+    	NSArray<ReportDataSet> dataSets = template.dataSets();
+ 		int dataSetRefs = 0;
+
+ 		for(ReportDataSet dataSet : dataSets)
+ 		{
+ 			dataSetRefs += dataSet.referenceCount();
+ 		}
+    	
+ 		return dataSetRefs;
+    }
+    
     // ----------------------------------------------------------
     /**
      * This function processes the job and performs the stages that

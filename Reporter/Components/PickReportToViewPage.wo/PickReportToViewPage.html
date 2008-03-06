@@ -16,7 +16,7 @@
 		<wo:loop list="$enqueuedReportsDisplayGroup.displayedObjects" item="$enqueuedReport" index="$enqueuedIndex">
 			<wo:tr index="$enqueuedIndex">
 				<td><wo:link action="$viewReportProgress" string="$enqueuedReport.description"/></td>
-				<td><wo:str value="$enqueuedReport.queueTime"/></td>
+				<td><wo name="EnqueuedReportTime"/></td>
 				<td><wo:str value="$enqueuedReportProgress"/></td>
 			</wo:tr>
 		</wo:loop>
@@ -37,12 +37,14 @@
 		</tr>
 		<tr>
 			<th>Report Title<webobject name="WCSortOrderTitle"/></th>
+			<th>Template Version</th>
 			<th>Date Generated<webobject name="WCSortOrderDate"/></th>
 		</tr>
 		<wo:loop list="$generatedReportsDisplayGroup.displayedObjects" item="$generatedReport" index="$index">
 			<wo:tr index="$index">
 				<td><wo:link action="$viewReport" string="$generatedReport.description"/></td>
-				<td><wo:str value="$generatedReport.generatedTime"/></td>
+				<td><wo:str value="$generatedReport.reportTemplate.displayableVersion"/></td>
+				<td><wo name="GeneratedReportTime"/></td>
 			</wo:tr>
 		</wo:loop>
 	</table></div>

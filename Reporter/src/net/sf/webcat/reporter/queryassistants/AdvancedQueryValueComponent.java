@@ -77,7 +77,9 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 */
 	public boolean isValueTypeString()
 	{
-		return String.class.isAssignableFrom(valueType);
+		return AdvancedQueryUtils.typeOfClass(valueType) ==
+			AdvancedQueryUtils.TYPE_STRING;
+		//return String.class.isAssignableFrom(valueType);
 	}
 
     public String stringValueOfRepresentedValue()
@@ -140,8 +142,10 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 */
 	public boolean isValueTypeInteger()
 	{
-		return Integer.class.isAssignableFrom(valueType) ||
-			valueType == Integer.TYPE;
+		return AdvancedQueryUtils.typeOfClass(valueType) ==
+			AdvancedQueryUtils.TYPE_INTEGER;
+//		return Integer.class.isAssignableFrom(valueType) ||
+//			valueType == Integer.TYPE;
 	}
 
 	public Integer integerValueOfObject(Object object)
@@ -232,8 +236,10 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 */
 	public boolean isValueTypeDouble()
 	{
-		return Double.class.isAssignableFrom(valueType) ||
-			valueType == Double.TYPE;
+		return AdvancedQueryUtils.typeOfClass(valueType) ==
+			AdvancedQueryUtils.TYPE_DOUBLE;
+//		return Double.class.isAssignableFrom(valueType) ||
+//			valueType == Double.TYPE;
 	}
 
 	public Double doubleValueOfObject(Object object)
@@ -325,8 +331,10 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 */
 	public boolean isValueTypeBoolean()
 	{
-		return Boolean.class.isAssignableFrom(valueType) ||
-			valueType == Boolean.TYPE;
+		return AdvancedQueryUtils.typeOfClass(valueType) ==
+			AdvancedQueryUtils.TYPE_BOOLEAN;
+//		return Boolean.class.isAssignableFrom(valueType) ||
+//			valueType == Boolean.TYPE;
 	}
 
     public NSArray<Boolean> booleanValues()
@@ -358,7 +366,9 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 */
 	public boolean isValueTypeTimestamp()
 	{
-		return java.util.Date.class.isAssignableFrom(valueType);
+		return AdvancedQueryUtils.typeOfClass(valueType) ==
+			AdvancedQueryUtils.TYPE_TIMESTAMP;
+//		return java.util.Date.class.isAssignableFrom(valueType);
 	}
 
     public NSTimestamp timestampValueOfRepresentedValue()
@@ -405,7 +415,9 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 */
 	public boolean isValueTypeEntity()
 	{
-		return EOEnterpriseObject.class.isAssignableFrom(valueType);
+//		return EOEnterpriseObject.class.isAssignableFrom(valueType);
+		return AdvancedQueryUtils.typeOfClass(valueType) ==
+			AdvancedQueryUtils.TYPE_ENTITY;
 	}
 
     public NSArray<EOEnterpriseObject> entityValues()
@@ -419,7 +431,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
     	fetchSpec.setFetchLimit(250);
     	
     	NSArray<EOEnterpriseObject> objects =
-    		wcSession().localContext().objectsWithFetchSpecification(fetchSpec);
+    		localContext().objectsWithFetchSpecification(fetchSpec);
     	
     	return objects;
     }

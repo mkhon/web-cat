@@ -30,7 +30,9 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.eoaccess.*;
 import java.util.Enumeration;
+import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
@@ -56,6 +58,87 @@ public abstract class _ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * A static factory method for creating a new
+     * _ReportTemplate object given required
+     * attributes and relationships.
+     * @param editingContext The context in which the new object will be
+     * inserted
+     * @param isPublished
+     * @return The newly created object
+     */
+    public static ReportTemplate create(
+        EOEditingContext editingContext,
+        boolean isPublished
+        )
+    {
+        ReportTemplate eoObject = (ReportTemplate)
+            EOUtilities.createAndInsertInstance(
+                editingContext,
+                _ReportTemplate.ENTITY_NAME);
+        eoObject.setIsPublished(isPublished);
+        return eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of the given object in another editing context.
+     * @param editingContext The target editing context
+     * @param eo The object to import
+     * @return An instance of the given object in the target editing context
+     */
+    public static ReportTemplate localInstance(
+        EOEditingContext editingContext, ReportTemplate eo)
+    {
+        return (eo == null)
+            ? null
+            : (ReportTemplate)EOUtilities.localInstanceOfObject(
+                editingContext, eo);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportTemplate forId(
+        EOEditingContext ec, int id )
+    {
+        ReportTemplate obj = null;
+        if (id > 0)
+        {
+            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+                ENTITY_NAME, "id", new Integer( id ) );
+            if ( results != null && results.count() > 0 )
+            {
+                obj = (ReportTemplate)results.objectAtIndex( 0 );
+            }
+        }
+        return obj;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportTemplate forId(
+        EOEditingContext ec, String id )
+    {
+        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+    }
+
+
     //~ Constants (for key names) .............................................
 
     // Attributes ---
@@ -64,6 +147,7 @@ public abstract class _ReportTemplate
     public static final String LAST_MODIFIED_KEY = "lastModified";
     public static final String NAME_KEY = "name";
     public static final String UPLOADED_FILE_NAME_KEY = "uploadedFileName";
+    public static final String VERSION_KEY = "version";
     // To-one relationships ---
     public static final String AUTHOR_KEY = "author";
     // To-many relationships ---
@@ -74,6 +158,50 @@ public abstract class _ReportTemplate
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of this object in another editing context.
+     * @param editingContext The target editing context
+     * @return An instance of this object in the target editing context
+     */
+    public ReportTemplate localInstance(EOEditingContext editingContext)
+    {
+        return (ReportTemplate)EOUtilities.localInstanceOfObject(
+            editingContext, this);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a list of changes between this object's current state and the
+     * last committed version.
+     * @return a dictionary of the changes that have not yet been committed
+     */
+    public NSDictionary changedProperties()
+    {
+        return changesFromSnapshot(
+            editingContext().committedSnapshotForObject(this) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            return er.extensions.ERXConstant.ZeroInteger;
+        }
+    }
 
     // ----------------------------------------------------------
     /**
@@ -95,6 +223,11 @@ public abstract class _ReportTemplate
      */
     public void setDescription( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDescription("
+                + value + "): was " + description() );
+        }
         takeStoredValueForKey( value, "description" );
     }
 
@@ -123,9 +256,14 @@ public abstract class _ReportTemplate
      */
     public void setIsPublished( boolean value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsPublished("
+                + value + "): was " + isPublished() );
+        }
         Number actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        takeStoredValueForKey( actual, "isPublished" );
+        setIsPublishedRaw( actual );
     }
 
 
@@ -149,6 +287,11 @@ public abstract class _ReportTemplate
      */
     public void setIsPublishedRaw( Number value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsPublishedRaw("
+                + value + "): was " + isPublishedRaw() );
+        }
         takeStoredValueForKey( value, "isPublished" );
     }
 
@@ -173,6 +316,11 @@ public abstract class _ReportTemplate
      */
     public void setLastModified( NSTimestamp value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setLastModified("
+                + value + "): was " + lastModified() );
+        }
         takeStoredValueForKey( value, "lastModified" );
     }
 
@@ -197,6 +345,11 @@ public abstract class _ReportTemplate
      */
     public void setName( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setName("
+                + value + "): was " + name() );
+        }
         takeStoredValueForKey( value, "name" );
     }
 
@@ -221,26 +374,76 @@ public abstract class _ReportTemplate
      */
     public void setUploadedFileName( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUploadedFileName("
+                + value + "): was " + uploadedFileName() );
+        }
         takeStoredValueForKey( value, "uploadedFileName" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>AllTemplates</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @return an NSArray of the entities retrieved
+     * Retrieve this object's <code>version</code> value.
+     * @return the value of the attribute
      */
-    public static NSArray objectsForAllTemplates(
-            EOEditingContext context
-        )
+    public int version()
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "allTemplates", "ReportTemplate" );
+        Number result =
+            (Number)storedValueForKey( "version" );
+        return ( result == null )
+            ? 0
+            : result.intValue();
+    }
 
-        return context.objectsWithFetchSpecification( spec );
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>version</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setVersion( int value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setVersion("
+                + value + "): was " + version() );
+        }
+        Number actual =
+            er.extensions.ERXConstant.integerForInt( value );
+        setVersionRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>version</code> value.
+     * @return the value of the attribute
+     */
+    public Number versionRaw()
+    {
+        return (Number)storedValueForKey( "version" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>version</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setVersionRaw( Number value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setVersionRaw("
+                + value + "): was " + versionRaw() );
+        }
+        takeStoredValueForKey( value, "version" );
     }
 
 
@@ -258,7 +461,7 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>author</code>
      * relationship (DO NOT USE--instead, use
      * <code>setAuthorRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -267,13 +470,18 @@ public abstract class _ReportTemplate
      */
     public void setAuthor( net.sf.webcat.core.User value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setAuthor("
+                + value + "): was " + author() );
+        }
         takeStoredValueForKey( value, "author" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>author</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -282,6 +490,11 @@ public abstract class _ReportTemplate
     public void setAuthorRelationship(
         net.sf.webcat.core.User value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setAuthorRelationship("
+                + value + "): was " + author() );
+        }
         if ( value == null )
         {
             net.sf.webcat.core.User object = author();
@@ -316,6 +529,11 @@ public abstract class _ReportTemplate
      */
     public void setDataSets( NSMutableArray value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDataSets("
+                + value + "): was " + dataSets() );
+        }
         takeStoredValueForKey( value, "dataSets" );
     }
 
@@ -331,6 +549,11 @@ public abstract class _ReportTemplate
      */
     public void addToDataSets( net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToDataSets("
+                + value + "): was " + dataSets() );
+        }
         NSMutableArray array = (NSMutableArray)dataSets();
         willChange();
         array.addObject( value );
@@ -348,6 +571,11 @@ public abstract class _ReportTemplate
      */
     public void removeFromDataSets( net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromDataSets("
+                + value + "): was " + dataSets() );
+        }
         NSMutableArray array = (NSMutableArray)dataSets();
         willChange();
         array.removeObject( value );
@@ -363,6 +591,11 @@ public abstract class _ReportTemplate
      */
     public void addToDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToDataSetsRelationship("
+                + value + "): was " + dataSets() );
+        }
         addObjectToBothSidesOfRelationshipWithKey(
             value, "dataSets" );
     }
@@ -377,6 +610,11 @@ public abstract class _ReportTemplate
      */
     public void removeFromDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromDataSetsRelationship("
+                + value + "): was " + dataSets() );
+        }
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, "dataSets" );
     }
@@ -391,6 +629,10 @@ public abstract class _ReportTemplate
      */
     public net.sf.webcat.reporter.ReportDataSet createDataSetsRelationship()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createDataSetsRelationship()" );
+        }
         EOClassDescription eoClassDesc = EOClassDescription
             .classDescriptionForEntityName( "ReportDataSet" );
         EOEnterpriseObject eoObject = eoClassDesc
@@ -411,6 +653,11 @@ public abstract class _ReportTemplate
      */
     public void deleteDataSetsRelationship( net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteDataSetsRelationship("
+                + value + "): was " + dataSets() );
+        }
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, "dataSets" );
         editingContext().deleteObject( value );
@@ -424,6 +671,11 @@ public abstract class _ReportTemplate
      */
     public void deleteAllDataSetsRelationships()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllDataSetsRelationships(): was "
+                + dataSets() );
+        }
         Enumeration objects = dataSets().objectEnumerator();
         while ( objects.hasMoreElements() )
             deleteDataSetsRelationship(
@@ -431,4 +683,33 @@ public abstract class _ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>AllTemplates</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray objectsForAllTemplates(
+            EOEditingContext context
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "allTemplates", "ReportTemplate" );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForAllTemplates(ec"
+            
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    //~ Instance/static variables .............................................
+
+    static Logger log = Logger.getLogger( ReportTemplate.class );
 }

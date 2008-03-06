@@ -30,7 +30,9 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.eoaccess.*;
 import java.util.Enumeration;
+import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
@@ -56,6 +58,84 @@ public abstract class _ReportDataSetQuery
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * A static factory method for creating a new
+     * _ReportDataSetQuery object given required
+     * attributes and relationships.
+     * @param editingContext The context in which the new object will be
+     * inserted
+     * @return The newly created object
+     */
+    public static ReportDataSetQuery create(
+        EOEditingContext editingContext
+        )
+    {
+        ReportDataSetQuery eoObject = (ReportDataSetQuery)
+            EOUtilities.createAndInsertInstance(
+                editingContext,
+                _ReportDataSetQuery.ENTITY_NAME);
+        return eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of the given object in another editing context.
+     * @param editingContext The target editing context
+     * @param eo The object to import
+     * @return An instance of the given object in the target editing context
+     */
+    public static ReportDataSetQuery localInstance(
+        EOEditingContext editingContext, ReportDataSetQuery eo)
+    {
+        return (eo == null)
+            ? null
+            : (ReportDataSetQuery)EOUtilities.localInstanceOfObject(
+                editingContext, eo);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportDataSetQuery forId(
+        EOEditingContext ec, int id )
+    {
+        ReportDataSetQuery obj = null;
+        if (id > 0)
+        {
+            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+                ENTITY_NAME, "id", new Integer( id ) );
+            if ( results != null && results.count() > 0 )
+            {
+                obj = (ReportDataSetQuery)results.objectAtIndex( 0 );
+            }
+        }
+        return obj;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportDataSetQuery forId(
+        EOEditingContext ec, String id )
+    {
+        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+    }
+
+
     //~ Constants (for key names) .............................................
 
     // Attributes ---
@@ -73,6 +153,50 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
+     * Get a local instance of this object in another editing context.
+     * @param editingContext The target editing context
+     * @return An instance of this object in the target editing context
+     */
+    public ReportDataSetQuery localInstance(EOEditingContext editingContext)
+    {
+        return (ReportDataSetQuery)EOUtilities.localInstanceOfObject(
+            editingContext, this);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a list of changes between this object's current state and the
+     * last committed version.
+     * @return a dictionary of the changes that have not yet been committed
+     */
+    public NSDictionary changedProperties()
+    {
+        return changesFromSnapshot(
+            editingContext().committedSnapshotForObject(this) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            return er.extensions.ERXConstant.ZeroInteger;
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve the entity pointed to by the <code>dataSet</code>
      * relationship.
      * @return the entity in the relationship
@@ -85,7 +209,7 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>dataSet</code>
      * relationship (DO NOT USE--instead, use
      * <code>setDataSetRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -94,13 +218,18 @@ public abstract class _ReportDataSetQuery
      */
     public void setDataSet( net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDataSet("
+                + value + "): was " + dataSet() );
+        }
         takeStoredValueForKey( value, "dataSet" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>dataSet</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -109,6 +238,11 @@ public abstract class _ReportDataSetQuery
     public void setDataSetRelationship(
         net.sf.webcat.reporter.ReportDataSet value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDataSetRelationship("
+                + value + "): was " + dataSet() );
+        }
         if ( value == null )
         {
             net.sf.webcat.reporter.ReportDataSet object = dataSet();
@@ -136,7 +270,7 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>enqueuedReportJob</code>
      * relationship (DO NOT USE--instead, use
      * <code>setEnqueuedReportJobRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -145,13 +279,18 @@ public abstract class _ReportDataSetQuery
      */
     public void setEnqueuedReportJob( net.sf.webcat.reporter.EnqueuedReportJob value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setEnqueuedReportJob("
+                + value + "): was " + enqueuedReportJob() );
+        }
         takeStoredValueForKey( value, "enqueuedReportJob" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>enqueuedReportJob</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -160,6 +299,11 @@ public abstract class _ReportDataSetQuery
     public void setEnqueuedReportJobRelationship(
         net.sf.webcat.reporter.EnqueuedReportJob value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setEnqueuedReportJobRelationship("
+                + value + "): was " + enqueuedReportJob() );
+        }
         if ( value == null )
         {
             net.sf.webcat.reporter.EnqueuedReportJob object = enqueuedReportJob();
@@ -187,7 +331,7 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>generatedReport</code>
      * relationship (DO NOT USE--instead, use
      * <code>setGeneratedReportRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -196,13 +340,18 @@ public abstract class _ReportDataSetQuery
      */
     public void setGeneratedReport( net.sf.webcat.reporter.GeneratedReport value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setGeneratedReport("
+                + value + "): was " + generatedReport() );
+        }
         takeStoredValueForKey( value, "generatedReport" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>generatedReport</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -211,6 +360,11 @@ public abstract class _ReportDataSetQuery
     public void setGeneratedReportRelationship(
         net.sf.webcat.reporter.GeneratedReport value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setGeneratedReportRelationship("
+                + value + "): was " + generatedReport() );
+        }
         if ( value == null )
         {
             net.sf.webcat.reporter.GeneratedReport object = generatedReport();
@@ -238,7 +392,7 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>reportQuery</code>
      * relationship (DO NOT USE--instead, use
      * <code>setReportQueryRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -247,13 +401,18 @@ public abstract class _ReportDataSetQuery
      */
     public void setReportQuery( net.sf.webcat.reporter.ReportQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportQuery("
+                + value + "): was " + reportQuery() );
+        }
         takeStoredValueForKey( value, "reportQuery" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>reportQuery</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -262,6 +421,11 @@ public abstract class _ReportDataSetQuery
     public void setReportQueryRelationship(
         net.sf.webcat.reporter.ReportQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportQueryRelationship("
+                + value + "): was " + reportQuery() );
+        }
         if ( value == null )
         {
             net.sf.webcat.reporter.ReportQuery object = reportQuery();
@@ -275,4 +439,7 @@ public abstract class _ReportDataSetQuery
     }
 
 
+    //~ Instance/static variables .............................................
+
+    static Logger log = Logger.getLogger( ReportDataSetQuery.class );
 }

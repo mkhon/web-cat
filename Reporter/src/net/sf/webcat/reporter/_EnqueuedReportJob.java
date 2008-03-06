@@ -30,7 +30,9 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.eoaccess.*;
 import java.util.Enumeration;
+import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
@@ -53,6 +55,90 @@ public abstract class _EnqueuedReportJob
     public _EnqueuedReportJob()
     {
         super();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A static factory method for creating a new
+     * _EnqueuedReportJob object given required
+     * attributes and relationships.
+     * @param editingContext The context in which the new object will be
+     * inserted
+     * @param discarded
+     * @param paused
+     * @return The newly created object
+     */
+    public static EnqueuedReportJob create(
+        EOEditingContext editingContext,
+        boolean discarded,
+        boolean paused
+        )
+    {
+        EnqueuedReportJob eoObject = (EnqueuedReportJob)
+            EOUtilities.createAndInsertInstance(
+                editingContext,
+                _EnqueuedReportJob.ENTITY_NAME);
+        eoObject.setDiscarded(discarded);
+        eoObject.setPaused(paused);
+        return eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of the given object in another editing context.
+     * @param editingContext The target editing context
+     * @param eo The object to import
+     * @return An instance of the given object in the target editing context
+     */
+    public static EnqueuedReportJob localInstance(
+        EOEditingContext editingContext, EnqueuedReportJob eo)
+    {
+        return (eo == null)
+            ? null
+            : (EnqueuedReportJob)EOUtilities.localInstanceOfObject(
+                editingContext, eo);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static EnqueuedReportJob forId(
+        EOEditingContext ec, int id )
+    {
+        EnqueuedReportJob obj = null;
+        if (id > 0)
+        {
+            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+                ENTITY_NAME, "id", new Integer( id ) );
+            if ( results != null && results.count() > 0 )
+            {
+                obj = (EnqueuedReportJob)results.objectAtIndex( 0 );
+            }
+        }
+        return obj;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static EnqueuedReportJob forId(
+        EOEditingContext ec, String id )
+    {
+        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -81,6 +167,50 @@ public abstract class _EnqueuedReportJob
 
     // ----------------------------------------------------------
     /**
+     * Get a local instance of this object in another editing context.
+     * @param editingContext The target editing context
+     * @return An instance of this object in the target editing context
+     */
+    public EnqueuedReportJob localInstance(EOEditingContext editingContext)
+    {
+        return (EnqueuedReportJob)EOUtilities.localInstanceOfObject(
+            editingContext, this);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a list of changes between this object's current state and the
+     * last committed version.
+     * @return a dictionary of the changes that have not yet been committed
+     */
+    public NSDictionary changedProperties()
+    {
+        return changesFromSnapshot(
+            editingContext().committedSnapshotForObject(this) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            return er.extensions.ERXConstant.ZeroInteger;
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve this object's <code>description</code> value.
      * @return the value of the attribute
      */
@@ -99,6 +229,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setDescription( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDescription("
+                + value + "): was " + description() );
+        }
         takeStoredValueForKey( value, "description" );
     }
 
@@ -127,9 +262,14 @@ public abstract class _EnqueuedReportJob
      */
     public void setDiscarded( boolean value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDiscarded("
+                + value + "): was " + discarded() );
+        }
         Number actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        takeStoredValueForKey( actual, "discarded" );
+        setDiscardedRaw( actual );
     }
 
 
@@ -153,6 +293,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setDiscardedRaw( Number value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDiscardedRaw("
+                + value + "): was " + discardedRaw() );
+        }
         takeStoredValueForKey( value, "discarded" );
     }
 
@@ -181,9 +326,14 @@ public abstract class _EnqueuedReportJob
      */
     public void setPaused( boolean value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPaused("
+                + value + "): was " + paused() );
+        }
         Number actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        takeStoredValueForKey( actual, "paused" );
+        setPausedRaw( actual );
     }
 
 
@@ -207,6 +357,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setPausedRaw( Number value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPausedRaw("
+                + value + "): was " + pausedRaw() );
+        }
         takeStoredValueForKey( value, "paused" );
     }
 
@@ -231,6 +386,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setQueueTime( NSTimestamp value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setQueueTime("
+                + value + "): was " + queueTime() );
+        }
         takeStoredValueForKey( value, "queueTime" );
     }
 
@@ -255,6 +415,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setRenderedResourceActionUrl( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setRenderedResourceActionUrl("
+                + value + "): was " + renderedResourceActionUrl() );
+        }
         takeStoredValueForKey( value, "renderedResourceActionUrl" );
     }
 
@@ -279,6 +444,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setRenderingMethod( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setRenderingMethod("
+                + value + "): was " + renderingMethod() );
+        }
         takeStoredValueForKey( value, "renderingMethod" );
     }
 
@@ -303,63 +473,12 @@ public abstract class _EnqueuedReportJob
      */
     public void setUuid( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUuid("
+                + value + "): was " + uuid() );
+        }
         takeStoredValueForKey( value, "uuid" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve object according to the <code>User</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @param userBinding fetch spec parameter
-     * @return an NSArray of the entities retrieved
-     */
-    public static NSArray objectsForUser(
-            EOEditingContext context,
-            net.sf.webcat.core.User userBinding
-        )
-    {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "user", "EnqueuedReportJob" );
-
-        NSMutableDictionary bindings = new NSMutableDictionary();
-
-        if ( userBinding != null )
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
-
-        return context.objectsWithFetchSpecification( spec );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve object according to the <code>Uuid</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @param uuidBinding fetch spec parameter
-     * @return an NSArray of the entities retrieved
-     */
-    public static NSArray objectsForUuid(
-            EOEditingContext context,
-            String uuidBinding
-        )
-    {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "uuid", "EnqueuedReportJob" );
-
-        NSMutableDictionary bindings = new NSMutableDictionary();
-
-        if ( uuidBinding != null )
-            bindings.setObjectForKey( uuidBinding,
-                                      "uuid" );
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
-
-        return context.objectsWithFetchSpecification( spec );
     }
 
 
@@ -377,7 +496,7 @@ public abstract class _EnqueuedReportJob
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>reportTemplate</code>
      * relationship (DO NOT USE--instead, use
      * <code>setReportTemplateRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -386,13 +505,18 @@ public abstract class _EnqueuedReportJob
      */
     public void setReportTemplate( net.sf.webcat.reporter.ReportTemplate value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportTemplate("
+                + value + "): was " + reportTemplate() );
+        }
         takeStoredValueForKey( value, "reportTemplate" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>reportTemplate</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -401,6 +525,11 @@ public abstract class _EnqueuedReportJob
     public void setReportTemplateRelationship(
         net.sf.webcat.reporter.ReportTemplate value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportTemplateRelationship("
+                + value + "): was " + reportTemplate() );
+        }
         if ( value == null )
         {
             net.sf.webcat.reporter.ReportTemplate object = reportTemplate();
@@ -428,7 +557,7 @@ public abstract class _EnqueuedReportJob
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>user</code>
      * relationship (DO NOT USE--instead, use
      * <code>setUserRelationship()</code>.
      * This method is provided for WebObjects use.
@@ -437,13 +566,18 @@ public abstract class _EnqueuedReportJob
      */
     public void setUser( net.sf.webcat.core.User value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUser("
+                + value + "): was " + user() );
+        }
         takeStoredValueForKey( value, "user" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
+     * Set the entity pointed to by the <code>user</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
@@ -452,6 +586,11 @@ public abstract class _EnqueuedReportJob
     public void setUserRelationship(
         net.sf.webcat.core.User value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUserRelationship("
+                + value + "): was " + user() );
+        }
         if ( value == null )
         {
             net.sf.webcat.core.User object = user();
@@ -486,6 +625,11 @@ public abstract class _EnqueuedReportJob
      */
     public void setDataSetQueries( NSMutableArray value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDataSetQueries("
+                + value + "): was " + dataSetQueries() );
+        }
         takeStoredValueForKey( value, "dataSetQueries" );
     }
 
@@ -501,6 +645,11 @@ public abstract class _EnqueuedReportJob
      */
     public void addToDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToDataSetQueries("
+                + value + "): was " + dataSetQueries() );
+        }
         NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.addObject( value );
@@ -518,6 +667,11 @@ public abstract class _EnqueuedReportJob
      */
     public void removeFromDataSetQueries( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromDataSetQueries("
+                + value + "): was " + dataSetQueries() );
+        }
         NSMutableArray array = (NSMutableArray)dataSetQueries();
         willChange();
         array.removeObject( value );
@@ -533,6 +687,11 @@ public abstract class _EnqueuedReportJob
      */
     public void addToDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToDataSetQueriesRelationship("
+                + value + "): was " + dataSetQueries() );
+        }
         addObjectToBothSidesOfRelationshipWithKey(
             value, "dataSetQueries" );
     }
@@ -547,6 +706,11 @@ public abstract class _EnqueuedReportJob
      */
     public void removeFromDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromDataSetQueriesRelationship("
+                + value + "): was " + dataSetQueries() );
+        }
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, "dataSetQueries" );
     }
@@ -561,6 +725,10 @@ public abstract class _EnqueuedReportJob
      */
     public net.sf.webcat.reporter.ReportDataSetQuery createDataSetQueriesRelationship()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createDataSetQueriesRelationship()" );
+        }
         EOClassDescription eoClassDesc = EOClassDescription
             .classDescriptionForEntityName( "ReportDataSetQuery" );
         EOEnterpriseObject eoObject = eoClassDesc
@@ -581,6 +749,11 @@ public abstract class _EnqueuedReportJob
      */
     public void deleteDataSetQueriesRelationship( net.sf.webcat.reporter.ReportDataSetQuery value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteDataSetQueriesRelationship("
+                + value + "): was " + dataSetQueries() );
+        }
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, "dataSetQueries" );
         editingContext().deleteObject( value );
@@ -594,6 +767,11 @@ public abstract class _EnqueuedReportJob
      */
     public void deleteAllDataSetQueriesRelationships()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllDataSetQueriesRelationships(): was "
+                + dataSetQueries() );
+        }
         Enumeration objects = dataSetQueries().objectEnumerator();
         while ( objects.hasMoreElements() )
             deleteDataSetQueriesRelationship(
@@ -601,4 +779,79 @@ public abstract class _EnqueuedReportJob
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>User</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray objectsForUser(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "user", "EnqueuedReportJob" );
+
+        NSMutableDictionary bindings = new NSMutableDictionary();
+
+        if ( userBinding != null )
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForUser(ec"
+            
+                + ", " + userBinding
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>Uuid</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param uuidBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray objectsForUuid(
+            EOEditingContext context,
+            String uuidBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "uuid", "EnqueuedReportJob" );
+
+        NSMutableDictionary bindings = new NSMutableDictionary();
+
+        if ( uuidBinding != null )
+            bindings.setObjectForKey( uuidBinding,
+                                      "uuid" );
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForUuid(ec"
+            
+                + ", " + uuidBinding
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    //~ Instance/static variables .............................................
+
+    static Logger log = Logger.getLogger( EnqueuedReportJob.class );
 }

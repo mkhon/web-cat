@@ -174,7 +174,7 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     	EOFetchSpecification fetch = new EOFetchSpecification("Course",
     			null, null);
     	
-    	NSArray<Course> courses = wcSession().localContext().
+    	NSArray<Course> courses = localContext().
     		objectsWithFetchSpecification(fetch);
 
     	NSMutableArray<EOSortOrdering> sortOrdering =
@@ -199,7 +199,7 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     				EOQualifier.qualifierWithQualifierFormat("course = %@",
     						new NSArray<Object>(new Object[] { c })), null);
     		NSArray<CourseOffering> offerings =
-    			wcSession().localContext().objectsWithFetchSpecification(fs);
+    			localContext().objectsWithFetchSpecification(fs);
 
     		NSMutableArray<CourseTreeNode> courseOfferingNodes =
     			new NSMutableArray<CourseTreeNode>();
@@ -243,7 +243,7 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     {
     	EOFetchSpecification fetchSpec = new EOFetchSpecification("Assignment",
     			null, null);
-    	NSArray<Assignment> allAssignments = wcSession().localContext()
+    	NSArray<Assignment> allAssignments = localContext()
     		.objectsWithFetchSpecification(fetchSpec);
     	
     	NSMutableArray<Assignment> assignments =

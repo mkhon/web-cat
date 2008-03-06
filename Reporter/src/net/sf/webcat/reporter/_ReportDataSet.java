@@ -30,7 +30,9 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.eoaccess.*;
 import java.util.Enumeration;
+import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
@@ -56,11 +58,90 @@ public abstract class _ReportDataSet
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * A static factory method for creating a new
+     * _ReportDataSet object given required
+     * attributes and relationships.
+     * @param editingContext The context in which the new object will be
+     * inserted
+     * @return The newly created object
+     */
+    public static ReportDataSet create(
+        EOEditingContext editingContext
+        )
+    {
+        ReportDataSet eoObject = (ReportDataSet)
+            EOUtilities.createAndInsertInstance(
+                editingContext,
+                _ReportDataSet.ENTITY_NAME);
+        return eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of the given object in another editing context.
+     * @param editingContext The target editing context
+     * @param eo The object to import
+     * @return An instance of the given object in the target editing context
+     */
+    public static ReportDataSet localInstance(
+        EOEditingContext editingContext, ReportDataSet eo)
+    {
+        return (eo == null)
+            ? null
+            : (ReportDataSet)EOUtilities.localInstanceOfObject(
+                editingContext, eo);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportDataSet forId(
+        EOEditingContext ec, int id )
+    {
+        ReportDataSet obj = null;
+        if (id > 0)
+        {
+            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
+                ENTITY_NAME, "id", new Integer( id ) );
+            if ( results != null && results.count() > 0 )
+            {
+                obj = (ReportDataSet)results.objectAtIndex( 0 );
+            }
+        }
+        return obj;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up an object by id number.  Assumes the editing
+     * context is appropriately locked.
+     * @param ec The editing context to use
+     * @param id The id to look up
+     * @return The object, or null if no such id exists
+     */
+    public static ReportDataSet forId(
+        EOEditingContext ec, String id )
+    {
+        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+    }
+
+
     //~ Constants (for key names) .............................................
 
     // Attributes ---
     public static final String DESCRIPTION_KEY = "description";
     public static final String NAME_KEY = "name";
+    public static final String REFERENCE_COUNT_KEY = "referenceCount";
     public static final String UUID_KEY = "uuid";
     public static final String WC_ENTITY_NAME_KEY = "wcEntityName";
     // To-one relationships ---
@@ -72,6 +153,50 @@ public abstract class _ReportDataSet
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Get a local instance of this object in another editing context.
+     * @param editingContext The target editing context
+     * @return An instance of this object in the target editing context
+     */
+    public ReportDataSet localInstance(EOEditingContext editingContext)
+    {
+        return (ReportDataSet)EOUtilities.localInstanceOfObject(
+            editingContext, this);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get a list of changes between this object's current state and the
+     * last committed version.
+     * @return a dictionary of the changes that have not yet been committed
+     */
+    public NSDictionary changedProperties()
+    {
+        return changesFromSnapshot(
+            editingContext().committedSnapshotForObject(this) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>id</code> value.
+     * @return the value of the attribute
+     */
+    public Number id()
+    {
+        try
+        {
+            return (Number)EOUtilities.primaryKeyForObject(
+                editingContext() , this ).objectForKey( "id" );
+        }
+        catch (Exception e)
+        {
+            return er.extensions.ERXConstant.ZeroInteger;
+        }
+    }
 
     // ----------------------------------------------------------
     /**
@@ -93,6 +218,11 @@ public abstract class _ReportDataSet
      */
     public void setDescription( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDescription("
+                + value + "): was " + description() );
+        }
         takeStoredValueForKey( value, "description" );
     }
 
@@ -117,7 +247,76 @@ public abstract class _ReportDataSet
      */
     public void setName( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setName("
+                + value + "): was " + name() );
+        }
         takeStoredValueForKey( value, "name" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>referenceCount</code> value.
+     * @return the value of the attribute
+     */
+    public int referenceCount()
+    {
+        Number result =
+            (Number)storedValueForKey( "referenceCount" );
+        return ( result == null )
+            ? 0
+            : result.intValue();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>referenceCount</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setReferenceCount( int value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReferenceCount("
+                + value + "): was " + referenceCount() );
+        }
+        Number actual =
+            er.extensions.ERXConstant.integerForInt( value );
+        setReferenceCountRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>referenceCount</code> value.
+     * @return the value of the attribute
+     */
+    public Number referenceCountRaw()
+    {
+        return (Number)storedValueForKey( "referenceCount" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>referenceCount</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setReferenceCountRaw( Number value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReferenceCountRaw("
+                + value + "): was " + referenceCountRaw() );
+        }
+        takeStoredValueForKey( value, "referenceCount" );
     }
 
 
@@ -141,6 +340,11 @@ public abstract class _ReportDataSet
      */
     public void setUuid( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUuid("
+                + value + "): was " + uuid() );
+        }
         takeStoredValueForKey( value, "uuid" );
     }
 
@@ -165,7 +369,73 @@ public abstract class _ReportDataSet
      */
     public void setWcEntityName( String value )
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setWcEntityName("
+                + value + "): was " + wcEntityName() );
+        }
         takeStoredValueForKey( value, "wcEntityName" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entity pointed to by the <code>reportTemplate</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public net.sf.webcat.reporter.ReportTemplate reportTemplate()
+    {
+        return (net.sf.webcat.reporter.ReportTemplate)storedValueForKey( "reportTemplate" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>reportTemplate</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setReportTemplateRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setReportTemplate( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportTemplate("
+                + value + "): was " + reportTemplate() );
+        }
+        takeStoredValueForKey( value, "reportTemplate" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>reportTemplate</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setReportTemplateRelationship(
+        net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportTemplateRelationship("
+                + value + "): was " + reportTemplate() );
+        }
+        if ( value == null )
+        {
+            net.sf.webcat.reporter.ReportTemplate object = reportTemplate();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "reportTemplate" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "reportTemplate" );
+        }
     }
 
 
@@ -193,59 +463,19 @@ public abstract class _ReportDataSet
                                       "uuid" );
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        return context.objectsWithFetchSpecification( spec );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve the entity pointed to by the <code>reportTemplate</code>
-     * relationship.
-     * @return the entity in the relationship
-     */
-    public net.sf.webcat.reporter.ReportTemplate reportTemplate()
-    {
-        return (net.sf.webcat.reporter.ReportTemplate)storedValueForKey( "reportTemplate" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
-     * relationship (DO NOT USE--instead, use
-     * <code>setReportTemplateRelationship()</code>.
-     * This method is provided for WebObjects use.
-     *
-     * @param value The new entity to relate to
-     */
-    public void setReportTemplate( net.sf.webcat.reporter.ReportTemplate value )
-    {
-        takeStoredValueForKey( value, "reportTemplate" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>authenticationDomain</code>
-     * relationship.  This method is a type-safe version of
-     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     *
-     * @param value The new entity to relate to
-     */
-    public void setReportTemplateRelationship(
-        net.sf.webcat.reporter.ReportTemplate value )
-    {
-        if ( value == null )
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
         {
-            net.sf.webcat.reporter.ReportTemplate object = reportTemplate();
-            if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "reportTemplate" );
+            log.debug( "objectsForUuid(ec"
+            
+                + ", " + uuidBinding
+                + "): " + result );
         }
-        else
-        {
-            addObjectToBothSidesOfRelationshipWithKey( value, "reportTemplate" );
-        }
+        return result;
     }
 
 
+    //~ Instance/static variables .............................................
+
+    static Logger log = Logger.getLogger( ReportDataSet.class );
 }

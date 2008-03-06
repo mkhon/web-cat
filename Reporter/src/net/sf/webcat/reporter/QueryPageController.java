@@ -39,7 +39,7 @@ public class QueryPageController
     	if(query != null)
     		qualifier = QualifierUtils.qualifierWithEOsForGIDs(
     				query.qualifier(),
-    				currentComponent.wcSession().localContext());
+    				currentComponent.localContext());
 
 		ReporterComponent page =
 			(ReporterComponent)currentComponent.pageWithName(
@@ -72,7 +72,7 @@ public class QueryPageController
     	EOQualifier qualifier = model.qualifierFromValues();
     	EOQualifier gidQualifier =
     		QualifierUtils.qualifierWithGIDsForEOs(
-    			qualifier, currentComponent.wcSession().localContext());
+    			qualifier, currentComponent.localContext());
 
     	currentComponent.commitNewQueryForDataSet(currentDataSet(),
    				description, gidQualifier);
@@ -119,7 +119,7 @@ public class QueryPageController
 			else if(state == STATE_CONSTRUCT_QUERY)
 			{
 				// Before we move away from the query assistant page, commit
-				// the user's query into the session.
+				// the user's query into the page's transient state.
 
 				commitCurrentQuery();
 			}
@@ -189,7 +189,7 @@ public class QueryPageController
 		else if(isSavedQuery || state == STATE_CONSTRUCT_QUERY)
 		{
 			// Before we move away from the query assistant page, commit
-			// the user's query into the session.
+			// the user's query into the page's transient state.
 
 			state = STATE_CHOOSE_ASSISTANT;
 

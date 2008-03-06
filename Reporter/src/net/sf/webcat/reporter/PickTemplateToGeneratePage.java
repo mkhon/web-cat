@@ -16,41 +16,31 @@ public class PickTemplateToGeneratePage extends ReporterComponent {
 	public ReportTemplate reportTemplate;
 	public int index;
 
-    public PickTemplateToGeneratePage(WOContext context) {
+    public PickTemplateToGeneratePage(WOContext context)
+    {
         super(context);
     }
 
-    public void awake()
+    public NSArray<ReportTemplate> reportTemplates()
     {
-    	reportTemplates = ReportTemplate.objectsForAllTemplates(
-    			wcSession().defaultEditingContext());
+    	if(reportTemplates == null)
+    	{
+    		reportTemplates =
+    			ReportTemplate.objectsForAllTemplates(localContext());
+    	}
+    	
+    	return reportTemplates;
     }
-    
+
     public WOComponent templateChosen()
     {
-    	clearSessionData();
+    	clearLocalReportState();
 
-    	setReportUuidInSession(UUID.randomUUID().toString());
-        setReportTemplateInSession(reportTemplate);
-        setCurrentReportDataSetInSession(0);
-        createPageControllerInSession();
+    	setLocalReportUuid(UUID.randomUUID().toString());
+        setLocalReportTemplate(reportTemplate);
+        setLocalCurrentReportDataSet(0);
+        createLocalPageController();
 
-        return pageControllerInSession().nextPage();
-
-        /*NSArray<ReportDataSet> dataSets = reportTemplate.dataSets();
-        if(dataSets == null || dataSets.isEmpty())
-        {
-        	return pageWithName(GenerationSummaryPage.class.getName());
-        }
-        else
-        {
-        	ConstructDataSetQueryPage page = (ConstructDataSetQueryPage)
-        		pageWithName(ConstructDataSetQueryPage.class.getName());
-
-        	page.takeValueForKey(dataSets, "dataSets");
-        	page.takeValueForKey(0, "currentDataSetIndex");
-
-        	return page;
-        }*/
+        return localPageController().nextPage();
     }
 }

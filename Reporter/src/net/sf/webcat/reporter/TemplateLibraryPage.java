@@ -42,15 +42,14 @@ public class TemplateLibraryPage extends WCComponent
     {
         terse = null;
         publishedTemplateGroup.fetch();
-        if ( wcSession().user().hasAdminPrivileges() )
+        if ( user().hasAdminPrivileges() )
         {
             unpublishedTemplateGroup.fetch();
         }
         else
         {
             personalTemplateGroup.queryBindings().setObjectForKey(
-                wcSession().user(),
-                "user"
+                user(), "user"
             );
             personalTemplateGroup.fetch();
         }
@@ -72,14 +71,14 @@ public class TemplateLibraryPage extends WCComponent
             return null;
         }
         
-        ReportTemplate.createNewReportTemplate(
-            wcSession().localContext(),
-            wcSession().user(),
-            uploadedName,
-            uploadedData,
-            messages()
-        );
-        wcSession().commitLocalChanges();
+        int version = ReportTemplate.versionFromComponents(1, 0, 0);
+
+        ReportTemplate uploadedTemplate =
+        	ReportTemplate.createNewReportTemplate(
+            localContext(), user(), uploadedName, uploadedData,
+            version, messages());
+        
+        applyLocalChanges();
         uploadedName = null;
         uploadedData = null;
         return null;
@@ -93,7 +92,7 @@ public class TemplateLibraryPage extends WCComponent
      */
     public boolean canEditTemplate()
     {
-        User user = wcSession().user();
+        User user = user();
         return user.hasAdminPrivileges() || user == reportTemplate.author();
     }
     
@@ -106,15 +105,15 @@ public class TemplateLibraryPage extends WCComponent
     public WOComponent togglePublished()
     {
         reportTemplate.setIsPublished( !reportTemplate.isPublished() );
-        wcSession().commitLocalChanges();
+        applyLocalChanges();
         return null;
     }
     
     
     public WOComponent deleteTemplate()
     {
-    	reportTemplate.deleteTemplate(wcSession().localContext());
-    	wcSession().commitLocalChanges();
+    	reportTemplate.deleteTemplate(localContext());
+    	applyLocalChanges();
     	return null;
     }
     
@@ -135,18 +134,17 @@ public class TemplateLibraryPage extends WCComponent
      * Toggle whether or not the user wants verbose descriptions of report
      * templates to be shown or hidden.  The setting is stored in the user's
      * preferences under the key specified by the TERSE_DESCRIPTIONS_KEY, and
-     * will be permanently saved the next time the session's local changes are
+     * will be permanently saved the next time the user's local changes are
      * saved.
      */
     public void toggleVerboseDescriptions()
     {
         boolean verboseDescriptions = ERXValueUtilities.booleanValue(
-            wcSession().userPreferences.objectForKey(
-                TERSE_DESCRIPTIONS_KEY ) );
+            user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) );
         verboseDescriptions = !verboseDescriptions;
-        wcSession().userPreferences.setObjectForKey(
+        user().preferences().setObjectForKey(
             Boolean.valueOf( verboseDescriptions ), TERSE_DESCRIPTIONS_KEY );
-        wcSession().commitLocalChanges();
+        user().savePreferences();
     }
 
 
@@ -162,8 +160,7 @@ public class TemplateLibraryPage extends WCComponent
         if ( terse == null )
         {
             terse = ERXValueUtilities.booleanValue(
-                wcSession().userPreferences.objectForKey(
-                    TERSE_DESCRIPTIONS_KEY ) )
+                user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) )
                 ? Boolean.TRUE : Boolean.FALSE;
         }
         return terse;

@@ -16,6 +16,7 @@ import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.core.TabDescriptor;
 import net.sf.webcat.dbupdate.UpdateEngine;
 import net.sf.webcat.grader.EnqueuedJob;
+import net.sf.webcat.grader.Grader;
 import net.sf.webcat.grader.GraderQueue;
 import net.sf.webcat.grader.GraderQueueProcessor;
 import net.sf.webcat.reporter.internal.rendering.CSVRenderingMethod;
@@ -50,13 +51,21 @@ import org.eclipse.birt.report.model.api.SessionHandle;
 import com.ibm.icu.util.ULocale;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.eocontrol.EOKeyValueQualifier;
+import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSBundle;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
+
+import er.extensions.ERXConstant;
+import er.extensions.ERXEOControlUtilities;
 
 public class Reporter extends Subsystem
 {
@@ -326,14 +335,6 @@ public class Reporter extends Subsystem
     	return null;
     }
 
-    // TODO this is for debugging purposes. Kill it when we're done.
-/*    public IResultSet executeReporterQuery(String queryString, NSDictionary vars)
-    {
-        DataSource webcatObject = new DataSource(vars, null);
-
-        return webcatObject.executeQuery(queryString);
-    }*/
-
     public ReportQueue reportQueue()
     {
     	return reportQueue;
@@ -349,6 +350,42 @@ public class Reporter extends Subsystem
     	return designEngine.newSessionHandle(null);
     }
 
+    public boolean refreshThrottleStatus()
+    {
+    	EOEditingContext ec = Application.newPeerEditingContext();
+
+        NSMutableArray qualifiers = new NSMutableArray();
+        qualifiers.addObject( new EOKeyValueQualifier(
+                        EnqueuedJob.DISCARDED_KEY,
+                        EOQualifier.QualifierOperatorEqual,
+                        ERXConstant.integerForInt( 0 )
+        ) );
+        qualifiers.addObject( new EOKeyValueQualifier(
+                        EnqueuedJob.PAUSED_KEY,
+                        EOQualifier.QualifierOperatorEqual,
+                        ERXConstant.integerForInt( 0 )
+        ) );
+        
+        jobCountAtLastThrottleCheck =
+        	ERXEOControlUtilities.objectCountWithQualifier(ec,
+        		EnqueuedJob.ENTITY_NAME, new EOAndQualifier(qualifiers));
+
+        Application.releasePeerEditingContext(ec);
+
+        return isThrottled();
+    }
+    
+    public boolean isThrottled()
+    {
+    	return jobCountAtLastThrottleCheck > 0;
+    }
+    
+    public long throttleTime()
+    {
+    	return Grader.getInstance().estimatedJobTime() *
+    		jobCountAtLastThrottleCheck;
+    }
+    
     //~ Instance/static variables .............................................
 
     // TODO: this should be refactored into the Subsystem parent class,
@@ -376,6 +413,10 @@ public class Reporter extends Subsystem
 
     /** this is the queue processor for processing report jobs */
     private static ReportQueueProcessor reportQueueProcessor;
+
+    private int jobCountAtLastThrottleCheck;
+
+    private boolean isCurrentlyThrottled;
 
     static Logger log = Logger.getLogger( Reporter.class );
     

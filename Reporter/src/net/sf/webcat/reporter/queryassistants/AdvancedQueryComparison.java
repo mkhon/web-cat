@@ -37,6 +37,9 @@ public abstract class AdvancedQueryComparison
 	private static final int SIMPLE_GT = 4;
 	private static final int SIMPLE_GE = 5;
 
+	private static NSMutableDictionary<String, AdvancedQueryComparison>
+		nameToComparisonMap;
+
 	private static NSMutableArray<AdvancedQueryComparison> booleanComparisons;
 	private static NSMutableArray<AdvancedQueryComparison> numericComparisons;
 	private static NSMutableArray<AdvancedQueryComparison> stringComparisons;
@@ -137,8 +140,27 @@ public abstract class AdvancedQueryComparison
 		keyPathSupport.setObjectForKey(true, IS_NOT_LIKE);
 		keyPathSupport.setObjectForKey(false, IS_ONE_OF);
 		keyPathSupport.setObjectForKey(false, IS_NOT_ONE_OF);
+		
+		nameToComparisonMap = new NSMutableDictionary<String, AdvancedQueryComparison>();
+		nameToComparisonMap.setObjectForKey(IS_EQUAL_TO, "IS_EQUAL_TO");
+		nameToComparisonMap.setObjectForKey(IS_NOT_EQUAL_TO, "IS_NOT_EQUAL_TO");
+		nameToComparisonMap.setObjectForKey(IS_LESS_THAN, "IS_LESS_THAN");
+		nameToComparisonMap.setObjectForKey(IS_LESS_THAN_OR_EQUAL_TO, "IS_LESS_THAN_OR_EQUAL_TO");
+		nameToComparisonMap.setObjectForKey(IS_GREATER_THAN, "IS_GREATER_THAN");
+		nameToComparisonMap.setObjectForKey(IS_GREATER_THAN_OR_EQUAL_TO, "IS_GREATER_THAN_OR_EQUAL_TO");
+		nameToComparisonMap.setObjectForKey(IS_BETWEEN, "IS_BETWEEN");
+		nameToComparisonMap.setObjectForKey(IS_NOT_BETWEEN, "IS_NOT_BETWEEN"); 
+		nameToComparisonMap.setObjectForKey(IS_LIKE, "IS_LIKE");
+		nameToComparisonMap.setObjectForKey(IS_NOT_LIKE, "IS_NOT_LIKE");
+		nameToComparisonMap.setObjectForKey(IS_ONE_OF, "IS_ONE_OF");
+		nameToComparisonMap.setObjectForKey(IS_NOT_ONE_OF, "IS_NOT_ONE_OF");
 	}
 	
+	public static AdvancedQueryComparison comparisonWithName(String name)
+	{
+		return nameToComparisonMap.objectForKey(name);
+	}
+
 	public static NSArray<AdvancedQueryComparison> comparisonsForType(
 			Class<?> klass)
 	{

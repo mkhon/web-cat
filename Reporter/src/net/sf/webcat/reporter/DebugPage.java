@@ -42,21 +42,9 @@ public class DebugPage extends ReporterComponent
     	columns.addObject("assignmentOffering.courseOffering.compactName");
     	columns.addObject("assignmentOffering.assignment.titleString");
 
-    	String uuid = dataSetUuidsInSession().objectAtIndex(0);
+    	String uuid = localDataSetUuids().objectAtIndex(0);
     	System.out.println("Getting qualifier for dataset " + uuid);
- /*   	EOQualifier q = qualifierForDataSetUuidInSession(uuid);
 
-    	// Partition qualifier into fetch and non-fetch.
-    	EOQualifier[] quals = QualifierUtils.partitionQualifier(q, "Submission");
-    	
-    	results = ERXEOControlUtilities.objectsWithQualifier(
-    			wcSession().localContext(), "Submission", quals[0], null, false);
-    	
-    	if(quals[1] != null)
-    	{
-    		results = EOQualifier.filteredArrayWithQualifier(results, quals[1]);
-    	}
-*/
     	super.appendToResponse(response, context);
     }
     

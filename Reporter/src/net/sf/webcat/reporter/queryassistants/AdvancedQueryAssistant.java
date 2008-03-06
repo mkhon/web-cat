@@ -32,7 +32,7 @@ public class AdvancedQueryAssistant extends ReporterComponent
         super(context);
     }
 
-	public NSArray<String> keyPathCompletionItems()
+	public NSArray<KVCAttributeInfo> keyPathCompletionItems()
 	{
 		KeyPathParser kpp = new KeyPathParser(dataSet.wcEntityName(),
 				currentKeyPath(), 1);
@@ -45,7 +45,7 @@ public class AdvancedQueryAssistant extends ReporterComponent
 		}
 		else
 		{
-			return new NSArray<String>();
+			return new NSArray<KVCAttributeInfo>();
 		}
 	}
 

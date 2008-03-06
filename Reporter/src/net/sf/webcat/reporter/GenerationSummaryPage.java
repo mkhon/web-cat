@@ -29,7 +29,7 @@ public class GenerationSummaryPage extends ReporterComponent
 
     public void appendToResponse(WOResponse response, WOContext context)
     {
-    	reportTemplate = this.reportTemplateInSession();
+    	reportTemplate = localReportTemplate();
     	dataSets = reportTemplate.dataSets();
 
     	super.appendToResponse(response, context);
@@ -37,13 +37,12 @@ public class GenerationSummaryPage extends ReporterComponent
 
     public String defaultDescription()
     {
-    	String time = wcSession().timeFormatter().format(new NSTimestamp());
-    	return reportTemplate.name() + " - " + time;
+    	return reportTemplate.name();
     }
     
     public String querySummaryForDataSet()
     {
-    	ReportQuery query = queryForDataSetUuid(dataSet.uuid());
+    	ReportQuery query = queryForLocalDataSetUuid(dataSet.uuid());
     	return query.qualifier().toString();
     }
 
@@ -60,8 +59,8 @@ public class GenerationSummaryPage extends ReporterComponent
     		desc = defaultDescription();
     	}
     	
-    	setReportDescriptionInSession(desc);
-    	setRenderingMethodInSession(selectedRenderingMethod.methodName());
+    	setLocalReportDescription(desc);
+    	setLocalRenderingMethod(selectedRenderingMethod.methodName());
 
     	commitReportGeneration();
     	return pageWithName(GeneratedReportPage.class.getName());

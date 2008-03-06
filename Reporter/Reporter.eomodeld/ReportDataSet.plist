@@ -26,6 +26,19 @@
             name = reportTemplateId; 
             prototypeName = foreignId; 
         },
+        {
+        	columnName = CREFERENCECOUNT;
+        	name = referenceCount;
+        	prototypeName = integer;
+			userInfo =
+			{
+			    isScalar = true;
+			    scalarConversionMethodName = intValue;
+			    scalarDefault = 0;
+			    type = int;
+			    valueClassName = Integer;
+			};
+        },
     ); 
     attributesUsedForLocking = (
     	uuid,
@@ -33,6 +46,7 @@
     	name,
     	description,
     	reportTemplateId,
+    	referenceCount,
     );
     className = net.sf.webcat.reporter.ReportDataSet;
     classProperties = (
@@ -40,7 +54,8 @@
     	wcEntityName,
     	name,
     	description,
-    	reportTemplate
+    	reportTemplate,
+    	referenceCount,
     );
     externalName = TREPORTDATASET;
     name = ReportDataSet;

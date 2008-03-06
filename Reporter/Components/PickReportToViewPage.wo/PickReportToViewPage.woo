@@ -6,7 +6,7 @@
             class = WODisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
-                editingContext = session.defaultEditingContext; 
+                editingContext = localContext; 
                 fetchSpecification = {
 			        class = EOFetchSpecification; 
 			        entityName = GeneratedReport; 
@@ -31,7 +31,7 @@
             class = WODisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
-                editingContext = session.defaultEditingContext; 
+                editingContext = localContext; 
                 fetchSpecification = {
 			        class = EOFetchSpecification; 
 			        entityName = EnqueuedReportJob; 

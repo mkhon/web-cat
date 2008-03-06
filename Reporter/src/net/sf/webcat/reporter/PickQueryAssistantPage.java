@@ -24,8 +24,7 @@ public class PickQueryAssistantPage extends ReporterComponent
     		assistantsForEntity(dataSet.wcEntityName());
 
     	savedQueries = ReportQuery.objectsForUserAndEntitySavedQueries(
-    			wcSession().localContext(), wcSession().localUser(),
-    			dataSet.wcEntityName());
+    			localContext(), user(), dataSet.wcEntityName());
 
     	super.appendToResponse(response, context);
     }
@@ -55,14 +54,14 @@ public class PickQueryAssistantPage extends ReporterComponent
 
     public WOComponent chooseQueryAssistant()
     {
-    	pageControllerInSession().selectNextQueryAssistant(queryAssistant);
-    	return pageControllerInSession().nextPage();
+    	localPageController().selectNextQueryAssistant(queryAssistant);
+    	return localPageController().nextPage();
     }
     
     public WOComponent useSavedQuery()
     {
-    	pageControllerInSession().selectNextSavedQuery(savedQuery);
-    	return pageControllerInSession().nextPage();
+    	localPageController().selectNextSavedQuery(savedQuery);
+    	return localPageController().nextPage();
     }
 
     // --- Component bindings -----------------------------

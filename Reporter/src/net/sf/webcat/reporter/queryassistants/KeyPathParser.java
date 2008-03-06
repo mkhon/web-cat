@@ -84,12 +84,10 @@ public class KeyPathParser
 						klass = null;
 					}
 				}
-				else if(klass != String.class && klass != Double.class &&
-						klass != Integer.class && klass != Boolean.class &&
-						klass != NSTimestamp.class)
+/*				else if(!isPrimitive(klass))
 				{
 					klass = null;
-				}
+				}*/
 
 				break;
 			}
@@ -115,6 +113,20 @@ public class KeyPathParser
 		remainingKeyPath = joinStrings(components, i);
 	}
 
+	private boolean isPrimitive(Class<?> klass)
+	{
+		return(klass == String.class ||
+				klass == Float.class || klass == Float.class ||
+				klass == Double.class || klass == Double.TYPE ||
+				klass == Byte.class || klass == Byte.TYPE ||
+				klass == Short.class || klass == Short.TYPE ||
+				klass == Integer.class || klass == Integer.TYPE ||
+				klass == Long.class || klass == Long.TYPE ||
+				klass == Boolean.class || klass == Boolean.TYPE ||
+				klass == Character.class || klass == Character.TYPE ||
+				klass == NSTimestamp.class);		
+	}
+
 	private Class<?> classForGetter(EOClassDescription classDesc, String key)
 	{
 		Class<?> klass = null;
@@ -123,7 +135,8 @@ public class KeyPathParser
 		{
 			try
 			{
-				EOEntityClassDescription entDesc = (EOEntityClassDescription)classDesc;
+				EOEntityClassDescription entDesc =
+					(EOEntityClassDescription)classDesc;
 				klass = Class.forName(entDesc.entity().className());
 				
 				if(klass == null)

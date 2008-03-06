@@ -58,7 +58,7 @@ public class ReporterDatabaseUpdates extends UpdateSet
             	+ "(OID INTEGER NOT NULL , CAUTHORID INTEGER , "
             	+ "CNAME TINYTEXT NOT NULL , CDESCRIPTION MEDIUMTEXT , "
             	+ "CISPUBLISHED BIT NOT NULL , CUPLOADEDFILENAME TINYTEXT , "
-            	+ "CLASTMODIFIEDTIME DATETIME )" );
+            	+ "CLASTMODIFIEDTIME DATETIME , CVERSION INTEGER )" );
             database().executeSQL(
                 "ALTER TABLE TREPORTTEMPLATE ADD PRIMARY KEY (OID)" );
         }
@@ -80,7 +80,7 @@ public class ReporterDatabaseUpdates extends UpdateSet
             	"CREATE TABLE TREPORTDATASET "
             	+ "(OID INTEGER NOT NULL , CREPORTTEMPLATEID INTEGER NOT NULL , "
             	+ "CENTITYNAME TINYTEXT NOT NULL , CUUID TINYTEXT NOT NULL , "
-            	+ "CDESCRIPTION MEDIUMTEXT)" );
+            	+ "CDESCRIPTION MEDIUMTEXT , CREFERENCECOUNT INTEGER )" );
             database().executeSQL(
                 "ALTER TABLE TREPORTDATASET ADD PRIMARY KEY (OID)" );
         }

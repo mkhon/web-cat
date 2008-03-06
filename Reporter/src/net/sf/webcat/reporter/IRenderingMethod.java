@@ -25,8 +25,8 @@ public interface IRenderingMethod
 
 	/**
 	 * Gets the internal name of the rendering method. This is the name stored
-	 * in the database and browser session to determine which rendering method
-	 * to use for a particular report.
+	 * in the database and transient page state to determine which rendering
+	 * method to use for a particular report.
 	 * 
 	 * @return a String containing the internal name of the rendering method
 	 */
