@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.5 2008/02/25 05:55:55 stedwar2 Exp $
+ |  $Id: Course.java,v 1.6 2008/03/07 15:32:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.eocontrol.*;
  * semesters (represented by separate course offerings).
  *
  * @author Stephen Edwards
- * @version $Id: Course.java,v 1.5 2008/02/25 05:55:55 stedwar2 Exp $
+ * @version $Id: Course.java,v 1.6 2008/03/07 15:32:10 stedwar2 Exp $
  */
 public class Course
     extends _Course
@@ -125,6 +125,7 @@ public class Course
     public void mightDelete()
     {
         log.debug("mightDelete()");
+        if (isNewObject()) return;
         if (offerings().count() > 0)
         {
             log.debug("mightDelete(): course has offerings");
