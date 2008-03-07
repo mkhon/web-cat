@@ -17,24 +17,12 @@ import er.extensions.ERXGenericRecord;
 
 public class KVCAttributeFinder
 {
-	private static final NSMutableArray<Class<?>> acceptableTypes;
-	private static final NSMutableDictionary<Class<?>, NSArray<KVCAttributeInfo>> cache;
+	private static final NSMutableDictionary<Class<?>,
+		NSArray<KVCAttributeInfo>> cache;
 
 	static
 	{
 		cache = new NSMutableDictionary<Class<?>, NSArray<KVCAttributeInfo>>();
-		
-		acceptableTypes = new NSMutableArray<Class<?>>();
-/*		acceptableTypes.addObject(Number.class);
-		acceptableTypes.addObject(Integer.class);
-		acceptableTypes.addObject(Integer.TYPE);
-		acceptableTypes.addObject(Double.class);
-		acceptableTypes.addObject(Double.TYPE);
-		acceptableTypes.addObject(Float.class);
-		acceptableTypes.addObject(Float.TYPE);
-		acceptableTypes.addObject(BigDecimal.class);
-		acceptableTypes.addObject(String.class);
-		acceptableTypes.addObject();*/
 	}
 
 	public static NSArray<KVCAttributeInfo> attributesForClass(Class<?> klass,

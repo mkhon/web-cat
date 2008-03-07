@@ -53,12 +53,15 @@ public class ReporterDatabaseUpdates extends UpdateSet
         {
             log.info( "creating table TREPORTTEMPLATE" );
 
-            database().executeSQL(
-            	"CREATE TABLE TREPORTTEMPLATE "
-            	+ "(OID INTEGER NOT NULL , CAUTHORID INTEGER , "
-            	+ "CNAME TINYTEXT NOT NULL , CDESCRIPTION MEDIUMTEXT , "
-            	+ "CISPUBLISHED BIT NOT NULL , CUPLOADEDFILENAME TINYTEXT , "
-            	+ "CLASTMODIFIEDTIME DATETIME , CVERSION INTEGER )" );
+            database().executeSQL("CREATE TABLE TREPORTTEMPLATE ("
+            	+ "OID INTEGER NOT NULL , "
+            	+ "CAUTHORID INTEGER , "
+            	+ "CNAME TINYTEXT NOT NULL , "
+            	+ "CDESCRIPTION MEDIUMTEXT , "
+            	+ "CISPUBLISHED BIT NOT NULL , "
+            	+ "CUPLOADEDFILENAME TINYTEXT , "
+            	+ "CLASTMODIFIEDTIME DATETIME , "
+            	+ "CVERSION INTEGER )" );
             database().executeSQL(
                 "ALTER TABLE TREPORTTEMPLATE ADD PRIMARY KEY (OID)" );
         }
@@ -76,11 +79,14 @@ public class ReporterDatabaseUpdates extends UpdateSet
         {
             log.info( "creating table TREPORTDATASET" );
 
-            database().executeSQL(
-            	"CREATE TABLE TREPORTDATASET "
-            	+ "(OID INTEGER NOT NULL , CREPORTTEMPLATEID INTEGER NOT NULL , "
-            	+ "CENTITYNAME TINYTEXT NOT NULL , CUUID TINYTEXT NOT NULL , "
-            	+ "CDESCRIPTION MEDIUMTEXT , CREFERENCECOUNT INTEGER )" );
+            database().executeSQL("CREATE TABLE TREPORTDATASET ("
+            	+ "OID INTEGER NOT NULL , "
+            	+ "CNAME TINYTEXT , "
+            	+ "CREPORTTEMPLATEID INTEGER NOT NULL , "
+            	+ "CENTITYNAME TINYTEXT NOT NULL , "
+            	+ "CUUID TINYTEXT NOT NULL , "
+            	+ "CDESCRIPTION MEDIUMTEXT , "
+            	+ "CREFERENCECOUNT INTEGER )" );
             database().executeSQL(
                 "ALTER TABLE TREPORTDATASET ADD PRIMARY KEY (OID)" );
         }
@@ -98,11 +104,13 @@ public class ReporterDatabaseUpdates extends UpdateSet
         {
             log.info( "creating table TREPORTQUERY" );
 
-            database().executeSQL(
-            	"CREATE TABLE TREPORTQUERY "
-            	+ "(OID INTEGER NOT NULL , CUSERID INTEGER NOT NULL ,"
-            	+ "CENTITYNAME TINYTEXT NOT NULL , CDESCRIPTION MEDIUMTEXT , "
-            	+ "CQUALIFIERS BLOB , CUPDATEMUTABLEFIELDS BIT NOT NULL)");
+            database().executeSQL("CREATE TABLE TREPORTQUERY ("
+            	+ "OID INTEGER NOT NULL , "
+            	+ "CUSERID INTEGER NOT NULL ,"
+            	+ "CENTITYNAME TINYTEXT NOT NULL , "
+            	+ "CDESCRIPTION MEDIUMTEXT , "
+            	+ "CQUERYINFO BLOB , "
+            	+ "CUPDATEMUTABLEFIELDS BIT NOT NULL)");
             database().executeSQL(
                 "ALTER TABLE TREPORTQUERY ADD PRIMARY KEY (OID)");
         }
@@ -120,10 +128,11 @@ public class ReporterDatabaseUpdates extends UpdateSet
         {
             log.info( "creating table TREPORTDATASETQUERY" );
 
-            database().executeSQL(
-            	"CREATE TABLE TREPORTDATASETQUERY "
-            	+ "(OID INTEGER NOT NULL , CENQUEUEDREPORTJOBID INTEGER ,"
-            	+ "CGENERATEDREPORTID INTEGER , CDATASETID INTEGER NOT NULL , "
+            database().executeSQL("CREATE TABLE TREPORTDATASETQUERY ("
+            	+ "OID INTEGER NOT NULL , "
+            	+ "CENQUEUEDREPORTJOBID INTEGER , "
+            	+ "CGENERATEDREPORTID INTEGER , "
+            	+ "CDATASETID INTEGER NOT NULL , "
             	+ "CREPORTQUERYID INTEGER NOT NULL)");
             database().executeSQL(
                 "ALTER TABLE TREPORTDATASETQUERY ADD PRIMARY KEY (OID)");
@@ -141,12 +150,15 @@ public class ReporterDatabaseUpdates extends UpdateSet
         {
             log.info( "creating table TENQUEUEDREPORTJOB" );
 
-            database().executeSQL(
-            	"CREATE TABLE TENQUEUEDREPORTJOB "
-            	+ "(OID INTEGER NOT NULL , CPAUSED BIT NOT NULL , "
-            	+ "CDISCARDED BIT NOT NULL , CQUEUETIME DATETIME , "
-            	+ "CREPORTTEMPLATEID INTEGER , CDESCRIPTION MEDIUMTEXT , "
-            	+ "CUSERID INTEGER NOT NULL , CUUID TINYTEXT , "
+            database().executeSQL("CREATE TABLE TENQUEUEDREPORTJOB ("
+            	+ "OID INTEGER NOT NULL , "
+            	+ "CPAUSED BIT NOT NULL , "
+            	+ "CDISCARDED BIT NOT NULL , "
+            	+ "CQUEUETIME DATETIME , "
+            	+ "CREPORTTEMPLATEID INTEGER , "
+            	+ "CDESCRIPTION MEDIUMTEXT , "
+            	+ "CUSERID INTEGER NOT NULL , "
+            	+ "CUUID TINYTEXT , "
             	+ "CRENDEREDRESOURCEACTIONURL MEDIUMTEXT , "
             	+ "CRENDERINGMETHOD TINYTEXT )" );
             database().executeSQL(
@@ -166,11 +178,15 @@ public class ReporterDatabaseUpdates extends UpdateSet
         {
             log.info( "creating table TGENERATEDREPORT" );
 
-            database().executeSQL(
-            	"CREATE TABLE TGENERATEDREPORT "
-            	+ "(OID INTEGER NOT NULL , CDESCRIPTION MEDIUMTEXT , "
-            	+ "CREPORTTEMPLATEID INTEGER NOT NULL , CGENERATEDTIME DATETIME , "
-            	+ "CUSERID INTEGER NOT NULL , CUUID MEDIUMTEXT )" );
+            database().executeSQL("CREATE TABLE TGENERATEDREPORT ("
+            	+ "OID INTEGER NOT NULL , "
+            	+ "CDESCRIPTION MEDIUMTEXT , "
+            	+ "CREPORTTEMPLATEID INTEGER NOT NULL , "
+            	+ "CGENERATEDTIME DATETIME , "
+            	+ "CUSERID INTEGER NOT NULL , "
+            	+ "CUUID MEDIUMTEXT , "
+            	+ "CUPDATEMUTABLEFIELDS BIT NOT NULL , "
+            	+ "CERRORS BLOB )" );
             database().executeSQL(
                 "ALTER TABLE TGENERATEDREPORT ADD PRIMARY KEY (OID)" );
         }

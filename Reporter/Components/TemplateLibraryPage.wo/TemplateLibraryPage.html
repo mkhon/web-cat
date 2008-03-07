@@ -29,8 +29,9 @@
 			<td><wo name="Date"/></td>
 			<td class="s">&nbsp;</td>
 			<td style="white-space:nowrap">
+				<wo name="DownloadNow"/>
 				<wo:if condition="$canEditTemplate">
-					<wo name="DownloadNow"/><wo name="Unpublish"/>
+					<wo name="Unpublish"/>
 				</wo:if>
 			</td>
 		</wo:tr>
@@ -70,6 +71,7 @@
 				<td><wo name="Date"/></td>
 				<td class="s">&nbsp;</td>
 				<td style="white-space:nowrap">
+					<wo name="DownloadNow"/>
 					<wo:if condition="$canEditTemplate">
 						<wo name="Publish"/><wo name="Delete"/>
 					</wo:if>
@@ -113,6 +115,7 @@
 				<td><wo name="Date"/></td>
 				<td class="s">&nbsp;</td>
 				<td style="white-space:nowrap">
+					<wo name="DownloadNow"/>
 					<wo:if condition="$reportTemplate.isPublished"><wo name="Unpublish"/></wo:if>
 					<wo:else><wo name="Publish"/></wo:else>
 				</td>	

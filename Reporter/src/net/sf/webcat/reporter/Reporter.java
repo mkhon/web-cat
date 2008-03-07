@@ -416,8 +416,6 @@ public class Reporter extends Subsystem
 
     private int jobCountAtLastThrottleCheck;
 
-    private boolean isCurrentlyThrottled;
-
     static Logger log = Logger.getLogger( Reporter.class );
     
     static final String REPORT_ENGINE_SUBDIR = "ReportEngine";

@@ -10,8 +10,8 @@ DownloadNow: WOActiveImage {
 	framework = "Core";
 	height    = "18";
 	width     = "18";
-	alt       = "Download and re-install now";
-	title     = "Download and re-install now";
+	alt       = "Download this template";
+	title     = "Download this template";
 	action    = download;
 }
 
@@ -40,17 +40,6 @@ Delete: WOActiveImage {
 	alt       = "Delete report template";
 	title     = "Delete report template";
 	action    = deleteTemplate;
-}
-
-Edit: WOActiveImage {
-	border    = "0";
-	filename  = "icons/edit.gif";
-	framework = "Core";
-	height    = "17";
-	width     = "18";
-	alt       = "Edit report template";
-	title     = "Edit report template";
-	action    = editTemplate;
 }
 
 TerseDescriptions: WOSubmitButton {

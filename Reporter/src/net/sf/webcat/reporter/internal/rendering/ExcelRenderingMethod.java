@@ -65,7 +65,7 @@ public class ExcelRenderingMethod extends AbstractRenderingMethod {
     	IReportDocument document = Reporter.getInstance().openReportDocument(
     			report.generatedReportFile());
    
-    	String actionUrl = (String)options.objectForKey(OPTION_ACTION_URL);
+    	// String actionUrl = (String)options.objectForKey(OPTION_ACTION_URL);
 
     	String filename = "report.xls";
   

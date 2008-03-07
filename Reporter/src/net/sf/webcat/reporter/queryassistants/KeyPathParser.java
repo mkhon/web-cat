@@ -113,7 +113,7 @@ public class KeyPathParser
 		remainingKeyPath = joinStrings(components, i);
 	}
 
-	private boolean isPrimitive(Class<?> klass)
+	/* private boolean isPrimitive(Class<?> klass)
 	{
 		return(klass == String.class ||
 				klass == Float.class || klass == Float.class ||
@@ -125,7 +125,7 @@ public class KeyPathParser
 				klass == Boolean.class || klass == Boolean.TYPE ||
 				klass == Character.class || klass == Character.TYPE ||
 				klass == NSTimestamp.class);		
-	}
+	} */
 
 	private Class<?> classForGetter(EOClassDescription classDesc, String key)
 	{
