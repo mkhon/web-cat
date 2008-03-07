@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.9 2008/02/25 05:43:00 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.10 2008/03/07 15:33:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.9 2008/02/25 05:43:00 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.10 2008/03/07 15:33:02 stedwar2 Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -369,12 +369,16 @@ public class CourseOffering
     public void mightDelete()
     {
         log.debug("mightDelete()");
+        if (isNewObject()) return;
         if (hasAssignmentOfferings())
         {
             log.debug("mightDelete(): offering has assignments");
             throw new ValidationException("You may not delete a course "
                 + "offering that has assignment offerings.");
         }
+        StringBuffer buf = new StringBuffer("/");
+        addSubdirTo(buf);
+        subdirToDelete = buf.toString();
         super.mightDelete();
     }
 
@@ -391,11 +395,43 @@ public class CourseOffering
     }
 
 
+    // ----------------------------------------------------------
+    @Override
+    public void didDelete( EOEditingContext context )
+    {
+        log.debug("didDelete()");
+        super.didDelete( context );
+        // should check to see if this is a child ec
+        EOObjectStore parent = context.parentObjectStore();
+        if (parent == null || !(parent instanceof EOEditingContext))
+        {
+            if (subdirToDelete != null)
+            {
+                NSArray domains = AuthenticationDomain.authDomains();
+                for ( int i = 0; i < domains.count(); i++ )
+                {
+                    AuthenticationDomain domain =
+                        (AuthenticationDomain)domains.objectAtIndex( i );
+                    StringBuffer dir = domain.submissionBaseDirBuffer();
+                    dir.append(subdirToDelete);
+                    File courseDir = new File(dir.toString());
+                    if (courseDir.exists())
+                    {
+                        net.sf.webcat.archives.FileUtilities.deleteDirectory(
+                            courseDir);
+                    }
+                }
+            }
+        }
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
     private boolean hasAssignmentOfferings()
     {
+        if (isNewObject()) return false;
         // This method introduces some minor conceptual coupling with
         // the Grader subsystem.  However, it avoids all binary dependencies
         // and it is necessary to preserve the integrity of the data
@@ -494,6 +530,7 @@ public class CourseOffering
     private String cachedDeptNumberAndName    = null;
     private String semesterDirNeedingRenaming = null;
     private String crnDirNeedingRenaming      = null;
+    private String subdirToDelete;
 
     static Logger log = Logger.getLogger( CourseOffering.class );
 }
