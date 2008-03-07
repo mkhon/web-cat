@@ -1,27 +1,27 @@
 {
     "Reports" = {
-        accessLevel = 50;
+        accessLevel = 40;
         priority = 300;
         children = {
             Generate = {
            		pageName   = net.sf.webcat.reporter.PickTemplateToGeneratePage;
-                accessLevel = 50;
+                accessLevel = 40;
            		priority   = 1;
            		wantsStart = YES;
             };
             View = {
                 pageName = net.sf.webcat.reporter.PickReportToViewPage;
-                accessLevel = 50;
+                accessLevel = 40;
                 priority = 2;
             };
             Schedule = {
                 pageName = net.sf.webcat.reporter.ScheduleReportPage;
-                accessLevel = 50;
+                accessLevel = 40;
                 priority = 3;
             };
             "Template Library" = {
                 pageName = net.sf.webcat.reporter.TemplateLibraryPage;
-                accessLevel = 50;
+                accessLevel = 40;
                 priority = 4;
             };
         };
