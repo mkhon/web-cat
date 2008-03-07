@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.11 2008/02/29 21:32:28 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.12 2008/03/07 15:31:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -61,7 +61,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.11 2008/02/29 21:32:28 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.12 2008/03/07 15:31:13 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -468,8 +468,20 @@ public class WCComponent
     {
         if (peerContextManager != null)
         {
-            peerContextManager.editingContext().revert();
-            peerContextManager.editingContext().refaultAllObjects();
+            try
+            {
+                // Make sure to grab the lock, in case this EC hasn't been
+                // used for anything yet in this RR-loop and Wonder hasn't
+                // auto-locked it yet.
+                peerContextManager.editingContext().lock();
+
+                peerContextManager.editingContext().revert();
+                peerContextManager.editingContext().refaultAllObjects();
+            }
+            finally
+            {
+                peerContextManager.editingContext().unlock();
+            }
         }
         else
         {
@@ -851,9 +863,21 @@ public class WCComponent
         log.debug( "commitLocalChanges()" );
       if (peerContextManager != null)
       {
-          peerContextManager.editingContext().saveChanges();
-          peerContextManager.editingContext().revert();
-          peerContextManager.editingContext().refaultAllObjects();
+          try
+          {
+              // Make sure to grab the lock, in case this EC hasn't been
+              // used for anything yet in this RR-loop and Wonder hasn't
+              // auto-locked it yet.
+              peerContextManager.editingContext().lock();
+
+              peerContextManager.editingContext().saveChanges();
+              peerContextManager.editingContext().revert();
+              peerContextManager.editingContext().refaultAllObjects();
+          }
+          finally
+          {
+              peerContextManager.editingContext().unlock();
+          }
       }
       else
       {
