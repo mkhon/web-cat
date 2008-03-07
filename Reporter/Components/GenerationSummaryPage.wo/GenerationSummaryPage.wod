@@ -6,6 +6,6 @@ RenderingMethod: WOPopUpButton {
 }
 
 Back: WOSubmitButton {
-	value = "Back";
+	value = " < Back ";
 	action = localPageController.previousPage;
 }
