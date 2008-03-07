@@ -2,7 +2,7 @@ RenderingMethod: WOPopUpButton {
 	list = renderingMethods;
 	item = renderingMethod;
 	selection = selectedRenderingMethod;
-	displayString = renderingMethod.displayName;
+	displayString = renderingMethod.displayName;  // VALID
 }
 
 Back: WOSubmitButton {
