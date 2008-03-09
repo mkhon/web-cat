@@ -449,7 +449,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 			try {
 				File jarFile = new File(jar);
-				if (!jarFile.exists() || jarFile.isDirectory()) {
+				if (!jarFile.exists() || jarFile.isDirectory()
+                    || isSystemJar(jar)) {
 					return;
 				}
 				JarFile f = new JarFile(jar);
@@ -464,6 +465,13 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 						}
 						bundles.addObject(jar);
 					}
+                    else if (name.endsWith("plugin.properties")
+                             || name.endsWith("plugin.xml")
+                             || name.endsWith("about.html"))
+                    {
+                        // Ignore these files, since they are likely to be
+                        // duplicated across multiple jars
+                    }
 					else if (!(name.startsWith("src") || name.startsWith("META-INF"))) {
 						Entry e = new Entry(entry.getSize(), jar);
 						NSMutableSet<Entry> set = classes.objectForKey(name);
