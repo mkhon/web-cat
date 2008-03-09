@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.12 2008/03/07 15:31:13 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.13 2008/03/09 02:46:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -61,7 +61,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.12 2008/03/07 15:31:13 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.13 2008/03/09 02:46:56 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -227,7 +227,7 @@ public class WCComponent
      * Set the tab that corresponds to this component's page.
      * @param current this page's navigation tab
      */
-    public void currentTab(TabDescriptor current)
+    public void setCurrentTab(TabDescriptor current)
     {
         currentTab = current;
     }
