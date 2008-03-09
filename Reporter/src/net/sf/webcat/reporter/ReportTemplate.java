@@ -61,8 +61,8 @@ import com.webobjects.eocontrol.*;
 /**
  * TODO: place a real description here.
  *
- * @author 
- * @version $Id: ReportTemplate.java,v 1.4 2008/03/06 20:13:41 aallowat Exp $
+ * @author
+ * @version $Id: ReportTemplate.java,v 1.5 2008/03/09 02:52:57 stedwar2 Exp $
  */
 public class ReportTemplate
     extends _ReportTemplate
@@ -103,14 +103,14 @@ public class ReportTemplate
         return dirName() + "/" + uploadedFileName();
     }
 
-    
+
     // ----------------------------------------------------------
     public String toString()
     {
         return filePath();
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Retrieve the name of the directory where a user's report templates are
@@ -122,10 +122,13 @@ public class ReportTemplate
     {
         StringBuffer dir = new StringBuffer( 50 );
         dir.append( templateRoot() );
-        dir.append( '/' );
-        dir.append( author.authenticationDomain().subdirName() );
-        dir.append( '/' );
-        dir.append( author.userName() );
+        if (author != null)
+        {
+            dir.append( '/' );
+            dir.append( author.authenticationDomain().subdirName() );
+            dir.append( '/' );
+            dir.append( author.userName() );
+        }
         return dir;
     }
 
@@ -143,7 +146,7 @@ public class ReportTemplate
         	templateRoot = net.sf.webcat.core.Application
         		.configurationProperties()
         		.getProperty("grader.reporttemplatesroot" );
-        	
+
             if ( templateRoot == null )
             {
             	templateRoot = net.sf.webcat.core.Application
@@ -158,20 +161,20 @@ public class ReportTemplate
 
     public String displayableVersion()
     {
-    	return displayableVersion(version());    	
+    	return displayableVersion(version());
     }
 
-    
+
     public static String displayableVersion(int version)
     {
     	int major = (version >> 16) & 0xFF;
     	int minor = (version >> 8) & 0xFF;
     	int revision = version & 0xFF;
-    	
+
     	return String.format("%d.%d.%d", major, minor, revision);
     }
 
-    
+
     public int versionByIncrementingMajor()
     {
     	return versionByIncrementingMajor(version());
@@ -199,7 +202,7 @@ public class ReportTemplate
     			components[0], components[1] + 1, 0);
     }
 
-    
+
     public int versionByIncrementingRevision()
     {
     	return versionByIncrementingRevision(version());
@@ -219,19 +222,19 @@ public class ReportTemplate
     	return componentsFromVersion(version())[0];
     }
 
-    
+
     public int versionMinor()
     {
     	return componentsFromVersion(version())[1];
     }
 
-    
+
     public int versionRevision()
     {
     	return componentsFromVersion(version())[2];
     }
 
-    
+
     public void setVersion(int major, int minor, int revision)
     {
     	setVersion(versionFromComponents(major, minor, revision));
@@ -255,13 +258,13 @@ public class ReportTemplate
     		revision = 0;
     		minor++;
     	}
-    	
+
     	if(minor > 255)
     	{
     		minor = 0;
     		major++;
     	}
-    	
+
     	if(major > 255)
     	{
     		// This will hopefully never happen!
@@ -275,9 +278,9 @@ public class ReportTemplate
     // ----------------------------------------------------------
     /**
      * Gets the parameter with the specified binding in this report template.
-     * 
+     *
      * @param binding the binding of the parameter to find
-     * 
+     *
      * @return the ReportParameter if it exists, or null if no parameter with
      *     the specified binding is in this report template
      */
@@ -287,14 +290,14 @@ public class ReportTemplate
     	while(e.hasMoreElements())
     	{
     		ReportParameter param = (ReportParameter)e.nextElement();
-    		
+
     		if(param.binding().equals(binding))
     			return param;
     	}
-    	
+
     	return null;
     }*/
-    
+
 
     // ----------------------------------------------------------
     /**
@@ -302,7 +305,7 @@ public class ReportTemplate
      * such that if a parameter Y depends on parameter X, then X occurs in the
      * array before Y (that is, they are topologically sorted based on their
      * dependencies).
-     * 
+     *
      * @return the array of parameters sorted in dependency order
      */
 /*    public NSArray sortedParameters()
@@ -310,7 +313,7 @@ public class ReportTemplate
     	ReverseTopologicalSort rts = new ReverseTopologicalSort(parameters());
     	return rts.sortedParameters();
     }*/
-    
+
     // ----------------------------------------------------------
     /**
      * Create a new report template object from uploaded file data.
@@ -394,7 +397,7 @@ public class ReportTemplate
 	            scriptPath.delete();
 	            return null;
 	        }
-	        
+
 	        msg = template.processDataSets(ec, reportHandle);
 	        if ( msg != null )
 	        {
@@ -403,7 +406,7 @@ public class ReportTemplate
 	            scriptPath.delete();
 	            return null;
 	        }
-	
+
 	        return template;
 		}
 		catch(Exception e)
@@ -430,7 +433,7 @@ public class ReportTemplate
             NSMutableDictionary errors)
     {
     	File scriptPath = new File(fullPath);
-    	  
+
         ReportTemplate template = new ReportTemplate();
         ec.insertObject( template );
         template.setName("");
@@ -455,7 +458,7 @@ public class ReportTemplate
 	            scriptPath.delete();
 	            return null;
 	        }
-	
+
 	        msg = template.processDataSets(ec, reportHandle);
 	        if ( msg != null )
 	        {
@@ -483,15 +486,20 @@ public class ReportTemplate
     	}
     }
 
-    	
+
+    // TODO: This should be redone to mirror the mightDelete(), canDelete(),
+    // and didDelete() methods from the Submission class.
     public void deleteTemplate(EOEditingContext ec)
     {
         File scriptPath = new File( filePath() );
         ec.deleteObject( this );
-        scriptPath.delete();
+        if (scriptPath.exists())
+        {
+            scriptPath.delete();
+        }
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Initializes various report template attributes in the EO model.
@@ -500,13 +508,13 @@ public class ReportTemplate
     {
     	String title = reportHandle.getStringProperty(
     			ReportDesignHandle.TITLE_PROP);
-    	
+
     	if(title == null || title.trim().length() == 0)
     	{
     		String msg = "The report template you tried to upload does not have a title. " +
     			"Please enter one in the <b>Title</b> field of the General Properties " +
     			"section of the report designer and then upload it again.";
-    		
+
     		return msg;
     	}
 
@@ -514,11 +522,11 @@ public class ReportTemplate
 
     	setName(title);
     	setDescription(description);
-    	
+
     	return null;
     }
-    
-    
+
+
     private class DataSetCollector implements IDesignElementVisitor
     {
     	public DataSetCollector()
@@ -538,7 +546,7 @@ public class ReportTemplate
 				{
 					String extensionID =
 						dataSet.getStringProperty("extensionID");
-					
+
 		    		if("net.sf.webcat.oda.dataSet".equals(extensionID))
 		    		{
 		    			if(dataSetRefCounts.containsKey(dataSet))
@@ -556,7 +564,7 @@ public class ReportTemplate
 				}
 			}
 		}
-		
+
 		public NSDictionary<DataSetHandle, Integer> dataSetsAndRefCounts()
 		{
 			return dataSetRefCounts;
@@ -564,7 +572,7 @@ public class ReportTemplate
 
 		private NSMutableDictionary<DataSetHandle, Integer> dataSetRefCounts;
     }
-    
+
 
     // ----------------------------------------------------------
     private String processDataSets(EOEditingContext ec, ReportDesignHandle reportHandle)
@@ -572,7 +580,7 @@ public class ReportTemplate
     	ReportBodyWalker walker = new ReportBodyWalker(reportHandle);
     	DataSetCollector collector = new DataSetCollector();
     	walker.visit(collector);
-    	
+
     	NSDictionary<DataSetHandle, Integer> sets =
     		collector.dataSetsAndRefCounts();
 
@@ -588,13 +596,13 @@ public class ReportTemplate
 			ReportDataSet.createNewReportDataSet(ec, this,
 					relation.getDataSetUuid(),
 					relation.getEntityType(),
-					name, description, refCount);    		
+					name, description, refCount);
     	}
-    	
+
     	return null;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Adds the parameters of the report template to the EO model and sets up
@@ -609,10 +617,10 @@ public class ReportTemplate
     		ParameterHandle paramHandleBase = (ParameterHandle)it.next();
     		if(!(paramHandleBase instanceof ScalarParameterHandle))
     			continue;
-    		
+
     		ScalarParameterHandle paramHandle =
     			(ScalarParameterHandle)paramHandleBase;
-    		
+
     		String binding = paramHandle.getName();
     		String displayName = paramHandle.getPromptText();
     		String description = paramHandle.getHelpText();
@@ -622,10 +630,10 @@ public class ReportTemplate
     		{
 	    		ParameterParser parser = new ParameterParser(optionString);
 	    		parser.parse();
-	    		
+
 	    		String type = parser.getType();
 	    		NSDictionary options = parser.getOptions();
-	    		
+
 	    		ReportParameter.createNewReportParameter(ec, this,
 	    				binding, type, displayName, description, options);
     		}
@@ -643,7 +651,7 @@ public class ReportTemplate
     	return null;
     }*/
 
-    
+
     // ----------------------------------------------------------
     /**
      * Computes the dependencies among all the parameters in the report
@@ -655,7 +663,7 @@ public class ReportTemplate
     	while(e.hasMoreElements())
     	{
     		ReportParameter param = (ReportParameter)e.nextElement();
-    		
+
     		String msg = computeDependenciesForParameter(param);
     		if(msg != null)
     			return msg;
@@ -663,8 +671,8 @@ public class ReportTemplate
 
     	return null;
     }*/
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Computes the dependencies for the specified parameter in the report
@@ -680,18 +688,18 @@ public class ReportTemplate
 
     		String msg = ognl.OgnlQualifierUtils.computeDependenciesFromOgnlAST(
     				ast, dependentBindings);
-    		
+
     		if(msg != null)
     			return msg;
     	}
-    	
+
     	if(param.hasOption(ReportParameter.OPTION_FILTER))
     	{
     		ognl.Node ast = (ognl.Node)param.filterOption();
 
     		String msg = ognl.OgnlQualifierUtils.computeDependenciesFromOgnlAST(
     				ast, dependentBindings);
-    		
+
     		if(msg != null)
     			return msg;
     	}
@@ -711,7 +719,7 @@ public class ReportTemplate
     			}
     		}
     	}
-    	
+
     	String dependString = "";
 
     	Enumeration e = dependentBindings.objectEnumerator();
@@ -719,9 +727,9 @@ public class ReportTemplate
     	{
     		String binding = (String)e.nextElement();
     		dependString += binding + " ";
-    		
+
     		ReportParameter dependent = parameterWithBinding(binding);
-    		
+
     		if(dependent == null)
     		{
     			return "Parameter '" + param.binding() + "' depends on " +
@@ -737,11 +745,11 @@ public class ReportTemplate
     			param.addToDependsOnRelationship(dependent);
     		}
     	}
-    	
+
     	return null;
     }*/
 
-    
+
 // If you add instance variables to store property values you
 // should add empty implementions of the Serialization methods
 // to avoid unnecessary overhead (the properties will be
@@ -770,7 +778,7 @@ public class ReportTemplate
 //    {
 //    }
 
-    
+
     //  ----------------------------------------------------------
     /**
      * Implements a standard reverse topological sort algorithm in order to
@@ -784,25 +792,25 @@ public class ReportTemplate
     	private int sortedIndex;
     	private boolean[] visited;
     	private int[] reordering;
-    	
+
     	/**
     	 * Creates a new sorter and stores the result of sorting the
     	 * specified parameters.
-    	 * 
+    	 *
     	 * @param parameters an NSArray of ReportParameter objects to sort
     	 */
 /*    	public ReverseTopologicalSort(NSArray parameters)
     	{
     		this.parameters = parameters;
     		int paramCount = parameters.count();
-    		
+
     		sortedIndex = 0;
     		visited = new boolean[paramCount];
     		reordering = new int[paramCount];
-    		
+
     		for(int i = 0; i < paramCount; i++)
     			reordering[i] = -1;
-    		
+
     		for(int i = 0; i < paramCount; i++)
     			if(!visited[i])
     				sortRecursive(i);
@@ -811,29 +819,29 @@ public class ReportTemplate
     	private void sortRecursive(int index)
     	{
     		visited[index] = true;
-    		
+
     		ReportParameter parameter =
     			(ReportParameter)parameters.objectAtIndex(index);
-    		
+
     		Enumeration dependsOn = parameter.dependsOn().objectEnumerator();
-    		
+
     		while(dependsOn.hasMoreElements())
     		{
     			ReportParameter dependent =
     				(ReportParameter)dependsOn.nextElement();
-    			
+
     			int dependentIndex =
     				parameters.indexOfIdenticalObject(dependent);
-    			
+
     			if(!visited[dependentIndex])
     				sortRecursive(dependentIndex);
     		}
-    		
+
     		reordering[sortedIndex++] = index;
     	}
-    	
+
     	/**
-    	 * 
+    	 *
     	 * @return
     	 */
 /*    	public NSArray sortedParameters()
@@ -842,12 +850,12 @@ public class ReportTemplate
 
     		for(int i = 0; i < parameters.count(); i++)
     			sorted.addObject(parameters.objectAtIndex(reordering[i]));
-    		
+
     		return sorted;
     	}
     }*/
 
-    
+
     static private String templateRoot = null;
     static Logger log = Logger.getLogger( ReportTemplate.class );
 }
