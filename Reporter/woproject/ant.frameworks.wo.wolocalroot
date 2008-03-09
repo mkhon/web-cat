@@ -7,8 +7,3 @@ Library/Frameworks/ERJars.framework
 Library/Frameworks/Grader.framework
 Library/Frameworks/JavaWOExtensions.framework
 Library/Frameworks/WOOgnl.framework
-Library/Java/Extensions/OpenBaseJDBC.jar
-Library/Frameworks/Core.framework
-Library/Frameworks/DBUpdateEngine.framework
-Library/Frameworks/EOJDBCPrototypes.framework
-Library/Frameworks/Grader.framework
