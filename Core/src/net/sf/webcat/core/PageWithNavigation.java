@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.6 2008/02/25 06:14:19 stedwar2 Exp $
+ |  $Id: PageWithNavigation.java,v 1.7 2008/03/09 02:46:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Level;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.6 2008/02/25 06:14:19 stedwar2 Exp $
+ * @version $Id: PageWithNavigation.java,v 1.7 2008/03/09 02:46:37 stedwar2 Exp $
  */
 public class PageWithNavigation
     extends BarePage
@@ -111,7 +111,6 @@ public class PageWithNavigation
             if (thisPage != null)
             {
                 myTab = thisPage.currentTab();
-                myTab.select();
                 secondLevelSelection =
                     ( (Session)session() ).tabs.selectedChild().selectedChild();
             }
@@ -122,10 +121,6 @@ public class PageWithNavigation
                     ( (Session)session() ).tabs.selectedChild().selectedChild();
             }
             bodyClass = myTab.cssClass();
-        }
-        else
-        {
-            myTab.select();
         }
         if ( title == null && thisPage != null )
         {
