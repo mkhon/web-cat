@@ -1,4 +1,5 @@
 Library/Frameworks/Admin.framework
+Library/Frameworks/Ajax.framework
 Library/Frameworks/ANTForPlugins.framework
 Library/Frameworks/CheckstyleForPlugins.framework
 Library/Frameworks/CloverForPlugins.framework
@@ -13,6 +14,7 @@ Library/Frameworks/Grader.framework
 Library/Frameworks/JavaWOExtensions.framework
 Library/Frameworks/PerlForPlugins.framework
 Library/Frameworks/PMDForPlugins.framework
+Library/Frameworks/Reporter.framework
 Library/Frameworks/WebObjectsUpdater.framework
 Library/Frameworks/WonderUpdater.framework
 Library/Frameworks/WOOgnl.framework
