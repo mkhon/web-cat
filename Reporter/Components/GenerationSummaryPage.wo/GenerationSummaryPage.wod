@@ -1,3 +1,8 @@
+Back: WOSubmitButton {
+	value = " < Back ";
+	action = localPageController.previousPage;
+}
+
 RenderingMethod: WOPopUpButton {
 	list = renderingMethods;
 	item = renderingMethod;
@@ -5,7 +10,8 @@ RenderingMethod: WOPopUpButton {
 	displayString = renderingMethod.displayName;  // VALID
 }
 
-Back: WOSubmitButton {
-	value = " < Back ";
-	action = localPageController.previousPage;
+Next: WOSubmitButton {
+	value = " Next > ";
+	name  = "NextButton";
+	action = goNext;
 }
