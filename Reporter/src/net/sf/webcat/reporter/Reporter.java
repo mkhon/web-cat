@@ -78,7 +78,7 @@ public class Reporter extends Subsystem
     public Reporter()
     {
         super();
-        
+
         instance = this;
     }
 
@@ -90,7 +90,7 @@ public class Reporter extends Subsystem
      * Initialize the subsystem-specific session data in a newly created
      * session object.  This method is called once by the core for
      * each newly created session object.
-     * 
+     *
      * @param s The new session object
      */
     public void initializeSessionData( Session s )
@@ -119,7 +119,7 @@ public class Reporter extends Subsystem
                 new NSData ( myBundle.bytesForResourcePath(
                                  TabDescriptor.TAB_DEFINITIONS ) ) );
         }
-        
+
         initializeBIRT();
 
         // Create the queue and the queueprocessor
@@ -161,16 +161,14 @@ public class Reporter extends Subsystem
     }
 
 
-    @SuppressWarnings( "deprecation" )
     private void initializeBIRT()
     {
         // Initialize the BIRT reporting engine.
-        NSBundle myBundle = NSBundle.bundleForClass( Reporter.class );
-        String reportEnginePath = myBundle.resourcePath() + "/" +
+        String reportEnginePath = myResourcesDir() + "/" +
         	REPORT_ENGINE_SUBDIR;
 
         log.info("Using reporting engine located at " + reportEnginePath);
-        
+
         EngineConfig config = new EngineConfig();
         config.setEngineHome( reportEnginePath );
 
@@ -193,7 +191,7 @@ public class Reporter extends Subsystem
     	if(!configAreaDir.exists())
     	{
     		configAreaDir.mkdirs();
-    		
+
     		File configSrcDir = new File(reportEnginePath + "/configuration");
 
     		try
@@ -235,7 +233,7 @@ public class Reporter extends Subsystem
         {
         	log.fatal("Error initializing BIRT reporting engine", e);
 		}
-     
+
         // Initialize the available report rendering methods.
         NSMutableArray methods = new NSMutableArray();
         methods.addObject(new HTMLRenderingMethod(reportEngine));
@@ -243,11 +241,11 @@ public class Reporter extends Subsystem
         methods.addObject(new ExcelRenderingMethod(reportEngine));
         renderingMethods = methods;
     }
-    
-    
+
+
     /**
      * Returns the sole instance of the reporter subsystem.
-     * 
+     *
      * @return the Reporter object that represents the subsystem.
      */
     public static Reporter getInstance()
@@ -267,7 +265,7 @@ public class Reporter extends Subsystem
 			return null;
 		}
     }
-    
+
     public IReportDocument openReportDocument(String path)
     {
     	try
@@ -293,15 +291,15 @@ public class Reporter extends Subsystem
     		appContext = new Hashtable();
     	else
     		appContext = new Hashtable(appContext);
-    	
+
     	OdaResultSetProvider resultProvider = new OdaResultSetProvider(job);
     	appContext.put("net.sf.webcat.oda.resultSetProvider", resultProvider);
-    	
+
     	task.setAppContext(appContext);
 
 	  	return task;
     }
-    
+
     public IGetParameterDefinitionTask createGetParameterDefinitionTask(
     		IReportRunnable runnable)
     {
@@ -313,7 +311,7 @@ public class Reporter extends Subsystem
     {
     	return reportEngine.createDataExtractionTask(document);
     }
-   
+
     public NSArray allRenderingMethods()
     {
     	return renderingMethods;
@@ -325,11 +323,11 @@ public class Reporter extends Subsystem
     	{
     		IRenderingMethod method =
     			(IRenderingMethod)renderingMethods.objectAtIndex(i);
-    		
+
     		if(method.methodName().equals(name))
     			return method;
     	}
-    	
+
     	log.error("Could not find a report rendering method with name " +
     			name + "!");
     	return null;
@@ -339,7 +337,7 @@ public class Reporter extends Subsystem
     {
     	return reportQueue;
     }
-    
+
     public ReportQueueProcessor reportQueueProcessor()
     {
     	return reportQueueProcessor;
@@ -365,7 +363,7 @@ public class Reporter extends Subsystem
                         EOQualifier.QualifierOperatorEqual,
                         ERXConstant.integerForInt( 0 )
         ) );
-        
+
         jobCountAtLastThrottleCheck =
         	ERXEOControlUtilities.objectCountWithQualifier(ec,
         		EnqueuedJob.ENTITY_NAME, new EOAndQualifier(qualifiers));
@@ -374,38 +372,38 @@ public class Reporter extends Subsystem
 
         return isThrottled();
     }
-    
+
     public boolean isThrottled()
     {
     	return jobCountAtLastThrottleCheck > 0;
     }
-    
+
     public long throttleTime()
     {
     	return Grader.getInstance().estimatedJobTime() *
     		jobCountAtLastThrottleCheck;
     }
-    
+
     //~ Instance/static variables .............................................
 
     // TODO: this should be refactored into the Subsystem parent class,
     // but that means handling Core in an appropriate way.
     private static NSArray subsystemTabTemplate;
-    
+
     /**
      * This is the sole instance of the reporter subsystem, initialized by the
      * constructor.
      */
     private static Reporter instance;
-    
+
     /**
      * This is the sole instance of the report engine, initialized by the init
      * method.
      */
     private IReportEngine reportEngine;
-    
+
     private IDesignEngine designEngine;
-    
+
     private NSArray renderingMethods;
 
     /** this is the main single report queue */
@@ -417,6 +415,6 @@ public class Reporter extends Subsystem
     private int jobCountAtLastThrottleCheck;
 
     static Logger log = Logger.getLogger( Reporter.class );
-    
+
     static final String REPORT_ENGINE_SUBDIR = "ReportEngine";
 }
