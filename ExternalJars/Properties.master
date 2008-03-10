@@ -5,7 +5,7 @@ subsystem.ExternalJars=
 
 ExternalJars.version.major=1
 ExternalJars.version.minor=0
-ExternalJars.version.revision=2
+ExternalJars.version.revision=3
 
 ExternalJars.copyright=\
 	(c) 2007 Virginia Tech Department of Computer Science
