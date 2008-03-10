@@ -17,11 +17,13 @@
            of being explicitly listed here.
       -->
       <fileset dir="${wo.wolocalroot}/Library/Frameworks">
+        <include name="Ajax.framework/**"/>
         <include name="ERJars.framework/**"/>
         <include name="ERExtensions.framework/**"/>
         <include name="ERDirectToWeb.framework/**"/>
         <include name="JavaWOExtensions.framework/**"/>
         <include name="WOOgnl.framework/**"/>
+          <exclude name="WOOgnl.framework/Resources/Java/ognl*.jar"/>
         <include name="WOUnitTest.framework/**"/>
       </fileset>
     </jar>
