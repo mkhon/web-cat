@@ -4,8 +4,8 @@
 subsystem.WonderUpdater=
 
 WonderUpdater.version.major=1
-WonderUpdater.version.minor=0
-WonderUpdater.version.revision=3
+WonderUpdater.version.minor=1
+WonderUpdater.version.revision=0
 
 WonderUpdater.copyright=\
 	(c) 2007 Virginia Tech Department of Computer Science
@@ -19,6 +19,7 @@ WonderUpdater.license=GNU General Public License v.2
 WonderUpdater.license.url=http\://www.gnu.org/copyleft/gpl.html
 
 WonderUpdater.alsoContains=\
+    Ajax.framework,\
     ERJars.framework,\
     ERExtensions.framework,\
     ERDirectToWeb.framework,\
