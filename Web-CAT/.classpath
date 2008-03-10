@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="/PMDForPlugins/build/PMDForPlugins.framework/Resources/Java"/>
 	<classpathentry kind="lib" path="build/Web-CAT.woa/Contents/Resources/Java" sourcepath="src"/>
 	<classpathentry kind="lib" path="/Reporter/build/Reporter.framework/Resources/Java"/>
-	<classpathentry kind="lib" path="C:/Apple/Library/Frameworks/JavaWOJSPServlet.framework/WebServerResources/Java/JavaWOJSPServlet_client.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EOJDBCPrototypes"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Admin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ANTForPlugins"/>
