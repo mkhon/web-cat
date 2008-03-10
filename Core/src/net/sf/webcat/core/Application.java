@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.28 2008/02/27 23:23:03 aallowat Exp $
+ |  $Id: Application.java,v 1.29 2008/03/10 02:52:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.28 2008/02/27 23:23:03 aallowat Exp $
+ * @version $Id: Application.java,v 1.29 2008/03/10 02:52:31 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -288,6 +288,8 @@ public class Application
 
         // Remove all state login session data
         EOEditingContext ec = newPeerEditingContext();
+        boolean nsLogDebugEnabled = NSLog.debug.isEnabled();
+        NSLog.debug.setIsEnabled(false);
         try
         {
             ec.lock();
@@ -315,6 +317,7 @@ public class Application
             ec.unlock();
             releasePeerEditingContext( ec );
         }
+        NSLog.debug.setIsEnabled(nsLogDebugEnabled);
         AuthenticationDomain.refreshAuthDomains();
         Language.refreshLanguages();
 
@@ -327,10 +330,10 @@ public class Application
         		"net.sf.webcat.core.TableRow", "tr");
         WOHelperFunctionHTMLTemplateParser.registerTagShortcut(
         		"WOComponentContent", "content");
-        
+
         AjaxUpdateContainerTagProcessor tp =
         	new AjaxUpdateContainerTagProcessor();
-        
+
         WOHelperFunctionHTMLTemplateParser.registerTagProcessorForElementType(
         		tp, "adiv");
         WOHelperFunctionHTMLTemplateParser.registerTagProcessorForElementType(
@@ -1182,13 +1185,21 @@ public class Application
         }
         catch ( Exception e )
         {
-            log.error( "Exception sending mail message:\n", e );
-            log.error( "unsent message:\nTo: "
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("java.net.UnknownHostException:"))
+            {
+                log.error( "Exception sending mail message: " + e );
+            }
+            else
+            {
+                log.error( "Exception sending mail message:\n", e );
+                log.error( "unsent message:\nTo: "
                        + ( to == null ? "null" : to )
                        + "\ntoAdmins: " + toAdmins
                        + "\nSubject: " + ( subject == null ? "null" : subject )
                        + "\nBody:\n" + ( body == null ? "null" : body )
                        );
+            }
         }
     }
 
