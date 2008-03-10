@@ -88,7 +88,8 @@
                CheckstyleForPlugins
                CloverForPlugins
                PerlForPlugins
-               PMDForPlugins"/>
+               PMDForPlugins
+               Reporter"/>
     </subant>
   </target>
 
@@ -167,9 +168,12 @@
       </patternset></resources>
       <frameworks root="${wo.wosystemroot}"><patternset>
         <includesfile name="woproject/ant.frameworks.wo.wosystemroot"/>
+        <exclude name="**/JavaWOJSPServlet.framework/WebServerResources/com/"/>
+        <exclude name="**/JavaWOJSPServlet.framework/WebServerResources/*.orig"/>
       </patternset></frameworks>
       <frameworks root="${wo.wolocalroot}"><patternset>
         <includesfile name="woproject/ant.frameworks.wo.wolocalroot"/>
+      <exclude name="**/WOOgnl.framework/Resources/Java/ognl*.jar"/>
       </patternset></frameworks>
       <frameworks root="${user.home}"><patternset>
         <includesfile name="woproject/ant.frameworks.user.home"/>
