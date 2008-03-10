@@ -3,8 +3,8 @@
 # ===================================================================
 subsystem.Reporter=net.sf.webcat.reporter.Reporter
 
-Reporter.version.major=0
-Reporter.version.minor=1
+Reporter.version.major=1
+Reporter.version.minor=0
 Reporter.version.revision=0
 Reporter.requires=Core, Grader
 
