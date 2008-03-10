@@ -27,7 +27,8 @@
         <include name="JavaJDBCAdaptor.framework/**"/>
         <include name="JavaWebObjects.framework/**"/>
         <include name="JavaWOJSPServlet.framework/**"/>
-        <include name="JavaXML.framework/**"/>
+          <exclude name="JavaWOJSPServlet.framework/WebServerResources/com/"/>
+          <exclude name="JavaWOJSPServlet.framework/WebServerResources/*.orig"/>
       </fileset>
     </jar>
   </target>
