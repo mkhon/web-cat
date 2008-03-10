@@ -10,6 +10,7 @@ import er.extensions.ERXConstant;
 public class AjaxLongResponse extends WOComponent
 {
     static String WOMetaRefreshSenderId = "WOMetaRefresh";
+    static Logger log = Logger.getLogger( AjaxLongResponse.class );
 
     protected Number _refreshInterval;
     protected boolean _performingAction;
@@ -31,7 +32,7 @@ public class AjaxLongResponse extends WOComponent
         _performingAction = false;
     }
 
-    
+
     //~ KVC Attributes (must be public) .......................................
 
     public Object jobToken;
@@ -48,20 +49,29 @@ public class AjaxLongResponse extends WOComponent
 
     //~ Methods ...............................................................
 
-    public int refreshInterval() {
-    	if(ERXConstant.ZeroInteger.equals(_refreshInterval)) {
+    // ----------------------------------------------------------
+    public int refreshInterval()
+    {
+    	if(ERXConstant.ZeroInteger.equals(_refreshInterval))
+        {
     		Number n = (Number)valueForBinding("refreshInterval");
-    		if(n != null) {
+    		if(n != null)
+            {
     			_refreshInterval = n;
     		}
     	}
     	return _refreshInterval.intValue();
     }
-    
-    public void setRefreshInterval(int value) {
+
+
+    // ----------------------------------------------------------
+    public void setRefreshInterval(int value)
+    {
     	_refreshInterval = new Integer(value);
     }
-    
+
+
+    // ----------------------------------------------------------
     public double percentOfWorkDone()
     {
     	ProgressManager progress = ProgressManager.getInstance();
@@ -75,11 +85,13 @@ public class AjaxLongResponse extends WOComponent
     		return progress.percentDoneOfJob(jobToken);
     	}
     }
-    
+
+
+    // ----------------------------------------------------------
     public String taskDescription()
     {
     	ProgressManager progress = ProgressManager.getInstance();
-    	
+
     	if(jobToken != null && progress.jobExists(jobToken))
     	{
     		return progress.descriptionOfCurrentTaskForJob(jobToken);
@@ -89,17 +101,23 @@ public class AjaxLongResponse extends WOComponent
     		return null;
     	}
     }
-    
+
+
+    // ----------------------------------------------------------
     public void setPercentOfWorkDone(double value)
     {
     	// Keep KVC happy.
     }
-    
+
+
+    // ----------------------------------------------------------
     public void setTaskDescription(String value)
     {
     	// Keep KVC happy.
     }
 
+
+    // ----------------------------------------------------------
     public WOActionResults cancelJob()
     {
     	handler.cancel();
@@ -107,10 +125,12 @@ public class AjaxLongResponse extends WOComponent
     	return null;
     }
 
+
+    // ----------------------------------------------------------
     public void awake()
     {
     	ProgressManager progress = ProgressManager.getInstance();
-    	
+
         if ( jobToken != null && progress.jobExists(jobToken))
         {
             isDone = progress.isJobDone(jobToken);
@@ -120,9 +140,28 @@ public class AjaxLongResponse extends WOComponent
         }
     }
 
+
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void appendToResponse(WOResponse response, WOContext context)
     {
-    	super.appendToResponse( response, context );
+    	super.appendToResponse(response, context);
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public Object handleQueryWithUnboundKey(String key)
+    {
+        if (net.sf.webcat.WCServletAdaptor.getInstance() == null)
+        {
+            // Not in a servlet, so it must be a regular app launch
+            return super.handleQueryWithUnboundKey(key);
+        }
+        else
+        {
+            // We're in a servlet, so swallow the error
+            log.debug("lookup of unknown key \"" + key + "\"");
+            return null;
+        }
     }
 }
