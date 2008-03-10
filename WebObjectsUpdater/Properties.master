@@ -5,7 +5,7 @@ subsystem.WebObjectsUpdater=
 
 WebObjectsUpdater.version.major=1
 WebObjectsUpdater.version.minor=1
-WebObjectsUpdater.version.revision=1
+WebObjectsUpdater.version.revision=2
 
 WebObjectsUpdater.copyright=\
 	(c) 2007 Virginia Tech Department of Computer Science
