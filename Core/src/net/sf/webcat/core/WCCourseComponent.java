@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.3 2008/02/25 14:55:22 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.4 2008/03/12 07:24:47 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @version $Id: WCCourseComponent.java,v 1.3 2008/02/25 14:55:22 stedwar2 Exp $
+ * @version $Id: WCCourseComponent.java,v 1.4 2008/03/12 07:24:47 stedwar2 Exp $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -67,20 +67,7 @@ public class WCCourseComponent
             log.debug("awake(): begin " + getClass().getName());
         }
         super.awake();
-        if (csm == null)
-        {
-            Object inheritedCsm = transientState().valueForKey( CSM_KEY );
-            if (inheritedCsm == null)
-            {
-                csm = new CoreSelectionsManager(
-                    user().getMyCoreSelections(), ecManager());
-            }
-            else
-            {
-                csm = (CoreSelectionsManager)
-                    ((CoreSelectionsManager)inheritedCsm).clone();
-            }
-        }
+        coreSelections();
         if (log.isDebugEnabled())
         {
             log.debug("awake(): end " + getClass().getName());
@@ -95,6 +82,20 @@ public class WCCourseComponent
      */
     public CoreSelectionsManager coreSelections()
     {
+        if (csm == null)
+        {
+            Object inheritedCsm = transientState().valueForKey( CSM_KEY );
+            if (inheritedCsm == null)
+            {
+                csm = new CoreSelectionsManager(
+                    user().getMyCoreSelections(), ecManager());
+            }
+            else
+            {
+                csm = (CoreSelectionsManager)
+                    ((CoreSelectionsManager)inheritedCsm).clone();
+            }
+        }
         return csm;
     }
 
