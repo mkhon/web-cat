@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.10 2008/02/08 20:00:44 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.11 2008/03/12 07:24:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: DirectAction.java,v 1.10 2008/02/08 20:00:44 stedwar2 Exp $
+ * @version $Id: DirectAction.java,v 1.11 2008/03/12 07:24:29 stedwar2 Exp $
  */
 public class DirectAction
     extends ERXDirectAction
@@ -315,9 +315,16 @@ public class DirectAction
         String thisWosid = wosid();
         if ( session == null && thisWosid != null )
         {
-            session = (Session)Application.application()
-                .restoreSessionWithID( thisWosid, context() );
-            log.debug( "restoreSession(): session = " + session );
+            if (context().hasSession())
+            {
+                session = (Session)context().session();
+            }
+            else
+            {
+                session = (Session)Application.application()
+                    .restoreSessionWithID( thisWosid, context() );
+                log.debug( "restoreSession(): session = " + session );
+            }
         }
     }
 
@@ -422,6 +429,10 @@ public class DirectAction
                 }
 //              log.debug( "session(): session is now " + session );
             }
+        }
+        if (session == null)
+        {
+            session = mySession;
         }
         return mySession;
     }
