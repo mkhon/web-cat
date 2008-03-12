@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.7 2008/02/25 14:56:01 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.8 2008/03/12 07:30:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.7 2008/02/25 14:56:01 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.8 2008/03/12 07:30:49 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -83,20 +83,7 @@ public class GraderComponent
             log.debug("awake(): begin " + getClass().getName());
         }
         super.awake();
-        if (prefs == null)
-        {
-            Object inheritedPrefs = transientState().valueForKey( GP_KEY );
-            if (inheritedPrefs == null)
-            {
-                prefs = new GraderPrefsManager(
-                    getGraderPrefs(), ecManager());
-            }
-            else
-            {
-                prefs = (GraderPrefsManager)
-                    ((GraderPrefsManager)inheritedPrefs).clone();
-            }
-        }
+        prefs();
         if (log.isDebugEnabled())
         {
             log.debug("awake(): end " + getClass().getName());
@@ -122,6 +109,20 @@ public class GraderComponent
      */
     public GraderPrefsManager prefs()
     {
+        if (prefs == null)
+        {
+            Object inheritedPrefs = transientState().valueForKey( GP_KEY );
+            if (inheritedPrefs == null)
+            {
+                prefs = new GraderPrefsManager(
+                    getGraderPrefs(), ecManager());
+            }
+            else
+            {
+                prefs = (GraderPrefsManager)
+                    ((GraderPrefsManager)inheritedPrefs).clone();
+            }
+        }
         return prefs;
     }
 
