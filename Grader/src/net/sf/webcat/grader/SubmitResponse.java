@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmitResponse.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ |  $Id: SubmitResponse.java,v 1.3 2008/03/12 07:32:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -36,10 +36,10 @@ import org.apache.log4j.Logger;
  *  in response to a BlueJ submitter direct action transaction.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmitResponse.java,v 1.2 2006/11/09 17:55:50 stedwar2 Exp $
+ *  @version $Id: SubmitResponse.java,v 1.3 2008/03/12 07:32:13 stedwar2 Exp $
  */
 public class SubmitResponse
-    extends GraderComponent
+    extends GraderSubmissionUploadComponent
 {
     //~ Constructors ..........................................................
 
