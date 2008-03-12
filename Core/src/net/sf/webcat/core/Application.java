@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.29 2008/03/10 02:52:31 stedwar2 Exp $
+ |  $Id: Application.java,v 1.30 2008/03/12 07:22:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.29 2008/03/10 02:52:31 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.30 2008/03/12 07:22:50 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -323,7 +323,6 @@ public class Application
 
         NSLog.debug.setAllowedDebugLevel( NSLog.DebugLevelInformational );
         NSLog.allowDebugLoggingForGroups( NSLog.DebugGroupMultithreading );
-        setAllowsConcurrentRequestHandling( true );
 
         // Add useful tag shortcuts for inline component tags.
         WOHelperFunctionHTMLTemplateParser.registerTagShortcut(
