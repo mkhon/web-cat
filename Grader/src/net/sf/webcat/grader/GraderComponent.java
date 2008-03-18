@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.8 2008/03/12 07:30:49 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.9 2008/03/18 03:21:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.8 2008/03/12 07:30:49 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.9 2008/03/18 03:21:16 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -114,8 +114,7 @@ public class GraderComponent
             Object inheritedPrefs = transientState().valueForKey( GP_KEY );
             if (inheritedPrefs == null)
             {
-                prefs = new GraderPrefsManager(
-                    getGraderPrefs(), ecManager());
+                reloadGraderPrefs();
             }
             else
             {
@@ -137,6 +136,19 @@ public class GraderComponent
         }
         WOComponent result = super.pageWithName( name );
         return result;
+    }
+
+
+    //~ Protected Methods .....................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Forces current prefs values to be reloaded from the database.
+     */
+    protected void reloadGraderPrefs()
+    {
+        prefs = new GraderPrefsManager(
+            getGraderPrefs(), ecManager());
     }
 
 

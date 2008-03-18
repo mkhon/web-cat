@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.5 2008/03/18 03:21:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @version $Id: PickSubmissionPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
+ * @version $Id: PickSubmissionPage.java,v 1.5 2008/03/18 03:21:16 stedwar2 Exp $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -234,14 +234,16 @@ public class PickSubmissionPage
     // ----------------------------------------------------------
     public WOComponent next()
     {
+        WOComponent result = null;
         if ( saveSelectionCanContinue() )
         {
-            return super.next();
+            result = super.next();
+            if (result instanceof GraderComponent)
+            {
+                ((GraderComponent)result).reloadGraderPrefs();
+            }
         }
-        else
-        {
-            return null;
-        }
+        return result;
     }
 
 
