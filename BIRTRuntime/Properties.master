@@ -1,0 +1,27 @@
+# ===================================================================
+# BIRTRuntime subsystem characteristics
+# ===================================================================
+subsystem.BIRTRuntime=net.sf.webcat.birtruntime.BIRTRuntime
+
+BIRTRuntime.version.major=2
+BIRTRuntime.version.minor=2
+BIRTRuntime.version.revision=1
+BIRTRuntime.requires=Core
+
+BIRTRuntime.copyright=\
+	(c) 2007 Virginia Tech Department of Computer Science
+BIRTRuntime.provider=Virginia Tech Computer Science
+BIRTRuntime.provider.url=http\://web-cat.cs.vt.edu/updates
+BIRTRuntime.info.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/BIRTRuntimeSubsystem
+BIRTRuntime.history.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/BIRTRuntimeSubsystem/ChangeHistory
+BIRTRuntime.license=GNU General Public License v.2
+BIRTRuntime.license.url=http\://www.gnu.org/copyleft/gpl.html
+
+BIRTRuntime.description=\
+	This subsystem contains the Eclipse BIRT (Business Intelligence and \
+	Reporting Tools) runtime that is required by the Reporter subsystem. \
+	It provides for automatic update control over this runtime and, given \
+	its size, alleviates the need to re-download the entire package when \
+	the Reporter functionality is updated.
