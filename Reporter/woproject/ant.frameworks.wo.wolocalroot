@@ -1,4 +1,5 @@
 Library/Frameworks/Ajax.framework
+Library/Frameworks/BIRTRuntime.framework
 Library/Frameworks/Core.framework
 Library/Frameworks/DBUpdateEngine.framework
 Library/Frameworks/EOJDBCPrototypes.framework

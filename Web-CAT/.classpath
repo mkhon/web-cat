@@ -16,6 +16,7 @@
 	<classpathentry kind="lib" path="/PMDForPlugins/build/PMDForPlugins.framework/Resources/Java"/>
 	<classpathentry kind="lib" path="build/Web-CAT.woa/Contents/Resources/Java" sourcepath="src"/>
 	<classpathentry kind="lib" path="/Reporter/build/Reporter.framework/Resources/Java"/>
+	<classpathentry kind="lib" path="/BIRTRuntime/build/BIRTRuntime.framework/Resources/Java"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EOJDBCPrototypes"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Admin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ANTForPlugins"/>
@@ -35,6 +36,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/WebObjectsUpdater"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WonderUpdater"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Reporter"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/BIRTRuntime"/>
 	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/Admin/ANTForPlugins/CheckstyleForPlugins/CloverForPlugins/Core/DBUpdateEngine/EOJDBCPrototypes/ERDirectToWeb/ERExtensions/ERJars/ExternalJars/Grader/JavaWOExtensions/PerlForPlugins/PMDForPlugins/WebObjectsUpdater/WonderUpdater/WOOgnl/WOUnitTest/JavaDirectToWeb/JavaDTWGeneration/JavaEOAccess/JavaEOControl/JavaEOProject/JavaFoundation/JavaWebObjects/JavaWOJSPServlet"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
