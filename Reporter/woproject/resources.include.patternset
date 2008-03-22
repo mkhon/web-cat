@@ -5,5 +5,4 @@ Properties
 **/*.api
 **/*.strings
 **/*.plist
-**/ReportEngine
 Tabs.plist

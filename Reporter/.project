@@ -3,6 +3,7 @@
 	<name>Reporter</name>
 	<comment></comment>
 	<projects>
+		<project>BIRTRuntime</project>
 		<project>Bootstrap</project>
 		<project>Core</project>
 		<project>DBUpdateEngine</project>

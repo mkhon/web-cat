@@ -10,6 +10,7 @@ import java.net.URLClassLoader;
 import java.util.Hashtable;
 import java.util.Map;
 
+import net.sf.webcat.birtruntime.BIRTRuntime;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Session;
 import net.sf.webcat.core.Subsystem;
@@ -120,7 +121,8 @@ public class Reporter extends Subsystem
                                  TabDescriptor.TAB_DEFINITIONS ) ) );
         }
 
-        initializeBIRT();
+        // Initialize the rendering methods that are available for reporting.
+        initializeRenderingMethods();
 
         // Create the queue and the queueprocessor
         reportQueue          = new ReportQueue();
@@ -161,80 +163,13 @@ public class Reporter extends Subsystem
     }
 
 
-    private void initializeBIRT()
+    private void initializeRenderingMethods()
     {
-        // Initialize the BIRT reporting engine.
-        String reportEnginePath = myResourcesDir() + "/" +
-        	REPORT_ENGINE_SUBDIR;
-
-        log.info("Using reporting engine located at " + reportEnginePath);
-
-        EngineConfig config = new EngineConfig();
-        config.setEngineHome( reportEnginePath );
-
-        DesignConfig dConfig = new DesignConfig();
-        dConfig.setBIRTHome( reportEnginePath );
-
-        // Point the OSGi platform's configuration area to the storage folder
-        // chosen by the Web-CAT admin. Otherwise, the default location is in
-        // the report engine path specified above, which could be read-only.
-    	String configArea = net.sf.webcat.core.Application
-			.configurationProperties().getProperty("grader.submissiondir") +
-			"/ReporterConfiguration";
-    	String instanceArea = net.sf.webcat.core.Application
-			.configurationProperties().getProperty("grader.submissiondir") +
-			"/ReporterWorkspace";
-
-    	// Copy the initial config area files from the ReportEngine subfolder
-    	// into the new config area if they aren't already there.
-    	File configAreaDir = new File(configArea);
-    	if(!configAreaDir.exists())
-    	{
-    		configAreaDir.mkdirs();
-
-    		File configSrcDir = new File(reportEnginePath + "/configuration");
-
-    		try
-    		{
-				net.sf.webcat.archives.FileUtilities
-					.copyDirectoryContentsIfNecessary(configSrcDir,
-							configAreaDir);
-			}
-    		catch (IOException e)
-    		{
-				log.fatal("Could not copy BIRT configuration data into " +
-						"Web-CAT storage location", e);
-			}
-    	}
-
-        Map osgiConfig = new Hashtable();
-        osgiConfig.put("osgi.configuration.area", configArea);
-        osgiConfig.put("osgi.instance.area", instanceArea);
-        config.setOSGiConfig(osgiConfig);
-        dConfig.setOSGiConfig(osgiConfig);
-
-        try
-        {
-			Platform.startup( config );
-
-        	IReportEngineFactory factory = (IReportEngineFactory) Platform
-				.createFactoryObject(
-						IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY );
-
-			reportEngine = factory.createReportEngine( config );
-
-        	IDesignEngineFactory dFactory = (IDesignEngineFactory) Platform
-			.createFactoryObject(
-					IDesignEngineFactory.EXTENSION_DESIGN_ENGINE_FACTORY );
-
-        	designEngine = dFactory.createDesignEngine( dConfig );
-        }
-        catch (Exception e)
-        {
-        	log.fatal("Error initializing BIRT reporting engine", e);
-		}
+        IReportEngine reportEngine =
+            BIRTRuntime.getInstance().getReportEngine();
 
         // Initialize the available report rendering methods.
+
         NSMutableArray methods = new NSMutableArray();
         methods.addObject(new HTMLRenderingMethod(reportEngine));
         methods.addObject(new CSVRenderingMethod(reportEngine));
@@ -255,7 +190,10 @@ public class Reporter extends Subsystem
 
     public IReportRunnable openReportTemplate(String path)
     {
-    	try
+        IReportEngine reportEngine =
+            BIRTRuntime.getInstance().getReportEngine();
+
+        try
     	{
 			return reportEngine.openReportDesign(path);
 		}
@@ -268,7 +206,10 @@ public class Reporter extends Subsystem
 
     public IReportDocument openReportDocument(String path)
     {
-    	try
+        IReportEngine reportEngine =
+            BIRTRuntime.getInstance().getReportEngine();
+
+        try
     	{
 			return reportEngine.openReportDocument(path);
 		}
@@ -281,7 +222,10 @@ public class Reporter extends Subsystem
 
     public IRunTask setupRunTaskForJob(EnqueuedReportJob job)
     {
-    	ReportTemplate template = job.reportTemplate();
+        IReportEngine reportEngine =
+            BIRTRuntime.getInstance().getReportEngine();
+
+        ReportTemplate template = job.reportTemplate();
 
     	IReportRunnable runnable = openReportTemplate(template.filePath());
     	IRunTask task = reportEngine.createRunTask(runnable);
@@ -303,13 +247,19 @@ public class Reporter extends Subsystem
     public IGetParameterDefinitionTask createGetParameterDefinitionTask(
     		IReportRunnable runnable)
     {
-    	return reportEngine.createGetParameterDefinitionTask(runnable);
+        IReportEngine reportEngine =
+            BIRTRuntime.getInstance().getReportEngine();
+
+        return reportEngine.createGetParameterDefinitionTask(runnable);
     }
 
     public IDataExtractionTask createDataExtractionTask(
     		IReportDocument document)
     {
-    	return reportEngine.createDataExtractionTask(document);
+        IReportEngine reportEngine =
+            BIRTRuntime.getInstance().getReportEngine();
+
+        return reportEngine.createDataExtractionTask(document);
     }
 
     public NSArray allRenderingMethods()
@@ -345,7 +295,10 @@ public class Reporter extends Subsystem
 
     public SessionHandle newDesignSession()
     {
-    	return designEngine.newSessionHandle(null);
+        IDesignEngine designEngine =
+            BIRTRuntime.getInstance().getDesignEngine();
+
+        return designEngine.newSessionHandle(null);
     }
 
     public boolean refreshThrottleStatus()
@@ -396,14 +349,6 @@ public class Reporter extends Subsystem
      */
     private static Reporter instance;
 
-    /**
-     * This is the sole instance of the report engine, initialized by the init
-     * method.
-     */
-    private IReportEngine reportEngine;
-
-    private IDesignEngine designEngine;
-
     private NSArray renderingMethods;
 
     /** this is the main single report queue */
@@ -415,6 +360,4 @@ public class Reporter extends Subsystem
     private int jobCountAtLastThrottleCheck;
 
     static Logger log = Logger.getLogger( Reporter.class );
-
-    static final String REPORT_ENGINE_SUBDIR = "ReportEngine";
 }
