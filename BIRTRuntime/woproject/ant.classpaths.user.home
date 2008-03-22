@@ -1,18 +1,1 @@
-/eclipse/Web-CAT/BIRTRuntime/Libraries/com.ibm.icu_3.6.1.v20070906.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/commons-cli-1.0.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/chartengineapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/scriptapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/org.w3c.css.sac_1.3.0.v200706111724.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/org.eclipse.emf.ecore_2.2.2.v200702131851.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/org.eclipse.emf.ecore.xmi_2.2.2.v200702131851.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/org.eclipse.emf.common_2.2.1.v200702131851.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/org.apache.commons.codec_1.3.0.v200706111738.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/modelapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/js.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/flute.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/engineapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/dteapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/odadesignapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/modelodaapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/dataadapterapi.jar
-/eclipse/Web-CAT/BIRTRuntime/Libraries/coreapi.jar
+An empty file result in a full filesystem scan
