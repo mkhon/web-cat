@@ -46,8 +46,9 @@
 		<wo:if condition="$isReportRendered">
 			<wo name="ReportContents"/>
 		</wo:if><wo:else>
-			<p>Web-CAT was unable to render the report. This is likely an
-			effect of the errors that are displayed above.</p>
+			<p>Web-CAT was unable to render the report.
+			<wo:if condition="$generatedReportErrors.count">This is likely an
+			effect of the errors that are displayed above.</wo:if></p>
 			<p><b>Report UUID:</b> <wo:str value="$reportUuid"/></p>
 		</wo:else>
 	</wo>
