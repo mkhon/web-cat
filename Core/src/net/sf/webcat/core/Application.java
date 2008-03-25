@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.31 2008/03/25 16:22:48 stedwar2 Exp $
+ |  $Id: Application.java,v 1.32 2008/03/25 16:47:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.31 2008/03/25 16:22:48 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.32 2008/03/25 16:47:46 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -497,39 +497,38 @@ public class Application
                 isSecure,
                 somePort
             );
-        if ( request != null )
+        log.debug( "prior to munging, dest = " + dest );
+        if ( urlHostPrefix == null )
         {
-            String host = hostName( request );
-            log.debug( "prior to munging, dest = " + dest );
-            log.debug( "host = " + host );
-            dest = dest.replaceFirst( "^http(s)?://[^/]*",
-                    "http"
-                    + ( (  ( forceSecureSetting && isSecure )
-                        || ( !forceSecureSetting && isSecure( request ) ) )
-                        ? "s" : "" )
-                    + "://" + host );
-        }
-        else
-        {
-            if ( urlHostPrefix == null )
+            String result =
+                configurationProperties().getProperty( "base.url" );
+            if ( result != null )
             {
-                String result =
-                    configurationProperties().getProperty( "base.url" );
-                if ( result != null )
+                Matcher matcher = Pattern.compile( "^http(s)?://[^/]*",
+                    Pattern.CASE_INSENSITIVE ).matcher( result );
+                if ( matcher.find() )
                 {
-                    Matcher matcher = Pattern.compile( "^http(s)?://[^/]*",
-                        Pattern.CASE_INSENSITIVE ).matcher( result );
-                    if ( matcher.find() )
-                    {
-                        urlHostPrefix = matcher.group();
-                    }
+                    urlHostPrefix = matcher.group();
                 }
             }
-            if ( urlHostPrefix != null )
+            if (urlHostPrefix == null && request != null)
             {
-                dest = dest.replaceFirst( "^http(s)?://[^/]*", urlHostPrefix );
+                urlHostPrefix = "http://" + hostName( request ) + "/";
             }
+            log.debug("urlHostPrefix = " + urlHostPrefix);
         }
+        if ( urlHostPrefix != null )
+        {
+            dest = dest.replaceFirst( "^http(s)?://[^/]*", urlHostPrefix );
+        }
+        dest = dest.replaceFirst( "^http(s)?:",
+            "http"
+            + ( (  ( forceSecureSetting && isSecure )
+                || ( !forceSecureSetting
+                     && request != null
+                     && isSecure(request) ) )
+                ? "s" : "" )
+            + ":");
         log.debug( "link = " + dest );
         return dest;
     }
