@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage4.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ |  $Id: InstallPage4.java,v 1.3 2008/03/25 16:19:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage4.java,v 1.2 2006/02/25 07:58:07 stedwar2 Exp $
+ *  @version $Id: InstallPage4.java,v 1.3 2008/03/25 16:19:05 stedwar2 Exp $
  */
 public class InstallPage4
     extends InstallPage
@@ -48,7 +48,7 @@ public class InstallPage4
     // ----------------------------------------------------------
     /**
      * Creates a new PreCheckPage object.
-     * 
+     *
      * @param context The context to use
      */
     public InstallPage4( WOContext context )
@@ -80,13 +80,13 @@ public class InstallPage4
         {
             if ( context() != null )
             {
-                configuration.setProperty( "base.url", 
+                configuration.setProperty( "base.url",
                     Application.completeURLWithRequestHandlerKey(
                         context(), null, null, null, false, 0 ) );
             }
             else
             {
-                String url = 
+                String url =
                     Application.application().servletConnectURL();
                 url = url.replaceFirst( "(//[^/]+/)/", "\\1" );
                 configuration.setProperty( "base.url", url );
@@ -122,7 +122,9 @@ public class InstallPage4
         storeFormValueToConfig( formValues, "base.url",
             "Please specify the base URL for Web-CAT." );
         storeFormValueToConfig( formValues, "login.url", null );
-        storeFormValueToConfig( formValues, "WOSMTPHost", null );
+        storeFormValueToConfig( formValues, "mail.smtp.host", null );
+        storeFormValueToConfig(
+            formValues, "mail.smtp.host", "WOSMTPHost", null );
         storeFormValueToConfig( formValues, "grader.submissiondir",
             "You must specify a storage directory." );
         storeFormValueToConfig( formValues, "grader.workarea",
