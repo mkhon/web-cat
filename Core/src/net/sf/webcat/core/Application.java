@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.30 2008/03/12 07:22:50 stedwar2 Exp $
+ |  $Id: Application.java,v 1.31 2008/03/25 16:22:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.30 2008/03/12 07:22:50 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.31 2008/03/25 16:22:48 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1464,11 +1464,14 @@ public class Application
                           e.hasMoreElements(); )
                     {
                         Object key = e.nextElement();
-                        Object value = extraInfo.objectForKey( key );
-                        errorBuffer.append( key );
-                        errorBuffer.append( "\t= " );
-                        errorBuffer.append( value );
-                        errorBuffer.append( '\n' );
+                        if (!"Session".equals(key))
+                        {
+                            Object value = extraInfo.objectForKey( key );
+                            errorBuffer.append( key );
+                            errorBuffer.append( "\t= " );
+                            errorBuffer.append( value );
+                            errorBuffer.append( '\n' );
+                        }
                     }
                 }
 
