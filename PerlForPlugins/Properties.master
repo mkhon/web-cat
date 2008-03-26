@@ -5,7 +5,7 @@ subsystem.PerlForPlugins=net.sf.webcat.perlforplugins.PerlForPlugins
 
 PerlForPlugins.version.major=1
 PerlForPlugins.version.minor=0
-PerlForPlugins.version.revision=14
+PerlForPlugins.version.revision=15
 PerlForPlugins.requires=Core
 PerlForPlugins.provides=env
 
