@@ -11,7 +11,7 @@ PeriodicUpdater: AjaxUpdateContainer {
 	decay = 1;
 }
 
-ProgressBar: net.sf.webcat.reporter.AjaxProgressBar {
+ProgressBar: net.sf.webcat.reporter.WCProgressBar {
     fractionDone = percentOfWorkDone;
     taskDescription = taskDescription;
 }

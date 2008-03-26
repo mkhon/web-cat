@@ -1,9 +1,10 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Thu Mar 06 16:54:01 EST 2008
+#Mon Mar 24 11:12:03 EDT 2008
 Reporter.provider=Virginia Tech Computer Science
-Reporter.version.major=0
+Reporter.version.major=1
 Reporter.version.revision=0
-Reporter.requires=Core, Grader
+Reporter.version.date=20080324
+Reporter.requires=BIRTRuntime, Core, Grader
 subsystem.Reporter=net.sf.webcat.reporter.Reporter
 Reporter.history.url=http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem/ChangeHistory
 Reporter.description=This subsystem provides all of Web-CAT's data reporting services.
@@ -12,5 +13,4 @@ Reporter.license.url=http\://www.gnu.org/copyleft/gpl.html
 Reporter.info.url=http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem
 Reporter.provider.url=http\://web-cat.cs.vt.edu/updates
 Reporter.license=GNU General Public License v.2
-Reporter.version.minor=1
-Reports.version.date=20080306
+Reporter.version.minor=0

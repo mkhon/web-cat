@@ -1,4 +1,4 @@
-LongResponse: net.sf.webcat.reporter.AjaxLongResponse {
+LongResponse: net.sf.webcat.reporter.ReporterLongResponse {
 	jobToken = jobToken;
 	refreshInterval = 3;
 	handler = longResponseHandler;

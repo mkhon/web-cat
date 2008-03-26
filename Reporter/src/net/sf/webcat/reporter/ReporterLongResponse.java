@@ -7,10 +7,10 @@ import com.webobjects.appserver.*;
 
 import er.extensions.ERXConstant;
 
-public class AjaxLongResponse extends WOComponent
+public class ReporterLongResponse extends WOComponent
 {
     static String WOMetaRefreshSenderId = "WOMetaRefresh";
-    static Logger log = Logger.getLogger( AjaxLongResponse.class );
+    static Logger log = Logger.getLogger( ReporterLongResponse.class );
 
     protected Number _refreshInterval;
     protected boolean _performingAction;
@@ -21,9 +21,9 @@ public class AjaxLongResponse extends WOComponent
     // ----------------------------------------------------------
     /**
      * Default constructor.
-     * @param context The page's context
+     * @param aContext The page's context
      */
-    public AjaxLongResponse(WOContext aContext)
+    public ReporterLongResponse(WOContext aContext)
     {
         super(aContext);
 
@@ -145,23 +145,5 @@ public class AjaxLongResponse extends WOComponent
     public void appendToResponse(WOResponse response, WOContext context)
     {
     	super.appendToResponse(response, context);
-    }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public Object handleQueryWithUnboundKey(String key)
-    {
-        if (net.sf.webcat.WCServletAdaptor.getInstance() == null)
-        {
-            // Not in a servlet, so it must be a regular app launch
-            return super.handleQueryWithUnboundKey(key);
-        }
-        else
-        {
-            // We're in a servlet, so swallow the error
-            log.debug("lookup of unknown key \"" + key + "\"");
-            return null;
-        }
     }
 }

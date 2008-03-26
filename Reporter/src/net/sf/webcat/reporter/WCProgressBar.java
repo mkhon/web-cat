@@ -3,7 +3,7 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.appserver.*;
 
-public class AjaxProgressBar extends WOComponent
+public class WCProgressBar extends WOComponent
 {
     //~ Constructors ..........................................................
 
@@ -12,7 +12,7 @@ public class AjaxProgressBar extends WOComponent
      * Default constructor.
      * @param context The page's context
      */
-    public AjaxProgressBar( WOContext context )
+    public WCProgressBar( WOContext context )
     {
         super( context );
     }
