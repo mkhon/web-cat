@@ -114,13 +114,17 @@ sub highlight_text
         $out .= $self->{context}->{code_parts}[0];
         }
 
+        if ($self->{context}->{inselection})
+        {
+        $out .= $self->{context}->{select_parts}[0];
+        }
         if ($self->{context}->{inbcomment})
         {
         $out .= $self->{context}->{blockcomment_parts}[0];
         }
-        elsif ($self->{context}->{inselection})
+        if ($self->{context}->{inquote})
         {
-        $out .= $self->{context}->{select_parts}[0];
+        $out .= $self->{context}->{quote_parts}[0];
         }
 
         $self->{context}->{prepro} = 0;
@@ -446,6 +450,11 @@ if ($DEBUG) { print "Munging. Got $lineout\n"; }
             }
         }
         # Close dangling tags.
+        if ($self->{context}->{inquote})
+        {
+            $lineout .= $self->{context}->{quote_parts}[1];
+        }
+
         if ($self->{context}->{incomment})
         {
             $lineout .= $self->{context}->{linecomment_parts}[1];
@@ -554,8 +563,16 @@ sub munge
             my $delim = in_array($currchar, $self->{highlightfile}->{delimiters});
             if ($delim || $i==$lngth)
             {
+                my $deliminkeyword = $delim
+                    && in_array($currchar,
+                        $self->{highlightfile}->{delimitersinkeywords});
                 if ($inword)
                 {
+                    if ($deliminkeyword)
+                    {
+                        $currword .= $currchar;
+                        $currchar = "";
+                    }
                     $inword = 0;
                     $oldword = $currword;
                     $checkword = $oldword;
@@ -582,6 +599,12 @@ sub munge
                     {
                         $strout .= $currword;
                     }
+                }
+                else
+                {
+                    $inword = 1;
+                    $currword = $currchar;
+                    $currchar = "";
                 }
                 $_ = $currchar;
                 if ($self->{output_module}->{html})

@@ -119,7 +119,11 @@ sub loadFile
     open( BEAUTIFIERFILEIN, $fileName ) or return;
     my @outstr = <BEAUTIFIERFILEIN>;
     close( BEAUTIFIERFILEIN );
-    return join( "", @outstr );
+    my $result = join( "", @outstr );
+    # Strip all NULL characters, in case this is UTF-16 or something.
+    $result =~ s/\x00//go;
+    $result =~ s/^[\xfe\xff]+//o;
+    return $result;
 }
 
 
