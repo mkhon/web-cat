@@ -32,7 +32,8 @@ sub new
     $self->{keywords}           = ();
     $self->{keypats}            = ();
     $self->{stringchars}        = ();
-    $self->{delimeters}         = ();
+    $self->{delimiters}         = ();
+    $self->{delimitersinkeywords} = ();
     $self->{escchar}            = "\\";
     $self->{perl}               = 0;
     $self->{notrim}             = 1;
