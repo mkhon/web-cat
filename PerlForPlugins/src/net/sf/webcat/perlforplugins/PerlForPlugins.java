@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PerlForPlugins.java,v 1.3 2007/12/05 19:38:14 stedwar2 Exp $
+ |  $Id: PerlForPlugins.java,v 1.4 2008/03/26 04:42:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -47,7 +47,7 @@ import net.sf.webcat.core.Subsystem;
  *  </ul>
  *
  *  @author  stedwar2
- *  @version $Id: PerlForPlugins.java,v 1.3 2007/12/05 19:38:14 stedwar2 Exp $
+ *  @version $Id: PerlForPlugins.java,v 1.4 2008/03/26 04:42:12 stedwar2 Exp $
  */
 public class PerlForPlugins
     extends Subsystem
@@ -112,14 +112,14 @@ public class PerlForPlugins
     public void addPluginPropertyBindings( NSMutableDictionary properties )
     {
         properties.takeValueForKey(
-            SUBSYSTEM_PREFIX + FILE_SEPARATOR_KEY,
-            System.getProperty( FILE_SEPARATOR_KEY ) );
+            System.getProperty( FILE_SEPARATOR_KEY ),
+            SUBSYSTEM_PREFIX + FILE_SEPARATOR_KEY );
         properties.takeValueForKey(
-            SUBSYSTEM_PREFIX + PATH_SEPARATOR_KEY,
-            System.getProperty( PATH_SEPARATOR_KEY ) );
+            System.getProperty( PATH_SEPARATOR_KEY ),
+            SUBSYSTEM_PREFIX + PATH_SEPARATOR_KEY );
         properties.takeValueForKey(
-            SUBSYSTEM_PREFIX + LINE_SEPARATOR_KEY,
-            System.getProperty( LINE_SEPARATOR_KEY ) );
+            System.getProperty( LINE_SEPARATOR_KEY ),
+            SUBSYSTEM_PREFIX + LINE_SEPARATOR_KEY );
     }
 
 
