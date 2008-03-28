@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.5 2008/03/28 03:15:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: ScoreSummaryBlock.java,v 1.4 2008/02/25 06:23:27 stedwar2 Exp $
+ *  @version $Id: ScoreSummaryBlock.java,v 1.5 2008/03/28 03:15:18 stedwar2 Exp $
  */
 public class ScoreSummaryBlock
     extends GraderComponent
@@ -83,7 +83,11 @@ public class ScoreSummaryBlock
     public boolean hasTAGrade()
     {
         return submission.assignmentOffering().assignment()
-            .submissionProfile().taPoints() > 0 || allowScoreEdit;
+            .submissionProfile().taPoints() > 0.0
+            || (result != null
+                && result.taScoreRaw() != null
+                && result.taScore() != 0.0)
+            || allowScoreEdit;
     }
 
 
