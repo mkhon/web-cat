@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickEnrolledStudentPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
+ |  $Id: PickEnrolledStudentPage.java,v 1.5 2008/03/28 03:14:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * Allow the user to select an enrolled student from the current course.
  *
  * @author Stephen Edwards
- * @version $Id: PickEnrolledStudentPage.java,v 1.4 2008/02/25 06:23:26 stedwar2 Exp $
+ * @version $Id: PickEnrolledStudentPage.java,v 1.5 2008/03/28 03:14:56 stedwar2 Exp $
  */
 public class PickEnrolledStudentPage
     extends GraderAssignmentComponent
@@ -71,6 +71,13 @@ public class PickEnrolledStudentPage
         studentDisplayGroup.setMasterObject(
             coreSelections().courseOffering() );
         super.appendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    public User localUser()
+    {
+        return user();
     }
 
 
