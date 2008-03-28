@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.6 2008/02/29 18:12:27 stedwar2 Exp $
+ |  $Id: UploadRosterPage.java,v 1.7 2008/03/28 03:12:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import net.sf.webcat.core.*;
  * This class allows a CSV file of new users to be added to a course.
  *
  * @author Stephen Edwards
- * @version $Id: UploadRosterPage.java,v 1.6 2008/02/29 18:12:27 stedwar2 Exp $
+ * @version $Id: UploadRosterPage.java,v 1.7 2008/03/28 03:12:33 stedwar2 Exp $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -105,7 +105,10 @@ public class UploadRosterPage
         {
             domain = user().authenticationDomain();
         }
-        refresh(true, false);
+        if (previewLines == null)
+        {
+            refresh(true, false);
+        }
         super.appendToResponse( response, context );
     }
 
@@ -761,7 +764,7 @@ public class UploadRosterPage
                 }
                 if (execute)
                 {
-                    applyLocalChanges();
+                    super.applyLocalChanges();
                 }
                 line = getNonBlankLine( in );
             }
