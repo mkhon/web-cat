@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.9 2008/03/18 03:21:16 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.10 2008/03/28 03:14:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.9 2008/03/18 03:21:16 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.10 2008/03/28 03:14:20 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -198,11 +198,13 @@ public class GraderComponent
                 ec.unlock();
                 Application.releasePeerEditingContext( ec );
             }
-            if ( prefs == null )
+            /*  Appears to be unnecessary ...
+            if ( newPrefs == null )
             {
                 log.error( "null prefs!", new Exception( "here" ) );
                 log.error( Application.extraInfoForContext( context() ) );
             }
+            */
             return newPrefs;
         }
     }
