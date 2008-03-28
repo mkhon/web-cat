@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.7 2008/03/28 03:16:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author Stephen Edwards
- * @version $Id: GradeStudentSubmissionPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
+ * @version $Id: GradeStudentSubmissionPage.java,v 1.7 2008/03/28 03:16:09 stedwar2 Exp $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -91,6 +91,15 @@ public class GradeStudentSubmissionPage
             throw new RuntimeException( "null submission result" );
         }
         result = prefs().submission().result();
+        if (log.isDebugEnabled())
+        {
+            log.debug( "result = " + result);
+            if (result != null)
+            {
+                log.debug( "result = " + result.hashCode());
+                log.debug( "result EC = " + result.editingContext().hashCode());
+            }
+        }
         hasFileStats = ( result.submissionFileStats().count() > 0 );
         statsDisplayGroup.setObjectArray( result.submissionFileStats() );
         showCoverageData = null;
@@ -397,9 +406,39 @@ public class GradeStudentSubmissionPage
     }
 
 
+    // ----------------------------------------------------------
+    public Boolean showAutoGradedComments()
+    {
+        if (showAutoGradedComments == null)
+        {
+            if (result.submission().assignmentOffering().assignment()
+                    .submissionProfile().toolPoints() > 0.0)
+            {
+                showAutoGradedComments = Boolean.TRUE;
+            }
+            else
+            {
+                showAutoGradedComments = Boolean.FALSE;
+                for (int i = 0; i < result.submissionFileStats().count(); i++)
+                {
+                    SubmissionFileStats thisStats = (SubmissionFileStats)
+                        result.submissionFileStats().objectAtIndex(i);
+                    if (thisStats.remarks() > 0)
+                    {
+                        showAutoGradedComments = Boolean.TRUE;
+                        break;
+                    }
+                }
+            }
+        }
+        return showAutoGradedComments;
+    }
+
+
     //~ Instance/static variables .............................................
 
     private Boolean showCoverageData;
     private String priorComments;
+    private Boolean showAutoGradedComments;
     static Logger log = Logger.getLogger( GradeStudentSubmissionPage.class );
 }

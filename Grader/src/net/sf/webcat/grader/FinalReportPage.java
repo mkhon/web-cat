@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.10 2008/02/25 06:23:26 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.11 2008/03/28 03:16:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.10 2008/02/25 06:23:26 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.11 2008/03/28 03:16:09 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -483,6 +483,35 @@ public class FinalReportPage
 
 
     // ----------------------------------------------------------
+    public Boolean showAutoGradedComments()
+    {
+        if (showAutoGradedComments == null)
+        {
+            if (submission.assignmentOffering().assignment()
+                    .submissionProfile().toolPoints() > 0.0)
+            {
+                showAutoGradedComments = Boolean.TRUE;
+            }
+            else
+            {
+                showAutoGradedComments = Boolean.FALSE;
+                for (int i = 0; i < result.submissionFileStats().count(); i++)
+                {
+                    SubmissionFileStats thisStats = (SubmissionFileStats)
+                        result.submissionFileStats().objectAtIndex(i);
+                    if (thisStats.remarks() > 0)
+                    {
+                        showAutoGradedComments = Boolean.TRUE;
+                        break;
+                    }
+                }
+            }
+        }
+        return showAutoGradedComments;
+    }
+
+
+    // ----------------------------------------------------------
     static private class JobData
     {
         public NSArray jobs;
@@ -565,6 +594,7 @@ public class FinalReportPage
     private JobData jobData;
     private int     oldQueuePos = -1;
     private Boolean showCoverageData;
+    private Boolean showAutoGradedComments;
 
     private static String blankGifUrl;
     static Logger log = Logger.getLogger( FinalReportPage.class );
