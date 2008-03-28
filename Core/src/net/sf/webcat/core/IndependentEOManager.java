@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
+ |  $Id: IndependentEOManager.java,v 1.3 2008/03/28 03:03:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.*;
  * database, separate from all the other objects related to it.
  *
  * @author stedwar2
- * @version $Id: IndependentEOManager.java,v 1.2 2008/02/25 05:36:00 stedwar2 Exp $
+ * @version $Id: IndependentEOManager.java,v 1.3 2008/03/28 03:03:15 stedwar2 Exp $
  */
 public class IndependentEOManager
     implements NSKeyValueCoding,
@@ -114,7 +114,7 @@ public class IndependentEOManager
     public Object valueForKey(String key)
     {
         Object result = snapshot.valueForKey(key);
-        if (result == NSKeyValueCoding.NullValue)
+        if (result == NullValue)
         {
             result = null;
         }
@@ -126,12 +126,17 @@ public class IndependentEOManager
     public void takeValueForKey( Object value, String key )
     {
         Object current = snapshot.valueForKey(key);
+        if (current != null && current != NullValue && current instanceof Null)
+        {
+            log.error("non-unique KVC.Null found in snapshot for key " + key);
+            log.error("snapshot = " + snapshot);
+        }
         if (attributeKeys.valueForKey(key) == null)
         {
             // Then this is a relationship, not a plain attribute
             if (value == null)
             {
-                if (current == null || current == NSKeyValueCoding.NullValue)
+                if (current == null || current == NullValue)
                 {
                     return;
                 }
@@ -172,7 +177,7 @@ public class IndependentEOManager
             }
             else
             {
-                if (current != null)
+                if (current != null && current != NullValue)
                 {
                     removeObjectFromBothSidesOfRelationshipWithKey(
                         (EORelationshipManipulation)current, key);
@@ -183,7 +188,7 @@ public class IndependentEOManager
             return;
         }
         if (current == value
-            || (value == null && current == NSKeyValueCoding.NullValue))
+            || (value == null && current == NullValue))
         {
             return;
         }
@@ -194,7 +199,7 @@ public class IndependentEOManager
             Object newValue = value;
             if (value == null)
             {
-                snapshot.takeValueForKey(NSKeyValueCoding.NullValue, key);
+                snapshot.takeValueForKey(NullValue, key);
             }
             else if (value instanceof NSArray)
             {
@@ -229,7 +234,9 @@ public class IndependentEOManager
         EORelationshipManipulation eo, String key)
     {
         Object current = snapshot.valueForKey(key);
-        if (current != null && current instanceof NSArray)
+        if (current != null
+            && current != NullValue
+            && current instanceof NSArray)
         {
             NSMutableArray currentTargets = (NSMutableArray)current;
             if (currentTargets.contains(eo))
@@ -269,7 +276,9 @@ public class IndependentEOManager
     public void addObjectToPropertyWithKey(Object eo, String key)
     {
         Object current = snapshot.valueForKey(key);
-        if (current != null && current instanceof NSArray)
+        if (current != null
+            && current != NullValue
+            && current instanceof NSArray)
         {
             NSMutableArray currentTargets = (NSMutableArray)current;
             if (currentTargets.contains(eo))
@@ -308,14 +317,16 @@ public class IndependentEOManager
         EORelationshipManipulation eo, String key)
     {
         Object current = snapshot.valueForKey(key);
-        if (current != null && current instanceof NSArray)
+        if (current != null
+            && current != NullValue
+            && current instanceof NSArray)
         {
             NSMutableArray currentTargets = (NSMutableArray)current;
             currentTargets.remove(eo);
         }
         else if (current == eo)
         {
-            snapshot.takeValueForKey(NSKeyValueCoding.NullValue, key);
+            snapshot.takeValueForKey(NullValue, key);
         }
         ecm.lock();
         try
@@ -344,14 +355,16 @@ public class IndependentEOManager
     public void removeObjectFromPropertyWithKey(Object eo, String key)
     {
         Object current = snapshot.valueForKey(key);
-        if (current != null && current instanceof NSArray)
+        if (current != null
+            && current != NullValue
+            && current instanceof NSArray)
         {
             NSMutableArray currentTargets = (NSMutableArray)current;
             currentTargets.remove(eo);
         }
         else if (current == eo)
         {
-            snapshot.takeValueForKey(NSKeyValueCoding.NullValue, key);
+            snapshot.takeValueForKey(NullValue, key);
         }
         ecm.lock();
         try
