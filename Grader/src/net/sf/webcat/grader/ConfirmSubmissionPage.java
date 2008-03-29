@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.4 2008/03/29 02:42:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @version $Id: ConfirmSubmissionPage.java,v 1.3 2008/02/25 06:23:27 stedwar2 Exp $
+ * @version $Id: ConfirmSubmissionPage.java,v 1.4 2008/03/29 02:42:21 stedwar2 Exp $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -83,7 +83,7 @@ public class ConfirmSubmissionPage
     public void appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "The submission number is "
-                   + prefs().submission().submitNumber() );
+                   + submissionInProcess().submission().submitNumber() );
         if ( !submissionInProcess().hasValidFileUpload() )
         {
             WOComponent prevPage = back();
