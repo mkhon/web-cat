@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.7 2008/03/29 02:42:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.6 2008/02/25 06:23:26 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.7 2008/03/29 02:42:44 stedwar2 Exp $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -315,13 +315,14 @@ public class UploadSubmissionPage
         }
         catch ( Exception e )
         {
-            error( e.getMessage() );
-            Application.emailExceptionToAdmins( e, arg1,
-                "In UploadSubmissionPage:takeValuesFromRequest(), a post "
-                + "request without an attached file submission was received\n."
-                + "Browser info = \n"
-                + context().request().headerForKey("user-agent")
-                );
+            // Ignore it
+//            error( e.getMessage() );
+//            Application.emailExceptionToAdmins( e, arg1,
+//                "In UploadSubmissionPage:takeValuesFromRequest(), a post "
+//                + "request without an attached file submission was received\n."
+//                + "Browser info = \n"
+//                + context().request().headerForKey("user-agent")
+//                );
         }
     }
 
