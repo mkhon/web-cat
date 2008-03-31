@@ -1,26 +1,70 @@
-/**
- *
- */
+/*==========================================================================*\
+ |  $Id: KeyPathParser.java,v 1.5 2008/03/31 18:27:11 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
+
 package net.sf.webcat.reporter.queryassistants;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-
-import net.sf.webcat.core.WCProperties;
 
 import com.webobjects.eoaccess.EOEntityClassDescription;
 import com.webobjects.eocontrol.EOClassDescription;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSTimestamp;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import net.sf.webcat.core.WCProperties;
 
+//-------------------------------------------------------------------------
+/**
+ * A KVC parser for use in queries.
+ *
+ * @author aallowat
+ * @version $Id: KeyPathParser.java,v 1.5 2008/03/31 18:27:11 stedwar2 Exp $
+ */
 public class KeyPathParser
 {
+    //~ Constructors ..........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Create an object.
+     * @param entity The entity from which the path originates
+     * @param keyPath The KVC path
+     */
 	public KeyPathParser(String entity, String keyPath)
 	{
 		this(entity, keyPath, 0);
 	}
 
+
+    // ----------------------------------------------------------
+    /**
+     * Create an object.
+     * @param entity The entity from which the path originates
+     * @param keyPath The KVC path
+     * @param skipEnd If non-zero, indicates how many of the final segments
+     * of the key path to ignore
+     */
 	public KeyPathParser(String entity, String keyPath, int skipEnd)
 	{
 		this.keyPath = keyPath;
@@ -109,6 +153,33 @@ public class KeyPathParser
 		remainingKeyPath = joinStrings(components, i);
 	}
 
+
+    //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
+    public Class<?> theClass()
+    {
+        return theClass;
+    }
+
+
+    // ----------------------------------------------------------
+    public String remainingKeyPath()
+    {
+        return remainingKeyPath;
+    }
+
+
+    // ----------------------------------------------------------
+    public String keyPath()
+    {
+        return keyPath;
+    }
+
+
+    //~ Private Methods .......................................................
+
+    // ----------------------------------------------------------
 	/* private boolean isPrimitive(Class<?> klass)
 	{
 		return(klass == String.class ||
@@ -123,6 +194,8 @@ public class KeyPathParser
 				klass == NSTimestamp.class);
 	} */
 
+
+    // ----------------------------------------------------------
 	private Class<?> classForGetter(EOClassDescription classDesc, String key)
 	{
 		Class<?> klass = null;
@@ -226,6 +299,8 @@ public class KeyPathParser
 		return null;
 	}
 
+
+    // ----------------------------------------------------------
 	private Class<?> getterHelper(Class<?> klass, String name)
 	{
 		try
@@ -239,6 +314,8 @@ public class KeyPathParser
 		}
 	}
 
+
+    // ----------------------------------------------------------
 	private Class<?> fieldHelper(Class<?> klass, String name)
 	{
 		try
@@ -252,6 +329,8 @@ public class KeyPathParser
 		}
 	}
 
+
+    // ----------------------------------------------------------
 	private String initialCap(String key)
 	{
 		if (key != null && key.length() > 0)
@@ -265,6 +344,8 @@ public class KeyPathParser
 		}
 	}
 
+
+    // ----------------------------------------------------------
 	private String[] splitKeyPath(String keypath)
 	{
 		ArrayList<String> list = new ArrayList<String>();
@@ -281,6 +362,8 @@ public class KeyPathParser
 		return list.toArray(new String[list.size()]);
 	}
 
+
+    // ----------------------------------------------------------
 	private String joinStrings(String[] parts, int start)
 	{
 		StringBuffer buffer = new StringBuffer();
@@ -299,24 +382,10 @@ public class KeyPathParser
 		return buffer.toString();
 	}
 
-	public Class<?> theClass()
-	{
-		return theClass;
-	}
 
-	public String remainingKeyPath()
-	{
-		return remainingKeyPath;
-	}
-
-	public String keyPath()
-	{
-		return keyPath;
-	}
+    //~ Instance/static variables .............................................
 
 	private String keyPath;
-
 	private String remainingKeyPath;
-
 	private Class<?> theClass;
 }
