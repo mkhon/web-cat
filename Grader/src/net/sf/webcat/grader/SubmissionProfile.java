@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.5 2007/06/03 04:25:20 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.6 2008/03/31 00:32:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.5 2007/06/03 04:25:20 stedwar2 Exp $
+ * @version $Id: SubmissionProfile.java,v 1.6 2008/03/31 00:32:34 stedwar2 Exp $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -237,14 +237,28 @@ public class SubmissionProfile
             return factor;
         }
 
-        public long unitsFromRaw( long raw )
+        public Long unitsFromRaw( Long raw )
         {
-            return raw / factor;
+            if (raw == null)
+            {
+                return raw;
+            }
+            else
+            {
+                return raw.longValue() / factor;
+            }
         }
 
-        public long rawFromUnits( long units )
+        public Long rawFromUnits( Long units )
         {
-            return units * factor;
+            if (units == null)
+            {
+                return units;
+            }
+            else
+            {
+                return units.longValue() * factor;
+            }
         }
 
         public boolean isUnitFor( long raw )
