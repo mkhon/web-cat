@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.7 2008/03/09 02:46:37 stedwar2 Exp $
+ |  $Id: PageWithNavigation.java,v 1.8 2008/03/31 01:45:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Level;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.7 2008/03/09 02:46:37 stedwar2 Exp $
+ * @version $Id: PageWithNavigation.java,v 1.8 2008/03/31 01:45:33 stedwar2 Exp $
  */
 public class PageWithNavigation
     extends BarePage
@@ -421,9 +421,10 @@ public class PageWithNavigation
     public boolean hasVisibleSecondaryTabs()
     {
         boolean result = false;
-        if ( ( (Session)session() ).user().restrictToStudentView() )
+        Session session = (Session)session();
+        if ( session.user() == null || session.user().restrictToStudentView() )
         {
-            NSArray secondaries = ( (Session)session() ).tabs.selectedChild()
+            NSArray secondaries = session.tabs.selectedChild()
                 .children();
             for ( int i = 0; i < secondaries.count(); i++ )
             {
@@ -438,7 +439,7 @@ public class PageWithNavigation
         }
         else
         {
-            result = ( (Session)session() ).tabs.selectedChild().children()
+            result = session.tabs.selectedChild().children()
                 .count() > 0;
         }
         return result;
