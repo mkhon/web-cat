@@ -1,106 +1,170 @@
+/*==========================================================================*\
+ |  $Id: ExcelRenderingMethod.java,v 1.4 2008/03/31 01:31:49 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
+
 package net.sf.webcat.reporter.internal.rendering;
 
+import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WOResponse;
+import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableDictionary;
 import java.io.IOException;
-
 import net.sf.webcat.reporter.GeneratedReport;
 import net.sf.webcat.reporter.Reporter;
 import net.sf.webcat.reporter.ReporterHTMLImageHandler;
-
 import org.eclipse.birt.report.engine.api.HTMLRenderOption;
 import org.eclipse.birt.report.engine.api.IRenderTask;
 import org.eclipse.birt.report.engine.api.IReportDocument;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.RenderOption;
 
-import com.webobjects.appserver.WOContext;
-import com.webobjects.appserver.WOResponse;
-import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableDictionary;
+//-------------------------------------------------------------------------
+/**
+ * Render method for Excel data files.
+ *
+ * @author aallowat
+ * @version $Id: ExcelRenderingMethod.java,v 1.4 2008/03/31 01:31:49 stedwar2 Exp $
+ */
+public class ExcelRenderingMethod
+    extends AbstractRenderingMethod
+{
+    //~ Constructor ...........................................................
 
-public class ExcelRenderingMethod extends AbstractRenderingMethod {
+    // ----------------------------------------------------------
+    /**
+     * Creates a new object.
+     * @param engine the reporting engine to use
+     */
+    public ExcelRenderingMethod(IReportEngine engine)
+    {
+        super(engine);
+    }
 
-	public ExcelRenderingMethod(IReportEngine engine)
-	{
-		super(engine);
-	}
 
-	public void appendContentToResponse(
+    //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
+    public void appendContentToResponse(
         GeneratedReport report, WOResponse response, WOContext context)
-	{
-		StringBuilder content = new StringBuilder();
-		NSMutableDictionary query = new NSMutableDictionary();
-		query.setObjectForKey(report.uuid(), "uuid");
+    {
+        StringBuilder content = new StringBuilder();
+        NSMutableDictionary query = new NSMutableDictionary();
+        query.setObjectForKey(report.uuid(), "uuid");
 
-		String filename = "report.xls";
+        String filename = "report.xls";
 
-		query.setObjectForKey(filename, "name");
-		query.setObjectForKey("application/msexcel", "contentType");
-		String actionUrl = context.directActionURLForActionNamed(
-				"reportResource/generic", query);
+        query.setObjectForKey(filename, "name");
+        query.setObjectForKey("application/msexcel", "contentType");
+        String actionUrl = context.directActionURLForActionNamed(
+            "reportResource/generic", query);
 
-		content.append("<a href=\"");
-		content.append(actionUrl);
-		content.append("\">");
-		content.append("Download <b>");
-		content.append(filename);
-		content.append("</b>");
-		content.append("</a><br/>");
+        content.append("<a href=\"");
+        content.append(actionUrl);
+        content.append("\">");
+        content.append("Download <b>");
+        content.append(filename);
+        content.append("</b>");
+        content.append("</a><br/>");
 
-		response.appendContentString(content.toString());
-	}
+        response.appendContentString(content.toString());
+    }
 
-	public String displayName()
-	{
-		return "Microsoft Excel";
-	}
 
-	public String methodName()
-	{
-		return "xls";
-	}
+    // ----------------------------------------------------------
+    public String displayName()
+    {
+        return "Microsoft Excel";
+    }
 
-	public Controller prepareToRender(GeneratedReport report,
-			NSDictionary options)
-	{
-    	IReportDocument document = Reporter.getInstance().openReportDocument(
-    			report.generatedReportFile());
 
-    	// String actionUrl = (String)options.objectForKey(OPTION_ACTION_URL);
+    // ----------------------------------------------------------
+    public String methodName()
+    {
+        return "xls";
+    }
 
-    	String filename = "report.xls";
 
-    	RenderOption option = new RenderOption();
-    	option.setOutputFormat("XLS");
-    	option.setOutputFileName(GeneratedReport.renderedResourcePath(
-    			report.uuid(), filename));
+    // ----------------------------------------------------------
+    public Controller prepareToRender(
+        GeneratedReport report, NSDictionary options)
+    {
+        IReportDocument document = Reporter.getInstance().openReportDocument(
+            report.generatedReportFile());
 
-    	IRenderTask task = reportEngine().createRenderTask(document);
-    	task.setRenderOption(option);
+        // String actionUrl = (String)options.objectForKey(OPTION_ACTION_URL);
 
-    	return new ExcelController(task);
-	}
+        String filename = "report.xls";
 
-	private class ExcelController implements Controller
-	{
-		private IRenderTask task;
+        RenderOption option = new RenderOption();
+        option.setOutputFormat("XLS");
+        option.setOutputFileName(GeneratedReport.renderedResourcePath(
+            report.uuid(), filename));
 
-		public ExcelController(IRenderTask task)
-		{
-			this.task = task;
-		}
+        IRenderTask task = reportEngine().createRenderTask(document);
+        task.setRenderOption(option);
 
-		public void render() throws Exception
-		{
-    		org.mozilla.javascript.Context.enter();
+        return new ExcelController(task);
+    }
+
+
+    //~ Private Methods/Classes ...............................................
+
+    // ----------------------------------------------------------
+    private static class ExcelController
+        implements Controller
+    {
+        //~ Constructor .......................................................
+
+        // ----------------------------------------------------------
+        public ExcelController(IRenderTask task)
+        {
+            this.task = task;
+        }
+
+
+        //~ Public Methods ....................................................
+
+        // ----------------------------------------------------------
+        public void render() throws Exception
+        {
+            org.mozilla.javascript.Context.enter();
             task.render();
             org.mozilla.javascript.Context.exit();
 
             task.close();
-		}
+        }
 
-		public void cancel()
-		{
-			task.cancel();
-		}
-	}
+
+        // ----------------------------------------------------------
+        public void cancel()
+        {
+            task.cancel();
+        }
+
+
+        //~ Instance/static variables .........................................
+
+        private IRenderTask task;
+    }
 }

@@ -1,3 +1,28 @@
+/*==========================================================================*\
+ |  $Id: CSVRenderingMethod.java,v 1.2 2008/03/31 01:31:49 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
+
 package net.sf.webcat.reporter.internal.rendering;
 
 import java.io.BufferedReader;
@@ -32,175 +57,231 @@ import net.sf.webcat.reporter.IRenderingMethod;
 import net.sf.webcat.reporter.Reporter;
 import net.sf.webcat.reporter.ReporterHTMLImageHandler;
 
-public class CSVRenderingMethod extends AbstractRenderingMethod
+//-------------------------------------------------------------------------
+/**
+ * Render method for CSV data files (comma-separated values).
+ *
+ * @author aallowat
+ * @version $Id: CSVRenderingMethod.java,v 1.2 2008/03/31 01:31:49 stedwar2 Exp $
+ */
+public class CSVRenderingMethod
+    extends AbstractRenderingMethod
 {
-	private static final String INDEX_FILE = ".resultSetIndex";
+    //~ Constructor ...........................................................
 
-	public CSVRenderingMethod(IReportEngine engine)
-	{
-		super(engine);
-	}
+    // ----------------------------------------------------------
+    /**
+     * Creates a new object.
+     * @param engine the reporting engine to use
+     */
+    public CSVRenderingMethod(IReportEngine engine)
+    {
+        super(engine);
+    }
 
-	public String methodName()
-	{
-		return "csv";
-	}
 
-	public String displayName()
-	{
-		return "Comma-Separated Values";
-	}
+    //~ Public Methods ........................................................
 
-	public Controller prepareToRender(GeneratedReport report,
-			NSDictionary options)
-	{
-    	IReportDocument document = Reporter.getInstance().openReportDocument(
-    			report.generatedReportFile());
-   
-    	IDataExtractionTask task =
-    		reportEngine().createDataExtractionTask(document);
-    	
-    	return new CSVController(task, report);
-	}
+    // ----------------------------------------------------------
+    public String methodName()
+    {
+        return "csv";
+    }
 
-	public void appendContentToResponse(GeneratedReport report,
-			WOResponse response, WOContext context) throws IOException
-	{
-		// The CSV renderer only renders hyperlinks to the CSV files as its
-		// content. These hyperlinks are direct actions that request the
-		// appropriate CSV file.
 
-		StringBuilder content = new StringBuilder();
-		NSMutableDictionary query = new NSMutableDictionary();
-		query.setObjectForKey(report.uuid(), "uuid");
+    // ----------------------------------------------------------
+    public String displayName()
+    {
+        return "Comma-Separated Values";
+    }
 
-		String indexPath = GeneratedReport.renderedResourcePath(
-				report.uuid(), INDEX_FILE);
-		BufferedReader reader = new BufferedReader(new FileReader(indexPath));
-		String resultSetName;
-		
-		while((resultSetName = reader.readLine()) != null)
-		{
-			query.setObjectForKey(resultSetName, "name");
-			String actionUrl = context.directActionURLForActionNamed(
-					"reportResource/csv", query);
 
-			content.append("<a href=\"");
-			content.append(actionUrl);
-			content.append("\">");
-			content.append("Download <b>");
-			content.append(resultSetName);
-			content.append(".csv");
-			content.append("</b>");
-			content.append("</a><br/>");
-		}
+    // ----------------------------------------------------------
+    public Controller prepareToRender(
+        GeneratedReport report, NSDictionary options)
+    {
+        IReportDocument document = Reporter.getInstance().openReportDocument(
+            report.generatedReportFile());
 
-		response.appendContentString(content.toString());
-		
-		reader.close();
-	}
-	
-	private class CSVController implements Controller
-	{
-		private IDataExtractionTask task;
-		private GeneratedReport report;
-		
-		public CSVController(IDataExtractionTask task, GeneratedReport report)
-		{
-			this.task = task;
-			this.report = report;
-		}
-		
-		public void render() throws Exception
-		{
-			String indexPath = GeneratedReport.renderedResourcePath(
-					report.uuid(), INDEX_FILE);
-			PrintWriter indexWriter = new PrintWriter(indexPath);
-			
-			List resultSets = task.getResultSetList();
-			for(int i = 0; i < resultSets.size(); i++)
-				renderResultSet(indexWriter, (IResultSetItem)resultSets.get(i));
+        IDataExtractionTask task =
+            reportEngine().createDataExtractionTask(document);
 
-			indexWriter.close();
-			task.close();
-		}
-		
-		private void renderResultSet(PrintWriter indexWriter,
-				IResultSetItem resultSet) throws Exception
-		{
-			String name = resultSet.getResultSetName();
-			task.selectResultSet(name);
-			IExtractionResults extraction = task.extract();
-			
-			if(extraction != null)
-			{
-				indexWriter.println(name);
+        return new CSVController(task, report);
+    }
 
-				// Create the CSV file.
-			   	String csvPath = GeneratedReport.renderedResourcePath(
-			   			report.uuid(), name + ".csv");
-				File csvFile = new File(csvPath);
-				PrintWriter writer = new PrintWriter(csvFile);
 
-				// Write the column names to the first line of the file.
-				IResultMetaData metadata = extraction.getResultMetaData();
-				int columnCount = metadata.getColumnCount();
-				writer.print('"');
-				writer.print(metadata.getColumnLabel(0));
-				writer.print('"');
-				for(int i = 1; i < columnCount; i++)
-				{
-					writer.print(",\"");
-					writer.print(metadata.getColumnLabel(i));
-					writer.print('"');
-				}
-				writer.println();
+    // ----------------------------------------------------------
+    public void appendContentToResponse(
+        GeneratedReport report, WOResponse response, WOContext context)
+        throws IOException
+    {
+        // The CSV renderer only renders hyperlinks to the CSV files as its
+        // content. These hyperlinks are direct actions that request the
+        // appropriate CSV file.
 
-				// Write the values for each row into the CSV file.
-				IDataIterator it = extraction.nextResultIterator();
-				if(it != null)
-				{
-					while(it.next())
-					{
-						writer.print(getColumnValue(it, 0));
-						
-						for(int i = 1; i < columnCount; i++)
-						{
-							writer.print(',');
-							writer.print(getColumnValue(it, i));
-						}
+        StringBuilder content = new StringBuilder();
+        NSMutableDictionary query = new NSMutableDictionary();
+        query.setObjectForKey(report.uuid(), "uuid");
 
-						writer.println();
-					}
-					
-					it.close();
-				}
-				
-				writer.close();
-				extraction.close();
-			}
-		}
-		
-		private String getColumnValue(IDataIterator it, int index)
-		{
-			String value;
-			
-			try
-			{
-				value = it.getValue(index).toString();
-				value = "\"" + value.replaceAll("\\\"", "\\\"\\\"") + "\"";
-			}
-			catch(Exception e)
-			{
-				value = "";
-			}
-			
-			return value;
-		}
+        String indexPath = GeneratedReport.renderedResourcePath(
+                report.uuid(), INDEX_FILE);
+        BufferedReader reader = new BufferedReader(new FileReader(indexPath));
+        String resultSetName;
 
-		public void cancel()
-		{
-			task.cancel();
-		}
-	}
+        while ((resultSetName = reader.readLine()) != null)
+        {
+            query.setObjectForKey(resultSetName, "name");
+            String actionUrl = context.directActionURLForActionNamed(
+                "reportResource/csv", query);
+
+            content.append("<a href=\"");
+            content.append(actionUrl);
+            content.append("\">");
+            content.append("Download <b>");
+            content.append(resultSetName);
+            content.append(".csv");
+            content.append("</b>");
+            content.append("</a><br/>");
+        }
+
+        response.appendContentString(content.toString());
+
+        reader.close();
+    }
+
+
+    //~ Private Methods/Classes ...............................................
+
+    // ----------------------------------------------------------
+    private static class CSVController
+        implements Controller
+    {
+        //~ Constructor .......................................................
+
+        // ----------------------------------------------------------
+        public CSVController(IDataExtractionTask task, GeneratedReport report)
+        {
+            this.task = task;
+            this.report = report;
+        }
+
+
+        //~ Public Methods ....................................................
+
+        // ----------------------------------------------------------
+        public void render()
+            throws Exception
+        {
+            String indexPath = GeneratedReport.renderedResourcePath(
+                    report.uuid(), INDEX_FILE);
+            PrintWriter indexWriter = new PrintWriter(indexPath);
+
+            List resultSets = task.getResultSetList();
+            for (int i = 0; i < resultSets.size(); i++)
+            {
+                renderResultSet(indexWriter, (IResultSetItem)resultSets.get(i));
+            }
+
+            indexWriter.close();
+            task.close();
+        }
+
+
+        // ----------------------------------------------------------
+        public void cancel()
+        {
+            task.cancel();
+        }
+
+
+        //~ Private Methods ...................................................
+
+        // ----------------------------------------------------------
+        private void renderResultSet(
+            PrintWriter indexWriter, IResultSetItem resultSet)
+            throws Exception
+        {
+            String name = resultSet.getResultSetName();
+            task.selectResultSet(name);
+            IExtractionResults extraction = task.extract();
+
+            if (extraction != null)
+            {
+                indexWriter.println(name);
+
+                // Create the CSV file.
+                String csvPath = GeneratedReport.renderedResourcePath(
+                        report.uuid(), name + ".csv");
+                File csvFile = new File(csvPath);
+                PrintWriter writer = new PrintWriter(csvFile);
+
+                // Write the column names to the first line of the file.
+                IResultMetaData metadata = extraction.getResultMetaData();
+                int columnCount = metadata.getColumnCount();
+                writer.print('"');
+                writer.print(metadata.getColumnLabel(0));
+                writer.print('"');
+                for (int i = 1; i < columnCount; i++)
+                {
+                    writer.print(",\"");
+                    writer.print(metadata.getColumnLabel(i));
+                    writer.print('"');
+                }
+                writer.println();
+
+                // Write the values for each row into the CSV file.
+                IDataIterator it = extraction.nextResultIterator();
+                if (it != null)
+                {
+                    while (it.next())
+                    {
+                        writer.print(getColumnValue(it, 0));
+
+                        for (int i = 1; i < columnCount; i++)
+                        {
+                            writer.print(',');
+                            writer.print(getColumnValue(it, i));
+                        }
+
+                        writer.println();
+                    }
+
+                    it.close();
+                }
+
+                writer.close();
+                extraction.close();
+            }
+        }
+
+
+        // ----------------------------------------------------------
+        private String getColumnValue(IDataIterator it, int index)
+        {
+            String value;
+
+            try
+            {
+                value = it.getValue(index).toString();
+                value = "\"" + value.replaceAll("\\\"", "\\\"\\\"") + "\"";
+            }
+            catch (Exception e)
+            {
+                value = "";
+            }
+
+            return value;
+        }
+
+
+        //~ Instance/static variables .........................................
+
+        private IDataExtractionTask task;
+        private GeneratedReport report;
+    }
+
+
+    //~ Instance/static variables .............................................
+
+    private static final String INDEX_FILE = ".resultSetIndex";
 }
