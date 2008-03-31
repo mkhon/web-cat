@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BIRTRuntime.java,v 1.1 2008/03/22 00:18:37 aallowat Exp $
+ |  $Id: BIRTRuntime.java,v 1.2 2008/03/31 00:06:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -13,7 +13,7 @@
  |  Web-CAT is distributed in the hope that it will be useful,
  |  but WITHOUT ANY WARRANTY; without even the implied warranty of
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- |  GNU General Public License for more details. 
+ |  GNU General Public License for more details.
  |
  |  You should have received a copy of the GNU General Public License
  |  along with Web-CAT; if not, write to the Free Software
@@ -51,14 +51,13 @@ import net.sf.webcat.core.Subsystem;
 
 //-------------------------------------------------------------------------
 /**
- *  This a completely empty class that simply ensures that the ExternalJars
- *  framework has a jar file created for it, and its resources end up being
- *  included as a live framework by various parts of WebObjects.
+ *  Initializes the BIRT runtime for use in report generation.
  *
- *  @author  stedwar2
- *  @version $Id: BIRTRuntime.java,v 1.1 2008/03/22 00:18:37 aallowat Exp $
+ *  @author  Anthony Allevato
+ *  @version $Id: BIRTRuntime.java,v 1.2 2008/03/31 00:06:32 stedwar2 Exp $
  */
-public class BIRTRuntime extends Subsystem
+public class BIRTRuntime
+    extends Subsystem
 {
     //~ Constructors ..........................................................
 
@@ -73,7 +72,7 @@ public class BIRTRuntime extends Subsystem
         instance = this;
     }
 
-    
+
     // ----------------------------------------------------------
     /**
      * Returns the sole instance of the BIRT runtime subsystem.
@@ -84,7 +83,9 @@ public class BIRTRuntime extends Subsystem
     {
         return instance;
     }
-    
+
+
+    //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
     /* (non-Javadoc)
@@ -97,6 +98,32 @@ public class BIRTRuntime extends Subsystem
         initializeBIRT();
     }
 
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the reference to the BIRT report engine.
+     *
+     * @return a reference to the BIRT report engine.
+     */
+    public IReportEngine getReportEngine()
+    {
+        return reportEngine;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the reference to the BIRT design engine.
+     *
+     * @return a reference to the BIRT design engine.
+     */
+    public IDesignEngine getDesignEngine()
+    {
+        return designEngine;
+    }
+
+
+    //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
     /**
@@ -180,30 +207,6 @@ public class BIRTRuntime extends Subsystem
     }
 
 
-    // ----------------------------------------------------------
-    /**
-     * Gets the reference to the BIRT report engine.
-     * 
-     * @return a reference to the BIRT report engine.
-     */
-    public IReportEngine getReportEngine()
-    {
-        return reportEngine;
-    }
-    
-
-    // ----------------------------------------------------------
-    /**
-     * Gets the reference to the BIRT design engine.
-     * 
-     * @return a reference to the BIRT design engine.
-     */
-    public IDesignEngine getDesignEngine()
-    {
-        return designEngine;
-    }
-
-    
     //~ Instance Variables ....................................................
 
     /**
@@ -223,7 +226,7 @@ public class BIRTRuntime extends Subsystem
      * information.
      */
     private IDesignEngine designEngine;
-    
+
     private static Logger log = Logger.getLogger( BIRTRuntime.class );
 
     private static final String REPORT_ENGINE_SUBDIR = "ReportEngine";
