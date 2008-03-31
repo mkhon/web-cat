@@ -39,8 +39,8 @@ import com.webobjects.eocontrol.*;
 /**
  * TODO: place a real description here.
  *
- * @author 
- * @version $Id: GeneratedReport.java,v 1.2 2007/07/26 15:22:50 aallowat Exp $
+ * @author
+ * @version $Id: GeneratedReport.java,v 1.3 2008/03/31 01:50:41 stedwar2 Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
@@ -75,15 +75,15 @@ public class GeneratedReport
         return dir.toString();
     }
 
-    
+
     public static String generatedReportFilePathForUser(User user,
     		String uuid)
     {
     	return generatedReportDirForUser(user) + "/" + uuid +
     		".rptdocument";
     }
-    
-    
+
+
     public static String renderedResourcesDir(String uuid)
     {
         StringBuffer dir = new StringBuffer( 50 );
@@ -92,7 +92,7 @@ public class GeneratedReport
         dir.append( "/RenderedReports/" );
         dir.append( uuid );
 
-        return dir.toString();    	
+        return dir.toString();
     }
 
     public static String renderedResourcePath(String uuid, String filename)
@@ -119,7 +119,7 @@ public class GeneratedReport
 			}
     	}
     }
-    
+
     public boolean isRenderedWithMethod(String method)
     {
     	File renderDir = new File(renderedResourcesDir(uuid()));
@@ -132,7 +132,7 @@ public class GeneratedReport
     			return true;
     		}
     	}
-    	
+
     	return false;
     }
 
@@ -146,33 +146,4 @@ public class GeneratedReport
     {
     	return generatedReportFilePathForUser(user(), uuid());
     }
-
-
-// If you add instance variables to store property values you
-// should add empty implementions of the Serialization methods
-// to avoid unnecessary overhead (the properties will be
-// serialized for you in the superclass).
-
-//    // ----------------------------------------------------------
-//    /**
-//     * Serialize this object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param out the stream to write to
-//     */
-//    private void writeObject( java.io.ObjectOutputStream out )
-//        throws java.io.IOException
-//    {
-//    }
-//
-//
-//    // ----------------------------------------------------------
-//    /**
-//     * Read in a serialized object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param in the stream to read from
-//     */
-//    private void readObject( java.io.ObjectInputStream in )
-//        throws java.io.IOException, java.lang.ClassNotFoundException
-//    {
-//    }
 }

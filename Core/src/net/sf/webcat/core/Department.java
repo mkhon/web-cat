@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Department.java,v 1.2 2007/06/03 04:15:22 stedwar2 Exp $
+ |  $Id: Department.java,v 1.3 2008/03/31 01:43:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -35,7 +35,7 @@ import sun.security.krb5.internal.*;
  * Represents one department within an institution.
  *
  * @author Stephen Edwards
- * @version $Id: Department.java,v 1.2 2007/06/03 04:15:22 stedwar2 Exp $
+ * @version $Id: Department.java,v 1.3 2008/03/31 01:43:12 stedwar2 Exp $
  */
 public class Department
     extends _Department
@@ -77,33 +77,4 @@ public class Department
     {
         return userPresentableDescription();
     }
-
-
-// If you add instance variables to store property values you
-// should add empty implementions of the Serialization methods
-// to avoid unnecessary overhead (the properties will be
-// serialized for you in the superclass).
-
-//    // ----------------------------------------------------------
-//    /**
-//     * Serialize this object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param out the stream to write to
-//     */
-//    private void writeObject( java.io.ObjectOutputStream out )
-//        throws java.io.IOException
-//    {
-//    }
-//
-//
-//    // ----------------------------------------------------------
-//    /**
-//     * Read in a serialized object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param in the stream to read from
-//     */
-//    private void readObject( java.io.ObjectInputStream in )
-//        throws java.io.IOException, java.lang.ClassNotFoundException
-//    {
-//    }
 }
