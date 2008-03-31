@@ -1,9 +1,29 @@
-package net.sf.webcat.reporter.actions;
+/*==========================================================================*\
+ |  $Id: contentAssist.java,v 1.3 2008/03/31 02:09:29 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
 
-import net.sf.webcat.core.Application;
-import net.sf.webcat.core.Subsystem;
-import net.sf.webcat.reporter.queryassistants.KVCAttributeFinder;
-import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
+package net.sf.webcat.reporter.actions;
 
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
@@ -18,59 +38,84 @@ import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
-
 import er.extensions.ERXDirectAction;
+import net.sf.webcat.core.Application;
+import net.sf.webcat.core.Subsystem;
+import net.sf.webcat.reporter.queryassistants.KVCAttributeFinder;
+import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
 
-public class contentAssist extends ERXDirectAction
+//-------------------------------------------------------------------------
+/**
+ * Direct action support for AJAX content assist requests for supported
+ * KVC paths.
+ *
+ * @author aallowat
+ * @version $Id: contentAssist.java,v 1.3 2008/03/31 02:09:29 stedwar2 Exp $
+ */
+public class contentAssist
+    extends ERXDirectAction
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new object.
+     * @param request The incoming request
+     */
 	public contentAssist(WORequest request)
 	{
 		super(request);
 	}
 
+
+    //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
 	public WOActionResults entityDescriptionsAction()
 	{
 		WOResponse response = new WOResponse();
 
 		NSDictionary<String, String> versions = subsystemVersions();
 
-		for(String subsystem : versions.allKeys())
+		for (String subsystem : versions.allKeys())
 		{
 			response.appendContentString("version:" + subsystem + "," +
-					versions.objectForKey(subsystem) + "\n");
+			    versions.objectForKey(subsystem) + "\n");
 		}
 
-		for(EOModel model :
+		for (EOModel model :
 			(NSArray<EOModel>)EOModelGroup.defaultGroup().models())
 		{
-			for(EOEntity entity : (NSArray<EOEntity>)model.entities())
+			for (EOEntity entity : (NSArray<EOEntity>)model.entities())
 			{
 				String className = entity.className();
 				boolean exclude = false;
 
-				for(String toExclude : ENTITIES_TO_EXCLUDE)
+				for (String toExclude : ENTITIES_TO_EXCLUDE)
 				{
-					if(toExclude.equals(className))
+					if (toExclude.equals(className))
 					{
 						exclude = true;
 						break;
 					}
 				}
 
-				if(exclude)
+				if (exclude)
+                {
 					continue;
+                }
 
 				try
 				{
 					Class<?> klass = Class.forName(className);
 
 					response.appendContentString("entity:" +
-							klass.getSimpleName() + "\n");
+					    klass.getSimpleName() + "\n");
 
 					NSArray<KVCAttributeInfo> attributes =
 						KVCAttributeFinder.attributesForClass(klass, "");
 
-					for(KVCAttributeInfo attr : attributes)
+					for (KVCAttributeInfo attr : attributes)
 					{
 						response.appendContentString("attribute:" +
 								attr.name() + "," + attr.type() + "\n");
@@ -86,16 +131,18 @@ public class contentAssist extends ERXDirectAction
 		return response;
 	}
 
+
+    // ----------------------------------------------------------
 	public WOActionResults objectDescriptionsAction()
 	{
 		WOResponse response = new WOResponse();
 
 		EOEditingContext ec = Application.newPeerEditingContext();
 
-		for(String entityName : OBJECTS_TO_DESCRIBE)
+		for (String entityName : OBJECTS_TO_DESCRIBE)
 		{
 	    	EOFetchSpecification fetchSpec = new EOFetchSpecification(
-	    			entityName, null, null);
+	    		entityName, null, null);
 	    	fetchSpec.setFetchLimit(250);
 
 	    	NSArray<EOEnterpriseObject> objects =
@@ -103,34 +150,40 @@ public class contentAssist extends ERXDirectAction
 
 	    	response.appendContentString("entity:" + entityName + "\n");
 
-	    	for(EOEnterpriseObject object : objects)
+	    	for (EOEnterpriseObject object : objects)
 	    	{
 	    		Number id = (Number)EOUtilities.primaryKeyForObject(
-	                    ec, object).objectForKey( "id" );
+	                ec, object).objectForKey( "id" );
 
 	    		response.appendContentString("object:" + id.toString() + "," +
-	    				object.toString() + "\n");
+	    			object.toString() + "\n");
 	    	}
 		}
 
 		return response;
 	}
 
+
+    // ----------------------------------------------------------
 	public WOActionResults subsystemVersionCheckAction()
 	{
 		WOResponse response = new WOResponse();
 
 		NSDictionary<String, String> versions = subsystemVersions();
 
-		for(String subsystem : versions.allKeys())
+		for (String subsystem : versions.allKeys())
 		{
 			response.appendContentString("version:" + subsystem + "," +
-					versions.objectForKey(subsystem) + "\n");
+				versions.objectForKey(subsystem) + "\n");
 		}
 
 		return response;
 	}
 
+
+    //~ Private Methods .......................................................
+
+    // ----------------------------------------------------------
 	private NSDictionary<String, String> subsystemVersions()
 	{
 		NSMutableDictionary<String, String> subsystemVersions =
@@ -140,15 +193,15 @@ public class contentAssist extends ERXDirectAction
 			((Application)Application.application()).
 			subsystemManager().subsystems();
 
-		for(Subsystem subsystem : subsystems)
+		for (Subsystem subsystem : subsystems)
 		{
-			for(String nameToCheck : SUBSYSTEMS_TO_CHECK)
+			for (String nameToCheck : SUBSYSTEMS_TO_CHECK)
 			{
-				if(nameToCheck.equals(subsystem.name()))
+				if (nameToCheck.equals(subsystem.name()))
 				{
 					subsystemVersions.setObjectForKey(
-							subsystem.descriptor().currentVersion(),
-							nameToCheck);
+						subsystem.descriptor().currentVersion(),
+						nameToCheck);
 					break;
 				}
 			}
@@ -156,6 +209,9 @@ public class contentAssist extends ERXDirectAction
 
 		return subsystemVersions;
 	}
+
+
+    //~ Instance/static variables .............................................
 
 	private static final String[] ENTITIES_TO_EXCLUDE = {
 		"CoreSelections", "ERXGenericRecord", "GraderPrefs", "LoginSession",

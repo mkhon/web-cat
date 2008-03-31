@@ -1,26 +1,29 @@
+/*==========================================================================*\
+ |  $Id: designerPreview.java,v 1.3 2008/03/31 02:09:29 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
+
 package net.sf.webcat.reporter.actions;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.StringReader;
-import java.util.Enumeration;
-
-import ognl.Node;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlException;
-import ognl.enhance.ExpressionAccessor;
-
-import net.sf.webcat.core.Application;
-import net.sf.webcat.oda.WebCATDataException;
-import net.sf.webcat.reporter.QualifierUtils;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryModel;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryUtils;
-import net.sf.webcat.reporter.queryassistants.KeyPathParser;
 
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
@@ -39,51 +42,54 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
-
 import er.extensions.ERXDirectAction;
 import er.extensions.ERXFetchSpecificationBatchIterator;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.StringReader;
+import java.util.Enumeration;
+import net.sf.webcat.core.Application;
+import net.sf.webcat.oda.WebCATDataException;
+import net.sf.webcat.reporter.QualifierUtils;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryModel;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryUtils;
+import net.sf.webcat.reporter.queryassistants.KeyPathParser;
+import ognl.Node;
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+import ognl.enhance.ExpressionAccessor;
 
-public class designerPreview extends ERXDirectAction
+//-------------------------------------------------------------------------
+/**
+ * Direct action support for preview actions in the BIRT report designer.
+ *
+ * @author aallowat
+ * @version $Id: designerPreview.java,v 1.3 2008/03/31 02:09:29 stedwar2 Exp $
+ */
+public class designerPreview
+    extends ERXDirectAction
 {
-	private static final int BATCH_SIZE = 50;
+    //~ Constructor ...........................................................
 
-	private static final String PARAM_ENTITY_TYPE = "entityType";
-
-	private static final String PARAM_EXPRESSIONS = "expressions";
-
-	private static final String PARAM_QUERY = "query";
-
-	private static final String PARAM_TIMEOUT = "timeout";
-
-	private static final String SESSION_ITERATOR =
-		"net.sf.webcat.reporter.actions.designerPreview.iterator";
-
-	private static final String SESSION_EXPRESSIONS =
-		"net.sf.webcat.reporter.actions.designerPreview.expressions";
-
-	private static final String SESSION_EXPRESSION_STRINGS =
-		"net.sf.webcat.reporter.actions.designerPreview.expressionStrings";
-
-	private static final String SESSION_OGNLCONTEXT =
-		"net.sf.webcat.reporter.actions.designerPreview.ognlContext";
-
-	private static final String SESSION_SLOW_QUALIFIER =
-		"net.sf.webcat.reporter.actions.designerPreview.slowQualifier";
-
-	private static final String SESSION_TIMEOUT =
-		"net.sf.webcat.reporter.actions.designerPreview.timeout";
-
-	private static final String SESSION_START_TIME =
-		"net.sf.webcat.reporter.actions.designerPreview.startTime";
-
-	private static final String SESSION_CANCELED =
-		"net.sf.webcat.reporter.actions.designerPreview.canceled";
-
+    // ----------------------------------------------------------
+    /**
+     * Creates a new object.
+     * @param request The incoming request
+     */
 	public designerPreview(WORequest request)
 	{
 		super(request);
 	}
 
+
+    //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
 	public WOActionResults startRetrievalAction()
 	{
 		WOResponse response = new WOResponse();
@@ -96,24 +102,24 @@ public class designerPreview extends ERXDirectAction
 		String[] expressions = expressionString.split("%===%");
 
 		int timeout = Integer.parseInt(
-				request().formValueForKey(PARAM_TIMEOUT).toString());
+			request().formValueForKey(PARAM_TIMEOUT).toString());
 
 		EOEditingContext context = Application.newPeerEditingContext();
 
 		EOQualifier fastQualifier = null;
 		EOQualifier slowQualifier = null;
 
-		if(request().formValueForKey(PARAM_QUERY) != null)
+		if (request().formValueForKey(PARAM_QUERY) != null)
 		{
 			String query = request().formValueForKey(PARAM_QUERY).toString();
 
-			if(query.length() > 0)
+			if (query.length() > 0)
 			{
 				EOQualifier fullQualifier = translateQueryToQualifier(
-						entityType, query, context);
+					entityType, query, context);
 
 				EOQualifier[] quals = QualifierUtils.partitionQualifier(
-						fullQualifier, entityType);
+					fullQualifier, entityType);
 				fastQualifier = quals[0];
 				slowQualifier = quals[1];
 			}
@@ -126,10 +132,10 @@ public class designerPreview extends ERXDirectAction
 			EOEntity rootEntity = EOUtilities.entityNamed(context, entityType);
 
 			EOFetchSpecification spec = new EOFetchSpecification(
-					entityType, fastQualifier, null);
+				entityType, fastQualifier, null);
 
 			ExpressionAccessor[] compiled = compileAndPrefetchExpressions(
-						ognlContext, expressions, rootEntity, spec);
+				ognlContext, expressions, rootEntity, spec);
 
 			ERXFetchSpecificationBatchIterator iterator =
 				new ERXFetchSpecificationBatchIterator(spec, context);
@@ -142,13 +148,17 @@ public class designerPreview extends ERXDirectAction
 			session.setObjectForKey(timeout, SESSION_TIMEOUT);
 			session.setObjectForKey(Boolean.FALSE, SESSION_CANCELED);
 
-			if(slowQualifier == null)
+			if (slowQualifier == null)
+            {
 				session.removeObjectForKey(SESSION_SLOW_QUALIFIER);
+            }
 			else
+            {
 				session.setObjectForKey(slowQualifier, SESSION_SLOW_QUALIFIER);
+            }
 
 			session.setObjectForKey(System.currentTimeMillis(),
-					SESSION_START_TIME);
+				SESSION_START_TIME);
 
 			// A successful response to this action contains the session ID to
 			// use to continue batching from this request.
@@ -156,7 +166,7 @@ public class designerPreview extends ERXDirectAction
 			response.appendContentString(session.sessionID());
 			response.appendContentCharacter('\n');
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			// Send any exception back as the response so that the report
 			// designer can report the error to the user.
@@ -167,6 +177,7 @@ public class designerPreview extends ERXDirectAction
 	}
 
 
+    // ----------------------------------------------------------
 	public WOActionResults retrieveNextBatchAction()
 	{
 		WOResponse response = new WOResponse();
@@ -178,18 +189,19 @@ public class designerPreview extends ERXDirectAction
 
 			ERXFetchSpecificationBatchIterator iterator =
 				(ERXFetchSpecificationBatchIterator)session().objectForKey(
-						SESSION_ITERATOR);
+					SESSION_ITERATOR);
 
 			long startTime = (Long)session().objectForKey(SESSION_START_TIME);
-			int timeout =
-				(Integer)session().objectForKey(SESSION_TIMEOUT);
+			int timeout = (Integer)session().objectForKey(SESSION_TIMEOUT);
 			long endTime = startTime + (timeout * 1000);
 
 			int count = 0;
 			boolean isTimedOut = (System.currentTimeMillis() > endTime);
 
-			while(count < BATCH_SIZE && iterator.hasNextBatch() &&
-					!isCanceledInSession() && !isTimedOut)
+			while (count < BATCH_SIZE
+                   && iterator.hasNextBatch()
+                   && !isCanceledInSession()
+                   && !isTimedOut)
 			{
 				int recordsRetrieved = serializeNextBatch(iterator, oos,
 						endTime);
@@ -207,7 +219,7 @@ public class designerPreview extends ERXDirectAction
 			NSData data = new NSData(baos.toByteArray());
 			response.appendContentData(data);
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			response = errorResponse(e);
 		}
@@ -215,12 +227,18 @@ public class designerPreview extends ERXDirectAction
 		return response;
 	}
 
+
+    // ----------------------------------------------------------
 	public WOActionResults cancelRetrievalAction()
 	{
 		setCanceledInSession();
 		return new WOResponse();
 	}
 
+
+    //~ Private Methods .......................................................
+
+    // ----------------------------------------------------------
 	private static WOResponse errorResponse(Exception e)
 	{
 		WOResponse response = new WOResponse();
@@ -231,28 +249,32 @@ public class designerPreview extends ERXDirectAction
 		return response;
 	}
 
+    // ----------------------------------------------------------
 	private boolean isCanceledInSession()
 	{
-		synchronized(designerPreview.class)
+		synchronized (designerPreview.class)
 		{
 			return (Boolean)session().objectForKey(SESSION_CANCELED);
 		}
 	}
 
+    // ----------------------------------------------------------
 	private void setCanceledInSession()
 	{
 		System.out.println("setting canceled");
-		synchronized(designerPreview.class)
+		synchronized (designerPreview.class)
 		{
 			System.out.println("inside sync block");
 			session().setObjectForKey(Boolean.TRUE, SESSION_CANCELED);
 		}
 	}
 
+    // ----------------------------------------------------------
 	private int serializeNextBatch(
-			ERXFetchSpecificationBatchIterator iterator, ObjectOutputStream oos,
-			long endTime)
-	throws IOException
+	    ERXFetchSpecificationBatchIterator iterator,
+	    ObjectOutputStream oos,
+	    long endTime)
+	    throws IOException
 	{
 		WOSession session = session();
 
@@ -273,24 +295,24 @@ public class designerPreview extends ERXDirectAction
 				(EOQualifier)session.objectForKey(SESSION_SLOW_QUALIFIER);
 
 			NSArray batch = EOQualifier.filteredArrayWithQualifier(
-					iterator.nextBatch(), slowQualifier);
+				iterator.nextBatch(), slowQualifier);
 
 			boolean isTimedOut = (System.currentTimeMillis() > endTime);
 
 			Enumeration<?> e = batch.objectEnumerator();
-			while(e.hasMoreElements() && !isTimedOut)
+			while (e.hasMoreElements() && !isTimedOut)
 			{
 				// Write the next-object-exists marker.
 				oos.writeBoolean(true);
 
 				EOGenericRecord eo = (EOGenericRecord)e.nextElement();
 
-				for(int i = 0; i < expressions.length; i++)
+				for (int i = 0; i < expressions.length; i++)
 				{
 					Object value = getValueOfExpression(expressions[i],
-							ognlContext, eo, expressionStrings[i]);
+						ognlContext, eo, expressionStrings[i]);
 
-					if(value instanceof NSTimestamp)
+					if (value instanceof NSTimestamp)
 					{
 						// We don't want to send an NSTimestamp back to the
 						// report designer because the report designer
@@ -325,9 +347,12 @@ public class designerPreview extends ERXDirectAction
 		return recordsRetrieved;
 	}
 
+    // ----------------------------------------------------------
 	private ExpressionAccessor[] compileAndPrefetchExpressions(
-			OgnlContext ognlContext, String[] expressions,
-			EOEntity rootEntity, EOFetchSpecification spec)
+			OgnlContext ognlContext,
+            String[] expressions,
+			EOEntity rootEntity,
+            EOFetchSpecification spec)
 	{
 		ExpressionAccessor[] compiled =
 			new ExpressionAccessor[expressions.length];
@@ -336,7 +361,7 @@ public class designerPreview extends ERXDirectAction
 		ognlContext = new OgnlContext();
 
 		int i = 0;
-		for(String expression : expressions)
+		for (String expression : expressions)
 		{
 			// We only bother prefetching relationships out of the expression
 			// if some arbitrary prefix of the expression is a keypath and not
@@ -351,12 +376,12 @@ public class designerPreview extends ERXDirectAction
 
 			String[] parts = expression.split("\\.");
 			String partsSoFar = "";
-			for(String part : parts)
+			for (String part : parts)
 			{
 				partsSoFar += part;
 
 				EORelationship relationship = entity.relationshipNamed(part);
-				if(relationship != null)
+				if (relationship != null)
 				{
 					entity = relationship.destinationEntity();
 					prefetchedRelationships.addObject(partsSoFar);
@@ -381,7 +406,7 @@ public class designerPreview extends ERXDirectAction
 				node = Ognl.compileExpression(ognlContext, null, expression);
 				compiled[i] = node.getAccessor();
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				throw new IllegalArgumentException(e);
 			}
@@ -394,9 +419,12 @@ public class designerPreview extends ERXDirectAction
 		return compiled;
 	}
 
-	private Object getValueOfExpression(ExpressionAccessor accessor,
-			OgnlContext ognlContext, EOGenericRecord object,
-			String expressionString)
+    // ----------------------------------------------------------
+	private Object getValueOfExpression(
+        ExpressionAccessor accessor,
+        OgnlContext        ognlContext,
+        EOGenericRecord    object,
+        String             expressionString)
 	{
 		Object result = null;
 
@@ -404,20 +432,22 @@ public class designerPreview extends ERXDirectAction
 		{
 			result = accessor.get(ognlContext, object);
 		}
-		catch(NSKeyValueCoding.UnknownKeyException e)
+		catch (NSKeyValueCoding.UnknownKeyException e)
 		{
 			// Translate the expression into something a little easier for the
 			// user to read.
 			String msg = String.format(
-					"In the expression (%s), the key \"%s\" is not recognized " +
-					"by the source object (which is of type \"%s\")",
-					expressionString, e.key(), e.object().getClass().getName());
+				"In the expression (%s), the key \"%s\" is not recognized "
+                + "by the source object (which is of type \"%s\")",
+                expressionString,
+                e.key(),
+                e.object().getClass().getName());
 
 			throw new IllegalArgumentException(msg);
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
-			if(e instanceof OgnlException)
+			if (e instanceof OgnlException)
 			{
 				return null;
 			}
@@ -430,8 +460,8 @@ public class designerPreview extends ERXDirectAction
 		return result;
 	}
 
-	private EOQualifier translateQueryToQualifier(String entityType,
-			String query, EOEditingContext ec)
+	private EOQualifier translateQueryToQualifier(
+        String entityType, String query, EOEditingContext ec)
 	{
 		AdvancedQueryModel model = new AdvancedQueryModel();
 
@@ -443,7 +473,7 @@ public class designerPreview extends ERXDirectAction
 			NSMutableArray<AdvancedQueryCriterion> criteria =
 				new NSMutableArray<AdvancedQueryCriterion>();
 
-			while((line = reader.readLine()) != null)
+			while ((line = reader.readLine()) != null)
 			{
 				String keypath = line;
 				String comparisonString = reader.readLine();
@@ -466,14 +496,14 @@ public class designerPreview extends ERXDirectAction
 						entityType, keypath);
 				Object value = null;
 
-				if(comparison == AdvancedQueryComparison.IS_BETWEEN ||
-						comparison == AdvancedQueryComparison.IS_NOT_BETWEEN)
+				if (comparison == AdvancedQueryComparison.IS_BETWEEN
+                    || comparison == AdvancedQueryComparison.IS_NOT_BETWEEN)
 				{
 					value = AdvancedQueryUtils.
 						valueRangeForPreviewRepresentation(
 							type, valueRepresentation, ec);
 				}
-				else if(comparison.doesSupportMultipleValues())
+				else if (comparison.doesSupportMultipleValues())
 				{
 					value = AdvancedQueryUtils.
 						multipleValuesForPreviewRepresentation(
@@ -494,9 +524,46 @@ public class designerPreview extends ERXDirectAction
 			model.setCriteria(criteria);
 			return model.qualifierFromValues();
 		}
-		catch(IOException e)
+		catch (IOException e)
 		{
 			return null;
 		}
 	}
+
+
+    //~ Instance/static variables .............................................
+
+    private static final int BATCH_SIZE = 50;
+
+    private static final String PARAM_ENTITY_TYPE = "entityType";
+
+    private static final String PARAM_EXPRESSIONS = "expressions";
+
+    private static final String PARAM_QUERY = "query";
+
+    private static final String PARAM_TIMEOUT = "timeout";
+
+    private static final String SESSION_ITERATOR =
+        "net.sf.webcat.reporter.actions.designerPreview.iterator";
+
+    private static final String SESSION_EXPRESSIONS =
+        "net.sf.webcat.reporter.actions.designerPreview.expressions";
+
+    private static final String SESSION_EXPRESSION_STRINGS =
+        "net.sf.webcat.reporter.actions.designerPreview.expressionStrings";
+
+    private static final String SESSION_OGNLCONTEXT =
+        "net.sf.webcat.reporter.actions.designerPreview.ognlContext";
+
+    private static final String SESSION_SLOW_QUALIFIER =
+        "net.sf.webcat.reporter.actions.designerPreview.slowQualifier";
+
+    private static final String SESSION_TIMEOUT =
+        "net.sf.webcat.reporter.actions.designerPreview.timeout";
+
+    private static final String SESSION_START_TIME =
+        "net.sf.webcat.reporter.actions.designerPreview.startTime";
+
+    private static final String SESSION_CANCELED =
+        "net.sf.webcat.reporter.actions.designerPreview.canceled";
 }
