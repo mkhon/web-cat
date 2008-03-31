@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.3 2008/03/31 02:09:29 stedwar2 Exp $
+ |  $Id: designerPreview.java,v 1.4 2008/03/31 02:12:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -69,7 +69,7 @@ import ognl.enhance.ExpressionAccessor;
  * Direct action support for preview actions in the BIRT report designer.
  *
  * @author aallowat
- * @version $Id: designerPreview.java,v 1.3 2008/03/31 02:09:29 stedwar2 Exp $
+ * @version $Id: designerPreview.java,v 1.4 2008/03/31 02:12:27 stedwar2 Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -280,66 +280,66 @@ public class designerPreview
 
 		int recordsRetrieved = 0;
 
-		if (iterator.hasNextBatch())
-		{
-			OgnlContext ognlContext =
-				(OgnlContext)session.objectForKey(SESSION_OGNLCONTEXT);
+        if (iterator != null)
+        {
+    		if (iterator.hasNextBatch())
+    		{
+    			OgnlContext ognlContext =
+    				(OgnlContext)session.objectForKey(SESSION_OGNLCONTEXT);
 
-			ExpressionAccessor[] expressions =
-				(ExpressionAccessor[])session.objectForKey(SESSION_EXPRESSIONS);
+    			ExpressionAccessor[] expressions = (ExpressionAccessor[])
+                    session.objectForKey(SESSION_EXPRESSIONS);
 
-			String[] expressionStrings =
-				(String[])session.objectForKey(SESSION_EXPRESSION_STRINGS);
+    			String[] expressionStrings =
+    				(String[])session.objectForKey(SESSION_EXPRESSION_STRINGS);
 
-			EOQualifier slowQualifier =
-				(EOQualifier)session.objectForKey(SESSION_SLOW_QUALIFIER);
+    			EOQualifier slowQualifier =
+    				(EOQualifier)session.objectForKey(SESSION_SLOW_QUALIFIER);
 
-			NSArray batch = EOQualifier.filteredArrayWithQualifier(
-				iterator.nextBatch(), slowQualifier);
+    			NSArray batch = EOQualifier.filteredArrayWithQualifier(
+    				iterator.nextBatch(), slowQualifier);
 
-			boolean isTimedOut = (System.currentTimeMillis() > endTime);
+    			boolean isTimedOut = (System.currentTimeMillis() > endTime);
 
-			Enumeration<?> e = batch.objectEnumerator();
-			while (e.hasMoreElements() && !isTimedOut)
-			{
-				// Write the next-object-exists marker.
-				oos.writeBoolean(true);
+    			Enumeration<?> e = batch.objectEnumerator();
+    			while (e.hasMoreElements() && !isTimedOut)
+    			{
+    				// Write the next-object-exists marker.
+    				oos.writeBoolean(true);
 
-				EOGenericRecord eo = (EOGenericRecord)e.nextElement();
+    				EOGenericRecord eo = (EOGenericRecord)e.nextElement();
 
-				for (int i = 0; i < expressions.length; i++)
-				{
-					Object value = getValueOfExpression(expressions[i],
-						ognlContext, eo, expressionStrings[i]);
+    				for (int i = 0; i < expressions.length; i++)
+    				{
+    					Object value = getValueOfExpression(expressions[i],
+    						ognlContext, eo, expressionStrings[i]);
 
-					if (value instanceof NSTimestamp)
-					{
-						// We don't want to send an NSTimestamp back to the
-						// report designer because the report designer
-						// doesn't have access to WebObjects classes. So,
-						// we create a java.sql.Timestamp from its value
-						// instead.
+    					if (value instanceof NSTimestamp)
+    					{
+    						// We don't want to send an NSTimestamp back to the
+    						// report designer because the report designer
+    						// doesn't have access to WebObjects classes. So,
+    						// we create a java.sql.Timestamp from its value
+    						// instead.
 
-						NSTimestamp timestamp = (NSTimestamp)value;
-						long time = timestamp.getTime();
-						java.sql.Timestamp sqlTime =
-							new java.sql.Timestamp(time);
-						value = sqlTime;
-					}
+    						NSTimestamp timestamp = (NSTimestamp)value;
+    						long time = timestamp.getTime();
+    						java.sql.Timestamp sqlTime =
+    							new java.sql.Timestamp(time);
+    						value = sqlTime;
+    					}
 
-					oos.writeObject(value);
-				}
+    					oos.writeObject(value);
+    				}
 
-				recordsRetrieved++;
+    				recordsRetrieved++;
 
-				isTimedOut = (System.currentTimeMillis() > endTime);
-			}
-		}
+    				isTimedOut = (System.currentTimeMillis() > endTime);
+    			}
+    		}
 
-		// Recycle the editing context after we've processed this batch to
-		// flush out all of the current objects.
-		if (iterator != null)
-		{
+    		// Recycle the editing context after we've processed this batch to
+    		// flush out all of the current objects.
 			Application.releasePeerEditingContext(iterator.editingContext());
 			iterator.setEditingContext(Application.newPeerEditingContext());
 		}
