@@ -502,7 +502,8 @@ public abstract class AdvancedQueryComparison
 	    	}
 
 	    	criterion.setKeyPath(bq.key());
-	    	criterion.setComparandType(AdvancedQueryCriterion.COMPARAND_LITERAL);
+	    	criterion.setComparandType(
+                AdvancedQueryCriterion.COMPARAND_LITERAL);
 
     		if(bq.minimumValue() != null || bq.maximumValue() != null)
     		{
