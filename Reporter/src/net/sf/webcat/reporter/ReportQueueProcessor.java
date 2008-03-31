@@ -50,7 +50,7 @@ public class ReportQueueProcessor extends Thread
     // ----------------------------------------------------------
     /**
      * Default constructor
-     * 
+     *
      * @param queue the queue to operate on
      */
     public ReportQueueProcessor( ReportQueue queue )
@@ -104,7 +104,7 @@ public class ReportQueueProcessor extends Thread
                 }
                 editingContext = Application.newPeerEditingContext();
                 editingContext.lock();
-                
+
                 // Clear discarded jobs
                 NSArray jobList = null;
                 try
@@ -120,7 +120,7 @@ public class ReportQueueProcessor extends Thread
                                     fetchDiscardedJobs
                             );
                 }
-                
+
                 if ( jobList != null )
                 {
                     // delete all the discarded jobs
@@ -244,11 +244,11 @@ public class ReportQueueProcessor extends Thread
 								{
 									log.info( "re-rendering already generated report with uuid " +
 											uuid);
-									
+
 									ProgressManager.getInstance().beginTaskForJob(
 											job.uuid(), 1, "Rendering report");
 								}
-								
+
                                 processReportJobWithProtection( job );
 
                                 ProgressManager.getInstance().forceJobComplete(job.uuid());
@@ -275,10 +275,10 @@ public class ReportQueueProcessor extends Thread
                             // of a fault, so save any changes before
                             // forcing it out of editing context cache
                             editingContext.saveChanges();
-                            
+
                             if(reportTemplate != null)
                             {
-	                            editingContext.refaultObject( 
+	                            editingContext.refaultObject(
 	                                reportTemplate,
 	                                editingContext.globalIDForObject(
 	                                    reportTemplate ),
@@ -321,16 +321,16 @@ public class ReportQueueProcessor extends Thread
  		{
  			dataSetRefs += dataSet.referenceCount();
  		}
-    	
+
  		return dataSetRefs;
     }
-    
+
     // ----------------------------------------------------------
     /**
      * This function processes the job and performs the stages that
      * are necessary.  It guards against any exceptions while
      * processing the job.
-     * 
+     *
      * @param job the job to process
      */
     private void processReportJobWithProtection( EnqueuedReportJob job )
@@ -353,7 +353,7 @@ public class ReportQueueProcessor extends Thread
     /**
      * This function processes the job and performs the stages that
      * are necessary.
-     * 
+     *
      * @param job the job to process
      */
     private void processReportJob( EnqueuedReportJob job )
@@ -394,7 +394,7 @@ public class ReportQueueProcessor extends Thread
 	        	for(Exception ex : e.errors())
 	        		exceptions.addObject(ex);
 	        }
-	
+
 	        if ( wasCanceled )
 	        {
 	            return;
@@ -404,14 +404,14 @@ public class ReportQueueProcessor extends Thread
 
 	        report = new GeneratedReport();
 	        editingContext.insertObject(report);
-	        
+
 	        report.setGeneratedTime(job.queueTime());
 	        report.setUuid(job.uuid());
 	        report.setDescription(job.description());
 	        report.setUserRelationship(job.user());
 	        report.setReportTemplateRelationship(job.reportTemplate());
 	        report.setErrors(errors);
-	        
+
 	        editingContext.saveChanges();
 
 	        // Associate the data set queries with the generated report now
@@ -422,7 +422,7 @@ public class ReportQueueProcessor extends Thread
 	        NSMutableArray<ReportDataSetQuery> dsqCopy =
 	        	new NSMutableArray<ReportDataSetQuery>();
 	        NSArray<ReportDataSetQuery> dataSetQueries = job.dataSetQueries();
-	        
+
 	        for(ReportDataSetQuery dataSetQuery : dataSetQueries)
 	        {
 	        	dsqCopy.addObject(dataSetQuery);
@@ -452,7 +452,7 @@ public class ReportQueueProcessor extends Thread
 	                            null );
 	            return;
 	        }
-	
+
 	        // Render the report.
 	        try
 	        {
@@ -464,7 +464,7 @@ public class ReportQueueProcessor extends Thread
 //	        			"while generating report", e, null );
 //	        	return;
 	        }
-	
+
 	        if ( wasCanceled )
 	        {
 	            return;
@@ -482,7 +482,7 @@ public class ReportQueueProcessor extends Thread
     		return new MutableArray();
 
     	MutableArray array = new MutableArray();
-    	
+
     	for(Exception e : exceptions)
     	{
     		MutableDictionary errorInfo = new MutableDictionary();
@@ -525,19 +525,19 @@ public class ReportQueueProcessor extends Thread
     	{
     		log.warn("cancelJobWithUuid: more than one job with same uuid!");
     	}
-    	
+
     	if(jobs.count() > 0)
     	{
     		EnqueuedReportJob job = (EnqueuedReportJob)jobs.objectAtIndex(0);
     		job.setDiscarded(true);
     		context.saveChanges();
-    		
+
     		if(currentlyRunningThread != null &&
     				currentlyRunningThread.jobUuid().equals(uuid))
     		{
     			currentlyRunningThread.interrupt();
     		}
-    		
+
     		// If a report document got generated, delete it.
     		NSArray reports = GeneratedReport.objectsForUuid(context, uuid);
     		if(reports.count() > 0)
@@ -561,15 +561,15 @@ public class ReportQueueProcessor extends Thread
     		return null;
     }
 
-	
+
 	private boolean generateReportDocument( EnqueuedReportJob job )
 	throws ReportGenerationException
 	{
 		EOGlobalID jobId = editingContext.globalIDForObject(job);
-		
+
 		GenerateReportThread exeThread = new GenerateReportThread(
         		job.uuid(), jobId );
-		
+
 		try
 		{
 			currentlyRunningThread = exeThread;
@@ -579,26 +579,27 @@ public class ReportQueueProcessor extends Thread
 		}
 		catch ( InterruptedException e )
 		{
+            // Nothing to do
 		}
-		
+
 		if(exeThread.generationErrors() != null)
 		{
 			throw new ReportGenerationException(exeThread.generationErrors());
 		}
-		
+
 		return exeThread.wasCanceled;
 	}
 
-	
+
 	private class ReportGenerationException extends Exception
 	{
 		private List<Exception> errors;
-		
+
 		public ReportGenerationException(List<Exception> errors)
 		{
 			this.errors = errors;
 		}
-		
+
 		public List<Exception> errors()
 		{
 			return errors;
@@ -607,7 +608,7 @@ public class ReportQueueProcessor extends Thread
 		public String toString()
 		{
 			StringBuilder message = new StringBuilder();
-			
+
 			for(int i = 0; i < errors.size(); i++)
 			{
 				message.append("Error ");
@@ -616,7 +617,7 @@ public class ReportQueueProcessor extends Thread
 				message.append(((Throwable)errors.get(i)).getCause().toString());
 				message.append("\n\n");
 			}
-			
+
 			return message.toString();
 		}
 	}
@@ -629,7 +630,7 @@ public class ReportQueueProcessor extends Thread
 
 		RenderReportThread exeThread = new RenderReportThread(
         		job.uuid(), jobId, reportId );
-		
+
 		try
 		{
 			currentlyRunningThread = exeThread;
@@ -639,13 +640,14 @@ public class ReportQueueProcessor extends Thread
 		}
 		catch ( InterruptedException e )
 		{
+		    // Nothing to do
 		}
-		
+
 		if ( exeThread.exception != null )
 		{
 			throw exeThread.exception;
 		}
-		
+
 		return exeThread.wasCanceled;
 	}
 
@@ -655,7 +657,7 @@ public class ReportQueueProcessor extends Thread
 		{
 			jobUuid = uuid;
 		}
-		
+
 		public String jobUuid()
 		{
 			return jobUuid;
@@ -671,7 +673,7 @@ public class ReportQueueProcessor extends Thread
 	        super(uuid);
 	        jobId = id;
 	    }
-	
+
 	    public void run()
 	    {
         	EOEditingContext context = Application.newPeerEditingContext();
@@ -680,7 +682,7 @@ public class ReportQueueProcessor extends Thread
         		(EnqueuedReportJob)context.faultForGlobalID(jobId, context);
 
         	String reportPath = GeneratedReport.generatedReportFilePathForUser(
-        			job.user(), job.uuid()); 
+        			job.user(), job.uuid());
 
         	org.mozilla.javascript.Context.enter();
 
@@ -688,13 +690,13 @@ public class ReportQueueProcessor extends Thread
 	        {
 	        	runTask = Reporter.getInstance().setupRunTaskForJob(job);
 	        	runTask.setErrorHandlingOption(IEngineTask.CANCEL_ON_ERROR);
-	        	
+
         		runTask.run(reportPath);
-	            
+
 	            generationErrors = runTask.getErrors();
 	            if(generationErrors.isEmpty())
 	            	generationErrors = null;
-	            
+
 	            runTask.close();
 	            runTask = null;
 
@@ -726,10 +728,10 @@ public class ReportQueueProcessor extends Thread
 	    	{
 	    		runTask.cancel();
 	    		wasCanceled = true;
-	    		
+
 	    		log.info("Reporter job with uuid " + jobUuid() + " canceled during generation stage");
 	    	}
-	    	
+
 	    	super.interrupt();
 	    }
 
@@ -804,7 +806,7 @@ public class ReportQueueProcessor extends Thread
 
 	    		log.info("Reporter job with uuid " + jobUuid() + " canceled during rendering stage");
 	    	}
-	    	
+
 	    	super.interrupt();
 	    }
 
@@ -815,18 +817,17 @@ public class ReportQueueProcessor extends Thread
         public  Exception exception = null;
     }
 
-    
+
 	// ----------------------------------------------------------
     /**
      * Creates and cleans the working directory, if necessary, fills
      * it with the student's submission, and creates the reporting
      * directory.
-     * 
+     *
      * @param job the job to operate on
      * @throws Exception if it occurs during this stage
      */
     private void prepareReportOutputDirectory( EnqueuedReportJob job )
-        throws java.io.IOException
     {
         // Create the working compilation directory for the user
         File workingDir = new File( job.generatedReportDir() );
@@ -838,12 +839,11 @@ public class ReportQueueProcessor extends Thread
 
 
     private void prepareRenderOutputDirectory( EnqueuedReportJob job )
-	    throws java.io.IOException
 	{
 	    // Create the working compilation directory for the user
 	    File workingDir = new File(
 	    		GeneratedReport.renderedResourcesDir(job.uuid()));
-	    
+
 	    if(workingDir.exists())
 	    {
 	    	FileUtilities.deleteDirectory(workingDir);
@@ -856,7 +856,7 @@ public class ReportQueueProcessor extends Thread
     /**
      * Handles a technical fault Suspends grading of other submissions for the
      * same assignment
-     * 
+     *
      * @param job the job which faulted
      */
     void technicalFault( EnqueuedReportJob job,
@@ -912,7 +912,7 @@ public class ReportQueueProcessor extends Thread
     // ----------------------------------------------------------
     /**
      * Find out how many grading jobs have been processed so far.
-     * 
+     *
      * @return the number of jobs process so far
      */
     public int processedJobCount()
@@ -924,7 +924,7 @@ public class ReportQueueProcessor extends Thread
     // ----------------------------------------------------------
     /**
      * Find out the processing delay for the most recently completed job.
-     * 
+     *
      * @return the time in milliseconds
      */
     public long mostRecentJobWait()
@@ -936,7 +936,7 @@ public class ReportQueueProcessor extends Thread
     // ----------------------------------------------------------
     /**
      * Find out the estimated processing delay for any job.
-     * 
+     *
      * @return the time in milliseconds
      */
     public long estimatedJobTime()
@@ -960,7 +960,7 @@ public class ReportQueueProcessor extends Thread
     			return true;
     		}
     	}
-    	
+
     	return false;
     }
 
@@ -987,7 +987,7 @@ public class ReportQueueProcessor extends Thread
     /** Number of jobs processed so far, to report administrative status. */
     private int  jobCount = 0;
     private int  jobsCountedWithWaits = 0;
-    
+
     /** Time between submission and grading completion for more recent job. */
     private long mostRecentJobWait = 0;
     private long totalWaitForJobs = 0;
@@ -999,7 +999,7 @@ public class ReportQueueProcessor extends Thread
 
     // State for the current step being executed
 //    private boolean timeoutOccurredInStep;
-    
+
     private EOEditingContext editingContext;
 
     private ReportQueueProcessorThread currentlyRunningThread;

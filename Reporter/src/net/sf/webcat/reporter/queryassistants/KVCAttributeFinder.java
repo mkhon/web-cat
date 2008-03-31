@@ -44,20 +44,21 @@ public class KVCAttributeFinder
 				addMethods(klass, klass.getMethods(), attrs);
 				addFields(klass.getFields(), attrs);
 			}
-			
+
 			try
 			{
 				attrs.sortUsingComparator(
 						NSComparator.AscendingCaseInsensitiveStringComparator);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
+                // ???
 			}
 
 			cache.setObjectForKey(attrs, klass);
 			unfiltered = attrs;
 		}
-		
+
 		NSMutableArray<KVCAttributeInfo> filtered =
 			new NSMutableArray<KVCAttributeInfo>();
 
@@ -68,10 +69,10 @@ public class KVCAttributeFinder
 			if(key.toLowerCase().startsWith(prefix.toLowerCase()))
 				filtered.addObject(attr);
 		}
-		
+
 		return filtered;
 	}
-	
+
 	private static boolean methodIsFromSuperclass(Class<?> klass, Method method)
 	{
 		if("toString".equals(method.getName()))
@@ -88,7 +89,7 @@ public class KVCAttributeFinder
 		boolean isInGenericRecord =
 			methodClass.isAssignableFrom(ERXGenericRecord.class) ||
 			methodClass.isAssignableFrom(EOGenericRecord.class);
-	
+
 		if(!isInGenericRecord)
 		{
 			// The method might have been overridden, causing its declaring
@@ -99,31 +100,35 @@ public class KVCAttributeFinder
 			{
 				ERXGenericRecord.class.getMethod(
 						method.getName(), method.getParameterTypes());
-				
+
 				isInGenericRecord = true;
 			}
 			catch (SecurityException e)
 			{
+                // ignore it
 			}
 			catch (NoSuchMethodException e)
 			{
+                // ignore it
 			}
-			
+
 			try
 			{
 				EOGenericRecord.class.getMethod(
 						method.getName(), method.getParameterTypes());
-				
+
 				isInGenericRecord = true;
 			}
 			catch (SecurityException e)
 			{
+                // ignore it
 			}
 			catch (NoSuchMethodException e)
 			{
+                // ignore it
 			}
 		}
-		
+
 		return isInGenericRecord;
 	}
 
@@ -132,7 +137,7 @@ public class KVCAttributeFinder
 		boolean isSpecial = false;
 
 		String methodName = method.getName();
-		
+
 		if(methodName.startsWith("create") &&
 				methodName.endsWith("Relationship"))
 		{
@@ -187,7 +192,7 @@ public class KVCAttributeFinder
 				{
 					name = name.substring("_".length());
 				}
-				
+
 				if(!attrs.containsObject(name))
 				{
 					KVCAttributeInfo attr = new KVCAttributeInfo(name,
@@ -232,13 +237,13 @@ public class KVCAttributeFinder
 			}
 		}
 	}
-	
+
 	private static boolean typeIsAcceptable(Class<?> klass)
 	{
 		//return acceptableTypes.containsObject(klass);
 		return klass != Void.class && klass != Void.TYPE;
 	}
-	
+
 	private static String initialLower(String str)
 	{
 		if(str != null && str.length() > 0)

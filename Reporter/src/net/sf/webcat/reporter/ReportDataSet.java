@@ -32,8 +32,8 @@ import com.webobjects.eocontrol.*;
 /**
  * TODO: place a real description here.
  *
- * @author 
- * @version $Id: ReportDataSet.java,v 1.2 2008/03/06 20:13:41 aallowat Exp $
+ * @author
+ * @version $Id: ReportDataSet.java,v 1.3 2008/03/31 00:44:58 stedwar2 Exp $
  */
 public class ReportDataSet
     extends _ReportDataSet
@@ -53,9 +53,6 @@ public class ReportDataSet
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    /**
-     * 
-     */
     public static ReportDataSet createNewReportDataSet(
     		EOEditingContext ec,
     		ReportTemplate reportTemplate,
@@ -74,34 +71,4 @@ public class ReportDataSet
 
         return dataSet;
     }
-
-
-
-// If you add instance variables to store property values you
-// should add empty implementions of the Serialization methods
-// to avoid unnecessary overhead (the properties will be
-// serialized for you in the superclass).
-
-//    // ----------------------------------------------------------
-//    /**
-//     * Serialize this object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param out the stream to write to
-//     */
-//    private void writeObject( java.io.ObjectOutputStream out )
-//        throws java.io.IOException
-//    {
-//    }
-//
-//
-//    // ----------------------------------------------------------
-//    /**
-//     * Read in a serialized object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param in the stream to read from
-//     */
-//    private void readObject( java.io.ObjectInputStream in )
-//        throws java.io.IOException, java.lang.ClassNotFoundException
-//    {
-//    }
 }

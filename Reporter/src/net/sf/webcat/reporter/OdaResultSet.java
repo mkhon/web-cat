@@ -30,37 +30,37 @@ public class OdaResultSet implements IWebCATResultSet
 	private String jobUuid;
 
 	private ReportQuery query;
-	
+
 	private EOEditingContext editingContext;
 
 	private EOQualifier fetchQualifier;
-	
+
 	private EOQualifier inMemoryQualifier;
 
 	private ERXFetchSpecificationBatchIterator iterator;
-	
+
 	private int currentRow;
-	
+
 	private int rawCurrentRow;
 
 	private String[] expressions;
 
 	private ExpressionAccessor[] accessors;
-	
+
 	private OgnlContext defaultContext;
-	
+
 	private NSArray<Object> currentBatch;
-	
+
 	private Enumeration<Object> currentBatchEnum;
 
 	private Object currentObject;
-	
+
 	private boolean wasNull;
-	
+
 	private long lastThrottleCheck;
 
 	private static final long MILLIS_BETWEEN_THROTTLE_CHECK = 3000;
-	
+
 	private static final long MILLIS_TO_THROTTLE = 5000;
 
 	private static final int PROGRESS_STEP_SIZE = 10;
@@ -71,7 +71,7 @@ public class OdaResultSet implements IWebCATResultSet
 		this.query = query;
 		currentRow = 0;
 		rawCurrentRow = 0;
-		
+
 		lastThrottleCheck = 0;
 	}
 
@@ -80,7 +80,7 @@ public class OdaResultSet implements IWebCATResultSet
 	{
 		if(editingContext != null)
 			Application.releasePeerEditingContext(editingContext);
-		
+
 		editingContext = Application.newPeerEditingContext();
 
 		if(iterator != null)
@@ -88,19 +88,18 @@ public class OdaResultSet implements IWebCATResultSet
 	}
 
 
-	public void close() throws WebCATDataException
+	public void close()
 	{
 		Application.releasePeerEditingContext(editingContext);
-		
 		ProgressManager.getInstance().completeCurrentTaskForJob(jobUuid);
 	}
 
-	public int currentRow() throws WebCATDataException
+	public int currentRow()
 	{
 		return currentRow;
 	}
 
-	public void execute() throws WebCATDataException
+	public void execute()
 	{
 		recycleEditingContext();
 
@@ -120,17 +119,17 @@ public class OdaResultSet implements IWebCATResultSet
  				jobUuid, iterator.count());
 	}
 
-	public void prepare(String entityType, String[] expressions)
+	public void prepare(String entityType, String[] myExpressions)
 	throws WebCATDataException
 	{
-		this.expressions = expressions;
+		this.expressions = myExpressions;
 
 		defaultContext = new OgnlContext();
 
-		accessors = new ExpressionAccessor[expressions.length];
+		accessors = new ExpressionAccessor[myExpressions.length];
 
 		int i = 0;
-		for(String expression : expressions)
+		for (String expression : myExpressions)
 		{
 			Node node;
 
@@ -143,7 +142,7 @@ public class OdaResultSet implements IWebCATResultSet
 			{
 				throw new WebCATDataException(e);
 			}
-			
+
 			i++;
 		}
 	}
@@ -153,12 +152,12 @@ public class OdaResultSet implements IWebCATResultSet
 		if(iterator.hasNextBatch())
 		{
 			boolean getBatch = true;
-			
+
 			while(getBatch)
 			{
 				recycleEditingContext();
 				currentBatch = iterator.nextBatch();
-				
+
 				if(inMemoryQualifier != null)
 					currentBatch = EOQualifier.filteredArrayWithQualifier(
 							currentBatch, inMemoryQualifier);
@@ -178,7 +177,7 @@ public class OdaResultSet implements IWebCATResultSet
 		return false;
 	}
 
-	public boolean moveToNextRow() throws WebCATDataException
+	public boolean moveToNextRow()
 	{
 		throttleIfNecessary();
 
@@ -216,7 +215,10 @@ public class OdaResultSet implements IWebCATResultSet
 				{
 					Thread.sleep(MILLIS_TO_THROTTLE);
 				}
-				catch(InterruptedException e) { }
+				catch(InterruptedException e)
+                {
+                    // Nothing to do
+                }
 			}
 
 			lastThrottleCheck = System.currentTimeMillis();
@@ -224,7 +226,7 @@ public class OdaResultSet implements IWebCATResultSet
 	}
 
 
-	public int rowCount() throws WebCATDataException
+	public int rowCount()
 	{
 		// This should be deprecated. It's not always possible to determine
 		// the number of rows before the result set is completely traversed,
@@ -237,7 +239,7 @@ public class OdaResultSet implements IWebCATResultSet
 	{
 		ExpressionAccessor accessor = accessors[column];
 		Object result = null;
-		
+
 		try
 		{
 			result = accessor.get(defaultContext, currentObject);
@@ -251,7 +253,7 @@ public class OdaResultSet implements IWebCATResultSet
 					"by the source object (which is of type \"%s\")",
 					expressions[column], e.key(),
 					e.object().getClass().getName());
-			
+
 			throw new WebCATDataException(new IllegalArgumentException(msg));
 		}
 		catch(Exception e)
@@ -264,7 +266,7 @@ public class OdaResultSet implements IWebCATResultSet
 
 			throw new WebCATDataException(e);
 		}
-		
+
 		if(result == null)
 		{
 			wasNull = true;
@@ -314,11 +316,10 @@ public class OdaResultSet implements IWebCATResultSet
 	}
 
 	public Timestamp timestampValueAtIndex(int column)
-	throws WebCATDataException
 	{
 		ExpressionAccessor accessor = accessors[column];
 		Object result = accessor.get(defaultContext, currentObject);
-		
+
 		if(result instanceof NSTimestamp)
 		{
 			return (NSTimestamp)result;
@@ -330,7 +331,7 @@ public class OdaResultSet implements IWebCATResultSet
 		}
 	}
 
-	public boolean wasValueNull() throws WebCATDataException
+	public boolean wasValueNull()
 	{
 		return wasNull;
 	}

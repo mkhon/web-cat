@@ -48,11 +48,11 @@ public class designerPreview extends ERXDirectAction
 	private static final int BATCH_SIZE = 50;
 
 	private static final String PARAM_ENTITY_TYPE = "entityType";
-	
+
 	private static final String PARAM_EXPRESSIONS = "expressions";
-	
+
 	private static final String PARAM_QUERY = "query";
-	
+
 	private static final String PARAM_TIMEOUT = "timeout";
 
 	private static final String SESSION_ITERATOR =
@@ -60,16 +60,16 @@ public class designerPreview extends ERXDirectAction
 
 	private static final String SESSION_EXPRESSIONS =
 		"net.sf.webcat.reporter.actions.designerPreview.expressions";
-	
+
 	private static final String SESSION_EXPRESSION_STRINGS =
 		"net.sf.webcat.reporter.actions.designerPreview.expressionStrings";
 
 	private static final String SESSION_OGNLCONTEXT =
 		"net.sf.webcat.reporter.actions.designerPreview.ognlContext";
-	
+
 	private static final String SESSION_SLOW_QUALIFIER =
 		"net.sf.webcat.reporter.actions.designerPreview.slowQualifier";
-	
+
 	private static final String SESSION_TIMEOUT =
 		"net.sf.webcat.reporter.actions.designerPreview.timeout";
 
@@ -88,7 +88,7 @@ public class designerPreview extends ERXDirectAction
 	{
 		WOResponse response = new WOResponse();
 		WOSession session = session();
-		
+
 		String entityType =
 			request().formValueForKey(PARAM_ENTITY_TYPE).toString();
 		String expressionString =
@@ -106,12 +106,12 @@ public class designerPreview extends ERXDirectAction
 		if(request().formValueForKey(PARAM_QUERY) != null)
 		{
 			String query = request().formValueForKey(PARAM_QUERY).toString();
-			
+
 			if(query.length() > 0)
 			{
 				EOQualifier fullQualifier = translateQueryToQualifier(
 						entityType, query, context);
-				
+
 				EOQualifier[] quals = QualifierUtils.partitionQualifier(
 						fullQualifier, entityType);
 				fastQualifier = quals[0];
@@ -122,26 +122,26 @@ public class designerPreview extends ERXDirectAction
 		try
 		{
 			OgnlContext ognlContext = new OgnlContext();
-	
+
 			EOEntity rootEntity = EOUtilities.entityNamed(context, entityType);
-	
+
 			EOFetchSpecification spec = new EOFetchSpecification(
 					entityType, fastQualifier, null);
-	
+
 			ExpressionAccessor[] compiled = compileAndPrefetchExpressions(
 						ognlContext, expressions, rootEntity, spec);
-	
+
 			ERXFetchSpecificationBatchIterator iterator =
 				new ERXFetchSpecificationBatchIterator(spec, context);
 			iterator.setBatchSize(50);
-	
+
 			session.setObjectForKey(ognlContext, SESSION_OGNLCONTEXT);
 			session.setObjectForKey(iterator, SESSION_ITERATOR);
 			session.setObjectForKey(compiled, SESSION_EXPRESSIONS);
 			session.setObjectForKey(expressions, SESSION_EXPRESSION_STRINGS);
 			session.setObjectForKey(timeout, SESSION_TIMEOUT);
 			session.setObjectForKey(Boolean.FALSE, SESSION_CANCELED);
-			
+
 			if(slowQualifier == null)
 				session.removeObjectForKey(SESSION_SLOW_QUALIFIER);
 			else
@@ -194,16 +194,16 @@ public class designerPreview extends ERXDirectAction
 				int recordsRetrieved = serializeNextBatch(iterator, oos,
 						endTime);
 				count += recordsRetrieved;
-				
+
 				isTimedOut = (System.currentTimeMillis() > endTime);
 			}
-			
+
 			// Write the end of data marker.
 			oos.writeBoolean(false);
 
 			oos.close();
 			baos.close();
-			
+
 			NSData data = new NSData(baos.toByteArray());
 			response.appendContentData(data);
 		}
@@ -227,7 +227,7 @@ public class designerPreview extends ERXDirectAction
 
 		response.appendContentString("!!! ERROR\n");
 		response.appendContentString(e.toString());
-		
+
 		return response;
 	}
 
@@ -258,11 +258,11 @@ public class designerPreview extends ERXDirectAction
 
 		int recordsRetrieved = 0;
 
-		if(iterator.hasNextBatch())
+		if (iterator.hasNextBatch())
 		{
 			OgnlContext ognlContext =
 				(OgnlContext)session.objectForKey(SESSION_OGNLCONTEXT);
-			
+
 			ExpressionAccessor[] expressions =
 				(ExpressionAccessor[])session.objectForKey(SESSION_EXPRESSIONS);
 
@@ -307,21 +307,21 @@ public class designerPreview extends ERXDirectAction
 
 					oos.writeObject(value);
 				}
-				
+
 				recordsRetrieved++;
 
-				isTimedOut = (System.currentTimeMillis() > endTime);				
+				isTimedOut = (System.currentTimeMillis() > endTime);
 			}
 		}
 
 		// Recycle the editing context after we've processed this batch to
 		// flush out all of the current objects.
-		if(iterator != null)
+		if (iterator != null)
 		{
 			Application.releasePeerEditingContext(iterator.editingContext());
 			iterator.setEditingContext(Application.newPeerEditingContext());
 		}
-		
+
 		return recordsRetrieved;
 	}
 
@@ -365,7 +365,7 @@ public class designerPreview extends ERXDirectAction
 				{
 					break;
 				}
-				
+
 				partsSoFar += ".";
 			}
 
@@ -385,7 +385,7 @@ public class designerPreview extends ERXDirectAction
 			{
 				throw new IllegalArgumentException(e);
 			}
-			
+
 			i++;
 		}
 
@@ -412,7 +412,7 @@ public class designerPreview extends ERXDirectAction
 					"In the expression (%s), the key \"%s\" is not recognized " +
 					"by the source object (which is of type \"%s\")",
 					expressionString, e.key(), e.object().getClass().getName());
-			
+
 			throw new IllegalArgumentException(msg);
 		}
 		catch(Exception e)
@@ -426,7 +426,7 @@ public class designerPreview extends ERXDirectAction
 				throw new IllegalArgumentException(e);
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -439,7 +439,7 @@ public class designerPreview extends ERXDirectAction
 		{
 			BufferedReader reader = new BufferedReader(new StringReader(query));
 			String line;
-			
+
 			NSMutableArray<AdvancedQueryCriterion> criteria =
 				new NSMutableArray<AdvancedQueryCriterion>();
 
@@ -450,13 +450,13 @@ public class designerPreview extends ERXDirectAction
 				String comparandTypeString = reader.readLine();
 				String valueRepresentation = reader.readLine();
 				reader.readLine();
-				
+
 				AdvancedQueryCriterion criterion = new AdvancedQueryCriterion();
-				
+
 				AdvancedQueryComparison comparison =
 					AdvancedQueryComparison.comparisonWithName(
 							comparisonString);
- 
+
 				criterion.setKeyPath(keypath);
 				criterion.setComparison(comparison);
 				criterion.setComparandType(
@@ -465,7 +465,7 @@ public class designerPreview extends ERXDirectAction
 				int type = AdvancedQueryUtils.typeOfKeyPath(
 						entityType, keypath);
 				Object value = null;
-				
+
 				if(comparison == AdvancedQueryComparison.IS_BETWEEN ||
 						comparison == AdvancedQueryComparison.IS_NOT_BETWEEN)
 				{
@@ -487,7 +487,7 @@ public class designerPreview extends ERXDirectAction
 				}
 
 				criterion.setValue(value);
-				
+
 				criteria.addObject(criterion);
 			}
 

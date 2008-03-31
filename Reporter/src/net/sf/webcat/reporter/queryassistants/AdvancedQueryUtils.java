@@ -22,15 +22,15 @@ public class AdvancedQueryUtils
 	public static final int TYPE_BOOLEAN = 3;
 	public static final int TYPE_TIMESTAMP = 4;
 	public static final int TYPE_ENTITY = 5;
-	
+
 	public static int typeOfKeyPath(String entityType, String keypath)
 	{
 		KeyPathParser parser = new KeyPathParser(entityType, keypath);
 		Class<?> klass = parser.theClass();
-	
+
 		return typeOfClass(klass);
 	}
-	
+
 	public static int typeOfClass(Class<?> klass)
 	{
 		if(String.class.isAssignableFrom(klass))
@@ -63,7 +63,7 @@ public class AdvancedQueryUtils
 		else
 		{
 			return TYPE_STRING;
-		}		
+		}
 	}
 
 	public static Object valueRangeForPreviewRepresentation(int type,
@@ -90,7 +90,7 @@ public class AdvancedQueryUtils
 		{
 			case TYPE_STRING:
 				return rep;
-				
+
 			case TYPE_INTEGER:
 	    		try
 	    		{
@@ -100,7 +100,7 @@ public class AdvancedQueryUtils
 	    		{
 	    			return null;
 	    		}
-				
+
 			case TYPE_DOUBLE:
 	    		try
 	    		{
@@ -110,13 +110,13 @@ public class AdvancedQueryUtils
 	    		{
 	    			return null;
 	    		}
-				
+
 			case TYPE_BOOLEAN:
 				return Boolean.parseBoolean(rep);
-				
+
 			case TYPE_TIMESTAMP:
 				return timestampFromRepresentation(rep);
-				
+
 			case TYPE_ENTITY:
 				try
 	    		{
@@ -133,38 +133,38 @@ public class AdvancedQueryUtils
 
 	    			return null;
 	    		}
-				
+
 			default:
 				return null;
 		}
 	}
-	
-	public static Object multipleValuesForPreviewRepresentation(int type,
-			String rep, EOEditingContext ec)
+
+	public static Object multipleValuesForPreviewRepresentation(
+        int type, String rep, EOEditingContext ec)
 	{
-		switch(type)
+		switch (type)
 		{
 			case TYPE_STRING:
 			{
 		    	String[] values = rep.split(",");
-		    	
+
 		    	NSMutableArray<String> array = new NSMutableArray<String>();
-		
-		    	for(String item : values)
+
+		    	for (String item : values)
 		    	{
 		    		array.addObject(item.trim());
 		    	}
-		    	
+
 		    	return array;
 			}
 
 			case TYPE_INTEGER:
 			{
 		    	String[] values = rep.split(",");
-		    	
+
 		    	NSMutableArray<Integer> array = new NSMutableArray<Integer>();
-		
-		    	for(String item : values)
+
+		    	for (String item : values)
 		    	{
 		    		try
 		    		{
@@ -172,40 +172,42 @@ public class AdvancedQueryUtils
 		    		}
 		    		catch(NumberFormatException e)
 		    		{
+                        // Ignore the erroneous value
 		    		}
 		    	}
-		    	
+
 		    	return array;
 			}
-			
+
 			case TYPE_DOUBLE:
 			{
 		    	String[] values = rep.split(",");
-		    	
+
 		    	NSMutableArray<Double> array = new NSMutableArray<Double>();
-		
-		    	for(String item : values)
+
+		    	for (String item : values)
 		    	{
 		    		try
 		    		{
 		    			array.addObject(Double.parseDouble(item.trim()));
 		    		}
-		    		catch(NumberFormatException e)
+		    		catch (NumberFormatException e)
 		    		{
+                        // Ignore the erroneous value
 		    		}
 		    	}
-		    	
+
 		    	return array;
 			}
 
 			case TYPE_ENTITY:
 			{
 		    	String[] values = rep.split(",");
-		    	
+
 		    	NSMutableArray<EOEnterpriseObject> array =
 		    		new NSMutableArray<EOEnterpriseObject>();
-		
-		    	for(String itemRep : values)
+
+		    	for (String itemRep : values)
 		    	{
 					try
 		    		{
@@ -214,25 +216,25 @@ public class AdvancedQueryUtils
 						int id = Integer.parseInt(parts[1]);
 
 						EOEnterpriseObject object = objectWithId(
-								id, entity, ec);
-		    			
-						if(object != null)
+						    id, entity, ec);
+
+						if (object != null)
 						{
 							array.addObject(object);
 						}
 						else
 						{
 							log.warn("No object found for entity " +
-									entity + " with id " + id + "!");
+							    entity + " with id " + id + "!");
 						}
 		    		}
-		    		catch(Exception e)
+		    		catch (Exception e)
 		    		{
 		    			log.warn("Exception trying to find object " +
-		    					itemRep, e);
+		    			    itemRep, e);
 		    		}
 		    	}
-			    	
+
 		    	return array;
 			}
 
@@ -241,8 +243,8 @@ public class AdvancedQueryUtils
 		}
 	}
 
-	private static EOEnterpriseObject objectWithId(int id, String entity,
-			EOEditingContext ec)
+	private static EOEnterpriseObject objectWithId(
+        int id, String entity, EOEditingContext ec)
 	{
         if (id > 0)
         {
@@ -255,10 +257,10 @@ public class AdvancedQueryUtils
                 return results.objectAtIndex( 0 );
             }
         }
-        
+
         return null;
     }
-	
+
 	private static NSTimestamp timestampFromRepresentation(String rep)
 	{
 		try
@@ -272,12 +274,12 @@ public class AdvancedQueryUtils
 					Integer.parseInt(parts[4]),
 					0, TimeZone.getDefault());
 		}
-		catch(NumberFormatException e)
+		catch (NumberFormatException e)
 		{
 			return null;
 		}
 	}
-	
+
 	private static final Logger log =
 		Logger.getLogger(AdvancedQueryUtils.class);
 }

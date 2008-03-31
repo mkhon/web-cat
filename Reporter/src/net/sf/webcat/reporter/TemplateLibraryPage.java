@@ -103,12 +103,12 @@ public class TemplateLibraryPage extends WCComponent
     {
     	File file = new File(reportTemplate.uploadedFileName());
         
-    	DeliverFile nextPage = (DeliverFile)pageWithName(
+    	DeliverFile myNextPage = (DeliverFile)pageWithName(
                 DeliverFile.class.getName() );
-        nextPage.setFileName( file );
-        nextPage.setContentType( WCFile.mimeType( file ) );
-        nextPage.setStartDownload( !WCFile.showInline( file ) );
-        return nextPage;    	
+        myNextPage.setFileName( file );
+        myNextPage.setContentType( WCFile.mimeType( file ) );
+        myNextPage.setStartDownload( !WCFile.showInline( file ) );
+        return myNextPage;    	
     }
     
 

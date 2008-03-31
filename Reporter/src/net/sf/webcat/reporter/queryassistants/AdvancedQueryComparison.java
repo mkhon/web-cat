@@ -24,7 +24,7 @@ public abstract class AdvancedQueryComparison
 	public static final AdvancedQueryComparison IS_GREATER_THAN;
 	public static final AdvancedQueryComparison IS_GREATER_THAN_OR_EQUAL_TO;
 	public static final AdvancedQueryComparison IS_BETWEEN;
-	public static final AdvancedQueryComparison IS_NOT_BETWEEN; 
+	public static final AdvancedQueryComparison IS_NOT_BETWEEN;
 	public static final AdvancedQueryComparison IS_LIKE;
 	public static final AdvancedQueryComparison IS_NOT_LIKE;
 	public static final AdvancedQueryComparison IS_ONE_OF;
@@ -45,12 +45,13 @@ public abstract class AdvancedQueryComparison
 	private static NSMutableArray<AdvancedQueryComparison> stringComparisons;
 	private static NSMutableArray<AdvancedQueryComparison> timestampComparisons;
 	private static NSMutableArray<AdvancedQueryComparison> objectComparisons;
-	
+
 	private static NSMutableDictionary<AdvancedQueryComparison, Boolean>
 		keyPathSupport;
 
 	protected AdvancedQueryComparison()
 	{
+        // Nothing to do
 	}
 
 	public boolean equals(Object obj)
@@ -64,7 +65,7 @@ public abstract class AdvancedQueryComparison
 			return false;
 		}
 	}
-	
+
 	public int hashCode()
 	{
 		return toString().hashCode();
@@ -86,7 +87,7 @@ public abstract class AdvancedQueryComparison
 		IS_NOT_ONE_OF = new InComparison(true);
 
 		booleanComparisons = new NSMutableArray<AdvancedQueryComparison>();
-		booleanComparisons.add(IS_EQUAL_TO); 
+		booleanComparisons.add(IS_EQUAL_TO);
 		booleanComparisons.add(IS_NOT_EQUAL_TO);
 
 		numericComparisons = new NSMutableArray<AdvancedQueryComparison>();
@@ -100,7 +101,7 @@ public abstract class AdvancedQueryComparison
 		numericComparisons.add(IS_NOT_BETWEEN);
 		numericComparisons.add(IS_ONE_OF);
 		numericComparisons.add(IS_NOT_ONE_OF);
-		
+
 		stringComparisons = new NSMutableArray<AdvancedQueryComparison>();
 		stringComparisons.add(IS_EQUAL_TO);
 		stringComparisons.add(IS_NOT_EQUAL_TO);
@@ -120,13 +121,13 @@ public abstract class AdvancedQueryComparison
 		timestampComparisons.add(IS_GREATER_THAN_OR_EQUAL_TO);
 		timestampComparisons.add(IS_BETWEEN);
 		timestampComparisons.add(IS_NOT_BETWEEN);
-		
+
 		objectComparisons = new NSMutableArray<AdvancedQueryComparison>();
 		objectComparisons.add(IS_EQUAL_TO);
 		objectComparisons.add(IS_NOT_EQUAL_TO);
 		objectComparisons.add(IS_ONE_OF);
 		objectComparisons.add(IS_NOT_ONE_OF);
-		
+
 		keyPathSupport = new NSMutableDictionary<AdvancedQueryComparison, Boolean>();
 		keyPathSupport.setObjectForKey(true, IS_EQUAL_TO);
 		keyPathSupport.setObjectForKey(true, IS_NOT_EQUAL_TO);
@@ -140,7 +141,7 @@ public abstract class AdvancedQueryComparison
 		keyPathSupport.setObjectForKey(true, IS_NOT_LIKE);
 		keyPathSupport.setObjectForKey(false, IS_ONE_OF);
 		keyPathSupport.setObjectForKey(false, IS_NOT_ONE_OF);
-		
+
 		nameToComparisonMap = new NSMutableDictionary<String, AdvancedQueryComparison>();
 		nameToComparisonMap.setObjectForKey(IS_EQUAL_TO, "IS_EQUAL_TO");
 		nameToComparisonMap.setObjectForKey(IS_NOT_EQUAL_TO, "IS_NOT_EQUAL_TO");
@@ -149,13 +150,13 @@ public abstract class AdvancedQueryComparison
 		nameToComparisonMap.setObjectForKey(IS_GREATER_THAN, "IS_GREATER_THAN");
 		nameToComparisonMap.setObjectForKey(IS_GREATER_THAN_OR_EQUAL_TO, "IS_GREATER_THAN_OR_EQUAL_TO");
 		nameToComparisonMap.setObjectForKey(IS_BETWEEN, "IS_BETWEEN");
-		nameToComparisonMap.setObjectForKey(IS_NOT_BETWEEN, "IS_NOT_BETWEEN"); 
+		nameToComparisonMap.setObjectForKey(IS_NOT_BETWEEN, "IS_NOT_BETWEEN");
 		nameToComparisonMap.setObjectForKey(IS_LIKE, "IS_LIKE");
 		nameToComparisonMap.setObjectForKey(IS_NOT_LIKE, "IS_NOT_LIKE");
 		nameToComparisonMap.setObjectForKey(IS_ONE_OF, "IS_ONE_OF");
 		nameToComparisonMap.setObjectForKey(IS_NOT_ONE_OF, "IS_NOT_ONE_OF");
 	}
-	
+
 	public static AdvancedQueryComparison comparisonWithName(String name)
 	{
 		return nameToComparisonMap.objectForKey(name);
@@ -219,16 +220,16 @@ public abstract class AdvancedQueryComparison
 	 * allows us to access the properties of any qualifier via a common
 	 * interface, instead of using large blocks of conditional code based on
 	 * the qualifier type.
-	 * 
+	 *
 	 * @param q the qualifier to convert to a criterion object
 	 * @return an AdvancedQueryCriterion containing the qualifier properties
 	 */
 	public static AdvancedQueryCriterion criterionForQualifier(EOQualifier q)
 	{
     	NSDictionary<String, Object> info = QualifierUtils.infoIfInQualifier(q);
-    	
+
     	AdvancedQueryComparison comparison = null;
-    	
+
     	if(info != null)
     	{
     		comparison = IS_ONE_OF;
@@ -252,7 +253,7 @@ public abstract class AdvancedQueryComparison
     		EOQualifier nq = ((EONotQualifier)q).qualifier();
 
         	info = QualifierUtils.infoIfInQualifier(nq);
-        	
+
         	if(info != null)
         	{
         		comparison = IS_NOT_ONE_OF;
@@ -275,7 +276,7 @@ public abstract class AdvancedQueryComparison
     		else if(nq instanceof EOKeyComparisonQualifier)
     		{
     			EOKeyComparisonQualifier kcq = (EOKeyComparisonQualifier)nq;
-    			
+
     			NSSelector selector = kcq.selector();
     			if(selector.equals(
     					EOQualifier.QualifierOperatorCaseInsensitiveLike))
@@ -302,7 +303,7 @@ public abstract class AdvancedQueryComparison
 
 	/**
 	 * Returns a qualifier with the properties of the given criterion object.
-	 * 
+	 *
 	 * @param criterion an AdvancedQueryCriterion containing the qualifier
 	 *     properties
 	 * @return the qualifier that results from converting the criterion
@@ -315,14 +316,14 @@ public abstract class AdvancedQueryComparison
 			return null;
 
 		AdvancedQueryComparison comparison = criterion.comparison();
-		
+
 		return comparison._qualifierForCriterion(criterion);
 	}
 
 	/**
 	 * Gets a value indicating whether this comparison supports a right-hand
 	 * side that is another keypath, rather than a just a literal value.
-	 * 
+	 *
 	 * @return true if the comparison supports keypaths and literals on the
 	 *     right-hand side; false if it only supports literals.
 	 */
@@ -332,16 +333,16 @@ public abstract class AdvancedQueryComparison
 	 * Gets a value indicating whether this comparison supports multiple right-
 	 * hand sides that are ORed together (either with actual ORs or in an IN
 	 * clause).
-	 * 
+	 *
 	 * @return true if the comparison supports multiple values on the right-
 	 *     hand side; false if it only supports singular values.
 	 */
 	public abstract boolean doesSupportMultipleValues();
-	
+
 	/**
 	 * Gets a value indicating whether this comparison has an operand on the
 	 * right-hand side.
-	 * 
+	 *
 	 * @return true if the comparison requires a second operand; otherwise,
 	 *     false.
 	 */
@@ -350,7 +351,7 @@ public abstract class AdvancedQueryComparison
 
 	protected abstract AdvancedQueryCriterion _criterionForQualifier(
 			EOQualifier q);
-	
+
 	protected abstract EOQualifier _qualifierForCriterion(
 			AdvancedQueryCriterion criterion);
 
@@ -365,7 +366,7 @@ public abstract class AdvancedQueryComparison
 		{
 			this.type = type;
 		}
-		
+
 		public String toString()
 		{
 			return descriptions[type];
@@ -377,7 +378,7 @@ public abstract class AdvancedQueryComparison
 			"is greater than or equal to"*/
 			"==", "!=", "<", "<=", ">", ">="
 		};
-		
+
 		private static final NSSelector[] selectors = {
 			EOQualifier.QualifierOperatorEqual,
 			EOQualifier.QualifierOperatorNotEqual,
@@ -404,13 +405,13 @@ public abstract class AdvancedQueryComparison
 	    	else if(q instanceof EOKeyComparisonQualifier)
 	    	{
 	    		EOKeyComparisonQualifier kcq = (EOKeyComparisonQualifier)q;
-	    		
+
 	    		criterion.setKeyPath(kcq.leftKey());
 	    		criterion.setComparandType(
 	    				AdvancedQueryCriterion.COMPARAND_KEYPATH);
 	    		criterion.setValue(kcq.rightKey());
 	    	}
-	    	
+
 	    	return criterion;
 		}
 
@@ -421,7 +422,7 @@ public abstract class AdvancedQueryComparison
 
 			NSSelector selector = selectors[type];
 
-			String keypath = cri.keyPath(); 
+			String keypath = cri.keyPath();
 			int comparand = cri.comparandType();
 			Object value = cri.value();
 
@@ -449,7 +450,7 @@ public abstract class AdvancedQueryComparison
 		{
 			return false;
 		}
-		
+
 		@Override
 		public boolean hasSecondOperand()
 		{
@@ -469,7 +470,7 @@ public abstract class AdvancedQueryComparison
 		{
 			this.negate = negate;
 		}
-		
+
 		public String toString()
 		{
 			if(negate)
@@ -484,7 +485,7 @@ public abstract class AdvancedQueryComparison
 			AdvancedQueryCriterion criterion = new AdvancedQueryCriterion();
 
 			ERXBetweenQualifier bq = null;
-			
+
 	    	if(q instanceof ERXBetweenQualifier)
 	    	{
 	    		bq = (ERXBetweenQualifier)q;
@@ -492,11 +493,12 @@ public abstract class AdvancedQueryComparison
 	    	else if(q instanceof EONotQualifier)
 	    	{
 	    		EONotQualifier nq = (EONotQualifier)q;
-	    		
+
 	    		if(nq.qualifier() instanceof ERXBetweenQualifier)
 	    		{
 	    			bq = (ERXBetweenQualifier)nq.qualifier();
 	    		}
+                // TODO: what if the if fails?  How does bq get a value?
 	    	}
 
 	    	criterion.setKeyPath(bq.key());
@@ -514,34 +516,29 @@ public abstract class AdvancedQueryComparison
     		{
     			criterion.setValue(null);
     		}
-    		
+
     		return criterion;
 		}
 
 		@Override
 		protected EOQualifier _qualifierForCriterion(AdvancedQueryCriterion cri)
 		{
-			String keypath = cri.keyPath(); 
+			String keypath = cri.keyPath();
 
 			NSDictionary<String, Object> values =
 				(NSDictionary<String, Object>)cri.value();
 
 			Object minimum = null, maximum = null;
-			
+
 			if(values != null)
 			{
 				minimum = values.objectForKey("minimumValue");
 				maximum = values.objectForKey("maximumValue");
 			}
-			else
-			{
-				minimum = null;
-				maximum = null;
-			}
 
 			ERXBetweenQualifier bq = new ERXBetweenQualifier(keypath, minimum,
 					maximum);
-			
+
 			if(negate)
 				return new EONotQualifier(bq);
 			else
@@ -579,7 +576,7 @@ public abstract class AdvancedQueryComparison
 		{
 			this.negate = negate;
 		}
-		
+
 		public String toString()
 		{
 			if(negate)
@@ -605,13 +602,13 @@ public abstract class AdvancedQueryComparison
 	    	else if(q instanceof EOKeyComparisonQualifier)
 	    	{
 	    		EOKeyComparisonQualifier kcq = (EOKeyComparisonQualifier)q;
-	    		
+
 	    		criterion.setKeyPath(kcq.leftKey());
 	    		criterion.setComparandType(
 	    				AdvancedQueryCriterion.COMPARAND_KEYPATH);
 	    		criterion.setValue(kcq.rightKey());
 	    	}
-	    	
+
 	    	return criterion;
 		}
 
@@ -620,7 +617,7 @@ public abstract class AdvancedQueryComparison
 		{
 			EOQualifier q = null;
 
-			String keypath = cri.keyPath(); 
+			String keypath = cri.keyPath();
 			int comparand = cri.comparandType();
 			Object value = cri.value();
 
@@ -674,7 +671,7 @@ public abstract class AdvancedQueryComparison
 		{
 			this.negate = negate;
 		}
-		
+
 		public String toString()
 		{
 			if(negate)
@@ -695,7 +692,7 @@ public abstract class AdvancedQueryComparison
 
 			NSDictionary<String, Object> info =
 				QualifierUtils.infoIfInQualifier(q);
-        	
+
         	if(info != null)
         	{
         		criterion.setKeyPath((String)info.objectForKey("key"));
@@ -703,7 +700,7 @@ public abstract class AdvancedQueryComparison
         				AdvancedQueryCriterion.COMPARAND_LITERAL);
         		criterion.setValue(info.objectForKey("values"));
         	}
-	    	
+
 	    	return criterion;
 		}
 
@@ -712,13 +709,13 @@ public abstract class AdvancedQueryComparison
 		{
 			EOQualifier q = null;
 
-			String keypath = cri.keyPath(); 
+			String keypath = cri.keyPath();
 			NSArray<Object> values = (NSArray<Object>)cri.value();
 
 			if(values != null)
 			{
 				q = QualifierUtils.qualifierForInCondition(keypath, values);
-				
+
 				if(negate)
 					return new EONotQualifier(q);
 				else

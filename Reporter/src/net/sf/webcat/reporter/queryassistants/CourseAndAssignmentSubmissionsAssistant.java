@@ -26,23 +26,23 @@ import er.extensions.ERXEOControlUtilities;
 public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 {
 	public ReportDataSet dataSet;
-	
+
 	public CourseAndAssignmentSubmissionsModel model;
 
 	public CourseTreeNode currentNode;
 
 	public Assignment assignment;
-	
+
 	public CourseTreeNode courseRoot;
 
 	public CourseTreeDelegate courseDelegate;
 
 	public int index;
-	
+
 	private boolean checkStateChanged = false;
 
 	private static int nextIdNumber = 0;
-	
+
 	private static String getUniqueId()
 	{
 		return "courseTreeNode_" + Integer.toString(nextIdNumber++);
@@ -53,9 +53,9 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 		public String id;
 
 		public Object data;
-		
+
 		public CourseTreeNode parent;
-		
+
 		public NSArray<CourseTreeNode> children;
 
 		public CourseTreeNode(CourseTreeNode parent, Object data)
@@ -64,7 +64,7 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 			this.data = data;
 			this.parent = parent;
 		}
-		
+
 		public boolean isChecked()
 		{
 			if(children == null || children.isEmpty())
@@ -85,7 +85,7 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 						break;
 					}
 				}
-				
+
 				return allChecked;
 			}
 		}
@@ -99,28 +99,34 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 		 * state. Thus, the checking is handled by the toggle() action below,
 		 * which will only be invoked on the node that was directly touched by
 		 * the user.
+         * @param value is ignored
 		 */
 		public void setChecked(boolean value)
 		{
+            // no-op
 		}
-		
+
 		private void setCheckedRecursively(boolean value)
 		{
-			if(children == null || children.isEmpty())
+			if (children == null || children.isEmpty())
 			{
-				if(data instanceof CourseOffering)
+				if (data instanceof CourseOffering)
 				{
 					CourseOffering offering = (CourseOffering)data;
 
-					if(value)
+					if (value)
+                    {
 						model.addCourseOffering(offering);
+                    }
 					else
+                    {
 						model.removeCourseOffering(offering);
+                    }
 				}
 			}
 			else
 			{
-				for(CourseTreeNode child : children)
+				for (CourseTreeNode child : children)
 				{
 					child.setCheckedRecursively(value);
 				}
@@ -135,7 +141,8 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 		}
 	}
 
-	public class CourseTreeDelegate implements AjaxTreeModel.Delegate
+	public class CourseTreeDelegate
+        implements AjaxTreeModel.Delegate
 	{
 		public NSArray<?> childrenTreeNodes(Object arg0)
 		{
@@ -153,12 +160,12 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
 		{
 			CourseTreeNode node = (CourseTreeNode)arg0;
 
-			if(node == null)
+			if (node == null)
 				return null;
 			else
 				return node.parent;
 		}
-		
+
 	}
 
     public CourseAndAssignmentSubmissionsAssistant(WOContext context)
@@ -171,43 +178,43 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     	courseDelegate = new CourseTreeDelegate();
     	courseRoot = new CourseTreeNode(null, null);
 
-    	EOFetchSpecification fetch = new EOFetchSpecification("Course",
-    			null, null);
-    	
+    	EOFetchSpecification fetch =
+            new EOFetchSpecification("Course", null, null);
+
     	NSArray<Course> courses = localContext().
     		objectsWithFetchSpecification(fetch);
 
     	NSMutableArray<EOSortOrdering> sortOrdering =
     		new NSMutableArray<EOSortOrdering>();
     	sortOrdering.addObject(new EOSortOrdering("deptNumberAndName",
-    			EOSortOrdering.CompareAscending));
+    	    EOSortOrdering.CompareAscending));
 
     	courses = EOSortOrdering.sortedArrayUsingKeyOrderArray(courses,
-    			sortOrdering);
+    	    sortOrdering);
 
     	NSMutableArray<CourseTreeNode> courseNodes =
     		new NSMutableArray<CourseTreeNode>();
 
-    	for(Course c : courses)
+    	for (Course c : courses)
     	{
     		CourseTreeNode ctn = new CourseTreeNode(courseRoot, c);
     		courseNodes.addObject(ctn);
-  
+
     		// Why did this disappear?!
 //    		NSArray<CourseOffering> offerings = c.offerings();
     		EOFetchSpecification fs = new EOFetchSpecification("CourseOffering",
-    				EOQualifier.qualifierWithQualifierFormat("course = %@",
-    						new NSArray<Object>(new Object[] { c })), null);
+    		    EOQualifier.qualifierWithQualifierFormat("course = %@",
+    		        new NSArray<Object>(new Object[] { c })), null);
     		NSArray<CourseOffering> offerings =
     			localContext().objectsWithFetchSpecification(fs);
 
     		NSMutableArray<CourseTreeNode> courseOfferingNodes =
     			new NSMutableArray<CourseTreeNode>();
-    		for(CourseOffering co : offerings)
+    		for (CourseOffering co : offerings)
     		{
     			courseOfferingNodes.addObject(new CourseTreeNode(ctn, co));
     		}
-    		
+
     		ctn.children = courseOfferingNodes;
     	}
 
@@ -229,23 +236,23 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     public NSArray<String> containersToUpdate()
     {
     	NSMutableArray<String> array = new NSMutableArray<String>();
-    	
-    	if(checkStateChanged)
+
+    	if (checkStateChanged)
     	{
     		array.addObject("assignmentContainer");
     		checkStateChanged = false;
     	}
-    	
+
     	return array;
     }
 
     public NSArray<Assignment> assignments()
     {
-    	EOFetchSpecification fetchSpec = new EOFetchSpecification("Assignment",
-    			null, null);
-    	NSArray<Assignment> allAssignments = localContext()
-    		.objectsWithFetchSpecification(fetchSpec);
-    	
+    	EOFetchSpecification fetchSpec =
+            new EOFetchSpecification("Assignment", null, null);
+    	NSArray<Assignment> allAssignments =
+            localContext().objectsWithFetchSpecification(fetchSpec);
+
     	NSMutableArray<Assignment> assignments =
     		new NSMutableArray<Assignment>();
 
@@ -253,40 +260,44 @@ public class CourseAndAssignmentSubmissionsAssistant extends ReporterComponent
     	{
     		boolean matches = true;
 
-    		if(model.courseOfferings().isEmpty())
+    		if (model.courseOfferings().isEmpty())
+            {
     			matches = false;
+            }
 
-    		for(CourseOffering sco : model.courseOfferings())
+    		for (CourseOffering sco : model.courseOfferings())
     		{
     			boolean found = false;
-    			
-       			for(AssignmentOffering ao :
+
+       			for (AssignmentOffering ao :
        				(NSArray<AssignmentOffering>)assn.offerings())
        			{
        				CourseOffering co = ao.courseOffering();
 
-       				if(co.equals(sco))
+       				if (co.equals(sco))
        				{
        					found = true;
        					break;
        				}
         		}
-       			
-       			if(found == false)
+
+       			if (found == false)
        			{
        				matches = false;
        				break;
        			}
     		}
 
-    		if(matches)
+    		if (matches)
+            {
     			assignments.addObject(assn);
+            }
     	}
 
     	NSMutableArray<EOSortOrdering> sortOrderings =
     		new NSMutableArray<EOSortOrdering>();
-    	sortOrderings.addObject(new EOSortOrdering("titleString",
-    			EOSortOrdering.CompareAscending));
+    	sortOrderings.addObject(
+            new EOSortOrdering("titleString", EOSortOrdering.CompareAscending));
     	EOSortOrdering.sortArrayUsingKeyOrderArray(assignments, sortOrderings);
 
     	return assignments;

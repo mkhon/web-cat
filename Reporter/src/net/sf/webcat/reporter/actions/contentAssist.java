@@ -33,7 +33,7 @@ public class contentAssist extends ERXDirectAction
 		WOResponse response = new WOResponse();
 
 		NSDictionary<String, String> versions = subsystemVersions();
-		
+
 		for(String subsystem : versions.allKeys())
 		{
 			response.appendContentString("version:" + subsystem + "," +
@@ -56,7 +56,7 @@ public class contentAssist extends ERXDirectAction
 						break;
 					}
 				}
-				
+
 				if(exclude)
 					continue;
 
@@ -69,7 +69,7 @@ public class contentAssist extends ERXDirectAction
 
 					NSArray<KVCAttributeInfo> attributes =
 						KVCAttributeFinder.attributesForClass(klass, "");
-					
+
 					for(KVCAttributeInfo attr : attributes)
 					{
 						response.appendContentString("attribute:" +
@@ -78,17 +78,18 @@ public class contentAssist extends ERXDirectAction
 				}
 				catch (ClassNotFoundException e)
 				{
+                    // ???
 				}
 			}
 		}
 
 		return response;
 	}
-	
+
 	public WOActionResults objectDescriptionsAction()
 	{
 		WOResponse response = new WOResponse();
-		
+
 		EOEditingContext ec = Application.newPeerEditingContext();
 
 		for(String entityName : OBJECTS_TO_DESCRIBE)
@@ -96,17 +97,17 @@ public class contentAssist extends ERXDirectAction
 	    	EOFetchSpecification fetchSpec = new EOFetchSpecification(
 	    			entityName, null, null);
 	    	fetchSpec.setFetchLimit(250);
-	    	
+
 	    	NSArray<EOEnterpriseObject> objects =
 	    		ec.objectsWithFetchSpecification(fetchSpec);
-	    	
+
 	    	response.appendContentString("entity:" + entityName + "\n");
 
 	    	for(EOEnterpriseObject object : objects)
 	    	{
 	    		Number id = (Number)EOUtilities.primaryKeyForObject(
 	                    ec, object).objectForKey( "id" );
-	    		
+
 	    		response.appendContentString("object:" + id.toString() + "," +
 	    				object.toString() + "\n");
 	    	}
@@ -114,13 +115,13 @@ public class contentAssist extends ERXDirectAction
 
 		return response;
 	}
-	
+
 	public WOActionResults subsystemVersionCheckAction()
 	{
 		WOResponse response = new WOResponse();
-		
+
 		NSDictionary<String, String> versions = subsystemVersions();
-		
+
 		for(String subsystem : versions.allKeys())
 		{
 			response.appendContentString("version:" + subsystem + "," +
@@ -152,7 +153,7 @@ public class contentAssist extends ERXDirectAction
 				}
 			}
 		}
-		
+
 		return subsystemVersions;
 	}
 
@@ -164,7 +165,7 @@ public class contentAssist extends ERXDirectAction
 	private static final String[] OBJECTS_TO_DESCRIBE = {
 		"Assignment", "AssignmentOffering", "Course", "CourseOffering"
 	};
-	
+
 	private static final String[] SUBSYSTEMS_TO_CHECK = {
 		"Core", "Grader", "Reporter"
 	};

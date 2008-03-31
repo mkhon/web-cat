@@ -24,8 +24,8 @@ public class ExcelRenderingMethod extends AbstractRenderingMethod {
 		super(engine);
 	}
 
-	public void appendContentToResponse(GeneratedReport report,
-			WOResponse response, WOContext context) throws IOException
+	public void appendContentToResponse(
+        GeneratedReport report, WOResponse response, WOContext context)
 	{
 		StringBuilder content = new StringBuilder();
 		NSMutableDictionary query = new NSMutableDictionary();
@@ -64,26 +64,26 @@ public class ExcelRenderingMethod extends AbstractRenderingMethod {
 	{
     	IReportDocument document = Reporter.getInstance().openReportDocument(
     			report.generatedReportFile());
-   
+
     	// String actionUrl = (String)options.objectForKey(OPTION_ACTION_URL);
 
     	String filename = "report.xls";
-  
+
     	RenderOption option = new RenderOption();
     	option.setOutputFormat("XLS");
     	option.setOutputFileName(GeneratedReport.renderedResourcePath(
     			report.uuid(), filename));
-    	
+
     	IRenderTask task = reportEngine().createRenderTask(document);
     	task.setRenderOption(option);
-    	
+
     	return new ExcelController(task);
 	}
-	
+
 	private class ExcelController implements Controller
 	{
 		private IRenderTask task;
-		
+
 		public ExcelController(IRenderTask task)
 		{
 			this.task = task;
@@ -97,7 +97,7 @@ public class ExcelRenderingMethod extends AbstractRenderingMethod {
 
             task.close();
 		}
-		
+
 		public void cancel()
 		{
 			task.cancel();

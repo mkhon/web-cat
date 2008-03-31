@@ -39,24 +39,24 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	 * is impossible.)
 	 */
 	public Class<?> valueType;
-	
+
 	/*
 	 * If true, this component will permit multiple values to be selected
 	 * (strings and numbers use comma-delimitation, entities become a multi-
 	 * select list, booleans and timestamps are not supported).
-	 * 
+	 *
 	 * When true, representedValue is assumed to be an NSArray of values.
 	 * Otherwise, it is just a simple value.
 	 */
 	public boolean multipleSelect = false;
 
-	
+
 	public Boolean booleanValueInList;
-	
+
 	public EOEnterpriseObject entityValueInList;
-	
+
 	public String calendarFieldId;
-	
+
 	public String calendarButtonId;
 
 	public AdvancedQueryValueComponent(WOContext context)
@@ -68,7 +68,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
 	{
 		calendarFieldId = context.elementID() + "_calendarField";
 		calendarButtonId = context.elementID() + "_calendarButton";
-		
+
 		super.appendToResponse(response, context);
 	}
 
@@ -84,12 +84,16 @@ public class AdvancedQueryValueComponent extends WCComponent {
 
     public String stringValueOfRepresentedValue()
     {
-    	if(representedValue != null)
+    	if (representedValue != null)
+        {
     		return representedValue.toString();
+        }
     	else
+        {
     		return null;
+        }
     }
-    
+
     public void setStringValueOfRepresentedValue(String value)
     {
     	representedValue = value;
@@ -98,14 +102,14 @@ public class AdvancedQueryValueComponent extends WCComponent {
     public String commaDelimitedStringValuesOfRepresentedValueArray()
     {
     	NSArray<Object> array = (NSArray<Object>)representedValue;
-    	
+
     	StringBuffer buffer = new StringBuffer();
 
-    	if(array != null && array.count() > 0)
+    	if (array != null && array.count() > 0)
     	{
     		buffer.append(array.objectAtIndex(0));
 
-    		for(int i = 1; i < array.count(); i++)
+    		for (int i = 1; i < array.count(); i++)
     		{
     			buffer.append(',');
     			buffer.append(array.objectAtIndex(i).toString());
@@ -118,17 +122,17 @@ public class AdvancedQueryValueComponent extends WCComponent {
     public void setCommaDelimitedStringValuesOfRepresentedValueArray(
     		String value)
     {
-    	if(value != null)
+    	if (value != null)
     	{
 	    	String[] values = value.split(",");
-	    	
+
 	    	NSMutableArray<String> array = new NSMutableArray<String>();
-	
-	    	for(String item : values)
+
+	    	for (String item : values)
 	    	{
 	    		array.addObject(item.trim());
 	    	}
-	    	
+
 	    	representedValue = array;
     	}
     	else
@@ -150,11 +154,11 @@ public class AdvancedQueryValueComponent extends WCComponent {
 
 	public Integer integerValueOfObject(Object object)
 	{
-		if(object == null)
+		if (object == null)
 		{
 			return null;
 		}
-		else if(object instanceof Number)
+		else if (object instanceof Number)
     	{
     		return ((Number)object).intValue();
     	}
@@ -164,7 +168,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
     		{
     			return Integer.parseInt(object.toString().trim());
     		}
-    		catch(NumberFormatException e)
+    		catch (NumberFormatException e)
     		{
     			return null;
     		}
@@ -175,7 +179,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
     {
     	return integerValueOfObject(representedValue);
     }
-    
+
     public void setIntegerValueOfRepresentedValue(Integer value)
     {
     	representedValue = value;
@@ -184,18 +188,18 @@ public class AdvancedQueryValueComponent extends WCComponent {
     public String commaDelimitedIntegerValuesOfRepresentedValueArray()
     {
     	NSArray<Object> array = (NSArray<Object>)representedValue;
-    	
+
     	StringBuffer buffer = new StringBuffer();
 
-    	if(array != null && array.count() > 0)
+    	if (array != null && array.count() > 0)
     	{
     		buffer.append(array.objectAtIndex(0));
 
-    		for(int i = 1; i < array.count(); i++)
+    		for (int i = 1; i < array.count(); i++)
     		{
     			Integer ival = integerValueOfObject(array.objectAtIndex(i));
-    			
-    			if(ival != null)
+
+    			if (ival != null)
     			{
         			buffer.append(',');
         			buffer.append(ival.toString());
@@ -207,22 +211,24 @@ public class AdvancedQueryValueComponent extends WCComponent {
     }
 
     public void setCommaDelimitedIntegerValuesOfRepresentedValueArray(
-    		String value)
+        String value)
     {
-    	if(value != null)
+    	if (value != null)
     	{
 	    	String[] values = value.split(",");
-	    	
+
 	    	NSMutableArray<Integer> array = new NSMutableArray<Integer>();
-	
-	    	for(String item : values)
+
+	    	for (String item : values)
 	    	{
 	    		Integer ival = integerValueOfObject(item);
-	    		
-	    		if(ival != null)
+
+	    		if (ival != null)
+                {
 	    			array.addObject(ival);
+                }
 	    	}
-	    	
+
 	    	representedValue = array;
     	}
     	else
@@ -244,11 +250,11 @@ public class AdvancedQueryValueComponent extends WCComponent {
 
 	public Double doubleValueOfObject(Object object)
 	{
-		if(object == null)
+		if (object == null)
 		{
 			return null;
 		}
-		else if(object instanceof Number)
+		else if (object instanceof Number)
     	{
     		return ((Number)object).doubleValue();
     	}
@@ -258,7 +264,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
     		{
     			return Double.parseDouble(object.toString().trim());
     		}
-    		catch(NumberFormatException e)
+    		catch (NumberFormatException e)
     		{
     			return null;
     		}
@@ -269,7 +275,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
     {
 		return doubleValueOfObject(representedValue);
     }
-    
+
     public void setDoubleValueOfRepresentedValue(Double value)
     {
     	representedValue = value;
@@ -278,18 +284,18 @@ public class AdvancedQueryValueComponent extends WCComponent {
     public String commaDelimitedDoubleValuesOfRepresentedValueArray()
     {
     	NSArray<Object> array = (NSArray<Object>)representedValue;
-    	
+
     	StringBuffer buffer = new StringBuffer();
 
-    	if(array != null && array.count() > 0)
+    	if (array != null && array.count() > 0)
     	{
     		buffer.append(array.objectAtIndex(0));
 
-    		for(int i = 1; i < array.count(); i++)
+    		for (int i = 1; i < array.count(); i++)
     		{
     			Double dval = doubleValueOfObject(array.objectAtIndex(i));
-    			
-    			if(dval != null)
+
+    			if (dval != null)
     			{
         			buffer.append(',');
         			buffer.append(dval.toString());
@@ -303,20 +309,22 @@ public class AdvancedQueryValueComponent extends WCComponent {
     public void setCommaDelimitedDoubleValuesOfRepresentedValueArray(
     		String value)
     {
-    	if(value != null)
+    	if (value != null)
     	{
 	    	String[] values = value.split(",");
-	    	
+
 	    	NSMutableArray<Double> array = new NSMutableArray<Double>();
-	
-	    	for(String item : values)
+
+	    	for (String item : values)
 	    	{
 	    		Double dval = doubleValueOfObject(item);
 
-	    		if(dval != null)
+	    		if (dval != null)
+                {
 	    			array.addObject(dval);
+                }
 	    	}
-	    	
+
 	    	representedValue = array;
     	}
     	else
@@ -341,20 +349,24 @@ public class AdvancedQueryValueComponent extends WCComponent {
     {
     	return BOOLEAN_VALUES;
     }
-    
+
     public String displayStringForBooleanValue()
     {
     	return booleanValueInList ? "true" : "false";
     }
-    
+
     public Boolean booleanValueOfRepresentedValue()
     {
-    	if(representedValue instanceof Boolean)
+    	if (representedValue instanceof Boolean)
+        {
     		return (Boolean)representedValue;
+        }
     	else
-    		return false;
+        {
+    		return Boolean.FALSE;
+        }
     }
-    
+
     public void setBooleanValueOfRepresentedValue(Boolean value)
     {
     	representedValue = value;
@@ -373,15 +385,15 @@ public class AdvancedQueryValueComponent extends WCComponent {
 
     public NSTimestamp timestampValueOfRepresentedValue()
     {
-    	if(representedValue == null)
+    	if (representedValue == null)
     	{
     		return null;
     	}
-    	else if(representedValue instanceof NSTimestamp)
+    	else if (representedValue instanceof NSTimestamp)
     	{
     		return (NSTimestamp)representedValue;
     	}
-    	else if(representedValue instanceof java.util.Date)
+    	else if (representedValue instanceof java.util.Date)
     	{
     		return new NSTimestamp((java.util.Date)representedValue);
     	}
@@ -400,13 +412,17 @@ public class AdvancedQueryValueComponent extends WCComponent {
 			}
     	}
     }
-    
+
     public void setTimestampValueOfRepresentedValue(java.util.Date value)
     {
-    	if(value instanceof NSTimestamp)
-    		representedValue = (NSTimestamp)value;
+    	if (value instanceof NSTimestamp)
+        {
+    		representedValue = value;
+        }
     	else
+        {
     		representedValue = new NSTimestamp(value);
+        }
     }
 
 
@@ -425,48 +441,52 @@ public class AdvancedQueryValueComponent extends WCComponent {
     	EOClassDescription classDesc =
     		EOClassDescription.classDescriptionForClass(valueType);
     	String entityName = classDesc.entityName();
-    	
+
     	EOFetchSpecification fetchSpec = new EOFetchSpecification(
     			entityName, null, null);
     	fetchSpec.setFetchLimit(250);
-    	
+
     	NSArray<EOEnterpriseObject> objects =
     		localContext().objectsWithFetchSpecification(fetchSpec);
-    	
+
     	return objects;
     }
-    
+
     public String displayStringForEntityValue()
     {
     	return entityValueInList.toString();
     }
-    
+
     public EOEnterpriseObject entityValueOfRepresentedValue()
     {
-    	if(representedValue instanceof EOEnterpriseObject)
+    	if (representedValue instanceof EOEnterpriseObject)
+        {
     		return (EOEnterpriseObject)representedValue;
+        }
     	else
+        {
     		return null;
+        }
     }
-    
+
     public void setEntityValueOfRepresentedValue(EOEnterpriseObject value)
     {
     	representedValue = value;
     }
-    
+
     public NSArray<EOEnterpriseObject> entityValuesOfRepresentedValueArray()
     {
     	NSMutableArray<EOEnterpriseObject> values =
     		new NSMutableArray<EOEnterpriseObject>();
-    	
+
     	NSArray<Object> array = (NSArray<Object>)representedValue;
 
-    	if(array != null)
+    	if (array != null)
     	{
-	    	for(Object object : array)
+	    	for (Object object : array)
 	    	{
-	    		if(object instanceof EOEnterpriseObject &&
-	    				valueType.isAssignableFrom(object.getClass()))
+	    		if (object instanceof EOEnterpriseObject
+                    && valueType.isAssignableFrom(object.getClass()))
 	    		{
 	    			values.addObject((EOEnterpriseObject)object);
 	    		}
@@ -475,7 +495,7 @@ public class AdvancedQueryValueComponent extends WCComponent {
 
     	return values;
     }
-    
+
     public void setEntityValuesOfRepresentedValueArray(
     		NSArray<EOEnterpriseObject> values)
     {

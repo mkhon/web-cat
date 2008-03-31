@@ -17,7 +17,7 @@ public class ProgressManager
 	{
 		if(instance == null)
 			instance = new ProgressManager();
-		
+
 		return instance;
 	}
 
@@ -36,10 +36,10 @@ public class ProgressManager
 	{
 		String token = UUID.randomUUID().toString();
 		beginJobWithToken(token);
-		
+
 		return token;
 	}
-	
+
 	public synchronized void forceJobComplete(Object token)
 	{
 		if(jobExists(token))
@@ -88,7 +88,7 @@ public class ProgressManager
 	{
 		stepJob(token, 1);
 	}
-	
+
 	public synchronized void stepJob(Object token, int delta)
 	{
 		if(jobExists(token))
@@ -116,7 +116,7 @@ public class ProgressManager
 		else
 			return 0;
     }
-    
+
     public boolean isJobDone(Object token)
     {
 		if(jobExists(token))
@@ -124,7 +124,7 @@ public class ProgressManager
 		else
 			return false;
     }
-    
+
     public boolean jobExists(Object token)
     {
     	return jobForToken(token) != null;
@@ -132,7 +132,7 @@ public class ProgressManager
 
 	private Job jobForToken(Object token)
 	{
-		return (Job)jobs.objectForKey(token);
+		return jobs.objectForKey(token);
 	}
 
 	private class Job
@@ -147,7 +147,7 @@ public class ProgressManager
 		public void beginTask(int[] weights, String description)
 		{
 			tasks.addObject(new Task(weights, weights.length, description));
-			
+
 	    	if(description == null)
 		    	logTaskStack("New task with " + weights.length + " units");
 	    	else
@@ -157,43 +157,43 @@ public class ProgressManager
 		public void beginTask(int totalWork, String description)
 		{
 	    	tasks.addObject(new Task(null, totalWork, description));
-	    	
+
 	    	if(description == null)
 		    	logTaskStack("New task with " + totalWork + " units");
 	    	else
 		    	logTaskStack("New task (\"" + description + "\") with " + totalWork + " units");
 		}
-		
+
 		public void beginTask(int[] weights, IProgressManagerDescriptionProvider descriptionProvider)
 		{
 			tasks.addObject(new Task(weights, weights.length, descriptionProvider));
-			
+
 	    	logTaskStack("New task with " + weights.length + " units");
 		}
 
 		public void beginTask(int totalWork, IProgressManagerDescriptionProvider descriptionProvider)
 		{
 	    	tasks.addObject(new Task(null, totalWork, descriptionProvider));
-	    	
+
 	    	logTaskStack("New task with " + totalWork + " units");
 		}
 
 		public void step(int delta)
 		{
 	    	int lastIndex = tasks.count() - 1;
-	    	Task task = (Task)tasks.objectAtIndex(lastIndex);
+	    	Task task = tasks.objectAtIndex(lastIndex);
 	    	task.step(delta);
 		}
-		
+
 		public void completeCurrentTask()
-		{			
+		{
 	    	int lastIndex = tasks.count() - 1;
 	    	tasks.removeObjectAtIndex(lastIndex);
 
 	    	if(tasks.count() == 0)
 	    	{
 	    		setIsDone(true);
-	    	}			
+	    	}
 	    	else
 	    	{
 	    		step(1);
@@ -201,39 +201,41 @@ public class ProgressManager
 
 	    	logTaskStack("Task " + lastIndex + " complete");
 		}
-		
+
 		public String descriptionOfCurrentTask()
 		{
 			int lastIndex = tasks.count() - 1;
-			
-			for(int i = lastIndex; i >= 0; i--)
+
+			for (int i = lastIndex; i >= 0; i--)
 			{
-				Task task = (Task)tasks.objectAtIndex(i);
-				
-				if(task.description() != null)
+				Task task = tasks.objectAtIndex(i);
+
+				if (task.description() != null)
+                {
 					return task.description();
+                }
 			}
-			
+
 			return null;
 		}
 
 		public double percentDone()
 		{
-	    	if(isDone)
+	    	if (isDone)
 	    	{
 	    		return 1;
 	    	}
 
 	    	double workDone = 0, divisor = 1;
-	    	
+
 	    	Enumeration<Task> e = tasks.objectEnumerator();
-	    	while(e.hasMoreElements())
+	    	while (e.hasMoreElements())
 	    	{
 	    		Task task = e.nextElement();
 	    		workDone += task.percentDone() * divisor;
-	    		divisor *= task.nextWeightPercent(); 
+	    		divisor *= task.nextWeightPercent();
 	    	}
-	    	
+
 	    	return workDone;
 		}
 
@@ -246,13 +248,13 @@ public class ProgressManager
 		{
 			isDone = done;
 		}
-		
+
 		private void logTaskStack(String prefix)
 		{
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(prefix);
 			buffer.append(": ");
-			
+
 	    	Enumeration<Task> e = tasks.objectEnumerator();
 	    	while(e.hasMoreElements())
 	    	{
@@ -263,7 +265,7 @@ public class ProgressManager
 	    		buffer.append(task.totalSteps);
 	    		buffer.append(") ");
 	    	}
-	    	
+
 	    	log.debug(buffer.toString());
 		}
 
@@ -274,47 +276,49 @@ public class ProgressManager
 			public int[] weights;
 			public int totalWeight;
 			public int totalSteps;
-			
+
 			private String description;
 			private IProgressManagerDescriptionProvider descriptionProvider;
 
 			public Task(int[] weights, int total, String desc)
 			{
 				initialize(weights, total);
-				
+
 				description = desc;
 			}
 
 			public Task(int[] weights, int total, IProgressManagerDescriptionProvider descProvider)
 			{
 				initialize(weights, total);
-				
+
 				descriptionProvider = descProvider;
 			}
 
-			private void initialize(int[] weights, int total)
+			private void initialize(int[] myWeights, int total)
 			{
-				this.weights = weights;
+				weights = myWeights;
 				totalWeight = 0;
-				
-				if(weights == null)
+
+				if (myWeights == null)
 				{
 					totalWeight = total;
 				}
 				else
 				{
-					for(int weight : weights)
+					for (int weight : myWeights)
+                    {
 						totalWeight += weight;
+                    }
 				}
 
 				weightSoFar = 0;
 				stepsDoneSoFar = 0;
-				totalSteps = total;				
+				totalSteps = total;
 			}
 
 			public double nextWeightPercent()
 			{
-				if(weights == null)
+				if (weights == null)
 				{
 					return 1.0 / totalWeight;
 				}
@@ -328,41 +332,49 @@ public class ProgressManager
 			{
 				int stop = Math.min(totalSteps, stepsDoneSoFar + delta);
 
-				if(weights == null)
+				if (weights == null)
 				{
 					weightSoFar += delta;
 				}
 				else
 				{
-					for(int i = stepsDoneSoFar; i < stop; i++)
+					for (int i = stepsDoneSoFar; i < stop; i++)
+                    {
 						weightSoFar += weights[i];
+                    }
 				}
 
 				stepsDoneSoFar += delta;
 
-				if(stepsDoneSoFar > totalSteps)
+				if (stepsDoneSoFar > totalSteps)
 				{
 					stepsDoneSoFar = totalSteps;
 					weightSoFar = totalWeight;
 				}
 			}
-			
+
 			public double percentDone()
 			{
 				return (double)weightSoFar / (double)totalWeight;
 			}
-			
+
 			public String description()
 			{
-				if(description != null)
+				if (description != null)
+                {
 					return description;
-				else if(descriptionProvider != null)
+                }
+				else if (descriptionProvider != null)
+                {
 					return descriptionProvider.description(jobToken);
+                }
 				else
+                {
 					return null;
+                }
 			}
 		}
-		
+
 		private Object jobToken;
 
 		private boolean isDone;
@@ -373,6 +385,6 @@ public class ProgressManager
 	private NSMutableDictionary<Object, Job> jobs;
 
 	private static ProgressManager instance;
-	
+
 	private static Logger log = Logger.getLogger(ProgressManager.class);
 }
