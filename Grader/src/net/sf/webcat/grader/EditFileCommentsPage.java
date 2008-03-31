@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.8 2008/03/28 03:16:27 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.9 2008/03/31 00:30:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.jdom.output.XMLOutputter;
  * of the source code.
  *
  * @author Stephen Edwards, Hussein Vastani
- * @version $Id: EditFileCommentsPage.java,v 1.8 2008/03/28 03:16:27 stedwar2 Exp $
+ * @version $Id: EditFileCommentsPage.java,v 1.9 2008/03/31 00:30:21 stedwar2 Exp $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -662,7 +662,6 @@ public class EditFileCommentsPage
     //~ Instance/static variables .............................................
 
     private double projectTADeduction          = 0.0;
-    private double toolTestingOtherFiles       = 0.0;
     private double projectToolTestingDeduction = 0.0;
     private String codeWithComments            = null;
     private String codeWithCommentsToStore     = null;
