@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  ReportDataSetQuery.java
+ |  $Id: ReportDataSetQuery.java,v 1.3 2008/04/01 18:27:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -25,20 +25,20 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
  * @author
- * @version $Id: ReportDataSetQuery.java,v 1.2 2008/03/31 01:50:41 stedwar2 Exp $
+ * @version $Id: ReportDataSetQuery.java,v 1.3 2008/04/01 18:27:12 stedwar2 Exp $
  */
 public class ReportDataSetQuery
     extends _ReportDataSetQuery
 {
-    //~ Constructors ..........................................................
+    //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     /**

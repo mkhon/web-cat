@@ -1,3 +1,28 @@
+/*==========================================================================*\
+ |  $Id: QualifierUtils.java,v 1.3 2008/04/01 18:18:06 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2008 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
+
 package net.sf.webcat.reporter;
 
 import com.webobjects.eocontrol.EOAndQualifier;
@@ -14,20 +39,37 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
-
 import er.extensions.ERXInQualifier;
 
+//-------------------------------------------------------------------------
 /**
  * Utility methods to operate on qualifiers.
  *
  * @author Tony Allevato
+ * @version $Id: QualifierUtils.java,v 1.3 2008/04/01 18:18:06 stedwar2 Exp $
  */
 public class QualifierUtils
 {
-	// -----------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * This class provides only static utility methods, so no instance
+     * should ever be created.
+     */
+    private QualifierUtils()
+    {
+        // Nothing to do
+    }
+
+
+
+    //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
 	/**
-	 * Returns a value indicating whether specified qualifier tree can be used
-	 * in a fetch specification.
+	 * Returns a value indicating whether specified qualifier tree can be
+     * used in a fetch specification.
 	 *
 	 * @param q the qualifier to check
 	 * @param entityName the entity being fetched
@@ -43,13 +85,14 @@ public class QualifierUtils
 			q.validateKeysWithRootClassDescription(classDescription);
 			return true;
 		}
-		catch(IllegalStateException e)
+		catch (IllegalStateException e)
 		{
 			return false;
 		}
 	}
 
-	// -----------------------------------------------------------------------
+
+    // ----------------------------------------------------------
 	/**
 	 * Partitions a qualifier two sets -- the set of qualifiers that can be
 	 * used in a fetch specification, and the set of those that cannot. This is
@@ -70,13 +113,13 @@ public class QualifierUtils
 	 *     non-fetchable qualifiers. Either of these entries can be null if
 	 *     there were no qualifiers in either set.
 	 */
-	public static EOQualifier[] partitionQualifier(EOQualifier q,
-			String entityName)
+	public static EOQualifier[] partitionQualifier(
+        EOQualifier q, String entityName)
 	{
 		EOQualifier fetchQualifier = null;
 		EOQualifier nonFetchQualifier = null;
 
-		if(q instanceof EOAndQualifier)
+		if (q instanceof EOAndQualifier)
 		{
 			EOAndQualifier aq = (EOAndQualifier)q;
 
@@ -85,32 +128,45 @@ public class QualifierUtils
 			NSMutableArray<EOQualifier> nonFetchQualifiers =
 				new NSMutableArray<EOQualifier>();
 
-			for(EOQualifier childQ : (NSArray<EOQualifier>)aq.qualifiers())
+			for (EOQualifier childQ : (NSArray<EOQualifier>)aq.qualifiers())
 			{
-				if(isQualifierFetchable(childQ, entityName))
+				if (isQualifierFetchable(childQ, entityName))
+                {
 					fetchQualifiers.addObject(childQ);
+                }
 				else
+                {
 					nonFetchQualifiers.addObject(childQ);
+                }
 			}
 
-			if(fetchQualifiers.count() > 0)
+			if (fetchQualifiers.count() > 0)
+            {
 				fetchQualifier = new EOAndQualifier(fetchQualifiers);
+            }
 
-			if(nonFetchQualifiers.count() > 0)
+			if (nonFetchQualifiers.count() > 0)
+            {
 				nonFetchQualifier = new EOAndQualifier(nonFetchQualifiers);
+            }
 		}
 		else
 		{
-			if(isQualifierFetchable(q, entityName))
+			if (isQualifierFetchable(q, entityName))
+            {
 				fetchQualifier = q;
+            }
 			else
+            {
 				nonFetchQualifier = q;
+            }
 		}
 
 		return new EOQualifier[] { fetchQualifier, nonFetchQualifier };
 	}
 
-	// -----------------------------------------------------------------------
+
+    // ----------------------------------------------------------
 	/**
 	 * Returns a qualifier that represents the condition (key IN choices).
 	 * Currently this returns an OR qualifier of the form
@@ -123,21 +179,21 @@ public class QualifierUtils
 	 *
 	 * @return the qualifier that represents this condition
 	 */
-	public static EOQualifier qualifierForInCondition(String key,
-			NSArray<?> choices)
+	public static EOQualifier qualifierForInCondition(
+        String key, NSArray<?> choices)
 	{
 		NSMutableArray<EOQualifier> terms = new NSMutableArray<EOQualifier>();
 
-		for(Object choice : choices)
+		for (Object choice : choices)
 		{
 			terms.addObject(new EOKeyValueQualifier(key,
-					EOQualifier.QualifierOperatorEqual, choice));
+				EOQualifier.QualifierOperatorEqual, choice));
 		}
-
 		return new EOOrQualifier(terms);
 	}
 
-	// -----------------------------------------------------------------------
+
+    // ----------------------------------------------------------
 	/**
 	 * Checks to see if the qualifier is essentially representative of an IN
 	 * condition. Currently this means that it is an EOOrQualifier for which
@@ -157,24 +213,24 @@ public class QualifierUtils
 		NSMutableDictionary<String, Object> info =
 			new NSMutableDictionary<String, Object>();
 
-		if(q instanceof ERXInQualifier)
+		if (q instanceof ERXInQualifier)
 		{
 			ERXInQualifier iq = (ERXInQualifier)q;
 			info.setObjectForKey(iq.key(), "key");
 			info.setObjectForKey(iq.values(), "values");
 			return info;
 		}
-		else if(q instanceof EOOrQualifier)
+		else if (q instanceof EOOrQualifier)
 		{
 			EOOrQualifier oq = (EOOrQualifier)q;
 			NSArray<EOQualifier> children = oq.qualifiers();
 			NSMutableArray<Object> choices = new NSMutableArray<Object>();
 
-			if(children.count() > 0)
+			if (children.count() > 0)
 			{
 				EOQualifier cq = children.objectAtIndex(0);
 
-				if(cq instanceof EOKeyValueQualifier)
+				if (cq instanceof EOKeyValueQualifier)
 				{
 					EOKeyValueQualifier kvq = (EOKeyValueQualifier)cq;
 
@@ -182,16 +238,16 @@ public class QualifierUtils
 					info.setObjectForKey(firstKey, "key");
 					choices.addObject(kvq.value());
 
-					for(int i = 1; i < children.count(); i++)
+					for (int i = 1; i < children.count(); i++)
 					{
 						cq = children.objectAtIndex(i);
 
-						if(cq instanceof EOKeyValueQualifier)
+						if (cq instanceof EOKeyValueQualifier)
 						{
 							kvq = (EOKeyValueQualifier)cq;
 
 							String key = kvq.key();
-							if(key.equals(firstKey))
+							if (key.equals(firstKey))
 							{
 								choices.addObject(kvq.value());
 							}
@@ -222,7 +278,7 @@ public class QualifierUtils
 	}
 
 
-	// -----------------------------------------------------------------------
+    // ----------------------------------------------------------
 	/**
 	 * Deeply traverses a qualifier tree and returns a new qualifier where
 	 * any EOs have been replaced by EOGlobalIDs that refer to them. This is
@@ -232,64 +288,74 @@ public class QualifierUtils
      * @param ec the editing context to use
 	 * @return a new qualifier that has had EOs replaced by EOGlobalIDs
 	 */
-	public static EOQualifier qualifierWithGIDsForEOs(EOQualifier q,
-			EOEditingContext ec)
+	public static EOQualifier qualifierWithGIDsForEOs(
+        EOQualifier q, EOEditingContext ec)
 	{
-		if(q == null)
+		if (q == null)
 		{
 			return null;
 		}
-		else if(q instanceof EOAndQualifier)
+		else if (q instanceof EOAndQualifier)
 		{
 			EOAndQualifier aq = (EOAndQualifier)q;
 			NSMutableArray<EOQualifier> children =
 				new NSMutableArray<EOQualifier>();
 
-			for(EOQualifier oldChild : (NSArray<EOQualifier>)aq.qualifiers())
+			for (EOQualifier oldChild : (NSArray<EOQualifier>)aq.qualifiers())
+            {
 				children.addObject(qualifierWithGIDsForEOs(oldChild, ec));
-
+            }
 			return new EOAndQualifier(children);
 		}
-		else if(q instanceof EOOrQualifier)
+		else if (q instanceof EOOrQualifier)
 		{
 			EOOrQualifier oq = (EOOrQualifier)q;
 			NSMutableArray<EOQualifier> children =
 				new NSMutableArray<EOQualifier>();
 
-			for(EOQualifier oldChild : (NSArray<EOQualifier>)oq.qualifiers())
+			for (EOQualifier oldChild : (NSArray<EOQualifier>)oq.qualifiers())
+            {
 				children.addObject(qualifierWithGIDsForEOs(oldChild, ec));
-
+            }
 			return new EOOrQualifier(children);
 		}
-		else if(q instanceof EONotQualifier)
+		else if (q instanceof EONotQualifier)
 		{
 			EONotQualifier nq = (EONotQualifier)q;
 			return new EONotQualifier(qualifierWithGIDsForEOs(nq.qualifier(), ec));
 		}
-		else if(q instanceof ERXInQualifier)
+		else if (q instanceof ERXInQualifier)
 		{
 			ERXInQualifier iq = (ERXInQualifier)q;
 			NSMutableArray<Object> values = new NSMutableArray<Object>();
 
-			for(Object value : iq.values())
-				if(value instanceof EOEnterpriseObject)
-					values.addObject(ec.globalIDForObject((EOEnterpriseObject)value));
+			for (Object value : iq.values())
+            {
+				if (value instanceof EOEnterpriseObject)
+                {
+					values.addObject(
+                        ec.globalIDForObject((EOEnterpriseObject)value));
+                }
 				else
+                {
 					values.addObject(value);
-
+                }
+            }
 			return new ERXInQualifier(iq.key(), values);
 		}
-		else if(q instanceof EOKeyValueQualifier)
+		else if (q instanceof EOKeyValueQualifier)
 		{
 			EOKeyValueQualifier kvq = (EOKeyValueQualifier)q;
-
 			Object value;
 
-			if(kvq.value() instanceof EOEnterpriseObject)
+			if (kvq.value() instanceof EOEnterpriseObject)
+            {
 				value = ec.globalIDForObject((EOEnterpriseObject)kvq.value());
+            }
 			else
+            {
 				value = kvq.value();
-
+            }
 			return new EOKeyValueQualifier(kvq.key(), kvq.selector(), value);
 		}
 		else
@@ -299,7 +365,7 @@ public class QualifierUtils
 	}
 
 
-	// -----------------------------------------------------------------------
+    // ----------------------------------------------------------
 	/**
 	 * Deeply traverses a qualifier tree and returns a new qualifier where
 	 * any EOGlobalIDs have been replaced by the EOs that they refer to. This
@@ -310,64 +376,76 @@ public class QualifierUtils
      * @param ec the editing context to use
 	 * @return a new qualifier that has had EOGlobalIDs replaced by EOs
 	 */
-	public static EOQualifier qualifierWithEOsForGIDs(EOQualifier q,
-			EOEditingContext ec)
+	public static EOQualifier qualifierWithEOsForGIDs(
+        EOQualifier q, EOEditingContext ec)
 	{
-		if(q == null)
+		if (q == null)
 		{
 			return null;
 		}
-		else if(q instanceof EOAndQualifier)
+		else if (q instanceof EOAndQualifier)
 		{
 			EOAndQualifier aq = (EOAndQualifier)q;
 			NSMutableArray<EOQualifier> children =
 				new NSMutableArray<EOQualifier>();
 
-			for(EOQualifier oldChild : (NSArray<EOQualifier>)aq.qualifiers())
+			for (EOQualifier oldChild : (NSArray<EOQualifier>)aq.qualifiers())
+            {
 				children.addObject(qualifierWithEOsForGIDs(oldChild, ec));
+            }
 
 			return new EOAndQualifier(children);
 		}
-		else if(q instanceof EOOrQualifier)
+		else if (q instanceof EOOrQualifier)
 		{
 			EOOrQualifier oq = (EOOrQualifier)q;
 			NSMutableArray<EOQualifier> children =
 				new NSMutableArray<EOQualifier>();
 
-			for(EOQualifier oldChild : (NSArray<EOQualifier>)oq.qualifiers())
+			for (EOQualifier oldChild : (NSArray<EOQualifier>)oq.qualifiers())
+            {
 				children.addObject(qualifierWithEOsForGIDs(oldChild, ec));
-
+            }
 			return new EOOrQualifier(children);
 		}
-		else if(q instanceof EONotQualifier)
+		else if (q instanceof EONotQualifier)
 		{
 			EONotQualifier nq = (EONotQualifier)q;
-			return new EONotQualifier(qualifierWithEOsForGIDs(nq.qualifier(), ec));
+			return new EONotQualifier(
+                qualifierWithEOsForGIDs(nq.qualifier(), ec));
 		}
-		else if(q instanceof ERXInQualifier)
+		else if (q instanceof ERXInQualifier)
 		{
 			ERXInQualifier iq = (ERXInQualifier)q;
 			NSMutableArray<Object> values = new NSMutableArray<Object>();
 
-			for(Object value : iq.values())
-				if(value instanceof EOGlobalID)
-					values.addObject(ec.faultForGlobalID((EOGlobalID)value, ec));
+			for (Object value : iq.values())
+            {
+				if (value instanceof EOGlobalID)
+                {
+					values.addObject(
+                        ec.faultForGlobalID((EOGlobalID)value, ec));
+                }
 				else
+                {
 					values.addObject(value);
-
+                }
+            }
 			return new ERXInQualifier(iq.key(), values);
 		}
-		else if(q instanceof EOKeyValueQualifier)
+		else if (q instanceof EOKeyValueQualifier)
 		{
 			EOKeyValueQualifier kvq = (EOKeyValueQualifier)q;
-
 			Object value;
 
-			if(kvq.value() instanceof EOGlobalID)
+			if (kvq.value() instanceof EOGlobalID)
+            {
 				value = ec.faultForGlobalID((EOGlobalID)kvq.value(), ec);
+            }
 			else
+            {
 				value = kvq.value();
-
+            }
 			return new EOKeyValueQualifier(kvq.key(), kvq.selector(), value);
 		}
 		else

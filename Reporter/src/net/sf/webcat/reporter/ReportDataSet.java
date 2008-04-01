@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  ReportDataSet.java
+ |  $Id: ReportDataSet.java,v 1.4 2008/04/01 18:26:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -25,15 +25,15 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
  * @author
- * @version $Id: ReportDataSet.java,v 1.3 2008/03/31 00:44:58 stedwar2 Exp $
+ * @version $Id: ReportDataSet.java,v 1.4 2008/04/01 18:26:22 stedwar2 Exp $
  */
 public class ReportDataSet
     extends _ReportDataSet
@@ -56,8 +56,11 @@ public class ReportDataSet
     public static ReportDataSet createNewReportDataSet(
     		EOEditingContext ec,
     		ReportTemplate reportTemplate,
-    		String uuid, String entityName,
-    		String name, String description, int referenceCount)
+    		String uuid,
+            String entityName,
+    		String name,
+            String description,
+            int    referenceCount)
     {
         ReportDataSet dataSet = new ReportDataSet();
         ec.insertObject( dataSet );
