@@ -1,14 +1,47 @@
+/*==========================================================================*\
+ |  $Id: ReporterDatabaseUpdates.java,v 1.5 2008/04/01 18:56:05 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2008 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
+
 package net.sf.webcat.reporter;
 
 import java.sql.SQLException;
-
+import net.sf.webcat.dbupdate.UpdateSet;
 import org.apache.log4j.Logger;
 
-import net.sf.webcat.dbupdate.UpdateSet;
-
-public class ReporterDatabaseUpdates extends UpdateSet
+//-------------------------------------------------------------------------
+/**
+ * This class captures the SQL database schema for the database tables
+ * underlying the Reporter subsystem and the Reporter.eomodeld.  Logging
+ * output for this class uses its parent class' logger.
+ *
+ * @author Tony Allevato
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.5 2008/04/01 18:56:05 stedwar2 Exp $
+ */
+public class ReporterDatabaseUpdates
+    extends UpdateSet
 {
-    //~ Constructors ..........................................................
+    //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     /**
@@ -67,7 +100,7 @@ public class ReporterDatabaseUpdates extends UpdateSet
         }
 	}
 
-	
+
     // ----------------------------------------------------------
     /**
      * Create the TREPORTDATASET table, if needed.
@@ -115,8 +148,8 @@ public class ReporterDatabaseUpdates extends UpdateSet
                 "ALTER TABLE TREPORTQUERY ADD PRIMARY KEY (OID)");
         }
 	}
-	
-	
+
+
     // ----------------------------------------------------------
     /**
      * Create the TREPORTDATASETQUERY table, if needed.
@@ -138,7 +171,7 @@ public class ReporterDatabaseUpdates extends UpdateSet
                 "ALTER TABLE TREPORTDATASETQUERY ADD PRIMARY KEY (OID)");
         }
 	}
-	
+
 	// ----------------------------------------------------------
     /**
      * Create the TENQUEUEDREPORTJOB table, if needed.
@@ -165,7 +198,7 @@ public class ReporterDatabaseUpdates extends UpdateSet
                 "ALTER TABLE TENQUEUEDREPORTJOB ADD PRIMARY KEY (OID)" );
         }
 	}
-	
+
 
     // ----------------------------------------------------------
     /**
@@ -191,7 +224,7 @@ public class ReporterDatabaseUpdates extends UpdateSet
                 "ALTER TABLE TGENERATEDREPORT ADD PRIMARY KEY (OID)" );
         }
 	}
-	
+
 
 	//~ Instance/static variables .............................................
 
