@@ -1,45 +1,81 @@
-package net.sf.webcat.reporter;
+/*==========================================================================*\
+ |  $Id: DataSetListWithSelection.java,v 1.2 2008/04/01 02:23:14 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
 
-import net.sf.webcat.core.WCComponent;
+package net.sf.webcat.reporter;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
+import net.sf.webcat.core.WCComponent;
 
+//-------------------------------------------------------------------------
 /**
- * This component is used to display a list of data sets that are defined in a
- * report during the query construction phase of report generation. It also
+ * This component is used to display a list of data sets that are defined in
+ * a report during the query construction phase of report generation. It also
  * allows one of the data sets to act as the current "selection" -- this data
- * set will be highlighted and have its description elaborated in the list for
- * emphasis.
- * 
+ * set will be highlighted and have its description elaborated in the list
+ * for emphasis.
+ *
  * @binding dataSets the data sets to be displayed in the list
- * @binding selection a data set equal to one of the elements in dataSets, this
- *     entry will be highlighted when the list is displayed
- * 
+ * @binding selection a data set equal to one of the elements in dataSets,
+ *          this entry will be highlighted when the list is displayed
+ *
  * @author aallowat
+ * @version $Id: DataSetListWithSelection.java,v 1.2 2008/04/01 02:23:14 stedwar2 Exp $
  */
-public class DataSetListWithSelection extends WCComponent
+public class DataSetListWithSelection
+    extends WCComponent
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * This is the default constructor
+     * @param context The page's context
+     */
     public DataSetListWithSelection(WOContext context)
     {
         super(context);
     }
-    
-    // --- Component bindings -----------------------------
-    
+
+
+    //~ KVC Attributes (must be public) .......................................
+
     /**
      * The data sets to iterate over in the list.
      */
     public NSArray<ReportDataSet> dataSets;
-    
+
     /**
      * The current data set that should be highlighted and have its description
      * displayed in the list.
      */
     public ReportDataSet selection;
 
+
     // --- Internal state ---------------------------------
-    
+
     /**
      * The current data set in the iteration.
      */
