@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  ReportTemplate.java
+ |  $Id: ReportTemplate.java,v 1.8 2008/04/01 19:40:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -25,6 +25,8 @@
 
 package net.sf.webcat.reporter;
 
+import com.webobjects.foundation.*;
+import com.webobjects.eocontrol.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,7 +35,9 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-
+import net.sf.webcat.core.MutableDictionary;
+import net.sf.webcat.core.User;
+import net.sf.webcat.oda.RelationInformation;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.IGetParameterDefinitionTask;
@@ -50,24 +54,17 @@ import org.eclipse.birt.report.model.api.ScalarParameterHandle;
 import org.eclipse.birt.report.model.api.SessionHandle;
 import org.eclipse.birt.report.model.api.SlotHandle;
 
-import net.sf.webcat.core.MutableDictionary;
-import net.sf.webcat.core.User;
-import net.sf.webcat.oda.RelationInformation;
-
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
-
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
- * @author
- * @version $Id: ReportTemplate.java,v 1.7 2008/03/31 01:50:41 stedwar2 Exp $
+ * @author aallowat
+ * @version $Id: ReportTemplate.java,v 1.8 2008/04/01 19:40:44 stedwar2 Exp $
  */
 public class ReportTemplate
     extends _ReportTemplate
 {
-    //~ Constructors ..........................................................
+    //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     /**
@@ -159,12 +156,14 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     public String displayableVersion()
     {
     	return displayableVersion(version());
     }
 
 
+    // ----------------------------------------------------------
     public static String displayableVersion(int version)
     {
     	int major = (version >> 16) & 0xFF;
@@ -175,12 +174,14 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     public int versionByIncrementingMajor()
     {
     	return versionByIncrementingMajor(version());
     }
 
 
+    // ----------------------------------------------------------
     public static int versionByIncrementingMajor(int version)
     {
     	int[] components = componentsFromVersion(version);
@@ -189,12 +190,14 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     public int versionByIncrementingMinor()
     {
     	return versionByIncrementingMinor(version());
     }
 
 
+    // ----------------------------------------------------------
     public static int versionByIncrementingMinor(int version)
     {
     	int[] components = componentsFromVersion(version);
@@ -203,12 +206,14 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     public int versionByIncrementingRevision()
     {
     	return versionByIncrementingRevision(version());
     }
 
 
+    // ----------------------------------------------------------
     public static int versionByIncrementingRevision(int version)
     {
     	int[] components = componentsFromVersion(version);
@@ -217,30 +222,35 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     public int versionMajor()
     {
     	return componentsFromVersion(version())[0];
     }
 
 
+    // ----------------------------------------------------------
     public int versionMinor()
     {
     	return componentsFromVersion(version())[1];
     }
 
 
+    // ----------------------------------------------------------
     public int versionRevision()
     {
     	return componentsFromVersion(version())[2];
     }
 
 
+    // ----------------------------------------------------------
     public void setVersion(int major, int minor, int revision)
     {
     	setVersion(versionFromComponents(major, minor, revision));
     }
 
 
+    // ----------------------------------------------------------
     public static int[] componentsFromVersion(int version)
     {
     	int[] components = new int[3];
@@ -251,21 +261,22 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     public static int versionFromComponents(int major, int minor, int revision)
     {
-    	if(revision > 255)
+    	if (revision > 255)
     	{
     		revision = 0;
     		minor++;
     	}
 
-    	if(minor > 255)
+    	if (minor > 255)
     	{
     		minor = 0;
     		major++;
     	}
 
-    	if(major > 255)
+    	if (major > 255)
     	{
     		// This will hopefully never happen!
     		throw new IllegalArgumentException("No version numbers remaining!");
@@ -287,12 +298,14 @@ public class ReportTemplate
 /*    public ReportParameter parameterWithBinding(String binding)
     {
     	Enumeration e = parameters().objectEnumerator();
-    	while(e.hasMoreElements())
+    	while (e.hasMoreElements())
     	{
     		ReportParameter param = (ReportParameter)e.nextElement();
 
-    		if(param.binding().equals(binding))
+    		if (param.binding().equals(binding))
+            {
     			return param;
+            }
     	}
 
     	return null;
@@ -336,10 +349,10 @@ public class ReportTemplate
     {
         String userTemplateDir = userTemplateDirName( author ).toString();
         uploadedName = ( new File( uploadedName ) ).getName();
-        if(uploadedName.endsWith(".rptdesign"))
+        if (uploadedName.endsWith(".rptdesign"))
         {
-        	uploadedName = uploadedName.substring(0,
-        			uploadedName.length() - ".rptdesign".length());
+        	uploadedName = uploadedName.substring(
+                0, uploadedName.length() - ".rptdesign".length());
         	uploadedName += "_" + displayableVersion(version) + ".rptdesign";
         }
 
@@ -388,7 +401,7 @@ public class ReportTemplate
         try
         {
             ReportDesignHandle reportHandle = designSession.openDesign(
-            		template.filePath());
+                template.filePath());
 
 	        String msg = template.initializeAttributes(reportHandle);
 	        if (msg != null )
@@ -412,7 +425,8 @@ public class ReportTemplate
 		}
 		catch(Exception e)
 		{
-			String msg = "There was an internal error opening the report template: "
+			String msg =
+                "There was an internal error opening the report template: "
 				+ e.toString();
 	        errors.setObjectForKey( msg, msg );
 	       	ec.deleteObject( template );
@@ -433,6 +447,7 @@ public class ReportTemplate
 	}
 
 
+    // ----------------------------------------------------------
     public static ReportTemplate createNewReportTemplate(
             EOEditingContext    ec,
             User                author,
@@ -455,7 +470,7 @@ public class ReportTemplate
     	try
     	{
 	        ReportDesignHandle reportHandle = designSession.openDesign(
-	        		template.filePath());
+	            template.filePath());
 
 	        String msg = template.initializeAttributes(reportHandle);
 	        if (msg != null )
@@ -479,7 +494,8 @@ public class ReportTemplate
     	}
     	catch(Exception e)
     	{
-    		String msg = "There was an internal error opening the report template: "
+    		String msg =
+                "There was an internal error opening the report template: "
     			+ e.toString();
             errors.setObjectForKey( msg, msg );
            	ec.deleteObject( template );
@@ -500,6 +516,7 @@ public class ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
     // TODO: This should be redone to mirror the mightDelete(), canDelete(),
     // and didDelete() methods from the Submission class.
     public void deleteTemplate(EOEditingContext ec)
@@ -522,12 +539,13 @@ public class ReportTemplate
     	String title = reportHandle.getStringProperty(
     			ReportDesignHandle.TITLE_PROP);
 
-    	if(title == null || title.trim().length() == 0)
+    	if (title == null || title.trim().length() == 0)
     	{
-    		String msg = "The report template you tried to upload does not have a title. " +
-    			"Please enter one in the <b>Title</b> field of the General Properties " +
-    			"section of the report designer and then upload it again.";
-
+    		String msg =
+                "The report template you tried to upload does not have a "
+                + "title.  Please enter one in the <b>Title</b> field of "
+                + "the General Properties section of the report designer "
+                + "and then upload it again.";
     		return msg;
     	}
 
@@ -540,29 +558,38 @@ public class ReportTemplate
     }
 
 
-    private class DataSetCollector implements IDesignElementVisitor
+    // ----------------------------------------------------------
+    private class DataSetCollector
+        implements IDesignElementVisitor
     {
+        //~ Constructor .......................................................
+
+        // ----------------------------------------------------------
     	public DataSetCollector()
     	{
     		dataSetRefCounts =
     			new NSMutableDictionary<DataSetHandle, Integer>();
     	}
 
+
+        //~ Methods ...........................................................
+
+        // ----------------------------------------------------------
 		public void accept(DesignElementHandle handle)
 		{
-			if(handle instanceof ReportItemHandle)
+			if (handle instanceof ReportItemHandle)
 			{
 				ReportItemHandle repItem = (ReportItemHandle)handle;
 				DataSetHandle dataSet = repItem.getDataSet();
 
-				if(dataSet != null)
+				if (dataSet != null)
 				{
 					String extensionID =
 						dataSet.getStringProperty("extensionID");
 
-		    		if("net.sf.webcat.oda.dataSet".equals(extensionID))
+		    		if ("net.sf.webcat.oda.dataSet".equals(extensionID))
 		    		{
-		    			if(dataSetRefCounts.containsKey(dataSet))
+		    			if (dataSetRefCounts.containsKey(dataSet))
 		    			{
 		    				int count = dataSetRefCounts.objectForKey(dataSet);
 		    				count++;
@@ -570,25 +597,31 @@ public class ReportTemplate
 		    			}
 		    			else
 		    			{
-		    				dataSetRefCounts.setObjectForKey(Integer.valueOf(1),
-		    						dataSet);
+		    				dataSetRefCounts.setObjectForKey(
+                                Integer.valueOf(1), dataSet);
 		    			}
 		    		}
 				}
 			}
 		}
 
+
+        // ----------------------------------------------------------
 		public NSDictionary<DataSetHandle, Integer> dataSetsAndRefCounts()
 		{
 			return dataSetRefCounts;
 		}
+
+
+        //~ Instance/static variables .........................................
 
 		private NSMutableDictionary<DataSetHandle, Integer> dataSetRefCounts;
     }
 
 
     // ----------------------------------------------------------
-    private String processDataSets(EOEditingContext ec, ReportDesignHandle reportHandle)
+    private String processDataSets(
+        EOEditingContext ec, ReportDesignHandle reportHandle)
     {
     	ReportBodyWalker walker = new ReportBodyWalker(reportHandle);
     	DataSetCollector collector = new DataSetCollector();
@@ -597,7 +630,7 @@ public class ReportTemplate
     	NSDictionary<DataSetHandle, Integer> sets =
     		collector.dataSetsAndRefCounts();
 
-    	for(DataSetHandle dataSetHandle : sets.allKeys())
+    	for (DataSetHandle dataSetHandle : sets.allKeys())
     	{
     		int refCount = sets.objectForKey(dataSetHandle);
 
@@ -606,10 +639,14 @@ public class ReportTemplate
 			String queryText = dataSetHandle.getStringProperty("queryText");
 			RelationInformation relation = new RelationInformation(queryText);
 
-			ReportDataSet.createNewReportDataSet(ec, this,
-					relation.getDataSetUuid(),
-					relation.getEntityType(),
-					name, description, refCount);
+			ReportDataSet.createNewReportDataSet(
+                ec,
+                this,
+                relation.getDataSetUuid(),
+                relation.getEntityType(),
+                name,
+                description,
+                refCount);
     	}
 
     	return null;
@@ -618,18 +655,20 @@ public class ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Adds the parameters of the report template to the EO model and sets up
-     * the appropriate associations and dependencies.
+     * Adds the parameters of the report template to the EO model and sets
+     * up the appropriate associations and dependencies.
      */
 /*    private String processParameters(EOEditingContext ec,
     		ReportDesignHandle reportHandle)
     {
     	Iterator it = reportHandle.getAllParameters().iterator();
-    	while(it.hasNext())
+    	while (it.hasNext())
     	{
     		ParameterHandle paramHandleBase = (ParameterHandle)it.next();
-    		if(!(paramHandleBase instanceof ScalarParameterHandle))
+    		if (!(paramHandleBase instanceof ScalarParameterHandle))
+            {
     			continue;
+            }
 
     		ScalarParameterHandle paramHandle =
     			(ScalarParameterHandle)paramHandleBase;
@@ -648,9 +687,9 @@ public class ReportTemplate
 	    		NSDictionary options = parser.getOptions();
 
 	    		ReportParameter.createNewReportParameter(ec, this,
-	    				binding, type, displayName, description, options);
+	    			binding, type, displayName, description, options);
     		}
-    		catch(Exception e)
+    		catch (Exception e)
     		{
     			return "Error processing parameter '" + binding + "': " +
     				e.getMessage();
@@ -658,8 +697,10 @@ public class ReportTemplate
     	}
 
 		String msg = computeAllParameterDependencies();
-		if(msg != null)
+		if (msg != null)
+        {
 			return msg;
+        }
 
     	return null;
     }*/
@@ -673,13 +714,15 @@ public class ReportTemplate
 /*    private String computeAllParameterDependencies()
     {
     	Enumeration e = parameters().objectEnumerator();
-    	while(e.hasMoreElements())
+    	while (e.hasMoreElements())
     	{
     		ReportParameter param = (ReportParameter)e.nextElement();
 
     		String msg = computeDependenciesForParameter(param);
-    		if(msg != null)
+    		if (msg != null)
+            {
     			return msg;
+            }
     	}
 
     	return null;
@@ -695,37 +738,41 @@ public class ReportTemplate
     {
     	NSMutableArray dependentBindings = new NSMutableArray();
 
-    	if(param.hasOption(ReportParameter.OPTION_SOURCE))
+    	if (param.hasOption(ReportParameter.OPTION_SOURCE))
     	{
     		ognl.Node ast = (ognl.Node)param.sourceOption();
 
     		String msg = ognl.OgnlQualifierUtils.computeDependenciesFromOgnlAST(
-    				ast, dependentBindings);
+    			ast, dependentBindings);
 
-    		if(msg != null)
+    		if (msg != null)
+            {
     			return msg;
+            }
     	}
 
-    	if(param.hasOption(ReportParameter.OPTION_FILTER))
+    	if (param.hasOption(ReportParameter.OPTION_FILTER))
     	{
     		ognl.Node ast = (ognl.Node)param.filterOption();
 
     		String msg = ognl.OgnlQualifierUtils.computeDependenciesFromOgnlAST(
-    				ast, dependentBindings);
+    			ast, dependentBindings);
 
-    		if(msg != null)
+    		if (msg != null)
+            {
     			return msg;
+            }
     	}
 
-    	if(param.hasOption(ReportParameter.OPTION_QUALIFIER))
+    	if (param.hasOption(ReportParameter.OPTION_QUALIFIER))
     	{
     		EOQualifier qualifier = param.qualifierOption();
     		Enumeration e = qualifier.bindingKeys().objectEnumerator();
-    		while(e.hasMoreElements())
+    		while (e.hasMoreElements())
     		{
     			String binding = (String)e.nextElement();
 
-    			if(binding.startsWith("selected."))
+    			if (binding.startsWith("selected."))
     			{
     				binding = binding.substring("selected.".length());
     				dependentBindings.addObject(binding);
@@ -736,19 +783,19 @@ public class ReportTemplate
     	String dependString = "";
 
     	Enumeration e = dependentBindings.objectEnumerator();
-    	while(e.hasMoreElements())
+    	while (e.hasMoreElements())
     	{
     		String binding = (String)e.nextElement();
     		dependString += binding + " ";
 
     		ReportParameter dependent = parameterWithBinding(binding);
 
-    		if(dependent == null)
+    		if (dependent == null)
     		{
     			return "Parameter '" + param.binding() + "' depends on " +
     				"non-existant parameter '" + binding + "'.";
     		}
-    		else if(dependent.isDependentOn(param))
+    		else if (dependent.isDependentOn(param))
     		{
     			return "Circular dependency between parameters '" +
     				binding + "' and '" + param.binding() + "'.";
@@ -777,6 +824,7 @@ public class ReportTemplate
     	private boolean[] visited;
     	private int[] reordering;
 
+        // ----------------------------------------------------------
     	/**
     	 * Creates a new sorter and stores the result of sorting the
     	 * specified parameters.
@@ -792,14 +840,22 @@ public class ReportTemplate
     		visited = new boolean[paramCount];
     		reordering = new int[paramCount];
 
-    		for(int i = 0; i < paramCount; i++)
+    		for (int i = 0; i < paramCount; i++)
+            {
     			reordering[i] = -1;
+            }
 
-    		for(int i = 0; i < paramCount; i++)
-    			if(!visited[i])
+    		for (int i = 0; i < paramCount; i++)
+            {
+    			if (!visited[i])
+                {
     				sortRecursive(i);
+                }
+            }
     	}
 
+
+        // ----------------------------------------------------------
     	private void sortRecursive(int index)
     	{
     		visited[index] = true;
@@ -809,7 +865,7 @@ public class ReportTemplate
 
     		Enumeration dependsOn = parameter.dependsOn().objectEnumerator();
 
-    		while(dependsOn.hasMoreElements())
+    		while (dependsOn.hasMoreElements())
     		{
     			ReportParameter dependent =
     				(ReportParameter)dependsOn.nextElement();
@@ -817,13 +873,17 @@ public class ReportTemplate
     			int dependentIndex =
     				parameters.indexOfIdenticalObject(dependent);
 
-    			if(!visited[dependentIndex])
+    			if (!visited[dependentIndex])
+                {
     				sortRecursive(dependentIndex);
+                }
     		}
 
     		reordering[sortedIndex++] = index;
     	}
 
+
+        // ----------------------------------------------------------
     	/**
     	 *
     	 * @return
@@ -832,13 +892,18 @@ public class ReportTemplate
     	{
     		NSMutableArray sorted = new NSMutableArray();
 
-    		for(int i = 0; i < parameters.count(); i++)
+    		for (int i = 0; i < parameters.count(); i++)
+            {
     			sorted.addObject(parameters.objectAtIndex(reordering[i]));
+            }
 
     		return sorted;
     	}
     }*/
 
+
+
+    //~ Instance/static variables .............................................
 
     static private String templateRoot = null;
     static Logger log = Logger.getLogger( ReportTemplate.class );
