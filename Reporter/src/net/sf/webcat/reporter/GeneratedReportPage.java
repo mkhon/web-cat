@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.5 2008/03/31 00:44:58 stedwar2 Exp $
+ |  $Id: GeneratedReportPage.java,v 1.6 2008/04/01 02:42:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.eclipse.birt.core.exception.BirtException;
  * This page displayed a generated report.
  *
  * @author  Anthony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.5 2008/03/31 00:44:58 stedwar2 Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.6 2008/04/01 02:42:25 stedwar2 Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -95,23 +95,21 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public GeneratedReport generatedReport()
     {
-    	if(cachedGeneratedReport == null)
+    	if (cachedGeneratedReport == null)
     	{
 	    	NSArray<GeneratedReport> reports = GeneratedReport.objectsForUuid(
 	    			localContext(), localReportUuid());
 
-	    	if(reports.count() > 0)
+	    	if (reports.count() > 0)
 	    	{
-	    		if(reports.count() != 1)
+	    		if (reports.count() != 1)
 	    		{
 	    			log.warn("There is more than one report with uuid " +
 	    					localReportUuid() + "!");
 	    		}
-
 	    		cachedGeneratedReport = reports.objectAtIndex(0);
 	    	}
     	}
-
     	return cachedGeneratedReport;
     }
 
@@ -121,15 +119,15 @@ public class GeneratedReportPage
     {
     	GeneratedReport report = generatedReport();
 
-    	return (report != null &&
-    			report.isRenderedWithMethod(localRenderingMethod()));
+    	return (report != null
+                && report.isRenderedWithMethod(localRenderingMethod()));
     }
 
 
     // ----------------------------------------------------------
     public NSArray<MutableDictionary> generatedReportErrors()
     {
-    	if(generatedReport() == null)
+    	if (generatedReport() == null)
     	{
     		return null;
     	}
@@ -152,22 +150,22 @@ public class GeneratedReportPage
     {
     	int severity = (Integer)error.objectForKey("severity");
 
-		switch(severity)
+		switch (severity)
 		{
-		case BirtException.OK:
-			return "OK";
+		    case BirtException.OK:
+		        return "OK";
 
-		case BirtException.INFO:
-			return "INFO";
+		    case BirtException.INFO:
+		        return "INFO";
 
-		case BirtException.WARNING:
-			return "WARNING";
+		    case BirtException.WARNING:
+		        return "WARNING";
 
-		case BirtException.ERROR:
-			return "ERROR";
+		    case BirtException.ERROR:
+		        return "ERROR";
 
-		case BirtException.CANCEL:
-			return "CANCEL";
+		    case BirtException.CANCEL:
+		        return "CANCEL";
 		}
 
 		return "ERROR";
@@ -179,20 +177,19 @@ public class GeneratedReportPage
     {
     	int severity = (Integer)error.objectForKey("severity");
 
-		switch(severity)
+		switch (severity)
 		{
-		case BirtException.OK:
-		case BirtException.INFO:
-		case BirtException.CANCEL:
-			return "infoBox";
+		    case BirtException.OK:
+		    case BirtException.INFO:
+		    case BirtException.CANCEL:
+		        return "infoBox";
 
-		case BirtException.WARNING:
-			return "warningBox";
+		    case BirtException.WARNING:
+		        return "warningBox";
 
-		case BirtException.ERROR:
-			return "errorBox";
+		    case BirtException.ERROR:
+		        return "errorBox";
 		}
-
     	return "errorBox";
     }
 
@@ -302,40 +299,12 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     /**
      * Returns the date format string for the corresponding time value
-     * @param timeDelta the time to format
-     * @return the time format to use
-     */
-    public static String formatForSmallTime( long timeDelta )
-    {
-        String format = "%j days, %H:%M:%S";
-        final int minute = 60 * 1000;
-        final int hour   = 60 * minute;
-        final int day    = 24 * hour;
-        if ( timeDelta < minute )
-        {
-            format = "%S seconds";
-        }
-        else if ( timeDelta < hour )
-        {
-            format = "%M:%S minutes";
-        }
-        else if ( timeDelta < day )
-        {
-            format = "%H:%M:%S hours";
-        }
-        return format;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns the date format string for the corresponding time value
      * @return the time format for the estimated job wait
      */
     public String estimatedWaitFormat()
     {
         ensureJobDataIsInitialized();
-        return formatForSmallTime( jobData.estimatedWait );
+        return FinalReportPage.formatForSmallTime( jobData.estimatedWait );
     }
 
 
@@ -347,7 +316,7 @@ public class GeneratedReportPage
     public String mostRecentJobWaitFormat()
     {
         ensureJobDataIsInitialized();
-        return formatForSmallTime( jobData.mostRecentWait );
+        return FinalReportPage.formatForSmallTime( jobData.mostRecentWait );
     }
 
 
@@ -372,30 +341,28 @@ public class GeneratedReportPage
             jobData = new JobData();
             NSMutableArray qualifiers = new NSMutableArray();
             qualifiers.addObject( new EOKeyValueQualifier(
-                            EnqueuedReportJob.DISCARDED_KEY,
-                            EOQualifier.QualifierOperatorEqual,
-                            ERXConstant.integerForInt( 0 )
+                EnqueuedReportJob.DISCARDED_KEY,
+                EOQualifier.QualifierOperatorEqual,
+                ERXConstant.integerForInt( 0 )
             ) );
             qualifiers.addObject( new EOKeyValueQualifier(
-                            EnqueuedReportJob.PAUSED_KEY,
-                            EOQualifier.QualifierOperatorEqual,
-                            ERXConstant.integerForInt( 0 )
+                EnqueuedReportJob.PAUSED_KEY,
+                EOQualifier.QualifierOperatorEqual,
+                ERXConstant.integerForInt( 0 )
             ) );
             EOFetchSpecification fetchSpec =
                 new EOFetchSpecification(
-                        EnqueuedReportJob.ENTITY_NAME,
-                        new EOAndQualifier( qualifiers ),
-                        new NSArray( new Object[]{
-                                new EOSortOrdering(
-                                        EnqueuedReportJob.QUEUE_TIME_KEY,
-                                        EOSortOrdering.CompareAscending
-                                    )
-                            } )
-                    );
-            jobData.jobs =
-                localContext().objectsWithFetchSpecification(
-                    fetchSpec
+                    EnqueuedReportJob.ENTITY_NAME,
+                    new EOAndQualifier( qualifiers ),
+                    new NSArray( new Object[]{
+                        new EOSortOrdering(
+                            EnqueuedReportJob.QUEUE_TIME_KEY,
+                            EOSortOrdering.CompareAscending
+                        )
+                    } )
                 );
+            jobData.jobs =
+                localContext().objectsWithFetchSpecification(fetchSpec);
             jobData.queueSize = jobData.jobs.count();
             if ( oldQueuePos < 0
                  || oldQueuePos >= jobData.queueSize )
@@ -415,14 +382,13 @@ public class GeneratedReportPage
             oldQueuePos = jobData.queuePosition;
             if ( jobData.queuePosition == jobData.queueSize )
             {
-                log.error( "cannot find job in queue for:"
-                           + localEnqueuedJob() );
+                log.error("cannot find job in queue for:" + localEnqueuedJob());
             }
 
-            //Reporter reporter = Reporter.getInstance();
-            jobData.mostRecentWait = 0; //reporter.mostRecentJobWait();
-            jobData.estimatedWait = 0; //
-                //reporter.estimatedJobTime() * ( jobData.queuePosition + 1 );
+            // Reporter reporter = Reporter.getInstance();
+            jobData.mostRecentWait = 0; // reporter.mostRecentJobWait();
+            jobData.estimatedWait = 0;
+            // reporter.estimatedJobTime() * ( jobData.queuePosition + 1 );
         }
     }
 
