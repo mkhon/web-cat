@@ -1,11 +1,36 @@
-package net.sf.webcat.reporter;
+/*==========================================================================*\
+ |  $Id: IRenderingMethod.java,v 1.4 2008/04/01 02:53:44 stedwar2 Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU General Public License as published by
+ |  the Free Software Foundation; either version 2 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU General Public License
+ |  along with Web-CAT; if not, write to the Free Software
+ |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ |
+ |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
+ |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+\*==========================================================================*/
 
-import java.io.IOException;
+package net.sf.webcat.reporter;
 
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSDictionary;
+import java.io.IOException;
 
+//-------------------------------------------------------------------------
 /**
  * The Reporter subsystem class manages a set of objects that implement this
  * IReportRenderingMethod interface. Each of these objects implements a
@@ -13,9 +38,13 @@ import com.webobjects.foundation.NSDictionary;
  * to control the format in which a report is displayed.
  *
  * @author aallowat
+ * @version $Id: IRenderingMethod.java,v 1.4 2008/04/01 02:53:44 stedwar2 Exp $
  */
 public interface IRenderingMethod
 {
+    //~ Constants .............................................................
+
+    // ----------------------------------------------------------
 	/**
 	 * The value of this key passed to renderReport() specifies the resource
 	 * action URL used to request external content displayed on the generated
@@ -23,6 +52,10 @@ public interface IRenderingMethod
 	 */
 	public static final String OPTION_ACTION_URL = "actionURL";
 
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
 	/**
 	 * Gets the internal name of the rendering method. This is the name stored
 	 * in the database and transient page state to determine which rendering
@@ -32,6 +65,8 @@ public interface IRenderingMethod
 	 */
 	String methodName();
 
+
+    // ----------------------------------------------------------
 	/**
 	 * Gets a human-readable name of the rendering method. This is the text
 	 * that is presented to the user in the UI when they are asked to choose
@@ -42,6 +77,8 @@ public interface IRenderingMethod
 	 */
 	String displayName();
 
+
+    // ----------------------------------------------------------
 	/**
 	 * Sets up the necessary resources to render the specified report using
 	 * this rendering method. No rendering is performed upon completion of this
@@ -55,6 +92,8 @@ public interface IRenderingMethod
 	 */
 	Controller prepareToRender(GeneratedReport report, NSDictionary options);
 
+
+    // ----------------------------------------------------------
 	/**
 	 * Appends the rendered report content to the specified response object.
 	 * The nature of this content can differ based on the rendering method;
@@ -67,9 +106,12 @@ public interface IRenderingMethod
      * @param context the context of the response
 	 * @throws IOException if there is an error generating the content
 	 */
-	void appendContentToResponse(GeneratedReport report, WOResponse response,
-			WOContext context) throws IOException;
+	void appendContentToResponse(
+        GeneratedReport report, WOResponse response, WOContext context)
+        throws IOException;
 
+
+    // ----------------------------------------------------------
 	/**
 	 * An object that implements this interface is returned by the
 	 * renderReport() method of each rendering method to control the rendering
@@ -77,6 +119,7 @@ public interface IRenderingMethod
 	 */
 	public interface Controller
 	{
+        // ----------------------------------------------------------
 		/**
 		 * Renders the report that this controller object was created in
 		 * preparation for.
@@ -84,9 +127,11 @@ public interface IRenderingMethod
 		 */
 		void render() throws Exception;
 
+
+        // ----------------------------------------------------------
 		/**
-		 * Cancels the rendering of the report that this controller object was
-		 * created in preparation for.
+		 * Cancels the rendering of the report that this controller object
+         * was created in preparation for.
 		 */
 		void cancel();
 	}
