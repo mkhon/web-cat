@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  GeneratedReport.java
+ |  $Id: GeneratedReport.java,v 1.4 2008/04/01 02:32:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -25,22 +25,20 @@
 
 package net.sf.webcat.reporter;
 
+import com.webobjects.foundation.*;
+import com.webobjects.eocontrol.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import net.sf.webcat.core.User;
-
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
 
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
  * @author
- * @version $Id: GeneratedReport.java,v 1.3 2008/03/31 01:50:41 stedwar2 Exp $
+ * @version $Id: GeneratedReport.java,v 1.4 2008/04/01 02:32:56 stedwar2 Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
@@ -61,6 +59,7 @@ public class GeneratedReport
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
     public static String generatedReportDirForUser(User user)
     {
 
@@ -76,14 +75,16 @@ public class GeneratedReport
     }
 
 
-    public static String generatedReportFilePathForUser(User user,
-    		String uuid)
+    // ----------------------------------------------------------
+    public static String generatedReportFilePathForUser(
+        User user, String uuid)
     {
     	return generatedReportDirForUser(user) + "/" + uuid +
     		".rptdocument";
     }
 
 
+    // ----------------------------------------------------------
     public static String renderedResourcesDir(String uuid)
     {
         StringBuffer dir = new StringBuffer( 50 );
@@ -95,15 +96,19 @@ public class GeneratedReport
         return dir.toString();
     }
 
+
+    // ----------------------------------------------------------
     public static String renderedResourcePath(String uuid, String filename)
     {
     	return renderedResourcesDir(uuid) + "/" + filename;
     }
 
+
+    // ----------------------------------------------------------
     public void markAsRenderedWithMethod(String method)
     {
     	File renderDir = new File(renderedResourcesDir(uuid()));
-    	if(renderDir.exists())
+    	if (renderDir.exists())
     	{
     		try
     		{
@@ -113,35 +118,39 @@ public class GeneratedReport
 				stream.write(0);
 				stream.close();
 			}
-    		catch(IOException e)
+    		catch (IOException e)
     		{
 				log.error("Could not create render-complete token: ", e);
 			}
     	}
     }
 
+
+    // ----------------------------------------------------------
     public boolean isRenderedWithMethod(String method)
     {
     	File renderDir = new File(renderedResourcesDir(uuid()));
-    	if(renderDir.exists())
+    	if (renderDir.exists())
     	{
     		String tokenName = RENDER_TOKEN_PREFIX + method;
     		File renderToken = new File(renderDir, tokenName);
-    		if(renderToken.exists())
+    		if (renderToken.exists())
     		{
     			return true;
     		}
     	}
-
     	return false;
     }
 
+
+    // ----------------------------------------------------------
     public String generatedReportDir()
     {
     	return generatedReportDirForUser(user());
     }
 
 
+    // ----------------------------------------------------------
     public String generatedReportFile()
     {
     	return generatedReportFilePathForUser(user(), uuid());
