@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IProgressManagerDescriptionProvider.java,v 1.3 2008/04/01 02:51:07 stedwar2 Exp $
+ |  $Id: IProgressManagerDescriptionProvider.java,v 1.2 2008/04/01 02:50:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -31,7 +31,7 @@ package net.sf.webcat.reporter;
  * to the {@link ProgressManager}.
  *
  * @author  Anthony Allevato
- * @version $Id: IProgressManagerDescriptionProvider.java,v 1.3 2008/04/01 02:51:07 stedwar2 Exp $
+ * @version $Id: IProgressManagerDescriptionProvider.java,v 1.2 2008/04/01 02:50:25 stedwar2 Exp $
  */
 public interface IProgressManagerDescriptionProvider
 {
@@ -41,7 +41,6 @@ public interface IProgressManagerDescriptionProvider
     /**
      * Get the description for a given job.
      * @param jobToken The job to describe
-     * @return The description.
      */
 	String description(Object jobToken);
 }
