@@ -1,13 +1,13 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
+ |  $Id: StepConfig.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2006-2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
  |  Web-CAT is free software; you can redistribute it and/or modify
- |  it under the terms of the GNU General Public License as published by
- |  the Free Software Foundation; either version 2 of the License, or
+ |  it under the terms of the GNU Affero General Public License as published
+ |  by the Free Software Foundation; either version 3 of the License, or
  |  (at your option) any later version.
  |
  |  Web-CAT is distributed in the hope that it will be useful,
@@ -15,18 +15,14 @@
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  |  GNU General Public License for more details.
  |
- |  You should have received a copy of the GNU General Public License
- |  along with Web-CAT; if not, write to the Free Software
- |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- |
- |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
- |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+ |  You should have received a copy of the GNU Affero General Public License
+ |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
 package net.sf.webcat.grader;
 
-import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 import net.sf.webcat.core.*;
 
 // -------------------------------------------------------------------------
@@ -34,7 +30,7 @@ import net.sf.webcat.core.*;
  * Custom settings for a single grading {@link Step}.
  *
  * @author stedwar2
- * @version $Id: StepConfig.java,v 1.3 2007/05/08 04:58:10 stedwar2 Exp $
+ * @version $Id: StepConfig.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
  */
 public class StepConfig
     extends _StepConfig
@@ -107,7 +103,7 @@ public class StepConfig
      * Retrieve all of the unique step config objects that are either
      * authored by the given user, or are associated with the given script
      * in some assignment in some offering of the given course.
-     * 
+     *
      * @param context The editing context to use
      * @param userBinding fetch spec parameter
      * @param scriptFileBinding fetch spec parameter
@@ -131,7 +127,7 @@ public class StepConfig
         NSMutableArray results = objectsForUser( context, userBinding )
             .mutableClone();
         er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
-            results, 
+            results,
             objectsForCourseAndScript(
                 context, scriptFileBinding, courseBinding )
             );

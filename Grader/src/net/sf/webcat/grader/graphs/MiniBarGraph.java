@@ -1,13 +1,13 @@
 /*==========================================================================*\
- |  $Id: MiniBarGraph.java,v 1.5 2008/03/28 03:13:52 stedwar2 Exp $
+ |  $Id: MiniBarGraph.java,v 1.6 2008/04/02 01:55:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2006-2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
  |  Web-CAT is free software; you can redistribute it and/or modify
- |  it under the terms of the GNU General Public License as published by
- |  the Free Software Foundation; either version 2 of the License, or
+ |  it under the terms of the GNU Affero General Public License as published
+ |  by the Free Software Foundation; either version 3 of the License, or
  |  (at your option) any later version.
  |
  |  Web-CAT is distributed in the hope that it will be useful,
@@ -15,12 +15,8 @@
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  |  GNU General Public License for more details.
  |
- |  You should have received a copy of the GNU General Public License
- |  along with Web-CAT; if not, write to the Free Software
- |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- |
- |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
- |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+ |  You should have received a copy of the GNU Affero General Public License
+ |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
 package net.sf.webcat.grader.graphs;
@@ -30,7 +26,6 @@ import com.webobjects.appserver._private.WODynamicElementCreationException;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSNumberFormatter;
 import java.util.Enumeration;
-
 import net.sf.webcat.core.*;
 
 // -------------------------------------------------------------------------
@@ -38,7 +33,7 @@ import net.sf.webcat.core.*;
  * A dynamic element used to generate tiny bar graphs.
  *
  * @author  Stephen Edwards
- * @version $Id: MiniBarGraph.java,v 1.5 2008/03/28 03:13:52 stedwar2 Exp $
+ * @version $Id: MiniBarGraph.java,v 1.6 2008/04/02 01:55:20 stedwar2 Exp $
  */
 public class MiniBarGraph
     extends DynamicElement
