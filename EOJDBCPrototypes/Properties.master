@@ -8,14 +8,14 @@ EOJDBCPrototypes.version.minor=1
 EOJDBCPrototypes.version.revision=6
 
 EOJDBCPrototypes.copyright=\
-	(c) 2006, 2007 Virginia Tech Department of Computer Science
+	(c) 2006-2008 Virginia Tech Department of Computer Science
 EOJDBCPrototypes.provider=Virginia Tech Computer Science
 EOJDBCPrototypes.provider.url=http\://web-cat.cs.vt.edu/updates
 EOJDBCPrototypes.info.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes
 EOJDBCPrototypes.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes/ChangeHistory
-EOJDBCPrototypes.license=GNU General Public License v.2
-EOJDBCPrototypes.license.url=http\://www.gnu.org/copyleft/gpl.html
+EOJDBCPrototypes.license=GNU Affero General Public License v.3
+EOJDBCPrototypes.license.url=http\://www.gnu.org/licenses/agpl.html
 
 EOJDBCPrototypes.description=\
 	This subsystem provides support services for all other subsystems by \

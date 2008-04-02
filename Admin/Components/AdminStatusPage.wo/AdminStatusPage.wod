@@ -31,6 +31,6 @@ SystemStatus: SystemStatusBlock {
 }
 
 ThrowException: WOSubmitButton {
-    action = throwException;
+    action = throwException;   // VALID
     value = " Force Exception ";
 }

@@ -8,15 +8,15 @@ ExternalJars.version.minor=0
 ExternalJars.version.revision=3
 
 ExternalJars.copyright=\
-	(c) 2007 Virginia Tech Department of Computer Science
+	(c) 2007-2008 Virginia Tech Department of Computer Science
 ExternalJars.provider=Virginia Tech Computer Science
 ExternalJars.provider.url=http\://web-cat.cs.vt.edu/updates
 ExternalJars.info.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/ExternalJarsSubsystem
 ExternalJars.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/ExternalJarsSubsystem/ChangeHistory
-ExternalJars.license=GNU General Public License v.2
-ExternalJars.license.url=http\://www.gnu.org/copyleft/gpl.html
+ExternalJars.license=GNU Affero General Public License v.3
+ExternalJars.license.url=http\://www.gnu.org/licenses/agpl.html
 
 ExternalJars.description=\
 	This subsystem contains all of the external support jars used by Web-CAT \

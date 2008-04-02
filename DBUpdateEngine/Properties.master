@@ -8,14 +8,14 @@ DBUpdateEngine.version.minor=1
 DBUpdateEngine.version.revision=2
 
 DBUpdateEngine.copyright=\
-	(c) 2006, 2007 Virginia Tech Department of Computer Science
+	(c) 2006-2008 Virginia Tech Department of Computer Science
 DBUpdateEngine.provider=Virginia Tech Computer Science
 DBUpdateEngine.provider.url=http\://web-cat.cs.vt.edu/updates
 DBUpdateEngine.info.url=http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine
 DBUpdateEngine.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine/ChangeHistory
-DBUpdateEngine.license=GNU General Public License v.2
-DBUpdateEngine.license.url=http\://www.gnu.org/copyleft/gpl.html
+DBUpdateEngine.license=GNU Affero General Public License v.3
+DBUpdateEngine.license.url=http\://www.gnu.org/licenses/agpl.html
 
 DBUpdateEngine.description=\
     This subsystem provides support services for all other subsystems by \

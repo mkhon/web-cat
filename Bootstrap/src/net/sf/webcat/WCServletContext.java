@@ -1,13 +1,13 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.4 2007/01/30 02:20:48 stedwar2 Exp $
+ |  $Id: WCServletContext.java,v 1.5 2008/04/02 01:01:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2006-2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
  |  Web-CAT is free software; you can redistribute it and/or modify
- |  it under the terms of the GNU General Public License as published by
- |  the Free Software Foundation; either version 2 of the License, or
+ |  it under the terms of the GNU Affero General Public License as published
+ |  by the Free Software Foundation; either version 3 of the License, or
  |  (at your option) any later version.
  |
  |  Web-CAT is distributed in the hope that it will be useful,
@@ -15,12 +15,8 @@
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  |  GNU General Public License for more details.
  |
- |  You should have received a copy of the GNU General Public License
- |  along with Web-CAT; if not, write to the Free Software
- |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- |
- |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
- |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+ |  You should have received a copy of the GNU Affero General Public License
+ |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
 package net.sf.webcat;
@@ -28,7 +24,6 @@ package net.sf.webcat;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-
 import javax.servlet.*;
 
 // -------------------------------------------------------------------------
@@ -41,7 +36,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.4 2007/01/30 02:20:48 stedwar2 Exp $
+ *  @version $Id: WCServletContext.java,v 1.5 2008/04/02 01:01:32 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -71,7 +66,7 @@ public class WCServletContext
      * context-wide initialization parameter, or <code>null</code> if the
      * parameter does not exist.  This version fixes up the WOClasspath
      * parameter to account for dynamically added subsystems.
-     * 
+     *
      * @param name a <code>String</code> containing the name of the parameter
      *             whose value is requested
      * @return a <code>String</code> containing the parameter's value, or
@@ -114,7 +109,7 @@ public class WCServletContext
 //     * a WOClasspath-style value.  Searches the initial classpath value
 //     * for the application's main Contents/Resources/Java directory, and
 //     * adds the subsystem class path right after this entry.
-//     * 
+//     *
 //     * @param classpath the initial classpath, as specified for the WOClasspath
 //     *        initial parameter value entry in the web.xml file for
 //     *        this application; this is a newline-separated list of

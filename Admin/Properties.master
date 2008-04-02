@@ -8,13 +8,13 @@ Admin.version.minor=1
 Admin.version.revision=15
 Admin.requires=Core
 
-Admin.copyright=(c) 2006, 2007 Virginia Tech Department of Computer Science
+Admin.copyright=(c) 2006-2008 Virginia Tech Department of Computer Science
 Admin.provider=Virginia Tech Computer Science
 Admin.provider.url=http\://web-cat.cs.vt.edu/updates
 Admin.info.url=http\://web-cat.cs.vt.edu/WCWiki/AdminSubsystem
 Admin.history.url=http\://web-cat.cs.vt.edu/WCWiki/AdminSubsystem/ChangeHistory
-Admin.license=GNU General Public License v.2
-Admin.license.url=http\://www.gnu.org/copyleft/gpl.html
+Admin.license=GNU Affero General Public License v.3
+Admin.license.url=http\://www.gnu.org/licenses/agpl.html
 
 Admin.description=\
     This subsystem provides tools for Web-CAT administrators to use, \

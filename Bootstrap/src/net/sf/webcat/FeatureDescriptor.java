@@ -1,26 +1,22 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.4 2007/05/08 04:36:20 stedwar2 Exp $
+ |  $Id: FeatureDescriptor.java,v 1.5 2008/04/02 01:01:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2006-2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
  |  Web-CAT is free software; you can redistribute it and/or modify
- |  it under the terms of the GNU General Public License as published by
- |  the Free Software Foundation; either version 2 of the License, or
+ |  it under the terms of the GNU Affero General Public License as published
+ |  by the Free Software Foundation; either version 3 of the License, or
  |  (at your option) any later version.
  |
  |  Web-CAT is distributed in the hope that it will be useful,
  |  but WITHOUT ANY WARRANTY; without even the implied warranty of
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- |  GNU General Public License for more details. 
+ |  GNU General Public License for more details.
  |
- |  You should have received a copy of the GNU General Public License
- |  along with Web-CAT; if not, write to the Free Software
- |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- |
- |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
- |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+ |  You should have received a copy of the GNU Affero General Public License
+ |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
 package net.sf.webcat;
@@ -38,7 +34,7 @@ import java.util.*;
  *  web.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureDescriptor.java,v 1.4 2007/05/08 04:36:20 stedwar2 Exp $
+ *  @version $Id: FeatureDescriptor.java,v 1.5 2008/04/02 01:01:33 stedwar2 Exp $
  */
 public class FeatureDescriptor
 {
@@ -221,7 +217,7 @@ public class FeatureDescriptor
         FeatureDescriptor latest = null;
         FeatureProvider provider = provider();
         if ( provider != null )
-        {            
+        {
             latest = isPlugin()
                 ? provider.pluginDescriptor( name )
                 : provider.subsystemDescriptor( name );
@@ -361,7 +357,7 @@ public class FeatureDescriptor
             // If we shouldn't update this subsystem, skip it
             return null;
         }
-        
+
         FeatureDescriptor latest = providerVersion();
         if ( latest != null && latest.isNewerThan( this ) )
         {

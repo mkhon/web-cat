@@ -10,14 +10,14 @@ ANTForPlugins.requires=Core
 ANTForPlugins.provides=env, pluginProperties
 
 ANTForPlugins.copyright=\
-	(c) 2006, 2007 Virginia Tech Department of Computer Science
+	(c) 2006-2008 Virginia Tech Department of Computer Science
 ANTForPlugins.provider=Virginia Tech Computer Science
 ANTForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 ANTForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/AntForPluginsSubsystem
 ANTForPlugins.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/AntForPluginsSubsystem/ChangeHistory
-ANTForPlugins.license=GNU General Public License v.2
-ANTForPlugins.license.url=http\://www.gnu.org/copyleft/gpl.html
+ANTForPlugins.license=GNU Affero General Public License v.3
+ANTForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 
 ANTForPlugins.description=\
     This subsystem provides <a href\="http\://ant.apache.org/">ANT</a> \

@@ -1,7 +1,3 @@
-Config: WOString {
-    value = subsystem.parameterDescriptions;
-}
-
 OptionEditor: net.sf.webcat.core.OptionSetEditor {
     options           = subsystem.parameterDescriptions.options;
     optionValues      = application.properties;

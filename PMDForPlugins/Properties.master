@@ -10,14 +10,14 @@ PMDForPlugins.requires=Core, ANTForPlugins
 PMDForPlugins.provides=pluginProperties
 
 PMDForPlugins.copyright=\
-	(c) 2006, 2007 Virginia Tech Department of Computer Science
+	(c) 2006-2008 Virginia Tech Department of Computer Science
 PMDForPlugins.provider=Virginia Tech Computer Science
 PMDForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 PMDForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem
 PMDForPlugins.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem/ChangeHistory
-PMDForPlugins.license=GNU General Public License v.2
-PMDForPlugins.license.url=http\://www.gnu.org/copyleft/gpl.html
+PMDForPlugins.license=GNU Affero General Public License v.3
+PMDForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 
 PMDForPlugins.description=\
 	This subsystem provides <a href\="http\://pmd.sf.net/">PMD</a> to \

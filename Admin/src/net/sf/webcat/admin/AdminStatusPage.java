@@ -1,13 +1,13 @@
 /*==========================================================================*\
- |  $Id: AdminStatusPage.java,v 1.2 2006/12/05 00:20:45 stedwar2 Exp $
+ |  $Id: AdminStatusPage.java,v 1.3 2008/04/02 00:56:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2006-2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
  |  Web-CAT is free software; you can redistribute it and/or modify
- |  it under the terms of the GNU General Public License as published by
- |  the Free Software Foundation; either version 2 of the License, or
+ |  it under the terms of the GNU Affero General Public License as published
+ |  by the Free Software Foundation; either version 3 of the License, or
  |  (at your option) any later version.
  |
  |  Web-CAT is distributed in the hope that it will be useful,
@@ -15,20 +15,16 @@
  |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  |  GNU General Public License for more details.
  |
- |  You should have received a copy of the GNU General Public License
- |  along with Web-CAT; if not, write to the Free Software
- |  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- |
- |  Project manager: Stephen Edwards <edwards@cs.vt.edu>
- |  Virginia Tech CS Dept, 660 McBryde Hall (0106), Blacksburg, VA 24061 USA
+ |  You should have received a copy of the GNU Affero General Public License
+ |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
 package net.sf.webcat.admin;
 
 import com.webobjects.appserver.*;
 import com.webobjects.directtoweb.*;
-import net.sf.webcat.core.*;
 import er.extensions.ERXApplication;
+import net.sf.webcat.core.*;
 
 //-------------------------------------------------------------------------
 /**
@@ -36,7 +32,7 @@ import er.extensions.ERXApplication;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: AdminStatusPage.java,v 1.2 2006/12/05 00:20:45 stedwar2 Exp $
+*  @version $Id: AdminStatusPage.java,v 1.3 2008/04/02 00:56:28 stedwar2 Exp $
 */
 public class AdminStatusPage
     extends WCComponent
@@ -46,7 +42,7 @@ public class AdminStatusPage
     // ----------------------------------------------------------
     /**
      * Creates a new AdminStatusPage object.
-     * 
+     *
      * @param context The context to use
      */
     public AdminStatusPage( WOContext context )

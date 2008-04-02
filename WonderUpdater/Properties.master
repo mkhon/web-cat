@@ -8,15 +8,15 @@ WonderUpdater.version.minor=1
 WonderUpdater.version.revision=0
 
 WonderUpdater.copyright=\
-	(c) 2007 Virginia Tech Department of Computer Science
+	(c) 2007-2008 Virginia Tech Department of Computer Science
 WonderUpdater.provider=Virginia Tech Computer Science
 WonderUpdater.provider.url=http\://web-cat.cs.vt.edu/updates
 WonderUpdater.info.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/WonderUpdater
 WonderUpdater.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/WonderUpdater/ChangeHistory
-WonderUpdater.license=GNU General Public License v.2
-WonderUpdater.license.url=http\://www.gnu.org/copyleft/gpl.html
+WonderUpdater.license=GNU Affero General Public License v.3
+WonderUpdater.license.url=http\://www.gnu.org/licenses/agpl.html
 
 WonderUpdater.alsoContains=\
     Ajax.framework,\

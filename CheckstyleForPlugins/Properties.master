@@ -11,15 +11,15 @@ CheckstyleForPlugins.requires=Core, ANTForPlugins
 CheckstyleForPlugins.provides=pluginProperties
 
 CheckstyleForPlugins.copyright=\
-	(c) 2006, 2007 Virginia Tech Department of Computer Science
+	(c) 2006-2008 Virginia Tech Department of Computer Science
 CheckstyleForPlugins.provider=Virginia Tech Computer Science
 CheckstyleForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 CheckstyleForPlugins.info.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/CheckstyleForPluginsSubsystem
 CheckstyleForPlugins.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/CheckstyleForPluginsSubsystem/ChangeHistory
-CheckstyleForPlugins.license=GNU General Public License v.2
-CheckstyleForPlugins.license.url=http\://www.gnu.org/copyleft/gpl.html
+CheckstyleForPlugins.license=GNU Affero General Public License v.3
+CheckstyleForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 
 CheckstyleForPlugins.description=\
     This subsystem provides \

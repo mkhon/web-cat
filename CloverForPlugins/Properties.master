@@ -10,15 +10,15 @@ CloverForPlugins.requires=Core, ANTForPlugins
 CloverForPlugins.provides=pluginProperties
 
 CloverForPlugins.copyright=\
-	(c) 2006, 2007 Virginia Tech Department of Computer Science
+	(c) 2006-2008 Virginia Tech Department of Computer Science
 CloverForPlugins.provider=Virginia Tech Computer Science
 CloverForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
 CloverForPlugins.info.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/CloverForPluginsSubsystem
 CloverForPlugins.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/CloverForPluginsSubsystem/ChangeHistory
-CloverForPlugins.license=GNU General Public License v.2
-CloverForPlugins.license.url=http\://www.gnu.org/copyleft/gpl.html
+CloverForPlugins.license=GNU Affero General Public License v.3
+CloverForPlugins.license.url=http\://www.gnu.org/license/agpl.html
 
 CloverForPlugins.description=\
 	This subsystem provides \

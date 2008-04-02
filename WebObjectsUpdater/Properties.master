@@ -8,15 +8,15 @@ WebObjectsUpdater.version.minor=1
 WebObjectsUpdater.version.revision=2
 
 WebObjectsUpdater.copyright=\
-	(c) 2007 Virginia Tech Department of Computer Science
+	(c) 2007-2008 Virginia Tech Department of Computer Science
 WebObjectsUpdater.provider=Virginia Tech Computer Science
 WebObjectsUpdater.provider.url=http\://web-cat.cs.vt.edu/updates
 WebObjectsUpdater.info.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/WebObjectsUpdater
 WebObjectsUpdater.history.url=\
 	http\://web-cat.cs.vt.edu/WCWiki/WebObjectsUpdater/ChangeHistory
-WebObjectsUpdater.license=GNU General Public License v.2
-WebObjectsUpdater.license.url=http\://www.gnu.org/copyleft/gpl.html
+WebObjectsUpdater.license=GNU Affero General Public License v.3
+WebObjectsUpdater.license.url=http\://www.gnu.org/licenses/agpl.html
 
 WebObjectsUpdater.alsoContains=\
     JavaDirectToWeb.framework,\
