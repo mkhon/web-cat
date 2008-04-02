@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LoggedError.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: LoggedError.java,v 1.3 2008/04/02 01:33:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -17,7 +17,7 @@
  |
  |  You should have received a copy of the GNU Affero General Public License
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
- \*==========================================================================*/
+\*==========================================================================*/
 
 package net.sf.webcat.core;
 
@@ -30,7 +30,7 @@ import com.webobjects.eocontrol.*;
  * the error, and the number of times this specific error has occurred.
  *
  * @author
- * @version $Id: LoggedError.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: LoggedError.java,v 1.3 2008/04/02 01:33:34 stedwar2 Exp $
  */
 public class LoggedError
     extends _LoggedError
