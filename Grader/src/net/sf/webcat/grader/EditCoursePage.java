@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.7 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: EditCoursePage.java,v 1.8 2008/04/03 21:16:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: EditCoursePage.java,v 1.7 2008/04/02 01:55:20 stedwar2 Exp $
+*  @version $Id: EditCoursePage.java,v 1.8 2008/04/03 21:16:38 stedwar2 Exp $
 */
 public class EditCoursePage
     extends GraderCourseEditComponent
@@ -57,7 +57,7 @@ public class EditCoursePage
     public WODisplayGroup      instructorDisplayGroup;
     public WODisplayGroup      TADisplayGroup;
     public Course              course;
-    public User                user;
+    public User                aUser;
     public int                 index;
     public NSArray             semesters;
     public Semester            aSemester;
@@ -102,7 +102,7 @@ public class EditCoursePage
      */
     public boolean matchesUser()
     {
-        return user == user();
+        return aUser == user();
     }
 
 
@@ -113,7 +113,7 @@ public class EditCoursePage
      */
     public WOComponent removeInstructor()
     {
-        courseOffering().removeFromInstructorsRelationship( user );
+        courseOffering().removeFromInstructorsRelationship( aUser );
         return null;
     }
 
@@ -125,7 +125,7 @@ public class EditCoursePage
      */
     public WOComponent removeTA()
     {
-        courseOffering().removeFromTAsRelationship( user );
+        courseOffering().removeFromTAsRelationship( aUser );
         return null;
     }
 
