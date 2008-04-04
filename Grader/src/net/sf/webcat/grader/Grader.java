@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.12 2008/04/04 22:28:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.12 2008/04/04 22:28:58 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -81,19 +81,10 @@ public class Grader
      */
     public void init()
     {
-        // Apply any pending database updates for the grader
-        UpdateEngine.instance().applyNecessaryUpdates(
-                        new GraderDatabaseUpdates() );
+        super.init();
 
         // Install or update any plug-ins that need it
         ScriptFile.autoUpdateAndInstall();
-
-        {
-            NSBundle myBundle = NSBundle.bundleForClass( Grader.class );
-            subsystemTabTemplate = TabDescriptor.tabsFromPropertyList(
-                new NSData ( myBundle.bytesForResourcePath(
-                                 TabDescriptor.TAB_DEFINITIONS ) ) );
-        }
 
         // Create the queue and the queueprocessor
         graderQueue          = new GraderQueue();
@@ -144,7 +135,7 @@ public class Grader
      */
     public void initializeSessionData( Session s )
     {
-        s.tabs.mergeClonedChildren( subsystemTabTemplate );
+        super.initializeSessionData(s);
         try
         {
             EOUtilities.objectsForEntityNamed( s.sessionContext(),
@@ -724,8 +715,6 @@ public class Grader
 
 
     //~ Instance/static variables .............................................
-
-    private static NSArray subsystemTabTemplate;
 
     /**
      * This is a reference to the single instance of this class, representing

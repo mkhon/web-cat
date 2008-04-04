@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.9 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: Reporter.java,v 1.10 2008/04/04 22:30:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -90,7 +90,7 @@ import org.eclipse.birt.report.model.api.SessionHandle;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.9 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: Reporter.java,v 1.10 2008/04/04 22:30:00 stedwar2 Exp $
  */
 public class Reporter
     extends Subsystem
@@ -112,20 +112,6 @@ public class Reporter
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    /**
-     * Initialize the subsystem-specific session data in a newly created
-     * session object.  This method is called once by the core for
-     * each newly created session object.
-     *
-     * @param s The new session object
-     */
-    public void initializeSessionData( Session s )
-    {
-        s.tabs.mergeClonedChildren( subsystemTabTemplate );
-    }
-
-
-    // ----------------------------------------------------------
     /* (non-Javadoc)
      * @see net.sf.webcat.core.Subsystem#init()
      */
@@ -133,24 +119,10 @@ public class Reporter
     {
         super.init();
 
-        // Apply any pending database updates for the grader
-        UpdateEngine.instance().applyNecessaryUpdates(
-            new ReporterDatabaseUpdates() );
-
-        NSBundle myBundle = NSBundle.bundleForClass( Reporter.class );
-
-        // TODO merge the tab template loading support into the Subsystem
-        // base class
-        {
-            subsystemTabTemplate = TabDescriptor.tabsFromPropertyList(
-                new NSData ( myBundle.bytesForResourcePath(
-                                 TabDescriptor.TAB_DEFINITIONS ) ) );
-        }
-
         // Initialize the rendering methods that are available for reporting.
         initializeRenderingMethods();
 
-        // Create the queue and the queueprocessor
+        // Create the queue and the queue processor
         reportQueue          = new ReportQueue();
         reportQueueProcessor = new ReportQueueProcessor( reportQueue );
 
@@ -400,10 +372,6 @@ public class Reporter
 
 
     //~ Instance/static variables .............................................
-
-    // TODO: this should be refactored into the Subsystem parent class,
-    // but that means handling Core in an appropriate way.
-    private static NSArray subsystemTabTemplate;
 
     /**
      * This is the sole instance of the reporter subsystem, initialized by the
