@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickQueryAssistantPage.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: PickQueryAssistantPage.java,v 1.5 2008/04/04 21:00:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import net.sf.webcat.reporter.queryassistants.QueryAssistantManager;
  * This page allows the user to pick which query assistant they want to use.
  *
  * @author aallowat
- * @version $Id: PickQueryAssistantPage.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: PickQueryAssistantPage.java,v 1.5 2008/04/04 21:00:53 aallowat Exp $
  */
 public class PickQueryAssistantPage
     extends ReporterComponent
@@ -60,6 +60,7 @@ public class PickQueryAssistantPage
     public QueryAssistantDescriptor queryAssistant;
     public NSArray<ReportQuery> savedQueries;
     public ReportQuery savedQuery;
+    public ReportQuery selectedSavedQuery;
 
 
     //~ Methods ...............................................................
@@ -122,7 +123,7 @@ public class PickQueryAssistantPage
     // ----------------------------------------------------------
     public WOComponent useSavedQuery()
     {
-    	localPageController().selectNextSavedQuery(savedQuery);
+    	localPageController().selectNextSavedQuery(selectedSavedQuery);
     	return localPageController().nextPage();
     }
 }

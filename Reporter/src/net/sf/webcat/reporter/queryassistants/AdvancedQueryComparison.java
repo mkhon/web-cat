@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryComparison.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: AdvancedQueryComparison.java,v 1.7 2008/04/04 21:00:54 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import net.sf.webcat.reporter.QualifierUtils;
  * by the advanced query assistant.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryComparison.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: AdvancedQueryComparison.java,v 1.7 2008/04/04 21:00:54 aallowat Exp $
  */
 public abstract class AdvancedQueryComparison
 {
@@ -219,7 +219,10 @@ public abstract class AdvancedQueryComparison
         	AdvancedQueryCriterion criterion =
         		comparison._criterionForQualifier(q);
 
-        	criterion.setComparison(comparison);
+        	if(criterion != null)
+        	{
+        	    criterion.setComparison(comparison);
+        	}
 
         	return criterion;
     	}
@@ -544,7 +547,11 @@ public abstract class AdvancedQueryComparison
 	    		{
 	    			bq = (ERXBetweenQualifier)nq.qualifier();
 	    		}
-                // TODO: what if the if fails?  How does bq get a value?
+	    	}
+
+	    	if(bq == null)
+	    	{
+	    	    return null;
 	    	}
 
 	    	criterion.setKeyPath(bq.key());

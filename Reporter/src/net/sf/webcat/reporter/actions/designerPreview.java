@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: designerPreview.java,v 1.6 2008/04/04 21:00:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,7 +47,6 @@ import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.Enumeration;
 import net.sf.webcat.core.Application;
-import net.sf.webcat.oda.WebCATDataException;
 import net.sf.webcat.reporter.QualifierUtils;
 import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
 import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
@@ -65,7 +64,7 @@ import ognl.enhance.ExpressionAccessor;
  * Direct action support for preview actions in the BIRT report designer.
  *
  * @author aallowat
- * @version $Id: designerPreview.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: designerPreview.java,v 1.6 2008/04/04 21:00:53 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -257,10 +256,8 @@ public class designerPreview
     // ----------------------------------------------------------
 	private void setCanceledInSession()
 	{
-		System.out.println("setting canceled");
 		synchronized (designerPreview.class)
 		{
-			System.out.println("inside sync block");
 			session().setObjectForKey(Boolean.TRUE, SESSION_CANCELED);
 		}
 	}

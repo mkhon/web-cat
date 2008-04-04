@@ -17,6 +17,7 @@ SavedQueries: WOPopUpButton {
 	list = savedQueries;
 	item = savedQuery;
 	displayString = savedQuery.description;
+	selection = selectedSavedQuery;
 }
 
 ChooseSavedQuery: WOSubmitButton {
@@ -27,8 +28,4 @@ ChooseSavedQuery: WOSubmitButton {
 Back: WOSubmitButton {
 	value = " < Back ";
 	action = localPageController.previousPage;
-}
-
-TextHinter : AjaxTextHinter {
-	form = "dataSetQueryForm";
 }
