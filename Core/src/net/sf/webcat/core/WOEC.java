@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOEC.java,v 1.3 2008/04/02 00:50:29 stedwar2 Exp $
+ |  $Id: WOEC.java,v 1.4 2008/04/05 17:51:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *  down an obscure WO bug.
  *
  *  @author  Stephen Edwards
- *  @version $Id: WOEC.java,v 1.3 2008/04/02 00:50:29 stedwar2 Exp $
+ *  @version $Id: WOEC.java,v 1.4 2008/04/05 17:51:36 stedwar2 Exp $
  */
 public class WOEC
     extends er.extensions.ERXEC
@@ -154,9 +154,9 @@ public class WOEC
                 for (int i = 0; i < values.count(); i++)
                 {
                     Object value = values.objectAtIndex(i);
-                    if (value instanceof IndependentEOManager.ECManager)
+                    if (value instanceof EOManager.ECManager)
                     {
-                        ((IndependentEOManager.ECManager)value).dispose();
+                        ((EOManager.ECManager)value).dispose();
                     }
                     else if (value instanceof EOEditingContext)
                     {

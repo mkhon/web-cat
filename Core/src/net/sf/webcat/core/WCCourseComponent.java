@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.5 2008/04/02 00:50:29 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.6 2008/04/05 17:51:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @version $Id: WCCourseComponent.java,v 1.5 2008/04/02 00:50:29 stedwar2 Exp $
+ * @version $Id: WCCourseComponent.java,v 1.6 2008/04/05 17:51:36 stedwar2 Exp $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -112,13 +112,13 @@ public class WCCourseComponent
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-    protected IndependentEOManager.ECManager ecManager()
+    protected EOManager.ECManager ecManager()
     {
-        IndependentEOManager.ECManager result = (IndependentEOManager.ECManager)
+        EOManager.ECManager result = (EOManager.ECManager)
             transientState().valueForKey(ECMANAGER_KEY);
         if (result == null)
         {
-            result = new IndependentEOManager.ECManager();
+            result = new EOManager.ECManager();
             transientState().takeValueForKey(result, ECMANAGER_KEY);
         }
         return result;
@@ -131,7 +131,7 @@ public class WCCourseComponent
     private static final String CSM_KEY =
         CoreSelectionsManager.class.getName();
     private static final String ECMANAGER_KEY =
-        IndependentEOManager.ECManager.class.getName();
+        EOManager.ECManager.class.getName();
 
     static Logger log = Logger.getLogger( WCCourseComponent.class );
 }

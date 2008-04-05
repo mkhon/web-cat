@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.16 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: Session.java,v 1.17 2008/04/05 17:51:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.16 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.17 2008/04/05 17:51:36 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -459,9 +459,9 @@ public class Session
             for (int i = 0; i < values.count(); i++)
             {
                 Object value = values.objectAtIndex(i);
-                if (value instanceof IndependentEOManager.ECManager)
+                if (value instanceof EOManager.ECManager)
                 {
-                    ((IndependentEOManager.ECManager)value).dispose();
+                    ((EOManager.ECManager)value).dispose();
                 }
                 else if (value instanceof EOEditingContext)
                 {

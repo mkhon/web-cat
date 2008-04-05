@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderPrefsManager.java,v 1.2 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderPrefsManager.java,v 1.3 2008/04/05 17:52:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,14 +26,14 @@ import net.sf.webcat.core.*;
 
 //-------------------------------------------------------------------------
 /**
- *  An {@link IndependentEOManager} specialized for managing a
+ *  An {@link CachingEOManager} specialized for managing a
  *  {@link GraderPrefs} object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderPrefsManager.java,v 1.2 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: GraderPrefsManager.java,v 1.3 2008/04/05 17:52:15 stedwar2 Exp $
  */
 public class GraderPrefsManager
-    extends IndependentEOManager
+    extends CachingEOManager
 {
     //~ Constructors ..........................................................
 
