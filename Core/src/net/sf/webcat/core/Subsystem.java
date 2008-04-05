@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.9 2008/04/04 22:25:17 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.10 2008/04/05 21:47:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *  communicate with subsystems.
  *
  *  @author Stephen Edwards
- *  @version $Id: Subsystem.java,v 1.9 2008/04/04 22:25:17 stedwar2 Exp $
+ *  @version $Id: Subsystem.java,v 1.10 2008/04/05 21:47:34 stedwar2 Exp $
  */
 public class Subsystem
 {
@@ -171,8 +171,13 @@ public class Subsystem
      */
     public void init()
     {
+        log.debug("init() for " + name());
         updateDbIfNecessary();
         subsystemTabTemplate = loadTabs();
+        if (log.isDebugEnabled())
+        {
+            log.debug("tabs for " + name() + " = " + subsystemTabTemplate);
+        }
     }
 
 
@@ -398,7 +403,7 @@ public class Subsystem
                 TabDescriptor.TAB_DEFINITIONS);
             if (bytes != null && bytes.length > 0)
             {
-                return TabDescriptor.tabsFromPropertyList(new NSData (bytes));
+                return TabDescriptor.tabsFromPropertyList(new NSData(bytes));
             }
         }
         return null;
@@ -576,7 +581,7 @@ public class Subsystem
     private FeatureDescriptor descriptor;
     private NSDictionary      options;
 
-    private static NSArray subsystemTabTemplate;
+    private NSArray subsystemTabTemplate;
 
     static Logger log = Logger.getLogger( Subsystem.class );
 }
