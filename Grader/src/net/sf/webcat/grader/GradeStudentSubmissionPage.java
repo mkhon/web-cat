@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.8 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.9 2008/04/06 21:35:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author Stephen Edwards
- * @version $Id: GradeStudentSubmissionPage.java,v 1.8 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: GradeStudentSubmissionPage.java,v 1.9 2008/04/06 21:35:14 stedwar2 Exp $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -415,7 +415,7 @@ public class GradeStudentSubmissionPage
                 showAutoGradedComments = Boolean.FALSE;
                 for (int i = 0; i < result.submissionFileStats().count(); i++)
                 {
-                    SubmissionFileStats thisStats = (SubmissionFileStats)
+                    SubmissionFileStats thisStats =
                         result.submissionFileStats().objectAtIndex(i);
                     if (thisStats.remarks() > 0)
                     {

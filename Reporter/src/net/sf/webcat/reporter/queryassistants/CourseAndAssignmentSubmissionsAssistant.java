@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.7 2008/04/06 21:37:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -48,7 +48,7 @@ import net.sf.webcat.reporter.ReporterComponent;
  * a specified set of course offerings.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.7 2008/04/06 21:37:24 stedwar2 Exp $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends ReporterComponent
@@ -347,8 +347,7 @@ public class CourseAndAssignmentSubmissionsAssistant
     		{
     			boolean found = false;
 
-       			for (AssignmentOffering ao :
-       				(NSArray<AssignmentOffering>)assn.offerings())
+       			for (AssignmentOffering ao : assn.offerings())
        			{
        				CourseOffering co = ao.courseOffering();
 

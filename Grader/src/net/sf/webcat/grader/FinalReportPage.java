@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.12 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.13 2008/04/06 21:35:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.12 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.13 2008/04/06 21:35:14 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -491,7 +491,7 @@ public class FinalReportPage
                 showAutoGradedComments = Boolean.FALSE;
                 for (int i = 0; i < result.submissionFileStats().count(); i++)
                 {
-                    SubmissionFileStats thisStats = (SubmissionFileStats)
+                    SubmissionFileStats thisStats =
                         result.submissionFileStats().objectAtIndex(i);
                     if (thisStats.remarks() > 0)
                     {
