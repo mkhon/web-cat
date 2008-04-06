@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CachingEOManager.java,v 1.1 2008/04/05 17:51:36 stedwar2 Exp $
+ |  $Id: CachingEOManager.java,v 1.2 2008/04/06 21:30:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * are locally cached as well.
  *
  * @author stedwar2
- * @version $Id: CachingEOManager.java,v 1.1 2008/04/05 17:51:36 stedwar2 Exp $
+ * @version $Id: CachingEOManager.java,v 1.2 2008/04/06 21:30:07 stedwar2 Exp $
  */
 public class CachingEOManager
     implements EOManager,
@@ -246,7 +246,7 @@ public class CachingEOManager
         try
         {
             mirror.addObjectToBothSidesOfRelationshipWithKey(
-                (EORelationshipManipulation)ecm.localize(eo), key);
+                ecm.localize(eo), key);
             EOEnterpriseObject oldMirror = mirror;
             mirror = ecm.saveChanges(mirror);
             if (mirror != oldMirror)
@@ -254,7 +254,7 @@ public class CachingEOManager
                 // retry it once if the save forced an abort and a new
                 // EC was created instead
                 mirror.addObjectToBothSidesOfRelationshipWithKey(
-                    (EORelationshipManipulation)ecm.localize(eo), key);
+                    ecm.localize(eo), key);
                 mirror = ecm.saveChanges(mirror);
             }
         }
@@ -325,7 +325,7 @@ public class CachingEOManager
         try
         {
             mirror.removeObjectFromBothSidesOfRelationshipWithKey(
-                (EORelationshipManipulation)ecm.localize(eo), key);
+                ecm.localize(eo), key);
             EOEnterpriseObject oldMirror = mirror;
             mirror = ecm.saveChanges(mirror);
             if (mirror != oldMirror)
@@ -333,7 +333,7 @@ public class CachingEOManager
                 // retry it once if the save forced an abort and a new
                 // EC was created instead
                 mirror.removeObjectFromBothSidesOfRelationshipWithKey(
-                    (EORelationshipManipulation)ecm.localize(eo), key);
+                    ecm.localize(eo), key);
                 mirror = ecm.saveChanges(mirror);
             }
         }
