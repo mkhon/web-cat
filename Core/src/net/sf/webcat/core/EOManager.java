@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EOManager.java,v 1.1 2008/04/05 17:42:53 stedwar2 Exp $
+ |  $Id: EOManager.java,v 1.2 2008/04/06 21:29:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,9 +26,10 @@ import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.eocontrol.EORelationshipManipulation;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
-
+import com.webobjects.foundation.NSMutableDictionary;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -41,7 +42,7 @@ import org.apache.log4j.Logger;
  * the other objects related to it.
  *
  * @author stedwar2
- * @version $Id: EOManager.java,v 1.1 2008/04/05 17:42:53 stedwar2 Exp $
+ * @version $Id: EOManager.java,v 1.2 2008/04/06 21:29:43 stedwar2 Exp $
  */
 public interface EOManager
     extends NSKeyValueCoding,
@@ -67,31 +68,17 @@ public interface EOManager
 
         // ----------------------------------------------------------
         /**
-         * Get a copy of the given EO in the internal editing context.
-         * @param eo The EO to transfer into the internal EC
-         * @return A local instance of the given EO
-         */
-        protected EOEnterpriseObject localize(EOEnterpriseObject eo)
-        {
-            if (eo == null || eo.editingContext() == ec)
-            {
-                return eo;
-            }
-            else
-            {
-                return EOUtilities.localInstanceOfObject(ec, eo);
-            }
-        }
-
-
-        // ----------------------------------------------------------
-        /**
-         * Get a copy of the given EO in the internal editing context.
-         * @param object The EO to transfer into the internal EC.  If the given
+         * Get a copy of the given object in the given editing context.
+         * @param <T> The type of the object to be localized, which could
+         *  be a concrete EO class
+         * @param context The editing context to localize to
+         * @param object The EO to transfer into the EC.  If the given
          * object is not an EOEnterpriseObject, it is returned unchanged.
-         * @return A local instance of the given EO
+         * If the object is an NSArray or NSDictionary, a copy with
+         * localized internal values is returned.
+         * @return A local instance of the given object
          */
-        protected Object localize(Object object)
+        public static <T> T localize(EOEditingContext context, T object)
         {
             if (object == null)
             {
@@ -99,21 +86,58 @@ public interface EOManager
             }
             else if (object instanceof EOEnterpriseObject)
             {
-                return localize((EOEnterpriseObject)object);
+                if (((EOEnterpriseObject)object).editingContext() == context)
+                {
+                    return object;
+                }
+                else
+                {
+                    return (T)EOUtilities.localInstanceOfObject(
+                        context, (EOEnterpriseObject)object);
+                }
+            }
+            else if (object instanceof NSDictionary)
+            {
+                NSMutableDictionary result =
+                    ((NSDictionary)object).mutableClone();
+                for (Object key : result.allKeys())
+                {
+                    result.takeValueForKey(
+                        localize(context, result.valueForKey((String)key)),
+                        (String)key);
+                }
+                return (T)result;
             }
             else if (object instanceof NSArray)
             {
                 NSMutableArray result = ((NSArray)object).mutableClone();
                 for (int i = 0; i < result.count(); i++)
                 {
-                    result.set(i, localize(result.objectAtIndex(i)));
+                    result.set(i, localize(context, result.objectAtIndex(i)));
                 }
-                return result;
+                return (T)result;
             }
             else
             {
                 return object;
             }
+        }
+
+
+        // ----------------------------------------------------------
+        /**
+         * Get a copy of the given object in the internal editing context.
+         * @param <T> The type of the object to be localized, which could
+         *  be a concrete EO class
+         * @param object The EO to transfer into the EC.  If the given
+         * object is not an EOEnterpriseObject, it is returned unchanged.
+         * If the object is an NSArray or NSDictionary, a copy with
+         * localized internal values is returned.
+         * @return A local instance of the given object
+         */
+        protected <T> T localize(T object)
+        {
+            return localize(ec, object);
         }
 
 
