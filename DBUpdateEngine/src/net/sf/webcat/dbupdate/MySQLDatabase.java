@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MySQLDatabase.java,v 1.2 2008/04/02 01:05:37 stedwar2 Exp $
+ |  $Id: MySQLDatabase.java,v 1.3 2008/04/06 21:24:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,10 +34,10 @@ import org.apache.log4j.Logger;
 /**
  * A default implementation of the {@link Database} interface that works
  * for MySQL (and some others).  If this concrete subclass doesn't work
- * for you, consider subclassing it and overridding whatever is necessary.
+ * for you, consider subclassing it and overriding whatever is necessary.
  *
  * @author  Stephen Edwards
- * @version $Id: MySQLDatabase.java,v 1.2 2008/04/02 01:05:37 stedwar2 Exp $
+ * @version $Id: MySQLDatabase.java,v 1.3 2008/04/06 21:24:55 stedwar2 Exp $
  */
 public class MySQLDatabase
     implements Database
