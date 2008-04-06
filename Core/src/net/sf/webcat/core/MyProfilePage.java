@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.8 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.9 2008/04/06 21:26:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.8 2008/04/02 00:50:26 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.9 2008/04/06 21:26:22 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -148,8 +148,8 @@ public class MyProfilePage
                          && lcPassword.equals( u.lastName().toLowerCase() ) ) )
             {
                 error(
-                    "You may not use your name as a password.  "
-                    + "Please enter a different password." );
+                    "You may not use your first name, last name, or user name "
+                    + "as a password.  Please enter a different password." );
             }
             else if ( newPassword1.equals( u.password() ) )
             {
