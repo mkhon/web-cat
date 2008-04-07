@@ -1,145 +1,161 @@
-/*
- * ************************************************************************
- * Copyright (c) 2007 <<Your Company Name here>>
- * 
- * ************************************************************************
- */
+/*==========================================================================*\
+ |  $Id: DataSetMetaData.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |*-------------------------------------------------------------------------*|
+ |  Copyright (C) 2006-2008 Virginia Tech
+ |
+ |  This file is part of Web-CAT.
+ |
+ |  Web-CAT is free software; you can redistribute it and/or modify
+ |  it under the terms of the GNU Affero General Public License as published
+ |  by the Free Software Foundation; either version 3 of the License, or
+ |  (at your option) any later version.
+ |
+ |  Web-CAT is distributed in the hope that it will be useful,
+ |  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ |  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ |  GNU General Public License for more details.
+ |
+ |  You should have received a copy of the GNU Affero General Public License
+ |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
+\*==========================================================================*/
 
 package net.sf.webcat.oda.core.impl;
 
 import net.sf.webcat.oda.core.Constants;
-
 import org.eclipse.datatools.connectivity.oda.IConnection;
 import org.eclipse.datatools.connectivity.oda.IDataSetMetaData;
 import org.eclipse.datatools.connectivity.oda.IResultSet;
 import org.eclipse.datatools.connectivity.oda.OdaException;
 
+// ------------------------------------------------------------------------
 /**
- * Implementation class of IDataSetMetaData for an ODA runtime driver. <br>
- * For demo purpose, the auto-generated method stubs have hard-coded
- * implementation that assume this custom ODA data set is capable of handling a
- * query that returns a single result set and accepts scalar input parameters by
- * index. A custom ODA driver is expected to implement own data set specific
- * behavior in its place.
+ * Implementation class of IDataSetMetaData for an ODA runtime driver.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: DataSetMetaData.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
  */
 public class DataSetMetaData implements IDataSetMetaData
 {
-	// === Methods ============================================================
+    //~ Constructors ..........................................................
 
-	// ------------------------------------------------------------------------
-	/**
-	 * Creates a new instance of the DataSetMetaData object.
-	 */
-	public DataSetMetaData(IConnection connection)
-	{
-		this.connection = connection;
-	}
-
-
-	// ------------------------------------------------------------------------
-	public IConnection getConnection() throws OdaException
-	{
-		return connection;
-	}
+    // ----------------------------------------------------------
+    /**
+     * Creates a new instance of the DataSetMetaData object.
+     *
+     * @param connection
+     */
+    public DataSetMetaData(IConnection connection)
+    {
+        this.connection = connection;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public IResultSet getDataSourceObjects(String catalog, String schema,
-			String object, String version) throws OdaException
-	{
-		throw new UnsupportedOperationException();
-	}
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    public IConnection getConnection() throws OdaException
+    {
+        return connection;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public int getDataSourceMajorVersion() throws OdaException
-	{
-		return Constants.DATA_SOURCE_MAJOR_VERSION;
-	}
+    // ----------------------------------------------------------
+    public IResultSet getDataSourceObjects(String catalog, String schema,
+            String object, String version) throws OdaException
+    {
+        throw new UnsupportedOperationException();
+    }
 
 
-	// ------------------------------------------------------------------------
-	public int getDataSourceMinorVersion() throws OdaException
-	{
-		return Constants.DATA_SOURCE_MINOR_VERSION;
-	}
+    // ----------------------------------------------------------
+    public int getDataSourceMajorVersion() throws OdaException
+    {
+        return Constants.DATA_SOURCE_MAJOR_VERSION;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public String getDataSourceProductName() throws OdaException
-	{
-		return "Web-CAT Data Source";
-	}
+    // ----------------------------------------------------------
+    public int getDataSourceMinorVersion() throws OdaException
+    {
+        return Constants.DATA_SOURCE_MINOR_VERSION;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public String getDataSourceProductVersion() throws OdaException
-	{
-		return Integer.toString(getDataSourceMajorVersion()) + "." + //$NON-NLS-1$
-				Integer.toString(getDataSourceMinorVersion());
-	}
+    // ----------------------------------------------------------
+    public String getDataSourceProductName() throws OdaException
+    {
+        return "Web-CAT Data Source";
+    }
 
 
-	// ------------------------------------------------------------------------
-	public int getSQLStateType() throws OdaException
-	{
-		return IDataSetMetaData.sqlStateSQL99;
-	}
+    // ----------------------------------------------------------
+    public String getDataSourceProductVersion() throws OdaException
+    {
+        return Integer.toString(getDataSourceMajorVersion()) + "." + //$NON-NLS-1$
+                Integer.toString(getDataSourceMinorVersion());
+    }
 
 
-	// ------------------------------------------------------------------------
-	public boolean supportsMultipleResultSets() throws OdaException
-	{
-		return false;
-	}
+    // ----------------------------------------------------------
+    public int getSQLStateType() throws OdaException
+    {
+        return IDataSetMetaData.sqlStateSQL99;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public boolean supportsMultipleOpenResults() throws OdaException
-	{
-		return false;
-	}
+    // ----------------------------------------------------------
+    public boolean supportsMultipleResultSets() throws OdaException
+    {
+        return false;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public boolean supportsNamedResultSets() throws OdaException
-	{
-		return false;
-	}
+    // ----------------------------------------------------------
+    public boolean supportsMultipleOpenResults() throws OdaException
+    {
+        return false;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public boolean supportsNamedParameters() throws OdaException
-	{
-		return false;
-	}
+    // ----------------------------------------------------------
+    public boolean supportsNamedResultSets() throws OdaException
+    {
+        return false;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public boolean supportsInParameters() throws OdaException
-	{
-		return true;
-	}
+    // ----------------------------------------------------------
+    public boolean supportsNamedParameters() throws OdaException
+    {
+        return false;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public boolean supportsOutParameters() throws OdaException
-	{
-		return false;
-	}
+    // ----------------------------------------------------------
+    public boolean supportsInParameters() throws OdaException
+    {
+        return true;
+    }
 
 
-	// ------------------------------------------------------------------------
-	public int getSortMode()
-	{
-		return IDataSetMetaData.sortModeNone;
-	}
+    // ----------------------------------------------------------
+    public boolean supportsOutParameters() throws OdaException
+    {
+        return false;
+    }
 
 
-	// === Instance Variables =================================================
+    // ----------------------------------------------------------
+    public int getSortMode()
+    {
+        return IDataSetMetaData.sortModeNone;
+    }
 
-	/**
-	 * The connection that created this data set metadata object.
-	 */
-	private IConnection connection;
+
+    //~ Static/Instance Variables .............................................
+
+    /**
+     * The connection that created this data set metadata object.
+     */
+    private IConnection connection;
 }
