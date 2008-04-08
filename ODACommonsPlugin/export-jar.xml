@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: export-jar.xml,v 1.1 2008/04/08 18:20:41 aallowat Exp $ -->
+
+<project default="jar_export" name="build">
+    <target name="jar_export">
+        <jar destfile="../Reporter/webcat-oda-commons.jar"
+            basedir="."
+            includes="**/*.class"/>
+    </target>
+</project>

@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Web-CAT ODA Common Components Plug-in
+Bundle-SymbolicName: net.sf.webcat.oda.commons
+Bundle-Version: 1.0.0
+Bundle-Vendor: Virginia Tech Computer Science
+Export-Package: net.sf.webcat.oda.commons
