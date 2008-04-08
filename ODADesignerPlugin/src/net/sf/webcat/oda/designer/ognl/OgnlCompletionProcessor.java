@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlCompletionProcessor.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: OgnlCompletionProcessor.java,v 1.2 2008/04/08 22:44:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -99,7 +99,10 @@ public class OgnlCompletionProcessor implements IContentAssistProcessor
             {
                 // if behind char is '.', ignore.
                 while ((currentChar = document.getChar(--startOffset)) == '.')
-                    ;
+                {
+                    // Do nothing but read characters.
+                }
+
                 // else reset start offset.
                 currentChar = document.getChar(++startOffset);
                 currentWord = document.get(startOffset + 1, endOffset

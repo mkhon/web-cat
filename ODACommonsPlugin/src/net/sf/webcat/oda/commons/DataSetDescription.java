@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetDescription.java,v 1.1 2008/04/08 18:20:41 aallowat Exp $
+ |  $Id: DataSetDescription.java,v 1.2 2008/04/08 22:44:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -60,7 +60,7 @@ import java.util.List;
  * descriptor.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataSetDescription.java,v 1.1 2008/04/08 18:20:41 aallowat Exp $
+ * @version $Id: DataSetDescription.java,v 1.2 2008/04/08 22:44:23 aallowat Exp $
  */
 public class DataSetDescription
 {
@@ -359,5 +359,5 @@ public class DataSetDescription
         public String name;
         public String expression;
         public String type;
-    };
+    }
 }
