@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ResultSetMetaData.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |  $Id: ResultSetMetaData.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,7 @@
 
 package net.sf.webcat.oda.core.impl;
 
-import net.sf.webcat.oda.RelationInformation;
+import net.sf.webcat.oda.commons.DataSetDescription;
 import org.eclipse.datatools.connectivity.oda.IResultSetMetaData;
 import org.eclipse.datatools.connectivity.oda.OdaException;
 
@@ -30,14 +30,14 @@ import org.eclipse.datatools.connectivity.oda.OdaException;
  * Implementation class of IResultSetMetaData for an ODA runtime driver.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ResultSetMetaData.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ * @version $Id: ResultSetMetaData.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  */
 public class ResultSetMetaData implements IResultSetMetaData
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public ResultSetMetaData(RelationInformation relation)
+    public ResultSetMetaData(DataSetDescription relation)
     {
         this.relation = relation;
     }
@@ -115,5 +115,5 @@ public class ResultSetMetaData implements IResultSetMetaData
      * Relational information about the query that owns this result set metadata
      * object.
      */
-    private RelationInformation relation;
+    private DataSetDescription relation;
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: export-plugin.xml,v 1.1 2008/04/07 20:39:44 aallowat Exp $ -->
+<!-- $Id: export-plugin.xml,v 1.2 2008/04/08 18:27:08 aallowat Exp $ -->
 
 <project default="plugin_export" name="build" basedir=".">
     <target name="plugin_export">
@@ -7,7 +7,7 @@
             destination="../BIRTRuntime/Resources/ReportEngine"
             exportSource="false"
             exportType="directory"
-            plugins="net.sf.webcat.oda"
+            plugins="net.sf.webcat.oda.core"
             useJARFormat="true"/>
     </target>
 </project>

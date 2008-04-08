@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ResultSet.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |  $Id: ResultSet.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,9 +25,9 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import net.sf.webcat.oda.IWebCATResultSet;
-import net.sf.webcat.oda.RelationInformation;
-import net.sf.webcat.oda.WebCATDataException;
+import net.sf.webcat.oda.commons.IWebCATResultSet;
+import net.sf.webcat.oda.commons.DataSetDescription;
+import net.sf.webcat.oda.commons.WebCATDataException;
 import org.eclipse.datatools.connectivity.oda.IBlob;
 import org.eclipse.datatools.connectivity.oda.IClob;
 import org.eclipse.datatools.connectivity.oda.IResultSet;
@@ -39,7 +39,7 @@ import org.eclipse.datatools.connectivity.oda.OdaException;
  * Implementation class of IResultSet for an ODA runtime driver.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ResultSet.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ * @version $Id: ResultSet.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  */
 public class ResultSet implements IResultSet
 {
@@ -56,7 +56,7 @@ public class ResultSet implements IResultSet
      *            the IWebCATResultSet object that is the source of the data for
      *            this result set
      */
-    public ResultSet(RelationInformation relation, IWebCATResultSet results)
+    public ResultSet(DataSetDescription relation, IWebCATResultSet results)
     {
         this.relation = relation;
         this.results = results;
@@ -362,7 +362,7 @@ public class ResultSet implements IResultSet
      * The relation information that describes the query, including its entity
      * type and columns to retrieve.
      */
-    private RelationInformation relation;
+    private DataSetDescription relation;
 
     /**
      * An object containing the result set of the query.

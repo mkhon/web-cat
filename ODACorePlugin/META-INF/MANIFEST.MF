@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %plugin.name
-Bundle-SymbolicName: net.sf.webcat.oda;singleton:=true
+Bundle-SymbolicName: net.sf.webcat.oda.core;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: net.sf.webcat.oda.core.Activator
 Bundle-Localization: plugin
@@ -10,7 +10,7 @@ Export-Package: net.sf.webcat.oda.core;uses:="net.sf.webcat.oda,org.osgi.framewo
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.datatools.connectivity.oda;bundle-version="[3.1.0,4.0.0)",
  org.eclipse.datatools.connectivity.oda.profile;bundle-version="[3.0.4,4.0.0)";resolution:=optional,
- net.sf.webcat.oda.interfaces;resolution:=optional;visibility:=reexport
+ net.sf.webcat.oda.commons;resolution:=optional;visibility:=reexport
 Eclipse-BuddyPolicy: app
 Eclipse-LazyStart: true
 Bundle-Vendor: Virginia Tech Computer Science

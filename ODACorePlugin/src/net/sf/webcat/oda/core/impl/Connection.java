@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Connection.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |  $Id: Connection.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.oda.core.impl;
 import java.util.Map;
 import java.util.Properties;
 
-import net.sf.webcat.oda.IWebCATResultSetProvider;
+import net.sf.webcat.oda.commons.IWebCATResultSetProvider;
 import net.sf.webcat.oda.core.Activator;
 import net.sf.webcat.oda.core.Constants;
 
@@ -39,7 +39,7 @@ import org.eclipse.datatools.connectivity.oda.OdaException;
  * Implementation class of IConnection for an ODA runtime driver.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: Connection.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ * @version $Id: Connection.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  */
 public class Connection implements IConnection
 {

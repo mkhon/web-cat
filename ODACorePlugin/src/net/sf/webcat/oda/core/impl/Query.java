@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Query.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |  $Id: Query.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,10 +25,10 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import net.sf.webcat.oda.IWebCATResultSet;
-import net.sf.webcat.oda.IWebCATResultSetProvider;
-import net.sf.webcat.oda.RelationInformation;
-import net.sf.webcat.oda.WebCATDataException;
+import net.sf.webcat.oda.commons.IWebCATResultSet;
+import net.sf.webcat.oda.commons.IWebCATResultSetProvider;
+import net.sf.webcat.oda.commons.DataSetDescription;
+import net.sf.webcat.oda.commons.WebCATDataException;
 import org.eclipse.datatools.connectivity.oda.IParameterMetaData;
 import org.eclipse.datatools.connectivity.oda.IResultSet;
 import org.eclipse.datatools.connectivity.oda.IResultSetMetaData;
@@ -45,7 +45,7 @@ import org.eclipse.datatools.connectivity.oda.SortSpec;
  * behavior in its place.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @author $Id: Query.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ * @author $Id: Query.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
  */
 public class Query implements IQuery
 {
@@ -63,11 +63,11 @@ public class Query implements IQuery
     // -----------------------------------------------------------
     public void prepare(String queryText) throws OdaException
     {
-        relation = new RelationInformation(queryText);
+        relation = new DataSetDescription(queryText);
 
         // Find the Web-CAT result set associated with this query.
-        String dataSetUuid = relation.getDataSetUuid();
-        results = resultSets.resultSetWithUuid(dataSetUuid);
+        String dataSetId = relation.getUniqueId();
+        results = resultSets.resultSetWithId(dataSetId);
 
         String[] expressions = new String[relation.getColumnCount()];
         for (int i = 0; i < relation.getColumnCount(); i++)
@@ -323,7 +323,7 @@ public class Query implements IQuery
     /**
      * A RelationInformation object that describes the query.
      */
-    private RelationInformation relation;
+    private DataSetDescription relation;
 
     /**
      * A result set provider that maintains the result sets for the report that
