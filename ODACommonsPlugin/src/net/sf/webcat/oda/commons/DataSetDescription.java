@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetDescription.java,v 1.2 2008/04/08 22:44:23 aallowat Exp $
+ |  $Id: DataSetDescription.java,v 1.3 2008/04/11 03:46:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -60,7 +60,7 @@ import java.util.List;
  * descriptor.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataSetDescription.java,v 1.2 2008/04/08 22:44:23 aallowat Exp $
+ * @version $Id: DataSetDescription.java,v 1.3 2008/04/11 03:46:25 aallowat Exp $
  */
 public class DataSetDescription
 {
@@ -184,15 +184,18 @@ public class DataSetDescription
 
     // ----------------------------------------------------------
     /**
+     * <p>
      * Gets the unique identifier assigned to this data set.
-     *
+     * </p><p>
      * Unique identifiers are reassigned when a report template is uploaded to
      * Web-CAT, to ensure true uniqueness. This identifier takes the form of a
      * URL constructed based on the server hostname and a report template
      * identification number.
-     *
-     * After a report template is created but before it is uploaded to the
-     * server, a temporary URL-like string is used with a generic UUID.
+     * </p><p>
+     * Before a template is uploaded to Web-CAT, it is assigned a temporary
+     * random unique identifier for the purposes of saving preview queries for
+     * the user.
+     * </p>
      *
      * @return the unique identifier of the data set
      */

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IWebCATResultSetProvider.java,v 1.1 2008/04/08 18:20:41 aallowat Exp $
+ |  $Id: IWebCATResultSetProvider.java,v 1.2 2008/04/11 03:46:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,11 +27,11 @@ package net.sf.webcat.oda.commons;
  * the reporting engine. Since a report can contain multiple data sets, each
  * data set is identified by a unique identifier, which is assigned when the
  * report is uploaded to Web-CAT (a placeholder is used until then for
- * previewing purposes. This interface permits access to the data behind those
+ * previewing purposes). This interface permits access to the data behind those
  * data sets by selecting them with their unique identifier.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: IWebCATResultSetProvider.java,v 1.1 2008/04/08 18:20:41 aallowat Exp $
+ * @version $Id: IWebCATResultSetProvider.java,v 1.2 2008/04/11 03:46:25 aallowat Exp $
  */
 public interface IWebCATResultSetProvider
 {
@@ -39,7 +39,7 @@ public interface IWebCATResultSetProvider
 
     // ----------------------------------------------------------
     /**
-     * Returns the result set for the data set with the specified UUID.
+     * Returns the result set for the data set with the specified unique ID.
      *
      * @param id
      *            the unique identifier of the data set whose results should be
