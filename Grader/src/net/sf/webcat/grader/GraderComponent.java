@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.12 2008/04/11 23:06:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,6 +25,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+
 import er.extensions.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.12 2008/04/11 23:06:05 stedwar2 Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -131,6 +132,15 @@ public class GraderComponent
     }
 
 
+    // ----------------------------------------------------------
+    @Override
+    public void changeWorkflow()
+    {
+        super.changeWorkflow();
+        resetPrimeUser();
+    }
+
+
     //~ Protected Methods .....................................................
 
     // ----------------------------------------------------------
@@ -141,6 +151,22 @@ public class GraderComponent
     {
         prefs = new GraderPrefsManager(
             getGraderPrefs(), ecManager());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * If the current page should reset the prime user when you leave it,
+     * this method will do the job.
+     */
+    public void resetPrimeUser()
+    {
+        NSDictionary config = currentTab().config();
+        if ( config != null
+             && config.objectForKey( "resetPrimeUser" ) != null )
+        {
+            setLocalUser( wcSession().primeUser() );
+        }
     }
 
 

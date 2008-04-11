@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.5 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.6 2008/04/11 23:06:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @version $Id: ConfirmSubmissionPage.java,v 1.5 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: ConfirmSubmissionPage.java,v 1.6 2008/04/11 23:06:05 stedwar2 Exp $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -182,13 +182,7 @@ public class ConfirmSubmissionPage
         }
         else
         {
-            NSDictionary config =
-                wcSession().tabs.selectedDescendant().config();
-            if ( config != null
-                 && config.objectForKey( "resetPrimeUser" ) != null )
-            {
-                setLocalUser( wcSession().primeUser() );
-            }
+            resetPrimeUser();
             return super.next();
         }
     }
@@ -198,12 +192,7 @@ public class ConfirmSubmissionPage
     public void cancelLocalChanges()
     {
         clearSubmission();
-        NSDictionary config = wcSession().tabs.selectedDescendant().config();
-        if ( config != null
-             && config.objectForKey( "resetPrimeUser" ) != null )
-        {
-            setLocalUser( wcSession().primeUser() );
-        }
+        resetPrimeUser();
         super.cancelLocalChanges();
     }
 

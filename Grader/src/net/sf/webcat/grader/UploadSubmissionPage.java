@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.8 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.9 2008/04/11 23:06:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.8 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.9 2008/04/11 23:06:05 stedwar2 Exp $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -289,12 +289,7 @@ public class UploadSubmissionPage
     public void cancelLocalChanges()
     {
         clearSubmission();
-        NSDictionary config = wcSession().tabs.selectedDescendant().config();
-        if ( config != null
-             && config.objectForKey( "resetPrimeUser" ) != null )
-        {
-            setLocalUser( wcSession().primeUser() );
-        }
+        resetPrimeUser();
         super.cancelLocalChanges();
     }
 
