@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.7 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.8 2008/04/11 22:50:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Present a complete, printable view of all feedback about this submission.
  *
  * @author Stephen Edwards
- * @version $Id: FullPrintableReport.java,v 1.7 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: FullPrintableReport.java,v 1.8 2008/04/11 22:50:04 stedwar2 Exp $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -70,7 +70,7 @@ public class FullPrintableReport
     {
         if ( task == null )
         {
-            task = new LongResponseTask( user(), result );
+            task = new LongResponseTask( user(), result, context() );
         }
         return task;
     }
@@ -155,13 +155,15 @@ public class FullPrintableReport
      * response.  The return value produced by performAction() is an
      * array of {@link Pair}s.
      */
-    public class LongResponseTask
+    public static class LongResponseTask
         extends InterpolatingLongResponseTask
     {
 
         // ----------------------------------------------------------
-        public LongResponseTask( User viewer, SubmissionResult theResult )
+        public LongResponseTask(
+            User viewer, SubmissionResult theResult, WOContext context)
         {
+            this.context = context;
             // Create a local EC, transfer the result into it, and
             // store both locally
             ec = Application.newPeerEditingContext();
@@ -210,7 +212,7 @@ public class FullPrintableReport
             }
             catch ( Exception e )
             {
-                Application.emailExceptionToAdmins( e, context(),
+                Application.emailExceptionToAdmins( e, context,
                     "Exception in setUpTask() preparing full printable report."
                     );
             }
@@ -231,7 +233,7 @@ public class FullPrintableReport
             {
                 ec.lock();
                 pairs[stepNumber].html = pairs[stepNumber].file
-                    .codeWithComments( user, false, context().request() );
+                    .codeWithComments( user, false, context.request() );
             }
             catch ( Exception e )
             {
@@ -264,6 +266,7 @@ public class FullPrintableReport
         private EOEditingContext ec;
         private SubmissionResult submissionResult;
         private User             user;
+        private WOContext        context;
     }
 
 
