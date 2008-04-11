@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Constants.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: Constants.java,v 1.3 2008/04/11 04:15:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,5 +29,5 @@ public interface Constants
 
     public static final String PROP_ENTITY_TYPE = "entityType"; //$NON-NLS-1$
 
-    public static final String PROP_DATA_SET_UUID = "dataSetUUID"; //$NON-NLS-1$
+    public static final String PROP_DATA_SET_ID = "dataSetId"; //$NON-NLS-1$
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebCATInformationHolder.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: WebCATInformationHolder.java,v 1.2 2008/04/11 04:15:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -66,13 +66,15 @@ public class WebCATInformationHolder
 
             DataSetDescription info = new DataSetDescription(queryText);
             String entityType = info.getEntityType();
-            String uuid = info.getUniqueId();
+            String dataSetId = info.getUniqueId();
 
             setPropertyValue(Constants.PROP_ENTITY_TYPE, entityType);
-            setPropertyValue(Constants.PROP_DATA_SET_UUID, uuid);
+            setPropertyValue(Constants.PROP_DATA_SET_ID, dataSetId);
         }
         else
         {
+            // Initialize the data set description with default values.
+
             DataSetDescription relation = new DataSetDescription();
             relation.setEntityType("Submission");
             relation.setUniqueId(UUID.randomUUID().toString());
@@ -80,10 +82,6 @@ public class WebCATInformationHolder
             setPropertyValue(Constants.PROP_RELATION_INFORMATION, relation
                     .getQueryText());
         }
-
-        //		if(dataSetDesign.getPrivateProperties() != null)
-        //		{
-        //		}
     }
 
 

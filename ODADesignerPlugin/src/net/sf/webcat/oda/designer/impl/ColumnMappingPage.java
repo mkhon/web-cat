@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingPage.java,v 1.2 2008/04/11 01:58:56 aallowat Exp $
+ |  $Id: ColumnMappingPage.java,v 1.3 2008/04/11 04:15:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,6 +36,7 @@ import net.sf.webcat.oda.designer.preview.PreviewQueryClause;
 import net.sf.webcat.oda.designer.preview.PreviewingResultCache;
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.eclipse.birt.report.model.api.DataSetHandle;
 import org.eclipse.datatools.connectivity.oda.OdaException;
 import org.eclipse.datatools.connectivity.oda.design.DataSetDesign;
 import org.eclipse.datatools.connectivity.oda.design.Property;
@@ -432,7 +433,7 @@ public class ColumnMappingPage extends DataSetWizardPage
         DataSetDescription relation = new DataSetDescription(queryText);
         WebCATInformationHolder.setPropertyValue(Constants.PROP_ENTITY_TYPE,
                 relation.getEntityType());
-        WebCATInformationHolder.setPropertyValue(Constants.PROP_DATA_SET_UUID,
+        WebCATInformationHolder.setPropertyValue(Constants.PROP_DATA_SET_ID,
                 relation.getUniqueId());
     }
 
@@ -824,7 +825,7 @@ public class ColumnMappingPage extends DataSetWizardPage
             {
                 java.util.Properties utilProps = new java.util.Properties();
                 utilProps.setProperty(Constants.PROP_ENTITY_TYPE, "");
-                utilProps.setProperty(Constants.PROP_DATA_SET_UUID, "");
+                utilProps.setProperty(Constants.PROP_DATA_SET_ID, "");
 
                 dataSetDesign.setPrivateProperties(DesignSessionUtil
                         .createDataSetNonPublicProperties(dataSetDesign
@@ -843,19 +844,24 @@ public class ColumnMappingPage extends DataSetWizardPage
 
             property = dataSetDesign.getPrivateProperties().findProperty(
                     Constants.PROP_ENTITY_TYPE);
+
             if (property != null)
+            {
                 property.setNameValue(Constants.PROP_ENTITY_TYPE,
                         WebCATInformationHolder
                                 .getPropertyValue(Constants.PROP_ENTITY_TYPE));
+            }
 
             property = dataSetDesign.getPrivateProperties().findProperty(
-                    Constants.PROP_DATA_SET_UUID);
+                    Constants.PROP_DATA_SET_ID);
+
             if (property != null)
-                property
-                        .setNameValue(
-                                Constants.PROP_DATA_SET_UUID,
+            {
+                property.setNameValue(
+                                Constants.PROP_DATA_SET_ID,
                                 WebCATInformationHolder
-                                        .getPropertyValue(Constants.PROP_DATA_SET_UUID));
+                                        .getPropertyValue(Constants.PROP_DATA_SET_ID));
+            }
         }
     }
 
