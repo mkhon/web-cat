@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlExpressionBuilder.java,v 1.1 2008/04/08 18:31:02 aallowat Exp $
+ |  $Id: OgnlExpressionBuilder.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -178,37 +178,37 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
         MenuItem item;
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("min");
+        item.setText("min"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_MIN));
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("max");
+        item.setText("max"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_MAX));
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("floor");
+        item.setText("floor"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_FLOOR));
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("ceil");
+        item.setText("ceil"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_CEIL));
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("round");
+        item.setText("round"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_ROUND));
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("abs");
+        item.setText("abs"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_ABS));
 
         item = new MenuItem(mathTemplateMenu, SWT.PUSH);
-        item.setText("signum");
+        item.setText("signum"); //$NON-NLS-1$
         item
                 .addSelectionListener(selectionAdapterForTemplate(OgnlBuilderTemplates.TEMPLATE_SIGNUM));
     }
@@ -229,7 +229,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
         composite.setLayout(layout);
 
         Label label = new Label(composite, SWT.NONE);
-        label.setText("OGNL templates:");
+        label.setText(Messages.EXPR_BUILDER_OGNL_TEMPLATES);
         gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 
         templateBar = new ToolBar(composite, SWT.FLAT | SWT.WRAP | SWT.TRAIL);
@@ -239,8 +239,8 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
         createTemplateMenu();
 
         final ToolItem toolItem = new ToolItem(templateBar, SWT.PUSH);
-        toolItem.setText("Math...");
-        toolItem.setToolTipText("Basic mathematical functions");
+        toolItem.setText(Messages.EXPR_BUILDER_MATH);
+        toolItem.setToolTipText(Messages.EXPR_BUILDER_MATH_TOOLTIP);
         toolItem.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -255,33 +255,33 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
 
         addTemplateSeparator();
 
-        addTemplateButton("List", "Insert a list into the current expression",
+        addTemplateButton(Messages.EXPR_BUILDER_LIST, Messages.EXPR_BUILDER_LIST_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_LIST);
 
-        addTemplateButton("Map", "Insert a map into the current expression",
+        addTemplateButton(Messages.EXPR_BUILDER_MAP, Messages.EXPR_BUILDER_MAP_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_MAP);
 
         addTemplateSeparator();
 
         addTemplateButton(
-                "Select All",
-                "Attached to the end of a list expression, this returns a list containing all elements that satisfy a condition",
+                Messages.EXPR_BUILDER_SELECT_ALL,
+                Messages.EXPR_BUILDER_SELECT_ALL_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_SELECT_ALL);
 
         addTemplateButton(
-                "Select First",
-                "Attached to the end of a list expression, this returns the first element that satisfies a condition",
+                Messages.EXPR_BUILDER_SELECT_FIRST,
+                Messages.EXPR_BUILDER_SELECT_FIRST_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_SELECT_FIRST);
 
         addTemplateButton(
-                "Select Last",
-                "Attached to the end of a list expression, this returns the last element that satisfies a condition",
+                Messages.EXPR_BUILDER_SELECT_LAST,
+                Messages.EXPR_BUILDER_SELECT_LAST_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_SELECT_LAST);
 
         addTemplateSeparator();
 
-        addTemplateButton("Lambda",
-                "Inserts a template for a lambda expression",
+        addTemplateButton(Messages.EXPR_BUILDER_LAMBDA,
+                Messages.EXPR_BUILDER_LAMBDA_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_LAMBDA);
     }
 
@@ -359,7 +359,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
 
         Label label = new Label(keyPathComposite, SWT.NONE);
         label.setFont(boldFont);
-        label.setText("Current key path (double-click below to insert):");
+        label.setText(Messages.EXPR_BUILDER_CURRENT_KEY_PATH);
         gd = new GridData(SWT.LEFT, SWT.CENTER, false, false);
         label.setLayoutData(gd);
 

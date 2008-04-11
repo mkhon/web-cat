@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneralInfoSection.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: GeneralInfoSection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.birt.report.model.api.activity.SemanticException;
 import org.eclipse.birt.report.model.api.command.UserPropertyException;
@@ -49,8 +50,8 @@ public class GeneralInfoSection extends AbstractSection
     public GeneralInfoSection(MetadataFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
-        super(formPage, parent, toolkit, model, "General Information",
-                "This section describes general information about the report template.");
+        super(formPage, parent, toolkit, model, Messages.GENERAL_INFO_SECTION_TITLE,
+                Messages.GENERAL_INFO_SECTION_DESCRIPTION);
     }
 
 
@@ -61,7 +62,7 @@ public class GeneralInfoSection extends AbstractSection
         GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
 
-        createLabel(parent, "Title*:", SWT.CENTER);
+        createLabel(parent, Messages.GENERAL_INFO_TITLE, SWT.CENTER);
         titleField = createText(parent, false, SWT.NONE);
         titleField.addModifyListener(new ModifyListener()
         {
@@ -79,7 +80,7 @@ public class GeneralInfoSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "Description*:", SWT.LEAD);
+        createLabel(parent, Messages.GENERAL_INFO_DESCRIPTION, SWT.LEAD);
         descriptionField = createText(parent, true, SWT.NONE, 56);
         descriptionField.addModifyListener(new ModifyListener()
         {
@@ -98,7 +99,7 @@ public class GeneralInfoSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "Keywords:", SWT.LEAD);
+        createLabel(parent, Messages.GENERAL_INFO_KEYWORDS, SWT.LEAD);
         keywordsField = createText(parent, true, SWT.NONE, 32);
     }
 
@@ -125,11 +126,11 @@ public class GeneralInfoSection extends AbstractSection
     }
 
 
-    private static final String EMPTY_TITLE_KEY = "generalInfo.emptyTitle";
-    private static final String EMPTY_TITLE_MESSAGE = "The title of the report must not be empty.";
+    private static final String EMPTY_TITLE_KEY = "generalInfo.emptyTitle"; //$NON-NLS-1$
+    private static final String EMPTY_TITLE_MESSAGE = Messages.GENERAL_INFO_ERROR_EMPTY_TITLE;
 
-    private static final String EMPTY_DESCRIPTION_KEY = "generalInfo.emptyDescription";
-    private static final String EMPTY_DESCRIPTION_MESSAGE = "The description of the report must not be empty.";
+    private static final String EMPTY_DESCRIPTION_KEY = "generalInfo.emptyDescription"; //$NON-NLS-1$
+    private static final String EMPTY_DESCRIPTION_MESSAGE = Messages.GENERAL_INFO_ERROR_EMPTY_DESCRIPTION;
 
     private Text titleField;
     private Text descriptionField;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportMetadata.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: ReportMetadata.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.birt.report.model.api.activity.SemanticException;
 import org.eclipse.birt.report.model.api.command.UserPropertyException;
@@ -36,7 +37,7 @@ import org.eclipse.birt.report.model.metadata.StringPropertyType;
  * by shadowing an existing BIRT property.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ReportMetadata.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ * @version $Id: ReportMetadata.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  */
 public class ReportMetadata
 {
@@ -162,11 +163,11 @@ public class ReportMetadata
     {
         Integer _oldCount = safeGetIntUserProperty(module, AUTHORS_COUNT);
 
+        safeSetIntUserProperty(module, AUTHORS_COUNT, value);
+
         if(_oldCount != null)
         {
             int oldCount = _oldCount;
-
-            safeSetIntUserProperty(module, AUTHORS_COUNT, value);
 
             for (int i = 1; i <= oldCount; i++)
             {
@@ -283,13 +284,13 @@ public class ReportMetadata
         String firstName = getAuthorFirstName(module, index);
         String lastName = getAuthorLastName(module, index);
 
-        String name = "";
+        String name = ""; //$NON-NLS-1$
 
         if (firstName != null)
             name += firstName;
 
         if (firstName != null && lastName != null)
-            name += " ";
+            name += " "; //$NON-NLS-1$
 
         if (lastName != null)
             name += lastName;
@@ -893,14 +894,14 @@ public class ReportMetadata
                 if (count > 2 && buffer.length() > 0)
                 {
                     comma = true;
-                    buffer.append(", ");
+                    buffer.append(", "); //$NON-NLS-1$
                 }
 
                 if (i == count - 1 && buffer.length() > 0)
                 {
                     if (!comma)
                         buffer.append(' ');
-                    buffer.append("and ");
+                    buffer.append(Messages.REPORT_METADATA_AUTHOR_AND);
                 }
 
                 name = getAuthorName(module, i + 1);
@@ -1069,35 +1070,35 @@ public class ReportMetadata
 
     //~ Instance/static variables .............................................
 
-    private static final String PROP_PREFIX = "webcat.";
+    private static final String PROP_PREFIX = "webcat."; //$NON-NLS-1$
 
-    private static final String KEYWORDS_PROP = PROP_PREFIX + "keywords";
-    private static final String COPYRIGHT_PROP = PROP_PREFIX + "copyright";
-    private static final String AUTHORS_COUNT = PROP_PREFIX + "authors.count";
+    private static final String KEYWORDS_PROP = PROP_PREFIX + "keywords"; //$NON-NLS-1$
+    private static final String COPYRIGHT_PROP = PROP_PREFIX + "copyright"; //$NON-NLS-1$
+    private static final String AUTHORS_COUNT = PROP_PREFIX + "authors.count"; //$NON-NLS-1$
     private static final String AUTHOR_FIRST_NAME_PROP = PROP_PREFIX
-            + "author%d.name.first";
+            + "author%d.name.first"; //$NON-NLS-1$
     private static final String AUTHOR_LAST_NAME_PROP = PROP_PREFIX
-            + "author%d.name.last";
+            + "author%d.name.last"; //$NON-NLS-1$
     private static final String AUTHOR_EMAIL_PROP = PROP_PREFIX
-            + "author%d.email";
-    private static final String AUTHOR_URL_PROP = PROP_PREFIX + "author%d.url";
+            + "author%d.email"; //$NON-NLS-1$
+    private static final String AUTHOR_URL_PROP = PROP_PREFIX + "author%d.url"; //$NON-NLS-1$
     private static final String AUTHOR_AFFILIATION_PROP = PROP_PREFIX
-            + "author%d.affiliation";
+            + "author%d.affiliation"; //$NON-NLS-1$
     private static final String AUTHOR_PHONE_PROP = PROP_PREFIX
-            + "author%d.phone";
-    private static final String LICENSE_PROP = PROP_PREFIX + "license";
-    private static final String LICENSE_URL_PROP = PROP_PREFIX + "license.url";
-    private static final String LANGUAGE_PROP = PROP_PREFIX + "language";
+            + "author%d.phone"; //$NON-NLS-1$
+    private static final String LICENSE_PROP = PROP_PREFIX + "license"; //$NON-NLS-1$
+    private static final String LICENSE_URL_PROP = PROP_PREFIX + "license.url"; //$NON-NLS-1$
+    private static final String LANGUAGE_PROP = PROP_PREFIX + "language"; //$NON-NLS-1$
     private static final String PREFERRED_RENDERER_PROP = PROP_PREFIX
-            + "preferred.renderer";
+            + "preferred.renderer"; //$NON-NLS-1$
     private static final String REPOSITORY_ID_PROP = PROP_PREFIX
-            + "repository.id";
+            + "repository.id"; //$NON-NLS-1$
     private static final String REPOSITORY_VERSION_PROP = PROP_PREFIX
-            + "repository.version";
+            + "repository.version"; //$NON-NLS-1$
     private static final String REPOSITORY_UPLOAD_DATE_PROP = PROP_PREFIX
-            + "repository.upload.date";
+            + "repository.upload.date"; //$NON-NLS-1$
     private static final String REPOSITORY_ROOT_ID_PROP = PROP_PREFIX
-            + "repository.root.id";
+            + "repository.root.id"; //$NON-NLS-1$
     private static final String REPOSITORY_CHANGE_HISTORY_PROP = PROP_PREFIX
-            + "repository.history";
+            + "repository.history"; //$NON-NLS-1$
 }

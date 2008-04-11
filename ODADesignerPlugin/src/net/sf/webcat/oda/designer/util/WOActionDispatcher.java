@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOActionDispatcher.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ |  $Id: WOActionDispatcher.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -53,8 +53,8 @@ public class WOActionDispatcher
 
             if (sessionId != null)
             {
-                params.append("wosid=");
-                params.append(URLEncoder.encode(sessionId, "UTF-8"));
+                params.append("wosid="); //$NON-NLS-1$
+                params.append(URLEncoder.encode(sessionId, "UTF-8")); //$NON-NLS-1$
 
                 firstParameter = false;
             }
@@ -69,7 +69,7 @@ public class WOActionDispatcher
                     params.append(parameterName);
                     params.append('=');
                     params.append(URLEncoder.encode(parameters
-                            .get(parameterName), "UTF-8"));
+                            .get(parameterName), "UTF-8")); //$NON-NLS-1$
 
                     firstParameter = false;
                 }
@@ -77,16 +77,16 @@ public class WOActionDispatcher
 
             byte[] paramBytes = params.toString().getBytes();
 
-            URL actionUrl = new URL(serverUrl + "/wa/" + action);
+            URL actionUrl = new URL(serverUrl + "/wa/" + action); //$NON-NLS-1$
 
             connection = (HttpURLConnection) actionUrl.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Content-Length", Integer
+            connection.setRequestMethod("POST"); //$NON-NLS-1$
+            connection.setRequestProperty("Content-Type", //$NON-NLS-1$
+                    "application/x-www-form-urlencoded"); //$NON-NLS-1$
+            connection.setRequestProperty("Content-Length", Integer //$NON-NLS-1$
                     .toString(paramBytes.length));
             connection.connect();
 

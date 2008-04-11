@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositorySection.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: RepositorySection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -44,8 +45,8 @@ public class RepositorySection extends AbstractSection
                 parent,
                 toolkit,
                 model,
-                "Repository Information",
-                "This section displays metadata that was placed into the report when it was initially uploaded to Web-CAT, if it has been so. These fields cannot be edited, but are provided for informational purposes.");
+                Messages.REPOSITORY_SECTION_TITLE,
+                Messages.REPOSITORY_SECTION_DESCRIPTION);
     }
 
 
@@ -56,29 +57,29 @@ public class RepositorySection extends AbstractSection
         GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
 
-        createLabel(parent, "ID:", SWT.CENTER);
+        createLabel(parent, Messages.REPOSITORY_ID, SWT.CENTER);
         idField = createFormText(parent, false);
-        idField.setColor("disabled", Display.getCurrent().getSystemColor(
+        idField.setColor("disabled", Display.getCurrent().getSystemColor( //$NON-NLS-1$
                 SWT.COLOR_GRAY));
 
-        createLabel(parent, "Version:", SWT.CENTER);
+        createLabel(parent, Messages.REPOSITORY_VERSION, SWT.CENTER);
         versionField = createFormText(parent, false);
-        versionField.setColor("disabled", Display.getCurrent().getSystemColor(
+        versionField.setColor("disabled", Display.getCurrent().getSystemColor( //$NON-NLS-1$
                 SWT.COLOR_GRAY));
 
-        createLabel(parent, "Upload Date:", SWT.CENTER);
+        createLabel(parent, Messages.REPOSITORY_UPLOAD_DATE, SWT.CENTER);
         uploadDateField = createFormText(parent, false);
-        uploadDateField.setColor("disabled", Display.getCurrent()
+        uploadDateField.setColor("disabled", Display.getCurrent() //$NON-NLS-1$
                 .getSystemColor(SWT.COLOR_GRAY));
 
-        createLabel(parent, "Root ID:", SWT.CENTER);
+        createLabel(parent, Messages.REPOSITORY_ROOT_ID, SWT.CENTER);
         rootIdField = createFormText(parent, false);
-        rootIdField.setColor("disabled", Display.getCurrent().getSystemColor(
+        rootIdField.setColor("disabled", Display.getCurrent().getSystemColor( //$NON-NLS-1$
                 SWT.COLOR_GRAY));
 
-        createLabel(parent, "Change History:", SWT.LEAD);
+        createLabel(parent, Messages.REPOSITORY_CHANGE_HISTORY, SWT.LEAD);
         changeHistoryField = createFormText(parent, true);
-        changeHistoryField.setColor("disabled", Display.getCurrent()
+        changeHistoryField.setColor("disabled", Display.getCurrent() //$NON-NLS-1$
                 .getSystemColor(SWT.COLOR_GRAY));
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
         gd.minimumHeight = 56;
@@ -98,7 +99,7 @@ public class RepositorySection extends AbstractSection
         if (id == null)
             text = NOT_YET_UPLOADED;
         else
-            text = "<form>" + id + "</form>";
+            text = "<form>" + id + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
         idField.setText(text, true, true);
 
@@ -107,7 +108,7 @@ public class RepositorySection extends AbstractSection
         if (rootId == null)
             text = NOT_YET_UPLOADED;
         else
-            text = "<form>" + rootId + "</form>";
+            text = "<form>" + rootId + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
         rootIdField.setText(text, true, true);
 
@@ -116,7 +117,7 @@ public class RepositorySection extends AbstractSection
         if (version == null)
             text = NOT_YET_UPLOADED;
         else
-            text = "<form>" + version + "</form>";
+            text = "<form>" + version + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
         versionField.setText(text, true, true);
 
@@ -125,7 +126,7 @@ public class RepositorySection extends AbstractSection
         if (uploadDate == null)
             text = NOT_YET_UPLOADED;
         else
-            text = "<form>" + uploadDate + "</form>";
+            text = "<form>" + uploadDate + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
         uploadDateField.setText(text, true, true);
 
@@ -135,7 +136,7 @@ public class RepositorySection extends AbstractSection
         if (changeHistory == null)
             text = NOT_YET_UPLOADED;
         else
-            text = "<form>" + changeHistory + "</form>";
+            text = "<form>" + changeHistory + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
         changeHistoryField.setText(text, true, true);
     }

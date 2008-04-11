@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebCATKeyProvider.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: WebCATKeyProvider.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,8 +34,8 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     {
         contentAssist = DesignerActivator.getDefault().getContentAssistManager();
 
-        propertyImage = ImageUtils.getImage("icons/keypath/property.gif");
-        methodImage = ImageUtils.getImage("icons/keypath/method.gif");
+        propertyImage = ImageUtils.getImage("icons/keypath/property.gif"); //$NON-NLS-1$
+        methodImage = ImageUtils.getImage("icons/keypath/method.gif"); //$NON-NLS-1$
     }
 
 
@@ -76,7 +76,7 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     public String getLabel(String className, String key)
     {
         String destType = getKeyType(className, key);
-        return key + " (" + destType + ")";
+        return key + " (" + destType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataTypeUtil.java,v 1.1 2008/04/08 18:31:11 aallowat Exp $
+ |  $Id: DataTypeUtil.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.oda.designer.impl;
 
 import java.util.HashMap;
 import net.sf.webcat.oda.core.impl.DataTypes;
+import net.sf.webcat.oda.designer.i18n.Messages;
 
 /**
  *
@@ -41,31 +42,31 @@ public class DataTypeUtil
      */
     static
     {
-        displayNameDataTypeMapping.put("Timestamp", Integer
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_TIMESTAMP, Integer
                 .valueOf(DataTypes.TIMESTAMP));
-        displayNameDataTypeMapping.put("Decimal", Integer
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_DECIMAL, Integer
                 .valueOf(DataTypes.DECIMAL));
-        displayNameDataTypeMapping.put("Float", Integer
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_FLOAT, Integer
                 .valueOf(DataTypes.DOUBLE));
-        displayNameDataTypeMapping.put("Integer", Integer
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_INTEGER, Integer
                 .valueOf(DataTypes.INT));
-        displayNameDataTypeMapping.put("String", Integer
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_STRING, Integer
                 .valueOf(DataTypes.STRING));
-        displayNameDataTypeMapping.put("Boolean", Integer
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_BOOLEAN, Integer
                 .valueOf(DataTypes.BOOLEAN));
 
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.TIMESTAMP),
-                "Timestamp");
+                Messages.DATATYPE_DISPLAYNAME_TIMESTAMP);
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.DECIMAL),
-                "Decimal");
+                Messages.DATATYPE_DISPLAYNAME_DECIMAL);
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.DOUBLE),
-                "Float");
+                Messages.DATATYPE_DISPLAYNAME_FLOAT);
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.INT),
-                "Integer");
+                Messages.DATATYPE_DISPLAYNAME_INTEGER);
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.STRING),
-                "String");
+                Messages.DATATYPE_DISPLAYNAME_STRING);
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.BOOLEAN),
-                "Boolean");
+                Messages.DATATYPE_DISPLAYNAME_BOOLEAN);
     }
 
 
@@ -81,7 +82,7 @@ public class DataTypeUtil
         if (s != null)
             return s;
         else
-            return "String";
+            return Messages.DATATYPE_DISPLAYNAME_STRING;
     }
 
 

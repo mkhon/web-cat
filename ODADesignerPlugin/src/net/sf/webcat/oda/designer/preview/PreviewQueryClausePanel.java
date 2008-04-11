@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryClausePanel.java,v 1.1 2008/04/08 18:31:04 aallowat Exp $
+ |  $Id: PreviewQueryClausePanel.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.oda.designer.preview;
 import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.contentassist.ContentAssistManager;
 import net.sf.webcat.oda.designer.contentassist.ContentAssistObjectDescription;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import net.sf.webcat.oda.designer.util.ImageUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -55,8 +56,8 @@ public class PreviewQueryClausePanel extends Composite
         contentAssistManager = DesignerActivator.getDefault()
                 .getContentAssistManager();
 
-        addImage = ImageUtils.getImage("icons/querybuilder/plus.gif");
-        removeImage = ImageUtils.getImage("icons/querybuilder/minus.gif");
+        addImage = ImageUtils.getImage("icons/querybuilder/plus.gif"); //$NON-NLS-1$
+        removeImage = ImageUtils.getImage("icons/querybuilder/minus.gif"); //$NON-NLS-1$
 
         createContents();
     }
@@ -184,8 +185,8 @@ public class PreviewQueryClausePanel extends Composite
         gd = new GridData(SWT.LEFT, SWT.CENTER, false, false);
         gd.widthHint = 80;
         booleanOperandCombo.setLayoutData(gd);
-        booleanOperandCombo.add("false");
-        booleanOperandCombo.add("true");
+        booleanOperandCombo.add("false"); //$NON-NLS-1$
+        booleanOperandCombo.add("true"); //$NON-NLS-1$
 
         booleanOperandCombo.select(0);
 
@@ -230,7 +231,7 @@ public class PreviewQueryClausePanel extends Composite
 
         Label label = new Label(composite, SWT.NONE);
         gd = new GridData(SWT.FILL, SWT.CENTER, false, false);
-        label.setText("and");
+        label.setText(Messages.QUERY_CLAUSE_AND);
 
         numRangeMaxOperandField = new Text(composite, SWT.BORDER);
         gd = new GridData(SWT.FILL, SWT.CENTER, false, false);
@@ -286,7 +287,7 @@ public class PreviewQueryClausePanel extends Composite
 
         Label label = new Label(composite, SWT.NONE);
         gd = new GridData(SWT.FILL, SWT.CENTER, false, false);
-        label.setText("and");
+        label.setText(Messages.QUERY_CLAUSE_AND);
 
         dateRangeMaxOperandField = new DateTime(composite, SWT.DATE
                 | SWT.MEDIUM);
@@ -407,12 +408,12 @@ public class PreviewQueryClausePanel extends Composite
 
         if (comparison.supportsKeyPaths())
         {
-            comparandTypeCombo.add("the value");
-            comparandTypeCombo.add("the key path");
+            comparandTypeCombo.add(Messages.QUERY_CLAUSE_THE_VALUE);
+            comparandTypeCombo.add(Messages.QUERY_CLAUSE_THE_KEY_PATH);
         }
         else
         {
-            comparandTypeCombo.add("the value");
+            comparandTypeCombo.add(Messages.QUERY_CLAUSE_THE_VALUE);
         }
 
         comparandTypeCombo.select(0);
@@ -586,7 +587,7 @@ public class PreviewQueryClausePanel extends Composite
                 if (clause.comparison() == PreviewQueryComparison.IS_BETWEEN
                         || clause.comparison() == PreviewQueryComparison.IS_NOT_BETWEEN)
                 {
-                    String[] parts = valueRep.split(",");
+                    String[] parts = valueRep.split(","); //$NON-NLS-1$
                     numRangeMinOperandField.setText(parts[0]);
                     numRangeMaxOperandField.setText(parts[1]);
                 }
@@ -600,7 +601,7 @@ public class PreviewQueryClausePanel extends Composite
                 if (clause.comparison() == PreviewQueryComparison.IS_BETWEEN
                         || clause.comparison() == PreviewQueryComparison.IS_NOT_BETWEEN)
                 {
-                    String[] parts = valueRep.split(",");
+                    String[] parts = valueRep.split(","); //$NON-NLS-1$
                     representationToDateTime(parts[0],
                             dateRangeMinOperandField, timeRangeMinOperandField);
                     representationToDateTime(parts[1],
@@ -660,7 +661,7 @@ public class PreviewQueryClausePanel extends Composite
                 if (comparison == PreviewQueryComparison.IS_BETWEEN
                         || comparison == PreviewQueryComparison.IS_NOT_BETWEEN)
                 {
-                    return String.format("%s,%s", numRangeMinOperandField
+                    return String.format("%s,%s", numRangeMinOperandField //$NON-NLS-1$
                             .getText(), numRangeMaxOperandField.getText());
                 }
                 else
@@ -673,7 +674,7 @@ public class PreviewQueryClausePanel extends Composite
                 if (comparison == PreviewQueryComparison.IS_BETWEEN
                         || comparison == PreviewQueryComparison.IS_NOT_BETWEEN)
                 {
-                    return String.format("%s,%s",
+                    return String.format("%s,%s", //$NON-NLS-1$
                             representationFromDateTime(
                                     dateRangeMinOperandField,
                                     timeRangeMinOperandField),
@@ -729,7 +730,7 @@ public class PreviewQueryClausePanel extends Composite
     private void representationToDateTime(String rep, DateTime date,
             DateTime time)
     {
-        String[] parts = rep.split(" ");
+        String[] parts = rep.split(" "); //$NON-NLS-1$
 
         date.setYear(Integer.parseInt(parts[0]));
         date.setMonth(Integer.parseInt(parts[1]));

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryManager.java,v 1.1 2008/04/08 18:31:04 aallowat Exp $
+ |  $Id: PreviewQueryManager.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -146,9 +146,9 @@ public class PreviewQueryManager
     }
 
 
-    private static final String PREVIEW_QUERY_FILE = "previewQueries.txt";
+    private static final String PREVIEW_QUERY_FILE = "previewQueries.txt"; //$NON-NLS-1$
 
-    private static final String END_OF_QUERY_MARKER = "%%%% END OF QUERY %%%%";
+    private static final String END_OF_QUERY_MARKER = "%%%% END OF QUERY %%%%"; //$NON-NLS-1$
 
     private Map<String, PreviewQueryClause[]> dataSetQueries;
 }

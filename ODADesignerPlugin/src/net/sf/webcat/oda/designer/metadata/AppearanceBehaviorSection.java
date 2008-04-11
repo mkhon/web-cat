@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AppearanceBehaviorSection.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: AppearanceBehaviorSection.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.util.Locale;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -42,8 +43,8 @@ public class AppearanceBehaviorSection extends AbstractSection
                 parent,
                 toolkit,
                 model,
-                "Appearance and Behavior",
-                "This section describes various properties that affect the appearance and behavior of the report template.");
+                Messages.APP_BEHAV_SECTION_TITLE,
+                Messages.APP_BEHAV_SECTION_DESCRIPTION);
     }
 
 
@@ -56,9 +57,9 @@ public class AppearanceBehaviorSection extends AbstractSection
 
         Label label;
 
-        label = createLabel(parent, "Language:", SWT.CENTER);
+        label = createLabel(parent, Messages.APP_BEHAV_LANGUAGE, SWT.CENTER);
         label
-                .setToolTipText("The language in which this report template is written. You can choose an entry from the list, or enter your own value, which must correspond to an RFC 4646 language identifier.");
+                .setToolTipText(Messages.APP_BEHAV_LANGUAGE_TOOLTIP);
         languageField = createCombo(parent);
 
         for (String language : LanguageTable.getInstance().getDisplayNames())
@@ -66,9 +67,9 @@ public class AppearanceBehaviorSection extends AbstractSection
             languageField.add(language);
         }
 
-        label = createLabel(parent, "Preferred Renderer:", SWT.CENTER);
+        label = createLabel(parent, Messages.APP_BEHAV_PREFERRED_RENDERER, SWT.CENTER);
         label
-                .setToolTipText("The name of the rendering method that will be selected as the default for reports generated from this template.");
+                .setToolTipText(Messages.APP_BEHAV_PREFERRED_RENDERER_TOOLTIP);
         rendererField = createCombo(parent);
 
         rendererField.add("html");

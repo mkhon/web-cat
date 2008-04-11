@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlContentProposalProvider.java,v 1.1 2008/04/08 18:31:03 aallowat Exp $
+ |  $Id: OgnlContentProposalProvider.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ public class OgnlContentProposalProvider implements IContentProposalProvider
     {
         contents = contents.substring(0, position - 1);
 
-        String[] segments = contents.split("\\.");
+        String[] segments = contents.split("\\."); //$NON-NLS-1$
         String finalType = rootClassName;
 
         if (finalType == null)
@@ -79,7 +79,7 @@ public class OgnlContentProposalProvider implements IContentProposalProvider
 
                 public String getDescription()
                 {
-                    return "description";
+                    return "description"; //$NON-NLS-1$
                 }
 
 

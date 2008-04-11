@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlCompletionProcessor.java,v 1.2 2008/04/08 22:44:22 aallowat Exp $
+ |  $Id: OgnlCompletionProcessor.java,v 1.3 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -54,13 +54,13 @@ public class OgnlCompletionProcessor implements IContentAssistProcessor
             String expression = supposeCurrentExpression(viewer.getDocument(),
                     viewer.getTopIndexStartOffset(), offset);
 
-            if (expression.endsWith("."))
+            if (expression.endsWith(".")) //$NON-NLS-1$
                 expression = expression.substring(0, expression
                         .lastIndexOf('.'));
 
             // Find the final type.
             // TODO generalize
-            String[] segments = expression.split("\\.");
+            String[] segments = expression.split("\\."); //$NON-NLS-1$
             String finalType = context.getRootClassName();
             for (String segment : segments)
             {

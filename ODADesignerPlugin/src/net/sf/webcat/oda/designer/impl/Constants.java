@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Constants.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: Constants.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,11 +21,13 @@
 
 package net.sf.webcat.oda.designer.impl;
 
+import net.sf.webcat.oda.designer.i18n.Messages;
+
 public interface Constants
 {
-    public static final String PROP_RELATION_INFORMATION = "relationInformation";
+    public static final String PROP_RELATION_INFORMATION = "relationInformation"; //$NON-NLS-1$
 
-    public static final String PROP_ENTITY_TYPE = "entityType";
+    public static final String PROP_ENTITY_TYPE = "entityType"; //$NON-NLS-1$
 
-    public static final String PROP_DATA_SET_UUID = "dataSetUUID";
+    public static final String PROP_DATA_SET_UUID = "dataSetUUID"; //$NON-NLS-1$
 }

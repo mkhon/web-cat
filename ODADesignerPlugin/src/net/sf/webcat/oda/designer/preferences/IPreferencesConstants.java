@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IPreferencesConstants.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: IPreferencesConstants.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,28 +34,28 @@ public interface IPreferencesConstants
      * report preview. This URL should start with the "http://" prefix and end
      * with the "WebCAT.woa" portion of the server address.
      */
-    static final String SERVER_URL_KEY = "serverURL";
+    static final String SERVER_URL_KEY = "serverURL"; //$NON-NLS-1$
 
     /**
      * The user name that should be used to connect to the Web-CAT server.
      */
-    static final String USERNAME_KEY = "username";
+    static final String USERNAME_KEY = "username"; //$NON-NLS-1$
 
     /**
      * The password that should be used to connect to the Web-CAT server.
      */
-    static final String PASSWORD_KEY = "password";
+    static final String PASSWORD_KEY = "password"; //$NON-NLS-1$
 
     /**
      * The maximum number of records to retrieve from the Web-CAT server during
      * a preview operation.
      */
-    static final String MAX_RECORDS_KEY = "maxRecords";
+    static final String MAX_RECORDS_KEY = "maxRecords"; //$NON-NLS-1$
 
     /**
      * The maximum amount of time, in seconds, to use to obtain preview data for
      * a single data set. If this time elapses, only those rows retrieved up to
      * that point will be returned.
      */
-    static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout";
+    static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout"; //$NON-NLS-1$
 }

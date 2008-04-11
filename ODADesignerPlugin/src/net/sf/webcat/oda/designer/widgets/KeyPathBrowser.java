@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: KeyPathBrowser.java,v 1.1 2008/04/08 18:31:12 aallowat Exp $
+ |  $Id: KeyPathBrowser.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -55,7 +55,7 @@ public class KeyPathBrowser extends Composite
         selectionListeners = new ArrayList<SelectionListener>();
         segments = new ArrayList<SegmentInfo>();
 
-        arrowImage = ImageUtils.getImage("icons/keypath/arrow.gif");
+        arrowImage = ImageUtils.getImage("icons/keypath/arrow.gif"); //$NON-NLS-1$
 
         createControls(parent);
     }
@@ -110,8 +110,8 @@ public class KeyPathBrowser extends Composite
                     Table table = (Table) event.widget;
                     TableItem item = (TableItem) event.item;
 
-                    String className = (String) item.getData("className");
-                    String key = (String) item.getData("key");
+                    String className = (String) item.getData("className"); //$NON-NLS-1$
+                    String key = (String) item.getData("key"); //$NON-NLS-1$
 
                     if (className != null && key != null)
                     {
@@ -353,8 +353,8 @@ public class KeyPathBrowser extends Composite
                 TableItem item = new TableItem(browserLists[listIndex],
                         SWT.NONE);
 
-                item.setData("className", className); // $NON_NLS_1$
-                item.setData("key", key); // $NON_NLS_1$
+                item.setData("className", className); // $NON_NLS_1$ //$NON-NLS-1$
+                item.setData("key", key); // $NON_NLS_1$ //$NON-NLS-1$
 
                 item.setText(keyLabelProvider.getLabel(className, key));
                 item.setImage(keyLabelProvider.getImage(className, key));
@@ -428,7 +428,7 @@ public class KeyPathBrowser extends Composite
     public String getSelectedKeyPath()
     {
         if (segments.isEmpty() || segments.get(0).getKey() == null)
-            return "";
+            return ""; //$NON-NLS-1$
 
         StringBuilder buffer = new StringBuilder();
 
@@ -439,7 +439,7 @@ public class KeyPathBrowser extends Composite
             SegmentInfo segment = segments.get(i);
             if (segment.getKey() != null)
             {
-                buffer.append(".");
+                buffer.append("."); //$NON-NLS-1$
                 buffer.append(segment.getKey());
             }
         }
@@ -450,7 +450,7 @@ public class KeyPathBrowser extends Composite
 
     private static final int LIST_COUNT = 3;
 
-    private static final String LIST_INDEX_KEY = "listIndex"; // $NON_NLS_1$
+    private static final String LIST_INDEX_KEY = "listIndex"; // $NON_NLS_1$ //$NON-NLS-1$
 
     private String rootClassName;
 

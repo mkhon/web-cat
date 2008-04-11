@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthorsSection.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: AuthorsSection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.util.ArrayList;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -48,8 +49,8 @@ public class AuthorsSection extends AbstractSection
                 parent,
                 toolkit,
                 model,
-                "Authors",
-                "This section describes the authors who contributed to the content in this report template.");
+                Messages.AUTHORS_SECTION_TITLE,
+                Messages.AUTHORS_SECTION_DESCRIPTION);
 
         authors = new ArrayList<AuthorInfo>();
     }
@@ -84,7 +85,7 @@ public class AuthorsSection extends AbstractSection
         gd = new GridData(SWT.FILL, SWT.FILL, false, true);
         buttonContainer.setLayoutData(gd);
 
-        createButton(buttonContainer, "Add", new SelectionAdapter()
+        createButton(buttonContainer, Messages.AUTHORS_ADD, new SelectionAdapter()
         {
             public void widgetSelected(SelectionEvent e)
             {
@@ -92,7 +93,7 @@ public class AuthorsSection extends AbstractSection
             }
         });
 
-        removeButton = createButton(buttonContainer, "Remove",
+        removeButton = createButton(buttonContainer, Messages.AUTHORS_REMOVE,
                 new SelectionAdapter()
                 {
                     public void widgetSelected(SelectionEvent e)
@@ -106,7 +107,7 @@ public class AuthorsSection extends AbstractSection
         gd.horizontalSpan = 4;
         separator.setLayoutData(gd);
 
-        createLabel(parent, "Name*:", SWT.CENTER);
+        createLabel(parent, Messages.AUTHORS_NAME, SWT.CENTER);
         nameField = createText(parent, false, SWT.NONE, SWT.DEFAULT, 3);
         nameField.addModifyListener(new ModifyListener()
         {
@@ -116,7 +117,7 @@ public class AuthorsSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "E-mail:", SWT.CENTER);
+        createLabel(parent, Messages.AUTHORS_EMAIL, SWT.CENTER);
         emailField = createText(parent, false, SWT.NONE);
         emailField.addModifyListener(new ModifyListener()
         {
@@ -126,7 +127,7 @@ public class AuthorsSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "URL:", SWT.CENTER);
+        createLabel(parent, Messages.AUTHORS_URL, SWT.CENTER);
         urlField = createText(parent, false, SWT.NONE);
         urlField.addModifyListener(new ModifyListener()
         {
@@ -136,7 +137,7 @@ public class AuthorsSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "Affiliation:", SWT.CENTER);
+        createLabel(parent, Messages.AUTHORS_AFFILIATION, SWT.CENTER);
         affiliationField = createText(parent, false, SWT.NONE);
         affiliationField.addModifyListener(new ModifyListener()
         {
@@ -146,7 +147,7 @@ public class AuthorsSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "Phone:", SWT.CENTER);
+        createLabel(parent, Messages.AUTHORS_PHONE, SWT.CENTER);
         phoneField = createText(parent, false, SWT.NONE);
         phoneField.addModifyListener(new ModifyListener()
         {
@@ -257,7 +258,7 @@ public class AuthorsSection extends AbstractSection
     private void addAuthor()
     {
         authors.add(new AuthorInfo());
-        authorTable.add("<enter name>");
+        authorTable.add(Messages.AUTHORS_ENTER_NAME_PROMPT);
         authorTable.select(authorTable.getItemCount() - 1);
 
         authorSelectionChanged();

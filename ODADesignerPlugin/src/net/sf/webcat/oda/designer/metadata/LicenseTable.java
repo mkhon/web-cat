@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LicenseTable.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: LicenseTable.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -75,25 +75,25 @@ public class LicenseTable
     private Map<String, String> licenseMap;
 
     private final static String[][] LICENSES = {
-            { "Apache License, version 2.0",
-                    "http://www.apache.org/licenses/LICENSE-2.0", },
-            { "GNU General Public License, version 1",
-                    "http://www.gnu.org/licenses/old-licenses/gpl-1.0.txt", },
-            { "GNU General Public License, version 2",
-                    "http://www.gnu.org/licenses/old-licenses/gpl-2.0.html", },
-            { "GNU General Public License, version 3",
-                    "http://www.gnu.org/licenses/gpl-3.0.html", },
-            { "MIT License",
-                    "http://www.opensource.org/licenses/mit-license.php", },
+            { "Apache License, version 2.0", //$NON-NLS-1$
+                    "http://www.apache.org/licenses/LICENSE-2.0", }, //$NON-NLS-1$
+            { "GNU General Public License, version 1", //$NON-NLS-1$
+                    "http://www.gnu.org/licenses/old-licenses/gpl-1.0.txt", }, //$NON-NLS-1$
+            { "GNU General Public License, version 2", //$NON-NLS-1$
+                    "http://www.gnu.org/licenses/old-licenses/gpl-2.0.html", }, //$NON-NLS-1$
+            { "GNU General Public License, version 3", //$NON-NLS-1$
+                    "http://www.gnu.org/licenses/gpl-3.0.html", }, //$NON-NLS-1$
+            { "MIT License", //$NON-NLS-1$
+                    "http://www.opensource.org/licenses/mit-license.php", }, //$NON-NLS-1$
             {
-                    "Common Development and Distribution License (CDDL), version 1.0",
-                    "http://www.sun.com/cddl/cddl.html", },
-            { "Common Public License, version 1.0",
-                    "http://www.ibm.com/developerworks/library/os-cpl.html", },
-            { "Eclipse Public License, version 1.0",
-                    "http://www.eclipse.org/legal/epl-v10.html", },
-            { "Educational Community License",
-                    "http://www.opensource.org/licenses/ecl1.php", },
-            { "GNU Affero General Public License, version 3",
-                    "http://www.gnu.org/licenses/agpl-3.0.html", }, };
+                    "Common Development and Distribution License (CDDL), version 1.0", //$NON-NLS-1$
+                    "http://www.sun.com/cddl/cddl.html", }, //$NON-NLS-1$
+            { "Common Public License, version 1.0", //$NON-NLS-1$
+                    "http://www.ibm.com/developerworks/library/os-cpl.html", }, //$NON-NLS-1$
+            { "Eclipse Public License, version 1.0", //$NON-NLS-1$
+                    "http://www.eclipse.org/legal/epl-v10.html", }, //$NON-NLS-1$
+            { "Educational Community License", //$NON-NLS-1$
+                    "http://www.opensource.org/licenses/ecl1.php", }, //$NON-NLS-1$
+            { "GNU Affero General Public License, version 3", //$NON-NLS-1$
+                    "http://www.gnu.org/licenses/agpl-3.0.html", }, }; //$NON-NLS-1$
 }

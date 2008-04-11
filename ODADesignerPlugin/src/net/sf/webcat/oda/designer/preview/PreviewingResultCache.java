@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultCache.java,v 1.1 2008/04/08 18:31:04 aallowat Exp $
+ |  $Id: PreviewingResultCache.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.core.runtime.jobs.Job;
 
 public class PreviewingResultCache
@@ -123,7 +124,7 @@ public class PreviewingResultCache
                     pendingCache.put(uuid, latch);
 
                     Job job = new PreviewingResultJob(
-                            "Reading and caching query results from Web-CAT",
+                            Messages.RESULT_CACHE_DESCRIPTION,
                             serverUrl, username, password, maxRecords, timeout,
                             uuid, entityName, expressions);
                     job.schedule();

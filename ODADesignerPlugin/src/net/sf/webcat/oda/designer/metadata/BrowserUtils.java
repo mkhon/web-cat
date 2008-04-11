@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BrowserUtils.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: BrowserUtils.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ public class BrowserUtils
         {
             PlatformUI.getWorkbench().getBrowserSupport().createBrowser(
                     IWorkbenchBrowserSupport.AS_EXTERNAL,
-                    "WebCATDesignerBrowser", "url", "url")
+                    "WebCATDesignerBrowser", "url", "url") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     .openURL(new URL(url));
         }
         catch (MalformedURLException e1)

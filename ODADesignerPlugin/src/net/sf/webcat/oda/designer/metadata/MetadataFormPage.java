@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MetadataFormPage.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: MetadataFormPage.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,8 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.lang.reflect.InvocationTargetException;
+import net.sf.webcat.oda.designer.i18n.Messages;
+import org.eclipse.birt.report.designer.internal.ui.command.WrapperCommandStack;
 import org.eclipse.birt.report.designer.internal.ui.editors.parts.event.ModelEventManager;
 import org.eclipse.birt.report.designer.internal.ui.views.data.DataViewPage;
 import org.eclipse.birt.report.designer.internal.ui.views.data.DataViewTreeViewerPage;
@@ -202,7 +204,7 @@ public class MetadataFormPage extends ReportFormPage
         int count = managedForm.getParts().length;
 
         if (monitor != null)
-            monitor.beginTask("Storing metadata in user properties...", count);
+            monitor.beginTask(Messages.OVERVIEW_PAGE_STORING_PROGRESS, count);
 
         for (IFormPart part : managedForm.getParts())
         {
@@ -221,6 +223,18 @@ public class MetadataFormPage extends ReportFormPage
             monitor.done();
     }
 
+
+    protected void hookModelEventManager(Object model)
+    {
+        getModelEventManager( ).hookRoot( model);
+
+        getModelEventManager( ).hookCommandStack( new WrapperCommandStack( ) );
+    }
+
+    protected void unhookModelEventManager(Object model)
+    {
+        getModelEventManager( ).unhookRoot( model);
+    }
 
     // ------------------------------------------------------------------------
     @Override
@@ -245,17 +259,22 @@ public class MetadataFormPage extends ReportFormPage
 
             FormToolkit toolkit = managedForm.getToolkit();
             toolkit.decorateFormHeading(managedForm.getForm().getForm());
-            managedForm.getForm().setText("Web-CAT Report Template Metadata");
+            managedForm.getForm().setText(Messages.OVERVIEW_PAGE_TITLE);
 
             createBodyContent(managedForm.getForm().getBody());
+
+            hookModelEventManager(getModel());
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+
+        updateContentValues();
     }
 
 
+    // ------------------------------------------------------------------------
     private void createBodyContent(final Composite parent)
     {
         SectionPart part;
@@ -338,6 +357,15 @@ public class MetadataFormPage extends ReportFormPage
     // ------------------------------------------------------------------------
     public boolean onBroughtToTop(IReportEditorPage prevPage)
     {
+        updateContentValues();
+
+        return true;
+    }
+
+
+    // ------------------------------------------------------------------------
+    private void updateContentValues()
+    {
         for (IFormPart part : managedForm.getParts())
         {
             if (part instanceof AbstractSection)
@@ -346,8 +374,6 @@ public class MetadataFormPage extends ReportFormPage
                 section.updateContentValues();
             }
         }
-
-        return true;
     }
 
 
@@ -422,7 +448,7 @@ public class MetadataFormPage extends ReportFormPage
                     outlinePage.getModelProcessor());
             return outlinePage;
         }
-        if (adapter == DataViewPage.class)
+        else if (adapter == DataViewPage.class)
         {
             DataViewTreeViewerPage page = new DataViewTreeViewerPage(getModel());
             getModelEventManager().addModelEventProcessor(
@@ -430,7 +456,7 @@ public class MetadataFormPage extends ReportFormPage
             return page;
         }
 
-        return null;
+        return super.getAdapter(adapter);
     }
 
 

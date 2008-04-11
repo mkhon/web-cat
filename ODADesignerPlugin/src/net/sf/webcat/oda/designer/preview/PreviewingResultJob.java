@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultJob.java,v 1.1 2008/04/08 18:31:04 aallowat Exp $
+ |  $Id: PreviewingResultJob.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,6 +35,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import net.sf.webcat.oda.designer.DesignerActivator;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import net.sf.webcat.oda.designer.util.WOActionDispatcher;
 import net.sf.webcat.oda.designer.util.WOActionResponse;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -96,7 +97,7 @@ public class PreviewingResultJob extends Job
     @Override
     protected IStatus run(IProgressMonitor monitor)
     {
-        monitor.beginTask("Obtaining preview data from Web-CAT server",
+        monitor.beginTask(Messages.PREVIEW_JOB_OBTAINING_DATA,
                 maxRecords);
 
         IStatus status = performRetrieval(monitor);
@@ -144,7 +145,6 @@ public class PreviewingResultJob extends Job
         {
             if (monitor.isCanceled())
             {
-                System.out.println("sup");
                 cancelRetrieval();
 
                 return Status.CANCEL_STATUS;
@@ -181,11 +181,11 @@ public class PreviewingResultJob extends Job
     private IStatus startRetrieval(IProgressMonitor monitor)
     {
         Hashtable<String, String> params = new Hashtable<String, String>();
-        params.put("entityType", entityType);
-        params.put("expressions", expressionParameterString);
-        params.put("username", username);
-        params.put("password", password);
-        params.put("timeout", Integer.toString(timeout));
+        params.put("entityType", entityType); //$NON-NLS-1$
+        params.put("expressions", expressionParameterString); //$NON-NLS-1$
+        params.put("username", username); //$NON-NLS-1$
+        params.put("password", password); //$NON-NLS-1$
+        params.put("timeout", Integer.toString(timeout)); //$NON-NLS-1$
 
         try
         {
@@ -194,7 +194,7 @@ public class PreviewingResultJob extends Job
             DesignerActivator.getDefault().getPreviewQueryManager().writeQuery(
                     dataSetUuid, writer);
             writer.flush();
-            params.put("query", stringWriter.toString());
+            params.put("query", stringWriter.toString()); //$NON-NLS-1$
         }
         catch (IOException e)
         {
@@ -203,7 +203,7 @@ public class PreviewingResultJob extends Job
 
         WOActionDispatcher dispatcher = new WOActionDispatcher(serverUrl);
         WOActionResponse response = dispatcher.send(
-                "designerPreview/startRetrieval", null, params);
+                "designerPreview/startRetrieval", null, params); //$NON-NLS-1$
 
         try
         {
@@ -214,7 +214,7 @@ public class PreviewingResultJob extends Job
 
                 previewSessionId = reader.readLine();
 
-                if (previewSessionId.equals("!!! ERROR"))
+                if (previewSessionId.equals("!!! ERROR")) //$NON-NLS-1$
                 {
                     return getStatusFromReader(reader);
                 }
@@ -253,7 +253,7 @@ public class PreviewingResultJob extends Job
         catch (IOException e)
         {
             message
-                    .append("Could not read a response from the Web-CAT server.");
+                    .append(Messages.PREVIEW_JOB_BAD_RESPONSE);
         }
 
         return new Status(IStatus.ERROR, DesignerActivator.PLUGIN_ID, message
@@ -265,7 +265,7 @@ public class PreviewingResultJob extends Job
     {
         WOActionDispatcher dispatcher = new WOActionDispatcher(serverUrl);
         WOActionResponse response = dispatcher.send(
-                "designerPreview/cancelRetrieval", previewSessionId, null);
+                "designerPreview/cancelRetrieval", previewSessionId, null); //$NON-NLS-1$
         response.close();
 
         return Status.CANCEL_STATUS;
@@ -333,7 +333,7 @@ public class PreviewingResultJob extends Job
     {
         WOActionDispatcher dispatcher = new WOActionDispatcher(serverUrl);
         WOActionResponse response = dispatcher.send(
-                "designerPreview/retrieveNextBatch", previewSessionId, null);
+                "designerPreview/retrieveNextBatch", previewSessionId, null); //$NON-NLS-1$
 
         lastBatchCount = 0;
         currentBatchIndex = 0;
@@ -352,7 +352,7 @@ public class PreviewingResultJob extends Job
                         bufferString));
                 String line = reader.readLine();
 
-                if (line.equals("!!! ERROR"))
+                if (line.equals("!!! ERROR")) //$NON-NLS-1$
                 {
                     synchronized (currentBatchLock)
                     {

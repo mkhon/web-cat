@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryBuilder.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: PreviewQueryBuilder.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.oda.designer.preview;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -65,8 +66,8 @@ public class PreviewQueryBuilder extends TitleAreaDialog implements
     {
         Control control = super.createContents(parent);
 
-        setTitle("Preview Query Builder");
-        setMessage("You can construct a query here in the same fashion as the advanced query builder on Web-CAT.\nThis query is for previewing purposes only and will not be saved into the final report.");
+        setTitle(Messages.QUERY_BUILDER_TITLE);
+        setMessage(Messages.QUERY_BUILDER_DESCRIPTION);
 
         return control;
     }
@@ -93,7 +94,7 @@ public class PreviewQueryBuilder extends TitleAreaDialog implements
         mainArea.setLayout(layout);
 
         Label label = new Label(mainArea, SWT.NONE);
-        String format = "Select objects of type \"{0}\" that satisfy all of the following criteria:";
+        String format = Messages.QUERY_BUILDER_INSTRUCTION;
         label.setText(MessageFormat.format(format, entityType));
         gd = new GridData(SWT.FILL, SWT.TOP, true, false);
         label.setLayoutData(gd);

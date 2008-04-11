@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CopyrightLicenseSection.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: CopyrightLicenseSection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.oda.designer.metadata;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -50,8 +51,8 @@ public class CopyrightLicenseSection extends AbstractSection
                 parent,
                 toolkit,
                 model,
-                "Copyright and License",
-                "This section describes the copyright and license under which this report template is distributed.");
+                Messages.COPYRIGHT_SECTION_TITLE,
+                Messages.COPYRIGHT_SECTION_DESCRIPTION);
     }
 
 
@@ -62,10 +63,10 @@ public class CopyrightLicenseSection extends AbstractSection
         GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
 
-        createLabel(parent, "Copyright:", SWT.CENTER);
+        createLabel(parent, Messages.COPYRIGHT_COPYRIGHT, SWT.CENTER);
         copyrightField = createText(parent, false, SWT.NONE);
 
-        createLabel(parent, "License:", SWT.CENTER);
+        createLabel(parent, Messages.COPYRIGHT_LICENSE, SWT.CENTER);
         licenseField = createCombo(parent);
 
         for (String license : LicenseTable.getInstance().getLicenses())
@@ -87,13 +88,13 @@ public class CopyrightLicenseSection extends AbstractSection
             }
         });
 
-        createLabel(parent, "License URL:", SWT.CENTER);
+        createLabel(parent, Messages.COPYRIGHT_LICENSE_URL, SWT.CENTER);
 
         Composite urlComp = createGridComposite(parent, 2, false);
 
         licenseURLField = createText(urlComp, false, SWT.NONE);
 
-        licenseURLGoButton = createButton(urlComp, "Go...", null);
+        licenseURLGoButton = createButton(urlComp, Messages.COPYRIGHT_GO, null);
         licenseURLGoButton.addSelectionListener(new SelectionAdapter()
         {
             public void widgetSelected(SelectionEvent e)
