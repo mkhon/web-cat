@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingPage.java,v 1.1 2008/04/08 18:31:10 aallowat Exp $
+ |  $Id: ColumnMappingPage.java,v 1.2 2008/04/11 01:58:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -108,7 +108,12 @@ public class ColumnMappingPage extends DataSetWizardPage
     private static final String TYPE_NAME = Messages.DATASET_TYPE_HEADER;
 
     private static String[] dataTypeDisplayNames = new String[] {
-            "Integer", "Float", "Decimal", "String", "Timestamp", "Boolean" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            Messages.DATATYPE_DISPLAYNAME_INTEGER,
+            Messages.DATATYPE_DISPLAYNAME_FLOAT,
+            Messages.DATATYPE_DISPLAYNAME_DECIMAL,
+            Messages.DATATYPE_DISPLAYNAME_STRING,
+            Messages.DATATYPE_DISPLAYNAME_TIMESTAMP,
+            Messages.DATATYPE_DISPLAYNAME_BOOLEAN };
 
 
     // -----------------------------------------------------------------------
@@ -304,6 +309,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
+    // ------------------------------------------------------------------------
     private void openPreviewQueryBuilder()
     {
         PreviewQueryClause[] clauses = DesignerActivator.getDefault()
@@ -316,7 +322,8 @@ public class ColumnMappingPage extends DataSetWizardPage
         {
             DesignerActivator.getDefault().getPreviewQueryManager().addQuery(
                     dataSetUuid, builder.getClauses());
-            DesignerActivator.getDefault().getPreviewQueryManager().saveToState();
+            DesignerActivator.getDefault().getPreviewQueryManager()
+                    .saveToState();
 
             DesignerActivator.getDefault().getPreviewCache().reset(dataSetUuid);
         }
@@ -782,7 +789,6 @@ public class ColumnMappingPage extends DataSetWizardPage
 
                 updatePrivateProperties(dataSetDesign);
 
-                //				updateDesign(dataSetDesign);
                 DataSetDesignPopulator.populateResultSet(dataSetDesign);
 
                 PreviewingResultCache cache = DesignerActivator.getDefault()

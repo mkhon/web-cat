@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MetadataFormPage.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: MetadataFormPage.java,v 1.3 2008/04/11 01:58:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,6 +32,7 @@ import org.eclipse.birt.report.designer.ui.editors.IPageStaleType;
 import org.eclipse.birt.report.designer.ui.editors.IReportEditorPage;
 import org.eclipse.birt.report.designer.ui.editors.IReportProvider;
 import org.eclipse.birt.report.designer.ui.editors.pages.ReportFormPage;
+import org.eclipse.birt.report.designer.ui.views.attributes.AttributeViewPage;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -454,6 +455,10 @@ public class MetadataFormPage extends ReportFormPage
             getModelEventManager().addModelEventProcessor(
                     page.getModelProcessor());
             return page;
+        }
+        else if (adapter == AttributeViewPage.class)
+        {
+            return new AttributeViewPage();
         }
 
         return super.getAdapter(adapter);
