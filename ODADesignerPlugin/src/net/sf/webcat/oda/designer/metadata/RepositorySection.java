@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositorySection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: RepositorySection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 public class RepositorySection extends AbstractSection
 {
     // ------------------------------------------------------------------------
-    public RepositorySection(MetadataFormPage formPage, Composite parent,
+    public RepositorySection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
         super(

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MetadataFormPage.java,v 1.3 2008/04/11 01:58:56 aallowat Exp $
+ |  $Id: OverviewFormPage.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,6 +33,9 @@ import org.eclipse.birt.report.designer.ui.editors.IReportEditorPage;
 import org.eclipse.birt.report.designer.ui.editors.IReportProvider;
 import org.eclipse.birt.report.designer.ui.editors.pages.ReportFormPage;
 import org.eclipse.birt.report.designer.ui.views.attributes.AttributeViewPage;
+import org.eclipse.birt.report.model.api.ModuleHandle;
+import org.eclipse.birt.report.model.api.command.ResourceChangeEvent;
+import org.eclipse.birt.report.model.api.core.IResourceChangeListener;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -50,6 +53,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.ManagedForm;
@@ -62,7 +67,16 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-public class MetadataFormPage extends ReportFormPage
+// ------------------------------------------------------------------------
+/**
+ * A form page that is added to the standard BIRT multi-page editor to add a
+ * user interface that lets the user easily edit and view the Web-CAT metadata
+ * for a report template.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OverviewFormPage.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ */
+public class OverviewFormPage extends ReportFormPage
 {
     // ------------------------------------------------------------------------
     @Override
@@ -225,17 +239,35 @@ public class MetadataFormPage extends ReportFormPage
     }
 
 
+    // ------------------------------------------------------------------------
+    private void moduleWasSaved(ModuleHandle module, ResourceChangeEvent event)
+    {
+        ReportProblemFinder finder = new ReportProblemFinder(module);
+
+        if (finder.hasProblems())
+        {
+            ReportProblemDialog dialog = new ReportProblemDialog(
+                    getSite().getShell(), finder.getProblems());
+
+            dialog.open();
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
     protected void hookModelEventManager(Object model)
     {
-        getModelEventManager( ).hookRoot( model);
-
-        getModelEventManager( ).hookCommandStack( new WrapperCommandStack( ) );
+        getModelEventManager().hookRoot(model);
+        getModelEventManager().hookCommandStack(new WrapperCommandStack());
     }
 
+
+    // ------------------------------------------------------------------------
     protected void unhookModelEventManager(Object model)
     {
-        getModelEventManager( ).unhookRoot( model);
+        getModelEventManager().unhookRoot(model);
     }
+
 
     // ------------------------------------------------------------------------
     @Override
@@ -270,6 +302,15 @@ public class MetadataFormPage extends ReportFormPage
         {
             e.printStackTrace();
         }
+
+        getModel().addResourceChangeListener(new IResourceChangeListener()
+        {
+            public void resourceChanged(ModuleHandle module,
+                    ResourceChangeEvent event)
+            {
+                moduleWasSaved(module, event);
+            }
+        });
 
         updateContentValues();
     }
@@ -308,23 +349,23 @@ public class MetadataFormPage extends ReportFormPage
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
 
-        part = new CopyrightLicenseSection(this, leftPane, toolkit, getModel());
-        twd = new TableWrapData(TableWrapData.FILL_GRAB);
-        part.getSection().setLayoutData(twd);
-        managedForm.addPart(part);
-
-        part = new AppearanceBehaviorSection(this, leftPane, toolkit,
-                getModel());
-        twd = new TableWrapData(TableWrapData.FILL_GRAB);
-        part.getSection().setLayoutData(twd);
-        managedForm.addPart(part);
-
         part = new AuthorsSection(this, rightPane, toolkit, getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
 
-        part = new RepositorySection(this, rightPane, toolkit, getModel());
+        part = new CopyrightLicenseSection(this, rightPane, toolkit, getModel());
+        twd = new TableWrapData(TableWrapData.FILL_GRAB);
+        part.getSection().setLayoutData(twd);
+        managedForm.addPart(part);
+
+        part = new AppearanceBehaviorSection(this, rightPane, toolkit,
+                getModel());
+        twd = new TableWrapData(TableWrapData.FILL_GRAB);
+        part.getSection().setLayoutData(twd);
+        managedForm.addPart(part);
+
+        part = new RepositorySection(this, leftPane, toolkit, getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);

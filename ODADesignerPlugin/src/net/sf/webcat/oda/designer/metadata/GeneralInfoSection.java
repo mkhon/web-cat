@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneralInfoSection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: GeneralInfoSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,7 +47,7 @@ import org.eclipse.ui.forms.widgets.Section;
 public class GeneralInfoSection extends AbstractSection
 {
     // ------------------------------------------------------------------------
-    public GeneralInfoSection(MetadataFormPage formPage, Composite parent,
+    public GeneralInfoSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
         super(formPage, parent, toolkit, model, Messages.GENERAL_INFO_SECTION_TITLE,

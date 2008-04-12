@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractSection.java,v 1.1 2008/04/08 18:30:59 aallowat Exp $
+ |  $Id: AbstractSection.java,v 1.2 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,8 @@ package net.sf.webcat.oda.designer.metadata;
 
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
@@ -46,7 +48,7 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class AbstractSection extends SectionPart
 {
     // ------------------------------------------------------------------------
-    public AbstractSection(MetadataFormPage formPage, Composite parent,
+    public AbstractSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model, String title,
             String description)
     {
@@ -74,9 +76,7 @@ public abstract class AbstractSection extends SectionPart
     // ------------------------------------------------------------------------
     public void updateContentValues()
     {
-        disableDirtyListener();
         updateControls();
-        enableDirtyListener();
     }
 
 
@@ -125,7 +125,15 @@ public abstract class AbstractSection extends SectionPart
     // ------------------------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style)
     {
-        return createText(parent, multiline, style, SWT.DEFAULT);
+        return createText(parent, multiline, style, SWT.DEFAULT, null);
+    }
+
+
+    // ------------------------------------------------------------------------
+    protected Text createText(Composite parent, boolean multiline, int style,
+            TrackingFocusListener focusListener)
+    {
+        return createText(parent, multiline, style, SWT.DEFAULT, focusListener);
     }
 
 
@@ -133,13 +141,29 @@ public abstract class AbstractSection extends SectionPart
     protected Text createText(Composite parent, boolean multiline, int style,
             int height)
     {
-        return createText(parent, multiline, style, height, 1);
+        return createText(parent, multiline, style, height, null);
+    }
+
+
+    // ------------------------------------------------------------------------
+    protected Text createText(Composite parent, boolean multiline, int style,
+            int height, TrackingFocusListener focusListener)
+    {
+        return createText(parent, multiline, style, height, 1, focusListener);
     }
 
 
     // ------------------------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style,
             int height, int colSpan)
+    {
+        return createText(parent, multiline, style, height, colSpan, null);
+    }
+
+
+    // ------------------------------------------------------------------------
+    protected Text createText(Composite parent, boolean multiline, int style,
+            int height, int colSpan, TrackingFocusListener focusListener)
     {
         style |= SWT.BORDER;
 
@@ -150,23 +174,19 @@ public abstract class AbstractSection extends SectionPart
 
         int valign = multiline ? SWT.FILL : SWT.CENTER;
 
-        Text text = getToolkit().createText(parent, "", style);
+        final Text text = getToolkit().createText(parent, "", style);
         GridData gd = new GridData(SWT.FILL, valign, true, false);
         gd.widthHint = 30;
         gd.heightHint = height;
         gd.horizontalSpan = colSpan;
         text.setLayoutData(gd);
 
-        text.addModifyListener(new ModifyListener()
+        if(focusListener == null)
         {
-            public void modifyText(ModifyEvent e)
-            {
-                if (!listenersDisabled)
-                {
-                    formPage.markAsDirty();
-                }
-            }
-        });
+            focusListener = new TrackingFocusListener(getFormPage());
+        }
+
+        text.addFocusListener(focusListener);
 
         return text;
     }
@@ -175,20 +195,24 @@ public abstract class AbstractSection extends SectionPart
     // ------------------------------------------------------------------------
     protected Combo createCombo(Composite parent)
     {
+        return createCombo(parent, null);
+    }
+
+
+    // ------------------------------------------------------------------------
+    protected Combo createCombo(Composite parent,
+            TrackingFocusListener focusListener)
+    {
         Combo combo = new Combo(parent, SWT.NONE);
         GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
         combo.setLayoutData(gd);
 
-        combo.addModifyListener(new ModifyListener()
+        if(focusListener == null)
         {
-            public void modifyText(ModifyEvent e)
-            {
-                if (!listenersDisabled)
-                {
-                    formPage.markAsDirty();
-                }
-            }
-        });
+            focusListener = new TrackingFocusListener(getFormPage());
+        }
+
+        combo.addFocusListener(focusListener);
 
         return combo;
     }
@@ -260,7 +284,7 @@ public abstract class AbstractSection extends SectionPart
 
 
     // ------------------------------------------------------------------------
-    protected MetadataFormPage getFormPage()
+    protected OverviewFormPage getFormPage()
     {
         return formPage;
     }
@@ -280,22 +304,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
-    protected void disableDirtyListener()
-    {
-        listenersDisabled = true;
-    }
-
-
-    // ------------------------------------------------------------------------
-    protected void enableDirtyListener()
-    {
-        listenersDisabled = false;
-    }
-
-
-    private boolean listenersDisabled = false;
-    private MetadataFormPage formPage;
+    private OverviewFormPage formPage;
     private FormToolkit toolkit;
     private ModuleHandle model;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CopyrightLicenseSection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: CopyrightLicenseSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class CopyrightLicenseSection extends AbstractSection
 {
     // ------------------------------------------------------------------------
-    public CopyrightLicenseSection(MetadataFormPage formPage, Composite parent,
+    public CopyrightLicenseSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
         super(

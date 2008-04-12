@@ -151,7 +151,7 @@
             targetEditorId="org.eclipse.birt.report.designer.ui.editors.ReportEditor">
          <formPage
                actionBarContributor="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-               class="net.sf.webcat.oda.designer.metadata.MetadataFormPage"
+               class="net.sf.webcat.oda.designer.metadata.OverviewFormPage"
                displayName="Overview"
                id="net.sf.webcat.oda.ui.editors.metadata"
                position="left"

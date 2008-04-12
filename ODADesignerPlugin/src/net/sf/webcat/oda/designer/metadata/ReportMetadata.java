@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportMetadata.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: ReportMetadata.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.eclipse.birt.report.model.metadata.StringPropertyType;
  * by shadowing an existing BIRT property.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ReportMetadata.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ * @version $Id: ReportMetadata.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  */
 public class ReportMetadata
 {
@@ -295,7 +295,10 @@ public class ReportMetadata
         if (lastName != null)
             name += lastName;
 
-        return name;
+        if (name.trim().length() == 0)
+            return null;
+        else
+            return name;
     }
 
 
@@ -314,16 +317,20 @@ public class ReportMetadata
             String value)
     {
         String firstName = null, lastName = null;
-        int lastSpace = value.lastIndexOf(' ');
 
-        if (lastSpace == -1)
+        if(value != null && value.trim().length() > 0)
         {
-            lastName = value;
-        }
-        else
-        {
-            firstName = value.substring(0, lastSpace);
-            lastName = value.substring(lastSpace + 1);
+            int lastSpace = value.lastIndexOf(' ');
+
+            if (lastSpace == -1)
+            {
+                lastName = value;
+            }
+            else
+            {
+                firstName = value.substring(0, lastSpace);
+                lastName = value.substring(lastSpace + 1);
+            }
         }
 
         setAuthorFirstName(module, index, firstName);

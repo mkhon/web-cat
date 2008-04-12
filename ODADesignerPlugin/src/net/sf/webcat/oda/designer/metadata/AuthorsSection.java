@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthorsSection.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: AuthorsSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,35 +21,40 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import java.util.List;
 import java.util.ArrayList;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class AuthorsSection extends AbstractSection
 {
     // ------------------------------------------------------------------------
-    public AuthorsSection(MetadataFormPage formPage, Composite parent,
+    public AuthorsSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
-        super(
-                formPage,
-                parent,
-                toolkit,
-                model,
-                Messages.AUTHORS_SECTION_TITLE,
+        super(formPage, parent, toolkit, model, Messages.AUTHORS_SECTION_TITLE,
                 Messages.AUTHORS_SECTION_DESCRIPTION);
 
         authors = new ArrayList<AuthorInfo>();
@@ -68,30 +73,38 @@ public class AuthorsSection extends AbstractSection
         gd.horizontalSpan = 4;
         tableContainer.setLayoutData(gd);
 
-        authorTable = new List(tableContainer, SWT.BORDER | SWT.V_SCROLL);
+        authorTable = new TableViewer(tableContainer, SWT.BORDER
+                | SWT.FULL_SELECTION);
         gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gd.heightHint = 48;
-        authorTable.setLayoutData(gd);
+        gd.heightHint = 36;
+        authorTable.getControl().setLayoutData(gd);
 
-        authorTable.addSelectionListener(new SelectionAdapter()
-        {
-            public void widgetSelected(SelectionEvent e)
-            {
-                authorSelectionChanged();
-            }
-        });
+        authorTable
+                .addPostSelectionChangedListener(new ISelectionChangedListener()
+                {
+                    public void selectionChanged(SelectionChangedEvent event)
+                    {
+                        authorSelectionChanged();
+                    }
+                });
+
+        AuthorProvider provider = new AuthorProvider();
+        authorTable.setContentProvider(provider);
+        authorTable.setLabelProvider(provider);
+        authorTable.setInput(authors);
 
         Composite buttonContainer = createGridComposite(tableContainer, 1, true);
         gd = new GridData(SWT.FILL, SWT.FILL, false, true);
         buttonContainer.setLayoutData(gd);
 
-        createButton(buttonContainer, Messages.AUTHORS_ADD, new SelectionAdapter()
-        {
-            public void widgetSelected(SelectionEvent e)
-            {
-                addAuthor();
-            }
-        });
+        createButton(buttonContainer, Messages.AUTHORS_ADD,
+                new SelectionAdapter()
+                {
+                    public void widgetSelected(SelectionEvent e)
+                    {
+                        addAuthor();
+                    }
+                });
 
         removeButton = createButton(buttonContainer, Messages.AUTHORS_REMOVE,
                 new SelectionAdapter()
@@ -102,56 +115,56 @@ public class AuthorsSection extends AbstractSection
                     }
                 });
 
-        Label separator = getToolkit().createSeparator(parent, SWT.HORIZONTAL);
-        gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        gd.horizontalSpan = 4;
-        separator.setLayoutData(gd);
-
         createLabel(parent, Messages.AUTHORS_NAME, SWT.CENTER);
-        nameField = createText(parent, false, SWT.NONE, SWT.DEFAULT, 3);
-        nameField.addModifyListener(new ModifyListener()
+        nameField = createText(parent, false, SWT.NONE, SWT.DEFAULT, 3,
+                new TrackingFocusListener(getFormPage())
         {
-            public void modifyText(ModifyEvent e)
+            @Override
+            protected void textDidChange()
             {
                 nameFieldModified();
             }
         });
 
         createLabel(parent, Messages.AUTHORS_EMAIL, SWT.CENTER);
-        emailField = createText(parent, false, SWT.NONE);
-        emailField.addModifyListener(new ModifyListener()
+        emailField = createText(parent, false, SWT.NONE,
+                new TrackingFocusListener(getFormPage())
         {
-            public void modifyText(ModifyEvent e)
+            @Override
+            protected void textDidChange()
             {
                 emailFieldModified();
             }
         });
 
         createLabel(parent, Messages.AUTHORS_URL, SWT.CENTER);
-        urlField = createText(parent, false, SWT.NONE);
-        urlField.addModifyListener(new ModifyListener()
+        urlField = createText(parent, false, SWT.NONE,
+                new TrackingFocusListener(getFormPage())
         {
-            public void modifyText(ModifyEvent e)
+            @Override
+            protected void textDidChange()
             {
                 urlFieldModified();
             }
         });
 
         createLabel(parent, Messages.AUTHORS_AFFILIATION, SWT.CENTER);
-        affiliationField = createText(parent, false, SWT.NONE);
-        affiliationField.addModifyListener(new ModifyListener()
+        affiliationField = createText(parent, false, SWT.NONE,
+                new TrackingFocusListener(getFormPage())
         {
-            public void modifyText(ModifyEvent e)
+            @Override
+            protected void textDidChange()
             {
                 affiliationFieldModified();
             }
         });
 
         createLabel(parent, Messages.AUTHORS_PHONE, SWT.CENTER);
-        phoneField = createText(parent, false, SWT.NONE);
-        phoneField.addModifyListener(new ModifyListener()
+        phoneField = createText(parent, false, SWT.NONE,
+                new TrackingFocusListener(getFormPage())
         {
-            public void modifyText(ModifyEvent e)
+            @Override
+            protected void textDidChange()
             {
                 phoneFieldModified();
             }
@@ -165,7 +178,6 @@ public class AuthorsSection extends AbstractSection
         ModuleHandle model = getModel();
 
         authors.clear();
-        authorTable.removeAll();
 
         int count = ReportMetadata.getAuthorsCount(model);
 
@@ -180,9 +192,10 @@ public class AuthorsSection extends AbstractSection
             author.phone = ReportMetadata.getAuthorPhone(model, i);
 
             authors.add(author);
-            authorTable.add(author.name);
         }
 
+        authorTable.setInput(authors);
+        authorTable.refresh();
         authorSelectionChanged();
     }
 
@@ -208,14 +221,29 @@ public class AuthorsSection extends AbstractSection
     }
 
 
+    // ----------------------------------------------------------
+    private AuthorInfo getSelectedAuthor()
+    {
+        IStructuredSelection selection =
+            (IStructuredSelection) authorTable.getSelection();
+
+        if(selection.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return (AuthorInfo) selection.getFirstElement();
+        }
+    }
+
+
     // ------------------------------------------------------------------------
     private void authorSelectionChanged()
     {
-        disableDirtyListener();
+        AuthorInfo author = getSelectedAuthor();
 
-        int index = authorTable.getSelectionIndex();
-
-        if (index == -1)
+        if(author == null)
         {
             nameField.setText("");
             emailField.setText("");
@@ -233,8 +261,6 @@ public class AuthorsSection extends AbstractSection
         }
         else
         {
-            AuthorInfo author = authors.get(index);
-
             safeSetText(nameField, author.name);
             safeSetText(emailField, author.email);
             safeSetText(urlField, author.url);
@@ -249,8 +275,6 @@ public class AuthorsSection extends AbstractSection
 
             removeButton.setEnabled(true);
         }
-
-        enableDirtyListener();
     }
 
 
@@ -258,8 +282,8 @@ public class AuthorsSection extends AbstractSection
     private void addAuthor()
     {
         authors.add(new AuthorInfo());
-        authorTable.add(Messages.AUTHORS_ENTER_NAME_PROMPT);
-        authorTable.select(authorTable.getItemCount() - 1);
+        authorTable.refresh();
+        authorTable.getTable().setSelection(authors.size() - 1);
 
         authorSelectionChanged();
 
@@ -272,12 +296,12 @@ public class AuthorsSection extends AbstractSection
     // ------------------------------------------------------------------------
     private void removeAuthor()
     {
-        int index = authorTable.getSelectionIndex();
+        AuthorInfo author = getSelectedAuthor();
 
-        if (index != -1)
+        if (author != null)
         {
-            authors.remove(index);
-            authorTable.remove(index);
+            authors.remove(author);
+            authorTable.refresh();
 
             authorSelectionChanged();
 
@@ -289,14 +313,12 @@ public class AuthorsSection extends AbstractSection
     // ------------------------------------------------------------------------
     private void nameFieldModified()
     {
-        int index = authorTable.getSelectionIndex();
+        AuthorInfo author = getSelectedAuthor();
 
-        if (index != -1)
+        if (author != null)
         {
-            AuthorInfo author = authors.get(index);
             author.name = nameField.getText();
-
-            authorTable.setItem(index, author.name);
+            authorTable.update(author, null);
         }
     }
 
@@ -304,12 +326,12 @@ public class AuthorsSection extends AbstractSection
     // ------------------------------------------------------------------------
     private void emailFieldModified()
     {
-        int index = authorTable.getSelectionIndex();
+        AuthorInfo author = getSelectedAuthor();
 
-        if (index != -1)
+        if (author != null)
         {
-            AuthorInfo author = authors.get(index);
             author.email = emailField.getText();
+            authorTable.update(author, null);
         }
     }
 
@@ -317,11 +339,10 @@ public class AuthorsSection extends AbstractSection
     // ------------------------------------------------------------------------
     private void urlFieldModified()
     {
-        int index = authorTable.getSelectionIndex();
+        AuthorInfo author = getSelectedAuthor();
 
-        if (index != -1)
+        if (author != null)
         {
-            AuthorInfo author = authors.get(index);
             author.url = urlField.getText();
         }
     }
@@ -330,11 +351,10 @@ public class AuthorsSection extends AbstractSection
     // ------------------------------------------------------------------------
     private void affiliationFieldModified()
     {
-        int index = authorTable.getSelectionIndex();
+        AuthorInfo author = getSelectedAuthor();
 
-        if (index != -1)
+        if (author != null)
         {
-            AuthorInfo author = authors.get(index);
             author.affiliation = affiliationField.getText();
         }
     }
@@ -343,11 +363,10 @@ public class AuthorsSection extends AbstractSection
     // ------------------------------------------------------------------------
     private void phoneFieldModified()
     {
-        int index = authorTable.getSelectionIndex();
+        AuthorInfo author = getSelectedAuthor();
 
-        if (index != -1)
+        if (author != null)
         {
-            AuthorInfo author = authors.get(index);
             author.phone = phoneField.getText();
         }
     }
@@ -364,13 +383,93 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    private List authorTable;
+    // ----------------------------------------------------------
+    private class AuthorProvider
+    implements IStructuredContentProvider, ITableLabelProvider
+    {
+        // ----------------------------------------------------------
+        public Object[] getElements(Object inputElement)
+        {
+            return authors.toArray();
+        }
+
+
+        // ----------------------------------------------------------
+        public void dispose()
+        {
+            // Do nothing.
+        }
+
+
+        // ----------------------------------------------------------
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+        {
+            // Do nothing.
+        }
+
+
+        // ----------------------------------------------------------
+        public Image getColumnImage(Object element, int columnIndex)
+        {
+            return null;
+        }
+
+
+        // ----------------------------------------------------------
+        public String getColumnText(Object element, int columnIndex)
+        {
+            AuthorInfo author = (AuthorInfo) element;
+
+            String name = "";
+
+            if(author.name == null)
+            {
+                name = "<no name provided>";
+            }
+            else
+            {
+                name = author.name;
+            }
+
+            if(author.email != null)
+            {
+                name += " (" + author.email + ")";
+            }
+
+            return name;
+        }
+
+
+        // ----------------------------------------------------------
+        public void addListener(ILabelProviderListener listener)
+        {
+            // Do nothing.
+        }
+
+
+        // ----------------------------------------------------------
+        public boolean isLabelProperty(Object element, String property)
+        {
+            return false;
+        }
+
+
+        // ----------------------------------------------------------
+        public void removeListener(ILabelProviderListener listener)
+        {
+            // Do nothing.
+        }
+    }
+
+
+    //~ Static/instance variables .............................................
+
+    private TableViewer authorTable;
     private Button removeButton;
     private Text nameField;
     private Text emailField;
     private Text urlField;
     private Text affiliationField;
     private Text phoneField;
-
-    private java.util.List<AuthorInfo> authors;
+    private List<AuthorInfo> authors;
 }

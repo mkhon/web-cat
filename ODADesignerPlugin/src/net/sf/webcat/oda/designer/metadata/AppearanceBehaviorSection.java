@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AppearanceBehaviorSection.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: AppearanceBehaviorSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.ibm.icu.util.ULocale;
 public class AppearanceBehaviorSection extends AbstractSection
 {
     // ------------------------------------------------------------------------
-    public AppearanceBehaviorSection(MetadataFormPage formPage,
+    public AppearanceBehaviorSection(OverviewFormPage formPage,
             Composite parent, FormToolkit toolkit, ModuleHandle model)
     {
         super(

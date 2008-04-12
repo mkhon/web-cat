@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Messages.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: Messages.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -141,6 +141,8 @@ public class Messages extends NLS
     public static String QUERY_COMPARISON_NOT_ONE_OF;
     public static String QUERY_COMPARISON_ONE_OF;
     public static String REPORT_METADATA_AUTHOR_AND;
+    public static String REPORT_PROBLEM_DIALOG_MESSAGE;
+    public static String REPORT_PROBLEM_DIALOG_TITLE;
     public static String REPOSITORY_CHANGE_HISTORY;
     public static String REPOSITORY_ID;
     public static String REPOSITORY_ROOT_ID;
