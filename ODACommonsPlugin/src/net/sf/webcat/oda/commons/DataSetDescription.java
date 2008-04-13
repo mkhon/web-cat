@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetDescription.java,v 1.3 2008/04/11 03:46:25 aallowat Exp $
+ |  $Id: DataSetDescription.java,v 1.4 2008/04/13 14:39:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -60,7 +60,7 @@ import java.util.List;
  * descriptor.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataSetDescription.java,v 1.3 2008/04/11 03:46:25 aallowat Exp $
+ * @version $Id: DataSetDescription.java,v 1.4 2008/04/13 14:39:20 aallowat Exp $
  */
 public class DataSetDescription
 {
@@ -342,6 +342,25 @@ public class DataSetDescription
     }
 
 
+    //~ Nested Classes ........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Contains information about a column in the data set.
+     */
+    private class ColumnInfo
+    {
+        /** The name of the column. */
+        public String name;
+
+        /** The key path or OGNL expression for the column. */
+        public String expression;
+
+        /** The data type of the column. */
+        public String type;
+    }
+
+
     //~ Static/Instance variables .............................................
 
     private static final String ENTITY_SECTION = "ENTITY";
@@ -352,15 +371,4 @@ public class DataSetDescription
     private String uniqueId;
     private String entityType;
     private List<ColumnInfo> columns;
-
-
-    //~ Nested Classes ........................................................
-
-    // ----------------------------------------------------------
-    private class ColumnInfo
-    {
-        public String name;
-        public String expression;
-        public String type;
-    }
 }

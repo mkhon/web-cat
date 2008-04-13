@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportMetadata.java,v 1.1 2008/04/13 14:33:11 aallowat Exp $
+ |  $Id: ReportMetadata.java,v 1.2 2008/04/13 14:39:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.eclipse.birt.report.model.metadata.StringPropertyType;
  * by shadowing an existing BIRT property.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ReportMetadata.java,v 1.1 2008/04/13 14:33:11 aallowat Exp $
+ * @version $Id: ReportMetadata.java,v 1.2 2008/04/13 14:39:20 aallowat Exp $
  */
 public class ReportMetadata
 {
@@ -1074,7 +1074,7 @@ public class ReportMetadata
     }
 
 
-    //~ Instance/static variables .............................................
+    //~ Static/instance variables .............................................
 
     private static final String PROP_PREFIX = "webcat.";
 
