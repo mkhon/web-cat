@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Query.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
+ |  $Id: Query.java,v 1.4 2008/04/13 14:44:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,13 +45,20 @@ import org.eclipse.datatools.connectivity.oda.SortSpec;
  * behavior in its place.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @author $Id: Query.java,v 1.3 2008/04/08 18:25:55 aallowat Exp $
+ * @author $Id: Query.java,v 1.4 2008/04/13 14:44:56 aallowat Exp $
  */
 public class Query implements IQuery
 {
     //~ Constructors ..........................................................
 
     // -----------------------------------------------------------
+    /**
+     * Creates a new query that gets its results from the specified result set
+     * provider.
+     *
+     * @param resultSets
+     *            the result set provider from which to get query results
+     */
     public Query(IWebCATResultSetProvider resultSets)
     {
         this.resultSets = resultSets;

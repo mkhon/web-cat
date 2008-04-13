@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Driver.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |  $Id: Driver.java,v 1.3 2008/04/13 14:44:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,11 +34,11 @@ import org.eclipse.datatools.connectivity.oda.util.manifest.ManifestExplorer;
  * Implementation class of IDriver for an ODA runtime driver.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: Driver.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ * @version $Id: Driver.java,v 1.3 2008/04/13 14:44:56 aallowat Exp $
  */
 public class Driver implements IDriver
 {
-    //~ Methods................................................................
+    //~ Methods ...............................................................
 
     // -----------------------------------------------------------
     public IConnection getConnection(String dataSourceType) throws OdaException
@@ -104,7 +104,7 @@ public class Driver implements IDriver
     }
 
 
-    // === Static Variables ===================================================
+    //~ Static/instance variables .............................................
 
     /**
      * The unique identifier of the Web-CAT ODA data source.

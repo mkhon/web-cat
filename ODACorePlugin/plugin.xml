@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
+<!-- $Id: plugin.xml,v 1.2 2008/04/13 14:44:56 aallowat Exp $ -->
+
 <plugin>
    <extension-point id="emptyAppContextHandlers" name="Empty App Context Handlers" schema="schema/emptyAppContextHandlers.exsd"/>
 
