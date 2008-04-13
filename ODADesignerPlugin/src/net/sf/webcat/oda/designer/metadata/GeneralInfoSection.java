@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneralInfoSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: GeneralInfoSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.birt.report.model.api.activity.SemanticException;
@@ -44,18 +45,31 @@ import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+//------------------------------------------------------------------------
+/**
+ * A section on the Overview page that edits general properties about the report
+ * template such as its title and description.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: GeneralInfoSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class GeneralInfoSection extends AbstractSection
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public GeneralInfoSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
-        super(formPage, parent, toolkit, model, Messages.GENERAL_INFO_SECTION_TITLE,
+        super(formPage, parent, toolkit, model,
+                Messages.GENERAL_INFO_SECTION_TITLE,
                 Messages.GENERAL_INFO_SECTION_DESCRIPTION);
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     protected void createContent(Composite parent)
     {
@@ -104,8 +118,8 @@ public class GeneralInfoSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
-    protected void updateControls()
+    // ----------------------------------------------------------
+    public void updateControls()
     {
         ModuleHandle module = getModel();
 
@@ -115,7 +129,7 @@ public class GeneralInfoSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public void saveModel()
     {
         ModuleHandle module = getModel();
@@ -125,6 +139,8 @@ public class GeneralInfoSection extends AbstractSection
         ReportMetadata.setKeywords(module, keywordsField.getText());
     }
 
+
+    //~ Static/instance variables .............................................
 
     private static final String EMPTY_TITLE_KEY = "generalInfo.emptyTitle"; //$NON-NLS-1$
     private static final String EMPTY_TITLE_MESSAGE = Messages.GENERAL_INFO_ERROR_EMPTY_TITLE;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryComparison.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: PreviewQueryComparison.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,6 +25,13 @@ import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.contentassist.ContentAssistManager;
 import net.sf.webcat.oda.designer.i18n.Messages;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewQueryComparison.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public enum PreviewQueryComparison
 {
     IS_EQUAL_TO("==", true), IS_NOT_EQUAL_TO("!=", true), IS_LESS_THAN("<", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

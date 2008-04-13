@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlScanner.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: OgnlScanner.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,8 +28,18 @@ import org.eclipse.jface.text.rules.IWhitespaceDetector;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlScanner.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlScanner extends RuleBasedScanner
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public OgnlScanner()
     {
         List<IRule> rules = new ArrayList<IRule>();

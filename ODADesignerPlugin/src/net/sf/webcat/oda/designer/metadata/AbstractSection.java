@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractSection.java,v 1.2 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: AbstractSection.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -45,9 +46,36 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
+//------------------------------------------------------------------------
+/**
+ * The base class for all of the form sections that are used in the Web-CAT
+ * report designer form pages.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: AbstractSection.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public abstract class AbstractSection extends SectionPart
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a section.
+     *
+     * @param formPage
+     *            the form page that will own this section
+     * @param parent
+     *            the Composite container that should be the parent of this
+     *            section
+     * @param toolkit
+     *            the form toolkit of the form page
+     * @param model
+     *            the report design that this section will edit
+     * @param title
+     *            the title of the section
+     * @param description
+     *            the description of the section
+     */
     public AbstractSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model, String title,
             String description)
@@ -69,32 +97,42 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Subclasses should override this method to create the controls that will
+     * make up this section.
+     *
+     * @param parent
+     *            the parent of the controls
+     */
     protected abstract void createContent(Composite parent);
 
 
-    // ------------------------------------------------------------------------
-    public void updateContentValues()
-    {
-        updateControls();
-    }
-
-
-    // ------------------------------------------------------------------------
-    protected void updateControls()
+    // ----------------------------------------------------------
+    /**
+     * Subclasses should override this method to populate their controls with
+     * values from the report model.
+     */
+    public void updateControls()
     {
         // Implement in subclasses if necessary.
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
+    /**
+     * Subclasses should override this method to populate the report model with
+     * values from their controls.
+     */
     public void saveModel()
     {
         // Implement in subclasses if necessary.
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Label createLabel(Composite parent, String text, int valign)
     {
         Label label = getToolkit().createLabel(parent, text);
@@ -108,7 +146,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected FormText createFormText(Composite parent, boolean vFill)
     {
         FormText formText = new FormText(parent, SWT.NONE);
@@ -122,14 +160,14 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style)
     {
         return createText(parent, multiline, style, SWT.DEFAULT, null);
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style,
             TrackingFocusListener focusListener)
     {
@@ -137,7 +175,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style,
             int height)
     {
@@ -145,7 +183,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style,
             int height, TrackingFocusListener focusListener)
     {
@@ -153,7 +191,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style,
             int height, int colSpan)
     {
@@ -161,7 +199,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Text createText(Composite parent, boolean multiline, int style,
             int height, int colSpan, TrackingFocusListener focusListener)
     {
@@ -174,14 +212,14 @@ public abstract class AbstractSection extends SectionPart
 
         int valign = multiline ? SWT.FILL : SWT.CENTER;
 
-        final Text text = getToolkit().createText(parent, "", style);
+        final Text text = getToolkit().createText(parent, "", style); //$NON-NLS-1$
         GridData gd = new GridData(SWT.FILL, valign, true, false);
         gd.widthHint = 30;
         gd.heightHint = height;
         gd.horizontalSpan = colSpan;
         text.setLayoutData(gd);
 
-        if(focusListener == null)
+        if (focusListener == null)
         {
             focusListener = new TrackingFocusListener(getFormPage());
         }
@@ -192,14 +230,14 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Combo createCombo(Composite parent)
     {
         return createCombo(parent, null);
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Combo createCombo(Composite parent,
             TrackingFocusListener focusListener)
     {
@@ -207,7 +245,7 @@ public abstract class AbstractSection extends SectionPart
         GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
         combo.setLayoutData(gd);
 
-        if(focusListener == null)
+        if (focusListener == null)
         {
             focusListener = new TrackingFocusListener(getFormPage());
         }
@@ -218,7 +256,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Button createButton(Composite parent, String text,
             SelectionListener listener)
     {
@@ -235,7 +273,7 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected Composite createGridComposite(Composite parent, int numColumns,
             boolean sameWidth)
     {
@@ -253,21 +291,21 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void safeSetText(Text control, String value)
     {
-        control.setText(value != null ? value : "");
+        control.setText(value != null ? value : ""); //$NON-NLS-1$
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void safeSetText(Combo control, String value)
     {
-        control.setText(value != null ? value : "");
+        control.setText(value != null ? value : ""); //$NON-NLS-1$
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void addMessage(Object key, String messageText, Object data,
             int type, Control control)
     {
@@ -276,33 +314,35 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void removeMessage(Object key, Control control)
     {
         getManagedForm().getMessageManager().removeMessage(key, control);
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected OverviewFormPage getFormPage()
     {
         return formPage;
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected FormToolkit getToolkit()
     {
         return toolkit;
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected ModuleHandle getModel()
     {
         return model;
     }
 
+
+    //~ Static/instance variables .............................................
 
     private OverviewFormPage formPage;
     private FormToolkit toolkit;

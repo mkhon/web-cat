@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StorageDocumentProvider.java,v 1.1 2008/04/08 18:31:02 aallowat Exp $
+ |  $Id: StorageDocumentProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,9 +29,18 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: StorageDocumentProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class StorageDocumentProvider extends DocumentProvider
 {
+    //~ Constructor ...........................................................
 
+    // ----------------------------------------------------------
     /**
      * Creates a new document provider.
      *
@@ -42,6 +51,9 @@ public class StorageDocumentProvider extends DocumentProvider
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     /**
      * Initializes the given document from the given editor input using the
      * given character encoding.
@@ -90,6 +102,7 @@ public class StorageDocumentProvider extends DocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Returns the persisted encoding for the given element.
      *
@@ -117,12 +130,14 @@ public class StorageDocumentProvider extends DocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     public boolean isModifiable(Object element)
     {
         return !isReadOnly(element);
     }
 
 
+    // ----------------------------------------------------------
     public boolean isReadOnly(Object element)
     {
         IStorage storage = null;

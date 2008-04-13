@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistManager.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: ContentAssistManager.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,8 +35,19 @@ import java.util.Map;
 import net.sf.webcat.oda.designer.DesignerActivator;
 import org.eclipse.core.runtime.IPath;
 
+//------------------------------------------------------------------------
+/**
+ * A class that manages the content assist information that is retrieved from
+ * the Web-CAT server in order to ease the editing of data sets for the user.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ContentAssistManager.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class ContentAssistManager
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public ContentAssistManager()
     {
         this.subsystemVersions = new Hashtable<String, String>();
@@ -49,6 +60,9 @@ public class ContentAssistManager
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public void setServerCredentials(String newUrl, String newUser,
             String newPass)
     {
@@ -65,6 +79,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private File getEntityDbFile()
     {
         IPath statePath = DesignerActivator.getDefault().getStateLocation();
@@ -72,6 +87,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private File getObjectDbFile()
     {
         IPath statePath = DesignerActivator.getDefault().getStateLocation();
@@ -79,6 +95,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private void loadFromState()
     {
         loadEntityDescriptionsFromState();
@@ -86,6 +103,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private void loadEntityDescriptionsFromState()
     {
         File dbFile = getEntityDbFile();
@@ -107,6 +125,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private void loadObjectDescriptionsFromState()
     {
         File dbFile = getObjectDbFile();
@@ -128,6 +147,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     /* package */void writeToState()
     {
         writeEntityDescriptionsToState();
@@ -135,6 +155,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private void writeEntityDescriptionsToState()
     {
         File dbFile = getEntityDbFile();
@@ -153,6 +174,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     private void writeObjectDescriptionsToState()
     {
         File dbFile = getObjectDbFile();
@@ -171,6 +193,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public void update(boolean forceEvenIfVersionsIdentical)
     {
         if (serverUrl != null)
@@ -185,6 +208,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public boolean isEntity(String name)
     {
         if (name == null)
@@ -194,6 +218,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public String[] getEntities()
     {
         String[] array = new String[entityDescriptions.size()];
@@ -204,6 +229,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public String[] getAttributeNames(String entity)
     {
         if (isEntity(entity))
@@ -227,6 +253,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public String getAttributeType(String entity, String attribute)
     {
         if (isEntity(entity))
@@ -247,6 +274,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public String getKeyPathType(String rootClass, String keyPath)
     {
         String[] parts = keyPath.split("\\."); //$NON-NLS-1$
@@ -265,6 +293,7 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
     public ContentAssistObjectDescription[] getObjectDescriptions(String entity)
     {
         List<ContentAssistObjectDescription> list = objectDescriptions
@@ -295,19 +324,15 @@ public class ContentAssistManager
     }
 
 
-    private static final String ENTITY_DESCRIPTIONS_FILE = "entityDescriptions.txt"; //$NON-NLS-1$
+    //~ Static/instance variables .............................................
 
+    private static final String ENTITY_DESCRIPTIONS_FILE = "entityDescriptions.txt"; //$NON-NLS-1$
     private static final String OBJECT_DESCRIPTIONS_FILE = "objectDescriptions.txt"; //$NON-NLS-1$
 
     /* package */Map<String, String> subsystemVersions;
-
     /* package */Map<String, List<ContentAssistAttributeInfo>> entityDescriptions;
-
     /* package */Map<String, List<ContentAssistObjectDescription>> objectDescriptions;
-
     /* package */String serverUrl;
-
     /* package */String username;
-
     /* package */String password;
 }

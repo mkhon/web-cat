@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingElement.java,v 1.1 2008/04/08 18:31:11 aallowat Exp $
+ |  $Id: ColumnMappingElement.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,46 +21,96 @@
 
 package net.sf.webcat.oda.designer.impl;
 
+//------------------------------------------------------------------------
+/**
+ * Stores information about a result set column while it is being edited in the
+ * data set editor.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ColumnMappingElement.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class ColumnMappingElement
 {
-    private String columnName;
-    private String expression;
-    private String type;
+    //~ Methods ...............................................................
 
-
+    // ----------------------------------------------------------
+    /**
+     * Gets the name of the column.
+     *
+     * @return the name of the column
+     */
     public String getColumnName()
     {
         return columnName;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Sets the name of the column.
+     *
+     * @param value
+     *            the name of the column
+     */
     public void setColumnName(String value)
     {
         columnName = value;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the key path or OGNL expression for the column.
+     *
+     * @return the key path or OGNL expression for the column
+     */
     public String getExpression()
     {
         return expression;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Sets the key path or OGNL expression for the column.
+     *
+     * @param value
+     *            the key path or OGNL expression for the column
+     */
     public void setExpression(String value)
     {
         expression = value;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the data type for the column.
+     *
+     * @return the data type for the column
+     */
     public String getType()
     {
         return type;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Sets the data type for the column.
+     *
+     * @param value
+     *            the data type for the column
+     */
     public void setType(String value)
     {
         type = value;
     }
 
+
+    //~ Static/instance variables .............................................
+
+    private String columnName;
+    private String expression;
+    private String type;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OverviewFormPage.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: OverviewFormPage.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,10 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.lang.reflect.InvocationTargetException;
+import net.sf.webcat.oda.commons.ReportModelProblemFinder;
+import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.i18n.Messages;
+import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
 import org.eclipse.birt.report.designer.internal.ui.command.WrapperCommandStack;
 import org.eclipse.birt.report.designer.internal.ui.editors.parts.event.ModelEventManager;
 import org.eclipse.birt.report.designer.internal.ui.views.data.DataViewPage;
@@ -43,8 +46,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -74,11 +79,13 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * for a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: OverviewFormPage.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ * @version $Id: OverviewFormPage.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  */
 public class OverviewFormPage extends ReportFormPage
 {
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     public void doSave(IProgressMonitor monitor)
     {
@@ -98,7 +105,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @Override
     public void doSaveAs()
     {
@@ -182,7 +189,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void saveModel(boolean showProgress)
     {
         if (showProgress)
@@ -213,7 +220,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void saveModelWithProgress(IProgressMonitor monitor)
     {
         int count = managedForm.getParts().length;
@@ -239,22 +246,42 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void moduleWasSaved(ModuleHandle module, ResourceChangeEvent event)
     {
-        ReportProblemFinder finder = new ReportProblemFinder(module);
+        Preferences prefs = DesignerActivator.getDefault()
+                .getPluginPreferences();
+        int saveBehavior = prefs
+                .getInt(IPreferencesConstants.SAVE_BEHAVIOR_KEY);
+
+        if (saveBehavior == IPreferencesConstants.SAVE_BEHAVIOR_SHOW_NO_PROBLEMS)
+        {
+            return;
+        }
+
+        ReportModelProblemFinder finder = new ReportModelProblemFinder(module);
 
         if (finder.hasProblems())
         {
-            ReportProblemDialog dialog = new ReportProblemDialog(
-                    getSite().getShell(), finder.getProblems());
+            ReportProblemDialog dialog = new ReportProblemDialog(getSite()
+                    .getShell(), finder.getProblems());
 
-            dialog.open();
+            if (dialog.open() == Window.OK)
+            {
+                updateContentValues();
+
+                // Remove the change listener while we're saving the immediate
+                // fixes in the report, or else we would get called again and
+                // present another fix dialog.
+                module.removeResourceChangeListener(resourceChangeListener);
+                getReportEditor().doSave(null);
+                module.addResourceChangeListener(resourceChangeListener);
+            }
         }
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void hookModelEventManager(Object model)
     {
         getModelEventManager().hookRoot(model);
@@ -262,14 +289,14 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void unhookModelEventManager(Object model)
     {
         getModelEventManager().unhookRoot(model);
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @Override
     public boolean isDirty()
     {
@@ -277,7 +304,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @Override
     public void createPartControl(Composite parent)
     {
@@ -303,20 +330,22 @@ public class OverviewFormPage extends ReportFormPage
             e.printStackTrace();
         }
 
-        getModel().addResourceChangeListener(new IResourceChangeListener()
+        resourceChangeListener = new IResourceChangeListener()
         {
             public void resourceChanged(ModuleHandle module,
                     ResourceChangeEvent event)
             {
                 moduleWasSaved(module, event);
             }
-        });
+        };
+
+        getModel().addResourceChangeListener(resourceChangeListener);
 
         updateContentValues();
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void createBodyContent(final Composite parent)
     {
         SectionPart part;
@@ -372,21 +401,21 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public int getStaleType()
     {
         return staleType;
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public void markPageStale(int type)
     {
         staleType = type;
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public void markAsDirty()
     {
         isDirty = true;
@@ -396,7 +425,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public boolean onBroughtToTop(IReportEditorPage prevPage)
     {
         updateContentValues();
@@ -405,7 +434,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void updateContentValues()
     {
         for (IFormPart part : managedForm.getParts())
@@ -413,20 +442,20 @@ public class OverviewFormPage extends ReportFormPage
             if (part instanceof AbstractSection)
             {
                 AbstractSection section = (AbstractSection) part;
-                section.updateContentValues();
+                section.updateControls();
             }
         }
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public String getId()
     {
         return ID;
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public Control getPartControl()
     {
         if (managedForm != null)
@@ -440,14 +469,14 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public IManagedForm getManagedForm()
     {
         return managedForm;
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public boolean canLeaveThePage()
     {
         if (isDirty())
@@ -459,14 +488,14 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private IReportProvider getProvider()
     {
         return (IReportProvider) getEditor().getAdapter(IReportProvider.class);
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected ModelEventManager getModelEventManager()
     {
         if (manager == null)
@@ -478,7 +507,7 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter)
     {
@@ -506,8 +535,11 @@ public class OverviewFormPage extends ReportFormPage
     }
 
 
+    //~ Static/instance variables .............................................
+
     private static final String ID = "net.sf.webcat.oda.ui.editors.metadata"; //$NON-NLS-1$
 
+    private IResourceChangeListener resourceChangeListener;
     private boolean isDirty = false;
     private int staleType;
     private ManagedForm managedForm;

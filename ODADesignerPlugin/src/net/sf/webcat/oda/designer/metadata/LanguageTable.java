@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LanguageTable.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: LanguageTable.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,9 +26,19 @@ import java.util.Hashtable;
 import java.util.Map;
 import com.ibm.icu.util.ULocale;
 
+//------------------------------------------------------------------------
+/**
+ * A singleton that maintains a list of the languages and locales available on
+ * the system.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: LanguageTable.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class LanguageTable
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     private LanguageTable()
     {
         displayNameMap = new Hashtable<String, String>();
@@ -43,7 +53,9 @@ public class LanguageTable
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public static LanguageTable getInstance()
     {
         if (instance == null)
@@ -55,7 +67,7 @@ public class LanguageTable
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public String[] getDisplayNames()
     {
         String[] displayNames = new String[displayNameMap.size()];
@@ -66,14 +78,14 @@ public class LanguageTable
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public String getNameForDisplayName(String displayName)
     {
         return displayNameMap.get(displayName);
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public String getDisplayNameForName(String name)
     {
         name = name.replace('-', '_');
@@ -82,6 +94,8 @@ public class LanguageTable
         return locale.getDisplayName();
     }
 
+
+    //~ Static/instance variables .............................................
 
     private static LanguageTable instance;
 

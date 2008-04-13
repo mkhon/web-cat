@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlDocumentProvider.java,v 1.1 2008/04/08 18:31:03 aallowat Exp $
+ |  $Id: OgnlDocumentProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,27 +26,27 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlDocumentProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlDocumentProvider extends StorageDocumentProvider
 {
+    //~ Constructor ...........................................................
 
-    /**
-     * Array of token types
-     */
-    private static String[] colorTokens = { OgnlPartitionScanner.OGNL_STRING,
-            OgnlPartitionScanner.OGNL_KEYWORD,
-            OgnlPartitionScanner.OGNL_STATIC_METHOD,
-            OgnlPartitionScanner.OGNL_VARIABLE };
-
-
+    // ----------------------------------------------------------
     public OgnlDocumentProvider()
     {
         super();
     }
 
 
-    /**
-     * @see DocumentProvider#createDocument(java.lang.Object)
-     */
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     protected IDocument createDocument(Object element) throws CoreException
     {
         IDocument document = super.createDocument(element);
@@ -60,4 +60,12 @@ public class OgnlDocumentProvider extends StorageDocumentProvider
         return document;
     }
 
+
+    //~ Static/instance variables .............................................
+
+    /** Array of token types. */
+    private static String[] colorTokens = { OgnlPartitionScanner.OGNL_STRING,
+            OgnlPartitionScanner.OGNL_KEYWORD,
+            OgnlPartitionScanner.OGNL_STATIC_METHOD,
+            OgnlPartitionScanner.OGNL_VARIABLE };
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ImageUtils.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ |  $Id: ImageUtils.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,16 +29,46 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
+//------------------------------------------------------------------------
+/**
+ * Utility methods for working with image resources in the plug-in.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ImageUtils.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ */
 public class ImageUtils
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Prevent instantiation.
+     */
+    private ImageUtils()
+    {
+        // Static class; prevent instantiation.
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the image at the specified path, relative to the plug-in.
+     *
+     * @param path
+     *            the plug-in relative path of the image
+     *
+     * @return the image
+     */
     public static Image getImage(String path)
     {
         Image image = null;
 
         try
         {
-            URL url = FileLocator.find(DesignerActivator.getDefault().getBundle(),
-                    new Path(path), null);
+            URL url = FileLocator.find(DesignerActivator.getDefault()
+                    .getBundle(), new Path(path), null);
             url = FileLocator.resolve(url);
             image = ImageDescriptor.createFromURL(url).createImage();
         }

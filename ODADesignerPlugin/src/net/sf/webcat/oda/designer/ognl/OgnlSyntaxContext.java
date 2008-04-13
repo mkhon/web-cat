@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlSyntaxContext.java,v 1.1 2008/04/08 18:31:04 aallowat Exp $
+ |  $Id: OgnlSyntaxContext.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,15 +24,18 @@ package net.sf.webcat.oda.designer.ognl;
 import net.sf.webcat.oda.designer.widgets.IKeyLabelProvider;
 import net.sf.webcat.oda.designer.widgets.IKeyProvider;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlSyntaxContext.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlSyntaxContext
 {
-    private String rootClassName;
+    //~ Constructor ...........................................................
 
-    private IKeyProvider keyProvider;
-
-    private IKeyLabelProvider keyLabelProvider;
-
-
+    // ----------------------------------------------------------
     public OgnlSyntaxContext(String rootClass, IKeyProvider keyProv,
             IKeyLabelProvider keyLabelProv)
     {
@@ -42,20 +45,32 @@ public class OgnlSyntaxContext
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public String getRootClassName()
     {
         return rootClassName;
     }
 
 
+    // ----------------------------------------------------------
     public IKeyProvider getKeyProvider()
     {
         return keyProvider;
     }
 
 
+    // ----------------------------------------------------------
     public IKeyLabelProvider getKeyLabelProvider()
     {
         return keyLabelProvider;
     }
+
+
+    //~ Static/instance variables .............................................
+
+    private String rootClassName;
+    private IKeyProvider keyProvider;
+    private IKeyLabelProvider keyLabelProvider;
 }

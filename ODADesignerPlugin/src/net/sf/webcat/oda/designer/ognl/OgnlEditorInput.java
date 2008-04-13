@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlEditorInput.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: OgnlEditorInput.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,85 +30,18 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlEditorInput.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlEditorInput implements IEditorInput
 {
-    private class OgnlStorage implements IStorage
-    {
+    //~ Constructor ...........................................................
 
-        /**
-         *
-         */
-        public OgnlStorage()
-        {
-            super();
-        }
-
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see org.eclipse.core.resources.IStorage#getContents()
-         */
-        public InputStream getContents() throws CoreException
-        {
-            if (name == null)
-            {
-                name = ""; //$NON-NLS-1$
-            }
-
-            return new ByteArrayInputStream(name.getBytes());
-        }
-
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see org.eclipse.core.resources.IStorage#getFullPath()
-         */
-        public IPath getFullPath()
-        {
-            return null;
-        }
-
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see org.eclipse.core.resources.IStorage#getName()
-         */
-        public String getName()
-        {
-            return name;
-        }
-
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see org.eclipse.core.resources.IStorage#isReadOnly()
-         */
-        public boolean isReadOnly()
-        {
-            return false;
-        }
-
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-         */
-        @SuppressWarnings("unchecked")
-        public Object getAdapter(Class adapter)
-        {
-            return null;
-        }
-    }
-
-
-    private String name = null;
-
-
+    // ----------------------------------------------------------
     /**
      * @param _name
      *            the name of the editor input
@@ -120,71 +53,44 @@ public class OgnlEditorInput implements IEditorInput
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#exists()
-     */
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public boolean exists()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
-     */
+    // ----------------------------------------------------------
     public ImageDescriptor getImageDescriptor()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getName()
-     */
+    // ----------------------------------------------------------
     public String getName()
     {
-        // TODO Auto-generated method stub
         return name;
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
-     */
+    // ----------------------------------------------------------
     public IPersistableElement getPersistable()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getToolTipText()
-     */
+    // ----------------------------------------------------------
     public String getToolTipText()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-     */
+    // ----------------------------------------------------------
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter)
     {
@@ -192,6 +98,7 @@ public class OgnlEditorInput implements IEditorInput
     }
 
 
+    // ----------------------------------------------------------
     /**
      * @see org.eclipse.ui.IStorageEditorInput#getStorage()
      * @return IStorage
@@ -201,4 +108,67 @@ public class OgnlEditorInput implements IEditorInput
     {
         return new OgnlStorage();
     }
+
+
+    //~ Nested classes ........................................................
+
+    // ----------------------------------------------------------
+    private class OgnlStorage implements IStorage
+    {
+        //~ Constructor .......................................................
+
+        // ----------------------------------------------------------
+        public OgnlStorage()
+        {
+            super();
+        }
+
+
+        //~ Methods ...........................................................
+
+        // ----------------------------------------------------------
+        public InputStream getContents() throws CoreException
+        {
+            if (name == null)
+            {
+                name = ""; //$NON-NLS-1$
+            }
+
+            return new ByteArrayInputStream(name.getBytes());
+        }
+
+
+        // ----------------------------------------------------------
+        public IPath getFullPath()
+        {
+            return null;
+        }
+
+
+        // ----------------------------------------------------------
+        public String getName()
+        {
+            return name;
+        }
+
+
+        // ----------------------------------------------------------
+        public boolean isReadOnly()
+        {
+            return false;
+        }
+
+
+        // ----------------------------------------------------------
+        @SuppressWarnings("unchecked")
+        public Object getAdapter(Class adapter)
+        {
+            return null;
+        }
+    }
+
+
+    //~ Static/instance variables .............................................
+
+    private String name = null;
 }

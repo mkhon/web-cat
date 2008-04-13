@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RefreshContentAssistHandler.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ |  $Id: RefreshContentAssistHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,8 +27,19 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
+//------------------------------------------------------------------------
+/**
+ * An Eclipse command handler that forces the content assist information to be
+ * refreshed from the Web-CAT server.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: RefreshContentAssistHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ */
 public class RefreshContentAssistHandler extends AbstractHandler
 {
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {

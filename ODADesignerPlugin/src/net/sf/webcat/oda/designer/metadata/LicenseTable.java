@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LicenseTable.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: LicenseTable.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,9 +26,19 @@ import java.util.Hashtable;
 import java.util.Map;
 import com.ibm.icu.util.ULocale;
 
+//------------------------------------------------------------------------
+/**
+ * A singleton that maintains a list of commonly used open source licenses that
+ * can be selected for a report.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: LicenseTable.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class LicenseTable
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     private LicenseTable()
     {
         licenseMap = new Hashtable<String, String>();
@@ -40,7 +50,9 @@ public class LicenseTable
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public static LicenseTable getInstance()
     {
         if (instance == null)
@@ -52,7 +64,7 @@ public class LicenseTable
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public String[] getLicenses()
     {
         String[] licenses = new String[licenseMap.size()];
@@ -63,12 +75,14 @@ public class LicenseTable
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public String getURLForLicense(String license)
     {
         return licenseMap.get(license);
     }
 
+
+    //~ Static/instance variables .............................................
 
     private static LicenseTable instance;
 

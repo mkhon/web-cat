@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: KeyPathBrowser.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: KeyPathBrowser.java,v 1.3 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,9 +40,19 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+//------------------------------------------------------------------------
+/**
+ * A widget modeled after the Mac OS X browser widget that permits drilling down
+ * a hierarchy using a horizontal sliding panel.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: KeyPathBrowser.java,v 1.3 2008/04/13 22:04:53 aallowat Exp $
+ */
 public class KeyPathBrowser extends Composite
 {
-    // -----------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     /**
      *
      * @param parent
@@ -61,6 +71,9 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     public void dispose()
     {
@@ -70,7 +83,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @param parent
@@ -180,21 +193,21 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    private boolean currentlyInSelection = false;
-
-
+    // ----------------------------------------------------------
     public void addSelectionListener(SelectionListener listener)
     {
         selectionListeners.add(listener);
     }
 
 
+    // ----------------------------------------------------------
     public void removeSelectionListener(SelectionListener listener)
     {
         selectionListeners.remove(listener);
     }
 
 
+    // ----------------------------------------------------------
     public void notifySelectionListeners(SelectionEvent e,
             boolean defaultSelection)
     {
@@ -210,7 +223,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @param listIndex
@@ -264,6 +277,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    // ----------------------------------------------------------
     private void updateScroller(int selection, int min, int max)
     {
         browserSlider.setValues(selection, min, max, LIST_COUNT, 1, LIST_COUNT);
@@ -271,7 +285,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -308,6 +322,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    // ----------------------------------------------------------
     private int lastListIndex()
     {
         int lastIndex = segments.size() - 1;
@@ -320,7 +335,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Initializes the contents of the lists based on the current root class.
      */
@@ -340,6 +355,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    // ----------------------------------------------------------
     private void addKeysToList(int listIndex, String className, String[] keys)
     {
         if (keys != null)
@@ -365,7 +381,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @param provider
@@ -377,7 +393,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @return
@@ -388,6 +404,7 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    // ----------------------------------------------------------
     public void setKeyLabelProvider(IKeyLabelProvider provider)
     {
         keyLabelProvider = provider;
@@ -395,12 +412,14 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    // ----------------------------------------------------------
     public IKeyLabelProvider getKeyLabelProvider()
     {
         return keyLabelProvider;
     }
 
 
+    // ----------------------------------------------------------
     public void setRootClassName(String className)
     {
         rootClassName = className;
@@ -412,19 +431,21 @@ public class KeyPathBrowser extends Composite
     }
 
 
+    // ----------------------------------------------------------
     public String getRootClassName()
     {
         return rootClassName;
     }
 
 
+    // ----------------------------------------------------------
     public void setSelectedKeyPath(String keyPath)
     {
         // TODO implement
-        //String[] parts = keyPath.split("\\.");
     }
 
 
+    // ----------------------------------------------------------
     public String getSelectedKeyPath()
     {
         if (segments.isEmpty() || segments.get(0).getKey() == null)
@@ -448,34 +469,14 @@ public class KeyPathBrowser extends Composite
     }
 
 
-    private static final int LIST_COUNT = 3;
+    //~ Nested classes ........................................................
 
-    private static final String LIST_INDEX_KEY = "listIndex"; // $NON_NLS_1$ //$NON-NLS-1$
-
-    private String rootClassName;
-
-    private IKeyProvider keyProvider;
-
-    private IKeyLabelProvider keyLabelProvider;
-
-    private java.util.List<SelectionListener> selectionListeners;
-
-    private Table[] browserLists;
-
-    private Slider browserSlider;
-
-    private java.util.List<SegmentInfo> segments;
-
-    private Image arrowImage;
-
-
+    // ----------------------------------------------------------
     private class SegmentInfo
     {
-        private String className;
+        //~ Constructor .......................................................
 
-        private String key;
-
-
+        // ----------------------------------------------------------
         public SegmentInfo(String className, String key)
         {
             this.className = className;
@@ -483,27 +484,55 @@ public class KeyPathBrowser extends Composite
         }
 
 
+        //~ Methods ...........................................................
+
+        // ----------------------------------------------------------
         public String getClassName()
         {
             return className;
         }
 
 
+        // ----------------------------------------------------------
         public void setClassName(String value)
         {
             className = value;
         }
 
 
+        // ----------------------------------------------------------
         public String getKey()
         {
             return key;
         }
 
 
+        // ----------------------------------------------------------
         public void setKey(String value)
         {
             key = value;
         }
+
+
+        //~ Static/instance variables .........................................
+
+        private String className;
+        private String key;
     }
+
+
+    //~ Static/instance variables .............................................
+
+    private static final int LIST_COUNT = 3;
+    private static final String LIST_INDEX_KEY = "listIndex"; // $NON_NLS_1$ //$NON-NLS-1$
+
+    private String rootClassName;
+    private IKeyProvider keyProvider;
+    private IKeyLabelProvider keyLabelProvider;
+    private java.util.List<SelectionListener> selectionListeners;
+    private boolean currentlyInSelection = false;
+    private Table[] browserLists;
+    private Slider browserSlider;
+    private java.util.List<SegmentInfo> segments;
+    private Image arrowImage;
 }

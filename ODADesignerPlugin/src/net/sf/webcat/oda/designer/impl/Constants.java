@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Constants.java,v 1.3 2008/04/11 04:15:48 aallowat Exp $
+ |  $Id: Constants.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,11 +23,18 @@ package net.sf.webcat.oda.designer.impl;
 
 import net.sf.webcat.oda.designer.i18n.Messages;
 
+//------------------------------------------------------------------------
+/**
+ * Various constants used by the data set editor.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: Constants.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public interface Constants
 {
+    //~ Static variables ......................................................
+
     public static final String PROP_RELATION_INFORMATION = "relationInformation"; //$NON-NLS-1$
-
     public static final String PROP_ENTITY_TYPE = "entityType"; //$NON-NLS-1$
-
     public static final String PROP_DATA_SET_ID = "dataSetId"; //$NON-NLS-1$
 }

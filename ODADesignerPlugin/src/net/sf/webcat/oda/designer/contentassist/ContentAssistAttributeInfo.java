@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistAttributeInfo.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: ContentAssistAttributeInfo.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,25 +21,58 @@
 
 package net.sf.webcat.oda.designer.contentassist;
 
+// ------------------------------------------------------------------------
+/**
+ * Attributes about a type that are displayed in a content assist request.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ContentAssistAttributeInfo.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class ContentAssistAttributeInfo
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new content assist attribute info object.
+     *
+     * @param name the name of the property
+     * @param type the type of the property
+     */
     public ContentAssistAttributeInfo(String name, String type)
     {
         this.name = name;
         this.type = type;
     }
 
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the name of the property.
+     *
+     * @return the name of the property
+     */
     public String name()
     {
         return name;
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the type of the property.
+     *
+     * @return the type of the property
+     */
     public String type()
     {
         return type;
     }
 
-    private String name;
 
+    //~ Static/instance variables .............................................
+
+    private String name;
     private String type;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryManager.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: PreviewQueryManager.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,6 +33,13 @@ import java.util.Map;
 import org.eclipse.core.runtime.IPath;
 import net.sf.webcat.oda.designer.DesignerActivator;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewQueryManager.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewQueryManager
 {
     public PreviewQueryManager()

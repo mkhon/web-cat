@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingTableViewer.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: ColumnMappingTableViewer.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,16 +36,24 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+//------------------------------------------------------------------------
 /**
+ * This class handles the creation of the column mapping table as well as the
+ * accessory buttons that permit moving and removing columns.
  *
- * @author Tony Allevato
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ColumnMappingTableViewer.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  */
 public class ColumnMappingTableViewer
 {
-    // -----------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     /**
+     * Creates the column mapping table and accessory buttons.
      *
      * @param parent
+     *            the Composite that should contain the controls
      */
     public ColumnMappingTableViewer(Composite parent)
     {
@@ -86,10 +94,13 @@ public class ColumnMappingTableViewer
     }
 
 
-    // -----------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     /**
+     * Gets the underlying table viewer.
      *
-     * @return
+     * @return the underlying table viewer
      */
     public TableViewer getViewer()
     {
@@ -97,10 +108,13 @@ public class ColumnMappingTableViewer
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
+     * Gets the Composite control that contains the table viewer and the
+     * accessory buttons.
      *
-     * @return
+     * @return the Composite control that contains the table viewer and
+     *         accessory buttons
      */
     public Composite getControl()
     {
@@ -108,10 +122,11 @@ public class ColumnMappingTableViewer
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
+     * Gets the button that, when clicked, moves a column up.
      *
-     * @return
+     * @return the button that, when clicked, moves a column up
      */
     public Button getUpButton()
     {
@@ -119,10 +134,11 @@ public class ColumnMappingTableViewer
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
+     * Gets the button that, when clicked, moves a column down.
      *
-     * @return
+     * @return the button that, when clicked, moves a column down
      */
     public Button getDownButton()
     {
@@ -130,10 +146,11 @@ public class ColumnMappingTableViewer
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
+     * Gets the button that, when clicked, removes the selected column.
      *
-     * @return
+     * @return the button that, when clicked, removes the selected column
      */
     public Button getRemoveButton()
     {
@@ -141,12 +158,17 @@ public class ColumnMappingTableViewer
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
+     * Refreshes the table viewer from the specified data set description.
      *
      * @param info
+     *            the data set description from which to obtain the columns
      * @param columnMapping
-     * @return
+     *            used to store a mapping from column names to
+     *            ColumnMappingElements
+     * @return the list of columns in the table, wrapped as
+     *         ColumnMappingElements
      */
     public List<ColumnMappingElement> refresh(DataSetDescription info,
             Map<String, ColumnMappingElement> columnMapping)
@@ -180,14 +202,11 @@ public class ColumnMappingTableViewer
     }
 
 
-    // =======================================================================
+    //~ Static/instance variables .............................................
+
     private Composite container;
-
     private TableViewer viewer;
-
     private Button removeButton;
-
     private Button upButton;
-
     private Button downButton;
 }

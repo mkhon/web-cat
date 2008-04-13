@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlExpressionBuilder.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: OgnlExpressionBuilder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,13 +51,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+//------------------------------------------------------------------------
 /**
+ * TODO: real description
  *
- * @author Tony Allevato
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlExpressionBuilder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  */
 public class OgnlExpressionBuilder extends TitleAreaDialog
 {
-    // -----------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     /**
      *
      * @param parentShell
@@ -91,7 +96,9 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -102,7 +109,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -118,7 +125,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -142,6 +149,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
+    // ----------------------------------------------------------
     private SelectionAdapter selectionAdapterForTemplate(final String template)
     {
         return new SelectionAdapter()
@@ -156,6 +164,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
+    // ----------------------------------------------------------
     private void addTemplateButton(String title, String tooltip, String template)
     {
         ToolItem toolItem = new ToolItem(templateBar, SWT.PUSH);
@@ -165,12 +174,14 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
+    // ----------------------------------------------------------
     private void addTemplateSeparator()
     {
         new ToolItem(templateBar, SWT.SEPARATOR);
     }
 
 
+    // ----------------------------------------------------------
     private void createTemplateMenu()
     {
         mathTemplateMenu = new Menu(templateBar);
@@ -214,7 +225,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @param parent
@@ -255,26 +266,25 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
 
         addTemplateSeparator();
 
-        addTemplateButton(Messages.EXPR_BUILDER_LIST, Messages.EXPR_BUILDER_LIST_TOOLTIP,
+        addTemplateButton(Messages.EXPR_BUILDER_LIST,
+                Messages.EXPR_BUILDER_LIST_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_LIST);
 
-        addTemplateButton(Messages.EXPR_BUILDER_MAP, Messages.EXPR_BUILDER_MAP_TOOLTIP,
+        addTemplateButton(Messages.EXPR_BUILDER_MAP,
+                Messages.EXPR_BUILDER_MAP_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_MAP);
 
         addTemplateSeparator();
 
-        addTemplateButton(
-                Messages.EXPR_BUILDER_SELECT_ALL,
+        addTemplateButton(Messages.EXPR_BUILDER_SELECT_ALL,
                 Messages.EXPR_BUILDER_SELECT_ALL_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_SELECT_ALL);
 
-        addTemplateButton(
-                Messages.EXPR_BUILDER_SELECT_FIRST,
+        addTemplateButton(Messages.EXPR_BUILDER_SELECT_FIRST,
                 Messages.EXPR_BUILDER_SELECT_FIRST_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_SELECT_FIRST);
 
-        addTemplateButton(
-                Messages.EXPR_BUILDER_SELECT_LAST,
+        addTemplateButton(Messages.EXPR_BUILDER_SELECT_LAST,
                 Messages.EXPR_BUILDER_SELECT_LAST_TOOLTIP,
                 OgnlBuilderTemplates.TEMPLATE_SELECT_LAST);
 
@@ -286,7 +296,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @param parent
@@ -334,7 +344,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @param parent
@@ -402,7 +412,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -413,7 +423,7 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      * @return
@@ -424,21 +434,15 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
     }
 
 
+    //~ Static/instance variables .............................................
+
     private Font boldFont;
-
     private ToolBar templateBar;
-
     private Menu mathTemplateMenu;
-
     private SourceViewer editor;
-
     private Label selectedKeyPathLabel;
-
     private String rootClassName;
-
     private WebCATKeyProvider keyProvider;
-
     private KeyPathBrowser browser;
-
     private String expression;
 }

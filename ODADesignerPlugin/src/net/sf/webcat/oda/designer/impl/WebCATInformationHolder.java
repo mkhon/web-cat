@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebCATInformationHolder.java,v 1.2 2008/04/11 04:15:48 aallowat Exp $
+ |  $Id: WebCATInformationHolder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,11 +26,31 @@ import java.util.UUID;
 import net.sf.webcat.oda.commons.DataSetDescription;
 import org.eclipse.datatools.connectivity.oda.design.DataSetDesign;
 
+//------------------------------------------------------------------------
+/**
+ * A static class that maintains information about the data set currently being
+ * edited.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: WebCATInformationHolder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class WebCATInformationHolder
 {
-    private static Properties props;
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Prevent instantiation.
+     */
+    private WebCATInformationHolder()
+    {
+        // Static class; prevent instantiation.
+    }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public static String getPropertyValue(String key)
     {
         if (props == null)
@@ -40,6 +60,7 @@ public class WebCATInformationHolder
     }
 
 
+    // ----------------------------------------------------------
     public static void setPropertyValue(String key, String value)
     {
         if (props == null)
@@ -52,6 +73,7 @@ public class WebCATInformationHolder
     }
 
 
+    // ----------------------------------------------------------
     public static void start(DataSetDesign dataSetDesign)
     {
         if (dataSetDesign == null)
@@ -76,7 +98,7 @@ public class WebCATInformationHolder
             // Initialize the data set description with default values.
 
             DataSetDescription relation = new DataSetDescription();
-            relation.setEntityType("Submission");
+            relation.setEntityType(DEFAULT_ENTITY);
             relation.setUniqueId(UUID.randomUUID().toString());
 
             setPropertyValue(Constants.PROP_RELATION_INFORMATION, relation
@@ -85,14 +107,23 @@ public class WebCATInformationHolder
     }
 
 
+    // ----------------------------------------------------------
     public static void destroy()
     {
         props = null;
     }
 
 
+    // ----------------------------------------------------------
     public static boolean hasDestroyed()
     {
         return props == null;
     }
+
+
+    //~ Static/instance variables .............................................
+
+    private static final String DEFAULT_ENTITY = "Submission"; //$NON-NLS-1$
+
+    private static Properties props;
 }

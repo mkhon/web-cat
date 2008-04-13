@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultSet.java,v 1.1 2008/04/08 18:31:04 aallowat Exp $
+ |  $Id: PreviewingResultSet.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,6 +27,13 @@ import net.sf.webcat.oda.commons.IWebCATResultSet;
 import net.sf.webcat.oda.commons.WebCATDataException;
 import net.sf.webcat.oda.designer.DesignerActivator;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewingResultSet.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewingResultSet implements IWebCATResultSet
 {
     // === Methods ============================================================

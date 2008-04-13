@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositorySection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: RepositorySection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
@@ -34,23 +35,32 @@ import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
+//------------------------------------------------------------------------
+/**
+ * A section on the Overview page that displays information about a report
+ * template that was stored when it was uploaded to a Web-CAT template
+ * repository.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: RepositorySection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class RepositorySection extends AbstractSection
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public RepositorySection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
-        super(
-                formPage,
-                parent,
-                toolkit,
-                model,
+        super(formPage, parent, toolkit, model,
                 Messages.REPOSITORY_SECTION_TITLE,
                 Messages.REPOSITORY_SECTION_DESCRIPTION);
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     protected void createContent(Composite parent)
     {
@@ -87,8 +97,8 @@ public class RepositorySection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
-    protected void updateControls()
+    // ----------------------------------------------------------
+    public void updateControls()
     {
         String text;
 
@@ -142,7 +152,11 @@ public class RepositorySection extends AbstractSection
     }
 
 
-    private static final String NOT_YET_UPLOADED = "<form><p><span color=\"disabled\">Not yet uploaded</span></p></form>";
+    //~ Static/instance variables .............................................
+
+    private static final String NOT_YET_UPLOADED = "<form><p><span color=\"disabled\">"
+            + Messages.REPOSITORY_SECTION_NOT_YET_UPLOADED
+            + "</span></p></form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
     private FormText idField;
     private FormText versionField;

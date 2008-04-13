@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOActionResponse.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ |  $Id: WOActionResponse.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,8 +25,29 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import org.eclipse.core.runtime.IStatus;
 
+//------------------------------------------------------------------------
+/**
+ * Instances of the class are returned by WOActionDispatcher to encapsulate both
+ * the content stream and the status of an action request.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: WOActionResponse.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ */
 public class WOActionResponse
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new WOActionResponse object.
+     *
+     * @param status
+     *            the status of the response
+     * @param connection
+     *            the connection from which the response came
+     * @param stream
+     *            the stream that contains the response content
+     */
     public WOActionResponse(IStatus status, HttpURLConnection connection,
             InputStream stream)
     {
@@ -36,27 +57,45 @@ public class WOActionResponse
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the status of the response.
+     *
+     * @return the status of the response
+     */
     public IStatus status()
     {
         return status;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the content stream of the response.
+     *
+     * @return the content stream of the response
+     */
     public InputStream stream()
     {
         return stream;
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Closes the connection from which the response came.
+     */
     public void close()
     {
         connection.disconnect();
     }
 
 
+    //~ Static/instance variables .............................................
+
     private IStatus status;
-
     private HttpURLConnection connection;
-
     private InputStream stream;
 }

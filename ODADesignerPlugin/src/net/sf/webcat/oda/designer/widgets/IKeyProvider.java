@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IKeyProvider.java,v 1.1 2008/04/08 18:31:11 aallowat Exp $
+ |  $Id: IKeyProvider.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,13 +21,18 @@
 
 package net.sf.webcat.oda.designer.widgets;
 
+//------------------------------------------------------------------------
 /**
+ * A content provider for the KeyBrowser widget.
  *
- * @author Tony Allevato
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: IKeyProvider.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  */
 public interface IKeyProvider
 {
-    // -----------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     /**
      * Gets a value indicating whether or not the specified class has any keys.
      *
@@ -39,7 +44,7 @@ public interface IKeyProvider
     boolean hasKeys(String className);
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Gets an array of key names that belong to the specified class.
      *
@@ -51,7 +56,7 @@ public interface IKeyProvider
     String[] getKeys(String className);
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Gets the string representation of the type of a key on the specified
      * class.

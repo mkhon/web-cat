@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetPreferencePage.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: DataSetPreferencePage.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,28 +37,28 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+// ------------------------------------------------------------------------
 /**
+ * An Eclipse preferences page that allows the user to edit information about
+ * the Web-CAT server to use for previewing purposes.
  *
  * @author Tony Allevato
+ * @version $Id: DataSetPreferencePage.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  */
 public class DataSetPreferencePage extends PreferencePage implements
         IWorkbenchPreferencePage
 {
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
-    public static final int DEFAULT_MAX_RECORDS = 500;
+    //~ Methods ...............................................................
 
-
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
     @Override
     protected Control createContents(Composite parent)
     {
-        Preferences prefs = DesignerActivator.getDefault().getPluginPreferences();
+        Preferences prefs = DesignerActivator.getDefault()
+                .getPluginPreferences();
 
         // Main composite
         Composite container = new Composite(parent, SWT.NONE);
@@ -135,7 +135,7 @@ public class DataSetPreferencePage extends PreferencePage implements
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -145,7 +145,7 @@ public class DataSetPreferencePage extends PreferencePage implements
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
@@ -160,19 +160,38 @@ public class DataSetPreferencePage extends PreferencePage implements
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      *
      */
     public boolean performOk()
     {
-        Preferences prefs = DesignerActivator.getDefault().getPluginPreferences();
+        Preferences prefs = DesignerActivator.getDefault()
+                .getPluginPreferences();
 
         String url = serverURLEditor.getStringValue();
         String username = usernameEditor.getStringValue();
         String password = passwordEditor.getStringValue();
-        int maxRecords = maxRecordsEditor.getIntValue();
-        int timeout = timeoutEditor.getIntValue();
+
+        int maxRecords = 0, timeout = 0;
+
+        try
+        {
+            maxRecords = maxRecordsEditor.getIntValue();
+        }
+        catch (Exception e)
+        {
+            // Do nothing.
+        }
+
+        try
+        {
+            timeout = timeoutEditor.getIntValue();
+        }
+        catch (Exception e)
+        {
+            // Do nothing.
+        }
 
         prefs.setValue(IPreferencesConstants.SERVER_URL_KEY, url);
         prefs.setValue(IPreferencesConstants.USERNAME_KEY, username);
@@ -198,29 +217,13 @@ public class DataSetPreferencePage extends PreferencePage implements
     }
 
 
-    // =======================================================================
-    /**
-     *
-     */
+    //~ Static/instance variables .............................................
+
+    public static final int DEFAULT_MAX_RECORDS = 500;
+
     private StringFieldEditor serverURLEditor;
-
-    /**
-     *
-     */
     private StringFieldEditor usernameEditor;
-
-    /**
-     *
-     */
     private StringFieldEditor passwordEditor;
-
-    /**
-     *
-     */
     private IntegerFieldEditor maxRecordsEditor;
-
-    /**
-     *
-     */
     private IntegerFieldEditor timeoutEditor;
 }

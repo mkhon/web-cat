@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlExpressionCellEditor.java,v 1.1 2008/04/08 18:31:00 aallowat Exp $
+ |  $Id: OgnlExpressionCellEditor.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,43 +38,41 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlExpressionCellEditor.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlExpressionCellEditor extends DialogCellEditor
 {
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    //~ Constructors ..........................................................
+
+    // ----------------------------------------------------------
     public OgnlExpressionCellEditor()
     {
         super();
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     * @param parent
-     */
+    // ----------------------------------------------------------
     public OgnlExpressionCellEditor(Composite parent)
     {
         super(parent);
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     * @param parent
-     * @param style
-     */
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public OgnlExpressionCellEditor(Composite parent, int style)
     {
         super(parent, style);
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     @Override
     protected Object openDialogBox(Control cellEditorWindow)
     {
@@ -92,6 +90,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
+    // ----------------------------------------------------------
     public void setRootClassName(String rootClassName)
     {
         this.rootClassName = rootClassName;
@@ -99,12 +98,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    // -----------------------------------------------------------------------
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.DialogCellEditor#createButton(org.eclipse.swt.widgets.Composite)
-     */
+    // ----------------------------------------------------------
     protected Button createButton(Composite parent)
     {
         button = super.createButton(parent);
@@ -112,11 +106,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.DialogCellEditor#createContents(org.eclipse.swt.widgets.Composite)
-     */
+    // ----------------------------------------------------------
     protected Control createContents(Composite cell)
     {
         editor = new Text(cell, SWT.NONE);
@@ -164,7 +154,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
         {
             public void focusLost(FocusEvent e)
             {
-                //OgnlExpressionCellEditor.this.focusLost();
+                // OgnlExpressionCellEditor.this.focusLost();
             }
         });
 
@@ -174,11 +164,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.DialogCellEditor#updateContents(java.lang.Object)
-     */
+    // ----------------------------------------------------------
     protected void updateContents(Object value)
     {
         if (editor != null && value != null)
@@ -188,11 +174,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.CellEditor#doSetFocus()
-     */
+    // ----------------------------------------------------------
     protected void doSetFocus()
     {
         if (editor != null)
@@ -202,11 +184,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.CellEditor#doGetValue()
-     */
+    // ----------------------------------------------------------
     protected Object doGetValue()
     {
         if (editor != null)
@@ -218,11 +196,7 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.CellEditor#doSetValue(java.lang.Object)
-     */
+    // ----------------------------------------------------------
     protected void doSetValue(Object value)
     {
         if (editor != null)
@@ -235,13 +209,10 @@ public class OgnlExpressionCellEditor extends DialogCellEditor
     }
 
 
-    // =======================================================================
+    //~ Static/instance variables .............................................
 
     private Text editor;
-
     private Button button;
-
     private String rootClassName;
-
     private OgnlContentProposalProvider proposalProvider;
 }

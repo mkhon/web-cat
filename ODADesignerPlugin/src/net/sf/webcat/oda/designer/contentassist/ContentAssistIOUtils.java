@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistIOUtils.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: ContentAssistIOUtils.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,8 +28,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+//------------------------------------------------------------------------
+/**
+ * Methods that read and write cached content assist information to the disk.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ContentAssistIOUtils.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class ContentAssistIOUtils
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Prevent instantiation.
+     */
+    private ContentAssistIOUtils()
+    {
+        // Static class; prevent instantiation.
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Reads the versions of the Web-CAT subsystems from the specified reader.
+     *
+     * @param subsystemVersions
+     *            the map that will contain the subsystem names and versions
+     * @param reader
+     *            the reader from which the data will be read
+     *
+     * @throws IOException
+     *             if an I/O error occurred
+     */
     public static void readSubsystemVersions(
             Map<String, String> subsystemVersions, BufferedReader reader)
             throws IOException
@@ -57,6 +90,21 @@ public class ContentAssistIOUtils
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Reads the descriptions of the Web-CAT entities and subsystem version
+     * information from the specified reader.
+     *
+     * @param subsystemVersions
+     *            the map that will contain the subsystem versions
+     * @param entityDescriptions
+     *            the map that will contain the entity descriptions
+     * @param reader
+     *            the reader from which the data will be read
+     *
+     * @throws IOException
+     *             is an I/O error occurs
+     */
     public static void readEntityDescriptions(
             Map<String, String> subsystemVersions,
             Map<String, List<ContentAssistAttributeInfo>> entityDescriptions,
@@ -103,6 +151,21 @@ public class ContentAssistIOUtils
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Writes the Web-CAT entity descriptions and subsystem version information
+     * to the specified writer.
+     *
+     * @param subsystemVersions
+     *            the map that contains the subsystem version information
+     * @param entityDescriptions
+     *            the map that contains the entity descriptions
+     * @param writer
+     *            the writer to which the data will be written
+     *
+     * @throws IOException
+     *             if an I/O error occurred
+     */
     public static void writeEntityDescriptions(
             Map<String, String> subsystemVersions,
             Map<String, List<ContentAssistAttributeInfo>> entityDescriptions,
@@ -136,6 +199,19 @@ public class ContentAssistIOUtils
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Reads the descriptions of the currently active EO objects on Web-CAT from
+     * the specified reader.
+     *
+     * @param objectDescriptions
+     *            the map that will contain the object descriptions
+     * @param reader
+     *            the reader from which the data will be read
+     *
+     * @throws IOException
+     *             if an I/O error occurred
+     */
     public static void readObjectDescriptions(
             Map<String, List<ContentAssistObjectDescription>> objectDescriptions,
             BufferedReader reader) throws IOException
@@ -177,6 +253,19 @@ public class ContentAssistIOUtils
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Writes the descriptions of the currently active EO objects on Web-CAT to
+     * the specified writer.
+     *
+     * @param objectDescriptions
+     *            the map that contains the object descriptions
+     * @param writer
+     *            the writer to which the data will be writter
+     *
+     * @throws IOException
+     *             if an I/O error occurred
+     */
     public static void writeObjectDescriptions(
             Map<String, List<ContentAssistObjectDescription>> objectDescriptions,
             BufferedWriter writer) throws IOException

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IPreviewQueryClauseEventHandler.java,v 1.1 2008/04/08 18:31:05 aallowat Exp $
+ |  $Id: IPreviewQueryClauseEventHandler.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,13 @@
 
 package net.sf.webcat.oda.designer.preview;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: IPreviewQueryClauseEventHandler.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public interface IPreviewQueryClauseEventHandler
 {
     void addClauseBelow(PreviewQueryClausePanel panel);

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportProblemDialog.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: ReportProblemDialog.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,8 +21,18 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import net.sf.webcat.oda.commons.ReportModelProblem;
+import net.sf.webcat.oda.commons.ReportModelProblemFinder;
+import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.i18n.Messages;
+import net.sf.webcat.oda.designer.metadata.fixers.AddAuthorFixer;
+import net.sf.webcat.oda.designer.metadata.fixers.LicensePropertyFixer;
+import net.sf.webcat.oda.designer.metadata.fixers.TextPropertyFixer;
+import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -30,18 +40,25 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 // ------------------------------------------------------------------------
@@ -50,7 +67,7 @@ import org.eclipse.swt.widgets.Shell;
  * when it is saved.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ReportProblemDialog.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ * @version $Id: ReportProblemDialog.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  */
 public class ReportProblemDialog extends TitleAreaDialog
 {
@@ -66,7 +83,7 @@ public class ReportProblemDialog extends TitleAreaDialog
      * @param problems
      *            the problems to be displayed in the dialog
      */
-    public ReportProblemDialog(Shell parentShell, ReportProblem[] problems)
+    public ReportProblemDialog(Shell parentShell, ReportModelProblem[] problems)
     {
         super(parentShell);
 
@@ -74,6 +91,7 @@ public class ReportProblemDialog extends TitleAreaDialog
         setShellStyle(style);
 
         this.problems = problems;
+        fixers = new IReportProblemFixer[problems.length];
     }
 
 
@@ -95,15 +113,27 @@ public class ReportProblemDialog extends TitleAreaDialog
     @Override
     protected Control createDialogArea(Composite parent)
     {
+        Preferences prefs =
+            DesignerActivator.getDefault().getPluginPreferences();
+        saveBehavior = prefs.getInt(IPreferencesConstants.SAVE_BEHAVIOR_KEY);
+
         Composite composite = (Composite) super.createDialogArea(parent);
 
         Composite panel = new Composite(composite, SWT.NONE);
         GridLayout layout = new GridLayout(1, true);
         panel.setLayout(layout);
+        panel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        Label label = new Label(panel, SWT.WRAP);
+        label
+                .setText(Messages.REPORT_PROBLEMS_INSTRUCTION);
+        GridData gd = new GridData(SWT.FILL, SWT.TOP, false, false);
+        gd.widthHint = 500;
+        label.setLayoutData(gd);
 
         problemTable = new TableViewer(panel, SWT.BORDER | SWT.FULL_SELECTION);
 
-        GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gd = new GridData(SWT.FILL, SWT.FILL, true, true);
         gd.widthHint = 500;
         gd.heightHint = 150;
         problemTable.getControl().setLayoutData(gd);
@@ -113,15 +143,149 @@ public class ReportProblemDialog extends TitleAreaDialog
         problemTable.setLabelProvider(provider);
         problemTable.setInput(problems);
 
+        problemTable
+                .addPostSelectionChangedListener(new ISelectionChangedListener()
+                {
+                    public void selectionChanged(SelectionChangedEvent event)
+                    {
+                        selectedProblemChanged();
+                    }
+                });
+
+        fixContainer = new Composite(panel, SWT.NONE);
+        fixersLayout = new StackLayout();
+        fixContainer.setLayout(fixersLayout);
+
+        gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+        fixContainer.setLayoutData(gd);
+
+        int i = 0;
+        for (ReportModelProblem problem : problems)
+        {
+            if (saveBehavior == IPreferencesConstants.SAVE_BEHAVIOR_SHOW_ALL_PROBLEMS
+                    || (saveBehavior == IPreferencesConstants.SAVE_BEHAVIOR_SHOW_ERRORS_ONLY && problem
+                            .getSeverity() == ReportModelProblem.SEVERITY_ERROR))
+            {
+                fixers[i++] = createFixerForProblem(problem, fixContainer);
+            }
+        }
+
+        Label sep = new Label(panel, SWT.HORIZONTAL | SWT.SEPARATOR);
+        gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        sep.setLayoutData(gd);
+
+        Composite futurePanel = new Composite(panel, SWT.NONE);
+        layout = new GridLayout(2, false);
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        futurePanel.setLayout(layout);
+
+        new Label(futurePanel, SWT.NONE).setText(Messages.REPORT_PROBLEMS_IN_THE_FUTURE);
+
+        futureCombo = new Combo(futurePanel, SWT.DROP_DOWN | SWT.READ_ONLY);
+        futureCombo.add(Messages.REPORT_PROBLEMS_SHOW_ALL_PROBLEMS);
+        futureCombo.add(Messages.REPORT_PROBLEMS_SHOW_ERRORS_ONLY);
+        futureCombo.add(Messages.REPORT_PROBLEMS_SHOW_NO_PROBLEMS);
+
+        futureCombo.select(saveBehavior);
+
         return composite;
     }
 
 
     // ----------------------------------------------------------
-    protected void createButtonsForButtonBar(Composite parent)
+    private IReportProblemFixer createFixerForProblem(
+            ReportModelProblem problem, Composite parent)
     {
-        createButton(parent, IDialogConstants.OK_ID,
-                IDialogConstants.CLOSE_LABEL, true);
+        String key = ReportModelProblemFinder.getKeyWithoutDetail(problem
+                .getKey());
+
+        IReportProblemFixer fixer = null;
+
+        if (ReportModelProblemFinder.KEY_NO_TITLE.equals(key))
+        {
+            fixer = new TextPropertyFixer(parent,
+                    TextPropertyFixer.PROP_REPORT_TITLE, false);
+        }
+        else if (ReportModelProblemFinder.KEY_NO_DESCRIPTION.equals(key))
+        {
+            fixer = new TextPropertyFixer(parent,
+                    TextPropertyFixer.PROP_REPORT_DESCRIPTION, true);
+        }
+        else if (ReportModelProblemFinder.KEY_NO_AUTHORS.equals(key))
+        {
+            fixer = new AddAuthorFixer(parent);
+        }
+        else if (ReportModelProblemFinder.KEY_AUTHOR_NO_NAME.equals(key))
+        {
+            fixer = new TextPropertyFixer(parent,
+                    TextPropertyFixer.PROP_REPORT_AUTHOR_NAME, false);
+        }
+        else if (ReportModelProblemFinder.KEY_NO_LICENSE.equals(key))
+        {
+            fixer = new LicensePropertyFixer(parent);
+        }
+        else if (ReportModelProblemFinder.KEY_NO_COPYRIGHT.equals(key))
+        {
+            fixer = new TextPropertyFixer(parent,
+                    TextPropertyFixer.PROP_REPORT_COPYRIGHT, false);
+        }
+        else if (ReportModelProblemFinder.KEY_DATASET_NO_DESCRIPTION
+                .equals(key))
+        {
+            fixer = new TextPropertyFixer(parent,
+                    TextPropertyFixer.PROP_REPORT_DATASET_DESCRIPTION, true);
+        }
+
+        if (fixer != null)
+            fixer.setReportModelProblem(problem);
+
+        return fixer;
+    }
+
+
+    // ----------------------------------------------------------
+    private void selectedProblemChanged()
+    {
+        IStructuredSelection selection = (IStructuredSelection) problemTable
+                .getSelection();
+
+        if (!selection.isEmpty())
+        {
+            ReportModelProblem problem = (ReportModelProblem) selection
+                    .getFirstElement();
+
+            for (int i = 0; i < problems.length; i++)
+            {
+                if (problems[i] == problem)
+                {
+                    fixersLayout.topControl = fixers[i]
+                            .getTopLevelFixerControl();
+                    fixContainer.layout();
+                    break;
+                }
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    protected void okPressed()
+    {
+        // Apply fixes.
+        for (IReportProblemFixer fixer : fixers)
+        {
+            if (fixer != null)
+                fixer.applyFixToModel();
+        }
+
+        Preferences prefs = DesignerActivator.getDefault()
+                .getPluginPreferences();
+        int behavior = futureCombo.getSelectionIndex();
+
+        prefs.setValue(IPreferencesConstants.SAVE_BEHAVIOR_KEY, behavior);
+
+        super.okPressed();
     }
 
 
@@ -138,7 +302,27 @@ public class ReportProblemDialog extends TitleAreaDialog
         // ----------------------------------------------------------
         public Object[] getElements(Object inputElement)
         {
-            return problems;
+            if (saveBehavior
+                    == IPreferencesConstants.SAVE_BEHAVIOR_SHOW_ERRORS_ONLY)
+            {
+                ArrayList<ReportModelProblem> filteredProblems =
+                    new ArrayList<ReportModelProblem>();
+
+                for (ReportModelProblem problem : problems)
+                {
+                    if (problem.getSeverity()
+                            == ReportModelProblem.SEVERITY_ERROR)
+                    {
+                        filteredProblems.add(problem);
+                    }
+                }
+
+                return filteredProblems.toArray();
+            }
+            else
+            {
+                return problems;
+            }
         }
 
 
@@ -159,17 +343,17 @@ public class ReportProblemDialog extends TitleAreaDialog
         // ----------------------------------------------------------
         public Image getColumnImage(Object element, int columnIndex)
         {
-            int severity = ((ReportProblem) element).getSeverity();
+            int severity = ((ReportModelProblem) element).getSeverity();
 
             switch (severity)
             {
-            case ReportProblem.SEVERITY_OK:
+            case ReportModelProblem.SEVERITY_OK:
                 return JFaceResources.getImage(DLG_IMG_MESSAGE_INFO);
 
-            case ReportProblem.SEVERITY_WARNING:
+            case ReportModelProblem.SEVERITY_WARNING:
                 return JFaceResources.getImage(DLG_IMG_MESSAGE_WARNING);
 
-            case ReportProblem.SEVERITY_ERROR:
+            case ReportModelProblem.SEVERITY_ERROR:
                 return JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR);
 
             default:
@@ -181,7 +365,7 @@ public class ReportProblemDialog extends TitleAreaDialog
         // ----------------------------------------------------------
         public String getColumnText(Object element, int columnIndex)
         {
-            return ((ReportProblem) element).getDescription();
+            return ((ReportModelProblem) element).getDescription();
         }
 
 
@@ -209,6 +393,11 @@ public class ReportProblemDialog extends TitleAreaDialog
 
     //~ Static/instance variables .............................................
 
+    private int saveBehavior;
     private TableViewer problemTable;
-    private ReportProblem[] problems;
+    private ReportModelProblem[] problems;
+    private IReportProblemFixer[] fixers;
+    private StackLayout fixersLayout;
+    private Composite fixContainer;
+    private Combo futureCombo;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BrowserUtils.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: IReportProblemFixer.java,v 1.1 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,56 +21,45 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.swt.widgets.Control;
+import net.sf.webcat.oda.commons.ReportModelProblem;
 
 // ------------------------------------------------------------------------
 /**
- * A small class to ease opening an external browser.
+ * This interface defines methods that the report problem dialog uses to fix
+ * problems in-place.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: BrowserUtils.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: IReportProblemFixer.java,v 1.1 2008/04/13 22:04:52 aallowat Exp $
  */
-public class BrowserUtils
+public interface IReportProblemFixer
 {
-    //~ Constructor ...........................................................
-
-    // ----------------------------------------------------------
-    /**
-     * Prevent instantiation.
-     */
-    private BrowserUtils()
-    {
-        // Static class; prevent instantiation.
-    }
-
-
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
     /**
-     * Opens an external browser with the specified URL.
+     * Gets the control that hosts the entire fixer user-interface (most likely
+     * a composite).
      *
-     * @param url
-     *            the URL to open in the browser
+     * @return the control that hosts the fixer user-interface
      */
-    public static void openURL(String url)
-    {
-        try
-        {
-            PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
-                    .openURL(new URL(url));
-        }
-        catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-        }
-        catch (PartInitException e)
-        {
-            e.printStackTrace();
-        }
-    }
+    Control getTopLevelFixerControl();
+
+    // ----------------------------------------------------------
+    /**
+     * Sets the report model problem that the fixer is responsible for
+     * correcting.
+     *
+     * @param problem
+     *            the problem that this fixer is responsible for
+     */
+    void setReportModelProblem(ReportModelProblem problem);
+
+
+    // ----------------------------------------------------------
+    /**
+     * Instructs the implementor that whatever fix that has been selected by the
+     * user should now be applied to the model.
+     */
+    void applyFixToModel();
 }

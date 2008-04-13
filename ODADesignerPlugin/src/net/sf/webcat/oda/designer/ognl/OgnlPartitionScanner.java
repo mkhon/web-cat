@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlPartitionScanner.java,v 1.1 2008/04/08 18:31:03 aallowat Exp $
+ |  $Id: OgnlPartitionScanner.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,57 +32,18 @@ import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlPartitionScanner.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlPartitionScanner extends RuleBasedPartitionScanner
 {
-    public final static String OGNL_DEFAULT = "__ognl_default"; //$NON-NLS-1$
+    //~ Constructor ...........................................................
 
-    public final static String OGNL_KEYWORD = "__ognl_keyword"; //$NON-NLS-1$
-
-    public final static String OGNL_STRING = "__ognl_string"; //$NON-NLS-1$
-
-    public final static String OGNL_STATIC_METHOD = "__ognl_static_method"; //$NON-NLS-1$
-
-    public final static String OGNL_VARIABLE = "__ognl_variable"; //$NON-NLS-1$
-
-    public final static IToken TOKEN_STRING = new Token(OGNL_STRING);
-
-    public final static IToken TOKEN_DEFAULT = new Token(OGNL_DEFAULT);
-
-    public final static IToken TOKEN_KEYWORD = new Token(OGNL_KEYWORD);
-
-    public final static IToken TOKEN_STATIC_METHOD = new Token(
-            OGNL_STATIC_METHOD);
-
-    public final static IToken TOKEN_VARIABLE = new Token(OGNL_VARIABLE);
-
-    /**
-     * Array of keyword token strings.
-     */
-    private static String[] keywordTokens = { "and", //$NON-NLS-1$
-            "band", //$NON-NLS-1$
-            "bor", //$NON-NLS-1$
-            "eq", //$NON-NLS-1$
-            "false", //$NON-NLS-1$
-            "gt", //$NON-NLS-1$
-            "gte", //$NON-NLS-1$
-            "in", //$NON-NLS-1$
-            "instanceof", //$NON-NLS-1$
-            "lt", //$NON-NLS-1$
-            "lte", //$NON-NLS-1$
-            "neq", //$NON-NLS-1$
-            "new", //$NON-NLS-1$
-            "not", //$NON-NLS-1$
-            "null", //$NON-NLS-1$
-            "or", //$NON-NLS-1$
-            "shl", //$NON-NLS-1$
-            "shr", //$NON-NLS-1$
-            "ushr", //$NON-NLS-1$
-            // "this", //$NON-NLS-1$
-            "true", //$NON-NLS-1$
-            "xor", //$NON-NLS-1$
-    };
-
-
+    // ----------------------------------------------------------
     /**
      * Creates a new OgnlPartitionScanner object.
      */
@@ -151,6 +112,9 @@ public class OgnlPartitionScanner extends RuleBasedPartitionScanner
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     private void setRuleList(List<IPredicateRule> rules)
     {
         IPredicateRule[] result = new IPredicateRule[rules.size()];
@@ -159,6 +123,7 @@ public class OgnlPartitionScanner extends RuleBasedPartitionScanner
     }
 
 
+    // ----------------------------------------------------------
     protected void addWords(WordRule rule, String[] tokens, IToken token)
     {
         for (int i = 0; i < tokens.length; i++)
@@ -168,26 +133,37 @@ public class OgnlPartitionScanner extends RuleBasedPartitionScanner
     }
 
 
+    //~ Nested classes ........................................................
+
+    // ----------------------------------------------------------
     private class PredicateWordRule extends WordRule implements IPredicateRule
     {
+        //~ Constructor .......................................................
+
+        // ----------------------------------------------------------
         public PredicateWordRule(IWordDetector detector, IToken defaultToken)
         {
             super(detector, defaultToken);
         }
 
 
+        //~ Methods ...........................................................
+
+        // ----------------------------------------------------------
         public IToken getSuccessToken()
         {
             return Token.UNDEFINED;
         }
 
 
+        // ----------------------------------------------------------
         public IToken evaluate(ICharacterScanner scanner, boolean resume)
         {
             return null;
         }
 
 
+        // ----------------------------------------------------------
         private void addWords(String[] tokens, IToken token)
         {
             for (int i = 0; i < tokens.length; i++)
@@ -196,4 +172,45 @@ public class OgnlPartitionScanner extends RuleBasedPartitionScanner
             }
         }
     }
+
+
+    //~ Static/instance variables .............................................
+
+    public final static String OGNL_DEFAULT = "__ognl_default"; //$NON-NLS-1$
+    public final static String OGNL_KEYWORD = "__ognl_keyword"; //$NON-NLS-1$
+    public final static String OGNL_STRING = "__ognl_string"; //$NON-NLS-1$
+    public final static String OGNL_STATIC_METHOD = "__ognl_static_method"; //$NON-NLS-1$
+    public final static String OGNL_VARIABLE = "__ognl_variable"; //$NON-NLS-1$
+
+    public final static IToken TOKEN_STRING = new Token(OGNL_STRING);
+    public final static IToken TOKEN_DEFAULT = new Token(OGNL_DEFAULT);
+    public final static IToken TOKEN_KEYWORD = new Token(OGNL_KEYWORD);
+    public final static IToken TOKEN_STATIC_METHOD = new Token(
+            OGNL_STATIC_METHOD);
+    public final static IToken TOKEN_VARIABLE = new Token(OGNL_VARIABLE);
+
+    /** Array of keyword token strings. */
+    private static String[] keywordTokens = { "and", //$NON-NLS-1$
+            "band", //$NON-NLS-1$
+            "bor", //$NON-NLS-1$
+            "eq", //$NON-NLS-1$
+            "false", //$NON-NLS-1$
+            "gt", //$NON-NLS-1$
+            "gte", //$NON-NLS-1$
+            "in", //$NON-NLS-1$
+            "instanceof", //$NON-NLS-1$
+            "lt", //$NON-NLS-1$
+            "lte", //$NON-NLS-1$
+            "neq", //$NON-NLS-1$
+            "new", //$NON-NLS-1$
+            "not", //$NON-NLS-1$
+            "null", //$NON-NLS-1$
+            "or", //$NON-NLS-1$
+            "shl", //$NON-NLS-1$
+            "shr", //$NON-NLS-1$
+            "ushr", //$NON-NLS-1$
+            // "this", //$NON-NLS-1$
+            "true", //$NON-NLS-1$
+            "xor", //$NON-NLS-1$
+    };
 }

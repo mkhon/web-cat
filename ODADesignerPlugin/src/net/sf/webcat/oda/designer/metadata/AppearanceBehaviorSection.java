@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AppearanceBehaviorSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: AppearanceBehaviorSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.util.Locale;
+import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
@@ -32,23 +33,31 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import com.ibm.icu.util.ULocale;
 
+//------------------------------------------------------------------------
+/**
+ * A section in the Overview page that edits properties related to the
+ * appearance and behavior of the report template.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: AppearanceBehaviorSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class AppearanceBehaviorSection extends AbstractSection
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public AppearanceBehaviorSection(OverviewFormPage formPage,
             Composite parent, FormToolkit toolkit, ModuleHandle model)
     {
-        super(
-                formPage,
-                parent,
-                toolkit,
-                model,
+        super(formPage, parent, toolkit, model,
                 Messages.APP_BEHAV_SECTION_TITLE,
                 Messages.APP_BEHAV_SECTION_DESCRIPTION);
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     protected void createContent(Composite parent)
     {
@@ -58,8 +67,7 @@ public class AppearanceBehaviorSection extends AbstractSection
         Label label;
 
         label = createLabel(parent, Messages.APP_BEHAV_LANGUAGE, SWT.CENTER);
-        label
-                .setToolTipText(Messages.APP_BEHAV_LANGUAGE_TOOLTIP);
+        label.setToolTipText(Messages.APP_BEHAV_LANGUAGE_TOOLTIP);
         languageField = createCombo(parent);
 
         for (String language : LanguageTable.getInstance().getDisplayNames())
@@ -67,9 +75,9 @@ public class AppearanceBehaviorSection extends AbstractSection
             languageField.add(language);
         }
 
-        label = createLabel(parent, Messages.APP_BEHAV_PREFERRED_RENDERER, SWT.CENTER);
-        label
-                .setToolTipText(Messages.APP_BEHAV_PREFERRED_RENDERER_TOOLTIP);
+        label = createLabel(parent, Messages.APP_BEHAV_PREFERRED_RENDERER,
+                SWT.CENTER);
+        label.setToolTipText(Messages.APP_BEHAV_PREFERRED_RENDERER_TOOLTIP);
         rendererField = createCombo(parent);
 
         rendererField.add("html");
@@ -78,8 +86,8 @@ public class AppearanceBehaviorSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
-    protected void updateControls()
+    // ----------------------------------------------------------
+    public void updateControls()
     {
         ModuleHandle module = getModel();
 
@@ -95,7 +103,7 @@ public class AppearanceBehaviorSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public void saveModel()
     {
         ModuleHandle module = getModel();
@@ -114,7 +122,8 @@ public class AppearanceBehaviorSection extends AbstractSection
     }
 
 
-    private Combo languageField;
+    //~ Static/instance variables .............................................
 
+    private Combo languageField;
     private Combo rendererField;
 }

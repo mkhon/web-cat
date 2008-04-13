@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IPreferencesConstants.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: IPreferencesConstants.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,14 +21,18 @@
 
 package net.sf.webcat.oda.designer.preferences;
 
+// ------------------------------------------------------------------------
 /**
  * This interface provides definitions for the names of keys that are used to
  * store preferences information for the Web-CAT Data Source plug-in.
  *
- * @author Tony Allevato
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: IPreferencesConstants.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  */
 public interface IPreferencesConstants
 {
+    //~ Static variables ......................................................
+
     /**
      * The URL of the Web-CAT server that will be used to obtain data in a
      * report preview. This URL should start with the "http://" prefix and end
@@ -58,4 +62,29 @@ public interface IPreferencesConstants
      * that point will be returned.
      */
     static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout"; //$NON-NLS-1$
+
+    /**
+     * An integer value (one of the SAVE_BEHAVIOR_* values below) that defines
+     * how the report designer behaves if problems were detected in the report
+     * when it is saved.
+     */
+    static final String SAVE_BEHAVIOR_KEY = "saveBehavior"; //$NON-NLS-1$
+
+
+    /**
+     * The report problem dialog should show all problems (errors and warnings)
+     * when the file is saved.
+     */
+    static final int SAVE_BEHAVIOR_SHOW_ALL_PROBLEMS = 0;
+
+    /**
+     * The report problem dialog should show only errors, not warnings, when
+     * the file is saved.
+     */
+    static final int SAVE_BEHAVIOR_SHOW_ERRORS_ONLY = 1;
+
+    /**
+     * The report problem dialog should not appear when the file is saved.
+     */
+    static final int SAVE_BEHAVIOR_SHOW_NO_PROBLEMS = 2;
 }

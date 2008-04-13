@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryBuilder.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: PreviewQueryBuilder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,6 +34,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewQueryBuilder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewQueryBuilder extends TitleAreaDialog implements
         IPreviewQueryClauseEventHandler
 {

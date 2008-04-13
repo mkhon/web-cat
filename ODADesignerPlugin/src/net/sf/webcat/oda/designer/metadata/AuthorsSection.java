@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthorsSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: AuthorsSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,8 +23,10 @@ package net.sf.webcat.oda.designer.metadata;
 
 import java.util.List;
 import java.util.ArrayList;
+import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -48,9 +50,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+//------------------------------------------------------------------------
+/**
+ * A section in the Overview page that edits properties related to the authors
+ * of a report template.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: AuthorsSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class AuthorsSection extends AbstractSection
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public AuthorsSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
@@ -61,7 +73,9 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     protected void createContent(Composite parent)
     {
@@ -172,8 +186,8 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
-    protected void updateControls()
+    // ----------------------------------------------------------
+    public void updateControls()
     {
         ModuleHandle model = getModel();
 
@@ -181,7 +195,7 @@ public class AuthorsSection extends AbstractSection
 
         int count = ReportMetadata.getAuthorsCount(model);
 
-        for (int i = 1; i <= count; i++)
+        for (int i = 0; i < count; i++)
         {
             AuthorInfo author = new AuthorInfo();
 
@@ -196,11 +210,13 @@ public class AuthorsSection extends AbstractSection
 
         authorTable.setInput(authors);
         authorTable.refresh();
+        updateErrors();
+
         authorSelectionChanged();
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     public void saveModel()
     {
         ModuleHandle model = getModel();
@@ -211,12 +227,44 @@ public class AuthorsSection extends AbstractSection
         {
             AuthorInfo author = authors.get(i);
 
-            ReportMetadata.setAuthorName(model, i + 1, author.name);
-            ReportMetadata.setAuthorEmail(model, i + 1, author.email);
-            ReportMetadata.setAuthorURL(model, i + 1, author.url);
-            ReportMetadata.setAuthorAffiliation(model, i + 1,
+            ReportMetadata.setAuthorName(model, i, author.name);
+            ReportMetadata.setAuthorEmail(model, i, author.email);
+            ReportMetadata.setAuthorURL(model, i, author.url);
+            ReportMetadata.setAuthorAffiliation(model, i,
                     author.affiliation);
-            ReportMetadata.setAuthorPhone(model, i + 1, author.phone);
+            ReportMetadata.setAuthorPhone(model, i, author.phone);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    private void updateErrors()
+    {
+        int authorCount = authors.size();
+
+        if(authorCount == 0)
+        {
+            addMessage(NO_AUTHORS_KEY,
+                    NO_AUTHORS_MESSAGE, null,
+                    IMessageProvider.ERROR, authorTable.getControl());
+        }
+        else
+        {
+            removeMessage(NO_AUTHORS_KEY, authorTable.getControl());
+            removeMessage(NO_NAME_AUTHOR_KEY, authorTable.getControl());
+
+            for(int i = 0; i < authorCount; i++)
+            {
+                String name = authors.get(i).name;
+
+                if(name == null || name.trim().length() == 0)
+                {
+                    addMessage(NO_NAME_AUTHOR_KEY, NO_NAME_AUTHOR_MESSAGE, null,
+                            IMessageProvider.ERROR, authorTable.getControl());
+
+                    break;
+                }
+            }
         }
     }
 
@@ -238,18 +286,18 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void authorSelectionChanged()
     {
         AuthorInfo author = getSelectedAuthor();
 
         if(author == null)
         {
-            nameField.setText("");
-            emailField.setText("");
-            urlField.setText("");
-            affiliationField.setText("");
-            phoneField.setText("");
+            nameField.setText(Messages.AUTHORS_SECTION_0);
+            emailField.setText(Messages.AUTHORS_SECTION_1);
+            urlField.setText(Messages.AUTHORS_SECTION_2);
+            affiliationField.setText(Messages.AUTHORS_SECTION_3);
+            phoneField.setText(Messages.AUTHORS_SECTION_4);
 
             nameField.setEnabled(false);
             emailField.setEnabled(false);
@@ -278,12 +326,14 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void addAuthor()
     {
         authors.add(new AuthorInfo());
         authorTable.refresh();
         authorTable.getTable().setSelection(authors.size() - 1);
+
+        updateErrors();
 
         authorSelectionChanged();
 
@@ -293,7 +343,7 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void removeAuthor()
     {
         AuthorInfo author = getSelectedAuthor();
@@ -303,6 +353,8 @@ public class AuthorsSection extends AbstractSection
             authors.remove(author);
             authorTable.refresh();
 
+            updateErrors();
+
             authorSelectionChanged();
 
             getFormPage().markAsDirty();
@@ -310,7 +362,7 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void nameFieldModified()
     {
         AuthorInfo author = getSelectedAuthor();
@@ -319,11 +371,12 @@ public class AuthorsSection extends AbstractSection
         {
             author.name = nameField.getText();
             authorTable.update(author, null);
+            updateErrors();
         }
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void emailFieldModified()
     {
         AuthorInfo author = getSelectedAuthor();
@@ -336,7 +389,7 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void urlFieldModified()
     {
         AuthorInfo author = getSelectedAuthor();
@@ -348,7 +401,7 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void affiliationFieldModified()
     {
         AuthorInfo author = getSelectedAuthor();
@@ -360,7 +413,7 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void phoneFieldModified()
     {
         AuthorInfo author = getSelectedAuthor();
@@ -372,7 +425,7 @@ public class AuthorsSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     private class AuthorInfo
     {
         public String name;
@@ -420,11 +473,11 @@ public class AuthorsSection extends AbstractSection
         {
             AuthorInfo author = (AuthorInfo) element;
 
-            String name = "";
+            String name = Messages.AUTHORS_SECTION_5;
 
             if(author.name == null)
             {
-                name = "<no name provided>";
+                name = Messages.AUTHORS_SECTION_NO_NAME_PROVIDED;
             }
             else
             {
@@ -433,7 +486,7 @@ public class AuthorsSection extends AbstractSection
 
             if(author.email != null)
             {
-                name += " (" + author.email + ")";
+                name += " (" + author.email + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             return name;
@@ -463,6 +516,12 @@ public class AuthorsSection extends AbstractSection
 
 
     //~ Static/instance variables .............................................
+
+    private static final String NO_AUTHORS_KEY = "noAuthors"; //$NON-NLS-1$
+    private static final String NO_NAME_AUTHOR_KEY = "author.noName"; //$NON-NLS-1$
+
+    private static final String NO_AUTHORS_MESSAGE = Messages.AUTHORS_SECTION_ERROR_NO_AUTHORS;
+    private static final String NO_NAME_AUTHOR_MESSAGE = Messages.AUTHORS_SECTION_ERROR_AUTHOR_NO_NAME;
 
     private TableViewer authorTable;
     private Button removeButton;

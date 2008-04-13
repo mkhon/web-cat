@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultJob.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: PreviewingResultJob.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,6 +43,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewingResultJob.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewingResultJob extends Job
 {
     // ------------------------------------------------------------------------

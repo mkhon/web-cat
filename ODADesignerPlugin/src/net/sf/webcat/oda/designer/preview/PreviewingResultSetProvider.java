@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultSetProvider.java,v 1.1 2008/04/08 18:31:05 aallowat Exp $
+ |  $Id: PreviewingResultSetProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,6 +28,13 @@ import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.datatools.connectivity.oda.OdaException;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewingResultSetProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewingResultSetProvider implements IWebCATResultSetProvider
 {
     // === Methods ============================================================

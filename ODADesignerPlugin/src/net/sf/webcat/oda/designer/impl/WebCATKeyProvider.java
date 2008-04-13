@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebCATKeyProvider.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: WebCATKeyProvider.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,17 +28,33 @@ import net.sf.webcat.oda.designer.util.ImageUtils;
 import net.sf.webcat.oda.designer.widgets.IKeyLabelProvider;
 import net.sf.webcat.oda.designer.widgets.IKeyProvider;
 
+//------------------------------------------------------------------------
+/**
+ * A content and label provider for the KeyBrowser widget that provides keys and
+ * images based on data retrieved from the Web-CAT server through the content
+ * assist manager.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: WebCATKeyProvider.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public WebCATKeyProvider()
     {
-        contentAssist = DesignerActivator.getDefault().getContentAssistManager();
+        contentAssist = DesignerActivator.getDefault()
+                .getContentAssistManager();
 
         propertyImage = ImageUtils.getImage("icons/keypath/property.gif"); //$NON-NLS-1$
         methodImage = ImageUtils.getImage("icons/keypath/method.gif"); //$NON-NLS-1$
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public void dispose()
     {
         propertyImage.dispose();
@@ -46,24 +62,28 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     }
 
 
+    // ----------------------------------------------------------
     public String getKeyType(String className, String key)
     {
         return contentAssist.getAttributeType(className, key);
     }
 
 
+    // ----------------------------------------------------------
     public boolean hasKeys(String className)
     {
         return contentAssist.isEntity(className);
     }
 
 
+    // ----------------------------------------------------------
     public String[] getKeys(String className)
     {
         return contentAssist.getAttributeNames(className);
     }
 
 
+    // ----------------------------------------------------------
     public Image getImage(String className, String key)
     {
         if (contentAssist.isEntity(getKeyType(className, key)))
@@ -73,6 +93,7 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     }
 
 
+    // ----------------------------------------------------------
     public String getLabel(String className, String key)
     {
         String destType = getKeyType(className, key);
@@ -80,9 +101,9 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     }
 
 
+    //~ Static/instance variables .............................................
+
     private ContentAssistManager contentAssist;
-
     private Image propertyImage;
-
     private Image methodImage;
 }

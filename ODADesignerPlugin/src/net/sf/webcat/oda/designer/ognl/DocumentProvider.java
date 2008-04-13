@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DocumentProvider.java,v 1.1 2008/04/08 18:31:02 aallowat Exp $
+ |  $Id: DocumentProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,19 +42,20 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 import org.osgi.framework.Bundle;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: DocumentProvider.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public abstract class DocumentProvider extends AbstractDocumentProvider
 {
+    //~ Constructor ...........................................................
 
-    /**
-     * Default file size.
-     *
-     */
-    protected static final int DEFAULT_FILE_SIZE = 15 * 1024;
-
-
+    // ----------------------------------------------------------
     /**
      * Creates a new document provider.
-     *
      */
     public DocumentProvider()
     {
@@ -62,6 +63,9 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     /**
      * Initializes the given document with the given stream.
      *
@@ -80,6 +84,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Initializes the given document with the given stream using the given
      * encoding.
@@ -143,6 +148,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Initializes the given document from the given editor input using the
      * given character encoding.
@@ -162,9 +168,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
             IEditorInput editorInput) throws CoreException;
 
 
-    /*
-     * @see AbstractDocumentProvider#createAnnotationModel(Object)
-     */
+    // ----------------------------------------------------------
     protected IAnnotationModel createAnnotationModel(Object element)
             throws CoreException
     {
@@ -172,6 +176,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Factory method for creating empty documents.
      *
@@ -183,9 +188,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
-    /*
-     * @see AbstractDocumentProvider#createDocument(Object)
-     */
+    // ----------------------------------------------------------
     protected IDocument createDocument(Object element) throws CoreException
     {
         if (element instanceof IEditorInput)
@@ -202,6 +205,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Sets up the given document as it would be provided for the given element.
      * The content of the document is not changed. This default implementation
@@ -218,10 +222,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
-    /*
-     * @see AbstractDocumentProvider#doSaveDocument(IProgressMonitor, Object,
-     *      IDocument, boolean)
-     */
+    // ----------------------------------------------------------
     protected void doSaveDocument(IProgressMonitor monitor, Object element,
             IDocument document, boolean overwrite) throws CoreException
     {
@@ -229,6 +230,7 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Defines the standard procedure to handle <code>CoreExceptions</code>.
      * Exceptions are written to the plug-in log.
@@ -252,15 +254,14 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
     }
 
 
-    /*
-     * @see IStorageDocumentProvider#getDefaultEncoding()
-     */
+    // ----------------------------------------------------------
     public String getDefaultEncoding()
     {
         return ResourcesPlugin.getEncoding();
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Returns the persisted encoding for the given element.
      *
@@ -268,14 +269,18 @@ public abstract class DocumentProvider extends AbstractDocumentProvider
      *            the element for which to get the persisted encoding
      * @return the persisted encoding
      */
-    abstract protected String getPersistedEncoding(Object element);
+    protected abstract String getPersistedEncoding(Object element);
 
 
-    /*
-     * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#getOperationRunner(org.eclipse.core.runtime.IProgressMonitor)
-     */
+    // ----------------------------------------------------------
     protected IRunnableContext getOperationRunner(IProgressMonitor monitor)
     {
         return null;
     }
+
+
+    //~ Static/instance variables .............................................
+
+    /** Default file size. */
+    protected static final int DEFAULT_FILE_SIZE = 15 * 1024;
 }

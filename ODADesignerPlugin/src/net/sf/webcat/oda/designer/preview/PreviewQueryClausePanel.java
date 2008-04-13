@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryClausePanel.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: PreviewQueryClausePanel.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,6 +43,13 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewQueryClausePanel.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewQueryClausePanel extends Composite
 {
     public PreviewQueryClausePanel(Composite parent,

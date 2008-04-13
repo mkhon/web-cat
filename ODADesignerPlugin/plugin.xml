@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
+<!-- $Id: plugin.xml,v 1.3 2008/04/13 22:04:53 aallowat Exp $ -->
+
 <plugin>
    <extension
          point="net.sf.webcat.oda.core.emptyAppContextHandlers">
@@ -67,10 +69,15 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.datatools.connectivity.oda.design.internal.ui.preferences.OpenDataAccessPage"
             class="net.sf.webcat.oda.designer.preferences.DataSetPreferencePage"
             id="net.sf.webcat.oda.ui.preferences.DataSetPreferencePage"
-            name="%preferences.data.set">
+            name="%preferences.root">
+      </page>
+      <page
+            category="net.sf.webcat.oda.ui.preferences.DataSetPreferencePage"
+            class="net.sf.webcat.oda.designer.preferences.DesignerPreferencePage"
+            id="net.sf.webcat.oda.ui.preferences.DesignerPreferencePage"
+            name="%preferences.designer">
       </page>
    </extension>
    <extension

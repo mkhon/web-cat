@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlBuilderTemplates.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: OgnlBuilderTemplates.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,8 +26,27 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.graphics.Point;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlBuilderTemplates.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlBuilderTemplates
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    private OgnlBuilderTemplates()
+    {
+        // Static class; prevent instantiation.
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public static void insertTemplate(SourceViewer editor, String template)
     {
         Point range = editor.getSelectedRange();
@@ -49,8 +68,11 @@ public class OgnlBuilderTemplates
     }
 
 
+    //~ Static/instance variables .............................................
+
     // The %% markers denote the beginning and end of what should be the
     // selected range of text once the template is inserted.
+
     public static final String TEMPLATE_MIN = "@min(%%arg1, arg2%%)"; //$NON-NLS-1$
     public static final String TEMPLATE_MAX = "@max(%%arg1, arg2%%)"; //$NON-NLS-1$
     public static final String TEMPLATE_FLOOR = "@floor(%%arg%%)"; //$NON-NLS-1$

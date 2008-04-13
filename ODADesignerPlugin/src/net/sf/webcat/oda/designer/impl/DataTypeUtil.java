@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataTypeUtil.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: DataTypeUtil.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,35 +25,91 @@ import java.util.HashMap;
 import net.sf.webcat.oda.core.impl.DataTypes;
 import net.sf.webcat.oda.designer.i18n.Messages;
 
+//------------------------------------------------------------------------
 /**
+ * Utility methods to convert between integral data type constants and their
+ * display names.
  *
- *
- * @author Tony Allevato
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: DataTypeUtil.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  */
 public class DataTypeUtil
 {
-    private static HashMap<String, Integer> displayNameDataTypeMapping = new HashMap<String, Integer>();
+    //~ Constructor ...........................................................
 
+    // ----------------------------------------------------------
+    /**
+     * Prevent instantiation.
+     */
+    private DataTypeUtil()
+    {
+        // Static class; prevent instantiation.
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the display name for the specified data type constant.
+     *
+     * @param type
+     *            the data type
+     *
+     * @return the display name of the data type
+     */
+    public static String getDataTypeDisplayName(int type)
+    {
+        String s = dataTypeDisplayNameMapping.get(Integer.valueOf(type));
+        if (s != null)
+            return s;
+        else
+            return Messages.DATATYPE_DISPLAYNAME_STRING;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the data type constant for the data type with the specified display
+     * name.
+     *
+     * @param displayName
+     *            the display name of the data type
+     *
+     * @return the data type constant for the data type with the specified
+     *         display name
+     */
+    public static Integer getDataType(String displayName)
+    {
+        Integer i = displayNameDataTypeMapping.get(displayName);
+
+        if (i != null)
+            return i;
+        else
+            return Integer.valueOf(DataTypes.STRING);
+    }
+
+
+    //~ Static variables ......................................................
+
+    private static HashMap<String, Integer> displayNameDataTypeMapping = new HashMap<String, Integer>();
     private static HashMap<Integer, String> dataTypeDisplayNameMapping = new HashMap<Integer, String>();
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     static
     {
-        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_TIMESTAMP, Integer
-                .valueOf(DataTypes.TIMESTAMP));
-        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_DECIMAL, Integer
-                .valueOf(DataTypes.DECIMAL));
-        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_FLOAT, Integer
-                .valueOf(DataTypes.DOUBLE));
-        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_INTEGER, Integer
-                .valueOf(DataTypes.INT));
-        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_STRING, Integer
-                .valueOf(DataTypes.STRING));
-        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_BOOLEAN, Integer
-                .valueOf(DataTypes.BOOLEAN));
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_TIMESTAMP,
+                Integer.valueOf(DataTypes.TIMESTAMP));
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_DECIMAL,
+                Integer.valueOf(DataTypes.DECIMAL));
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_FLOAT,
+                Integer.valueOf(DataTypes.DOUBLE));
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_INTEGER,
+                Integer.valueOf(DataTypes.INT));
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_STRING,
+                Integer.valueOf(DataTypes.STRING));
+        displayNameDataTypeMapping.put(Messages.DATATYPE_DISPLAYNAME_BOOLEAN,
+                Integer.valueOf(DataTypes.BOOLEAN));
 
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.TIMESTAMP),
                 Messages.DATATYPE_DISPLAYNAME_TIMESTAMP);
@@ -67,37 +123,5 @@ public class DataTypeUtil
                 Messages.DATATYPE_DISPLAYNAME_STRING);
         dataTypeDisplayNameMapping.put(Integer.valueOf(DataTypes.BOOLEAN),
                 Messages.DATATYPE_DISPLAYNAME_BOOLEAN);
-    }
-
-
-    // -----------------------------------------------------------------------
-    /**
-     *
-     * @param type
-     * @return
-     */
-    public static String getDataTypeDisplayName(int type)
-    {
-        String s = dataTypeDisplayNameMapping.get(Integer.valueOf(type));
-        if (s != null)
-            return s;
-        else
-            return Messages.DATATYPE_DISPLAYNAME_STRING;
-    }
-
-
-    // -----------------------------------------------------------------------
-    /**
-     *
-     * @param displayName
-     * @return
-     */
-    public static Integer getDataType(String displayName)
-    {
-        Integer i = displayNameDataTypeMapping.get(displayName);
-        if (i != null)
-            return i;
-        else
-            return Integer.valueOf(DataTypes.STRING);
     }
 }

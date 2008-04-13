@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultCache.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: PreviewingResultCache.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,6 +28,13 @@ import java.util.concurrent.CountDownLatch;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.core.runtime.jobs.Job;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewingResultCache.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewingResultCache
 {
     // ==== Methods ===========================================================

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewQueryClause.java,v 1.1 2008/04/08 18:31:05 aallowat Exp $
+ |  $Id: PreviewQueryClause.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,6 +25,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: PreviewQueryClause.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class PreviewQueryClause
 {
     public static final int COMPARAND_LITERAL = 0;

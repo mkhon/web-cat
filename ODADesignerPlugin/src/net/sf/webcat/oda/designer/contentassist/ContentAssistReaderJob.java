@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistReaderJob.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: ContentAssistReaderJob.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,8 +36,18 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+//------------------------------------------------------------------------
+/**
+ * A background job that retrieves content assist information from the server.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ContentAssistReaderJob.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class ContentAssistReaderJob extends Job
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public ContentAssistReaderJob(ContentAssistManager manager, boolean force)
     {
         super(Messages.CONTENTASSIST_JOB_NAME);
@@ -47,6 +57,9 @@ public class ContentAssistReaderJob extends Job
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     protected IStatus run(IProgressMonitor monitor)
     {
@@ -172,6 +185,7 @@ public class ContentAssistReaderJob extends Job
     }
 
 
+    // ----------------------------------------------------------
     private boolean isVersionHigher(String thisVersion, String otherVersion)
     {
         try
@@ -201,7 +215,8 @@ public class ContentAssistReaderJob extends Job
     }
 
 
-    private ContentAssistManager manager;
+    //~ Static/instance variables .............................................
 
+    private ContentAssistManager manager;
     private boolean forceEvenIfVersionsIdentical;
 }

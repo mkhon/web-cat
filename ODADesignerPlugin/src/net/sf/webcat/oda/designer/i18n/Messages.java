@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Messages.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: Messages.java,v 1.4 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,14 +23,23 @@ package net.sf.webcat.oda.designer.i18n;
 
 import org.eclipse.osgi.util.NLS;
 
+// ------------------------------------------------------------------------
 /**
- * Manages the internationalizable message strings in the Web-CAT Data Source
+ * Manages the internationalizable message strings in the Web-CAT report
  * designer plug-in.
  *
- * @author Tony Allevato
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: Messages.java,v 1.4 2008/04/13 22:04:53 aallowat Exp $
  */
 public class Messages extends NLS
 {
+    //~ Static/instance variables .............................................
+
+    public static String ADD_AUTHOR_FIXER_AFFILIATION;
+    public static String ADD_AUTHOR_FIXER_EMAIL;
+    public static String ADD_AUTHOR_FIXER_NAME;
+    public static String ADD_AUTHOR_FIXER_PHONE;
+    public static String ADD_AUTHOR_FIXER_URL;
     public static String APP_BEHAV_LANGUAGE;
     public static String APP_BEHAV_LANGUAGE_TOOLTIP;
     public static String APP_BEHAV_PREFERRED_RENDERER;
@@ -44,7 +53,16 @@ public class Messages extends NLS
     public static String AUTHORS_NAME;
     public static String AUTHORS_PHONE;
     public static String AUTHORS_REMOVE;
+    public static String AUTHORS_SECTION_0;
+    public static String AUTHORS_SECTION_1;
+    public static String AUTHORS_SECTION_2;
+    public static String AUTHORS_SECTION_3;
+    public static String AUTHORS_SECTION_4;
+    public static String AUTHORS_SECTION_5;
     public static String AUTHORS_SECTION_DESCRIPTION;
+    public static String AUTHORS_SECTION_ERROR_AUTHOR_NO_NAME;
+    public static String AUTHORS_SECTION_ERROR_NO_AUTHORS;
+    public static String AUTHORS_SECTION_NO_NAME_PROVIDED;
     public static String AUTHORS_SECTION_TITLE;
     public static String AUTHORS_URL;
     public static String CONTENTASSIST_CONNECTION_ERROR;
@@ -59,10 +77,6 @@ public class Messages extends NLS
     public static String DATASET_DEFAULT_TITLE;
     public static String DATASET_DEFINE_QUERY_BUTTON;
     public static String DATASET_DEFINE_QUERY_LABEL;
-    // -----------------------------------------------------------------------
-    /*
-     * Web-CAT Data Set properties page messages
-     */
     public static String DATASET_ENTITY_LABEL;
     public static String DATASET_ENTITY_COMBO_LABEL;
     public static String DATASET_COLUMN_MAPPING_LABEL;
@@ -82,6 +96,10 @@ public class Messages extends NLS
     public static String DATATYPE_DISPLAYNAME_INTEGER;
     public static String DATATYPE_DISPLAYNAME_STRING;
     public static String DATATYPE_DISPLAYNAME_TIMESTAMP;
+    public static String DESIGNER_PREFS_PROBLEM_MESSAGE;
+    public static String DESIGNER_PREFS_SHOW_ALL_PROBLEMS;
+    public static String DESIGNER_PREFS_SHOW_ERRORS_ONLY;
+    public static String DESIGNER_PREFS_SHOW_NO_PROBLEMS;
     public static String EXPR_BUILDER_CURRENT_KEY_PATH;
     public static String EXPR_BUILDER_LAMBDA;
     public static String EXPR_BUILDER_LAMBDA_TOOLTIP;
@@ -105,13 +123,12 @@ public class Messages extends NLS
     public static String GENERAL_INFO_SECTION_DESCRIPTION;
     public static String GENERAL_INFO_SECTION_TITLE;
     public static String GENERAL_INFO_TITLE;
+    public static String LICENSE_FIXER_GO;
+    public static String LICENSE_FIXER_INSTRUCTION;
+    public static String LICENSE_FIXER_LICENSE;
+    public static String LICENSE_FIXER_LICENSE_URL;
     public static String OVERVIEW_PAGE_STORING_PROGRESS;
     public static String OVERVIEW_PAGE_TITLE;
-
-    // -----------------------------------------------------------------------
-    /*
-     * Web-CAT Data Source preferences page messages
-     */
     public static String PREFS_MAIN_LABEL;
     public static String PREFS_SERVER_URL_LABEL;
     public static String PREFS_USERNAME_LABEL;
@@ -119,11 +136,6 @@ public class Messages extends NLS
     public static String PREFS_LIMITS_LABEL;
     public static String PREFS_MAX_RECORDS_LABEL;
     public static String PREFS_TIMEOUT_LABEL;
-
-    // -----------------------------------------------------------------------
-    /*
-     * OGNL Expression Builder dialog messages
-     */
     public static String EXPR_BUILDER_TITLE;
     public static String EXPR_BUILDER_PROMPT;
     public static String PREVIEW_JOB_BAD_RESPONSE;
@@ -140,26 +152,36 @@ public class Messages extends NLS
     public static String QUERY_COMPARISON_NOT_LIKE;
     public static String QUERY_COMPARISON_NOT_ONE_OF;
     public static String QUERY_COMPARISON_ONE_OF;
-    public static String REPORT_METADATA_AUTHOR_AND;
     public static String REPORT_PROBLEM_DIALOG_MESSAGE;
     public static String REPORT_PROBLEM_DIALOG_TITLE;
+    public static String REPORT_PROBLEMS_IN_THE_FUTURE;
+    public static String REPORT_PROBLEMS_INSTRUCTION;
+    public static String REPORT_PROBLEMS_SHOW_ALL_PROBLEMS;
+    public static String REPORT_PROBLEMS_SHOW_ERRORS_ONLY;
+    public static String REPORT_PROBLEMS_SHOW_NO_PROBLEMS;
     public static String REPOSITORY_CHANGE_HISTORY;
     public static String REPOSITORY_ID;
     public static String REPOSITORY_ROOT_ID;
     public static String REPOSITORY_SECTION_DESCRIPTION;
+    public static String REPOSITORY_SECTION_NOT_YET_UPLOADED;
     public static String REPOSITORY_SECTION_TITLE;
     public static String REPOSITORY_UPLOAD_DATE;
     public static String REPOSITORY_VERSION;
     public static String RESETPREVIEWCACHE_CONFIRMATION;
     public static String RESETPREVIEWCACHE_MSGBOX_NAME;
-
     public static String ACTIVATOR_SERVER_URL_NOT_SET;
     public static String RESULT_CACHE_DESCRIPTION;
+    public static String TEXT_FIXER_ENTER_AUTHOR_NAME;
+    public static String TEXT_FIXER_ENTER_COPYRIGHT;
+    public static String TEXT_FIXER_ENTER_DATASET_DESCRIPTION;
+    public static String TEXT_FIXER_ENTER_DESCRIPTION;
+    public static String TEXT_FIXER_ENTER_LICENSE;
+    public static String TEXT_FIXER_ENTER_TITLE;
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     private static final String BUNDLE_NAME = "net.sf.webcat.oda.designer.i18n.messages"; //$NON-NLS-1$
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Initializes the message table by loading the strings into the static
      * fields declared above.

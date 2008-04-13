@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpenWebCATHandler.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ |  $Id: OpenWebCATHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,8 +34,19 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+//------------------------------------------------------------------------
+/**
+ * An Eclipse command handler that opens the Web-CAT server in an external
+ * browser window.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OpenWebCATHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ */
 public class OpenWebCATHandler extends AbstractHandler
 {
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {

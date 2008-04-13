@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CopyrightLicenseSection.java,v 1.3 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: CopyrightLicenseSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.oda.designer.metadata;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
@@ -40,9 +41,19 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+//------------------------------------------------------------------------
+/**
+ * A section on the Overview page that edits properties related to the copyright
+ * and license of a report template.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: CopyrightLicenseSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class CopyrightLicenseSection extends AbstractSection
 {
-    // ------------------------------------------------------------------------
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public CopyrightLicenseSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model)
     {
@@ -56,7 +67,9 @@ public class CopyrightLicenseSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     @Override
     protected void createContent(Composite parent)
     {
@@ -105,9 +118,9 @@ public class CopyrightLicenseSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @Override
-    protected void updateControls()
+    public void updateControls()
     {
         ModuleHandle module = getModel();
 
@@ -117,7 +130,7 @@ public class CopyrightLicenseSection extends AbstractSection
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @Override
     public void saveModel()
     {
@@ -128,6 +141,8 @@ public class CopyrightLicenseSection extends AbstractSection
         ReportMetadata.setLicenseURL(module, licenseURLField.getText());
     }
 
+
+    //~ Static/instance variables .............................................
 
     private Text copyrightField;
     private Combo licenseField;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOActionDispatcher.java,v 1.2 2008/04/11 00:58:37 aallowat Exp $
+ |  $Id: WOActionDispatcher.java,v 1.3 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,14 +31,49 @@ import net.sf.webcat.oda.designer.DesignerActivator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+//------------------------------------------------------------------------
+/**
+ * A utility class to ease the process of sending a direct action request to the
+ * Web-CAT server.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: WOActionDispatcher.java,v 1.3 2008/04/13 22:04:53 aallowat Exp $
+ */
 public class WOActionDispatcher
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new action dispatcher that sends requests to the server at the
+     * specified URL.
+     *
+     * @param serverUrl
+     *            the URL of the Web-CAT server
+     */
     public WOActionDispatcher(String serverUrl)
     {
         this.serverUrl = serverUrl;
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Sends an action to the Web-CAT server and returns its response.
+     *
+     * @param action
+     *            the name of the action, either of the form "actionClass" or
+     *            "actionClass/actionName"
+     * @param sessionId
+     *            the ID of a session started from a previous request, or null
+     *            to use a new session
+     * @param parameters
+     *            query parameters to send to the action
+     *
+     * @return the response returned from the action
+     */
     public WOActionResponse send(String action, String sessionId,
             Map<String, String> parameters)
     {
@@ -105,6 +140,8 @@ public class WOActionDispatcher
         return new WOActionResponse(status, connection, stream);
     }
 
+
+    //~ Static/instance variables .............................................
 
     private String serverUrl;
 }

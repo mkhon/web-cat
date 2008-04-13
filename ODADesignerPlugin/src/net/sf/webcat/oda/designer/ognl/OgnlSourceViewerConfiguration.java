@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlSourceViewerConfiguration.java,v 1.1 2008/04/08 18:31:03 aallowat Exp $
+ |  $Id: OgnlSourceViewerConfiguration.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,34 +36,27 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlSourceViewerConfiguration.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlSourceViewerConfiguration extends SourceViewerConfiguration
 {
-    private RuleBasedScanner scanner;
+    //~ Constructor ...........................................................
 
-    private OgnlSyntaxContext context;
-
-    private static final Color STRING_COLOR = new Color(Display.getDefault(),
-            42, 0, 255);
-
-    private static final Color KEYWORD_COLOR = new Color(Display.getDefault(),
-            127, 0, 85);
-
-    private static final Color STATIC_METHOD_COLOR = new Color(Display
-            .getDefault(), 0, 0, 128);
-
-    private static final Color VARIABLE_COLOR = new Color(Display.getDefault(),
-            0, 128, 64);
-
-    private static final Color DEFAULT_COLOR = new Color(Display.getDefault(),
-            0, 0, 0);
-
-
+    // ----------------------------------------------------------
     public OgnlSourceViewerConfiguration(OgnlSyntaxContext context)
     {
         this.context = context;
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     /**
      * @see SourceViewerConfiguration#getConfiguredContentTypes(ISourceViewer)
      */
@@ -77,6 +70,7 @@ public class OgnlSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Gets default scanner
      *
@@ -95,6 +89,7 @@ public class OgnlSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    // ----------------------------------------------------------
     /**
      * @see SourceViewerConfiguration#getPresentationReconciler(ISourceViewer)
      */
@@ -139,11 +134,7 @@ public class OgnlSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentAssistant(org.eclipse.jface.text.source.ISourceViewer)
-     */
+    // ----------------------------------------------------------
     public IContentAssistant getContentAssistant(ISourceViewer sourceViewer)
     {
         ContentAssistant assistant = new ContentAssistant();
@@ -156,4 +147,21 @@ public class OgnlSourceViewerConfiguration extends SourceViewerConfiguration
                 .setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
         return assistant;
     }
+
+
+    //~ Static/instance variables .............................................
+
+    private static final Color STRING_COLOR = new Color(Display.getDefault(),
+            42, 0, 255);
+    private static final Color KEYWORD_COLOR = new Color(Display.getDefault(),
+            127, 0, 85);
+    private static final Color STATIC_METHOD_COLOR = new Color(Display
+            .getDefault(), 0, 0, 128);
+    private static final Color VARIABLE_COLOR = new Color(Display.getDefault(),
+            0, 128, 64);
+    private static final Color DEFAULT_COLOR = new Color(Display.getDefault(),
+            0, 0, 0);
+
+    private RuleBasedScanner scanner;
+    private OgnlSyntaxContext context;
 }

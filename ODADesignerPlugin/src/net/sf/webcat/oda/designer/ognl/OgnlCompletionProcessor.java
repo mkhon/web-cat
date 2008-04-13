@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlCompletionProcessor.java,v 1.3 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: OgnlCompletionProcessor.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,19 +32,27 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlCompletionProcessor.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlCompletionProcessor implements IContentAssistProcessor
 {
-    private OgnlSyntaxContext context;
+    //~ Constructor ...........................................................
 
-    private String currentWord = ""; //$NON-NLS-1$
-
-
+    // ----------------------------------------------------------
     public OgnlCompletionProcessor(OgnlSyntaxContext context)
     {
         this.context = context;
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
             int offset)
     {
@@ -79,6 +87,7 @@ public class OgnlCompletionProcessor implements IContentAssistProcessor
     }
 
 
+    // ----------------------------------------------------------
     private String supposeCurrentExpression(IDocument document, int topOffset,
             int offset) throws BadLocationException
     {
@@ -138,6 +147,7 @@ public class OgnlCompletionProcessor implements IContentAssistProcessor
     }
 
 
+    // ----------------------------------------------------------
     private CompletionProposal[] getCompletionProposals(String finalType,
             int offset)
     {
@@ -168,6 +178,7 @@ public class OgnlCompletionProcessor implements IContentAssistProcessor
     }
 
 
+    // ----------------------------------------------------------
     public IContextInformation[] computeContextInformation(ITextViewer viewer,
             int offset)
     {
@@ -175,26 +186,36 @@ public class OgnlCompletionProcessor implements IContentAssistProcessor
     }
 
 
+    // ----------------------------------------------------------
     public char[] getCompletionProposalAutoActivationCharacters()
     {
         return new char[] { '.' };
     }
 
 
+    // ----------------------------------------------------------
     public char[] getContextInformationAutoActivationCharacters()
     {
         return null;
     }
 
 
+    // ----------------------------------------------------------
     public IContextInformationValidator getContextInformationValidator()
     {
         return null;
     }
 
 
+    // ----------------------------------------------------------
     public String getErrorMessage()
     {
         return null;
     }
+
+
+    //~ Static/instance variables .............................................
+
+    private OgnlSyntaxContext context;
+    private String currentWord = ""; //$NON-NLS-1$
 }

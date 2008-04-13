@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DesignerActivator.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ |  $Id: DesignerActivator.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,19 +36,14 @@ import org.osgi.framework.BundleContext;
 
 // ------------------------------------------------------------------------
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DesignerActivator.java,v 1.1 2008/04/08 18:31:13 aallowat Exp $
+ * @version $Id: DesignerActivator.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  */
 public class DesignerActivator extends AbstractUIPlugin implements IStartup
 {
-    // The plug-in ID
-    public static final String PLUGIN_ID = "net.sf.webcat.oda.ui"; //$NON-NLS-1$
-
-    // The shared instance
-    private static DesignerActivator plugin;
-
+    //~ Methods ...............................................................
 
     // ----------------------------------------------------------
     public void start(BundleContext context) throws Exception
@@ -58,11 +53,7 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
     }
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
+    // ----------------------------------------------------------
     public void stop(BundleContext context) throws Exception
     {
         plugin = null;
@@ -70,6 +61,7 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
     }
 
 
+    // ----------------------------------------------------------
     /**
      * Returns the shared instance
      *
@@ -81,19 +73,30 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Force loading of the content assist information in the background when
+     * Eclipse starts.
+     */
     public void earlyStartup()
     {
-        // Force loading of this information in the background when Eclipse
-        // starts.
         getContentAssistManager();
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the in-memory cache that stores the results of a preview query
+     * operation.
+     *
+     * @return the previewing result cache
+     */
     public PreviewingResultCache getPreviewCache()
     {
         if (previewCache == null)
         {
-            Preferences prefs = DesignerActivator.getDefault().getPluginPreferences();
+            Preferences prefs = DesignerActivator.getDefault()
+                    .getPluginPreferences();
 
             // Try to construct a previewing result set provider based on the
             // current preferences settings.
@@ -141,11 +144,19 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the object that manages the content assist information read from
+     * the Web-CAT server.
+     *
+     * @return the content assist manager
+     */
     public ContentAssistManager getContentAssistManager()
     {
         if (contentAssistManager == null)
         {
-            Preferences prefs = DesignerActivator.getDefault().getPluginPreferences();
+            Preferences prefs = DesignerActivator.getDefault()
+                    .getPluginPreferences();
             String url = prefs.getString(IPreferencesConstants.SERVER_URL_KEY);
             String username = prefs
                     .getString(IPreferencesConstants.USERNAME_KEY);
@@ -160,6 +171,12 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the object that manages stored preview queries in the workspace.
+     *
+     * @return the preview query manager
+     */
     public PreviewQueryManager getPreviewQueryManager()
     {
         if (previewQueryManager == null)
@@ -171,9 +188,13 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
     }
 
 
+    //~ Static/instance variables .............................................
+
+    public static final String PLUGIN_ID = "net.sf.webcat.oda.designer"; //$NON-NLS-1$
+
+    private static DesignerActivator plugin;
+
     private PreviewingResultCache previewCache;
-
     private ContentAssistManager contentAssistManager;
-
     private PreviewQueryManager previewQueryManager;
 }

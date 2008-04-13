@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ResetPreviewCacheHandler.java,v 1.1 2008/04/08 18:31:12 aallowat Exp $
+ |  $Id: ResetPreviewCacheHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,18 +32,19 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+//------------------------------------------------------------------------
 /**
- * Our sample handler extends AbstractHandler, an IHandler base class.
+ * An Eclipse command handler that clears the data that has been cached for
+ * previewing operations.
  *
- * @see org.eclipse.core.commands.IHandler
- * @see org.eclipse.core.commands.AbstractHandler
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ResetPreviewCacheHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
  */
 public class ResetPreviewCacheHandler extends AbstractHandler
 {
-    /**
-     * the command has been executed, so extract extract the needed information
-     * from the application context.
-     */
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
         IWorkbenchWindow window = HandlerUtil

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetDesignPopulator.java,v 1.1 2008/04/08 18:31:11 aallowat Exp $
+ |  $Id: DataSetDesignPopulator.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,11 +34,42 @@ import org.eclipse.datatools.connectivity.oda.design.ResultSetColumns;
 import org.eclipse.datatools.connectivity.oda.design.ResultSetDefinition;
 import org.eclipse.datatools.connectivity.oda.design.ui.designsession.DesignSessionUtil;
 
+//------------------------------------------------------------------------
+/**
+ * Populates the design properties of an ODA data set based on the data set
+ * description encoded in the query text.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: DataSetDesignPopulator.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class DataSetDesignPopulator
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Prevent instantiation.
+     */
+    private DataSetDesignPopulator()
+    {
+        // Static class; prevent instantiation.
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Populates the data set design based on the encoded description in the
+     * query text.
+     *
+     * @param dataSetDesign
+     *            the data set design to populate
+     */
     public static void populateResultSet(DataSetDesign dataSetDesign)
     {
         IConnection conn = null;
+
         try
         {
             IDriver jdbcDriver = new Driver();
@@ -65,14 +96,15 @@ public class DataSetDesignPopulator
         {
             closeConnection(conn);
         }
-
     }
 
 
+    // ----------------------------------------------------------
     /**
-     * close the connection
+     * Close the connection that was opened to populate the data set design.
      *
      * @param conn
+     *            the connection
      */
     private static void closeConnection(IConnection conn)
     {
@@ -83,19 +115,23 @@ public class DataSetDesignPopulator
         }
         catch (OdaException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Do nothing.
         }
 
     }
 
 
+    // ----------------------------------------------------------
     /**
-     * set resultset meta data
+     * Sets the result set metadata for the given data set design.
      *
      * @param dataSetDesign
+     *            the data set design
      * @param md
+     *            the result set metadata to set
+     *
      * @throws OdaException
+     *             if an ODA error occurs
      */
     private static void setResultSetMetaData(DataSetDesign dataSetDesign,
             IResultSetMetaData md) throws OdaException
@@ -105,7 +141,6 @@ public class DataSetDesignPopulator
 
         ResultSetDefinition resultSetDefn = DesignFactory.eINSTANCE
                 .createResultSetDefinition();
-        // jdbc does not support result set name
         resultSetDefn.setResultSetColumns(columns);
 
         // no exception; go ahead and assign to specified dataSetDesign

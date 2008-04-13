@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlContentProposalProvider.java,v 1.2 2008/04/11 00:58:36 aallowat Exp $
+ |  $Id: OgnlContentProposalProvider.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,20 +25,34 @@ import net.sf.webcat.oda.designer.widgets.IKeyProvider;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 
+//------------------------------------------------------------------------
+/**
+ * TODO: real description
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: OgnlContentProposalProvider.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class OgnlContentProposalProvider implements IContentProposalProvider
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public OgnlContentProposalProvider(IKeyProvider keyProvider)
     {
         this.keyProvider = keyProvider;
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public void setRootClassName(String value)
     {
         rootClassName = value;
     }
 
 
+    // ----------------------------------------------------------
     public IContentProposal[] getProposals(String contents, int position)
     {
         contents = contents.substring(0, position - 1);
@@ -97,7 +111,8 @@ public class OgnlContentProposalProvider implements IContentProposalProvider
     }
 
 
-    private String rootClassName;
+    //~ Static/instance variables .............................................
 
+    private String rootClassName;
     private IKeyProvider keyProvider;
 }

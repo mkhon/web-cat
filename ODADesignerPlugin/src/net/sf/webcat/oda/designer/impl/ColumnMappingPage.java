@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingPage.java,v 1.3 2008/04/11 04:15:48 aallowat Exp $
+ |  $Id: ColumnMappingPage.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -73,56 +73,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+//------------------------------------------------------------------------
 /**
- * Auto-generated implementation of an ODA data set designer page for an user to
- * create or edit an ODA data set design instance. This custom page provides a
- * simple Query Text control for user input. It further extends the DTP
- * design-time framework to update an ODA data set design instance based on the
- * query's derived meta-data. <br>
- * A custom ODA designer is expected to change this exemplary implementation as
- * appropriate.
+ * This class implements the page in the Web-CAT data set wizard that displays
+ * the entity and column mappings for the data set.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ColumnMappingPage.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
  */
 public class ColumnMappingPage extends DataSetWizardPage
 {
-    private static final String DEFAULT_MESSAGE = Messages.DATASET_DEFAULT_TITLE;
+    //~ Constructors ..........................................................
 
-    private Combo entityTypeField;
-
-    private ColumnMappingTableViewer columnMappingTable;
-
-    private OgnlExpressionCellEditor ognlCellEditor;
-
-    private String dataSetUuid;
-
-    private String entityTypeName = "Submission"; //$NON-NLS-1$
-
-    private List<ColumnMappingElement> columnMappingList = new ArrayList<ColumnMappingElement>();
-
-    private Map<String, ColumnMappingElement> columnMap = new HashMap<String, ColumnMappingElement>();
-
-    private ColumnMappingElement newColumn;
-
-    private static final String COLUMN_NAME = Messages.DATASET_COLUMN_NAME_HEADER;
-
-    private static final String EXPRESSION_NAME = Messages.DATASET_EXPRESSION_HEADER;
-
-    private static final String TYPE_NAME = Messages.DATASET_TYPE_HEADER;
-
-    private static String[] dataTypeDisplayNames = new String[] {
-            Messages.DATATYPE_DISPLAYNAME_INTEGER,
-            Messages.DATATYPE_DISPLAYNAME_FLOAT,
-            Messages.DATATYPE_DISPLAYNAME_DECIMAL,
-            Messages.DATATYPE_DISPLAYNAME_STRING,
-            Messages.DATATYPE_DISPLAYNAME_TIMESTAMP,
-            Messages.DATATYPE_DISPLAYNAME_BOOLEAN };
-
-
-    // -----------------------------------------------------------------------
-    /**
-     * Constructor
-     *
-     * @param pageName
-     */
+    // ----------------------------------------------------------
     public ColumnMappingPage(String pageName)
     {
         super(pageName);
@@ -132,14 +95,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     * Constructor
-     *
-     * @param pageName
-     * @param title
-     * @param titleImage
-     */
+    // ----------------------------------------------------------
     public ColumnMappingPage(String pageName, String title,
             ImageDescriptor titleImage)
     {
@@ -149,12 +105,9 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.datatools.connectivity.oda.design.ui.wizards.DataSetWizardPage#createPageCustomControl(org.eclipse.swt.widgets.Composite)
-     */
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public void createPageCustomControl(Composite parent)
     {
         setControl(createPageControl(parent));
@@ -166,10 +119,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     * Creates custom control for user-defined query text.
-     */
+    // ----------------------------------------------------------
     private Control createPageControl(Composite parent)
     {
         Composite composite = new Composite(parent, SWT.NONE);
@@ -310,11 +260,14 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
+    /**
+     * Opens the preview query builder dialog.
+     */
     private void openPreviewQueryBuilder()
     {
         PreviewQueryClause[] clauses = DesignerActivator.getDefault()
-                .getPreviewQueryManager().getQuery(dataSetUuid);
+                .getPreviewQueryManager().getQuery(dataSetId);
 
         PreviewQueryBuilder builder = new PreviewQueryBuilder(getShell(),
                 entityTypeName, clauses);
@@ -322,19 +275,16 @@ public class ColumnMappingPage extends DataSetWizardPage
         if (builder.open() == Window.OK)
         {
             DesignerActivator.getDefault().getPreviewQueryManager().addQuery(
-                    dataSetUuid, builder.getClauses());
+                    dataSetId, builder.getClauses());
             DesignerActivator.getDefault().getPreviewQueryManager()
                     .saveToState();
 
-            DesignerActivator.getDefault().getPreviewCache().reset(dataSetUuid);
+            DesignerActivator.getDefault().getPreviewCache().reset(dataSetId);
         }
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void setupListeners()
     {
         columnMappingTable.getViewer().getTable().addSelectionListener(
@@ -392,10 +342,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void setupEditors()
     {
         CellEditor[] editors = new CellEditor[3];
@@ -420,7 +367,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     private void updateRelationInformation()
     {
         if (WebCATInformationHolder.hasDestroyed())
@@ -438,10 +385,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void removeSelectedItem()
     {
         int index = columnMappingTable.getViewer().getTable()
@@ -473,10 +417,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void moveUpSelectedItem()
     {
         int index = columnMappingTable.getViewer().getTable()
@@ -495,10 +436,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void moveDownSelectedItem()
     {
         int index = columnMappingTable.getViewer().getTable()
@@ -517,10 +455,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void enablePageControls()
     {
         boolean columnMappingExist = false;
@@ -548,12 +483,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     * @param keypath
-     * @return
-     */
+    // ----------------------------------------------------------
     @SuppressWarnings("unused")
     private boolean isValidKeyPath(String keypath)
     {
@@ -572,18 +502,15 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     * @return
-     */
+    // ----------------------------------------------------------
     private String getQueryText()
     {
         // Convert the data set info (entity type and columns) into a text
         // "query" for the ODA engine
+
         DataSetDescription info = new DataSetDescription();
 
-        info.setUniqueId(dataSetUuid);
+        info.setUniqueId(dataSetId);
         info.setEntityType(entityTypeName);
 
         for (int i = 0; i < columnMappingList.size(); i++)
@@ -598,10 +525,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     */
+    // ----------------------------------------------------------
     private void refreshColumnMappingViewer()
     {
         columnMappingTable.getViewer().setInput(columnMappingList);
@@ -631,7 +555,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Initializes the page control with the last edited data set design.
      */
@@ -644,7 +568,7 @@ public class ColumnMappingPage extends DataSetWizardPage
             // initialize controls
             DataSetDescription info = new DataSetDescription(queryText);
             entityTypeName = info.getEntityType();
-            dataSetUuid = info.getUniqueId();
+            dataSetId = info.getUniqueId();
 
             columnMap = new HashMap<String, ColumnMappingElement>();
             columnMappingList = columnMappingTable.refresh(info, columnMap);
@@ -657,7 +581,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------
     protected void refresh(DataSetDesign dataSetDesign)
     {
         if (WebCATInformationHolder.hasDestroyed())
@@ -675,16 +599,12 @@ public class ColumnMappingPage extends DataSetWizardPage
              *
              * entityTypeField.setText(entityTypeName);
              * refreshColumnMappingViewer();
-             */}
+             */
+        }
     }
 
 
-    // -----------------------------------------------------------------------
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.datatools.connectivity.oda.design.ui.wizards.DataSetWizardPage#collectDataSetDesign(org.eclipse.datatools.connectivity.oda.design.DataSetDesign)
-     */
+    // ----------------------------------------------------------
     protected DataSetDesign collectDataSetDesign(DataSetDesign design)
     {
         if (!hasValidData())
@@ -695,25 +615,14 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.datatools.connectivity.oda.design.ui.wizards.DataSetWizardPage#canLeave()
-     */
+    // ----------------------------------------------------------
     protected boolean canLeave()
     {
         return isPageComplete();
     }
 
 
-    // -----------------------------------------------------------------------
-    /**
-     *
-     * @param columnName
-     * @param element
-     * @return
-     */
+    // ----------------------------------------------------------
     private boolean isUniqueName(String columnName, ColumnMappingElement element)
     {
         boolean success = true;
@@ -744,7 +653,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Indicates whether the custom page has valid data to proceed with defining
      * a data set.
@@ -760,7 +669,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------
     /**
      * Saves the user-defined value in this page, and updates the specified
      * dataSetDesign with the latest design definition.
@@ -817,6 +726,7 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
+    // ----------------------------------------------------------
     private void updatePrivateProperties(DataSetDesign dataSetDesign)
     {
         if (dataSetDesign.getPrivateProperties() == null)
@@ -866,16 +776,20 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
+    // ----------------------------------------------------------
     protected void cleanup()
     {
         WebCATInformationHolder.destroy();
     }
 
 
-    // =======================================================================
+    //~ Nested classes ........................................................
+
+    // ----------------------------------------------------------
     private class ColumnMappingTableContentProvider implements
             IStructuredContentProvider
     {
+        // ----------------------------------------------------------
         public Object[] getElements(Object inputElement)
         {
             if (inputElement instanceof ArrayList)
@@ -896,12 +810,14 @@ public class ColumnMappingPage extends DataSetWizardPage
         }
 
 
+        // ----------------------------------------------------------
         public void dispose()
         {
             // Do nothing.
         }
 
 
+        // ----------------------------------------------------------
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
         {
             // Do nothing.
@@ -909,15 +825,18 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
+    // ----------------------------------------------------------
     private class ColumnMappingTableLabelProvider implements
             ITableLabelProvider
     {
+        // ----------------------------------------------------------
         public Image getColumnImage(Object element, int columnIndex)
         {
             return null;
         }
 
 
+        // ----------------------------------------------------------
         public String getColumnText(Object element, int columnIndex)
         {
             String value = "";
@@ -947,24 +866,28 @@ public class ColumnMappingPage extends DataSetWizardPage
         }
 
 
+        // ----------------------------------------------------------
         public void addListener(ILabelProviderListener listener)
         {
             // Do nothing.
         }
 
 
+        // ----------------------------------------------------------
         public void dispose()
         {
             // Do nothing.
         }
 
 
+        // ----------------------------------------------------------
         public boolean isLabelProperty(Object element, String property)
         {
             return false;
         }
 
 
+        // ----------------------------------------------------------
         public void removeListener(ILabelProviderListener listener)
         {
             // Do nothing.
@@ -972,8 +895,10 @@ public class ColumnMappingPage extends DataSetWizardPage
     }
 
 
+    // ----------------------------------------------------------
     private class ColumnMappingTableCellModifier implements ICellModifier
     {
+        // ----------------------------------------------------------
         public boolean canModify(Object element, String property)
         {
             if (element == newColumn && !property.equals(COLUMN_NAME))
@@ -983,6 +908,7 @@ public class ColumnMappingPage extends DataSetWizardPage
         }
 
 
+        // ----------------------------------------------------------
         public Object getValue(Object element, String property)
         {
             ColumnMappingElement cme = (ColumnMappingElement) element;
@@ -1023,6 +949,7 @@ public class ColumnMappingPage extends DataSetWizardPage
         }
 
 
+        // ----------------------------------------------------------
         public void modify(Object element, String property, Object value)
         {
             Object actualElement = ((TableItem) element).getData();
@@ -1105,4 +1032,29 @@ public class ColumnMappingPage extends DataSetWizardPage
             }
         }
     }
+
+
+    //~ Static/instance variables .............................................
+
+    private static final String DEFAULT_MESSAGE = Messages.DATASET_DEFAULT_TITLE;
+    private static final String COLUMN_NAME = Messages.DATASET_COLUMN_NAME_HEADER;
+    private static final String EXPRESSION_NAME = Messages.DATASET_EXPRESSION_HEADER;
+    private static final String TYPE_NAME = Messages.DATASET_TYPE_HEADER;
+
+    private Combo entityTypeField;
+    private ColumnMappingTableViewer columnMappingTable;
+    private OgnlExpressionCellEditor ognlCellEditor;
+    private String dataSetId;
+    private String entityTypeName = "Submission"; //$NON-NLS-1$
+    private List<ColumnMappingElement> columnMappingList = new ArrayList<ColumnMappingElement>();
+    private Map<String, ColumnMappingElement> columnMap = new HashMap<String, ColumnMappingElement>();
+    private ColumnMappingElement newColumn;
+
+    private static String[] dataTypeDisplayNames = new String[] {
+            Messages.DATATYPE_DISPLAYNAME_INTEGER,
+            Messages.DATATYPE_DISPLAYNAME_FLOAT,
+            Messages.DATATYPE_DISPLAYNAME_DECIMAL,
+            Messages.DATATYPE_DISPLAYNAME_STRING,
+            Messages.DATATYPE_DISPLAYNAME_TIMESTAMP,
+            Messages.DATATYPE_DISPLAYNAME_BOOLEAN };
 }

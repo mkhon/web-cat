@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistObjectDescription.java,v 1.1 2008/04/08 18:31:09 aallowat Exp $
+ |  $Id: ContentAssistObjectDescription.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,8 +21,22 @@
 
 package net.sf.webcat.oda.designer.contentassist;
 
+//------------------------------------------------------------------------
+/**
+ * Stores information about a live EO object retrieved from the Web-CAT server.
+ *
+ * These EOs are given as options to the user when creating preview queries so
+ * that they can, for example, create a query that takes submissions from a
+ * particular assignment offering on the server.
+ *
+ * @author Tony Allevato (Virginia Tech Computer Science)
+ * @version $Id: ContentAssistObjectDescription.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ */
 public class ContentAssistObjectDescription
 {
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
     public ContentAssistObjectDescription(String type, int id,
             String description)
     {
@@ -32,33 +46,39 @@ public class ContentAssistObjectDescription
     }
 
 
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
     public String type()
     {
         return type;
     }
 
 
+    // ----------------------------------------------------------
     public int id()
     {
         return id;
     }
 
 
+    // ----------------------------------------------------------
     public String description()
     {
         return description;
     }
 
 
+    // ----------------------------------------------------------
     public String valueRepresentation()
     {
         return String.format("%s:%d", type, id); //$NON-NLS-1$
     }
 
 
+    //~ Static/instance variables .............................................
+
     private String type;
-
     private int id;
-
     private String description;
 }
