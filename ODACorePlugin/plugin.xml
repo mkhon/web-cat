@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.2 2008/04/13 14:44:56 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.3 2008/04/14 03:17:52 aallowat Exp $ -->
 
 <plugin>
    <extension-point id="emptyAppContextHandlers" name="Empty App Context Handlers" schema="schema/emptyAppContextHandlers.exsd"/>
@@ -17,7 +17,7 @@
       </dataSource>
       <dataSet
             defaultDisplayName="%data.set.name"
-            id="net.sf.webcat.oda.dataSet">
+            id="%oda.data.set.id">
          <properties>
             <propertyGroup
                   defaultDisplayName="Data Set Properties"

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetMetadata.java,v 1.1 2008/04/13 14:33:11 aallowat Exp $
+ |  $Id: DataSetMetadata.java,v 1.2 2008/04/14 03:17:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.eclipse.birt.report.model.api.command.NameException;
  * Other useful utility methods are provided as well.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataSetMetadata.java,v 1.1 2008/04/13 14:33:11 aallowat Exp $
+ * @version $Id: DataSetMetadata.java,v 1.2 2008/04/14 03:17:55 aallowat Exp $
  */
 public class DataSetMetadata
 {
@@ -141,7 +141,7 @@ public class DataSetMetadata
     public static boolean isWebCATDataSet(DataSetHandle handle)
     {
         String extensionID = handle.getStringProperty("extensionID");
-        return ("net.sf.webcat.oda.dataSet".equals(extensionID));
+        return ("net.sf.webcat.oda.core.dataSet".equals(extensionID));
     }
 
 

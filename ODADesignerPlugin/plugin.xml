@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.3 2008/04/13 22:04:53 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.4 2008/04/14 03:17:54 aallowat Exp $ -->
 
 <plugin>
    <extension
@@ -52,7 +52,7 @@
             supportsOutParameters="false"
             supportsInParameters="true"
             initialPageId="net.sf.webcat.oda.dataSet.columnMappingPage"
-            id="net.sf.webcat.oda.dataSet">
+            id="%oda.data.set.id">
          <dataSetWizard
                class="org.eclipse.datatools.connectivity.oda.design.ui.wizards.DataSetWizard"
                windowTitle="%wizard.data.set.window.title">

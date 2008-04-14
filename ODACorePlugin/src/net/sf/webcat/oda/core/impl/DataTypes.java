@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataTypes.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ |  $Id: DataTypes.java,v 1.3 2008/04/14 03:17:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.eclipse.datatools.connectivity.oda.util.manifest.ManifestExplorer;
  * representation.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataTypes.java,v 1.2 2008/04/07 20:02:40 aallowat Exp $
+ * @version $Id: DataTypes.java,v 1.3 2008/04/14 03:17:52 aallowat Exp $
  */
 public class DataTypes
 {
@@ -158,5 +158,6 @@ public class DataTypes
     public static final int TIMESTAMP = Types.TIMESTAMP;
     public static final int BOOLEAN = Types.BOOLEAN;
 
-    private static final String WEBCAT_DATA_SOURCE_ID = "net.sf.webcat.oda";
+    private static final String WEBCAT_DATA_SOURCE_ID =
+        "net.sf.webcat.oda.core.dataSource";
 }
