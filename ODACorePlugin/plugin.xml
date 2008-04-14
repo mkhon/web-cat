@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.3 2008/04/14 03:17:52 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.4 2008/04/14 13:27:07 aallowat Exp $ -->
 
 <plugin>
    <extension-point id="emptyAppContextHandlers" name="Empty App Context Handlers" schema="schema/emptyAppContextHandlers.exsd"/>
 
    <extension
-         id="%oda.data.source.id"
+         id="net.sf.webcat.oda.core.dataSource"
          point="org.eclipse.datatools.connectivity.oda.dataSource">
       <dataSource
             driverClass="net.sf.webcat.oda.core.impl.Driver"
             defaultDisplayName="%data.source.name"
             setThreadContextClassLoader="false"
             odaVersion="3.1"
-            id="%oda.data.source.id">
+            id="net.sf.webcat.oda.core.dataSource">
       </dataSource>
       <dataSet
             defaultDisplayName="%data.set.name"
-            id="%oda.data.set.id">
+            id="net.sf.webcat.oda.core.dataSet">
          <properties>
             <propertyGroup
                   defaultDisplayName="Data Set Properties"
                   name="dataSetProperties">
                <property
                      canInherit="true"
-                     defaultDisplayName="Data Set UUID"
-                     name="dataSetUUID"
+                     defaultDisplayName="Data Set ID"
+                     name="dataSetId"
                      type="string">
                </property>
                <property
@@ -46,7 +46,7 @@
                   visibility="hide">
             </propertyVisibility>
             <propertyVisibility
-                  name="dataSetUUID"
+                  name="dataSetId"
                   visibility="hide">
             </propertyVisibility>
             <propertyVisibility
