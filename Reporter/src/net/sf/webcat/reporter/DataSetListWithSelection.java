@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetListWithSelection.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: DataSetListWithSelection.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,8 +37,8 @@ import net.sf.webcat.core.WCComponent;
  * @binding selection a data set equal to one of the elements in dataSets,
  *          this entry will be highlighted when the list is displayed
  *
- * @author aallowat
- * @version $Id: DataSetListWithSelection.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: DataSetListWithSelection.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public class DataSetListWithSelection
     extends WCComponent

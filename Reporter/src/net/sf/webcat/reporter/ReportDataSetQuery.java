@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportDataSetQuery.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReportDataSetQuery.java,v 1.5 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,10 +26,12 @@ import com.webobjects.foundation.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * For a report generation job or a generated report, this class maps a data set
+ * in the report to a query that defines the result set to be used in the
+ * report.
  *
- * @author
- * @version $Id: ReportDataSetQuery.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: ReportDataSetQuery.java,v 1.5 2008/04/15 04:09:22 aallowat Exp $
  */
 public class ReportDataSetQuery
     extends _ReportDataSetQuery

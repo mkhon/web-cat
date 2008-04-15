@@ -1,28 +1,28 @@
 <wo:PageWithNavigation>
 
 <wo:if condition="$reportTemplates.count">
-	<p>Click on a report template below to begin generating a report.</p>
-	<div class="shadow"><table><tbody>
-		<tr>
-			<th>Report Template</th>
-			<th>Installed By</th>
-		</tr>
-		<wo:loop list="$reportTemplates" item="$reportTemplate" index="$index">
-			<wo:tr index="$index">
-				<td>
-					<wo:link string="$reportTemplate.name" action="$templateChosen"/>
-					<wo:str value="$reportTemplate.displayableVersion"/>
-				</td>
-				<td>
-					<wo:str value="$reportTemplate.author.name"/>
-				</td>
-			</wo:tr>
-		</wo:loop>
-	</tbody></table></div>
+    <p>Click on a report template below to begin generating a report.</p>
+    <div class="shadow"><table><tbody>
+        <tr>
+            <th>Report Template</th>
+            <th>Installed By</th>
+        </tr>
+        <wo:loop list="$reportTemplates" item="$reportTemplate" index="$index">
+            <wo:tr index="$index">
+                <td>
+                    <wo:link string="$reportTemplate.name" action="$templateChosen"/>
+                    <wo:str value="$reportTemplate.version"/>
+                </td>
+                <td>
+                    <wo:str value="$reportTemplate.user.name"/>
+                </td>
+            </wo:tr>
+        </wo:loop>
+    </tbody></table></div>
 </wo:if>
 <wo:else>
-	<p>There are currently no report templates available. You can use the
-	<b>Template Library</b> to upload one.</p>
+    <p>There are currently no report templates available. You can use the
+    <b>Template Library</b> to upload one.</p>
 </wo:else>
 
 </wo:PageWithNavigation>

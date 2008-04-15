@@ -4,7 +4,7 @@
  |  Created by eogenerator
  |  DO NOT EDIT.  Make changes to ReportTemplate.java instead.
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,9 +24,9 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.eoaccess.*;
+import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -138,15 +138,23 @@ public abstract class _ReportTemplate
     //~ Constants (for key names) .............................................
 
     // Attributes ---
+    public static final String CHANGE_HISTORY_KEY = "changeHistory";
+    public static final String CHECKSUM_KEY = "checksum";
     public static final String DESCRIPTION_KEY = "description";
+    public static final String DESIGN_ELEMENTS_RAW_KEY = "designElementsRaw";
     public static final String IS_PUBLISHED_KEY = "isPublished";
-    public static final String LAST_MODIFIED_KEY = "lastModified";
+    public static final String LANGUAGE_KEY = "language";
     public static final String NAME_KEY = "name";
-    public static final String UPLOADED_FILE_NAME_KEY = "uploadedFileName";
+    public static final String PREFERRED_RENDERER_KEY = "preferredRenderer";
+    public static final String UPLOADED_TIME_KEY = "uploadedTime";
     public static final String VERSION_KEY = "version";
     // To-one relationships ---
-    public static final String AUTHOR_KEY = "author";
+    public static final String BRANCHED_FROM_TEMPLATE_KEY = "branchedFromTemplate";
+    public static final String PREDECESSOR_TEMPLATE_KEY = "predecessorTemplate";
+    public static final String ROOT_TEMPLATE_KEY = "rootTemplate";
+    public static final String USER_KEY = "user";
     // To-many relationships ---
+    public static final String BRANCHED_TEMPLATES_KEY = "branchedTemplates";
     public static final String DATA_SETS_KEY = "dataSets";
     // Fetch specifications ---
     public static final String ALL_TEMPLATES_FSPEC = "allTemplates";
@@ -201,6 +209,64 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
+     * Retrieve this object's <code>changeHistory</code> value.
+     * @return the value of the attribute
+     */
+    public String changeHistory()
+    {
+        return (String)storedValueForKey( "changeHistory" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>changeHistory</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setChangeHistory( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setChangeHistory("
+                + value + "): was " + changeHistory() );
+        }
+        takeStoredValueForKey( value, "changeHistory" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>checksum</code> value.
+     * @return the value of the attribute
+     */
+    public String checksum()
+    {
+        return (String)storedValueForKey( "checksum" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>checksum</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setChecksum( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setChecksum("
+                + value + "): was " + checksum() );
+        }
+        takeStoredValueForKey( value, "checksum" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve this object's <code>description</code> value.
      * @return the value of the attribute
      */
@@ -225,6 +291,35 @@ public abstract class _ReportTemplate
                 + value + "): was " + description() );
         }
         takeStoredValueForKey( value, "description" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>designElementsRaw</code> value.
+     * @return the value of the attribute
+     */
+    public String designElementsRaw()
+    {
+        return (String)storedValueForKey( "designElementsRaw" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>designElementsRaw</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setDesignElementsRaw( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setDesignElementsRaw("
+                + value + "): was " + designElementsRaw() );
+        }
+        takeStoredValueForKey( value, "designElementsRaw" );
     }
 
 
@@ -294,30 +389,30 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>lastModified</code> value.
+     * Retrieve this object's <code>language</code> value.
      * @return the value of the attribute
      */
-    public NSTimestamp lastModified()
+    public String language()
     {
-        return (NSTimestamp)storedValueForKey( "lastModified" );
+        return (String)storedValueForKey( "language" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>lastModified</code>
+     * Change the value of this object's <code>language</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setLastModified( NSTimestamp value )
+    public void setLanguage( String value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setLastModified("
-                + value + "): was " + lastModified() );
+            log.debug( "setLanguage("
+                + value + "): was " + language() );
         }
-        takeStoredValueForKey( value, "lastModified" );
+        takeStoredValueForKey( value, "language" );
     }
 
 
@@ -352,30 +447,59 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>uploadedFileName</code> value.
+     * Retrieve this object's <code>preferredRenderer</code> value.
      * @return the value of the attribute
      */
-    public String uploadedFileName()
+    public String preferredRenderer()
     {
-        return (String)storedValueForKey( "uploadedFileName" );
+        return (String)storedValueForKey( "preferredRenderer" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>uploadedFileName</code>
+     * Change the value of this object's <code>preferredRenderer</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setUploadedFileName( String value )
+    public void setPreferredRenderer( String value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setUploadedFileName("
-                + value + "): was " + uploadedFileName() );
+            log.debug( "setPreferredRenderer("
+                + value + "): was " + preferredRenderer() );
         }
-        takeStoredValueForKey( value, "uploadedFileName" );
+        takeStoredValueForKey( value, "preferredRenderer" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>uploadedTime</code> value.
+     * @return the value of the attribute
+     */
+    public NSTimestamp uploadedTime()
+    {
+        return (NSTimestamp)storedValueForKey( "uploadedTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>uploadedTime</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setUploadedTime( NSTimestamp value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUploadedTime("
+                + value + "): was " + uploadedTime() );
+        }
+        takeStoredValueForKey( value, "uploadedTime" );
     }
 
 
@@ -384,13 +508,9 @@ public abstract class _ReportTemplate
      * Retrieve this object's <code>version</code> value.
      * @return the value of the attribute
      */
-    public int version()
+    public String version()
     {
-        Number result =
-            (Number)storedValueForKey( "version" );
-        return ( result == null )
-            ? 0
-            : result.intValue();
+        return (String)storedValueForKey( "version" );
     }
 
 
@@ -401,43 +521,12 @@ public abstract class _ReportTemplate
      *
      * @param value The new value for this property
      */
-    public void setVersion( int value )
+    public void setVersion( String value )
     {
         if (log.isDebugEnabled())
         {
             log.debug( "setVersion("
                 + value + "): was " + version() );
-        }
-        Number actual =
-            er.extensions.ERXConstant.integerForInt( value );
-        setVersionRaw( actual );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>version</code> value.
-     * @return the value of the attribute
-     */
-    public Number versionRaw()
-    {
-        return (Number)storedValueForKey( "version" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>version</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setVersionRaw( Number value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setVersionRaw("
-                + value + "): was " + versionRaw() );
         }
         takeStoredValueForKey( value, "version" );
     }
@@ -445,62 +534,423 @@ public abstract class _ReportTemplate
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entity pointed to by the <code>author</code>
+     * Retrieve the entity pointed to by the <code>branchedFromTemplate</code>
      * relationship.
      * @return the entity in the relationship
      */
-    public net.sf.webcat.core.User author()
+    public net.sf.webcat.reporter.ReportTemplate branchedFromTemplate()
     {
-        return (net.sf.webcat.core.User)storedValueForKey( "author" );
+        return (net.sf.webcat.reporter.ReportTemplate)storedValueForKey( "branchedFromTemplate" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>author</code>
+     * Set the entity pointed to by the <code>branchedFromTemplate</code>
      * relationship (DO NOT USE--instead, use
-     * <code>setAuthorRelationship()</code>.
+     * <code>setBranchedFromTemplateRelationship()</code>.
      * This method is provided for WebObjects use.
      *
      * @param value The new entity to relate to
      */
-    public void setAuthor( net.sf.webcat.core.User value )
+    public void setBranchedFromTemplate( net.sf.webcat.reporter.ReportTemplate value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setAuthor("
-                + value + "): was " + author() );
+            log.debug( "setBranchedFromTemplate("
+                + value + "): was " + branchedFromTemplate() );
         }
-        takeStoredValueForKey( value, "author" );
+        takeStoredValueForKey( value, "branchedFromTemplate" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>author</code>
+     * Set the entity pointed to by the <code>branchedFromTemplate</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
      * @param value The new entity to relate to
      */
-    public void setAuthorRelationship(
+    public void setBranchedFromTemplateRelationship(
+        net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setBranchedFromTemplateRelationship("
+                + value + "): was " + branchedFromTemplate() );
+        }
+        if ( value == null )
+        {
+            net.sf.webcat.reporter.ReportTemplate object = branchedFromTemplate();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "branchedFromTemplate" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "branchedFromTemplate" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entity pointed to by the <code>predecessorTemplate</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public net.sf.webcat.reporter.ReportTemplate predecessorTemplate()
+    {
+        return (net.sf.webcat.reporter.ReportTemplate)storedValueForKey( "predecessorTemplate" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>predecessorTemplate</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setPredecessorTemplateRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setPredecessorTemplate( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPredecessorTemplate("
+                + value + "): was " + predecessorTemplate() );
+        }
+        takeStoredValueForKey( value, "predecessorTemplate" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>predecessorTemplate</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setPredecessorTemplateRelationship(
+        net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPredecessorTemplateRelationship("
+                + value + "): was " + predecessorTemplate() );
+        }
+        if ( value == null )
+        {
+            net.sf.webcat.reporter.ReportTemplate object = predecessorTemplate();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "predecessorTemplate" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "predecessorTemplate" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entity pointed to by the <code>rootTemplate</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public net.sf.webcat.reporter.ReportTemplate rootTemplate()
+    {
+        return (net.sf.webcat.reporter.ReportTemplate)storedValueForKey( "rootTemplate" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>rootTemplate</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setRootTemplateRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setRootTemplate( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setRootTemplate("
+                + value + "): was " + rootTemplate() );
+        }
+        takeStoredValueForKey( value, "rootTemplate" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>rootTemplate</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setRootTemplateRelationship(
+        net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setRootTemplateRelationship("
+                + value + "): was " + rootTemplate() );
+        }
+        if ( value == null )
+        {
+            net.sf.webcat.reporter.ReportTemplate object = rootTemplate();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "rootTemplate" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "rootTemplate" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entity pointed to by the <code>user</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public net.sf.webcat.core.User user()
+    {
+        return (net.sf.webcat.core.User)storedValueForKey( "user" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>user</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setUserRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setUser( net.sf.webcat.core.User value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUser("
+                + value + "): was " + user() );
+        }
+        takeStoredValueForKey( value, "user" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>user</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setUserRelationship(
         net.sf.webcat.core.User value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setAuthorRelationship("
-                + value + "): was " + author() );
+            log.debug( "setUserRelationship("
+                + value + "): was " + user() );
         }
         if ( value == null )
         {
-            net.sf.webcat.core.User object = author();
+            net.sf.webcat.core.User object = user();
             if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "author" );
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "user" );
         }
         else
         {
-            addObjectToBothSidesOfRelationshipWithKey( value, "author" );
+            addObjectToBothSidesOfRelationshipWithKey( value, "user" );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entities pointed to by the <code>branchedTemplates</code>
+     * relationship.
+     * @return an NSArray of the entities in the relationship
+     */
+    @SuppressWarnings("unchecked")
+    public NSArray<net.sf.webcat.reporter.ReportTemplate> branchedTemplates()
+    {
+        return (NSArray)storedValueForKey( "branchedTemplates" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Replace the list of entities pointed to by the
+     * <code>branchedTemplates</code> relationship.
+     *
+     * @param value The new set of entities to relate to
+     */
+    public void setBranchedTemplates( NSMutableArray<net.sf.webcat.reporter.ReportTemplate>  value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setBranchedTemplates("
+                + value + "): was " + branchedTemplates() );
+        }
+        takeStoredValueForKey( value, "branchedTemplates" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>branchedTemplates</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>addToBranchedTemplatesRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToBranchedTemplates( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToBranchedTemplates("
+                + value + "): was " + branchedTemplates() );
+        }
+        NSMutableArray<net.sf.webcat.reporter.ReportTemplate> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportTemplate>)branchedTemplates();
+        willChange();
+        array.addObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>branchedTemplates</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>removeFromBranchedTemplatesRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromBranchedTemplates( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromBranchedTemplates("
+                + value + "): was " + branchedTemplates() );
+        }
+        NSMutableArray<net.sf.webcat.reporter.ReportTemplate> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportTemplate>)branchedTemplates();
+        willChange();
+        array.removeObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>branchedTemplates</code>
+     * relationship.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToBranchedTemplatesRelationship( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToBranchedTemplatesRelationship("
+                + value + "): was " + branchedTemplates() );
+        }
+        addObjectToBothSidesOfRelationshipWithKey(
+            value, "branchedTemplates" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>branchedTemplates</code>
+     * relationship.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromBranchedTemplatesRelationship( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromBranchedTemplatesRelationship("
+                + value + "): was " + branchedTemplates() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "branchedTemplates" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create a brand new object that is a member of the
+     * <code>branchedTemplates</code> relationship.
+     *
+     * @return The new entity
+     */
+    public net.sf.webcat.reporter.ReportTemplate createBranchedTemplatesRelationship()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createBranchedTemplatesRelationship()" );
+        }
+        EOClassDescription eoClassDesc = EOClassDescription
+            .classDescriptionForEntityName( "ReportTemplate" );
+        EOEnterpriseObject eoObject = eoClassDesc
+            .createInstanceWithEditingContext( editingContext(), null );
+        editingContext().insertObject( eoObject );
+        addObjectToBothSidesOfRelationshipWithKey(
+            eoObject, "branchedTemplates" );
+        return (net.sf.webcat.reporter.ReportTemplate)eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove and then delete a specific entity that is a member of the
+     * <code>branchedTemplates</code> relationship.
+     *
+     * @param value The entity to remove from the relationship and then delete
+     */
+    public void deleteBranchedTemplatesRelationship( net.sf.webcat.reporter.ReportTemplate value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteBranchedTemplatesRelationship("
+                + value + "): was " + branchedTemplates() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "branchedTemplates" );
+        editingContext().deleteObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove (and then delete, if owned) all entities that are members of the
+     * <code>branchedTemplates</code> relationship.
+     */
+    public void deleteAllBranchedTemplatesRelationships()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllBranchedTemplatesRelationships(): was "
+                + branchedTemplates() );
+        }
+        Enumeration objects = branchedTemplates().objectEnumerator();
+        while ( objects.hasMoreElements() )
+            deleteBranchedTemplatesRelationship(
+                (net.sf.webcat.reporter.ReportTemplate)objects.nextElement() );
     }
 
 
@@ -510,7 +960,8 @@ public abstract class _ReportTemplate
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray dataSets()
+    @SuppressWarnings("unchecked")
+    public NSArray<net.sf.webcat.reporter.ReportDataSet> dataSets()
     {
         return (NSArray)storedValueForKey( "dataSets" );
     }
@@ -523,7 +974,7 @@ public abstract class _ReportTemplate
      *
      * @param value The new set of entities to relate to
      */
-    public void setDataSets( NSMutableArray value )
+    public void setDataSets( NSMutableArray<net.sf.webcat.reporter.ReportDataSet>  value )
     {
         if (log.isDebugEnabled())
         {
@@ -550,7 +1001,8 @@ public abstract class _ReportTemplate
             log.debug( "addToDataSets("
                 + value + "): was " + dataSets() );
         }
-        NSMutableArray array = (NSMutableArray)dataSets();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSet> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportDataSet>)dataSets();
         willChange();
         array.addObject( value );
     }
@@ -572,7 +1024,8 @@ public abstract class _ReportTemplate
             log.debug( "RemoveFromDataSets("
                 + value + "): was " + dataSets() );
         }
-        NSMutableArray array = (NSMutableArray)dataSets();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSet> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportDataSet>)dataSets();
         willChange();
         array.removeObject( value );
     }
@@ -687,7 +1140,8 @@ public abstract class _ReportTemplate
      * @param context The editing context to use
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForAllTemplates(
+    @SuppressWarnings("unchecked")
+    public static NSArray<ReportTemplate> objectsForAllTemplates(
             EOEditingContext context
         )
     {
@@ -698,7 +1152,7 @@ public abstract class _ReportTemplate
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForAllTemplates(ec"
-
+            
                 + "): " + result );
         }
         return result;

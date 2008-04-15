@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EOGlobalIDUtils.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: EOGlobalIDUtils.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,11 +35,15 @@ import java.util.Map;
 
 //-------------------------------------------------------------------------
 /**
- * Provides static utility methods for converting arrays or dictionaries
- * of EO IDs to the corresponding EOs and vice versa.
+ * Provides static utility methods for converting arrays or dictionaries of EO
+ * IDs to the corresponding EOs and vice versa. The conversions provided are
+ * "deep"; that is, nested arrays and dictionaries are traversed as well.
  *
- * @author aallowat
- * @version $Id: EOGlobalIDUtils.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * Any elements of an array or dictionary that are not a global ID or enterprise
+ * object are skipped and returned unmodified.
+ *
+ * @author Tony Allevato
+ * @version $Id: EOGlobalIDUtils.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public class EOGlobalIDUtils
 {
@@ -47,8 +51,8 @@ public class EOGlobalIDUtils
 
     // ----------------------------------------------------------
     /**
-     * This class provides only static utility methods, so no instances
-     * should ever be created.
+     * This class provides only static utility methods, so no instances should
+     * ever be created.
      */
     private EOGlobalIDUtils()
     {
@@ -59,183 +63,253 @@ public class EOGlobalIDUtils
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-	public static NSArray enterpriseObjectsForIdArray(List array,
-			EOEditingContext ec)
-	{
-		NSMutableArray newArray = new NSMutableArray();
+    /**
+     * Converts a list of EO IDs to a list of the objects that they represent.
+     *
+     * @param array
+     *            the list of {@link EOGlobalID}s to convert
+     * @param ec
+     *            the editing context
+     *
+     * @return an {@link NSArray} containing the corresponding objects
+     */
+    public static NSArray enterpriseObjectsForIdArray(List array,
+            EOEditingContext ec)
+    {
+        NSMutableArray newArray = new NSMutableArray();
 
-		if (array instanceof NSArray)
-		{
-			Enumeration e = ((NSArray)array).objectEnumerator();
-			while (e.hasMoreElements())
-			{
-				Object value = e.nextElement();
+        if (array instanceof NSArray)
+        {
+            Enumeration e = ((NSArray) array).objectEnumerator();
+            while (e.hasMoreElements())
+            {
+                Object value = e.nextElement();
 
-				Object newValue = tryEnterpriseObjectForId(value, ec);
-				newArray.addObject(newValue);
-			}
-		}
-		else
-		{
-			Iterator it = array.iterator();
-			while (it.hasNext())
-			{
-				Object value = it.next();
+                Object newValue = tryEnterpriseObjectForId(value, ec);
+                newArray.addObject(newValue);
+            }
+        }
+        else
+        {
+            Iterator it = array.iterator();
+            while (it.hasNext())
+            {
+                Object value = it.next();
 
-				Object newValue = tryEnterpriseObjectForId(value, ec);
-				newArray.addObject(newValue);
-			}
-		}
+                Object newValue = tryEnterpriseObjectForId(value, ec);
+                newArray.addObject(newValue);
+            }
+        }
 
-		return newArray;
-	}
-
-
-    // ----------------------------------------------------------
-	public static NSDictionary enterpriseObjectsForIdDictionary(
-	    Map dictionary, EOEditingContext ec)
-	{
-		NSMutableDictionary newDictionary = new NSMutableDictionary();
-
-		if (dictionary instanceof NSDictionary)
-		{
-			Enumeration e = ((NSDictionary)dictionary).keyEnumerator();
-			while (e.hasMoreElements())
-			{
-				Object key = e.nextElement();
-				Object value = ((NSDictionary)dictionary).objectForKey(key);
-
-				Object newValue = tryEnterpriseObjectForId(value, ec);
-				newDictionary.setObjectForKey(newValue, key);
-			}
-		}
-		else
-		{
-			Iterator it = dictionary.keySet().iterator();
-			while (it.hasNext())
-			{
-				Object key = it.next();
-				Object value = dictionary.get(key);
-
-				Object newValue = tryEnterpriseObjectForId(value, ec);
-				newDictionary.setObjectForKey(newValue, key);
-			}
-		}
-
-		return newDictionary;
-	}
+        return newArray;
+    }
 
 
     // ----------------------------------------------------------
-	public static Object tryEnterpriseObjectForId(
-        Object value, EOEditingContext ec)
-	{
-		if (value instanceof List)
-		{
-			return enterpriseObjectsForIdArray((List)value, ec);
-		}
-		else if (value instanceof Map)
-		{
-			return enterpriseObjectsForIdDictionary((Map)value, ec);
-		}
-		else if (value instanceof EOGlobalID)
-		{
-			return ec.faultForGlobalID((EOGlobalID)value, ec);
-		}
-		else
-		{
-			return value;
-		}
-	}
+    /**
+     * Converts a dictionary containing EO IDs for values into a dictionary with
+     * the corresponding enterprise objects as values.
+     *
+     * @param dictionary
+     *            the dictionary of {@link EOGlobalID}s to convert
+     * @param ec
+     *            the editing context
+     *
+     * @return an {@link NSDictionary} containing the corresponding objects
+     */
+    public static NSDictionary enterpriseObjectsForIdDictionary(Map dictionary,
+            EOEditingContext ec)
+    {
+        NSMutableDictionary newDictionary = new NSMutableDictionary();
+
+        if (dictionary instanceof NSDictionary)
+        {
+            Enumeration e = ((NSDictionary) dictionary).keyEnumerator();
+            while (e.hasMoreElements())
+            {
+                Object key = e.nextElement();
+                Object value = ((NSDictionary) dictionary).objectForKey(key);
+
+                Object newValue = tryEnterpriseObjectForId(value, ec);
+                newDictionary.setObjectForKey(newValue, key);
+            }
+        }
+        else
+        {
+            Iterator it = dictionary.keySet().iterator();
+            while (it.hasNext())
+            {
+                Object key = it.next();
+                Object value = dictionary.get(key);
+
+                Object newValue = tryEnterpriseObjectForId(value, ec);
+                newDictionary.setObjectForKey(newValue, key);
+            }
+        }
+
+        return newDictionary;
+    }
 
 
     // ----------------------------------------------------------
-	public static NSArray idsForEnterpriseObjectArray(
-	    List array, EOEditingContext ec)
-	{
-		NSMutableArray newArray = new NSMutableArray();
-
-		if (array instanceof NSArray)
-		{
-			Enumeration e = ((NSArray)array).objectEnumerator();
-			while (e.hasMoreElements())
-			{
-				Object value = e.nextElement();
-
-				Object newValue = tryIdForEnterpriseObject(value, ec);
-				newArray.addObject(newValue);
-			}
-		}
-		else
-		{
-			Iterator it = array.iterator();
-			while (it.hasNext())
-			{
-				Object value = it.next();
-
-				Object newValue = tryIdForEnterpriseObject(value, ec);
-				newArray.addObject(newValue);
-			}
-		}
-
-		return newArray;
-	}
-
-
-    // ----------------------------------------------------------
-	public static NSDictionary idsForEnterpriseObjectDictionary(
-			Map dictionary, EOEditingContext ec)
-	{
-		NSMutableDictionary newDictionary = new NSMutableDictionary();
-
-		if (dictionary instanceof NSDictionary)
-		{
-			Enumeration e = ((NSDictionary)dictionary).keyEnumerator();
-			while (e.hasMoreElements())
-			{
-				Object key = e.nextElement();
-				Object value = ((NSDictionary)dictionary).objectForKey(key);
-
-				Object newValue = tryIdForEnterpriseObject(value, ec);
-				newDictionary.setObjectForKey(newValue, key);
-			}
-		}
-		else
-		{
-			Iterator it = dictionary.keySet().iterator();
-			while (it.hasNext())
-			{
-				Object key = it.next();
-				Object value = dictionary.get(key);
-
-				Object newValue = tryIdForEnterpriseObject(value, ec);
-				newDictionary.setObjectForKey(newValue, key);
-			}
-		}
-
-		return newDictionary;
-	}
+    /**
+     * Tries to convert an object that might be an enterprise object into a
+     * global ID.
+     *
+     * @param value
+     *            the object to try to convert
+     * @param ec
+     *            the editing context
+     *
+     * @return if the object was a global ID, the corresponding enterprise
+     *         object is returned. If the object was a list or dictionary, a
+     *         deep conversion is returned. Otherwise, the original object is
+     *         returned.
+     */
+    public static Object tryEnterpriseObjectForId(Object value,
+            EOEditingContext ec)
+    {
+        if (value instanceof List)
+        {
+            return enterpriseObjectsForIdArray((List) value, ec);
+        }
+        else if (value instanceof Map)
+        {
+            return enterpriseObjectsForIdDictionary((Map) value, ec);
+        }
+        else if (value instanceof EOGlobalID)
+        {
+            return ec.faultForGlobalID((EOGlobalID) value, ec);
+        }
+        else
+        {
+            return value;
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public static Object tryIdForEnterpriseObject(
-        Object value, EOEditingContext ec)
-	{
-		if (value instanceof List)
-		{
-			return idsForEnterpriseObjectArray((List)value, ec);
-		}
-		else if (value instanceof Map)
-		{
-			return idsForEnterpriseObjectDictionary((Map)value, ec);
-		}
-		else if (value instanceof EOEnterpriseObject)
-		{
-			return ec.globalIDForObject((EOEnterpriseObject)value);
-		}
-		else
-		{
-			return value;
-		}
-	}
+    /**
+     * Converts a list of enterprise objects to a list of global IDs.
+     *
+     * @param array
+     *            the list of enterprise objects to convert
+     * @param ec
+     *            the editing context
+     *
+     * @return an {@link NSArray} containing the corresponding global IDs
+     */
+    public static NSArray idsForEnterpriseObjectArray(List array,
+            EOEditingContext ec)
+    {
+        NSMutableArray newArray = new NSMutableArray();
+
+        if (array instanceof NSArray)
+        {
+            Enumeration e = ((NSArray) array).objectEnumerator();
+            while (e.hasMoreElements())
+            {
+                Object value = e.nextElement();
+
+                Object newValue = tryIdForEnterpriseObject(value, ec);
+                newArray.addObject(newValue);
+            }
+        }
+        else
+        {
+            Iterator it = array.iterator();
+            while (it.hasNext())
+            {
+                Object value = it.next();
+
+                Object newValue = tryIdForEnterpriseObject(value, ec);
+                newArray.addObject(newValue);
+            }
+        }
+
+        return newArray;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Converts a dictionary containing enterprise objects for values into a
+     * dictionary with the corresponding EO global IDs as values.
+     *
+     * @param dictionary
+     *            the dictionary of enterprise objects to convert
+     * @param ec
+     *            the editing context
+     *
+     * @return an {@link NSDictionary} containing the corresponding global IDs
+     */
+    public static NSDictionary idsForEnterpriseObjectDictionary(Map dictionary,
+            EOEditingContext ec)
+    {
+        NSMutableDictionary newDictionary = new NSMutableDictionary();
+
+        if (dictionary instanceof NSDictionary)
+        {
+            Enumeration e = ((NSDictionary) dictionary).keyEnumerator();
+            while (e.hasMoreElements())
+            {
+                Object key = e.nextElement();
+                Object value = ((NSDictionary) dictionary).objectForKey(key);
+
+                Object newValue = tryIdForEnterpriseObject(value, ec);
+                newDictionary.setObjectForKey(newValue, key);
+            }
+        }
+        else
+        {
+            Iterator it = dictionary.keySet().iterator();
+            while (it.hasNext())
+            {
+                Object key = it.next();
+                Object value = dictionary.get(key);
+
+                Object newValue = tryIdForEnterpriseObject(value, ec);
+                newDictionary.setObjectForKey(newValue, key);
+            }
+        }
+
+        return newDictionary;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Tries to convert an object that might be an enterprise object into a
+     * global ID. If the object is a list or a dictionary, it is deeply
+     * converted.
+     *
+     * @param value
+     *            the object try to convert
+     * @param ec
+     *            the editing context
+     *
+     * @return if the object was an enterprise object, its global ID is
+     *         returned. If it was a list or dictionary, then a deep conversion
+     *         is returned. Otherwise, the original object is returned.
+     */
+    public static Object tryIdForEnterpriseObject(Object value,
+            EOEditingContext ec)
+    {
+        if (value instanceof List)
+        {
+            return idsForEnterpriseObjectArray((List) value, ec);
+        }
+        else if (value instanceof Map)
+        {
+            return idsForEnterpriseObjectDictionary((Map) value, ec);
+        }
+        else if (value instanceof EOEnterpriseObject)
+        {
+            return ec.globalIDForObject((EOEnterpriseObject) value);
+        }
+        else
+        {
+            return value;
+        }
+    }
 }

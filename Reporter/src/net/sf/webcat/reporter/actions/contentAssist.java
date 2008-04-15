@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: contentAssist.java,v 1.5 2008/04/15 04:09:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,11 +42,11 @@ import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
 
 //-------------------------------------------------------------------------
 /**
- * Direct action support for AJAX content assist requests for supported
- * KVC paths.
+ * A direct action used by the BIRT report designer to request information about
+ * entities and key paths, used for content assistance and previewing purposes.
  *
- * @author aallowat
- * @version $Id: contentAssist.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: contentAssist.java,v 1.5 2008/04/15 04:09:23 aallowat Exp $
  */
 public class contentAssist
     extends ERXDirectAction
@@ -58,167 +58,193 @@ public class contentAssist
      * Creates a new object.
      * @param request The incoming request
      */
-	public contentAssist(WORequest request)
-	{
-		super(request);
-	}
+    public contentAssist(WORequest request)
+    {
+        super(request);
+    }
 
 
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-	public WOActionResults entityDescriptionsAction()
-	{
-		WOResponse response = new WOResponse();
+    /**
+     * An action that returns as its response a list of entities recognized by
+     * Web-CAT and the keys that are valid on them.
+     *
+     * @return the action response
+     */
+    public WOActionResults entityDescriptionsAction()
+    {
+        WOResponse response = new WOResponse();
 
-		NSDictionary<String, String> versions = subsystemVersions();
+        NSDictionary<String, String> versions = subsystemVersions();
 
-		for (String subsystem : versions.allKeys())
-		{
-			response.appendContentString("version:" + subsystem + "," +
-			    versions.objectForKey(subsystem) + "\n");
-		}
+        for (String subsystem : versions.allKeys())
+        {
+            response.appendContentString("version:" + subsystem + "," +
+                versions.objectForKey(subsystem) + "\n");
+        }
 
-		for (EOModel model :
-			(NSArray<EOModel>)EOModelGroup.defaultGroup().models())
-		{
-			for (EOEntity entity : (NSArray<EOEntity>)model.entities())
-			{
-				String className = entity.className();
-				boolean exclude = false;
+        for (EOModel model :
+            (NSArray<EOModel>)EOModelGroup.defaultGroup().models())
+        {
+            for (EOEntity entity : (NSArray<EOEntity>)model.entities())
+            {
+                String className = entity.className();
+                boolean exclude = false;
 
-				for (String toExclude : ENTITIES_TO_EXCLUDE)
-				{
-					if (toExclude.equals(className))
-					{
-						exclude = true;
-						break;
-					}
-				}
-
-				if (exclude)
+                for (String toExclude : ENTITIES_TO_EXCLUDE)
                 {
-					continue;
+                    if (toExclude.equals(className))
+                    {
+                        exclude = true;
+                        break;
+                    }
                 }
 
-				try
-				{
-					Class<?> klass = Class.forName(className);
+                if (exclude)
+                {
+                    continue;
+                }
 
-					response.appendContentString("entity:" +
-					    klass.getSimpleName() + "\n");
+                try
+                {
+                    Class<?> klass = Class.forName(className);
 
-					NSArray<KVCAttributeInfo> attributes =
-						KVCAttributeFinder.attributesForClass(klass, "");
+                    response.appendContentString("entity:" +
+                        klass.getSimpleName() + "\n");
 
-					for (KVCAttributeInfo attr : attributes)
-					{
-						response.appendContentString("attribute:" +
-								attr.name() + "," + attr.type() + "\n");
-					}
-				}
-				catch (ClassNotFoundException e)
-				{
-                    // ???
-				}
-			}
-		}
+                    NSArray<KVCAttributeInfo> attributes =
+                        KVCAttributeFinder.attributesForClass(klass, "");
 
-		return response;
-	}
+                    for (KVCAttributeInfo attr : attributes)
+                    {
+                        response.appendContentString("attribute:" +
+                                attr.name() + "," + attr.type() + "\n");
+                    }
+                }
+                catch (ClassNotFoundException e)
+                {
+                    // If, for some reason, the class was not found, just don't
+                    // output any keys for it.
+                }
+            }
+        }
 
-
-    // ----------------------------------------------------------
-	public WOActionResults objectDescriptionsAction()
-	{
-		WOResponse response = new WOResponse();
-
-		EOEditingContext ec = Application.newPeerEditingContext();
-
-		for (String entityName : OBJECTS_TO_DESCRIBE)
-		{
-	    	EOFetchSpecification fetchSpec = new EOFetchSpecification(
-	    		entityName, null, null);
-	    	fetchSpec.setFetchLimit(250);
-
-	    	NSArray<EOEnterpriseObject> objects =
-	    		ec.objectsWithFetchSpecification(fetchSpec);
-
-	    	response.appendContentString("entity:" + entityName + "\n");
-
-	    	for (EOEnterpriseObject object : objects)
-	    	{
-	    		Number id = (Number)EOUtilities.primaryKeyForObject(
-	                ec, object).objectForKey( "id" );
-
-	    		response.appendContentString("object:" + id.toString() + "," +
-	    			object.toString() + "\n");
-	    	}
-		}
-
-		return response;
-	}
+        return response;
+    }
 
 
     // ----------------------------------------------------------
-	public WOActionResults subsystemVersionCheckAction()
-	{
-		WOResponse response = new WOResponse();
+    /**
+     * An action that returns as its response a list of active objects for
+     * various entities in Web-CAT, used to give the user choices when
+     * constructing a preview query in the designer.
+     *
+     * @return the action response
+     */
+    public WOActionResults objectDescriptionsAction()
+    {
+        WOResponse response = new WOResponse();
 
-		NSDictionary<String, String> versions = subsystemVersions();
+        EOEditingContext ec = Application.newPeerEditingContext();
 
-		for (String subsystem : versions.allKeys())
-		{
-			response.appendContentString("version:" + subsystem + "," +
-				versions.objectForKey(subsystem) + "\n");
-		}
+        for (String entityName : OBJECTS_TO_DESCRIBE)
+        {
+            EOFetchSpecification fetchSpec = new EOFetchSpecification(
+                entityName, null, null);
+            fetchSpec.setFetchLimit(250);
 
-		return response;
-	}
+            NSArray<EOEnterpriseObject> objects =
+                ec.objectsWithFetchSpecification(fetchSpec);
+
+            response.appendContentString("entity:" + entityName + "\n");
+
+            for (EOEnterpriseObject object : objects)
+            {
+                Number id = (Number)EOUtilities.primaryKeyForObject(
+                    ec, object).objectForKey( "id" );
+
+                response.appendContentString("object:" + id.toString() + "," +
+                    object.toString() + "\n");
+            }
+        }
+
+        return response;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * An action that returns as its response a list of the subsystems installed
+     * in this instance of Web-CAT and their versions.
+     *
+     * @return the action response
+     */
+    public WOActionResults subsystemVersionCheckAction()
+    {
+        WOResponse response = new WOResponse();
+
+        NSDictionary<String, String> versions = subsystemVersions();
+
+        for (String subsystem : versions.allKeys())
+        {
+            response.appendContentString("version:" + subsystem + "," +
+                versions.objectForKey(subsystem) + "\n");
+        }
+
+        return response;
+    }
 
 
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-	private NSDictionary<String, String> subsystemVersions()
-	{
-		NSMutableDictionary<String, String> subsystemVersions =
-			new NSMutableDictionary<String, String>();
+    /**
+     * Gets a dictionary whose keys are the names of the subsystems in this
+     * instance of Web-CAT and values are their versions.
+     *
+     * @return a dictionary containing the subsystem version information
+     */
+    private NSDictionary<String, String> subsystemVersions()
+    {
+        NSMutableDictionary<String, String> subsystemVersions =
+            new NSMutableDictionary<String, String>();
 
-		NSArray<Subsystem> subsystems =
-			((Application)Application.application()).
-			subsystemManager().subsystems();
+        NSArray<Subsystem> subsystems =
+            ((Application)Application.application()).
+            subsystemManager().subsystems();
 
-		for (Subsystem subsystem : subsystems)
-		{
-			for (String nameToCheck : SUBSYSTEMS_TO_CHECK)
-			{
-				if (nameToCheck.equals(subsystem.name()))
-				{
-					subsystemVersions.setObjectForKey(
-						subsystem.descriptor().currentVersion(),
-						nameToCheck);
-					break;
-				}
-			}
-		}
+        for (Subsystem subsystem : subsystems)
+        {
+            for (String nameToCheck : SUBSYSTEMS_TO_CHECK)
+            {
+                if (nameToCheck.equals(subsystem.name()))
+                {
+                    subsystemVersions.setObjectForKey(
+                        subsystem.descriptor().currentVersion(),
+                        nameToCheck);
+                    break;
+                }
+            }
+        }
 
-		return subsystemVersions;
-	}
+        return subsystemVersions;
+    }
 
 
     //~ Instance/static variables .............................................
 
-	private static final String[] ENTITIES_TO_EXCLUDE = {
-		"CoreSelections", "ERXGenericRecord", "GraderPrefs", "LoginSession",
-		"PasswordChangeRequest"
-	};
+    private static final String[] ENTITIES_TO_EXCLUDE = {
+        "CoreSelections", "ERXGenericRecord", "GraderPrefs", "LoginSession",
+        "PasswordChangeRequest"
+    };
 
-	private static final String[] OBJECTS_TO_DESCRIBE = {
-		"Assignment", "AssignmentOffering", "Course", "CourseOffering"
-	};
+    private static final String[] OBJECTS_TO_DESCRIBE = {
+        "Assignment", "AssignmentOffering", "Course", "CourseOffering"
+    };
 
-	private static final String[] SUBSYSTEMS_TO_CHECK = {
-		"Core", "Grader", "Reporter"
-	};
+    private static final String[] SUBSYSTEMS_TO_CHECK = {
+        "Core", "Grader", "Reporter"
+    };
 }

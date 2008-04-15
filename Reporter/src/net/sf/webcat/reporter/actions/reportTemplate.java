@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EnqueuedReportJob.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: reportTemplate.java,v 1.1 2008/04/15 04:09:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -19,50 +19,44 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package net.sf.webcat.reporter;
+package net.sf.webcat.reporter.actions;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
-import net.sf.webcat.core.Application;
+import net.sf.webcat.core.DirectAction;
+import com.webobjects.appserver.WOActionResults;
+import com.webobjects.appserver.WORequest;
 
-// -------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Acts as an external portal to the report template repository. Unique
+ * identifiers for templates are URLs based on this direct action and can be
+ * visited by a user to display useful information about and grant other access
+ * to a template.
  *
- * @author
- * @version $Id: EnqueuedReportJob.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: reportTemplate.java,v 1.1 2008/04/15 04:09:23 aallowat Exp $
  */
-public class EnqueuedReportJob
-    extends _EnqueuedReportJob
+public class reportTemplate extends DirectAction
 {
-    //~ Constructors ..........................................................
+    //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     /**
-     * Creates a new EnqueuedReportJob object.
+     * Creates a new object.
+     *
+     * @param request The incoming request
      */
-    public EnqueuedReportJob()
+    public reportTemplate(WORequest request)
     {
-        super();
+        super(request);
     }
 
 
-    //~ Methods ...............................................................
+    //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-    /**
-     * Retrieve the name of the directory where this submission is stored.
-     * @return the directory name
-     */
-    public String generatedReportDir()
+    public WOActionResults reportTemplateAction()
     {
-    	return GeneratedReport.generatedReportDirForUser(user());
-    }
-
-
-    // ----------------------------------------------------------
-    public String generatedReportFile()
-    {
-    	return GeneratedReport.generatedReportFilePathForUser(user(), uuid());
+        // TODO: implement a useful portal
+        return null;
     }
 }

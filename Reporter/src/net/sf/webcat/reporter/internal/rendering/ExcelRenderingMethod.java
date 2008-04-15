@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ExcelRenderingMethod.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ExcelRenderingMethod.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.eclipse.birt.report.engine.api.RenderOption;
 /**
  * Render method for Excel data files.
  *
- * @author aallowat
- * @version $Id: ExcelRenderingMethod.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: ExcelRenderingMethod.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  */
 public class ExcelRenderingMethod
     extends AbstractRenderingMethod
@@ -66,7 +66,7 @@ public class ExcelRenderingMethod
     {
         StringBuilder content = new StringBuilder();
         NSMutableDictionary query = new NSMutableDictionary();
-        query.setObjectForKey(report.uuid(), "uuid");
+        query.setObjectForKey(report.id(), "reportId");
 
         String filename = "report.xls";
 
@@ -114,8 +114,7 @@ public class ExcelRenderingMethod
 
         RenderOption option = new RenderOption();
         option.setOutputFormat("XLS");
-        option.setOutputFileName(GeneratedReport.renderedResourcePath(
-            report.uuid(), filename));
+        option.setOutputFileName(report.renderedResourcePath(filename));
 
         IRenderTask task = reportEngine().createRenderTask(document);
         task.setRenderOption(option);

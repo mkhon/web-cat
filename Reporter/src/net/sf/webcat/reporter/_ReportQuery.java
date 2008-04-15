@@ -4,7 +4,7 @@
  |  Created by eogenerator
  |  DO NOT EDIT.  Make changes to ReportQuery.java instead.
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,9 +24,9 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.eoaccess.*;
+import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -475,7 +475,6 @@ public abstract class _ReportQuery
         log.debug("flushCaches()");
         queryInfoCache = null;
         queryInfoRawCache  = null;
-        setUpdateMutableFields( false );
         super.flushCaches();
     }
 
@@ -557,7 +556,8 @@ public abstract class _ReportQuery
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray dataSetQueries()
+    @SuppressWarnings("unchecked")
+    public NSArray<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries()
     {
         return (NSArray)storedValueForKey( "dataSetQueries" );
     }
@@ -570,7 +570,7 @@ public abstract class _ReportQuery
      *
      * @param value The new set of entities to relate to
      */
-    public void setDataSetQueries( NSMutableArray value )
+    public void setDataSetQueries( NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>  value )
     {
         if (log.isDebugEnabled())
         {
@@ -597,7 +597,8 @@ public abstract class _ReportQuery
             log.debug( "addToDataSetQueries("
                 + value + "): was " + dataSetQueries() );
         }
-        NSMutableArray array = (NSMutableArray)dataSetQueries();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
         willChange();
         array.addObject( value );
     }
@@ -619,7 +620,8 @@ public abstract class _ReportQuery
             log.debug( "RemoveFromDataSetQueries("
                 + value + "): was " + dataSetQueries() );
         }
-        NSMutableArray array = (NSMutableArray)dataSetQueries();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
         willChange();
         array.removeObject( value );
     }
@@ -736,7 +738,8 @@ public abstract class _ReportQuery
      * @param wcEntityNameBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForUserAndEntitySavedQueries(
+    @SuppressWarnings("unchecked")
+    public static NSArray<ReportQuery> objectsForUserAndEntitySavedQueries(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding,
             String wcEntityNameBinding
@@ -745,21 +748,26 @@ public abstract class _ReportQuery
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "userAndEntitySavedQueries", "ReportQuery" );
 
-        NSMutableDictionary bindings = new NSMutableDictionary();
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
 
         if ( userBinding != null )
+        {
             bindings.setObjectForKey( userBinding,
                                       "user" );
+        }
         if ( wcEntityNameBinding != null )
+        {
             bindings.setObjectForKey( wcEntityNameBinding,
                                       "wcEntityName" );
+        }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
         NSArray result = context.objectsWithFetchSpecification( spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForUserAndEntitySavedQueries(ec"
-
+            
                 + ", " + userBinding
                 + ", " + wcEntityNameBinding
                 + "): " + result );

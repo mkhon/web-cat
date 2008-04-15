@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterDatabaseUpdates.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReporterDatabaseUpdates.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: ReporterDatabaseUpdates.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
  */
 public class ReporterDatabaseUpdates
     extends UpdateSet
@@ -57,44 +57,52 @@ public class ReporterDatabaseUpdates
      * Creates all tables in their baseline configuration, as needed.
      * @throws SQLException on error
      */
-	@Override
-	public void updateIncrement0() throws SQLException
-	{
-		createReportTemplateTable();
-		createReportDataSetTable();
-		createReportQueryTable();
-		createReportDataSetQueryTable();
-		createEnqueuedReportJobTable();
-		createGeneratedReportTable();
-	}
+    @Override
+    public void updateIncrement0() throws SQLException
+    {
+        createReportTemplateTable();
+        createReportDataSetTable();
+        createReportQueryTable();
+        createReportDataSetQueryTable();
+        createEnqueuedReportGenerationJobTable();
+        createEnqueuedReportRenderJobTable();
+        createGeneratedReportTable();
+    }
 
 
-	//~ Private Methods .......................................................
+    //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
     /**
      * Create the TREPORTTEMPLATE table, if needed.
      * @throws SQLException on error
      */
-	private void createReportTemplateTable() throws SQLException
-	{
+    private void createReportTemplateTable() throws SQLException
+    {
         if ( !database().hasTable( "TREPORTTEMPLATE" ) )
         {
             log.info( "creating table TREPORTTEMPLATE" );
 
             database().executeSQL("CREATE TABLE TREPORTTEMPLATE ("
-            	+ "OID INTEGER NOT NULL , "
-            	+ "CAUTHORID INTEGER , "
-            	+ "CNAME TINYTEXT NOT NULL , "
-            	+ "CDESCRIPTION MEDIUMTEXT , "
-            	+ "CISPUBLISHED BIT NOT NULL , "
-            	+ "CUPLOADEDFILENAME TINYTEXT , "
-            	+ "CLASTMODIFIEDTIME DATETIME , "
-            	+ "CVERSION INTEGER )" );
+                + "OID INTEGER NOT NULL , "
+                + "CNAME TINYTEXT NOT NULL , "
+                + "CDESCRIPTION MEDIUMTEXT , "
+                + "CUSERID INTEGER , "
+                + "CISPUBLISHED BIT NOT NULL , "
+                + "CUPLOADEDTIME DATETIME , "
+                + "CVERSION TINYTEXT , "
+                + "CCHANGEHISTORY MEDIUMTEXT , "
+                + "CROOTTEMPLATEID INTEGER , "
+                + "CBRANCHEDFROMTEMPLATEID INTEGER , "
+                + "CPREDECESSORTEMPLATEID INTEGER , "
+                + "CCHECKSUM TINYTEXT , "
+                + "CDESIGNELEMENTS MEDIUMTEXT , "
+                + "CLANGUAGE TINYTEXT , "
+                + "CPREFERREDRENDERER TINYTEXT )" );
             database().executeSQL(
                 "ALTER TABLE TREPORTTEMPLATE ADD PRIMARY KEY (OID)" );
         }
-	}
+    }
 
 
     // ----------------------------------------------------------
@@ -102,24 +110,25 @@ public class ReporterDatabaseUpdates
      * Create the TREPORTDATASET table, if needed.
      * @throws SQLException on error
      */
-	private void createReportDataSetTable() throws SQLException
-	{
+    private void createReportDataSetTable() throws SQLException
+    {
         if ( !database().hasTable( "TREPORTDATASET" ) )
         {
             log.info( "creating table TREPORTDATASET" );
 
             database().executeSQL("CREATE TABLE TREPORTDATASET ("
-            	+ "OID INTEGER NOT NULL , "
-            	+ "CNAME TINYTEXT , "
-            	+ "CREPORTTEMPLATEID INTEGER NOT NULL , "
-            	+ "CENTITYNAME TINYTEXT NOT NULL , "
-            	+ "CUUID TINYTEXT NOT NULL , "
-            	+ "CDESCRIPTION MEDIUMTEXT , "
-            	+ "CREFERENCECOUNT INTEGER )" );
+                + "OID INTEGER NOT NULL , "
+                + "CNAME TINYTEXT , "
+                + "CDESCRIPTION MEDIUMTEXT , "
+                + "CENTITYNAME TINYTEXT NOT NULL , "
+                + "CREPORTTEMPLATEID INTEGER , "
+                + "CREFERENCECOUNT INTEGER , "
+                + "CCONSTRAINTS BLOB , "
+                + "CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
             database().executeSQL(
                 "ALTER TABLE TREPORTDATASET ADD PRIMARY KEY (OID)" );
         }
-	}
+    }
 
 
     // ----------------------------------------------------------
@@ -127,23 +136,23 @@ public class ReporterDatabaseUpdates
      * Create the TREPORTQUERY table, if needed.
      * @throws SQLException on error
      */
-	private void createReportQueryTable() throws SQLException
-	{
+    private void createReportQueryTable() throws SQLException
+    {
         if ( !database().hasTable( "TREPORTQUERY" ) )
         {
             log.info( "creating table TREPORTQUERY" );
 
             database().executeSQL("CREATE TABLE TREPORTQUERY ("
-            	+ "OID INTEGER NOT NULL , "
-            	+ "CUSERID INTEGER NOT NULL ,"
-            	+ "CENTITYNAME TINYTEXT NOT NULL , "
-            	+ "CDESCRIPTION MEDIUMTEXT , "
-            	+ "CQUERYINFO BLOB , "
-            	+ "CUPDATEMUTABLEFIELDS BIT NOT NULL)");
+                + "OID INTEGER NOT NULL , "
+                + "CDESCRIPTION MEDIUMTEXT , "
+                + "CUSERID INTEGER NOT NULL ,"
+                + "CENTITYNAME TINYTEXT NOT NULL , "
+                + "CQUERYINFO BLOB , "
+                + "CUPDATEMUTABLEFIELDS BIT NOT NULL)");
             database().executeSQL(
                 "ALTER TABLE TREPORTQUERY ADD PRIMARY KEY (OID)");
         }
-	}
+    }
 
 
     // ----------------------------------------------------------
@@ -151,49 +160,69 @@ public class ReporterDatabaseUpdates
      * Create the TREPORTDATASETQUERY table, if needed.
      * @throws SQLException on error
      */
-	private void createReportDataSetQueryTable() throws SQLException
-	{
+    private void createReportDataSetQueryTable() throws SQLException
+    {
         if ( !database().hasTable( "TREPORTDATASETQUERY" ) )
         {
             log.info( "creating table TREPORTDATASETQUERY" );
 
             database().executeSQL("CREATE TABLE TREPORTDATASETQUERY ("
-            	+ "OID INTEGER NOT NULL , "
-            	+ "CENQUEUEDREPORTJOBID INTEGER , "
-            	+ "CGENERATEDREPORTID INTEGER , "
-            	+ "CDATASETID INTEGER NOT NULL , "
-            	+ "CREPORTQUERYID INTEGER NOT NULL)");
+                + "OID INTEGER NOT NULL , "
+                + "CENQUEUEDREPORTJOBID INTEGER , "
+                + "CGENERATEDREPORTID INTEGER , "
+                + "CDATASETID INTEGER NOT NULL , "
+                + "CREPORTQUERYID INTEGER NOT NULL)");
             database().executeSQL(
                 "ALTER TABLE TREPORTDATASETQUERY ADD PRIMARY KEY (OID)");
         }
-	}
+    }
 
-	// ----------------------------------------------------------
+    // ----------------------------------------------------------
     /**
-     * Create the TENQUEUEDREPORTJOB table, if needed.
+     * Create the TENQUEUEDREPORTGENERATIONJOB table, if needed.
      * @throws SQLException on error
      */
-	private void createEnqueuedReportJobTable() throws SQLException
-	{
-        if ( !database().hasTable( "TENQUEUEDREPORTJOB" ) )
+    private void createEnqueuedReportGenerationJobTable() throws SQLException
+    {
+        if ( !database().hasTable( "TENQUEUEDREPORTGENERATIONJOB" ) )
         {
-            log.info( "creating table TENQUEUEDREPORTJOB" );
+            log.info( "creating table TENQUEUEDREPORTGENERATIONJOB" );
 
-            database().executeSQL("CREATE TABLE TENQUEUEDREPORTJOB ("
-            	+ "OID INTEGER NOT NULL , "
-            	+ "CPAUSED BIT NOT NULL , "
-            	+ "CDISCARDED BIT NOT NULL , "
-            	+ "CQUEUETIME DATETIME , "
-            	+ "CREPORTTEMPLATEID INTEGER , "
-            	+ "CDESCRIPTION MEDIUMTEXT , "
-            	+ "CUSERID INTEGER NOT NULL , "
-            	+ "CUUID TINYTEXT , "
-            	+ "CRENDEREDRESOURCEACTIONURL MEDIUMTEXT , "
-            	+ "CRENDERINGMETHOD TINYTEXT )" );
+            database().executeSQL("CREATE TABLE TENQUEUEDREPORTGENERATIONJOB ("
+                + "OID INTEGER NOT NULL , "
+                + "CUSERID INTEGER NOT NULL , "
+                + "CQUEUETIME DATETIME , "
+                + "CREPORTTEMPLATEID INTEGER , "
+                + "CDESCRIPTION MEDIUMTEXT ) " );
             database().executeSQL(
-                "ALTER TABLE TENQUEUEDREPORTJOB ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE TENQUEUEDREPORTGENERATIONJOB "
+                    + "ADD PRIMARY KEY (OID)" );
         }
-	}
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create the TENQUEUEDREPORTRENDERJOB table, if needed.
+     * @throws SQLException on error
+     */
+    private void createEnqueuedReportRenderJobTable() throws SQLException
+    {
+        if ( !database().hasTable( "TENQUEUEDREPORTRENDERJOB" ) )
+        {
+            log.info( "creating table TENQUEUEDREPORTRENDERJOB" );
+
+            database().executeSQL("CREATE TABLE TENQUEUEDREPORTRENDERJOB ("
+                + "OID INTEGER NOT NULL , "
+                + "CUSERID INTEGER NOT NULL , "
+                + "CQUEUETIME DATETIME , "
+                + "CGENERATEDREPORTID INTEGER , "
+                + "CRENDEREDRESOURCEACTIONURL MEDIUMTEXT , "
+                + "CRENDERINGMETHOD TINYTEXT )" );
+            database().executeSQL(
+                "ALTER TABLE TENQUEUEDREPORTRENDERJOB ADD PRIMARY KEY (OID)" );
+        }
+    }
 
 
     // ----------------------------------------------------------
@@ -201,28 +230,28 @@ public class ReporterDatabaseUpdates
      * Create the TGENERATEDREPORT table, if needed.
      * @throws SQLException on error
      */
-	private void createGeneratedReportTable() throws SQLException
-	{
+    private void createGeneratedReportTable() throws SQLException
+    {
         if ( !database().hasTable( "TGENERATEDREPORT" ) )
         {
             log.info( "creating table TGENERATEDREPORT" );
 
             database().executeSQL("CREATE TABLE TGENERATEDREPORT ("
-            	+ "OID INTEGER NOT NULL , "
-            	+ "CDESCRIPTION MEDIUMTEXT , "
-            	+ "CREPORTTEMPLATEID INTEGER NOT NULL , "
-            	+ "CGENERATEDTIME DATETIME , "
-            	+ "CUSERID INTEGER NOT NULL , "
-            	+ "CUUID MEDIUMTEXT , "
-            	+ "CUPDATEMUTABLEFIELDS BIT NOT NULL , "
-            	+ "CERRORS BLOB )" );
+                + "OID INTEGER NOT NULL , "
+                + "CUSERID INTEGER NOT NULL , "
+                + "CDESCRIPTION MEDIUMTEXT , "
+                + "CREPORTTEMPLATEID INTEGER NOT NULL , "
+                + "CCOMPLETE BIT NOT NULL , "
+                + "CGENERATEDTIME DATETIME , "
+                + "CERRORS BLOB , "
+                + "CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
             database().executeSQL(
                 "ALTER TABLE TGENERATEDREPORT ADD PRIMARY KEY (OID)" );
         }
-	}
+    }
 
 
-	//~ Instance/static variables .............................................
+    //~ Instance/static variables .............................................
 
     static Logger log = Logger.getLogger( UpdateSet.class );
 }

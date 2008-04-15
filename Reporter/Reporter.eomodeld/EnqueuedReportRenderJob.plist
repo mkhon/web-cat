@@ -1,0 +1,63 @@
+{
+    attributes = (
+        { name = id; prototypeName = id; },
+        {
+            columnName = CUSERID;
+            name = userId;
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CQUEUETIME;
+            name = queueTime;
+            prototypeName = dateTime;
+        },
+        {
+            columnName = CGENERATEDREPORTID;
+            name = generatedReportId;
+            prototypeName = foreignId;
+        },
+        {
+            columnName = CRENDEREDRESOURCEACTIONURL;
+            name = renderedResourceActionUrl;
+            prototypeName = mediumText;
+        },
+        {
+            columnName = CRENDERINGMETHOD;
+            name = renderingMethod;
+            prototypeName = tinyText;
+        }
+    );
+    attributesUsedForLocking = (
+        userId,
+        generatedReportId,
+        renderedResourceActionUrl,
+        renderingMethod,
+    );
+    className = net.sf.webcat.reporter.EnqueuedReportRenderJob;
+    classProperties = (
+        user,
+        queueTime,
+        generatedReport,
+        renderedResourceActionUrl,
+        renderingMethod,
+    );
+    externalName = TENQUEUEDREPORTRENDERJOB;
+    name = EnqueuedReportRenderJob;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = GeneratedReport;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = generatedReportId; });
+            name = generatedReport;
+        },
+        {
+            destination = User;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = userId; });
+            name = user;
+        },
+    );
+}

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportDataSet.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReportDataSet.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,10 +26,10 @@ import com.webobjects.foundation.*;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Represents a data set in a report template.
  *
- * @author
- * @version $Id: ReportDataSet.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: ReportDataSet.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  */
 public class ReportDataSet
     extends _ReportDataSet
@@ -50,11 +50,10 @@ public class ReportDataSet
 
     // ----------------------------------------------------------
     public static ReportDataSet createNewReportDataSet(
-    		EOEditingContext ec,
-    		ReportTemplate reportTemplate,
-    		String uuid,
+            EOEditingContext ec,
+            ReportTemplate reportTemplate,
             String entityName,
-    		String name,
+            String name,
             String description,
             int    referenceCount)
     {
@@ -62,11 +61,12 @@ public class ReportDataSet
         ec.insertObject( dataSet );
 
         dataSet.setReportTemplateRelationship(reportTemplate);
-        dataSet.setUuid(uuid);
-        dataSet.setWcEntityName(entityName);
         dataSet.setName(name);
         dataSet.setDescription(description);
+        dataSet.setWcEntityName(entityName);
         dataSet.setReferenceCount(referenceCount);
+
+        ec.saveChanges();
 
         return dataSet;
     }

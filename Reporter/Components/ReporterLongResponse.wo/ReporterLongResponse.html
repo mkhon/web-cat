@@ -1,21 +1,21 @@
 <wo:form><wo name="PeriodicUpdater">
-	<wo:if condition="$isDone">
-		<script>
-		periodicUpdaterStop();
-		</script>
-		<wo:content/>
-	</wo:if><wo:else>
-		<wo:if condition="$isCancelled">
-			<script>
-			periodicUpdaterStop();
-			</script>
-			<p><wo:str value="$cancellationMessage" escapeHTML="$false"/></p>
-		</wo:if><wo:else>
-			<wo:if condition="$workingMessage">
-				<p><wo:str value="$workingMessage" escapeHTML="$false"/></p>
-			</wo:if>
-			<wo name="ProgressBar"/>
-			<p><wo name="CancelButton"/></p>
-		</wo:else>
-	</wo:else>
+    <wo:if condition="$isDone">
+        <script>
+        periodicUpdaterStop();
+        </script>
+        <wo:content/>
+    </wo:if><wo:else>
+        <wo:if condition="$isCanceled">
+            <script>
+            periodicUpdaterStop();
+            </script>
+            <p><wo:str value="$cancellationMessage" escapeHTML="$false"/></p>
+        </wo:if><wo:else>
+            <wo:if condition="$workingMessage">
+                <p><wo:str value="$workingMessage" escapeHTML="$false"/></p>
+            </wo:if>
+            <wo name="ProgressBar"/>
+            <p><wo name="CancelButton"/></p>
+        </wo:else>
+    </wo:else>
 </wo></wo:form>

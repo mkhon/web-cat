@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportQuery.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReportQuery.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,10 +27,11 @@ import net.sf.webcat.core.MutableDictionary;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * A query in the reporter is a qualifier, along with other metadata, that
+ * determines the data that will go into a result set.
  *
- * @author
- * @version $Id: ReportQuery.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: ReportQuery.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
  */
 public class ReportQuery
     extends _ReportQuery
@@ -56,12 +57,12 @@ public class ReportQuery
      */
     public EOQualifier qualifier()
     {
-    	MutableDictionary info = queryInfo();
+        MutableDictionary info = queryInfo();
 
-    	if(info == null)
-    		return null;
-    	else
-    		return (EOQualifier)info.objectForKey("qualifier");
+        if(info == null)
+            return null;
+        else
+            return (EOQualifier)info.objectForKey("qualifier");
     }
 
 
@@ -72,16 +73,16 @@ public class ReportQuery
      */
     public void setQualifier(EOQualifier q)
     {
-    	if(queryInfo() == null)
-    		setQueryInfo(new MutableDictionary());
+        if(queryInfo() == null)
+            setQueryInfo(new MutableDictionary());
 
-    	if(q == null)
-    	{
-    		queryInfo().removeObjectForKey("qualifier");
-    	}
-    	else
-    	{
-    		queryInfo().setObjectForKey(q, "qualifier");
-    	}
+        if(q == null)
+        {
+            queryInfo().removeObjectForKey("qualifier");
+        }
+        else
+        {
+            queryInfo().setObjectForKey(q, "qualifier");
+        }
     }
 }

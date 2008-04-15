@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReport.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: GeneratedReport.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,23 +24,25 @@ package net.sf.webcat.reporter;
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import net.sf.webcat.core.MutableArray;
+import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.core.User;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Represents a report that is being generated or has been generated from a
+ * report template.
  *
- * @author
- * @version $Id: GeneratedReport.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: GeneratedReport.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
 {
-	private static final String RENDER_TOKEN_PREFIX = ".rendered.";
-
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
@@ -56,7 +58,7 @@ public class GeneratedReport
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public static String generatedReportDirForUser(User user)
+    private static String generatedReportDirForUser(User user)
     {
 
         StringBuffer dir = new StringBuffer( 50 );
@@ -65,90 +67,175 @@ public class GeneratedReport
         dir.append( '/' );
         dir.append( user.authenticationDomain().subdirName() );
         dir.append( '/' );
-        dir.append( "GeneratedReports/" );
+        dir.append( GENERATED_REPORTS_SUBDIR_NAME );
+        dir.append( '/' );
         dir.append( user.userName() );
         return dir.toString();
     }
 
 
     // ----------------------------------------------------------
-    public static String generatedReportFilePathForUser(
-        User user, String uuid)
+    private static String generatedReportFilePathForUser(
+        User user, Number id)
     {
-    	return generatedReportDirForUser(user) + "/" + uuid +
-    		".rptdocument";
+        return generatedReportDirForUser(user) + "/" + id.toString() +
+            REPORT_EXTENSION;
     }
 
 
     // ----------------------------------------------------------
-    public static String renderedResourcesDir(String uuid)
+    public String renderedResourcesDir()
     {
         StringBuffer dir = new StringBuffer( 50 );
         dir.append( net.sf.webcat.core.Application
             .configurationProperties().getProperty( "grader.workarea" ) );
-        dir.append( "/RenderedReports/" );
-        dir.append( uuid );
+        dir.append( "/" );
+        dir.append( RENDERED_REPORTS_SUBDIR_NAME );
+        dir.append( "/" );
+        dir.append( id().toString() );
 
         return dir.toString();
     }
 
 
     // ----------------------------------------------------------
-    public static String renderedResourcePath(String uuid, String filename)
+    public String renderedResourcePath(String filename)
     {
-    	return renderedResourcesDir(uuid) + "/" + filename;
+        return renderedResourcesDir() + "/" + filename;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean hasRenderingErrors()
+    {
+        File renderDir = new File(renderedResourcesDir());
+        if (renderDir.exists())
+        {
+            File renderErrorFile = new File(renderDir, RENDER_ERRORS_FILE);
+            if (renderErrorFile.exists())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    // ----------------------------------------------------------
+    public MutableArray renderingErrors()
+    {
+        MutableArray errors = null;
+
+        File renderDir = new File(renderedResourcesDir());
+        if (renderDir.exists())
+        {
+            File renderErrorFile = new File(renderDir, RENDER_ERRORS_FILE);
+            if (renderErrorFile.exists())
+            {
+                try
+                {
+                    FileInputStream stream = new FileInputStream(renderErrorFile);
+                    NSData data = new NSData(stream, 1024);
+                    errors = MutableArray.objectWithArchiveData(data);
+                    stream.close();
+                }
+                catch (IOException e)
+                {
+                    log.error("Error reading rendering error info: ", e);
+                }
+            }
+        }
+
+        return errors;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setRenderingErrors(MutableArray errors)
+    {
+        File renderDir = new File(renderedResourcesDir());
+        if (renderDir.exists())
+        {
+            try
+            {
+                File renderErrorFile = new File(renderDir, RENDER_ERRORS_FILE);
+                FileOutputStream stream = new FileOutputStream(renderErrorFile);
+                errors.archiveData().writeToStream(stream);
+                stream.close();
+            }
+            catch (IOException e)
+            {
+                log.error("Error writing rendering error info: ", e);
+            }
+        }
     }
 
 
     // ----------------------------------------------------------
     public void markAsRenderedWithMethod(String method)
     {
-    	File renderDir = new File(renderedResourcesDir(uuid()));
-    	if (renderDir.exists())
-    	{
-    		try
-    		{
-    			String tokenName = RENDER_TOKEN_PREFIX + method;
-        		File renderToken = new File(renderDir, tokenName);
-				FileOutputStream stream = new FileOutputStream(renderToken);
-				stream.write(0);
-				stream.close();
-			}
-    		catch (IOException e)
-    		{
-				log.error("Could not create render-complete token: ", e);
-			}
-    	}
+        File renderDir = new File(renderedResourcesDir());
+        if (renderDir.exists())
+        {
+            try
+            {
+                String tokenName = RENDER_TOKEN_PREFIX + method;
+                File renderToken = new File(renderDir, tokenName);
+                FileOutputStream stream = new FileOutputStream(renderToken);
+                stream.write(0);
+                stream.close();
+            }
+            catch (IOException e)
+            {
+                log.error("Could not create render-complete token: ", e);
+            }
+        }
     }
 
 
     // ----------------------------------------------------------
     public boolean isRenderedWithMethod(String method)
     {
-    	File renderDir = new File(renderedResourcesDir(uuid()));
-    	if (renderDir.exists())
-    	{
-    		String tokenName = RENDER_TOKEN_PREFIX + method;
-    		File renderToken = new File(renderDir, tokenName);
-    		if (renderToken.exists())
-    		{
-    			return true;
-    		}
-    	}
-    	return false;
+        File renderDir = new File(renderedResourcesDir());
+        if (renderDir.exists())
+        {
+            String tokenName = RENDER_TOKEN_PREFIX + method;
+            File renderToken = new File(renderDir, tokenName);
+            if (renderToken.exists())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
     // ----------------------------------------------------------
     public String generatedReportDir()
     {
-    	return generatedReportDirForUser(user());
+        return generatedReportDirForUser(user());
     }
 
 
     // ----------------------------------------------------------
     public String generatedReportFile()
     {
-    	return generatedReportFilePathForUser(user(), uuid());
+        return generatedReportFilePathForUser(user(), id());
     }
+
+
+    //~ Constructors ..........................................................
+
+    public static final String REPORT_EXTENSION = ".rptdocument";
+
+    private static final String RENDER_TOKEN_PREFIX = ".rendered.";
+
+    private static final String RENDER_ERRORS_FILE = ".renderingErrors";
+
+    private static final String GENERATED_REPORTS_SUBDIR_NAME =
+        "GeneratedReports";
+
+    private static final String RENDERED_REPORTS_SUBDIR_NAME =
+        "RenderedReports";
 }

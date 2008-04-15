@@ -1,45 +1,34 @@
 
 Date: WOString {
-	dateformat = "%m/%d/%y %I:%M%p";
-	value      = reportTemplate.lastModified;
+    dateformat = "%m/%d/%y %I:%M%p";
+    value      = reportTemplate.uploadedTime;
 }
 
 DownloadNow: WOActiveImage {
-	border    = "0";
-	filename  = "icons/download.gif";
-	framework = "Core";
-	height    = "18";
-	width     = "18";
-	alt       = "Download this template";
-	title     = "Download this template";
-	action    = download;
+    border    = "0";
+    filename  = "icons/download.gif";
+    framework = "Core";
+    height    = "18";
+    width     = "18";
+    alt       = "Download this template";
+    title     = "Download this template";
+    action    = download;
 }
 
 TemplateUpload: WOFileUpload {
-	data     = uploadedData;
-	filePath = uploadedName;
+    data     = uploadedData;
+    filePath = uploadedName;
 }
 
 Publish: WOActiveImage {
-	border    = "0";
-	filename  = "icons/show.gif";
-	framework = "Grader";
-	height    = "11";
-	width     = "11";
-	alt       = "Publish report template (make visible to others)";
-	title     = "Publish report template (make visible to others)";
-	action    = togglePublished;
-}
-
-Delete: WOActiveImage {
-	border    = "0";
-	filename  = "icons/trash.gif";
-	framework = "Core";
-	height    = "17";
-	width     = "14";
-	alt       = "Delete report template";
-	title     = "Delete report template";
-	action    = deleteTemplate;
+    border    = "0";
+    filename  = "icons/show.gif";
+    framework = "Grader";
+    height    = "11";
+    width     = "11";
+    alt       = "Publish report template (make visible to others)";
+    title     = "Publish report template (make visible to others)";
+    action    = togglePublished;
 }
 
 TerseDescriptions: WOSubmitButton {
@@ -48,14 +37,14 @@ TerseDescriptions: WOSubmitButton {
 }
 
 Unpublish: WOActiveImage {
-	border    = "0";
-	filename  = "icons/hide.gif";
-	framework = "Grader";
-	height    = "11";
-	width     = "11";
-	alt       = "Unpublish report template (hide from others)";
-	title     = "Unpublish report template (hide from others)";
-	action    = togglePublished;
+    border    = "0";
+    filename  = "icons/hide.gif";
+    framework = "Grader";
+    height    = "11";
+    width     = "11";
+    alt       = "Unpublish report template (hide from others)";
+    title     = "Unpublish report template (hide from others)";
+    action    = togglePublished;
 }
 
 Upload: WOSubmitButton {

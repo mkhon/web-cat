@@ -2,16 +2,6 @@
     attributes = (
         { name = id; prototypeName = id; },
         {
-            columnName = CUUID; 
-            name = uuid; 
-            prototypeName = tinyText;
-        },
-        {
-            columnName = CENTITYNAME; 
-            name = wcEntityName;
-            prototypeName = tinyText;
-        },
-        {
         	columnName = CNAME;
         	name = name;
         	prototypeName = tinyText;
@@ -20,6 +10,11 @@
             columnName = CDESCRIPTION; 
             name = description;
             prototypeName = mediumText;
+        },
+        {
+            columnName = CENTITYNAME; 
+            name = wcEntityName;
+            prototypeName = tinyText;
         },
         {
             columnName = CREPORTTEMPLATEID; 
@@ -39,23 +34,45 @@
 			    valueClassName = Integer;
 			};
         },
+        {
+            columnName = CCONSTRAINTS; 
+            name = constraints; 
+            prototypeName = mutableArray; 
+            userInfo = {
+                adaptorValueConversionMethodName = archiveData; 
+                valueFactoryMethodName = objectWithArchiveData; 
+                isMutable = true; 
+                valueClassName = net.sf.webcat.core.MutableArray; 
+            };
+        },
+        {
+            name = updateMutableFields; 
+            prototypeName = updateMutableFields; 
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean; 
+            }; 
+        },
     ); 
     attributesUsedForLocking = (
-    	uuid,
-    	wcEntityName,
     	name,
     	description,
+    	wcEntityName,
     	reportTemplateId,
     	referenceCount,
+    	constraints,
+    	updateMutableFields,
     );
     className = net.sf.webcat.reporter.ReportDataSet;
     classProperties = (
-    	uuid,
-    	wcEntityName,
     	name,
     	description,
+    	wcEntityName,
     	reportTemplate,
     	referenceCount,
+    	constraints,
+    	updateMutableFields,
     );
     externalName = TREPORTDATASET;
     name = ReportDataSet;

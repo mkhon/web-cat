@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.6 2008/04/04 21:00:53 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.7 2008/04/15 04:09:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -61,10 +61,14 @@ import ognl.enhance.ExpressionAccessor;
 
 //-------------------------------------------------------------------------
 /**
- * Direct action support for preview actions in the BIRT report designer.
+ * Direct action support for preview actions in the BIRT report designer. This
+ * action is used in two phases, first by sending
+ * "designerPreview/startRetrieval" to prep the retrieval and then
+ * repeatedly sending "designerPreview/retrieveNextBatch" until the
+ * response end-of-data marker is true.
  *
- * @author aallowat
- * @version $Id: designerPreview.java,v 1.6 2008/04/04 21:00:53 aallowat Exp $
+ * @author Tony Allevato
+ * @version $Id: designerPreview.java,v 1.7 2008/04/15 04:09:23 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -76,452 +80,466 @@ public class designerPreview
      * Creates a new object.
      * @param request The incoming request
      */
-	public designerPreview(WORequest request)
-	{
-		super(request);
-	}
+    public designerPreview(WORequest request)
+    {
+        super(request);
+    }
 
 
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-	public WOActionResults startRetrievalAction()
-	{
-		WOResponse response = new WOResponse();
-		WOSession session = session();
+    public WOActionResults startRetrievalAction()
+    {
+        WOResponse response = new WOResponse();
+        WOSession session = session();
 
-		String entityType =
-			request().formValueForKey(PARAM_ENTITY_TYPE).toString();
-		String expressionString =
-			request().formValueForKey(PARAM_EXPRESSIONS).toString();
-		String[] expressions = expressionString.split("%===%");
+        String entityType =
+            request().formValueForKey(PARAM_ENTITY_TYPE).toString();
+        String expressionString =
+            request().formValueForKey(PARAM_EXPRESSIONS).toString();
+        String[] expressions = expressionString.split("%===%");
 
-		int timeout = Integer.parseInt(
-			request().formValueForKey(PARAM_TIMEOUT).toString());
+        int timeout = Integer.parseInt(
+            request().formValueForKey(PARAM_TIMEOUT).toString());
 
-		EOEditingContext context = Application.newPeerEditingContext();
+        EOEditingContext context = Application.newPeerEditingContext();
 
-		EOQualifier fastQualifier = null;
-		EOQualifier slowQualifier = null;
+        EOQualifier fastQualifier = null;
+        EOQualifier slowQualifier = null;
 
-		if (request().formValueForKey(PARAM_QUERY) != null)
-		{
-			String query = request().formValueForKey(PARAM_QUERY).toString();
+        if (request().formValueForKey(PARAM_QUERY) != null)
+        {
+            String query = request().formValueForKey(PARAM_QUERY).toString();
 
-			if (query.length() > 0)
-			{
-				EOQualifier fullQualifier = translateQueryToQualifier(
-					entityType, query, context);
-
-				EOQualifier[] quals = QualifierUtils.partitionQualifier(
-					fullQualifier, entityType);
-				fastQualifier = quals[0];
-				slowQualifier = quals[1];
-			}
-		}
-
-		try
-		{
-			OgnlContext ognlContext = new OgnlContext();
-
-			EOEntity rootEntity = EOUtilities.entityNamed(context, entityType);
-
-			EOFetchSpecification spec = new EOFetchSpecification(
-				entityType, fastQualifier, null);
-
-			ExpressionAccessor[] compiled = compileAndPrefetchExpressions(
-				ognlContext, expressions, rootEntity, spec);
-
-			ERXFetchSpecificationBatchIterator iterator =
-				new ERXFetchSpecificationBatchIterator(spec, context);
-			iterator.setBatchSize(50);
-
-			session.setObjectForKey(ognlContext, SESSION_OGNLCONTEXT);
-			session.setObjectForKey(iterator, SESSION_ITERATOR);
-			session.setObjectForKey(compiled, SESSION_EXPRESSIONS);
-			session.setObjectForKey(expressions, SESSION_EXPRESSION_STRINGS);
-			session.setObjectForKey(timeout, SESSION_TIMEOUT);
-			session.setObjectForKey(Boolean.FALSE, SESSION_CANCELED);
-
-			if (slowQualifier == null)
+            if (query.length() > 0)
             {
-				session.removeObjectForKey(SESSION_SLOW_QUALIFIER);
+                EOQualifier fullQualifier = translateQueryToQualifier(
+                    entityType, query, context);
+
+                EOQualifier[] quals = QualifierUtils.partitionQualifier(
+                    fullQualifier, entityType);
+                fastQualifier = quals[0];
+                slowQualifier = quals[1];
             }
-			else
+        }
+
+        try
+        {
+            OgnlContext ognlContext = new OgnlContext();
+
+            EOEntity rootEntity = EOUtilities.entityNamed(context, entityType);
+
+            EOFetchSpecification spec = new EOFetchSpecification(
+                entityType, fastQualifier, null);
+
+            ExpressionAccessor[] compiled = compileAndPrefetchExpressions(
+                ognlContext, expressions, rootEntity, spec);
+
+            ERXFetchSpecificationBatchIterator iterator =
+                new ERXFetchSpecificationBatchIterator(spec, context);
+            iterator.setBatchSize(50);
+
+            session.setObjectForKey(ognlContext, SESSION_OGNLCONTEXT);
+            session.setObjectForKey(iterator, SESSION_ITERATOR);
+            session.setObjectForKey(compiled, SESSION_EXPRESSIONS);
+            session.setObjectForKey(expressions, SESSION_EXPRESSION_STRINGS);
+            session.setObjectForKey(timeout, SESSION_TIMEOUT);
+            session.setObjectForKey(Boolean.FALSE, SESSION_CANCELED);
+
+            if (slowQualifier == null)
             {
-				session.setObjectForKey(slowQualifier, SESSION_SLOW_QUALIFIER);
+                session.removeObjectForKey(SESSION_SLOW_QUALIFIER);
+            }
+            else
+            {
+                session.setObjectForKey(slowQualifier, SESSION_SLOW_QUALIFIER);
             }
 
-			session.setObjectForKey(System.currentTimeMillis(),
-				SESSION_START_TIME);
+            session.setObjectForKey(System.currentTimeMillis(),
+                SESSION_START_TIME);
 
-			// A successful response to this action contains the session ID to
-			// use to continue batching from this request.
+            // A successful response to this action contains the session ID to
+            // use to continue batching from this request.
 
-			response.appendContentString(session.sessionID());
-			response.appendContentCharacter('\n');
-		}
-		catch (Exception e)
-		{
-			// Send any exception back as the response so that the report
-			// designer can report the error to the user.
-			response = errorResponse(e);
-		}
+            response.appendContentString(session.sessionID());
+            response.appendContentCharacter('\n');
+        }
+        catch (Exception e)
+        {
+            // Send any exception back as the response so that the report
+            // designer can report the error to the user.
+            response = errorResponse(e);
+        }
 
-		return response;
-	}
+        return response;
+    }
 
 
     // ----------------------------------------------------------
-	public WOActionResults retrieveNextBatchAction()
-	{
-		WOResponse response = new WOResponse();
+    public WOActionResults retrieveNextBatchAction()
+    {
+        WOResponse response = new WOResponse();
 
-		try
-		{
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+        try
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
 
-			ERXFetchSpecificationBatchIterator iterator =
-				(ERXFetchSpecificationBatchIterator)session().objectForKey(
-					SESSION_ITERATOR);
+            ERXFetchSpecificationBatchIterator iterator =
+                (ERXFetchSpecificationBatchIterator)session().objectForKey(
+                    SESSION_ITERATOR);
 
-			long startTime = (Long)session().objectForKey(SESSION_START_TIME);
-			int timeout = (Integer)session().objectForKey(SESSION_TIMEOUT);
-			long endTime = startTime + (timeout * 1000);
+            long startTime = (Long)session().objectForKey(SESSION_START_TIME);
+            int timeout = (Integer)session().objectForKey(SESSION_TIMEOUT);
+            long endTime;
 
-			int count = 0;
-			boolean isTimedOut = (System.currentTimeMillis() > endTime);
+            if(timeout == 0)
+            {
+                endTime = Long.MAX_VALUE;
+            }
+            else
+            {
+                endTime = startTime + (timeout * 1000);
+            }
 
-			while (count < BATCH_SIZE
+            int count = 0;
+            boolean isTimedOut = (System.currentTimeMillis() > endTime);
+
+            while (count < BATCH_SIZE
                    && iterator.hasNextBatch()
                    && !isCanceledInSession()
                    && !isTimedOut)
-			{
-				int recordsRetrieved = serializeNextBatch(iterator, oos,
-						endTime);
-				count += recordsRetrieved;
+            {
+                int recordsRetrieved = serializeNextBatch(iterator, oos,
+                        endTime);
+                count += recordsRetrieved;
 
-				isTimedOut = (System.currentTimeMillis() > endTime);
-			}
+                isTimedOut = (System.currentTimeMillis() > endTime);
+            }
 
-			// Write the end of data marker.
-			oos.writeBoolean(false);
+            // Write the end of data marker.
+            oos.writeBoolean(false);
 
-			oos.close();
-			baos.close();
+            oos.close();
+            baos.close();
 
-			NSData data = new NSData(baos.toByteArray());
-			response.appendContentData(data);
-		}
-		catch (Exception e)
-		{
-			response = errorResponse(e);
-		}
+            NSData data = new NSData(baos.toByteArray());
+            response.appendContentData(data);
+        }
+        catch (Exception e)
+        {
+            response = errorResponse(e);
+        }
 
-		return response;
-	}
+        return response;
+    }
 
 
     // ----------------------------------------------------------
-	public WOActionResults cancelRetrievalAction()
-	{
-		setCanceledInSession();
-		return new WOResponse();
-	}
+    public WOActionResults cancelRetrievalAction()
+    {
+        setCanceledInSession();
+        return new WOResponse();
+    }
 
 
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-	private static WOResponse errorResponse(Exception e)
-	{
-		WOResponse response = new WOResponse();
+    private static WOResponse errorResponse(Exception e)
+    {
+        WOResponse response = new WOResponse();
 
-		response.appendContentString("!!! ERROR\n");
-		response.appendContentString(e.toString());
+        response.appendContentString("!!! ERROR\n");
+        response.appendContentString(e.toString());
 
-		return response;
-	}
-
-    // ----------------------------------------------------------
-	private boolean isCanceledInSession()
-	{
-		synchronized (designerPreview.class)
-		{
-			return (Boolean)session().objectForKey(SESSION_CANCELED);
-		}
-	}
+        return response;
+    }
 
     // ----------------------------------------------------------
-	private void setCanceledInSession()
-	{
-		synchronized (designerPreview.class)
-		{
-			session().setObjectForKey(Boolean.TRUE, SESSION_CANCELED);
-		}
-	}
+    private boolean isCanceledInSession()
+    {
+        synchronized (designerPreview.class)
+        {
+            return (Boolean)session().objectForKey(SESSION_CANCELED);
+        }
+    }
+
 
     // ----------------------------------------------------------
-	private int serializeNextBatch(
-	    ERXFetchSpecificationBatchIterator iterator,
-	    ObjectOutputStream oos,
-	    long endTime)
-	    throws IOException
-	{
-		WOSession session = session();
+    private void setCanceledInSession()
+    {
+        synchronized (designerPreview.class)
+        {
+            session().setObjectForKey(Boolean.TRUE, SESSION_CANCELED);
+        }
+    }
 
-		int recordsRetrieved = 0;
+
+    // ----------------------------------------------------------
+    private int serializeNextBatch(
+        ERXFetchSpecificationBatchIterator iterator,
+        ObjectOutputStream oos,
+        long endTime)
+        throws IOException
+    {
+        WOSession session = session();
+
+        int recordsRetrieved = 0;
 
         if (iterator != null)
         {
-    		if (iterator.hasNextBatch())
-    		{
-    			OgnlContext ognlContext =
-    				(OgnlContext)session.objectForKey(SESSION_OGNLCONTEXT);
+            if (iterator.hasNextBatch())
+            {
+                OgnlContext ognlContext =
+                    (OgnlContext)session.objectForKey(SESSION_OGNLCONTEXT);
 
-    			ExpressionAccessor[] expressions = (ExpressionAccessor[])
+                ExpressionAccessor[] expressions = (ExpressionAccessor[])
                     session.objectForKey(SESSION_EXPRESSIONS);
 
-    			String[] expressionStrings =
-    				(String[])session.objectForKey(SESSION_EXPRESSION_STRINGS);
+                String[] expressionStrings =
+                    (String[])session.objectForKey(SESSION_EXPRESSION_STRINGS);
 
-    			EOQualifier slowQualifier =
-    				(EOQualifier)session.objectForKey(SESSION_SLOW_QUALIFIER);
+                EOQualifier slowQualifier =
+                    (EOQualifier)session.objectForKey(SESSION_SLOW_QUALIFIER);
 
-    			NSArray batch = EOQualifier.filteredArrayWithQualifier(
-    				iterator.nextBatch(), slowQualifier);
+                NSArray batch = EOQualifier.filteredArrayWithQualifier(
+                    iterator.nextBatch(), slowQualifier);
 
-    			boolean isTimedOut = (System.currentTimeMillis() > endTime);
+                boolean isTimedOut = (System.currentTimeMillis() > endTime);
 
-    			Enumeration<?> e = batch.objectEnumerator();
-    			while (e.hasMoreElements() && !isTimedOut)
-    			{
-    				// Write the next-object-exists marker.
-    				oos.writeBoolean(true);
+                Enumeration<?> e = batch.objectEnumerator();
+                while (e.hasMoreElements() && !isTimedOut)
+                {
+                    // Write the next-object-exists marker.
+                    oos.writeBoolean(true);
 
-    				EOGenericRecord eo = (EOGenericRecord)e.nextElement();
+                    EOGenericRecord eo = (EOGenericRecord)e.nextElement();
 
-    				for (int i = 0; i < expressions.length; i++)
-    				{
-    					Object value = getValueOfExpression(expressions[i],
-    						ognlContext, eo, expressionStrings[i]);
+                    for (int i = 0; i < expressions.length; i++)
+                    {
+                        Object value = getValueOfExpression(expressions[i],
+                            ognlContext, eo, expressionStrings[i]);
 
-    					if (value instanceof NSTimestamp)
-    					{
-    						// We don't want to send an NSTimestamp back to the
-    						// report designer because the report designer
-    						// doesn't have access to WebObjects classes. So,
-    						// we create a java.sql.Timestamp from its value
-    						// instead.
+                        if (value instanceof NSTimestamp)
+                        {
+                            // We don't want to send an NSTimestamp back to the
+                            // report designer because the report designer
+                            // doesn't have access to WebObjects classes. So,
+                            // we create a java.sql.Timestamp from its value
+                            // instead.
 
-    						NSTimestamp timestamp = (NSTimestamp)value;
-    						long time = timestamp.getTime();
-    						java.sql.Timestamp sqlTime =
-    							new java.sql.Timestamp(time);
-    						value = sqlTime;
-    					}
+                            NSTimestamp timestamp = (NSTimestamp)value;
+                            long time = timestamp.getTime();
+                            java.sql.Timestamp sqlTime =
+                                new java.sql.Timestamp(time);
+                            value = sqlTime;
+                        }
 
-    					oos.writeObject(value);
-    				}
+                        oos.writeObject(value);
+                    }
 
-    				recordsRetrieved++;
+                    recordsRetrieved++;
 
-    				isTimedOut = (System.currentTimeMillis() > endTime);
-    			}
-    		}
+                    isTimedOut = (System.currentTimeMillis() > endTime);
+                }
+            }
 
-    		// Recycle the editing context after we've processed this batch to
-    		// flush out all of the current objects.
-			Application.releasePeerEditingContext(iterator.editingContext());
-			iterator.setEditingContext(Application.newPeerEditingContext());
-		}
+            // Recycle the editing context after we've processed this batch to
+            // flush out all of the current objects.
+            Application.releasePeerEditingContext(iterator.editingContext());
+            iterator.setEditingContext(Application.newPeerEditingContext());
+        }
 
-		return recordsRetrieved;
-	}
+        return recordsRetrieved;
+    }
+
 
     // ----------------------------------------------------------
-	private ExpressionAccessor[] compileAndPrefetchExpressions(
-			OgnlContext ognlContext,
+    private ExpressionAccessor[] compileAndPrefetchExpressions(
+            OgnlContext ognlContext,
             String[] expressions,
-			EOEntity rootEntity,
+            EOEntity rootEntity,
             EOFetchSpecification spec)
-	{
-		ExpressionAccessor[] compiled =
-			new ExpressionAccessor[expressions.length];
-		NSMutableArray prefetchedRelationships = new NSMutableArray();
+    {
+        ExpressionAccessor[] compiled =
+            new ExpressionAccessor[expressions.length];
+        NSMutableArray prefetchedRelationships = new NSMutableArray();
 
-		ognlContext = new OgnlContext();
+        ognlContext = new OgnlContext();
 
-		int i = 0;
-		for (String expression : expressions)
-		{
-			// We only bother prefetching relationships out of the expression
-			// if some arbitrary prefix of the expression is a keypath and not
-			// a richer OGNL expression. This allows us to still prefetch
-			// relationships that are used in certain types of OGNL expressions
-			// like selection or projection (for example,
-			// "object.relationship.{? #this instanceof SomeClass }", but
-			// without the challenge of trying to parse keypaths out of the
-			// entire expression.
+        int i = 0;
+        for (String expression : expressions)
+        {
+            // We only bother prefetching relationships out of the expression
+            // if some arbitrary prefix of the expression is a keypath and not
+            // a richer OGNL expression. This allows us to still prefetch
+            // relationships that are used in certain types of OGNL expressions
+            // like selection or projection (for example,
+            // "object.relationship.{? #this instanceof SomeClass }", but
+            // without the challenge of trying to parse keypaths out of the
+            // entire expression.
 
-			EOEntity entity = rootEntity;
+            EOEntity entity = rootEntity;
 
-			String[] parts = expression.split("\\.");
-			String partsSoFar = "";
-			for (String part : parts)
-			{
-				partsSoFar += part;
+            String[] parts = expression.split("\\.");
+            String partsSoFar = "";
+            for (String part : parts)
+            {
+                partsSoFar += part;
 
-				EORelationship relationship = entity.relationshipNamed(part);
-				if (relationship != null)
-				{
-					entity = relationship.destinationEntity();
-					prefetchedRelationships.addObject(partsSoFar);
-				}
-				else
-				{
-					break;
-				}
+                EORelationship relationship = entity.relationshipNamed(part);
+                if (relationship != null)
+                {
+                    entity = relationship.destinationEntity();
+                    prefetchedRelationships.addObject(partsSoFar);
+                }
+                else
+                {
+                    break;
+                }
 
-				partsSoFar += ".";
-			}
+                partsSoFar += ".";
+            }
 
-			// Compile the OGNL expressions for more efficient accesses during
-			// the preview batch operations. If an error occurs, pass it back
-			// up to the direct action so that a proper response can be sent
-			// back to the report designer.
+            // Compile the OGNL expressions for more efficient accesses during
+            // the preview batch operations. If an error occurs, pass it back
+            // up to the direct action so that a proper response can be sent
+            // back to the report designer.
 
-			Node node;
+            Node node;
 
-			try
-			{
-				node = Ognl.compileExpression(ognlContext, null, expression);
-				compiled[i] = node.getAccessor();
-			}
-			catch (Exception e)
-			{
-				throw new IllegalArgumentException(e);
-			}
+            try
+            {
+                node = Ognl.compileExpression(ognlContext, null, expression);
+                compiled[i] = node.getAccessor();
+            }
+            catch (Exception e)
+            {
+                throw new IllegalArgumentException(e);
+            }
 
-			i++;
-		}
+            i++;
+        }
 
-		spec.setPrefetchingRelationshipKeyPaths(prefetchedRelationships);
+        spec.setPrefetchingRelationshipKeyPaths(prefetchedRelationships);
 
-		return compiled;
-	}
+        return compiled;
+    }
 
     // ----------------------------------------------------------
-	private Object getValueOfExpression(
+    private Object getValueOfExpression(
         ExpressionAccessor accessor,
         OgnlContext        ognlContext,
         EOGenericRecord    object,
         String             expressionString)
-	{
-		Object result = null;
+    {
+        Object result = null;
 
-		try
-		{
-			result = accessor.get(ognlContext, object);
-		}
-		catch (NSKeyValueCoding.UnknownKeyException e)
-		{
-			// Translate the expression into something a little easier for the
-			// user to read.
-			String msg = String.format(
-				"In the expression (%s), the key \"%s\" is not recognized "
+        try
+        {
+            result = accessor.get(ognlContext, object);
+        }
+        catch (NSKeyValueCoding.UnknownKeyException e)
+        {
+            // Translate the expression into something a little easier for the
+            // user to read.
+            String msg = String.format(
+                "In the expression (%s), the key \"%s\" is not recognized "
                 + "by the source object (which is of type \"%s\")",
                 expressionString,
                 e.key(),
                 e.object().getClass().getName());
 
-			throw new IllegalArgumentException(msg);
-		}
-		catch (Exception e)
-		{
-			if (e instanceof OgnlException)
-			{
-				return null;
-			}
-			else
-			{
-				throw new IllegalArgumentException(e);
-			}
-		}
+            throw new IllegalArgumentException(msg);
+        }
+        catch (Exception e)
+        {
+            if (e instanceof OgnlException)
+            {
+                return null;
+            }
+            else
+            {
+                throw new IllegalArgumentException(e);
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private EOQualifier translateQueryToQualifier(
+
+    // ----------------------------------------------------------
+    private EOQualifier translateQueryToQualifier(
         String entityType, String query, EOEditingContext ec)
-	{
-		AdvancedQueryModel model = new AdvancedQueryModel();
+    {
+        AdvancedQueryModel model = new AdvancedQueryModel();
 
-		try
-		{
-			BufferedReader reader = new BufferedReader(new StringReader(query));
-			String line;
+        try
+        {
+            BufferedReader reader = new BufferedReader(new StringReader(query));
+            String line;
 
-			NSMutableArray<AdvancedQueryCriterion> criteria =
-				new NSMutableArray<AdvancedQueryCriterion>();
+            NSMutableArray<AdvancedQueryCriterion> criteria =
+                new NSMutableArray<AdvancedQueryCriterion>();
 
-			while ((line = reader.readLine()) != null)
-			{
-				String keypath = line;
-				String comparisonString = reader.readLine();
-				String comparandTypeString = reader.readLine();
-				String valueRepresentation = reader.readLine();
-				reader.readLine();
+            while ((line = reader.readLine()) != null)
+            {
+                String keypath = line;
+                String comparisonString = reader.readLine();
+                String comparandTypeString = reader.readLine();
+                String valueRepresentation = reader.readLine();
+                reader.readLine();
 
-				AdvancedQueryCriterion criterion = new AdvancedQueryCriterion();
+                AdvancedQueryCriterion criterion = new AdvancedQueryCriterion();
 
-				AdvancedQueryComparison comparison =
-					AdvancedQueryComparison.comparisonWithName(
-							comparisonString);
+                AdvancedQueryComparison comparison =
+                    AdvancedQueryComparison.comparisonWithName(
+                            comparisonString);
 
-				criterion.setKeyPath(keypath);
-				criterion.setComparison(comparison);
-				criterion.setComparandType(
-						Integer.parseInt(comparandTypeString));
+                criterion.setKeyPath(keypath);
+                criterion.setComparison(comparison);
+                criterion.setComparandType(
+                        Integer.parseInt(comparandTypeString));
 
-				int type = AdvancedQueryUtils.typeOfKeyPath(
-						entityType, keypath);
-				Object value = null;
+                int type = AdvancedQueryUtils.typeOfKeyPath(
+                        entityType, keypath);
+                Object value = null;
 
-				if (comparison == AdvancedQueryComparison.IS_BETWEEN
+                if (comparison == AdvancedQueryComparison.IS_BETWEEN
                     || comparison == AdvancedQueryComparison.IS_NOT_BETWEEN)
-				{
-					value = AdvancedQueryUtils.
-						valueRangeForPreviewRepresentation(
-							type, valueRepresentation, ec);
-				}
-				else if (comparison.doesSupportMultipleValues())
-				{
-					value = AdvancedQueryUtils.
-						multipleValuesForPreviewRepresentation(
-							type, valueRepresentation, ec);
-				}
-				else
-				{
-					value = AdvancedQueryUtils.
-						singleValueForPreviewRepresentation(
-							type, valueRepresentation, ec);
-				}
+                {
+                    value = AdvancedQueryUtils.
+                        valueRangeForPreviewRepresentation(
+                            type, valueRepresentation, ec);
+                }
+                else if (comparison.doesSupportMultipleValues())
+                {
+                    value = AdvancedQueryUtils.
+                        multipleValuesForPreviewRepresentation(
+                            type, valueRepresentation, ec);
+                }
+                else
+                {
+                    value = AdvancedQueryUtils.
+                        singleValueForPreviewRepresentation(
+                            type, valueRepresentation, ec);
+                }
 
-				criterion.setValue(value);
+                criterion.setValue(value);
 
-				criteria.addObject(criterion);
-			}
+                criteria.addObject(criterion);
+            }
 
-			model.setCriteria(criteria);
-			return model.qualifierFromValues();
-		}
-		catch (IOException e)
-		{
-			return null;
-		}
-	}
+            model.setCriteria(criteria);
+            return model.qualifierFromValues();
+        }
+        catch (IOException e)
+        {
+            return null;
+        }
+    }
 
 
     //~ Instance/static variables .............................................

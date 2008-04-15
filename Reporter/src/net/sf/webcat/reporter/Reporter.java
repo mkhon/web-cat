@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.10 2008/04/04 22:30:00 stedwar2 Exp $
+ |  $Id: Reporter.java,v 1.11 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -90,7 +90,7 @@ import org.eclipse.birt.report.model.api.SessionHandle;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.10 2008/04/04 22:30:00 stedwar2 Exp $
+ * @version $Id: Reporter.java,v 1.11 2008/04/15 04:09:22 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -99,7 +99,7 @@ public class Reporter
 
     // ----------------------------------------------------------
     /**
-     * Creates a new Admin subsystem object.
+     * Creates a new Reporter subsystem object.
      */
     public Reporter()
     {
@@ -122,12 +122,22 @@ public class Reporter
         // Initialize the rendering methods that are available for reporting.
         initializeRenderingMethods();
 
-        // Create the queue and the queue processor
-        reportQueue          = new ReportQueue();
-        reportQueueProcessor = new ReportQueueProcessor( reportQueue );
+        // Create the queue and the queueprocessor
+        reportGenerationQueue          = new ReportGenerationQueue();
+        reportGenerationQueueProcessor = new ReportGenerationQueueProcessor( reportGenerationQueue );
+
+        reportRenderQueue = new ReportRenderQueue();
+        reportRenderQueueProcessor = new ReportRenderQueueProcessor( reportRenderQueue );
+
+        log.info("Creating global report design session");
+
+        IDesignEngine designEngine =
+            BIRTRuntime.getInstance().getDesignEngine();
+        designSession = designEngine.newSessionHandle(null);
 
         // Kick off the processor thread
-        reportQueueProcessor.start();
+        reportGenerationQueueProcessor.start();
+        reportRenderQueueProcessor.start();
 
         if ( Application.configurationProperties().booleanForKey(
                 "reporter.resumeSuspendedJobs" ) )
@@ -139,18 +149,14 @@ public class Reporter
             {
                 ec.lock();
                 NSArray jobList = EOUtilities.objectsForEntityNamed(
-                                ec, EnqueuedReportJob.ENTITY_NAME );
+                                ec, EnqueuedReportGenerationJob.ENTITY_NAME );
 
                 for ( int i = 0; i < jobList.count(); i++ )
                 {
-                    if ( !( (EnqueuedReportJob)jobList.objectAtIndex( i ) )
-                                 .paused() )
-                    {
-                        // Only need to trigger the queue processor once,
-                        // and it will slurp up all the jobs that are ready.
-                        reportQueue.enqueue( null );
-                        break;
-                    }
+                    // Only need to trigger the queue processor once,
+                    // and it will slurp up all the jobs that are ready.
+                    reportGenerationQueue.enqueue( null );
+                    break;
                 }
             }
             finally
@@ -186,7 +192,7 @@ public class Reporter
      */
     public static Reporter getInstance()
     {
-    	return instance;
+        return instance;
     }
 
 
@@ -197,14 +203,14 @@ public class Reporter
             BIRTRuntime.getInstance().getReportEngine();
 
         try
-    	{
-			return reportEngine.openReportDesign(path);
-		}
-    	catch (EngineException e)
-    	{
-    		log.error("Error opening report template: " + path, e);
-			return null;
-		}
+        {
+            return reportEngine.openReportDesign(path);
+        }
+        catch (EngineException e)
+        {
+            log.error("Error opening report template: " + path, e);
+            return null;
+        }
     }
 
 
@@ -215,44 +221,45 @@ public class Reporter
             BIRTRuntime.getInstance().getReportEngine();
 
         try
-    	{
-			return reportEngine.openReportDocument(path);
-		}
-    	catch (EngineException e)
-    	{
-    		log.error("Error opening report template: " + path, e);
-			return null;
-		}
+        {
+            return reportEngine.openReportDocument(path);
+        }
+        catch (EngineException e)
+        {
+            log.error("Error opening report template: " + path, e);
+            return null;
+        }
     }
 
 
     // ----------------------------------------------------------
-    public IRunTask setupRunTaskForJob(EnqueuedReportJob job)
+    public IRunTask setupRunTaskForJob(EnqueuedReportGenerationJob job)
     {
         IReportEngine reportEngine =
             BIRTRuntime.getInstance().getReportEngine();
 
         ReportTemplate template = job.reportTemplate();
 
-    	IReportRunnable runnable = openReportTemplate(template.filePath());
-    	IRunTask task = reportEngine.createRunTask(runnable);
+        IReportRunnable runnable = openReportTemplate(template.filePath());
+        IRunTask task = reportEngine.createRunTask(runnable);
 
-    	Map appContext = task.getAppContext();
-    	if (appContext == null)
+        Map appContext = task.getAppContext();
+        if (appContext == null)
         {
-    		appContext = new Hashtable();
+            appContext = new Hashtable();
         }
-    	else
+        else
         {
-    		appContext = new Hashtable(appContext);
+            appContext = new Hashtable(appContext);
         }
 
-    	OdaResultSetProvider resultProvider = new OdaResultSetProvider(job);
-    	appContext.put("net.sf.webcat.oda.resultSetProvider", resultProvider);
+        OdaResultSetProvider resultProvider = new OdaResultSetProvider(job);
 
-    	task.setAppContext(appContext);
+        appContext.put("net.sf.webcat.oda.resultSetProvider", resultProvider);
 
-	  	return task;
+        task.setAppContext(appContext);
+
+        return task;
     }
 
 
@@ -281,58 +288,69 @@ public class Reporter
     // ----------------------------------------------------------
     public NSArray allRenderingMethods()
     {
-    	return renderingMethods;
+        return renderingMethods;
     }
 
 
     // ----------------------------------------------------------
     public IRenderingMethod renderingMethodWithName(String name)
     {
-    	for (int i = 0; i < renderingMethods.count(); i++)
-    	{
-    		IRenderingMethod method =
-    			(IRenderingMethod)renderingMethods.objectAtIndex(i);
+        for (int i = 0; i < renderingMethods.count(); i++)
+        {
+            IRenderingMethod method =
+                (IRenderingMethod)renderingMethods.objectAtIndex(i);
 
-    		if (method.methodName().equals(name))
+            if (method.methodName().equals(name))
             {
-    			return method;
+                return method;
             }
-    	}
+        }
 
-    	log.error("Could not find a report rendering method with name "
+        log.error("Could not find a report rendering method with name "
             + name + "!");
-    	return null;
+        return null;
     }
 
 
     // ----------------------------------------------------------
-    public ReportQueue reportQueue()
+    public ReportGenerationQueue reportGenerationQueue()
     {
-    	return reportQueue;
+        return reportGenerationQueue;
     }
 
 
     // ----------------------------------------------------------
-    public ReportQueueProcessor reportQueueProcessor()
+    public ReportGenerationQueueProcessor reportGenerationQueueProcessor()
     {
-    	return reportQueueProcessor;
+        return reportGenerationQueueProcessor;
     }
 
 
     // ----------------------------------------------------------
-    public SessionHandle newDesignSession()
+    public ReportRenderQueue reportRenderQueue()
     {
-        IDesignEngine designEngine =
-            BIRTRuntime.getInstance().getDesignEngine();
+        return reportRenderQueue;
+    }
 
-        return designEngine.newSessionHandle(null);
+
+    // ----------------------------------------------------------
+    public ReportRenderQueueProcessor reportRenderQueueProcessor()
+    {
+        return reportRenderQueueProcessor;
+    }
+
+
+    // ----------------------------------------------------------
+    public SessionHandle designSession()
+    {
+        return designSession;
     }
 
 
     // ----------------------------------------------------------
     public boolean refreshThrottleStatus()
     {
-    	EOEditingContext ec = Application.newPeerEditingContext();
+        EOEditingContext ec = Application.newPeerEditingContext();
 
         NSMutableArray qualifiers = new NSMutableArray();
         qualifiers.addObject( new EOKeyValueQualifier(
@@ -347,8 +365,8 @@ public class Reporter
         ) );
 
         jobCountAtLastThrottleCheck =
-        	ERXEOControlUtilities.objectCountWithQualifier(ec,
-        		EnqueuedJob.ENTITY_NAME, new EOAndQualifier(qualifiers));
+            ERXEOControlUtilities.objectCountWithQualifier(ec,
+                EnqueuedJob.ENTITY_NAME, new EOAndQualifier(qualifiers));
 
         Application.releasePeerEditingContext(ec);
 
@@ -359,15 +377,15 @@ public class Reporter
     // ----------------------------------------------------------
     public boolean isThrottled()
     {
-    	return jobCountAtLastThrottleCheck > 0;
+        return jobCountAtLastThrottleCheck > 0;
     }
 
 
     // ----------------------------------------------------------
     public long throttleTime()
     {
-    	return Grader.getInstance().estimatedJobTime() *
-    		jobCountAtLastThrottleCheck;
+        return Grader.getInstance().estimatedJobTime() *
+            jobCountAtLastThrottleCheck;
     }
 
 
@@ -382,10 +400,16 @@ public class Reporter
     private NSArray renderingMethods;
 
     /** this is the main single report queue */
-    private static ReportQueue reportQueue;
+    private static ReportGenerationQueue reportGenerationQueue;
 
     /** this is the queue processor for processing report jobs */
-    private static ReportQueueProcessor reportQueueProcessor;
+    private static ReportGenerationQueueProcessor reportGenerationQueueProcessor;
+
+    private static ReportRenderQueue reportRenderQueue;
+
+    private static ReportRenderQueueProcessor reportRenderQueueProcessor;
+
+    private SessionHandle designSession;
 
     private int jobCountAtLastThrottleCheck;
 

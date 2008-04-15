@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlQualifierUtils.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: OgnlQualifierUtils.java,v 1.4 2008/04/15 04:09:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,8 +40,8 @@ import com.webobjects.foundation.NSSelector;
  * to the ognl.AST* classes, but they only have package visibility. Dumping it
  * in the ognl package is easier than using reflection everywhere.
  *
- * @author aallowat
- * @version $Id: OgnlQualifierUtils.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: OgnlQualifierUtils.java,v 1.4 2008/04/15 04:09:23 aallowat Exp $
  */
 public class OgnlQualifierUtils
 {

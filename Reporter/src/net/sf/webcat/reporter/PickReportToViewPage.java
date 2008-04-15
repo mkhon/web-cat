@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickReportToViewPage.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: PickReportToViewPage.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import net.sf.webcat.core.MutableDictionary;
 /**
  * This page allows the user to select among already-generated reports.
  *
- * @author aallowat
- * @version $Id: PickReportToViewPage.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: PickReportToViewPage.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  */
 public class PickReportToViewPage
     extends ReporterComponent
@@ -46,7 +46,7 @@ public class PickReportToViewPage
      * Create a new page.
      * @param context The page's context
      */
-	public PickReportToViewPage(WOContext context)
+    public PickReportToViewPage(WOContext context)
     {
         super(context);
     }
@@ -58,7 +58,7 @@ public class PickReportToViewPage
     public GeneratedReport generatedReport;
     public int index;
     public WODisplayGroup enqueuedReportsDisplayGroup;
-    public EnqueuedReportJob enqueuedReport;
+    public EnqueuedReportGenerationJob enqueuedReport;
     public int enqueuedIndex;
 
 
@@ -67,47 +67,49 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-    	EODatabaseDataSource source = (EODatabaseDataSource)
-    		generatedReportsDisplayGroup.dataSource();
+        EODatabaseDataSource source = (EODatabaseDataSource)
+            generatedReportsDisplayGroup.dataSource();
 
-    	NSMutableDictionary bindings = new NSMutableDictionary();
-    	bindings.setObjectForKey(user(), "user");
-    	source.setQualifierBindings(bindings);
+        NSMutableDictionary bindings = new NSMutableDictionary();
+        bindings.setObjectForKey(user(), "user");
+        source.setQualifierBindings(bindings);
 
-    	source = (EODatabaseDataSource)
-			enqueuedReportsDisplayGroup.dataSource();
+        source = (EODatabaseDataSource)
+            enqueuedReportsDisplayGroup.dataSource();
 
-    	bindings = new NSMutableDictionary();
-    	bindings.setObjectForKey(user(), "user");
-    	source.setQualifierBindings(bindings);
+        bindings = new NSMutableDictionary();
+        bindings.setObjectForKey(user(), "user");
+        source.setQualifierBindings(bindings);
 
-    	super.appendToResponse(response, context);
+        super.appendToResponse(response, context);
     }
 
 
     // ----------------------------------------------------------
     public WOComponent viewReport()
     {
-    	setLocalReportUuid(generatedReport.uuid());
-    	commitReportRendering();
-    	return pageWithName(GeneratedReportPage.class.getName());
+        commitReportRendering(generatedReport);
+        return pageWithName(GeneratedReportPage.class.getName());
     }
 
 
     // ----------------------------------------------------------
     public WOComponent viewReportProgress()
     {
-    	setLocalReportUuid(enqueuedReport.uuid());
-    	return pageWithName(GeneratedReportPage.class.getName());
+        setLocalReportGenerationJob(enqueuedReport);
+        return pageWithName(GeneratedReportPage.class.getName());
     }
 
 
     // ----------------------------------------------------------
     public String enqueuedReportProgress()
     {
-    	ProgressManager manager = ProgressManager.getInstance();
-    	double done = manager.percentDoneOfJob(enqueuedReport.uuid());
-    	int percent = (int)Math.floor(done * 100 + 0.5);
-    	return "" + percent + "%";
+        int jobId = enqueuedReport.id().intValue();
+
+        float workDone = ReportGenerationTracker.getInstance().
+            fractionOfWorkDoneForJobId(jobId);
+
+        int percent = (int)Math.floor(workDone * 100 + 0.5);
+        return "" + percent + "%";
     }
 }

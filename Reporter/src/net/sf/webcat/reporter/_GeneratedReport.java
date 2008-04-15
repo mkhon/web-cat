@@ -4,7 +4,7 @@
  |  Created by eogenerator
  |  DO NOT EDIT.  Make changes to GeneratedReport.java instead.
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,9 +24,9 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.eoaccess.*;
+import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -62,11 +62,13 @@ public abstract class _GeneratedReport
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
+     * @param isComplete
      * @param updateMutableFields
      * @return The newly created object
      */
     public static GeneratedReport create(
         EOEditingContext editingContext,
+        boolean isComplete,
         boolean updateMutableFields
         )
     {
@@ -74,6 +76,7 @@ public abstract class _GeneratedReport
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _GeneratedReport.ENTITY_NAME);
+        eoObject.setIsComplete(isComplete);
         eoObject.setUpdateMutableFields(updateMutableFields);
         return eoObject;
     }
@@ -142,8 +145,8 @@ public abstract class _GeneratedReport
     public static final String DESCRIPTION_KEY = "description";
     public static final String ERRORS_KEY = "errors";
     public static final String GENERATED_TIME_KEY = "generatedTime";
+    public static final String IS_COMPLETE_KEY = "isComplete";
     public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
-    public static final String UUID_KEY = "uuid";
     // To-one relationships ---
     public static final String REPORT_TEMPLATE_KEY = "reportTemplate";
     public static final String USER_KEY = "user";
@@ -151,7 +154,8 @@ public abstract class _GeneratedReport
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
     // Fetch specifications ---
     public static final String USER_FSPEC = "user";
-    public static final String UUID_FSPEC = "uuid";
+    public static final String USER_COMPLETE_REPORTS_FSPEC = "userCompleteReports";
+    public static final String USER_INCOMPLETE_REPORTS_FSPEC = "userIncompleteReports";
     public static final String ENTITY_NAME = "GeneratedReport";
 
 
@@ -364,6 +368,70 @@ public abstract class _GeneratedReport
 
     // ----------------------------------------------------------
     /**
+     * Retrieve this object's <code>isComplete</code> value.
+     * @return the value of the attribute
+     */
+    public boolean isComplete()
+    {
+        Number result =
+            (Number)storedValueForKey( "isComplete" );
+        return ( result == null )
+            ? false
+            : ( result.intValue() > 0 );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isComplete</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsComplete( boolean value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsComplete("
+                + value + "): was " + isComplete() );
+        }
+        Number actual =
+            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+        setIsCompleteRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isComplete</code> value.
+     * @return the value of the attribute
+     */
+    public Number isCompleteRaw()
+    {
+        return (Number)storedValueForKey( "isComplete" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isComplete</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsCompleteRaw( Number value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsCompleteRaw("
+                + value + "): was " + isCompleteRaw() );
+        }
+        takeStoredValueForKey( value, "isComplete" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve this object's <code>updateMutableFields</code> value.
      * @return the value of the attribute
      */
@@ -428,35 +496,6 @@ public abstract class _GeneratedReport
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>uuid</code> value.
-     * @return the value of the attribute
-     */
-    public String uuid()
-    {
-        return (String)storedValueForKey( "uuid" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>uuid</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setUuid( String value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setUuid("
-                + value + "): was " + uuid() );
-        }
-        takeStoredValueForKey( value, "uuid" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Called just before this object is saved to the database.
      */
     public void saveMutables()
@@ -507,7 +546,6 @@ public abstract class _GeneratedReport
         log.debug("flushCaches()");
         errorsCache = null;
         errorsRawCache  = null;
-        setUpdateMutableFields( false );
         super.flushCaches();
     }
 
@@ -650,7 +688,8 @@ public abstract class _GeneratedReport
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
-    public NSArray dataSetQueries()
+    @SuppressWarnings("unchecked")
+    public NSArray<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries()
     {
         return (NSArray)storedValueForKey( "dataSetQueries" );
     }
@@ -663,7 +702,7 @@ public abstract class _GeneratedReport
      *
      * @param value The new set of entities to relate to
      */
-    public void setDataSetQueries( NSMutableArray value )
+    public void setDataSetQueries( NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>  value )
     {
         if (log.isDebugEnabled())
         {
@@ -690,7 +729,8 @@ public abstract class _GeneratedReport
             log.debug( "addToDataSetQueries("
                 + value + "): was " + dataSetQueries() );
         }
-        NSMutableArray array = (NSMutableArray)dataSetQueries();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
         willChange();
         array.addObject( value );
     }
@@ -712,7 +752,8 @@ public abstract class _GeneratedReport
             log.debug( "RemoveFromDataSetQueries("
                 + value + "): was " + dataSetQueries() );
         }
-        NSMutableArray array = (NSMutableArray)dataSetQueries();
+        NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportDataSetQuery>)dataSetQueries();
         willChange();
         array.removeObject( value );
     }
@@ -828,7 +869,8 @@ public abstract class _GeneratedReport
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForUser(
+    @SuppressWarnings("unchecked")
+    public static NSArray<GeneratedReport> objectsForUser(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
         )
@@ -836,18 +878,21 @@ public abstract class _GeneratedReport
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "user", "GeneratedReport" );
 
-        NSMutableDictionary bindings = new NSMutableDictionary();
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
 
         if ( userBinding != null )
+        {
             bindings.setObjectForKey( userBinding,
                                       "user" );
+        }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
         NSArray result = context.objectsWithFetchSpecification( spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForUser(ec"
-
+            
                 + ", " + userBinding
                 + "): " + result );
         }
@@ -857,34 +902,78 @@ public abstract class _GeneratedReport
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>Uuid</code>
+     * Retrieve object according to the <code>UserCompleteReports</code>
      * fetch specification.
      *
      * @param context The editing context to use
-     * @param uuidBinding fetch spec parameter
+     * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray objectsForUuid(
+    @SuppressWarnings("unchecked")
+    public static NSArray<GeneratedReport> objectsForUserCompleteReports(
             EOEditingContext context,
-            String uuidBinding
+            net.sf.webcat.core.User userBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "uuid", "GeneratedReport" );
+            .fetchSpecificationNamed( "userCompleteReports", "GeneratedReport" );
 
-        NSMutableDictionary bindings = new NSMutableDictionary();
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
 
-        if ( uuidBinding != null )
-            bindings.setObjectForKey( uuidBinding,
-                                      "uuid" );
+        if ( userBinding != null )
+        {
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
         NSArray result = context.objectsWithFetchSpecification( spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForUuid(ec"
+            log.debug( "objectsForUserCompleteReports(ec"
+            
+                + ", " + userBinding
+                + "): " + result );
+        }
+        return result;
+    }
 
-                + ", " + uuidBinding
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>UserIncompleteReports</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<GeneratedReport> objectsForUserIncompleteReports(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "userIncompleteReports", "GeneratedReport" );
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if ( userBinding != null )
+        {
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForUserIncompleteReports(ec"
+            
+                + ", " + userBinding
                 + "): " + result );
         }
         return result;

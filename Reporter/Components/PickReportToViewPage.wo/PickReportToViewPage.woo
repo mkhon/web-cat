@@ -1,56 +1,67 @@
 {
-    "WebObjects Release" = "WebObjects 5.1"; 
-	encoding = NSUTF8StringEncoding; 
+    "WebObjects Release" = "WebObjects 5.1";
+    encoding = NSUTF8StringEncoding;
     variables = {
         generatedReportsDisplayGroup = {
-            class = WODisplayGroup; 
+            class = WODisplayGroup;
             dataSource = {
-                class = EODatabaseDataSource; 
-                editingContext = localContext; 
+                class = EODatabaseDataSource;
+                editingContext = localContext;
                 fetchSpecification = {
-			        class = EOFetchSpecification; 
-			        entityName = GeneratedReport; 
-			        fetchLimit = 0; 
-			        isDeep = YES; 
-			        qualifier = {
-			            class = EOKeyValueQualifier; 
-			            key = user;
-			            selectorName = "isEqualTo:"; 
-			            value = { _key = user; class = EOQualifierVariable; }; 
-			        }; 
-			    };
-            }; 
-            fetchesOnLoad = YES; 
-            formatForLikeQualifier = "%@*"; 
-            localKeys = (); 
-            numberOfObjectsPerBatch = 15; 
-            selectsFirstObjectAfterFetch = YES; 
-            sortOrdering = ({class = EOSortOrdering; key = generatedTime; selectorName = "compareDescending:"; }); 
-        }; 
+                    class = EOFetchSpecification;
+                    entityName = GeneratedReport;
+                    fetchLimit = 0;
+                    isDeep = YES;
+                    qualifier = {
+                        class = EOAndQualifier;
+                        qualifiers = (
+                            {
+                                class = EOKeyValueQualifier;
+                                key = user;
+                                selectorName = "isEqualTo:";
+                                value = {_key = user; class = EOQualifierVariable; };
+                            },
+                            {
+                                class = EOKeyValueQualifier;
+                                key = isComplete;
+                                selectorName = "isEqualTo:";
+                                value = {class = NSNumber; value = 1; };
+                            },
+                        );
+                    };
+                };
+            };
+            fetchesOnLoad = YES;
+            formatForLikeQualifier = "%@*";
+            localKeys = ();
+            numberOfObjectsPerBatch = 15;
+            selectsFirstObjectAfterFetch = YES;
+            sortOrdering = ({class = EOSortOrdering; key = generatedTime; selectorName = "compareDescending:"; });
+        };
         enqueuedReportsDisplayGroup = {
-            class = WODisplayGroup; 
+            class = WODisplayGroup;
             dataSource = {
-                class = EODatabaseDataSource; 
-                editingContext = localContext; 
+                class = EODatabaseDataSource;
+                editingContext = localContext;
                 fetchSpecification = {
-			        class = EOFetchSpecification; 
-			        entityName = EnqueuedReportJob; 
-			        fetchLimit = 0; 
-			        isDeep = YES; 
-			        qualifier = {
-			            class = EOKeyValueQualifier; 
-			            key = user;
-			            selectorName = "isEqualTo:"; 
-			            value = { _key = user; class = EOQualifierVariable; }; 
-			        }; 
-			    };
-            }; 
-            fetchesOnLoad = YES; 
-            formatForLikeQualifier = "%@*"; 
-            localKeys = (); 
-            numberOfObjectsPerBatch = 15; 
-            selectsFirstObjectAfterFetch = YES; 
-            sortOrdering = ({class = EOSortOrdering; key = queueTime; selectorName = "compareAscending:"; }); 
-        }; 
-    }; 
+                    class = EOFetchSpecification;
+                    entityName = EnqueuedReportGenerationJob;
+                    fetchLimit = 0;
+                    isDeep = YES;
+                    qualifier = {
+                        class = EOKeyValueQualifier;
+                        key = user;
+                        selectorName = "isEqualTo:";
+                        value = { _key = user; class = EOQualifierVariable; };
+                    };
+                };
+            };
+            fetchesOnLoad = YES;
+            formatForLikeQualifier = "%@*";
+            localKeys = ();
+            numberOfObjectsPerBatch = 15;
+            selectsFirstObjectAfterFetch = YES;
+            sortOrdering = ({class = EOSortOrdering; key = queueTime; selectorName = "compareAscending:"; });
+        };
+    };
 }

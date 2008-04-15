@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IProgressManagerDescriptionProvider.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: EnqueuedReportGenerationJob.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,23 +21,33 @@
 
 package net.sf.webcat.reporter;
 
-//-------------------------------------------------------------------------
+import com.webobjects.foundation.*;
+import com.webobjects.eocontrol.*;
+import net.sf.webcat.core.Application;
+
+// -------------------------------------------------------------------------
 /**
- * Defines the interface for objects that can provide job descriptions
- * to the {@link ProgressManager}.
+ * Represents the generation phase of a report in Web-CAT. The rendering phase
+ * is handled by the {@link EnqueuedReportRenderJob} entity.
  *
- * @author  Anthony Allevato
- * @version $Id: IProgressManagerDescriptionProvider.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: EnqueuedReportGenerationJob.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  */
-public interface IProgressManagerDescriptionProvider
+public class EnqueuedReportGenerationJob
+    extends _EnqueuedReportGenerationJob
 {
-    //~ Methods ...............................................................
+    //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
-     * Get the description for a given job.
-     * @param jobToken The job to describe
-     * @return The description.
+     * Creates a new EnqueuedReportJob object.
      */
-	String description(Object jobToken);
+    public EnqueuedReportGenerationJob()
+    {
+        super();
+    }
+
+
+    //~ Methods ...............................................................
+
 }

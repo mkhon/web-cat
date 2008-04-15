@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSetProvider.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: OdaResultSetProvider.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,54 +23,66 @@ package net.sf.webcat.reporter;
 
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableDictionary;
-import net.sf.webcat.oda.IWebCATResultSet;
-import net.sf.webcat.oda.IWebCATResultSetProvider;
+import net.sf.webcat.oda.commons.IWebCATResultSet;
+import net.sf.webcat.oda.commons.IWebCATResultSetProvider;
 
 //-------------------------------------------------------------------------
 /**
- * Generates result sets.
+ * Generates result sets for a report generation job based on the data set
+ * queries that it has specified.
  *
- * @author aallowat
- * @version $Id: OdaResultSetProvider.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: OdaResultSetProvider.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
-public class OdaResultSetProvider
-    implements IWebCATResultSetProvider
+public class OdaResultSetProvider implements IWebCATResultSetProvider
 {
     //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     /**
-     * Create a new provider for a report job.
-     * @param job the report job
+     * Create a new result set provider for a report job.
+     *
+     * @param job
+     *            the report job
+     * @param report
+     *            the generated report that this data will go into
      */
-	public OdaResultSetProvider(EnqueuedReportJob job)
-	{
-		jobUuid = job.uuid();
-		dataSetQueries = job.dataSetQueries();
-		queryMap = new NSMutableDictionary<String, ReportQuery>();
+    public OdaResultSetProvider(EnqueuedReportGenerationJob job)
+    {
+        jobId = job.id();
 
-		for (ReportDataSetQuery dataSetQuery : dataSetQueries)
-		{
-			String uuid = dataSetQuery.dataSet().uuid();
-			ReportQuery query = dataSetQuery.reportQuery();
-			queryMap.setObjectForKey(query, uuid);
-		}
-	}
+        dataSetQueries = job.dataSetQueries();
+        queryMap = new NSMutableDictionary<Integer, ReportQuery>();
+
+        // Construct the mapping from data set IDs to queries that define the
+        // data to be retrieved.
+
+        for (ReportDataSetQuery dataSetQuery : dataSetQueries)
+        {
+            Number dataSetId = dataSetQuery.dataSet().id();
+            ReportQuery query = dataSetQuery.reportQuery();
+
+            queryMap.setObjectForKey(query,
+                    Integer.valueOf(dataSetId.intValue()));
+        }
+    }
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-	public IWebCATResultSet resultSetWithUuid(String uuid)
-	{
-		ReportQuery query = queryMap.objectForKey(uuid);
-		return new OdaResultSet(jobUuid, query);
-	}
+    public IWebCATResultSet resultSetWithId(String id)
+    {
+        Integer dataSetId = Integer.parseInt(id);
+        ReportQuery query = queryMap.objectForKey(dataSetId);
+
+        return new OdaResultSet(jobId, query);
+    }
 
 
     //~ Instance/static variables .............................................
 
-    private String jobUuid;
+    private Number jobId;
     private NSArray<ReportDataSetQuery> dataSetQueries;
-    private NSMutableDictionary<String, ReportQuery> queryMap;
+    private NSMutableDictionary<Integer, ReportQuery> queryMap;
 }

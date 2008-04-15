@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TemplateLibraryPage.java,v 1.7 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: TemplateLibraryPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,6 +25,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
+import com.webobjects.foundation.NSMutableDictionary;
 import er.extensions.ERXValueUtilities;
 import java.io.File;
 import java.util.Iterator;
@@ -41,8 +42,8 @@ import org.apache.log4j.Logger;
  * Shows the list of available report templates and allows one to upload new
  * templates or manage existing ones.
  *
- * @author aallowat
- * @version $Id: TemplateLibraryPage.java,v 1.7 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: TemplateLibraryPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
  */
 public class TemplateLibraryPage
     extends WCComponent
@@ -110,11 +111,20 @@ public class TemplateLibraryPage
             return null;
         }
 
-        int version = ReportTemplate.versionFromComponents(1, 0, 0);
+        ReportTemplate template = ReportTemplate.createNewReportTemplate(
+            localContext(), user(), uploadedName, uploadedData, messages());
 
-        ReportTemplate.createNewReportTemplate(
-            localContext(), user(), uploadedName, uploadedData,
-            version, messages());
+        if(template != null)
+        {
+            template.setRootTemplateRelationship(template);
+            template.setVersion(VersionUtils.initialVersion());
+            template.setChangeHistory("Initial version.");
+
+            IRepositoryIdProvider idProvider =
+                new DirectActionRepositoryIdProvider(context());
+
+            template.updateRepositoryMetadataAndFinalize(idProvider);
+        }
 
         applyLocalChanges();
         uploadedName = null;
@@ -131,27 +141,30 @@ public class TemplateLibraryPage
     public boolean canEditTemplate()
     {
         User user = user();
-        return user.hasAdminPrivileges() || user == reportTemplate.author();
+        return user.hasAdminPrivileges() || user == reportTemplate.user();
     }
 
 
     // ----------------------------------------------------------
     public WOComponent download()
     {
-    	File file = new File(reportTemplate.uploadedFileName());
+        File actualFile = new File(reportTemplate.filePath());
+        String deliveredName = reportTemplate.name() + "_"
+            + reportTemplate.version() + ReportTemplate.TEMPLATE_EXTENSION;
 
-    	DeliverFile myNextPage = (DeliverFile)pageWithName(
+        DeliverFile myNextPage = (DeliverFile)pageWithName(
                 DeliverFile.class.getName() );
-        myNextPage.setFileName( file );
-        myNextPage.setContentType( WCFile.mimeType( file ) );
-        myNextPage.setStartDownload( !WCFile.showInline( file ) );
+        myNextPage.setFileName( actualFile );
+        myNextPage.setDeliveredName( deliveredName );
+        myNextPage.setContentType( WCFile.mimeType( actualFile ) );
+        myNextPage.setStartDownload( !WCFile.showInline( actualFile ) );
         return myNextPage;
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Publish/unpublish a plug-in by togglinh its isPublished attribute.
+     * Publish/unpublish a plug-in by toggling its isPublished attribute.
      * @return null to refresh the page
      */
     public WOComponent togglePublished()
@@ -159,27 +172,6 @@ public class TemplateLibraryPage
         reportTemplate.setIsPublished( !reportTemplate.isPublished() );
         applyLocalChanges();
         return null;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent deleteTemplate()
-    {
-    	reportTemplate.deleteTemplate(localContext());
-    	applyLocalChanges();
-    	return null;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent editTemplate()
-    {
-/*    	EditTemplatePage page =
-    		(EditTemplatePage)pageWithName(EditTemplatePage.class.getName());
-    	page.reportTemplate = reportTemplate;
-
-    	return page;*/
-    	return null;
     }
 
 

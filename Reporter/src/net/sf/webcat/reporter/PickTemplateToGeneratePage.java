@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickTemplateToGeneratePage.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: PickTemplateToGeneratePage.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,6 @@ package net.sf.webcat.reporter;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
-import java.util.UUID;
 import net.sf.webcat.core.WCComponent;
 import net.sf.webcat.grader.EditPluginGlobalsPage;
 
@@ -32,8 +31,8 @@ import net.sf.webcat.grader.EditPluginGlobalsPage;
 /**
  * This page allows the user to select the template to use for a new report.
  *
- * @author aallowat
- * @version $Id: PickTemplateToGeneratePage.java,v 1.6 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: PickTemplateToGeneratePage.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
  */
 public class PickTemplateToGeneratePage
     extends ReporterComponent
@@ -63,21 +62,20 @@ public class PickTemplateToGeneratePage
     // ----------------------------------------------------------
     public NSArray<ReportTemplate> reportTemplates()
     {
-    	if (reportTemplates == null)
-    	{
-    		reportTemplates =
-    			ReportTemplate.objectsForAllTemplates(localContext());
-    	}
-    	return reportTemplates;
+        if (reportTemplates == null)
+        {
+            reportTemplates =
+                ReportTemplate.objectsForAllTemplates(localContext());
+        }
+        return reportTemplates;
     }
 
 
     // ----------------------------------------------------------
     public WOComponent templateChosen()
     {
-    	clearLocalReportState();
+        clearLocalReportState();
 
-    	setLocalReportUuid(UUID.randomUUID().toString());
         setLocalReportTemplate(reportTemplate);
         setLocalCurrentReportDataSet(0);
         createLocalPageController();

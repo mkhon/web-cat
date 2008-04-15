@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.7 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: GeneratedReportPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,8 +41,8 @@ import org.eclipse.birt.core.exception.BirtException;
 /**
  * This page displayed a generated report.
  *
- * @author  Anthony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.7 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author  Tony Allevato
+ * @version $Id: GeneratedReportPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -64,7 +64,9 @@ public class GeneratedReportPage
 
     /** The associated refresh interval for this page */
     public int refreshTimeout = 15;
-    public GeneratedReport cachedGeneratedReport;
+    public GeneratedReport generatedReport;
+    public Number reportGenerationJobId;
+    public ReporterLongResponseDelegate longResponseDelegate;
     public IRenderingMethod renderingMethod;
     public IRenderingMethod selectedRenderingMethod;
     public MutableDictionary error;
@@ -75,180 +77,156 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-    	cachedGeneratedReport = null;
+        EnqueuedReportGenerationJob genJob = localReportGenerationJob();
 
-    	super.appendToResponse(response, context);
+        if(genJob != null)
+        {
+            reportGenerationJobId = genJob.id();
+        }
+        else
+        {
+            reportGenerationJobId = null;
+        }
+
+        // Get the generated report the first time we load the page, if it
+        // exists. If it doesn't, then we'll continue trying to update it in
+        // the long response delegate.
+
+        generatedReport = localGeneratedReport();
+
+        longResponseDelegate = new Delegate();
+
+        super.appendToResponse(response, context);
     }
 
 
     // ----------------------------------------------------------
     public ReporterComponent self()
     {
-    	return this;
-    }
-
-
-    // ----------------------------------------------------------
-    public GeneratedReport generatedReport()
-    {
-    	if (cachedGeneratedReport == null)
-    	{
-	    	NSArray<GeneratedReport> reports = GeneratedReport.objectsForUuid(
-	    			localContext(), localReportUuid());
-
-	    	if (reports.count() > 0)
-	    	{
-	    		if (reports.count() != 1)
-	    		{
-	    			log.warn("There is more than one report with uuid " +
-	    					localReportUuid() + "!");
-	    		}
-	    		cachedGeneratedReport = reports.objectAtIndex(0);
-	    	}
-    	}
-    	return cachedGeneratedReport;
+        return this;
     }
 
 
     // ----------------------------------------------------------
     public boolean isReportRendered()
     {
-    	GeneratedReport report = generatedReport();
+        return (generatedReport != null
+                && generatedReport.isRenderedWithMethod(localRenderingMethod()));
+    }
 
-    	return (report != null
-                && report.isRenderedWithMethod(localRenderingMethod()));
+
+    // ----------------------------------------------------------
+    public boolean reportHasRenderingErrors()
+    {
+        return (generatedReport != null
+                && generatedReport.hasRenderingErrors());
     }
 
 
     // ----------------------------------------------------------
     public NSArray<MutableDictionary> generatedReportErrors()
     {
-    	if (generatedReport() == null)
-    	{
-    		return null;
-    	}
-    	else
-    	{
-    		return generatedReport().errors();
-    	}
+        if (generatedReport == null)
+        {
+            return null;
+        }
+        else
+        {
+            return generatedReport.errors();
+        }
     }
 
 
     // ----------------------------------------------------------
-    public String reportUuid()
+    public NSArray<MutableDictionary> renderingErrors()
     {
-    	return localReportUuid();
+        if (generatedReport == null)
+        {
+            return null;
+        }
+        else
+        {
+            return generatedReport.renderingErrors();
+        }
     }
 
 
     // ----------------------------------------------------------
     public String errorSeverity()
     {
-    	int severity = (Integer)error.objectForKey("severity");
+        int severity = (Integer)error.objectForKey("severity");
 
-		switch (severity)
-		{
-		    case BirtException.OK:
-		        return "OK";
+        switch (severity)
+        {
+            case BirtException.OK:
+                return "OK";
 
-		    case BirtException.INFO:
-		        return "INFO";
+            case BirtException.INFO:
+                return "INFO";
 
-		    case BirtException.WARNING:
-		        return "WARNING";
+            case BirtException.WARNING:
+                return "WARNING";
 
-		    case BirtException.ERROR:
-		        return "ERROR";
+            case BirtException.ERROR:
+                return "ERROR";
 
-		    case BirtException.CANCEL:
-		        return "CANCEL";
-		}
+            case BirtException.CANCEL:
+                return "CANCEL";
+        }
 
-		return "ERROR";
+        return "ERROR";
     }
 
 
     // ----------------------------------------------------------
     public String errorCssClass()
     {
-    	int severity = (Integer)error.objectForKey("severity");
+        int severity = (Integer)error.objectForKey("severity");
 
-		switch (severity)
-		{
-		    case BirtException.OK:
-		    case BirtException.INFO:
-		    case BirtException.CANCEL:
-		        return "infoBox";
+        switch (severity)
+        {
+            case BirtException.OK:
+            case BirtException.INFO:
+            case BirtException.CANCEL:
+                return "infoBox";
 
-		    case BirtException.WARNING:
-		        return "warningBox";
+            case BirtException.WARNING:
+                return "warningBox";
 
-		    case BirtException.ERROR:
-		        return "errorBox";
-		}
-    	return "errorBox";
+            case BirtException.ERROR:
+                return "errorBox";
+        }
+        return "errorBox";
     }
 
 
     // ----------------------------------------------------------
     public String errorMessage()
     {
-    	return (String)error.objectForKey("message");
+        return (String)error.objectForKey("message");
     }
 
 
     // ----------------------------------------------------------
     public String errorCause()
     {
-    	return (String)error.objectForKey("cause");
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns null to force a reload of the current page.
-     * @return always null, to refresh the current page
-     */
-    public WOComponent refreshAction()
-    {
-        return null;
-    }
-
-
-    // ----------------------------------------------------------
-    public Object jobToken()
-    {
-    	return localReportUuid();
-    }
-
-
-    // ----------------------------------------------------------
-    public AjaxLongResponseHandler longResponseHandler()
-    {
-    	return new AjaxLongResponseHandler()
-        {
-    		public void cancel()
-    		{
-    			Reporter.getInstance().reportQueueProcessor()
-                    .cancelJobWithUuid(localContext(), localReportUuid());
-    		}
-    	};
+        return (String)error.objectForKey("cause");
     }
 
 
     // ----------------------------------------------------------
     public NSArray<IRenderingMethod> renderingMethods()
     {
-    	return Reporter.getInstance().allRenderingMethods();
+        return Reporter.getInstance().allRenderingMethods();
     }
 
 
     // ----------------------------------------------------------
     public WOComponent rerenderReport()
     {
-    	setLocalRenderingMethod(selectedRenderingMethod.methodName());
-    	commitReportRendering();
-    	return pageWithName(GeneratedReportPage.class.getName());
+        setLocalRenderingMethod(selectedRenderingMethod.methodName());
+        commitReportRendering(generatedReport);
+        return pageWithName(GeneratedReportPage.class.getName());
     }
 
 
@@ -316,6 +294,173 @@ public class GeneratedReportPage
     }
 
 
+    // ----------------------------------------------------------
+    private class Delegate extends ReporterLongResponseDelegate
+    {
+        // ----------------------------------------------------------
+        /**
+         * Cache the
+         */
+        public void longResponseAwakened()
+        {
+            if (generatedReport == null)
+            {
+                if (reportGenerationJobId != null)
+                {
+                    Integer reportId =
+                        ReportGenerationTracker.getInstance().reportIdForJobId(
+                            reportGenerationJobId.intValue());
+
+                    if(reportId != null)
+                    {
+                        // The GeneratedReport was created while we have been
+                        // observing the progress, so store it for future
+                        // updates.
+
+                        generatedReport = GeneratedReport.forId(
+                                localContext(), reportId);
+
+                        // The new state will be picked up in the
+                        // (generatedReport != null) block below.
+                    }
+                    else
+                    {
+                        // There is a generation job, but no report ID has been
+                        // registered for it yet in the tracker, so it is still
+                        // in the queue.
+
+                        state = STATE_ENQUEUED;
+                    }
+                }
+
+                // No else clause; if reportGenerationJobId == null, then
+                // generatedReport will not be null
+            }
+
+            if (generatedReport != null)
+            {
+                boolean ready =
+                    isReportRendered() || reportHasRenderingErrors();
+
+                if (ready)
+                {
+                    // The report is rendered, so the state is "ready".
+
+                    state = STATE_READY;
+                }
+                else if (generatedReport.isComplete())
+                {
+                    NSArray<EnqueuedReportRenderJob> jobs =
+                        EnqueuedReportRenderJob.objectsForGeneratedReport(
+                                localContext(), generatedReport);
+
+                    if (jobs.count() == 0)
+                    {
+                        // If the report is complete, it is not "ready", and
+                        // there are no rendering jobs currently in the queue
+                        // for it, then we commit one now.
+
+                        commitReportRendering(generatedReport);
+                    }
+
+                    state = STATE_RENDERING;
+                }
+                else
+                {
+                    // The GeneratedReport has been created but it is not yet
+                    // complete.
+
+                    state = STATE_GENERATING;
+                }
+            }
+        }
+
+
+        // ----------------------------------------------------------
+        public float fractionOfWorkDone()
+        {
+            switch (state)
+            {
+            case STATE_ENQUEUED:
+                return 0.00f;
+
+            case STATE_GENERATING:
+                ReportGenerationTracker tracker =
+                    ReportGenerationTracker.getInstance();
+
+                return tracker.fractionOfWorkDoneForJobId(
+                        reportGenerationJobId.intValue()) * GENERATING_FRACTION;
+
+            case STATE_RENDERING:
+                return GENERATING_FRACTION;
+
+            case STATE_READY:
+                return 1.00f;
+
+            default:
+                return 0.00f;
+            }
+        }
+
+
+        // ----------------------------------------------------------
+        public boolean isDone()
+        {
+            return (state == STATE_READY);
+        }
+
+
+        // ----------------------------------------------------------
+        public String workDescription()
+        {
+            switch (state)
+            {
+            case STATE_ENQUEUED:
+                return String.format("Your report is currently in the queue "
+                        + "and will be processed shortly (queue position %d).",
+                        queuePosition());
+
+            case STATE_GENERATING:
+                return "Your report is currently being generated.";
+
+            case STATE_RENDERING:
+                return "Your report has been generated and is now being rendered.";
+
+            default:
+                return "";
+            }
+        }
+
+
+        // ----------------------------------------------------------
+        public boolean canCancel()
+        {
+            // Right now we don't permit canceling in the render phase, only in
+            // the generation phase. This may change in the future.
+
+            return (state == STATE_ENQUEUED || state == STATE_GENERATING);
+        }
+
+
+        // ----------------------------------------------------------
+        public void cancel()
+        {
+            Reporter.getInstance().reportGenerationQueueProcessor()
+                .cancelJobWithId(localContext(), reportGenerationJobId);
+        }
+
+
+        private static final int STATE_ENQUEUED = 0;
+        private static final int STATE_GENERATING = 1;
+        private static final int STATE_RENDERING = 2;
+        private static final int STATE_READY = 3;
+
+        private static final float GENERATING_FRACTION = 0.95f;
+
+        private int state;
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -335,24 +480,13 @@ public class GeneratedReportPage
         if ( jobData == null )
         {
             jobData = new JobData();
-            NSMutableArray qualifiers = new NSMutableArray();
-            qualifiers.addObject( new EOKeyValueQualifier(
-                EnqueuedReportJob.DISCARDED_KEY,
-                EOQualifier.QualifierOperatorEqual,
-                ERXConstant.integerForInt( 0 )
-            ) );
-            qualifiers.addObject( new EOKeyValueQualifier(
-                EnqueuedReportJob.PAUSED_KEY,
-                EOQualifier.QualifierOperatorEqual,
-                ERXConstant.integerForInt( 0 )
-            ) );
             EOFetchSpecification fetchSpec =
                 new EOFetchSpecification(
-                    EnqueuedReportJob.ENTITY_NAME,
-                    new EOAndQualifier( qualifiers ),
+                    EnqueuedReportGenerationJob.ENTITY_NAME,
+                    null,
                     new NSArray( new Object[]{
                         new EOSortOrdering(
-                            EnqueuedReportJob.QUEUE_TIME_KEY,
+                            EnqueuedReportGenerationJob.QUEUE_TIME_KEY,
                             EOSortOrdering.CompareAscending
                         )
                     } )
@@ -369,7 +503,7 @@ public class GeneratedReportPage
             for ( int i = oldQueuePos; i >= 0; i-- )
             {
                 if ( jobData.jobs.objectAtIndex( i )
-                     == localEnqueuedJob() )
+                     == localReportGenerationJob() )
                 {
                     jobData.queuePosition = i;
                     break;
@@ -378,7 +512,8 @@ public class GeneratedReportPage
             oldQueuePos = jobData.queuePosition;
             if ( jobData.queuePosition == jobData.queueSize )
             {
-                log.error("cannot find job in queue for:" + localEnqueuedJob());
+                log.error("cannot find job in queue for:"
+                        + localReportGenerationJob());
             }
 
             // Reporter reporter = Reporter.getInstance();

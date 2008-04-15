@@ -2,11 +2,6 @@
     attributes = (
         { name = id; prototypeName = id; },
         {
-            columnName = CENTITYNAME; 
-            name = wcEntityName;
-            prototypeName = tinyText;
-        },
-        {
         	columnName = CDESCRIPTION;
         	name = description;
         	prototypeName = mediumText;
@@ -15,6 +10,11 @@
         	columnName = CUSERID;
         	name = userId;
         	prototypeName = foreignId;
+        },
+        {
+            columnName = CENTITYNAME; 
+            name = wcEntityName;
+            prototypeName = tinyText;
         },
         {
             columnName = CQUERYINFO; 
@@ -38,16 +38,16 @@
         }
     ); 
     attributesUsedForLocking = (
-    	wcEntityName,
     	description,
     	userId,
+    	wcEntityName,
     	updateMutableFields
     );
     className = net.sf.webcat.reporter.ReportQuery;
     classProperties = (
-    	wcEntityName,
     	description,
     	user,
+    	wcEntityName,
     	queryInfo,
     	updateMutableFields,
     	dataSetQueries

@@ -4,7 +4,7 @@
  |  Created by eogenerator
  |  DO NOT EDIT.  Make changes to ReportDataSet.java instead.
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,9 +24,9 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.eoaccess.*;
+import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class _ReportDataSet
     extends er.extensions.ERXGenericRecord
+    implements net.sf.webcat.core.MutableContainer.MutableContainerOwner
 {
     //~ Constructors ..........................................................
 
@@ -61,16 +62,19 @@ public abstract class _ReportDataSet
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
+     * @param updateMutableFields
      * @return The newly created object
      */
     public static ReportDataSet create(
-        EOEditingContext editingContext
+        EOEditingContext editingContext,
+        boolean updateMutableFields
         )
     {
         ReportDataSet eoObject = (ReportDataSet)
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _ReportDataSet.ENTITY_NAME);
+        eoObject.setUpdateMutableFields(updateMutableFields);
         return eoObject;
     }
 
@@ -135,16 +139,16 @@ public abstract class _ReportDataSet
     //~ Constants (for key names) .............................................
 
     // Attributes ---
+    public static final String CONSTRAINTS_KEY = "constraints";
     public static final String DESCRIPTION_KEY = "description";
     public static final String NAME_KEY = "name";
     public static final String REFERENCE_COUNT_KEY = "referenceCount";
-    public static final String UUID_KEY = "uuid";
+    public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
     public static final String WC_ENTITY_NAME_KEY = "wcEntityName";
     // To-one relationships ---
     public static final String REPORT_TEMPLATE_KEY = "reportTemplate";
     // To-many relationships ---
     // Fetch specifications ---
-    public static final String UUID_FSPEC = "uuid";
     public static final String ENTITY_NAME = "ReportDataSet";
 
 
@@ -193,6 +197,109 @@ public abstract class _ReportDataSet
             return er.extensions.ERXConstant.ZeroInteger;
         }
     }
+
+    //-- Local mutable cache --
+    private net.sf.webcat.core.MutableArray constraintsCache;
+    private NSData constraintsRawCache;
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>constraints</code> value.
+     * @return the value of the attribute
+     */
+    public net.sf.webcat.core.MutableArray constraints()
+    {
+    	NSData dbValue =
+            (NSData)storedValueForKey( "constraints" );
+        if ( constraintsRawCache != dbValue )
+        {
+            if ( dbValue != null && dbValue.equals( constraintsRawCache ) )
+            {
+                // They are still equal, so just update the raw cache
+                constraintsRawCache = dbValue;
+            }
+            else
+            {
+                // Underlying attribute may have changed because
+                // of a concurrent update through another editing
+                // context, so throw away current values.
+                constraintsRawCache = dbValue;
+                net.sf.webcat.core.MutableArray newValue =
+                    net.sf.webcat.core.MutableArray
+                    .objectWithArchiveData( dbValue );
+                if ( constraintsCache != null )
+                {
+                    constraintsCache.copyFrom( newValue );
+                }
+                else
+                {
+                    constraintsCache = newValue;
+                }
+                constraintsCache.setOwner( this );
+                setUpdateMutableFields( true );
+            }
+        }
+        else if ( dbValue == null && constraintsCache == null )
+        {
+            constraintsCache =
+                net.sf.webcat.core.MutableArray
+                .objectWithArchiveData( dbValue );
+             constraintsCache.setOwner( this );
+             setUpdateMutableFields( true );
+        }
+        return constraintsCache;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>constraints</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setConstraints( net.sf.webcat.core.MutableArray value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setConstraints("
+                + value + ")" );
+        }
+        if ( constraintsCache == null )
+        {
+            constraintsCache = value;
+            value.setHasChanged( false );
+            constraintsRawCache = value.archiveData();
+            takeStoredValueForKey( constraintsRawCache, "constraints" );
+        }
+        else if ( constraintsCache != value )  // ( constraintsCache != null )
+        {
+            constraintsCache.copyFrom( value );
+            setUpdateMutableFields( true );
+        }
+        else  // ( constraintsCache == non-null value )
+        {
+            // no nothing
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Clear the value of this object's <code>constraints</code>
+     * property.
+     */
+    public void clearConstraints()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "clearConstraints()" );
+        }
+        takeStoredValueForKey( null, "constraints" );
+        constraintsRawCache = null;
+        constraintsCache = null;
+    }
+
 
     // ----------------------------------------------------------
     /**
@@ -318,30 +425,65 @@ public abstract class _ReportDataSet
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>uuid</code> value.
+     * Retrieve this object's <code>updateMutableFields</code> value.
      * @return the value of the attribute
      */
-    public String uuid()
+    public boolean updateMutableFields()
     {
-        return (String)storedValueForKey( "uuid" );
+        Number result =
+            (Number)storedValueForKey( "updateMutableFields" );
+        return ( result == null )
+            ? false
+            : ( result.intValue() > 0 );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>uuid</code>
+     * Change the value of this object's <code>updateMutableFields</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setUuid( String value )
+    public void setUpdateMutableFields( boolean value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setUuid("
-                + value + "): was " + uuid() );
+            log.debug( "setUpdateMutableFields("
+                + value + "): was " + updateMutableFields() );
         }
-        takeStoredValueForKey( value, "uuid" );
+        Number actual =
+            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+        setUpdateMutableFieldsRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>updateMutableFields</code> value.
+     * @return the value of the attribute
+     */
+    public Number updateMutableFieldsRaw()
+    {
+        return (Number)storedValueForKey( "updateMutableFields" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>updateMutableFields</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setUpdateMutableFieldsRaw( Number value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUpdateMutableFieldsRaw("
+                + value + "): was " + updateMutableFieldsRaw() );
+        }
+        takeStoredValueForKey( value, "updateMutableFields" );
     }
 
 
@@ -371,6 +513,72 @@ public abstract class _ReportDataSet
                 + value + "): was " + wcEntityName() );
         }
         takeStoredValueForKey( value, "wcEntityName" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called just before this object is saved to the database.
+     */
+    public void saveMutables()
+    {
+        log.debug("saveMutables()");
+        if ( constraintsCache != null
+            && constraintsCache.hasChanged() )
+        {
+            constraintsRawCache = constraintsCache.archiveData();
+            takeStoredValueForKey( constraintsRawCache, "constraints" );
+            constraintsCache.setHasChanged( false );
+        }
+
+        setUpdateMutableFields( false );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called just before this object is saved to the database.
+     */
+    public void willUpdate()
+    {
+        log.debug("willUpdate()");
+        saveMutables();
+        super.willUpdate();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called just before this object is inserted into the database.
+     */
+    public void willInsert()
+    {
+        log.debug("willInsert()");
+        saveMutables();
+        super.willInsert();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called when the object is invalidated.
+     */
+    public void flushCaches()
+    {
+        log.debug("flushCaches()");
+        constraintsCache = null;
+        constraintsRawCache  = null;
+        super.flushCaches();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called when an owned mutable container object is changed.
+     */
+    public void mutableContainerHasChanged()
+    {
+        setUpdateMutableFields( true );
     }
 
 
@@ -432,42 +640,6 @@ public abstract class _ReportDataSet
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "reportTemplate" );
         }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve object according to the <code>Uuid</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @param uuidBinding fetch spec parameter
-     * @return an NSArray of the entities retrieved
-     */
-    public static NSArray objectsForUuid(
-            EOEditingContext context,
-            String uuidBinding
-        )
-    {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "uuid", "ReportDataSet" );
-
-        NSMutableDictionary bindings = new NSMutableDictionary();
-
-        if ( uuidBinding != null )
-            bindings.setObjectForKey( uuidBinding,
-                                      "uuid" );
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
-
-        NSArray result = context.objectsWithFetchSpecification( spec );
-        if (log.isDebugEnabled())
-        {
-            log.debug( "objectsForUuid(ec"
-
-                + ", " + uuidBinding
-                + "): " + result );
-        }
-        return result;
     }
 
 

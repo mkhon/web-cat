@@ -1,24 +1,22 @@
 LongResponse: net.sf.webcat.reporter.ReporterLongResponse {
-	jobToken = jobToken;
-	refreshInterval = 3;
-	handler = longResponseHandler;
-	workingMessage = "Your report is being generated. You are free to continue using Web-CAT while the report runs in the background. To come back and check the progress of this report, visit the <b>View</b> submenu in the <b>Reports</b> section of Web-CAT.";
-	cancellationMessage = "You have <b>cancelled</b> the generation of this report. Use one of the tabs above to return to Web-CAT.";
+    delegate = longResponseDelegate;
+    workingMessage = "Your report is being generated. You are free to continue using Web-CAT while the report runs in the background. To come back and check the progress of this report, visit the <b>View</b> submenu in the <b>Reports</b> section of Web-CAT.";
+    cancellationMessage = "You have <b>canceled</b> the generation of this report. Use one of the tabs above to return to Web-CAT.";
 }
 
 RenderingMethod: WOPopUpButton {
-	list = renderingMethods;
-	item = renderingMethod;
-	selection = selectedRenderingMethod;
-	displayString = renderingMethod.displayName;  // VALID
+    list = renderingMethods;
+    item = renderingMethod;
+    selection = selectedRenderingMethod;
+    displayString = renderingMethod.displayName;  // VALID
 }
 
 Rerender: WOSubmitButton {
-	value = "Re-render Report";
-	action = rerenderReport;
+    value = "Re-render Report";
+    action = rerenderReport;
 }
 
 ReportContents: net.sf.webcat.reporter.ReportContentsBlock {
-	generatedReport = generatedReport;
-	owner = self;
+    generatedReport = generatedReport;
+    owner = self;
 }

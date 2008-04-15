@@ -4,129 +4,129 @@
 <h2>Published Report Templates (Available to All)</h2>
 
 <!--
-	Displays the table of published report templates if any exist.
+    Displays the table of published report templates if any exist.
 -->
 <wo:if condition="$publishedTemplateGroup.displayedObjects.count">
-	<div class="shadow"><table><tbody>
-	<tr>
-		<th>Published Report Templates
-			<wo:if condition="$terse"><wo name="VerboseDescriptions"/></wo:if>
-			<wo:else><wo name="TerseDescriptions"/></wo:else>
-		</th>
-		<th class="sm">Last Modified</th>
-		<th>Will Update?</th>
-		<th>Action</th>
-	</tr>
-	<wo:loop list="$publishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
-		<wo:tr index="$index">
-			<td>
-				<b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.displayableVersion"/></b>
-				<wo:not condition="$terse"><br/>
-					<b>Installed by:</b> <wo:str value="$reportTemplate.author.nameAndUid"/><br/>
-					<b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
-				</wo:not>
-			</td>
-			<td><wo name="Date"/></td>
-			<td class="s">&nbsp;</td>
-			<td style="white-space:nowrap">
-				<wo name="DownloadNow"/>
-				<wo:if condition="$canEditTemplate">
-					<wo name="Unpublish"/>
-				</wo:if>
-			</td>
-		</wo:tr>
-	</wo:loop>
+    <div class="shadow"><table><tbody>
+    <tr>
+        <th>Published Report Templates
+            <wo:if condition="$terse"><wo name="VerboseDescriptions"/></wo:if>
+            <wo:else><wo name="TerseDescriptions"/></wo:else>
+        </th>
+        <th class="sm">Last Modified</th>
+        <th>Will Update?</th>
+        <th>Action</th>
+    </tr>
+    <wo:loop list="$publishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
+        <wo:tr index="$index">
+            <td>
+                <b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.version"/></b>
+                <wo:not condition="$terse"><br/>
+                    <b>Installed by:</b> <wo:str value="$reportTemplate.user.nameAndUid"/><br/>
+                    <b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
+                </wo:not>
+            </td>
+            <td><wo name="Date"/></td>
+            <td class="s">&nbsp;</td>
+            <td style="white-space:nowrap">
+                <wo name="DownloadNow"/>
+                <wo:if condition="$canEditTemplate">
+                    <wo name="Unpublish"/>
+                </wo:if>
+            </td>
+        </wo:tr>
+    </wo:loop>
 </tbody></table></div>
 <div class="spacer">&nbsp;</div>
 </wo:if><wo:else>
-	<p><span class="hl">No published report templates</span> have been installed.</p>
+    <p><span class="hl">No published report templates</span> have been installed.</p>
 </wo:else>
 
 <!--
-	Displays the list of all unpublished report templates if the current user
-	has administrator privileges.
+    Displays the list of all unpublished report templates if the current user
+    has administrator privileges.
 -->
 <wo:if condition="$user.hasAdminPrivileges">
-	<h2>Unpublished Report Templates (for Individual Use)</h2>
-	<wo:if condition="$unpublishedTemplateGroup.displayedObjects.count">
-		<div class="shadow"><table><tbody>
-		<tr>
-			<th>Unpublished Report Templates
-				<wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
-				<wo:else><wo name="VerboseDescriptions"/></wo:else>
-			</th>
-			<th class="sm">Last Modified</th>
-			<th>Will Update?</th>
-			<th>Action</th>
-		</tr>
-		<wo:loop list="$unpublishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
-			<wo:tr index="$index">
-				<td>
-					<b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.displayableVersion"/></b>
-					<wo:not condition="$terse"><br/>
-						<b>Installed by:</b> <wo:str value="$reportTemplate.author.nameAndUid"/><br/>
-						<b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
-					</wo:not>
-				</td>
-				<td><wo name="Date"/></td>
-				<td class="s">&nbsp;</td>
-				<td style="white-space:nowrap">
-					<wo name="DownloadNow"/>
-					<wo:if condition="$canEditTemplate">
-						<wo name="Publish"/><wo name="Delete"/>
-					</wo:if>
-				</td>
-			</wo:tr>
-		</wo:loop>
-		</tbody></table></div>
-		<div class="spacer">&nbsp;</div>
-	</wo:if>
-	<wo:else>
-		<p><span class="hl">No unpublished report templates</span> have been installed.</p>
-	</wo:else>
+    <h2>Unpublished Report Templates (for Individual Use)</h2>
+    <wo:if condition="$unpublishedTemplateGroup.displayedObjects.count">
+        <div class="shadow"><table><tbody>
+        <tr>
+            <th>Unpublished Report Templates
+                <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
+                <wo:else><wo name="VerboseDescriptions"/></wo:else>
+            </th>
+            <th class="sm">Last Modified</th>
+            <th>Will Update?</th>
+            <th>Action</th>
+        </tr>
+        <wo:loop list="$unpublishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
+            <wo:tr index="$index">
+                <td>
+                    <b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.version"/></b>
+                    <wo:not condition="$terse"><br/>
+                        <b>Installed by:</b> <wo:str value="$reportTemplate.user.nameAndUid"/><br/>
+                        <b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
+                    </wo:not>
+                </td>
+                <td><wo name="Date"/></td>
+                <td class="s">&nbsp;</td>
+                <td style="white-space:nowrap">
+                    <wo name="DownloadNow"/>
+                    <wo:if condition="$canEditTemplate">
+                        <wo name="Publish"/>
+                    </wo:if>
+                </td>
+            </wo:tr>
+        </wo:loop>
+        </tbody></table></div>
+        <div class="spacer">&nbsp;</div>
+    </wo:if>
+    <wo:else>
+        <p><span class="hl">No unpublished report templates</span> have been installed.</p>
+    </wo:else>
 </wo:if>
 
 <!--
-	If the current user does not have administrator privileges, then only
-	display the list of unpublished report templates for that user.
+    If the current user does not have administrator privileges, then only
+    display the list of unpublished report templates for that user.
 -->
 <wo:else>
-	<h2>Personal Report Templates (for Your Individual Use)</h2>
-	<wo:if condition="$personalTemplateGroup.displayedObjects.count">
-		<div class="shadow"><table><tbody>
-		<tr>
-			<th>Your Personal Report Templates
-				<wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
-				<wo:else><wo name="VerboseDescriptions"/></wo:else>
-			</th>
-			<th class="sm">Last Modified</th>
-			<th>Will Update?</th>
-			<th>Action</th>
-		</tr>
-		<wo:loop list="$personalTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
-			<wo:tr index="$index">
-				<td>
-					<b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.displayableVersion"/></b>
-					<wo:not condition="$terse"><br/>
-						<b>Installed by:</b> <wo:str value="$reportTemplate.author.nameAndUid"/><br/>
-						<b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
-					</wo:not>
-				</td>
-				<td><wo name="Date"/></td>
-				<td class="s">&nbsp;</td>
-				<td style="white-space:nowrap">
-					<wo name="DownloadNow"/>
-					<wo:if condition="$reportTemplate.isPublished"><wo name="Unpublish"/></wo:if>
-					<wo:else><wo name="Publish"/></wo:else>
-				</td>	
-			</wo:tr>
-		</wo:loop>
-		</tbody></table></div>
-		<div class="spacer">&nbsp;</div>
-	</wo:if>
-	<wo:else>
-		<p>You have not yet installed any personal report templates.</p>
-	</wo:else>
+    <h2>Personal Report Templates (for Your Individual Use)</h2>
+    <wo:if condition="$personalTemplateGroup.displayedObjects.count">
+        <div class="shadow"><table><tbody>
+        <tr>
+            <th>Your Personal Report Templates
+                <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
+                <wo:else><wo name="VerboseDescriptions"/></wo:else>
+            </th>
+            <th class="sm">Last Modified</th>
+            <th>Will Update?</th>
+            <th>Action</th>
+        </tr>
+        <wo:loop list="$personalTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
+            <wo:tr index="$index">
+                <td>
+                    <b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.version"/></b>
+                    <wo:not condition="$terse"><br/>
+                        <b>Installed by:</b> <wo:str value="$reportTemplate.user.nameAndUid"/><br/>
+                        <b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
+                    </wo:not>
+                </td>
+                <td><wo name="Date"/></td>
+                <td class="s">&nbsp;</td>
+                <td style="white-space:nowrap">
+                    <wo name="DownloadNow"/>
+                    <wo:if condition="$reportTemplate.isPublished"><wo name="Unpublish"/></wo:if>
+                    <wo:else><wo name="Publish"/></wo:else>
+                </td>
+            </wo:tr>
+        </wo:loop>
+        </tbody></table></div>
+        <div class="spacer">&nbsp;</div>
+    </wo:if>
+    <wo:else>
+        <p>You have not yet installed any personal report templates.</p>
+    </wo:else>
 </wo:else>
 
 <h2>Manually Upload a New Report Template</h2>

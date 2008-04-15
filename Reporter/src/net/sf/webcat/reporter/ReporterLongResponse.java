@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterLongResponse.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReporterLongResponse.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * real content is ready, and then updates the content using AJAX.
  *
  * @author Tony Allevato
- * @version $Id: ReporterLongResponse.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: ReporterLongResponse.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public class ReporterLongResponse
     extends WOComponent
@@ -46,133 +46,103 @@ public class ReporterLongResponse
     public ReporterLongResponse(WOContext aContext)
     {
         super(aContext);
-
-        doneAndRefreshed = false;
-        refreshInterval = ERXConstant.ZeroInteger;
-        performingAction = false;
     }
 
 
     //~ KVC Attributes (must be public) .......................................
 
-    public Object jobToken;
-    public AjaxLongResponseHandler handler;
+    public ReporterLongResponseDelegate delegate;
     public String cancellationMessage;
     public String workingMessage;
 
     // These two keys ensure that the task is only checked once, so that
     // all conditionals in the template always return consistent results,
     // even if the task finishes part-way through generation of this page
-    public boolean isDone      = false;
-    public boolean isCancelled = false;
+    public boolean isDone     = false;
+    public boolean isCanceled = false;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public int refreshInterval()
+    public double fractionOfWorkDone()
     {
-    	if (ERXConstant.ZeroInteger.equals(refreshInterval))
-        {
-    		Number n = (Number)valueForBinding("refreshInterval");
-    		if (n != null)
-            {
-    			refreshInterval = n;
-    		}
-    	}
-    	return refreshInterval.intValue();
+        return delegate.fractionOfWorkDone();
     }
 
 
     // ----------------------------------------------------------
-    public void setRefreshInterval(int value)
+    public String workDescription()
     {
-    	refreshInterval = new Integer(value);
+        return delegate.workDescription();
     }
 
 
     // ----------------------------------------------------------
-    public double percentOfWorkDone()
+    public void setFractionOfWorkDone(double value)
     {
-    	ProgressManager progress = ProgressManager.getInstance();
-
-    	if (jobToken == null || !progress.jobExists(jobToken))
-    	{
-    		return 0;
-    	}
-    	else
-    	{
-    		return progress.percentDoneOfJob(jobToken);
-    	}
+        // Keep KVC happy.
     }
 
 
     // ----------------------------------------------------------
-    public String taskDescription()
+    public void setWorkDescription(String value)
     {
-    	ProgressManager progress = ProgressManager.getInstance();
-
-    	if (jobToken != null && progress.jobExists(jobToken))
-    	{
-    		return progress.descriptionOfCurrentTaskForJob(jobToken);
-    	}
-    	else
-    	{
-    		return null;
-    	}
+        // Keep KVC happy.
     }
 
 
     // ----------------------------------------------------------
-    public void setPercentOfWorkDone(double value)
+    public boolean cannotCancel()
     {
-    	// Keep KVC happy.
-    }
-
-
-    // ----------------------------------------------------------
-    public void setTaskDescription(String value)
-    {
-    	// Keep KVC happy.
+        return !delegate.canCancel();
     }
 
 
     // ----------------------------------------------------------
     public WOActionResults cancelJob()
     {
-    	handler.cancel();
-    	isCancelled = true;
-    	return null;
+        delegate.cancel();
+        isCanceled = true;
+        return null;
     }
 
 
     // ----------------------------------------------------------
     public void awake()
     {
-    	ProgressManager progress = ProgressManager.getInstance();
+        super.awake();
 
-        if (jobToken != null && progress.jobExists(jobToken))
-        {
-            isDone = progress.isJobDone(jobToken);
-
-//            isCancelled =
-//                ( (LongResponseTaskWithProgress)task() ).isCancelled();
-        }
+        updateStateFromDelegate();
     }
 
 
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-    	super.appendToResponse(response, context);
+        // The first time the component is awakened, delegate appears to be
+        // null (bindings not yet resolved?), so we also check the isDone
+        // status here in order to bypass the progress bar entirely if the
+        // operation is already complete.
+
+        updateStateFromDelegate();
+
+        super.appendToResponse(response, context);
+    }
+
+
+    // ----------------------------------------------------------
+    private void updateStateFromDelegate()
+    {
+        if (delegate != null)
+        {
+            delegate.longResponseAwakened();
+            isDone = delegate.isDone();
+        }
     }
 
 
     //~ Instance/static variables .............................................
-
-    protected Number refreshInterval;
-    protected boolean performingAction;
-    protected boolean doneAndRefreshed;
 
     static Logger log = Logger.getLogger( ReporterLongResponse.class );
 }

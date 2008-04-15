@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HTMLRenderingMethod.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: HTMLRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,8 +43,8 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
 /**
  * Render method for HTML-viewable reports.
  *
- * @author aallowat
- * @version $Id: HTMLRenderingMethod.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: HTMLRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public class HTMLRenderingMethod
     extends AbstractRenderingMethod
@@ -89,8 +89,7 @@ public class HTMLRenderingMethod
         option.setEmbeddable(true);
         option.setImageHandler(new ReporterHTMLImageHandler(report,
             actionUrl));
-        option.setOutputFileName(GeneratedReport.renderedResourcePath(
-            report.uuid(), REPORT_ROOT_HTML));
+        option.setOutputFileName(report.renderedResourcePath(REPORT_ROOT_HTML));
 
         IRenderTask task = reportEngine().createRenderTask(document);
         task.setRenderOption(option);
@@ -104,8 +103,7 @@ public class HTMLRenderingMethod
         GeneratedReport report, WOResponse response, WOContext context)
         throws IOException
     {
-        String htmlPath = GeneratedReport.renderedResourcePath(
-            report.uuid(), REPORT_ROOT_HTML);
+        String htmlPath = report.renderedResourcePath(REPORT_ROOT_HTML);
         File htmlFile = new File(htmlPath);
 
         NSData htmlData = new NSData(

@@ -1,55 +1,73 @@
 <style>
 .infoBox {
-	background-color: white;
-	border: 1px solid gray;
-	padding: 5px;
+    background-color: white;
+    border: 1px solid gray;
+    padding: 5px;
 }
 
 .warningBox {
-	background-color: #FFFCCC;
-	border: 1px solid #999900;
-	padding: 5px;
+    background-color: #FFFCCC;
+    border: 1px solid #999900;
+    padding: 5px;
 }
 
 .errorBox {
-	background-color: #FFCCCC;
-	border: 1px solid #990000;
-	padding: 5px;
+    background-color: #FFCCCC;
+    border: 1px solid #990000;
+    padding: 5px;
 }
 
 .cause {
-	padding-left: 16px;
-	font-size: 80%;
+    padding-left: 16px;
+    font-size: 80%;
 }
 
 </style>
 <wo:PageWithNavigation title="Your Generated Report" hideSteps="$true">
-	<wo name="LongResponse">
-		<p>Re-render this report as: <webobject name="RenderingMethod"/><webobject name="Rerender"/></p>
-		<hr style="width: 100%"/>
-		<wo:if condition="$generatedReportErrors.count">
-			<p>The following warnings and/or errors were produced during the
-			generation of this report:</p>
-			<wo:loop list="$generatedReportErrors" item="$error">
-				<div class="$errorCssClass">
-					<b><wo:str value="$errorSeverity"/>:</b>
-					<wo:str value="$errorMessage"/>
-					<wo:if condition="$errorCause">
-						<p class="cause">
-							<b>Cause:</b>
-							<wo:str value="$errorCause"/>
-						</p>
-					</wo:if>
-				</div>
-			</wo:loop>
-		</wo:if>
-		<wo:if condition="$isReportRendered">
-			<wo name="ReportContents"/>
-		</wo:if><wo:else>
-			<p>Web-CAT was unable to render the report.
-			<wo:if condition="$generatedReportErrors.count">This is likely an
-			effect of the errors that are displayed above.</wo:if></p>
-			<p><b>Report UUID:</b> <wo:str value="$reportUuid"/></p>
-		</wo:else>
-	</wo>
+    <wo name="LongResponse">
+        <p>Re-render this report as: <webobject name="RenderingMethod"/><webobject name="Rerender"/></p>
+        <hr style="width: 100%"/>
+        <wo:if condition="$generatedReportErrors.count">
+            <p>The following warnings and/or errors were produced during the
+            generation of this report:</p>
+            <wo:loop list="$generatedReportErrors" item="$error">
+                <div class="$errorCssClass">
+                    <b><wo:str value="$errorSeverity"/>:</b>
+                    <wo:str value="$errorMessage"/>
+                    <wo:if condition="$errorCause">
+                        <p class="cause">
+                            <b>Cause:</b>
+                            <wo:str value="$errorCause"/>
+                        </p>
+                    </wo:if>
+                </div>
+            </wo:loop>
+        </wo:if>
+        <wo:if condition="$isReportRendered">
+            <wo name="ReportContents"/>
+        </wo:if><wo:else>
+            <p>Web-CAT was unable to render the report.
+            <wo:if condition="$generatedReportErrors.count">This is likely an
+            effect of the errors that are displayed above.</wo:if></p>
+            <wo:if condition="$reportHasRenderingErrors">
+            <wo:if condition="$renderingErrors.count">
+                <p>The following warnings and/or errors were produced during the
+                rendering of this report:</p>
+                <wo:loop list="$renderingErrors" item="$error">
+                    <div class="$errorCssClass">
+                        <b><wo:str value="$errorSeverity"/>:</b>
+                        <wo:str value="$errorMessage"/>
+                        <wo:if condition="$errorCause">
+                            <p class="cause">
+                                <b>Cause:</b>
+                                <wo:str value="$errorCause"/>
+                            </p>
+                        </wo:if>
+                    </div>
+                </wo:loop>
+            </wo:if>
+            </wo:if>
+            <p><b>Report ID:</b> <wo:str value="$generatedReport.id"/></p>
+        </wo:else>
+    </wo>
 </wo:PageWithNavigation>

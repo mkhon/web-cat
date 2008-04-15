@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportQueue.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReportGenerationQueue.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,9 +30,9 @@ import org.apache.log4j.Logger;
  * mirrors the GraderQueue class in the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportQueue.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: ReportGenerationQueue.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  */
-public class ReportQueue
+public class ReportGenerationQueue
 {
     //~ Constructors ..........................................................
 
@@ -40,7 +40,7 @@ public class ReportQueue
     /**
      * Default constructor
      */
-    public ReportQueue()
+    public ReportGenerationQueue()
     {
         queue = new Vector();
     }
@@ -109,5 +109,5 @@ public class ReportQueue
     /** The queue is maintained as a vector. */
     private Vector queue;
 
-    static Logger log = Logger.getLogger( ReportQueue.class );
+    static Logger log = Logger.getLogger( ReportGenerationQueue.class );
 }

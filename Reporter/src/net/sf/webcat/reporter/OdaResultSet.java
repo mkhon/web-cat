@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: OdaResultSet.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import java.sql.Timestamp;
 import java.util.Enumeration;
 import java.util.Map;
 import net.sf.webcat.core.Application;
-import net.sf.webcat.oda.IWebCATResultSet;
-import net.sf.webcat.oda.WebCATDataException;
+import net.sf.webcat.oda.commons.IWebCATResultSet;
+import net.sf.webcat.oda.commons.WebCATDataException;
 import ognl.Node;
 import ognl.Ognl;
 import ognl.OgnlContext;
@@ -46,8 +46,8 @@ import ognl.webobjects.WOOgnl;
 /**
  * A result set for a report.
  *
- * @author  aallowat
- * @version $Id: OdaResultSet.java,v 1.5 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author  Tony Allevato
+ * @version $Id: OdaResultSet.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -57,193 +57,190 @@ public class OdaResultSet
     // ----------------------------------------------------------
     /**
      * Create a result set.
-     * @param jobUuid The job associated with this result set
-     * @param query   The query defining this result set
+     *
+     * @param jobId
+     *      The ID of the EnqueuedReportGenerationJob that is generated the
+     *      report that will contain this data
+     * @param query
+     *      The query defining this result set
      */
-	public OdaResultSet(String jobUuid, ReportQuery query)
-	{
-		this.jobUuid = jobUuid;
-		this.query = query;
-		currentRow = 0;
-		rawCurrentRow = 0;
-		lastThrottleCheck = 0;
-	}
+    public OdaResultSet(Number jobId, ReportQuery query)
+    {
+        this.jobId = jobId.intValue();
+        this.query = query;
+
+        currentRow = 0;
+        rawCurrentRow = 0;
+        lastThrottleCheck = 0;
+    }
 
 
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-	public void close()
-	{
-		Application.releasePeerEditingContext(editingContext);
-		ProgressManager.getInstance().completeCurrentTaskForJob(jobUuid);
-	}
+    public void close()
+    {
+        Application.releasePeerEditingContext(editingContext);
+
+        ReportGenerationTracker.getInstance().completeDataSetForJobId(jobId);
+    }
 
 
     // ----------------------------------------------------------
-	public int currentRow()
-	{
-		return currentRow;
-	}
+    public int currentRow()
+    {
+        return currentRow;
+    }
 
 
     // ----------------------------------------------------------
-	public void execute()
-	{
-		recycleEditingContext();
+    public void execute()
+    {
+        recycleEditingContext();
 
-		EOQualifier qualifier = QualifierUtils.qualifierWithEOsForGIDs(
-			query.qualifier(), editingContext);
+        EOQualifier qualifier = QualifierUtils.qualifierWithEOsForGIDs(
+            query.qualifier(), editingContext);
 
-		EOQualifier[] quals = QualifierUtils.partitionQualifier(
+        EOQualifier[] quals = QualifierUtils.partitionQualifier(
             qualifier, query.wcEntityName());
-		fetchQualifier = quals[0];
-		inMemoryQualifier = quals[1];
+        fetchQualifier = quals[0];
+        inMemoryQualifier = quals[1];
 
-		EOFetchSpecification fetch = new EOFetchSpecification(
-			query.wcEntityName(), fetchQualifier, null);
-		iterator =
+        EOFetchSpecification fetch = new EOFetchSpecification(
+            query.wcEntityName(), fetchQualifier, null);
+        iterator =
             new ERXFetchSpecificationBatchIterator(fetch, editingContext);
 
-		ProgressManager.getInstance().beginTaskForJob(
- 			jobUuid, iterator.count());
-	}
+        ReportGenerationTracker.getInstance().startNextDataSetForJobId(jobId,
+                iterator.count());
+    }
 
 
     // ----------------------------------------------------------
-	public void prepare(String entityType, String[] myExpressions)
-	    throws WebCATDataException
-	{
-		this.expressions = myExpressions;
-		defaultContext = new OgnlContext();
-		accessors = new ExpressionAccessor[myExpressions.length];
+    public void prepare(String entityType, String[] myExpressions)
+        throws WebCATDataException
+    {
+        this.expressions = myExpressions;
+        defaultContext = new OgnlContext();
+        accessors = new ExpressionAccessor[myExpressions.length];
 
-		int i = 0;
-		for (String expression : myExpressions)
-		{
-			try
-			{
+        int i = 0;
+        for (String expression : myExpressions)
+        {
+            try
+            {
                 accessors[i] = Ognl.compileExpression(
                     defaultContext, null, expression).getAccessor();
-			}
-			catch (Exception e)
-			{
-				throw new WebCATDataException(e);
-			}
-			i++;
-		}
-	}
+            }
+            catch (Exception e)
+            {
+                throw new WebCATDataException(e);
+            }
+            i++;
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public boolean moveToNextRow()
-	{
-		throttleIfNecessary();
-		boolean hasNext = true;
-		rawCurrentRow++;
-		if (rawCurrentRow % PROGRESS_STEP_SIZE == 0)
+    public boolean moveToNextRow()
+    {
+        throttleIfNecessary();
+        boolean hasNext = true;
+        rawCurrentRow++;
+        if (rawCurrentRow % PROGRESS_STEP_SIZE == 0)
         {
-			ProgressManager.getInstance().stepJob(jobUuid, PROGRESS_STEP_SIZE);
+            ReportGenerationTracker.getInstance().doWorkForJobId(jobId,
+                    PROGRESS_STEP_SIZE);
         }
 
-		if (currentBatchEnum == null || !currentBatchEnum.hasMoreElements())
-		{
-			hasNext = getNextBatch();
-		}
-
-		if (hasNext)
-		{
-			currentObject = currentBatchEnum.nextElement();
-			currentRow++;
-		}
-
-		return hasNext;
-	}
-
-
-    // ----------------------------------------------------------
-	public int rowCount()
-	{
-		// This should be deprecated. It's not always possible to determine
-		// the number of rows before the result set is completely traversed,
-		// and the ODA classes don't even call this.
-		return 0;
-	}
-
-
-    // ----------------------------------------------------------
-	public boolean booleanValueAtIndex(int column)
-        throws WebCATDataException
-	{
-		Boolean value = evaluate(column, Boolean.class);
-		return (value == null)? false : value;
-	}
-
-
-    // ----------------------------------------------------------
-	public BigDecimal decimalValueAtIndex(int column)
-        throws WebCATDataException
-	{
-		return evaluate(column, BigDecimal.class);
-	}
-
-
-    // ----------------------------------------------------------
-	public double doubleValueAtIndex(int column)
-        throws WebCATDataException
-	{
-		Double value = evaluate(column, Double.class);
-		if (value == null)
+        if (currentBatchEnum == null || !currentBatchEnum.hasMoreElements())
         {
-			return 0.0;
+            hasNext = getNextBatch();
         }
-		else
+
+        if (hasNext)
         {
-			return value;
+            currentObject = currentBatchEnum.nextElement();
+            currentRow++;
         }
-	}
+
+        return hasNext;
+    }
 
 
     // ----------------------------------------------------------
-	public int intValueAtIndex(int column)
+    public boolean booleanValueAtIndex(int column)
         throws WebCATDataException
-	{
-		Integer value = evaluate(column, Integer.class);
-		return (value == null)? 0 : value;
-	}
+    {
+        Boolean value = evaluate(column, Boolean.class);
+        return (value == null)? false : value;
+    }
 
 
     // ----------------------------------------------------------
-	public String stringValueAtIndex(int column)
+    public BigDecimal decimalValueAtIndex(int column)
         throws WebCATDataException
-	{
-		return evaluate(column, String.class);
-	}
+    {
+        return evaluate(column, BigDecimal.class);
+    }
 
 
     // ----------------------------------------------------------
-	public Timestamp timestampValueAtIndex(int column)
-	{
-		ExpressionAccessor accessor = accessors[column];
-		Object result = accessor.get(defaultContext, currentObject);
-
-		if (result instanceof NSTimestamp)
-		{
-			return (NSTimestamp)result;
-		}
-		else
-		{
-			// TODO Probably do some more conversions here.
-			return null;
-		}
-	}
+    public double doubleValueAtIndex(int column)
+        throws WebCATDataException
+    {
+        Double value = evaluate(column, Double.class);
+        if (value == null)
+        {
+            return 0.0;
+        }
+        else
+        {
+            return value;
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public boolean wasValueNull()
-	{
-		return wasNull;
-	}
+    public int intValueAtIndex(int column)
+        throws WebCATDataException
+    {
+        Integer value = evaluate(column, Integer.class);
+        return (value == null)? 0 : value;
+    }
+
+
+    // ----------------------------------------------------------
+    public String stringValueAtIndex(int column)
+        throws WebCATDataException
+    {
+        return evaluate(column, String.class);
+    }
+
+
+    // ----------------------------------------------------------
+    public Timestamp timestampValueAtIndex(int column)
+    {
+        ExpressionAccessor accessor = accessors[column];
+        Object result = accessor.get(defaultContext, currentObject);
+
+        if (result instanceof NSTimestamp)
+        {
+            return (NSTimestamp)result;
+        }
+        else
+        {
+            // TODO Probably do some more conversions here.
+            return null;
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean wasValueNull()
+    {
+        return wasNull;
+    }
 
 
     //~ Private Methods .......................................................
@@ -301,8 +298,7 @@ public class OdaResultSet
     private void throttleIfNecessary()
     {
         long currentTime = System.currentTimeMillis();
-//      System.out.println("currentTime = " + currentTime);
-//      System.out.println("lastThrottleCheck = " + lastThrottleCheck);
+
         if (currentTime - lastThrottleCheck > MILLIS_BETWEEN_THROTTLE_CHECK)
         {
             while (Reporter.getInstance().refreshThrottleStatus())
@@ -379,7 +375,7 @@ public class OdaResultSet
 
     //~ Instance/static variables .............................................
 
-    private String jobUuid;
+    private int jobId;
     private ReportQuery query;
     private EOEditingContext editingContext;
     private EOQualifier fetchQualifier;

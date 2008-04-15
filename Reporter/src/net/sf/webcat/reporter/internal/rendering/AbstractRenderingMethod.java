@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractRenderingMethod.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: AbstractRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,8 +28,8 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
 /**
  * Abstract base class for rendering methods.
  *
- * @author aallowat
- * @version $Id: AbstractRenderingMethod.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: AbstractRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public abstract class AbstractRenderingMethod
     implements IRenderingMethod

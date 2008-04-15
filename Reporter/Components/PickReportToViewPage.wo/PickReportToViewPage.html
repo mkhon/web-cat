@@ -3,26 +3,26 @@
 <h2>Reports Currently Queued</h2>
 
 <wo:if condition="$enqueuedReportsDisplayGroup.allObjects.count">
-	<p>Click on a report below to view its progress.</p>
-	<div class="shadow"><table>
-		<tr>
-			<td colspan="4" class="batchnav"><webobject name="BatchNavigatorQueue"/></td>
-		</tr>
-		<tr>
-			<th>Report Title<webobject name="WCSortOrderTitleQueue"/></th>
-			<th>Date Requested<webobject name="WCSortOrderDateQueue"/></th>
-			<th>Progress</th>
-		</tr>
-		<wo:loop list="$enqueuedReportsDisplayGroup.displayedObjects" item="$enqueuedReport" index="$enqueuedIndex">
-			<wo:tr index="$enqueuedIndex">
-				<td><wo:link action="$viewReportProgress" string="$enqueuedReport.description"/></td>
-				<td><wo name="EnqueuedReportTime"/></td>
-				<td><wo:str value="$enqueuedReportProgress"/></td>
-			</wo:tr>
-		</wo:loop>
-	</table></div>
+    <p>Click on a report below to view its progress.</p>
+    <div class="shadow"><table>
+        <tr>
+            <td colspan="4" class="batchnav"><webobject name="BatchNavigatorQueue"/></td>
+        </tr>
+        <tr>
+            <th>Report Title<webobject name="WCSortOrderTitleQueue"/></th>
+            <th>Date Requested<webobject name="WCSortOrderDateQueue"/></th>
+            <th>Progress</th>
+        </tr>
+        <wo:loop list="$enqueuedReportsDisplayGroup.displayedObjects" item="$enqueuedReport" index="$enqueuedIndex">
+            <wo:tr index="$enqueuedIndex">
+                <td><wo:link action="$viewReportProgress" string="$enqueuedReport.description"/></td>
+                <td><wo name="EnqueuedReportTime"/></td>
+                <td><wo:str value="$enqueuedReportProgress"/></td>
+            </wo:tr>
+        </wo:loop>
+    </table></div>
 </wo:if><wo:else>
-	<p>You do not currently have any reports waiting to be generated <b>in the queue.</b></p>
+    <p>You do not currently have any reports waiting to be generated <b>in the queue.</b></p>
 </wo:else>
 
 <div class="spacer">&nbsp;</div>
@@ -30,26 +30,26 @@
 <h2>Previously Generated Reports</h2>
 
 <wo:if condition="$generatedReportsDisplayGroup.allObjects.count">
-	<p>Click on a previously generated report below to view it.</p>
-	<div class="shadow"><table>
-		<tr>
-			<td colspan="4" class="batchnav"><webobject name="BatchNavigator"/></td>
-		</tr>
-		<tr>
-			<th>Report Title<webobject name="WCSortOrderTitle"/></th>
-			<th>Template Version</th>
-			<th>Date Generated<webobject name="WCSortOrderDate"/></th>
-		</tr>
-		<wo:loop list="$generatedReportsDisplayGroup.displayedObjects" item="$generatedReport" index="$index">
-			<wo:tr index="$index">
-				<td><wo:link action="$viewReport" string="$generatedReport.description"/></td>
-				<td><wo:str value="$generatedReport.reportTemplate.displayableVersion"/></td>
-				<td><wo name="GeneratedReportTime"/></td>
-			</wo:tr>
-		</wo:loop>
-	</table></div>
+    <p>Click on a previously generated report below to view it.</p>
+    <div class="shadow"><table>
+        <tr>
+            <td colspan="4" class="batchnav"><webobject name="BatchNavigator"/></td>
+        </tr>
+        <tr>
+            <th>Report Title<webobject name="WCSortOrderTitle"/></th>
+            <th>Template Version</th>
+            <th>Date Generated<webobject name="WCSortOrderDate"/></th>
+        </tr>
+        <wo:loop list="$generatedReportsDisplayGroup.displayedObjects" item="$generatedReport" index="$index">
+            <wo:tr index="$index">
+                <td><wo:link action="$viewReport" string="$generatedReport.description"/></td>
+                <td><wo:str value="$generatedReport.reportTemplate.version"/></td>
+                <td><wo name="GeneratedReportTime"/></td>
+            </wo:tr>
+        </wo:loop>
+    </table></div>
 </wo:if><wo:else>
-	<p>There are currently no <b>generated reports</b> available for you to view.</p>
+    <p>There are currently no <b>generated reports</b> available for you to view.</p>
 </wo:else>
 
 </wo:PageWithNavigation>

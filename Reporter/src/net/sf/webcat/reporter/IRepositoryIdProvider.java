@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IDesignElementVisitor.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: IRepositoryIdProvider.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,24 +21,29 @@
 
 package net.sf.webcat.reporter;
 
-import org.eclipse.birt.report.model.api.DesignElementHandle;
-
-//-------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 /**
- * An interface defining the kinds of objects that can be used in the
- * visitor pattern over design elements in a report template.
+ * <p>
+ * Objects that implement this interface are passed into the
+ * updateRepositoryDataAndFinalize method of the ReportTemplate class so that
+ * it can generate repository IDs for the reports that are uploaded to Web-CAT.
+ * </p><p>
+ * Since our repository IDs are based on direct action URLs, which require a
+ * WOContext in order to be generated, this class isolates the ReportTemplate
+ * entity from this implementation detail.
+ * </p>
  *
- * @author  Anthony Allevato
- * @version $Id: IDesignElementVisitor.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: IRepositoryIdProvider.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  */
-public interface IDesignElementVisitor
+public interface IRepositoryIdProvider
 {
-    //~ Public Methods ........................................................
-
     // ----------------------------------------------------------
     /**
-     * Visit one design element and process it.
-     * @param handle The current design element
+     * Gets the unique repository identifier for the specified report template.
+     *
+     * @param template the report template
+     * @return the unique repository identifier of the template
      */
-	void accept(DesignElementHandle handle);
+    String idForReportTemplate(ReportTemplate template);
 }

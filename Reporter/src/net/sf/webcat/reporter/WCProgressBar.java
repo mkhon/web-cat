@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCProgressBar.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: WCProgressBar.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,8 +27,8 @@ import com.webobjects.appserver.*;
 /**
  * An AJAX-based progress bar component.
  *
- * @author aallowat
- * @version $Id: WCProgressBar.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: WCProgressBar.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public class WCProgressBar
     extends WOComponent

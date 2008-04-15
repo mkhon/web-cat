@@ -1,17 +1,18 @@
 CancelButton: AjaxSubmitButton {
-	value = "Cancel";
-	id = "longResponseCancelButton";
-	onClick = "$('longResponseCancelButton').disable(); $('longResponseCancelButton').value = 'Canceling...';";
-	action = cancelJob;
+    value = "Cancel";
+    id = "longResponseCancelButton";
+    disabled = cannotCancel;
+    onClick = "$('longResponseCancelButton').disable(); $('longResponseCancelButton').value = 'Canceling...';";
+    action = cancelJob;
 }
 
 PeriodicUpdater: AjaxUpdateContainer {
-	id = "periodicUpdater";
-	frequency = 3;
-	decay = 1;
+    id = "periodicUpdater";
+    frequency = 3;
+    decay = 1;
 }
 
 ProgressBar: net.sf.webcat.reporter.WCProgressBar {
-    fractionDone = percentOfWorkDone;
-    taskDescription = taskDescription;
+    fractionDone = fractionOfWorkDone;
+    taskDescription = workDescription;
 }

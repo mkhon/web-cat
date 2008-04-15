@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.9 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: ReportTemplate.java,v 1.10 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,44 +21,36 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-import net.sf.webcat.core.MutableDictionary;
+import java.text.DateFormat;
 import net.sf.webcat.core.User;
-import net.sf.webcat.oda.RelationInformation;
+import net.sf.webcat.oda.commons.DataSetDescription;
+import net.sf.webcat.oda.commons.DataSetMetadata;
+import net.sf.webcat.oda.commons.ReportMetadata;
 import org.apache.log4j.Logger;
-import org.eclipse.birt.core.exception.BirtException;
-import org.eclipse.birt.report.engine.api.IGetParameterDefinitionTask;
-import org.eclipse.birt.report.engine.api.IParameterDefn;
-import org.eclipse.birt.report.engine.api.IReportRunnable;
-import org.eclipse.birt.report.engine.api.script.element.IReportDesign;
 import org.eclipse.birt.report.model.api.DataSetHandle;
-import org.eclipse.birt.report.model.api.DesignElementHandle;
-import org.eclipse.birt.report.model.api.ParameterHandle;
+import org.eclipse.birt.report.model.api.DesignFileException;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
-import org.eclipse.birt.report.model.api.ReportElementHandle;
-import org.eclipse.birt.report.model.api.ReportItemHandle;
-import org.eclipse.birt.report.model.api.ScalarParameterHandle;
 import org.eclipse.birt.report.model.api.SessionHandle;
-import org.eclipse.birt.report.model.api.SlotHandle;
+import org.eclipse.birt.report.model.api.activity.SemanticException;
+import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSData;
+import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableDictionary;
+import com.webobjects.foundation.NSMutableSet;
+import com.webobjects.foundation.NSSet;
+import com.webobjects.foundation.NSTimestamp;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Represents a BIRT report template and its associated metadata.
  *
- * @author aallowat
- * @version $Id: ReportTemplate.java,v 1.9 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: ReportTemplate.java,v 1.10 2008/04/15 04:09:22 aallowat Exp $
  */
-public class ReportTemplate
-    extends _ReportTemplate
+public class ReportTemplate extends _ReportTemplate
 {
     //~ Constructor ...........................................................
 
@@ -77,11 +69,12 @@ public class ReportTemplate
     // ----------------------------------------------------------
     /**
      * Retrieve the name of the directory where this script is stored.
+     *
      * @return the directory name
      */
     public String dirName()
     {
-        StringBuffer dir = userTemplateDirName( author() );
+        StringBuffer dir = userTemplateDirName(user());
         return dir.toString();
     }
 
@@ -89,11 +82,12 @@ public class ReportTemplate
     // ----------------------------------------------------------
     /**
      * Retrieve the path name for this report template.
+     *
      * @return the path to the template
      */
     public String filePath()
     {
-        return dirName() + "/" + uploadedFileName();
+        return dirName() + "/" + id().toString() + TEMPLATE_EXTENSION;
     }
 
 
@@ -108,19 +102,21 @@ public class ReportTemplate
     /**
      * Retrieve the name of the directory where a user's report templates are
      * stored.
-     * @param author the user
+     *
+     * @param author
+     *            the user
      * @return the directory name
      */
-    public static StringBuffer userTemplateDirName( User author )
+    public static StringBuffer userTemplateDirName(User author)
     {
-        StringBuffer dir = new StringBuffer( 50 );
-        dir.append( templateRoot() );
+        StringBuffer dir = new StringBuffer(50);
+        dir.append(templateRoot());
         if (author != null)
         {
-            dir.append( '/' );
-            dir.append( author.authenticationDomain().subdirName() );
-            dir.append( '/' );
-            dir.append( author.userName() );
+            dir.append('/');
+            dir.append(author.authenticationDomain().subdirName());
+            dir.append('/');
+            dir.append(author.userName());
         }
         return dir;
     }
@@ -130,22 +126,23 @@ public class ReportTemplate
     /**
      * Retrieve the name of the directory where all user report templates are
      * stored.
+     *
      * @return the directory name
      */
     public static String templateRoot()
     {
-        if ( templateRoot == null )
+        if (templateRoot == null)
         {
-        	templateRoot = net.sf.webcat.core.Application
-        		.configurationProperties()
-        		.getProperty("grader.reporttemplatesroot" );
+            templateRoot = net.sf.webcat.core.Application
+                    .configurationProperties().getProperty(
+                            "grader.reporttemplatesroot");
 
-            if ( templateRoot == null )
+            if (templateRoot == null)
             {
-            	templateRoot = net.sf.webcat.core.Application
-                    .configurationProperties()
-                        .getProperty( "grader.submissiondir" )
-                    + "/UserReportTemplates";
+                templateRoot = net.sf.webcat.core.Application
+                        .configurationProperties().getProperty(
+                                "grader.submissiondir")
+                        + "/UserReportTemplates";
             }
         }
         return templateRoot;
@@ -153,376 +150,241 @@ public class ReportTemplate
 
 
     // ----------------------------------------------------------
-    public String displayableVersion()
+    /**
+     * Gets the report template that represents the next version of this
+     * template.
+     *
+     * @return the next version of the report template
+     */
+    public ReportTemplate successorTemplate()
     {
-    	return displayableVersion(version());
-    }
+        NSArray<ReportTemplate> successors =
+            (NSArray) storedValueForKey("successorTemplateArray");
 
-
-    // ----------------------------------------------------------
-    public static String displayableVersion(int version)
-    {
-    	int major = (version >> 16) & 0xFF;
-    	int minor = (version >> 8) & 0xFF;
-    	int revision = version & 0xFF;
-
-    	return String.format("%d.%d.%d", major, minor, revision);
-    }
-
-
-    // ----------------------------------------------------------
-    public int versionByIncrementingMajor()
-    {
-    	return versionByIncrementingMajor(version());
-    }
-
-
-    // ----------------------------------------------------------
-    public static int versionByIncrementingMajor(int version)
-    {
-    	int[] components = componentsFromVersion(version);
-    	return versionFromComponents(
-    			components[0] + 1, 0, 0);
-    }
-
-
-    // ----------------------------------------------------------
-    public int versionByIncrementingMinor()
-    {
-    	return versionByIncrementingMinor(version());
-    }
-
-
-    // ----------------------------------------------------------
-    public static int versionByIncrementingMinor(int version)
-    {
-    	int[] components = componentsFromVersion(version);
-    	return versionFromComponents(
-    			components[0], components[1] + 1, 0);
-    }
-
-
-    // ----------------------------------------------------------
-    public int versionByIncrementingRevision()
-    {
-    	return versionByIncrementingRevision(version());
-    }
-
-
-    // ----------------------------------------------------------
-    public static int versionByIncrementingRevision(int version)
-    {
-    	int[] components = componentsFromVersion(version);
-    	return versionFromComponents(
-    			components[0], components[1], components[2] + 1);
-    }
-
-
-    // ----------------------------------------------------------
-    public int versionMajor()
-    {
-    	return componentsFromVersion(version())[0];
-    }
-
-
-    // ----------------------------------------------------------
-    public int versionMinor()
-    {
-    	return componentsFromVersion(version())[1];
-    }
-
-
-    // ----------------------------------------------------------
-    public int versionRevision()
-    {
-    	return componentsFromVersion(version())[2];
-    }
-
-
-    // ----------------------------------------------------------
-    public void setVersion(int major, int minor, int revision)
-    {
-    	setVersion(versionFromComponents(major, minor, revision));
-    }
-
-
-    // ----------------------------------------------------------
-    public static int[] componentsFromVersion(int version)
-    {
-    	int[] components = new int[3];
-    	components[0] = (version >> 16) & 0xFF;
-    	components[1] = (version >> 8) & 0xFF;
-    	components[2] = version & 0xFF;
-    	return components;
-    }
-
-
-    // ----------------------------------------------------------
-    public static int versionFromComponents(int major, int minor, int revision)
-    {
-    	if (revision > 255)
-    	{
-    		revision = 0;
-    		minor++;
-    	}
-
-    	if (minor > 255)
-    	{
-    		minor = 0;
-    		major++;
-    	}
-
-    	if (major > 255)
-    	{
-    		// This will hopefully never happen!
-    		throw new IllegalArgumentException("No version numbers remaining!");
-    	}
-
-    	return (major << 16) | (minor << 8) | revision;
+        if (successors == null || successors.count() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return successors.objectAtIndex(0);
+        }
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Gets the parameter with the specified binding in this report template.
+     * Gets a set that contains the visual design elements that are contained in
+     * this report template.
      *
-     * @param binding the binding of the parameter to find
+     * This is the preferred method to use to access this property, rather than
+     * the raw string returned by {@link designElementsRaw}.
      *
-     * @return the ReportParameter if it exists, or null if no parameter with
-     *     the specified binding is in this report template
+     * @return an {@link NSSet} that contains the kinds of design elements in
+     *         the report template
      */
-/*    public ReportParameter parameterWithBinding(String binding)
+    public NSSet<String> designElements()
     {
-    	Enumeration e = parameters().objectEnumerator();
-    	while (e.hasMoreElements())
-    	{
-    		ReportParameter param = (ReportParameter)e.nextElement();
+        NSMutableSet<String> set = new NSMutableSet<String>();
 
-    		if (param.binding().equals(binding))
+        String raw = designElementsRaw();
+
+        if (raw != null)
+        {
+            String[] elements = designElementsRaw().split(" ");
+
+            for (String element : elements)
             {
-    			return param;
+                set.addObject(element);
             }
-    	}
+        }
 
-    	return null;
-    }*/
+        return set;
+    }
 
 
     // ----------------------------------------------------------
     /**
-     * Gets the array of parameters defined in this report template, but sorted
-     * such that if a parameter Y depends on parameter X, then X occurs in the
-     * array before Y (that is, they are topologically sorted based on their
-     * dependencies).
+     * Sets the visual design elements that are contained in this report
+     * template.
      *
-     * @return the array of parameters sorted in dependency order
+     * This is the preferred method to use to access this property, rather than
+     * passing a raw string into {@link setDesignElementsRaw}.
+     *
+     * @param set
+     *            an {@link NSSet} that contains the kinds of design elements in
+     *            the report template
      */
-/*    public NSArray sortedParameters()
+    public void setDesignElements(NSSet<String> set)
     {
-    	ReverseTopologicalSort rts = new ReverseTopologicalSort(parameters());
-    	return rts.sortedParameters();
-    }*/
+        StringBuffer buffer = new StringBuffer(32);
+
+        if (set.count() > 0)
+        {
+            boolean first = true;
+
+            for (String element : set)
+            {
+                if (first)
+                    first = false;
+                else
+                    buffer.append(' ');
+
+                buffer.append(element);
+            }
+        }
+
+        setDesignElementsRaw(buffer.toString());
+    }
+
 
     // ----------------------------------------------------------
     /**
      * Create a new report template object from uploaded file data.
-     * @param ec           the editing context in which to add the new object
-     * @param author       the user uploading the template
-     * @param uploadedName the template's file name
-     * @param uploadedData the file's data
-     * @param version      the version number to use
-     * @param errors       a dictionary in which to store any error messages
-     *                     for display to the user
+     *
+     * @param ec
+     *            the editing context in which to add the new object
+     * @param user
+     *            the user uploading the template
+     * @param uploadedName
+     *            the template's file name
+     * @param uploadedData
+     *            the file's data
+     * @param errors
+     *            a dictionary in which to store any error messages for display
+     *            to the user
      * @return the new report template, if successful, or null if unsuccessful
      */
-    public static ReportTemplate createNewReportTemplate(
-            EOEditingContext    ec,
-            User                author,
-            String              uploadedName,
-            NSData              uploadedData,
-            int                 version,
+    public static ReportTemplate createNewReportTemplate(EOEditingContext ec,
+            User user, String uploadedName, NSData uploadedData,
             NSMutableDictionary errors)
     {
-        String userTemplateDir = userTemplateDirName( author ).toString();
-        uploadedName = ( new File( uploadedName ) ).getName();
-        if (uploadedName.endsWith(".rptdesign"))
-        {
-        	uploadedName = uploadedName.substring(
-                0, uploadedName.length() - ".rptdesign".length());
-        	uploadedName += "_" + displayableVersion(version) + ".rptdesign";
-        }
-
-        File toLookFor = new File( userTemplateDir + "/" + uploadedName );
-
-        if ( toLookFor.exists() )
-        {
-            String msg = "You already have an uploaded report template with "
-            	         + "this name.  Please use a different file name "
-                         + "for this new template.";
-            errors.setObjectForKey( msg, msg );
-            return null;
-        }
-
         ReportTemplate template = new ReportTemplate();
-        ec.insertObject( template );
+        ec.insertObject(template);
         template.setName("");
         ec.saveChanges();
 
-        template.setVersion(version);
-        template.setUploadedFileName( uploadedName );
-        template.setLastModified( new NSTimestamp() );
-        template.setAuthorRelationship( author );
+        template.setUploadedTime(new NSTimestamp());
+        template.setUserRelationship(user);
 
         // Save the file to disk
-        log.debug( "Saving report template to disk: " + template.filePath() );
-        File scriptPath = new File( template.filePath() );
+        log.debug("Saving report template to disk: " + template.filePath());
+        File templateFile = new File(template.filePath());
         try
         {
-            scriptPath.getParentFile().mkdirs();
-            FileOutputStream out = new FileOutputStream( scriptPath );
-            uploadedData.writeToStream( out );
+            templateFile.getParentFile().mkdirs();
+            FileOutputStream out = new FileOutputStream(templateFile);
+            uploadedData.writeToStream(out);
             out.close();
         }
-        catch ( java.io.IOException e )
+        catch (java.io.IOException e)
         {
             String msg = e.getMessage();
-            errors.setObjectForKey( msg, msg );
-            ec.deleteObject( template );
-            scriptPath.delete();
+            errors.setObjectForKey(msg, msg);
+            ec.deleteObject(template);
+            templateFile.delete();
             return null;
         }
 
-        SessionHandle designSession = Reporter.getInstance().newDesignSession();
+        SessionHandle designSession = Reporter.getInstance().designSession();
+        ReportDesignHandle reportHandle = null;
 
         try
         {
-            ReportDesignHandle reportHandle = designSession.openDesign(
-                template.filePath());
+            reportHandle = designSession.openDesign(template.filePath());
 
-	        String msg = template.initializeAttributes(reportHandle);
-	        if (msg != null )
-	        {
-	            errors.setObjectForKey( msg, msg );
-	            ec.deleteObject( template );
-	            scriptPath.delete();
-	            return null;
-	        }
+            String msg = template.processMetadata(reportHandle);
 
-	        msg = template.processDataSets(ec, reportHandle);
-	        if ( msg != null )
-	        {
-	            errors.setObjectForKey( msg, msg );
-	            ec.deleteObject( template );
-	            scriptPath.delete();
-	            return null;
-	        }
-
-	        return template;
-		}
-		catch(Exception e)
-		{
-			String msg =
-                "There was an internal error opening the report template: "
-				+ e.toString();
-	        errors.setObjectForKey( msg, msg );
-	       	ec.deleteObject( template );
-	       	scriptPath.delete();
-			return null;
-		}
-		finally
-		{
-			try
+            if (msg != null)
             {
-			    designSession.closeAll(false);
+                errors.setObjectForKey(msg, msg);
+                ec.deleteObject(template);
+                templateFile.delete();
+                return null;
             }
-			catch (Exception e)
+
+            msg = template.deeplyVisitTemplate(ec, reportHandle);
+            if (msg != null)
             {
-			    // Nothing to do
+                errors.setObjectForKey(msg, msg);
+                ec.deleteObject(template);
+                templateFile.delete();
+                return null;
             }
-		}
-	}
 
+            // Save any changes that we have made to the report template up to
+            // this point (mainly, the data set IDs in the query text).
+            reportHandle.save();
 
-    // ----------------------------------------------------------
-    public static ReportTemplate createNewReportTemplate(
-            EOEditingContext    ec,
-            User                author,
-            String              fullPath,
-            NSMutableDictionary errors)
-    {
-    	File scriptPath = new File(fullPath);
-
-        ReportTemplate template = new ReportTemplate();
-        ec.insertObject( template );
-        template.setName("");
-        ec.saveChanges();
-
-        template.setUploadedFileName( scriptPath.getName() );
-        template.setLastModified( new NSTimestamp() );
-        template.setAuthorRelationship( author );
-
-        SessionHandle designSession = Reporter.getInstance().newDesignSession();
-
-    	try
-    	{
-	        ReportDesignHandle reportHandle = designSession.openDesign(
-	            template.filePath());
-
-	        String msg = template.initializeAttributes(reportHandle);
-	        if (msg != null )
-	        {
-	            errors.setObjectForKey( msg, msg );
-	            ec.deleteObject( template );
-	            scriptPath.delete();
-	            return null;
-	        }
-
-	        msg = template.processDataSets(ec, reportHandle);
-	        if ( msg != null )
-	        {
-	            errors.setObjectForKey( msg, msg );
-	            ec.deleteObject( template );
-	            scriptPath.delete();
-	            return null;
-	        }
-
-	        return template;
-    	}
-    	catch(Exception e)
-    	{
-    		String msg =
-                "There was an internal error opening the report template: "
-    			+ e.toString();
-            errors.setObjectForKey( msg, msg );
-           	ec.deleteObject( template );
-           	scriptPath.delete();
-    		return null;
-    	}
-    	finally
-    	{
-    		try
+            return template;
+        }
+        catch (Exception e)
+        {
+            String msg = "There was an internal error opening the report template: "
+                    + e.toString();
+            errors.setObjectForKey(msg, msg);
+            ec.deleteObject(template);
+            templateFile.delete();
+            return null;
+        }
+        finally
+        {
+            if (reportHandle != null)
             {
-                designSession.closeAll(false);
+                reportHandle.close();
             }
-    		catch (Exception e)
-            {
-    		    // Nothing to do
-            }
-    	}
+        }
     }
 
 
     // ----------------------------------------------------------
-    // TODO: This should be redone to mirror the mightDelete(), canDelete(),
-    // and didDelete() methods from the Submission class.
-    public void deleteTemplate(EOEditingContext ec)
+    /**
+     * After a report template has been uploaded and all of its properties set,
+     * call this method to update the repository metadata properties in the
+     * template and then compute its checksum.
+     *
+     * @param idProvider
+     *            the object used to generate repository IDs for this template
+     */
+    public void updateRepositoryMetadataAndFinalize(
+            IRepositoryIdProvider idProvider)
     {
-        File scriptPath = new File( filePath() );
-        ec.deleteObject( this );
-        if (scriptPath.exists())
+        SessionHandle designSession = Reporter.getInstance().designSession();
+        ReportDesignHandle reportHandle = null;
+
+        try
         {
-            scriptPath.delete();
+            reportHandle = designSession.openDesign(filePath());
+
+            DateFormat dateFmt = DateFormat.getDateTimeInstance(
+                    DateFormat.MEDIUM, DateFormat.FULL);
+
+            String repositoryId = idProvider.idForReportTemplate(this);
+            String rootId = idProvider.idForReportTemplate(rootTemplate());
+
+            ReportMetadata.setRepositoryId(reportHandle, repositoryId);
+            ReportMetadata.setRepositoryRootId(reportHandle, rootId);
+            ReportMetadata.setRepositoryVersion(reportHandle, version());
+            ReportMetadata.setRepositoryUploadDate(reportHandle, dateFmt
+                    .format(uploadedTime()));
+            ReportMetadata.setRepositoryChangeHistory(reportHandle,
+                    changeHistory());
+
+            // Save any changes that we have made back to the file.
+            reportHandle.save();
         }
+        catch (Exception e)
+        {
+            log.error("Exception occurred trying to update report template "
+                    + "metadata: ", e);
+        }
+
+        // Compute the MD5 checksum of the file contents. This must be the
+        // last thing we do, because setting the repository properties
+        // (and other modifications) will change the contents of the file.
+        String checksum = ChecksumUtils.checksumFromContentsOfFile(new File(
+                filePath()));
+        setChecksum(checksum);
     }
 
 
@@ -530,377 +392,126 @@ public class ReportTemplate
     /**
      * Initializes various report template attributes in the EO model.
      */
-    private String initializeAttributes(ReportDesignHandle reportHandle)
+    private String processMetadata(ReportDesignHandle reportHandle)
     {
-    	String title = reportHandle.getStringProperty(
-    			ReportDesignHandle.TITLE_PROP);
+        // Set the title and description of the report.
+        String title = ReportMetadata.getTitle(reportHandle);
+        String description = ReportMetadata.getDescription(reportHandle);
 
-    	if (title == null || title.trim().length() == 0)
-    	{
-    		String msg =
-                "The report template you tried to upload does not have a "
-                + "title.  Please enter one in the <b>Title</b> field of "
-                + "the General Properties section of the report designer "
-                + "and then upload it again.";
-    		return msg;
-    	}
-
-    	String description = reportHandle.getDescription();
-
-    	setName(title);
-    	setDescription(description);
-
-    	return null;
-    }
-
-
-    // ----------------------------------------------------------
-    private class DataSetCollector
-        implements IDesignElementVisitor
-    {
-        //~ Constructor .......................................................
-
-        // ----------------------------------------------------------
-    	public DataSetCollector()
-    	{
-    		dataSetRefCounts =
-    			new NSMutableDictionary<DataSetHandle, Integer>();
-    	}
-
-
-        //~ Methods ...........................................................
-
-        // ----------------------------------------------------------
-		public void accept(DesignElementHandle handle)
-		{
-			if (handle instanceof ReportItemHandle)
-			{
-				ReportItemHandle repItem = (ReportItemHandle)handle;
-				DataSetHandle dataSet = repItem.getDataSet();
-
-				if (dataSet != null)
-				{
-					String extensionID =
-						dataSet.getStringProperty("extensionID");
-
-		    		if ("net.sf.webcat.oda.dataSet".equals(extensionID))
-		    		{
-		    			if (dataSetRefCounts.containsKey(dataSet))
-		    			{
-		    				int count = dataSetRefCounts.objectForKey(dataSet);
-		    				count++;
-		    				dataSetRefCounts.setObjectForKey(count, dataSet);
-		    			}
-		    			else
-		    			{
-		    				dataSetRefCounts.setObjectForKey(
-                                Integer.valueOf(1), dataSet);
-		    			}
-		    		}
-				}
-			}
-		}
-
-
-        // ----------------------------------------------------------
-		public NSDictionary<DataSetHandle, Integer> dataSetsAndRefCounts()
-		{
-			return dataSetRefCounts;
-		}
-
-
-        //~ Instance/static variables .........................................
-
-		private NSMutableDictionary<DataSetHandle, Integer> dataSetRefCounts;
-    }
-
-
-    // ----------------------------------------------------------
-    private String processDataSets(
-        EOEditingContext ec, ReportDesignHandle reportHandle)
-    {
-    	ReportBodyWalker walker = new ReportBodyWalker(reportHandle);
-    	DataSetCollector collector = new DataSetCollector();
-    	walker.visit(collector);
-
-    	NSDictionary<DataSetHandle, Integer> sets =
-    		collector.dataSetsAndRefCounts();
-
-    	for (DataSetHandle dataSetHandle : sets.allKeys())
-    	{
-    		int refCount = sets.objectForKey(dataSetHandle);
-
-			String name = dataSetHandle.getName();
-			String description = dataSetHandle.getComments();
-			String queryText = dataSetHandle.getStringProperty("queryText");
-			RelationInformation relation = new RelationInformation(queryText);
-
-			ReportDataSet.createNewReportDataSet(
-                ec,
-                this,
-                relation.getDataSetUuid(),
-                relation.getEntityType(),
-                name,
-                description,
-                refCount);
-    	}
-
-    	return null;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Adds the parameters of the report template to the EO model and sets
-     * up the appropriate associations and dependencies.
-     */
-/*    private String processParameters(EOEditingContext ec,
-    		ReportDesignHandle reportHandle)
-    {
-    	Iterator it = reportHandle.getAllParameters().iterator();
-    	while (it.hasNext())
-    	{
-    		ParameterHandle paramHandleBase = (ParameterHandle)it.next();
-    		if (!(paramHandleBase instanceof ScalarParameterHandle))
-            {
-    			continue;
-            }
-
-    		ScalarParameterHandle paramHandle =
-    			(ScalarParameterHandle)paramHandleBase;
-
-    		String binding = paramHandle.getName();
-    		String displayName = paramHandle.getPromptText();
-    		String description = paramHandle.getHelpText();
-    		String optionString = paramHandle.getDefaultValue();
-
-    		try
-    		{
-	    		ParameterParser parser = new ParameterParser(optionString);
-	    		parser.parse();
-
-	    		String type = parser.getType();
-	    		NSDictionary options = parser.getOptions();
-
-	    		ReportParameter.createNewReportParameter(ec, this,
-	    			binding, type, displayName, description, options);
-    		}
-    		catch (Exception e)
-    		{
-    			return "Error processing parameter '" + binding + "': " +
-    				e.getMessage();
-    		}
-    	}
-
-		String msg = computeAllParameterDependencies();
-		if (msg != null)
+        if (title == null || title.trim().length() == 0)
         {
-			return msg;
+            String msg = "The report template you tried to upload does not have a "
+                    + "title.  Please enter one in the <b>Title</b> field on "
+                    + "the Overview page of the report in the report designer "
+                    + "and then upload it again.";
+            return msg;
         }
 
-    	return null;
-    }*/
+        if (description == null || description.trim().length() == 0)
+        {
+            String msg = "The report template you tried to upload does not have a "
+                    + "description.  Please enter one in the <b>Description</b> "
+                    + "field on the Overview page of the report in the report "
+                    + "designer and then upload it again.";
+            return msg;
+        }
+
+        setName(title);
+        setDescription(description);
+
+        // Set the language identifier of the template.
+        String language = ReportMetadata.getLanguage(reportHandle);
+        if (language == null)
+        {
+            language = "en";
+        }
+
+        setLanguage(language);
+
+        // Set the preferred renderer of the template.
+        String renderer = ReportMetadata.getPreferredRenderer(reportHandle);
+        if (renderer == null)
+        {
+            renderer = "html";
+        }
+
+        setPreferredRenderer(renderer);
+
+        return null;
+    }
 
 
     // ----------------------------------------------------------
     /**
-     * Computes the dependencies among all the parameters in the report
-     * template.
+     * Collects information about the report template by performing a deep
+     * visitation of its layout.
+     *
+     * @param ec
+     *            the editing context in which to work
+     * @param reportHandle
+     *            the BIRT report design handle
+     *
+     * @return a String indicating any errors that occurred, or null if it was
+     *         successful
      */
-/*    private String computeAllParameterDependencies()
+    private String deeplyVisitTemplate(EOEditingContext ec,
+            ReportDesignHandle reportHandle)
     {
-    	Enumeration e = parameters().objectEnumerator();
-    	while (e.hasMoreElements())
-    	{
-    		ReportParameter param = (ReportParameter)e.nextElement();
+        UploadedTemplateVisitor visitor = new UploadedTemplateVisitor();
+        visitor.apply(reportHandle);
 
-    		String msg = computeDependenciesForParameter(param);
-    		if (msg != null)
+        NSDictionary<DataSetHandle, Integer> sets = visitor
+                .dataSetsAndRefCounts();
+
+        for (DataSetHandle dataSetHandle : sets.allKeys())
+        {
+            int refCount = sets.objectForKey(dataSetHandle);
+
+            String name = DataSetMetadata.getName(dataSetHandle);
+            String description = DataSetMetadata.getDescription(dataSetHandle);
+
+            String queryText = dataSetHandle.getStringProperty("queryText");
+            DataSetDescription relation = new DataSetDescription(queryText);
+
+            ReportDataSet dataSet = ReportDataSet
+                    .createNewReportDataSet(ec, this, relation.getEntityType(),
+                            name, description, refCount);
+
+            String realId = dataSet.id().toString();
+            relation.setUniqueId(realId);
+
+            try
             {
-    			return msg;
+                dataSetHandle.setStringProperty("queryText", relation
+                        .getQueryText());
             }
-    	}
-
-    	return null;
-    }*/
-
-
-    // ----------------------------------------------------------
-    /**
-     * Computes the dependencies for the specified parameter in the report
-     * template.
-     */
-/*    private String computeDependenciesForParameter(ReportParameter param)
-    {
-    	NSMutableArray dependentBindings = new NSMutableArray();
-
-    	if (param.hasOption(ReportParameter.OPTION_SOURCE))
-    	{
-    		ognl.Node ast = (ognl.Node)param.sourceOption();
-
-    		String msg = ognl.OgnlQualifierUtils.computeDependenciesFromOgnlAST(
-    			ast, dependentBindings);
-
-    		if (msg != null)
+            catch (SemanticException e)
             {
-    			return msg;
+                return "An exception occurred when manipulating the data set "
+                        + "query text in the report template: "
+                        + e.getMessage();
             }
-    	}
+        }
 
-    	if (param.hasOption(ReportParameter.OPTION_FILTER))
-    	{
-    		ognl.Node ast = (ognl.Node)param.filterOption();
+        // Set the design elements that were found by the visitor.
+        setDesignElements(visitor.reportElements());
 
-    		String msg = ognl.OgnlQualifierUtils.computeDependenciesFromOgnlAST(
-    			ast, dependentBindings);
-
-    		if (msg != null)
-            {
-    			return msg;
-            }
-    	}
-
-    	if (param.hasOption(ReportParameter.OPTION_QUALIFIER))
-    	{
-    		EOQualifier qualifier = param.qualifierOption();
-    		Enumeration e = qualifier.bindingKeys().objectEnumerator();
-    		while (e.hasMoreElements())
-    		{
-    			String binding = (String)e.nextElement();
-
-    			if (binding.startsWith("selected."))
-    			{
-    				binding = binding.substring("selected.".length());
-    				dependentBindings.addObject(binding);
-    			}
-    		}
-    	}
-
-    	String dependString = "";
-
-    	Enumeration e = dependentBindings.objectEnumerator();
-    	while (e.hasMoreElements())
-    	{
-    		String binding = (String)e.nextElement();
-    		dependString += binding + " ";
-
-    		ReportParameter dependent = parameterWithBinding(binding);
-
-    		if (dependent == null)
-    		{
-    			return "Parameter '" + param.binding() + "' depends on " +
-    				"non-existant parameter '" + binding + "'.";
-    		}
-    		else if (dependent.isDependentOn(param))
-    		{
-    			return "Circular dependency between parameters '" +
-    				binding + "' and '" + param.binding() + "'.";
-    		}
-    		else
-    		{
-    			param.addToDependsOnRelationship(dependent);
-    		}
-    	}
-
-    	return null;
-    }*/
-
-
-    //  ----------------------------------------------------------
-    /**
-     * Implements a standard reverse topological sort algorithm in order to
-     * sort the parameters of a report in dependency order (parameters occur
-     * before those that depend on them).
-     */
-/*    private static class ReverseTopologicalSort
-    {
-    	private NSArray parameters;
-
-    	private int sortedIndex;
-    	private boolean[] visited;
-    	private int[] reordering;
-
-        // ----------------------------------------------------------
-    	/**
-    	 * Creates a new sorter and stores the result of sorting the
-    	 * specified parameters.
-    	 *
-    	 * @param parameters an NSArray of ReportParameter objects to sort
-    	 */
-/*    	public ReverseTopologicalSort(NSArray parameters)
-    	{
-    		this.parameters = parameters;
-    		int paramCount = parameters.count();
-
-    		sortedIndex = 0;
-    		visited = new boolean[paramCount];
-    		reordering = new int[paramCount];
-
-    		for (int i = 0; i < paramCount; i++)
-            {
-    			reordering[i] = -1;
-            }
-
-    		for (int i = 0; i < paramCount; i++)
-            {
-    			if (!visited[i])
-                {
-    				sortRecursive(i);
-                }
-            }
-    	}
-
-
-        // ----------------------------------------------------------
-    	private void sortRecursive(int index)
-    	{
-    		visited[index] = true;
-
-    		ReportParameter parameter =
-    			(ReportParameter)parameters.objectAtIndex(index);
-
-    		Enumeration dependsOn = parameter.dependsOn().objectEnumerator();
-
-    		while (dependsOn.hasMoreElements())
-    		{
-    			ReportParameter dependent =
-    				(ReportParameter)dependsOn.nextElement();
-
-    			int dependentIndex =
-    				parameters.indexOfIdenticalObject(dependent);
-
-    			if (!visited[dependentIndex])
-                {
-    				sortRecursive(dependentIndex);
-                }
-    		}
-
-    		reordering[sortedIndex++] = index;
-    	}
-
-
-        // ----------------------------------------------------------
-    	/**
-    	 *
-    	 * @return
-    	 */
-/*    	public NSArray sortedParameters()
-    	{
-    		NSMutableArray sorted = new NSMutableArray();
-
-    		for (int i = 0; i < parameters.count(); i++)
-            {
-    			sorted.addObject(parameters.objectAtIndex(reordering[i]));
-            }
-
-    		return sorted;
-    	}
-    }*/
-
+        return null;
+    }
 
 
     //~ Instance/static variables .............................................
 
+    public static final String TEMPLATE_EXTENSION = ".rptdesign";
+
+    /*
+     * Constants that define the valid "kinds" of report elements that are
+     * catalogued when a report template is uploaded.
+     */
+    public static final String ELEMENT_TABLE = "table";
+    public static final String ELEMENT_CHART = "chart";
+    public static final String ELEMENT_CROSSTAB = "crosstab";
+
     static private String templateRoot = null;
-    static Logger log = Logger.getLogger( ReportTemplate.class );
+    static Logger log = Logger.getLogger(ReportTemplate.class);
 }

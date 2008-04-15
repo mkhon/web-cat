@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AjaxLongResponseHandler.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: EnqueuedReportRenderJob.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,18 +21,32 @@
 
 package net.sf.webcat.reporter;
 
-//-------------------------------------------------------------------------
+import com.webobjects.eocontrol.*;
+import com.webobjects.foundation.*;
+
+// -------------------------------------------------------------------------
 /**
- * Defines a handler for a {@link ReporterLongResponse} component.
+ * Represents the rendering of a report. The generation of a report is handled
+ * by the {@link EnqueuedReportGenerationJob} class.
  *
- * @author aallowat
- * @version $Id: AjaxLongResponseHandler.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @author Tony Allevato
+ * @version $Id: EnqueuedReportRenderJob.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
  */
-public interface AjaxLongResponseHandler
+public class EnqueuedReportRenderJob
+    extends _EnqueuedReportRenderJob
 {
+    //~ Constructors ..........................................................
+
     // ----------------------------------------------------------
     /**
-     * Take action when the long response's "cancel" button is pressed.
+     * Creates a new EnqueuedReportRenderJob object.
      */
-	void cancel();
+    public EnqueuedReportRenderJob()
+    {
+        super();
+    }
+
+
+    //~ Methods ...............................................................
+
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueryAssistantHolderPage.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: QueryAssistantHolderPage.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,10 +29,11 @@ import net.sf.webcat.reporter.queryassistants.QueryAssistantManager;
 
 //-------------------------------------------------------------------------
 /**
- * A page ...
+ * A page that acts as a container for a query assistant component used in the
+ * data set query editor wizard.
  *
  * @author Tony Allevato
- * @version $Id: QueryAssistantHolderPage.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: QueryAssistantHolderPage.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
  */
 public class QueryAssistantHolderPage
     extends ReporterComponent
