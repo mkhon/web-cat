@@ -13,14 +13,14 @@
             <wo:if condition="$terse"><wo name="VerboseDescriptions"/></wo:if>
             <wo:else><wo name="TerseDescriptions"/></wo:else>
         </th>
-        <th class="sm">Last Modified</th>
+        <th class="sm">Upload Date</th>
         <th>Will Update?</th>
         <th>Action</th>
     </tr>
     <wo:loop list="$publishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
         <wo:tr index="$index">
             <td>
-                <b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.version"/></b>
+                <b><wo:str value="$reportTemplate.name"/></b> (version <wo:str value="$reportTemplate.version"/>)
                 <wo:not condition="$terse"><br/>
                     <b>Installed by:</b> <wo:str value="$reportTemplate.user.nameAndUid"/><br/>
                     <b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
@@ -55,14 +55,14 @@
                 <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
                 <wo:else><wo name="VerboseDescriptions"/></wo:else>
             </th>
-            <th class="sm">Last Modified</th>
+            <th class="sm">Upload Date</th>
             <th>Will Update?</th>
             <th>Action</th>
         </tr>
         <wo:loop list="$unpublishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
             <wo:tr index="$index">
                 <td>
-                    <b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.version"/></b>
+                    <b><wo:str value="$reportTemplate.name"/></b> (version <wo:str value="$reportTemplate.version"/>)
                     <wo:not condition="$terse"><br/>
                         <b>Installed by:</b> <wo:str value="$reportTemplate.user.nameAndUid"/><br/>
                         <b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
@@ -99,14 +99,14 @@
                 <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
                 <wo:else><wo name="VerboseDescriptions"/></wo:else>
             </th>
-            <th class="sm">Last Modified</th>
+            <th class="sm">Upload Date</th>
             <th>Will Update?</th>
             <th>Action</th>
         </tr>
         <wo:loop list="$personalTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
             <wo:tr index="$index">
                 <td>
-                    <b><wo:str value="$reportTemplate.name"/> <wo:str value="$reportTemplate.version"/></b>
+                    <b><wo:str value="$reportTemplate.name"/></b> (version <wo:str value="$reportTemplate.version"/>)
                     <wo:not condition="$terse"><br/>
                         <b>Installed by:</b> <wo:str value="$reportTemplate.user.nameAndUid"/><br/>
                         <b>Description:</b> <wo:str value="$reportTemplate.description" escapeHTML="$false"/>
@@ -135,7 +135,7 @@ Upload a new plug-in: <wo name="TemplateUpload"/> <wo name="Upload"/>
 </p>
 <p>
 A report template is a <b>.rptdesign</b> file that contains the report layout,
-data set definitions, and meta-data describing the template's input parameters.
+data set definitions, and meta-data describing the template.
 </p>
 
 </wo:form>

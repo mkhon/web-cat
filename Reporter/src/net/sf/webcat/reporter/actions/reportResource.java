@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: reportResource.java,v 1.5 2008/04/15 04:09:23 aallowat Exp $
+ |  $Id: reportResource.java,v 1.6 2008/04/16 20:48:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * location.
  *
  * @author Tony Allevato
- * @version $Id: reportResource.java,v 1.5 2008/04/15 04:09:23 aallowat Exp $
+ * @version $Id: reportResource.java,v 1.6 2008/04/16 20:48:23 aallowat Exp $
  */
 public class reportResource
     extends DirectAction
@@ -142,11 +142,24 @@ public class reportResource
                 request().stringFormValueForKey("reportId"));
         String name = request().stringFormValueForKey("name");
         String type = request().stringFormValueForKey("contentType");
+        String deliveredName = request().stringFormValueForKey("deliveredName");
+        boolean inline = Boolean.parseBoolean(
+                request().stringFormValueForKey("inline"));
+
         String filename = name;
 
+        if(deliveredName == null)
+        {
+            deliveredName = filename;
+        }
+
         response.setHeader(type, "Content-Type");
-        response.setHeader("attachment; filename=\"" + filename + "\"",
-            "Content-Disposition");
+
+        if(!inline)
+        {
+            response.setHeader("attachment; filename=\"" + deliveredName + "\"",
+                "Content-Disposition");
+        }
 
         EOEditingContext ec = Application.newPeerEditingContext();
         GeneratedReport report = GeneratedReport.forId(ec, reportId);

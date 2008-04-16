@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.11 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: Reporter.java,v 1.12 2008/04/16 20:48:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -60,6 +60,7 @@ import net.sf.webcat.grader.GraderQueueProcessor;
 import net.sf.webcat.reporter.internal.rendering.CSVRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.ExcelRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.HTMLRenderingMethod;
+import net.sf.webcat.reporter.internal.rendering.PDFRenderingMethod;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.IExtension;
@@ -90,7 +91,7 @@ import org.eclipse.birt.report.model.api.SessionHandle;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.11 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.12 2008/04/16 20:48:23 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -178,6 +179,7 @@ public class Reporter
 
         NSMutableArray methods = new NSMutableArray();
         methods.addObject(new HTMLRenderingMethod(reportEngine));
+        methods.addObject(new PDFRenderingMethod(reportEngine));
         methods.addObject(new CSVRenderingMethod(reportEngine));
         methods.addObject(new ExcelRenderingMethod(reportEngine));
         renderingMethods = methods;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: AbstractRenderingMethod.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,8 @@
 package net.sf.webcat.reporter.internal.rendering;
 
 import net.sf.webcat.reporter.IRenderingMethod;
+import net.sf.webcat.reporter.IRenderingMethod.Controller;
+import org.eclipse.birt.report.engine.api.IRenderTask;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 
 //-------------------------------------------------------------------------
@@ -29,7 +31,7 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
  * Abstract base class for rendering methods.
  *
  * @author Tony Allevato
- * @version $Id: AbstractRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: AbstractRenderingMethod.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
  */
 public abstract class AbstractRenderingMethod
     implements IRenderingMethod
@@ -43,12 +45,55 @@ public abstract class AbstractRenderingMethod
     }
 
 
-    //~ Protected Methods .....................................................
+    //~ Protected Methods/Classes .............................................
 
     // ----------------------------------------------------------
     protected IReportEngine reportEngine()
     {
         return reportEngine;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A basic rendering controller that simply delegates operations to the
+     * BIRT {@link IRenderTask}.
+     */
+    protected static class BasicController
+        implements Controller
+    {
+        //~ Constructor .......................................................
+
+        // ----------------------------------------------------------
+        public BasicController(IRenderTask task)
+        {
+            this.task = task;
+        }
+
+
+        //~ Public Methods ....................................................
+
+        // ----------------------------------------------------------
+        public void render() throws Exception
+        {
+            org.mozilla.javascript.Context.enter();
+            task.render();
+            org.mozilla.javascript.Context.exit();
+
+            task.close();
+        }
+
+
+        // ----------------------------------------------------------
+        public void cancel()
+        {
+            task.cancel();
+        }
+
+
+        //~ Instance/static variables .........................................
+
+        private IRenderTask task;
     }
 
 

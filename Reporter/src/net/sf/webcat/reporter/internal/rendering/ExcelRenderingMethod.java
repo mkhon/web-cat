@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ExcelRenderingMethod.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ExcelRenderingMethod.java,v 1.7 2008/04/16 20:48:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.eclipse.birt.report.engine.api.RenderOption;
  * Render method for Excel data files.
  *
  * @author Tony Allevato
- * @version $Id: ExcelRenderingMethod.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ExcelRenderingMethod.java,v 1.7 2008/04/16 20:48:23 aallowat Exp $
  */
 public class ExcelRenderingMethod
     extends AbstractRenderingMethod
@@ -119,47 +119,6 @@ public class ExcelRenderingMethod
         IRenderTask task = reportEngine().createRenderTask(document);
         task.setRenderOption(option);
 
-        return new ExcelController(task);
-    }
-
-
-    //~ Private Methods/Classes ...............................................
-
-    // ----------------------------------------------------------
-    private static class ExcelController
-        implements Controller
-    {
-        //~ Constructor .......................................................
-
-        // ----------------------------------------------------------
-        public ExcelController(IRenderTask task)
-        {
-            this.task = task;
-        }
-
-
-        //~ Public Methods ....................................................
-
-        // ----------------------------------------------------------
-        public void render() throws Exception
-        {
-            org.mozilla.javascript.Context.enter();
-            task.render();
-            org.mozilla.javascript.Context.exit();
-
-            task.close();
-        }
-
-
-        // ----------------------------------------------------------
-        public void cancel()
-        {
-            task.cancel();
-        }
-
-
-        //~ Instance/static variables .........................................
-
-        private IRenderTask task;
+        return new BasicController(task);
     }
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HTMLRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: HTMLRenderingMethod.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
  * Render method for HTML-viewable reports.
  *
  * @author Tony Allevato
- * @version $Id: HTMLRenderingMethod.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: HTMLRenderingMethod.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
  */
 public class HTMLRenderingMethod
     extends AbstractRenderingMethod
@@ -94,7 +94,7 @@ public class HTMLRenderingMethod
         IRenderTask task = reportEngine().createRenderTask(document);
         task.setRenderOption(option);
 
-        return new HTMLController(task);
+        return new BasicController(task);
     }
 
 
@@ -109,47 +109,6 @@ public class HTMLRenderingMethod
         NSData htmlData = new NSData(
             new FileInputStream(htmlFile), (int)htmlFile.length());
         response.appendContentData(htmlData);
-    }
-
-
-    //~ Private Methods/Classes ...............................................
-
-    // ----------------------------------------------------------
-    private static class HTMLController
-        implements Controller
-    {
-        //~ Constructor .......................................................
-
-        // ----------------------------------------------------------
-        public HTMLController(IRenderTask task)
-        {
-            this.task = task;
-        }
-
-
-        //~ Public Methods ....................................................
-
-        // ----------------------------------------------------------
-        public void render() throws Exception
-        {
-            org.mozilla.javascript.Context.enter();
-            task.render();
-            org.mozilla.javascript.Context.exit();
-
-            task.close();
-        }
-
-
-        // ----------------------------------------------------------
-        public void cancel()
-        {
-            task.cancel();
-        }
-
-
-        //~ Instance/static variables .........................................
-
-        private IRenderTask task;
     }
 
 

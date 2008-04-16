@@ -5,12 +5,15 @@
     <div class="shadow"><table><tbody>
         <tr>
             <th>Report Template</th>
+            <th>Version</th>
             <th>Installed By</th>
         </tr>
         <wo:loop list="$reportTemplates" item="$reportTemplate" index="$index">
             <wo:tr index="$index">
                 <td>
                     <wo:link string="$reportTemplate.name" action="$templateChosen"/>
+                </td>
+                <td>
                     <wo:str value="$reportTemplate.version"/>
                 </td>
                 <td>

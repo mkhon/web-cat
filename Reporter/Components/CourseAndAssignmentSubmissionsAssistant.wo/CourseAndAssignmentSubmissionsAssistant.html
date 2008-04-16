@@ -7,14 +7,14 @@
 <p>1. Choose one or more <b>course offerings.</b></p>
 <wo:adiv id="courseTreeContainer" class="scrollPane" style="height: 300px;">
 <wo name="CourseOfferingTree">
-	<wo name="CourseNodeCheckbox"/>
-	<wo:if condition="$isCurrentNodeCourse">
-		<b><wo:str value="$currentNode.data.deptNumber"/>:</b> <wo:str value="$currentNode.data.name"/>
-	</wo:if>
-	<wo:if condition="$isCurrentNodeCourseOffering">
-		<wo:str value="$currentNode.data.compactName"/>
-	</wo:if>
-	<wo name="CourseNodeCheckboxObserver"/>
+    <wo name="CourseNodeCheckbox"/>
+    <wo:if condition="$isCurrentNodeCourse">
+        <b><wo:str value="$currentNode.data.deptNumber"/>:</b> <wo:str value="$currentNode.data.name"/>
+    </wo:if>
+    <wo:if condition="$isCurrentNodeCourseOffering">
+        <wo:str value="$currentNode.data.compactName"/>
+    </wo:if>
+    <wo name="CourseNodeCheckboxObserver"/>
 </wo>
 <wo:AjaxUpdateTrigger updateContainerIDs="$containersToUpdate"/>
 </wo:adiv>
@@ -25,23 +25,23 @@
 
 <wo:adiv id="assignmentContainer" onRefreshComplete="stopBusy();">
 <wo:if condition="$assignments.count">
-	<div class="scrollPane" style="height: 300px;"><table><tbody>
-		<wo:loop list="$assignments" item="$assignment" index="$index">
-			<wo:tr index="$index">
-				<td><wo name="AssignmentRadio"/></td>
-				<td><wo:str value="$assignment.titleString"/></td>
-			</wo:tr>
-		</wo:loop>
-	</tbody></table></div>
+    <div class="scrollPane" style="max-height: 300px;"><table style="border: none; width: 100%"><tbody>
+        <wo:loop list="$assignments" item="$assignment" index="$index">
+            <wo:tr index="$index">
+                <td><wo name="AssignmentRadio"/></td>
+                <td><span style="font-size: small"><wo:str value="$assignment.titleString"/></span></td>
+            </wo:tr>
+        </wo:loop>
+    </tbody></table></div>
 </wo:if><wo:else>
-	<p style="border: 1px solid gray; padding: 16px"><b>
-	There are no assignments available that are offered in all of the courses
-	that you have selected.
-	</b></p>
+    <p style="border: 1px solid gray; padding: 16px"><b>
+    There are no assignments available that are offered in all of the courses
+    that you have selected.
+    </b></p>
 </wo:else>
 </wo:adiv>
 <div id="assignmentContainerBusy" style="display: none">
-	<wo:WOImage filename="images/busy_big.gif"/>
+    <wo:WOImage filename="images/busy_big.gif"/>
 </div>
 </div>
 

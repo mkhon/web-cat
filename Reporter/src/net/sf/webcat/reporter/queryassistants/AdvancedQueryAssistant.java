@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryAssistant.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: AdvancedQueryAssistant.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import net.sf.webcat.reporter.ReporterComponent;
  * by adding/combining key/value qualifiers of various kinds.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryAssistant.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: AdvancedQueryAssistant.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
  */
 public class AdvancedQueryAssistant
     extends ReporterComponent
@@ -59,59 +59,59 @@ public class AdvancedQueryAssistant
 
     //~ KVC Attributes (must be public) .......................................
 
-	public ReportDataSet dataSet;
+    public ReportDataSet dataSet;
 
-	public AdvancedQueryModel model;
+    public AdvancedQueryModel model;
 
-	/* Repetition variables */
-	public AdvancedQueryCriterion criterion;
-	public int comparandType;
-	public Class<?> castType;
-	public int index;
-	public String keyPathCompletionItem;
+    /* Repetition variables */
+    public AdvancedQueryCriterion criterion;
+    public int comparandType;
+    public Class<?> castType;
+    public int index;
+    public KVCAttributeInfo keyPathCompletionItem;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-	public NSArray<KVCAttributeInfo> keyPathCompletionItems()
-	{
-		KeyPathParser kpp = new KeyPathParser(dataSet.wcEntityName(),
-			currentKeyPath(), 1);
+    public NSArray<KVCAttributeInfo> keyPathCompletionItems()
+    {
+        KeyPathParser kpp = new KeyPathParser(dataSet.wcEntityName(),
+            currentKeyPath(), 1);
 
-		if (kpp.theClass() != null)
-		{
-			String prefix = kpp.remainingKeyPath();
-			return KVCAttributeFinder.attributesForClass(
+        if (kpp.theClass() != null)
+        {
+            String prefix = kpp.remainingKeyPath();
+            return KVCAttributeFinder.attributesForClass(
                 kpp.theClass(), prefix);
-		}
-		else
-		{
-			return new NSArray<KVCAttributeInfo>();
-		}
-	}
+        }
+        else
+        {
+            return new NSArray<KVCAttributeInfo>();
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public String displayStringForKeyPathCompletionItem()
-	{
-		String[] components = keyPathCompletionItem.split("\\.");
-		return components[components.length - 1];
-	}
+    public String displayStringForKeyPathCompletionItem()
+    {
+        String[] components = keyPathCompletionItem.name().split("\\.");
+        return components[components.length - 1];
+    }
 
 
     // ----------------------------------------------------------
     public String currentKeyPath()
     {
-   		String keypath = criterion.keyPath();
+           String keypath = criterion.keyPath();
 
-   		if (keypath == null)
+           if (keypath == null)
         {
-   			return "";
+               return "";
         }
-   		else
+           else
         {
-   			return keypath;
+               return keypath;
         }
     }
 
@@ -119,62 +119,62 @@ public class AdvancedQueryAssistant
     // ----------------------------------------------------------
     public void setCurrentKeyPath(String value)
     {
-    	criterion.setKeyPath(value);
+        criterion.setKeyPath(value);
 
-    	if (criterion.comparison() == null)
-    	{
-    		criterion.setComparison(
-    			comparisonsForCurrentKeyPath().objectAtIndex(0));
-    	}
+        if (criterion.comparison() == null)
+        {
+            criterion.setComparison(
+                comparisonsForCurrentKeyPath().objectAtIndex(0));
+        }
     }
 
 
     // ----------------------------------------------------------
     public boolean isCurrentKeyPathValid()
     {
-    	String keypath = currentKeyPath();
+        String keypath = currentKeyPath();
 
-    	KeyPathParser kpp = new KeyPathParser(
+        KeyPathParser kpp = new KeyPathParser(
             dataSet.wcEntityName(), keypath);
 
-    	return (kpp.theClass() != null);
+        return (kpp.theClass() != null);
     }
 
 
     // ----------------------------------------------------------
     public boolean doesCurrentKeyPathNeedCast()
     {
-    	KeyPathParser kpp = new KeyPathParser(
+        KeyPathParser kpp = new KeyPathParser(
             dataSet.wcEntityName(), currentKeyPath());
 
-    	return (kpp.theClass() == Object.class);
+        return (kpp.theClass() == Object.class);
     }
 
 
     // ----------------------------------------------------------
     public NSArray<Class<?>> castTypes()
     {
-    	return new NSArray<Class<?>>(new Class<?>[] {
-    		String.class,
+        return new NSArray<Class<?>>(new Class<?>[] {
+            String.class,
             Integer.class,
             Double.class,
             Boolean.class,
-    		NSTimestamp.class
-    	});
+            NSTimestamp.class
+        });
     }
 
 
     // ----------------------------------------------------------
     public Class<?> currentCastType()
     {
-    	System.out.println("cast type == " + criterion.castType());
-    	if (criterion.castType() == null)
+        System.out.println("cast type == " + criterion.castType());
+        if (criterion.castType() == null)
         {
-    		return String.class;
+            return String.class;
         }
-    	else
+        else
         {
-    		return criterion.castType();
+            return criterion.castType();
         }
     }
 
@@ -182,14 +182,14 @@ public class AdvancedQueryAssistant
     // ----------------------------------------------------------
     public void setCurrentCastType(Class<?> value)
     {
-    	System.out.println("new cast type == " + value);
-    	if (value == null)
+        System.out.println("new cast type == " + value);
+        if (value == null)
         {
-    		criterion.setCastType(String.class);
+            criterion.setCastType(String.class);
         }
-    	else
+        else
         {
-    		criterion.setCastType(value);
+            criterion.setCastType(value);
         }
     }
 
@@ -197,53 +197,53 @@ public class AdvancedQueryAssistant
     // ----------------------------------------------------------
     public String displayStringForCastType()
     {
-    	Class<?> type = castType;
+        Class<?> type = castType;
 
-    	if (type == String.class)
-    	{
-    		return "string";
-    	}
-    	else if (type == Integer.class)
-    	{
-    		return "integer";
-    	}
-    	else if (type == Double.class)
-    	{
-    		return "float";
-    	}
-    	else if (type == Boolean.class)
-    	{
-    		return "boolean";
-    	}
-    	else if (type == NSTimestamp.class)
-    	{
-    		return "timestamp";
-    	}
-    	else
-    	{
-    		return "";
-    	}
+        if (type == String.class)
+        {
+            return "string";
+        }
+        else if (type == Integer.class)
+        {
+            return "integer";
+        }
+        else if (type == Double.class)
+        {
+            return "float";
+        }
+        else if (type == Boolean.class)
+        {
+            return "boolean";
+        }
+        else if (type == NSTimestamp.class)
+        {
+            return "timestamp";
+        }
+        else
+        {
+            return "";
+        }
     }
 
 
     // ----------------------------------------------------------
     public NSArray<AdvancedQueryComparison> comparisonsForCurrentKeyPath()
     {
-    	String keypath = currentKeyPath();
+        String keypath = currentKeyPath();
 
-    	KeyPathParser kpp = new KeyPathParser(
+        KeyPathParser kpp = new KeyPathParser(
             dataSet.wcEntityName(), keypath);
 
-    	Class<?> klass = kpp.theClass();
+        Class<?> klass = kpp.theClass();
 
-    	if (klass == Object.class)
+        if (klass == Object.class)
         {
-    		return AdvancedQueryComparison
+            return AdvancedQueryComparison
                 .comparisonsForType(currentCastType());
         }
-    	else
+        else
         {
-    		return AdvancedQueryComparison.comparisonsForType(klass);
+            return AdvancedQueryComparison.comparisonsForType(klass);
         }
     }
 
@@ -251,285 +251,285 @@ public class AdvancedQueryAssistant
     // ----------------------------------------------------------
     public NSArray<Integer> validComparandTypesForCurrentComparison()
     {
-    	NSMutableArray<Integer> comparands = new NSMutableArray<Integer>();
-    	comparands.addObject(AdvancedQueryCriterion.COMPARAND_LITERAL);
+        NSMutableArray<Integer> comparands = new NSMutableArray<Integer>();
+        comparands.addObject(AdvancedQueryCriterion.COMPARAND_LITERAL);
 
-    	AdvancedQueryComparison comparison = criterion.comparison();
+        AdvancedQueryComparison comparison = criterion.comparison();
 
-    	if (comparison != null && comparison.doesSupportKeyPaths())
+        if (comparison != null && comparison.doesSupportKeyPaths())
         {
-    		comparands.addObject(AdvancedQueryCriterion.COMPARAND_KEYPATH);
+            comparands.addObject(AdvancedQueryCriterion.COMPARAND_KEYPATH);
         }
 
-    	return comparands;
+        return comparands;
     }
 
 
     // ----------------------------------------------------------
     public AdvancedQueryComparison currentComparison()
     {
-    	return criterion.comparison();
+        return criterion.comparison();
     }
 
 
     // ----------------------------------------------------------
     public void setCurrentComparison(AdvancedQueryComparison comparison)
     {
-    	/*
-    	 * If the keypath operand support for either the old or the new
-    	 * comparison differ, we reset the comparand back to LITERAL so that
-    	 * it doesn't cause problems later.
-    	 */
-    	if (comparison == null)
-    	{
-        	comparison = comparisonsForCurrentKeyPath().objectAtIndex(0);
-    	}
+        /*
+         * If the keypath operand support for either the old or the new
+         * comparison differ, we reset the comparand back to LITERAL so that
+         * it doesn't cause problems later.
+         */
+        if (comparison == null)
+        {
+            comparison = comparisonsForCurrentKeyPath().objectAtIndex(0);
+        }
 
-    	if (criterion.comparison() == null
+        if (criterion.comparison() == null
             || criterion.comparison().doesSupportKeyPaths() !=
-    		       comparison.doesSupportKeyPaths())
-    	{
-    		criterion.setComparandType(
-    			AdvancedQueryCriterion.COMPARAND_LITERAL);
-    		criterion.setValue(null);
-    	}
+                   comparison.doesSupportKeyPaths())
+        {
+            criterion.setComparandType(
+                AdvancedQueryCriterion.COMPARAND_LITERAL);
+            criterion.setValue(null);
+        }
 
-    	criterion.setComparison(comparison);
+        criterion.setComparison(comparison);
     }
 
 
     // ----------------------------------------------------------
     public boolean doesCurrentComparisonHaveSecondOperand()
     {
-    	return currentComparison().hasSecondOperand();
+        return currentComparison().hasSecondOperand();
     }
 
 
     // ----------------------------------------------------------
     public Integer currentComparandType()
     {
-    	return criterion.comparandType();
+        return criterion.comparandType();
     }
 
 
     // ----------------------------------------------------------
     public void setCurrentComparandType(Integer type)
     {
-    	if (type == null)
-    	{
-    		criterion.setComparandType(
-    			AdvancedQueryCriterion.COMPARAND_LITERAL);
-    	}
-    	else
-    	{
-    		criterion.setComparandType(type);
-    	}
+        if (type == null)
+        {
+            criterion.setComparandType(
+                AdvancedQueryCriterion.COMPARAND_LITERAL);
+        }
+        else
+        {
+            criterion.setComparandType(type);
+        }
     }
 
 
     // ----------------------------------------------------------
     public boolean doesCurrentCriterionUseComparand()
     {
-    	return currentComparison().doesSupportKeyPaths();
+        return currentComparison().doesSupportKeyPaths();
     }
 
 
     // ----------------------------------------------------------
     public String displayStringForComparandType()
     {
-    	if (comparandType == AdvancedQueryCriterion.COMPARAND_LITERAL)
-    	{
-    		return "value";
-    	}
-    	else
-    	{
-    		return "key path";
-    	}
+        if (comparandType == AdvancedQueryCriterion.COMPARAND_LITERAL)
+        {
+            return "value";
+        }
+        else
+        {
+            return "key path";
+        }
     }
 
 
     // ----------------------------------------------------------
     public boolean doesCurrentComparisonSupportMultipleValues()
-	{
-		return currentComparison().doesSupportMultipleValues();
-	}
+    {
+        return currentComparison().doesSupportMultipleValues();
+    }
 
 
     // ----------------------------------------------------------
-	public Class<?> typeOfCurrentKeyPath()
-	{
-    	String keypath = currentKeyPath();
+    public Class<?> typeOfCurrentKeyPath()
+    {
+        String keypath = currentKeyPath();
 
-    	KeyPathParser kpp = new KeyPathParser(
+        KeyPathParser kpp = new KeyPathParser(
             dataSet.wcEntityName(), keypath);
 
-    	Class<?> klass = kpp.theClass();
+        Class<?> klass = kpp.theClass();
 
-    	if (klass != null && klass != Object.class)
-    	{
-    		return klass;
-    	}
-    	else
-    	{
-    		return currentCastType();
-    	}
-	}
+        if (klass != null && klass != Object.class)
+        {
+            return klass;
+        }
+        else
+        {
+            return currentCastType();
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public boolean isCurrentCriterionOperandSimple()
-	{
-		return (currentComparandType() !=
-			        AdvancedQueryCriterion.COMPARAND_KEYPATH)
+    public boolean isCurrentCriterionOperandSimple()
+    {
+        return (currentComparandType() !=
+                    AdvancedQueryCriterion.COMPARAND_KEYPATH)
             && (currentComparison() != AdvancedQueryComparison.IS_BETWEEN)
             && (currentComparison() != AdvancedQueryComparison.IS_NOT_BETWEEN);
-	}
+    }
 
 
     // ----------------------------------------------------------
-	public boolean isCurrentCriterionOperandKeyPath()
-	{
-		return currentComparandType() ==
-			AdvancedQueryCriterion.COMPARAND_KEYPATH;
-	}
+    public boolean isCurrentCriterionOperandKeyPath()
+    {
+        return currentComparandType() ==
+            AdvancedQueryCriterion.COMPARAND_KEYPATH;
+    }
 
 
     // ----------------------------------------------------------
-	public boolean isCurrentCriterionOperandBetween()
-	{
-		return (currentComparison() == AdvancedQueryComparison.IS_BETWEEN)
+    public boolean isCurrentCriterionOperandBetween()
+    {
+        return (currentComparison() == AdvancedQueryComparison.IS_BETWEEN)
             || (currentComparison() == AdvancedQueryComparison.IS_NOT_BETWEEN);
-	}
+    }
 
 
     // ----------------------------------------------------------
-	public Object currentRepresentedValue()
-	{
-		return criterion.value();
-	}
+    public Object currentRepresentedValue()
+    {
+        return criterion.value();
+    }
 
 
     // ----------------------------------------------------------
-	public void setCurrentRepresentedValue(Object value)
-	{
-		criterion.setValue(value);
-	}
+    public void setCurrentRepresentedValue(Object value)
+    {
+        criterion.setValue(value);
+    }
 
 
     // ----------------------------------------------------------
-	public Object minimumValueOfCurrentRepresentedValue()
-	{
-		if (criterion.value() instanceof NSDictionary)
+    public Object minimumValueOfCurrentRepresentedValue()
+    {
+        if (criterion.value() instanceof NSDictionary)
         {
-			return ((NSDictionary<String, Object>)criterion.value())
+            return ((NSDictionary<String, Object>)criterion.value())
                 .objectForKey("minimumValue");
         }
-		else
+        else
         {
-			return null;
+            return null;
         }
-	}
+    }
 
-	public void setMinimumValueOfCurrentRepresentedValue(Object value)
-	{
-		if (value == null)
+    public void setMinimumValueOfCurrentRepresentedValue(Object value)
+    {
+        if (value == null)
         {
-			return;
+            return;
         }
 
-		if (criterion.value() instanceof NSMutableDictionary)
+        if (criterion.value() instanceof NSMutableDictionary)
         {
-			((NSMutableDictionary<String, Object>)criterion.value())
+            ((NSMutableDictionary<String, Object>)criterion.value())
                 .setObjectForKey(value, "minimumValue");
         }
-		else
-		{
-			NSMutableDictionary<String, Object> dict =
-				new NSMutableDictionary<String, Object>();
-			dict.setObjectForKey(value, "minimumValue");
-			criterion.setValue(dict);
-		}
-	}
+        else
+        {
+            NSMutableDictionary<String, Object> dict =
+                new NSMutableDictionary<String, Object>();
+            dict.setObjectForKey(value, "minimumValue");
+            criterion.setValue(dict);
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public Object maximumValueOfCurrentRepresentedValue()
-	{
-		if (criterion.value() instanceof NSDictionary)
-        {
-			return ((NSDictionary<String, Object>)criterion.value())
-				.objectForKey("maximumValue");
-        }
-		else
-        {
-			return null;
-        }
-	}
-
-
-    // ----------------------------------------------------------
-	public void setMaximumValueOfCurrentRepresentedValue(Object value)
-	{
-		if (value == null)
-        {
-			return;
-        }
-
-		if (criterion.value() instanceof NSMutableDictionary)
-        {
-			((NSMutableDictionary<String, Object>)criterion.value())
-				.setObjectForKey(value, "maximumValue");
-        }
-		else
-		{
-			NSMutableDictionary<String, Object> dict =
-				new NSMutableDictionary<String, Object>();
-			dict.setObjectForKey(value, "maximumValue");
-			criterion.setValue(dict);
-		}
-	}
-
-
-    // ----------------------------------------------------------
-	public WOComponent addCriterion()
+    public Object maximumValueOfCurrentRepresentedValue()
     {
-    	model.insertNewCriterionAtIndex(index + 1);
-    	return null;
+        if (criterion.value() instanceof NSDictionary)
+        {
+            return ((NSDictionary<String, Object>)criterion.value())
+                .objectForKey("maximumValue");
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public void setMaximumValueOfCurrentRepresentedValue(Object value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+
+        if (criterion.value() instanceof NSMutableDictionary)
+        {
+            ((NSMutableDictionary<String, Object>)criterion.value())
+                .setObjectForKey(value, "maximumValue");
+        }
+        else
+        {
+            NSMutableDictionary<String, Object> dict =
+                new NSMutableDictionary<String, Object>();
+            dict.setObjectForKey(value, "maximumValue");
+            criterion.setValue(dict);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent addCriterion()
+    {
+        model.insertNewCriterionAtIndex(index + 1);
+        return null;
     }
 
 
     // ----------------------------------------------------------
     public WOComponent removeCriterion()
     {
-    	model.removeCriterionAtIndex(index);
-    	return null;
+        model.removeCriterionAtIndex(index);
+        return null;
     }
 
 
     // ----------------------------------------------------------
     public String idForCurrentCastTypeContainer()
     {
-    	return "castTypeContainer_" + index;
+        return "castTypeContainer_" + index;
     }
 
 
     // ----------------------------------------------------------
     public String idForCurrentComparisonContainer()
     {
-    	return "comparisonContainer_" + index;
+        return "comparisonContainer_" + index;
     }
 
 
     // ----------------------------------------------------------
     public String idForCurrentComparandTypeContainer()
     {
-    	return "comparandTypeContainer_" + index;
+        return "comparandTypeContainer_" + index;
     }
 
 
     // ----------------------------------------------------------
     public String idForCurrentValueContainer()
     {
-    	return "valueContainer_" + index;
+        return "valueContainer_" + index;
     }
 }
