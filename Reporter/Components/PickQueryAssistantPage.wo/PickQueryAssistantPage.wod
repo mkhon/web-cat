@@ -1,31 +1,31 @@
 Page : net.sf.webcat.core.PageWithNavigation {
-	title = "Construct Data Set Query";
+    title = "Construct Data Set Query";
     stylesheet = "Grader.framework/WebServerResources/jscalendar/skins/aqua/theme.css";
     externalJavascript = "Grader.framework/WebServerResources/jscalendar/calendar.js,Grader.framework/WebServerResources/jscalendar/lang/calendar-en.js,Grader.framework/WebServerResources/jscalendar/calendar-setup.js";
 }
 
-DataSetList: DataSetListWithSelection {
-	dataSets = localReportTemplate.dataSets;
-	selection = dataSet;
+CurrentReportAndDataSet: CurrentReportAndDataSetComponent {
+    reportTemplate = localReportTemplate;
+    dataSet = dataSet;
 }
 
 ChooseQueryAssistant: WOHyperlink {
-	action = chooseQueryAssistant;
+    action = chooseQueryAssistant;
 }
 
 SavedQueries: WOPopUpButton {
-	list = savedQueries;
-	item = savedQuery;
-	displayString = savedQuery.description;
-	selection = selectedSavedQuery;
+    list = savedQueries;
+    item = savedQuery;
+    displayString = savedQuery.description;
+    selection = selectedSavedQuery;
 }
 
 ChooseSavedQuery: WOSubmitButton {
-	value = "Use this query";
-	action = useSavedQuery;
+    value = "Use this query";
+    action = useSavedQuery;
 }
 
 Back: WOSubmitButton {
-	value = " < Back ";
-	action = localPageController.previousPage;
+    value = " < Back ";
+    action = localPageController.previousPage;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetListWithSelection.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: CurrentReportAndDataSetComponent.java,v 1.1 2008/04/16 18:16:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,27 +21,18 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.appserver.*;
-import com.webobjects.foundation.NSArray;
 import net.sf.webcat.core.WCComponent;
+import com.webobjects.appserver.WOContext;
 
-//-------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 /**
- * This component is used to display a list of data sets that are defined in
- * a report during the query construction phase of report generation. It also
- * allows one of the data sets to act as the current "selection" -- this data
- * set will be highlighted and have its description elaborated in the list
- * for emphasis.
- *
- * @binding dataSets the data sets to be displayed in the list
- * @binding selection a data set equal to one of the elements in dataSets,
- *          this entry will be highlighted when the list is displayed
+ * A small info-block that displays the current report template being generated
+ * and the current data set being constructed.
  *
  * @author Tony Allevato
- * @version $Id: DataSetListWithSelection.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: CurrentReportAndDataSetComponent.java,v 1.1 2008/04/16 18:16:18 aallowat Exp $
  */
-public class DataSetListWithSelection
-    extends WCComponent
+public class CurrentReportAndDataSetComponent extends WCComponent
 {
     //~ Constructor ...........................................................
 
@@ -50,7 +41,7 @@ public class DataSetListWithSelection
      * This is the default constructor
      * @param context The page's context
      */
-    public DataSetListWithSelection(WOContext context)
+    public CurrentReportAndDataSetComponent(WOContext context)
     {
         super(context);
     }
@@ -58,22 +49,6 @@ public class DataSetListWithSelection
 
     //~ KVC Attributes (must be public) .......................................
 
-    /**
-     * The data sets to iterate over in the list.
-     */
-    public NSArray<ReportDataSet> dataSets;
-
-    /**
-     * The current data set that should be highlighted and have its description
-     * displayed in the list.
-     */
-    public ReportDataSet selection;
-
-
-    // --- Internal state ---------------------------------
-
-    /**
-     * The current data set in the iteration.
-     */
+    public ReportTemplate reportTemplate;
     public ReportDataSet dataSet;
 }
