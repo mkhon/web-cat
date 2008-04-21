@@ -7,6 +7,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Grader"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/BIRTRuntime"/>
 	<classpathentry kind="con" path="org.objectstyle.wolips.ContainerInitializer/10/1/Ajax/1/nil/1/nil/1/0/1/false/10/1/Core/1/nil/1/nil/1/0/1/false/10/1/DBUpdateEngine/1/nil/1/nil/1/0/1/false/10/1/ERExtensions/1/nil/1/nil/1/0/1/false/10/1/ERJars/1/nil/1/nil/1/0/1/false/10/1/Grader/1/nil/1/nil/1/0/1/false/10/1/JavaWOExtensions/1/nil/1/nil/1/0/1/false/10/1/WOOgnl/1/nil/1/nil/1/0/1/false/10/1/JavaEOAccess/1/nil/1/nil/1/0/1/false/10/1/JavaEOControl/1/nil/1/nil/1/0/1/false/10/1/JavaFoundation/1/nil/1/nil/1/0/1/false/10/1/JavaJDBCAdaptor/1/nil/1/nil/1/0/1/false/10/1/JavaWebObjects/1/nil/1/nil/1/0/1/false"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/webcat-oda-commons.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
