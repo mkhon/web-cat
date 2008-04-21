@@ -1,20 +1,16 @@
-<div class="shadow">
-<table style="width: 100%"><tbody>
-<tr class="e">
-<td><b>Report template to generate:</b></td>
-<td>
-    <wo:str value="$reportTemplate.name" /><br />
-    <span style="font-size: small">(version: <wo:str value="$reportTemplate.version" />)</span></td>
+<table style="border:none;"><tbody>
+<tr>
+  <td class="R">Template:</td>
+  <td><span class="hl">
+    <wo:str value="$reportTemplate.name" />
+    (v<wo:str value="$reportTemplate.version" />)</span></td>
 </tr>
-<tr class="o">
-<td><b>Current data set:</b></td>
-<td>
+<tr>
+  <td class="R">Data set:</td>
+  <td>
     <wo:str value="$dataSet.name" />
-    (<wo:str value="~reportTemplate.dataSets.indexOf(dataSet) + 1" /> of <wo:str value="$reportTemplate.dataSets.count" />)<br />
-    <span style="font-size: small"><wo:str value="$dataSet.description" /></span>
-</td>
+    (<wo:str value="~reportTemplate.dataSets.indexOf(dataSet) + 1" /> of <wo:str value="$reportTemplate.dataSets.count" />)</td>
 </tr>
+<tr><td class="R">Find:</td><td><wo:str value="$dataSet.description" /></td>
+  </tr>
 </tbody></table>
-</div>
-
-<div class="spacer">&nbsp;</div>
