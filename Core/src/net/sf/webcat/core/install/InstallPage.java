@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage.java,v 1.5 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: InstallPage.java,v 1.6 2008/04/21 02:42:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import net.sf.webcat.core.*;
  * A basic interface implemented by all InstallPages.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage.java,v 1.5 2008/04/02 00:50:30 stedwar2 Exp $
+ *  @version $Id: InstallPage.java,v 1.6 2008/04/21 02:42:11 stedwar2 Exp $
  */
 public abstract class InstallPage
     extends WCComponentWithErrorMessages
@@ -151,7 +151,7 @@ public abstract class InstallPage
         String value = extractFormValue( formValues, formKey );
         try
         {
-            if ( value != null )
+            if ( value != null && !"WONoSelectionString".equals(value))
             {
                 value = validateValueForKey( value, formKey ).toString();
                 if ( value == null || value.equals( "" ) )
