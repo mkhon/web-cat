@@ -18,6 +18,7 @@ DownloadNow: WOActiveImage {
 TemplateUpload: WOFileUpload {
     data     = uploadedData;
     filePath = uploadedName;
+    size     = 60;
 }
 
 Publish: WOActiveImage {
