@@ -30,6 +30,11 @@
 //                accessLevel = 90;
 //                priority = 5;
 //            };
+            "License" = {
+                pageName = net.sf.webcat.admin.AdminLicensePage;
+                accessLevel = 90;
+                priority = 6;
+            };
         };
     };
 }
