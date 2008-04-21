@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage4.java,v 1.4 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: InstallPage4.java,v 1.5 2008/04/21 02:41:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage4.java,v 1.4 2008/04/02 00:50:30 stedwar2 Exp $
+ *  @version $Id: InstallPage4.java,v 1.5 2008/04/21 02:41:48 stedwar2 Exp $
  */
 public class InstallPage4
     extends InstallPage
@@ -97,8 +97,7 @@ public class InstallPage4
                 configuration.setProperty( "grader.workarea", value );
             }
         }
-        if ( configuration.getProperty( "WOSMTPHost" ) == null
-             && configuration.getProperty( "mail.smtp.host" ) != null )
+        if ( configuration.getProperty( "mail.smtp.host" ) != null )
         {
             configuration.setProperty( "WOSMTPHost",
                 configuration.getProperty( "mail.smtp.host" ) );
