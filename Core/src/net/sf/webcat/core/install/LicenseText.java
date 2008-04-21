@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LicensePage.java,v 1.3 2008/04/21 02:42:53 stedwar2 Exp $
+ |  $Id: LicenseText.java,v 1.1 2008/04/21 02:42:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,13 +25,16 @@ import com.webobjects.appserver.*;
 
 // -------------------------------------------------------------------------
 /**
- *  Displays Web-CAT's license as a plain HTML page, suitable for use in a
- *  direct action response.
+ *  A component that displays the Web-CAT license, suitable for inclusion
+ *  in another page.  The height attribute, if set, will cause the license
+ *  to be displayed in a 100%-wide auto-scrolling div of the specified
+ *  height (in pixels).  If the height is unset, the license is surrounded
+ *  by an unstyled div instead.
  *
  *  @author Stephen Edwards
- *  @version $Id: LicensePage.java,v 1.3 2008/04/21 02:42:53 stedwar2 Exp $
+ *  @version $Id: LicenseText.java,v 1.1 2008/04/21 02:42:53 stedwar2 Exp $
  */
-public class LicensePage
+public class LicenseText
     extends WOComponent
 {
     //~ Constructors ..........................................................
@@ -42,8 +45,13 @@ public class LicensePage
      *
      * @param context The context to use
      */
-    public LicensePage( WOContext context )
+    public LicenseText( WOContext context )
     {
         super( context );
     }
+
+
+    //~ KVC Attributes (must be public) .......................................
+
+    public Number height;
 }
