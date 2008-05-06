@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadedTemplateVisitor.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: UploadedTemplateVisitor.java,v 1.2 2008/05/06 13:29:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSSet;
  * report elements that it contains.
  *
  * @author Tony Allevato
- * @version $Id: UploadedTemplateVisitor.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: UploadedTemplateVisitor.java,v 1.2 2008/05/06 13:29:25 aallowat Exp $
  */
 public class UploadedTemplateVisitor extends DeepLayoutVisitor
 {
@@ -99,13 +99,16 @@ public class UploadedTemplateVisitor extends DeepLayoutVisitor
         List<HideRule> rules =
             handle.getListProperty(TableHandle.VISIBILITY_PROP);
 
-        for(HideRule rule : rules)
+        if (rules != null)
         {
-            if("all".equals(rule.getFormat()))
+            for(HideRule rule : rules)
             {
-                if("true".equals(rule.getExpression()))
+                if("all".equals(rule.getFormat()))
                 {
-                    alwaysHidden = true;
+                    if("true".equals(rule.getExpression()))
+                    {
+                        alwaysHidden = true;
+                    }
                 }
             }
         }
