@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OverviewFormPage.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: OverviewFormPage.java,v 1.3 2008/05/06 19:09:42 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -79,7 +79,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * for a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: OverviewFormPage.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: OverviewFormPage.java,v 1.3 2008/05/06 19:09:42 aallowat Exp $
  */
 public class OverviewFormPage extends ReportFormPage
 {
@@ -293,6 +293,19 @@ public class OverviewFormPage extends ReportFormPage
     protected void unhookModelEventManager(Object model)
     {
         getModelEventManager().unhookRoot(model);
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void dispose()
+    {
+        if (managedForm != null)
+        {
+            managedForm.dispose();
+        }
+
+        super.dispose();
     }
 
 

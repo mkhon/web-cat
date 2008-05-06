@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.4 2008/04/14 03:17:54 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.5 2008/05/06 19:09:43 aallowat Exp $ -->
 
 <plugin>
    <extension
@@ -102,6 +102,11 @@
             id="net.sf.webcat.oda.ui.commands.refreshContentAssist"
             name="%command.refreshContentAssist.name">
       </command>
+      <command
+            categoryId="net.sf.webcat.oda.ui.commands.webCatCategory"
+            id="net.sf.webcat.oda.ui.commands.deriveTransformedDataSet"
+            name="Derive a Transformed Data Set...">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -130,6 +135,18 @@
                   id="net.sf.webcat.oda.ui.menus.refreshContentAssist"
                   mnemonic="%menu.refreshContentAssist.mnemonic">
             </command>
+            <separator
+                  name="net.sf.webcat.oda.ui.menus.serverActionsGroupEnd">
+            </separator>
+            <command
+                  commandId="net.sf.webcat.oda.ui.commands.deriveTransformedDataSet"
+                  id="net.sf.webcat.oda.ui.menus.deriveTransformedDataSet">
+               <visibleWhen>
+                  <reference
+                        definitionId="net.sf.webcat.oda.designer.isReportEditorActive">
+                  </reference>
+               </visibleWhen>
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -151,6 +168,10 @@
             class="net.sf.webcat.oda.designer.handlers.RefreshContentAssistHandler"
             commandId="net.sf.webcat.oda.ui.commands.refreshContentAssist">
       </handler>
+      <handler
+            class="net.sf.webcat.oda.designer.handlers.DeriveTransformedDataSetHandler"
+            commandId="net.sf.webcat.oda.ui.commands.deriveTransformedDataSet">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.birt.report.designer.ui.editors.multiPageEditorContributor">
@@ -166,6 +187,18 @@
                visible="true">
          </formPage>
       </targetEditor>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="net.sf.webcat.oda.designer.isReportEditorActive">
+         <with
+               variable="activeEditorId">
+            <equals
+                  value="org.eclipse.birt.report.designer.ui.editors.ReportEditor">
+            </equals>
+         </with>
+      </definition>
    </extension>
 
 </plugin>
