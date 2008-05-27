@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.10 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReportTemplate.java,v 1.11 2008/05/27 20:55:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -48,7 +48,7 @@ import com.webobjects.foundation.NSTimestamp;
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.10 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.11 2008/05/27 20:55:42 stedwar2 Exp $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -279,10 +279,12 @@ public class ReportTemplate extends _ReportTemplate
         }
         catch (java.io.IOException e)
         {
+            log.error("Error saving report template to disk:", e);
             String msg = e.getMessage();
             errors.setObjectForKey(msg, msg);
             ec.deleteObject(template);
             templateFile.delete();
+            ec.saveChanges();
             return null;
         }
 
@@ -297,18 +299,22 @@ public class ReportTemplate extends _ReportTemplate
 
             if (msg != null)
             {
+                log.error("Error processing report template metadata: " + msg);
                 errors.setObjectForKey(msg, msg);
                 ec.deleteObject(template);
                 templateFile.delete();
+                ec.saveChanges();
                 return null;
             }
 
             msg = template.deeplyVisitTemplate(ec, reportHandle);
             if (msg != null)
             {
+                log.error("Error walking report template: " + msg);
                 errors.setObjectForKey(msg, msg);
                 ec.deleteObject(template);
                 templateFile.delete();
+                ec.saveChanges();
                 return null;
             }
 
@@ -320,11 +326,13 @@ public class ReportTemplate extends _ReportTemplate
         }
         catch (Exception e)
         {
+            log.error("Error opening report template:", e);
             String msg = "There was an internal error opening the report template: "
                     + e.toString();
             errors.setObjectForKey(msg, msg);
             ec.deleteObject(template);
             templateFile.delete();
+            ec.saveChanges();
             return null;
         }
         finally
