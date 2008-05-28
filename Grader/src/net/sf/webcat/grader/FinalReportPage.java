@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.13 2008/04/06 21:35:14 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.14 2008/05/28 15:46:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.13 2008/04/06 21:35:14 stedwar2 Exp $
+ * @version $Id: FinalReportPage.java,v 1.14 2008/05/28 15:46:08 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -138,6 +138,7 @@ public class FinalReportPage
         if (selectedReport == null)
         {
             error("Please select a file to download first.");
+            return null;
         }
         DeliverFile download =
             (DeliverFile)pageWithName( DeliverFile.class.getName() );
