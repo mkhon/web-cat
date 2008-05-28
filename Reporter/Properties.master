@@ -24,4 +24,4 @@ Reporter.description=\
 # -------------------------------------------------------------------
 # Reporter subsystem configuration property defaults
 # -------------------------------------------------------------------
-grader.resumeSuspendedJobs=true
+reporter.resumeSuspendedJobs=true
