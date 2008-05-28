@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.6 2008/04/05 17:51:36 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.7 2008/05/28 15:42:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @version $Id: WCCourseComponent.java,v 1.6 2008/04/05 17:51:36 stedwar2 Exp $
+ * @version $Id: WCCourseComponent.java,v 1.7 2008/05/28 15:42:36 stedwar2 Exp $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -83,8 +83,12 @@ public class WCCourseComponent
             Object inheritedCsm = transientState().valueForKey( CSM_KEY );
             if (inheritedCsm == null)
             {
-                csm = new CoreSelectionsManager(
-                    user().getMyCoreSelections(), ecManager());
+                if (user() != null)
+                {
+                    csm = new CoreSelectionsManager(
+                        user().getMyCoreSelections(), ecManager());
+                }
+                // else: How is it possible to get here !?!?
             }
             else
             {
