@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.12 2008/04/16 20:48:23 aallowat Exp $
+ |  $Id: Reporter.java,v 1.13 2008/05/28 16:12:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -91,7 +91,7 @@ import org.eclipse.birt.report.model.api.SessionHandle;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.12 2008/04/16 20:48:23 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.13 2008/05/28 16:12:05 stedwar2 Exp $
  */
 public class Reporter
     extends Subsystem
@@ -371,6 +371,11 @@ public class Reporter
                 EnqueuedJob.ENTITY_NAME, new EOAndQualifier(qualifiers));
 
         Application.releasePeerEditingContext(ec);
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("refreshThrottleStatus(): " + isThrottled());
+        }
 
         return isThrottled();
     }
