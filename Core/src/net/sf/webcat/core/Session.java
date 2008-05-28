@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.17 2008/04/05 17:51:36 stedwar2 Exp $
+ |  $Id: Session.java,v 1.18 2008/05/28 15:42:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.17 2008/04/05 17:51:36 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.18 2008/05/28 15:42:23 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.ERXSession
@@ -399,8 +399,19 @@ public class Session
                   + " users)" );
         try
         {
+            String loginSessionId = "";
+            try
+            {
+                loginSessionId = loginSession.sessionId();
+            }
+            catch (Exception e)
+            {
+                // The code above could throw an exception if the EC is
+                // already disposed, so ignore it
+            }
+
             if (  loginSession != null
-               && sessionID().equals( loginSession.sessionId() ) )
+               && sessionID().equals( loginSessionId ) )
             {
                 try
                 {
