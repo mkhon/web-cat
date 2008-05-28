@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationTracker.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReportGenerationTracker.java,v 1.2 2008/05/28 05:48:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -71,7 +71,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * previously the responsibility of the old ProgressManager class.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationTracker.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReportGenerationTracker.java,v 1.2 2008/05/28 05:48:51 stedwar2 Exp $
  */
 public class ReportGenerationTracker
 {
@@ -207,7 +207,7 @@ public class ReportGenerationTracker
     public synchronized float fractionOfWorkDoneForJobId(int jobId)
     {
         ReportProgress progress = jobToProgressMap.objectForKey(jobId);
-        return progress.fractionOfWorkDone();
+        return progress == null ? 0.0f : progress.fractionOfWorkDone();
     }
 
 
