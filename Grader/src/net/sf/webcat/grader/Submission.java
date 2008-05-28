@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.11 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.12 2008/05/28 05:55:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.11 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: Submission.java,v 1.12 2008/05/28 05:55:22 stedwar2 Exp $
  */
 public class Submission
     extends _Submission
@@ -442,6 +442,8 @@ public class Submission
      */
     public boolean isSubmissionForGrading()
     {
+        if (user() == null || assignmentOffering() == null) return false;
+
         Submission primarySubmission = null;
         Submission gradedSubmission = null;
 
