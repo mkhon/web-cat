@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationQueueProcessor.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReportGenerationQueueProcessor.java,v 1.2 2008/05/28 05:48:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -67,7 +67,7 @@ import org.eclipse.birt.report.engine.api.IRunTask;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationQueueProcessor.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReportGenerationQueueProcessor.java,v 1.2 2008/05/28 05:48:11 stedwar2 Exp $
  */
 public class ReportGenerationQueueProcessor extends Thread
 {
@@ -281,6 +281,7 @@ public class ReportGenerationQueueProcessor extends Thread
 
             for (Exception ex : e.errors())
             {
+                log.error("Error generating report:", ex);
                 exceptions.addObject(ex);
             }
         }
