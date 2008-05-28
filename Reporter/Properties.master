@@ -19,3 +19,9 @@ Reporter.license.url=http\://www.gnu.org/licenses/agpl.html
 
 Reporter.description=\
     This subsystem provides all of Web-CAT's data reporting services.
+
+
+# -------------------------------------------------------------------
+# Reporter subsystem configuration property defaults
+# -------------------------------------------------------------------
+grader.resumeSuspendedJobs=true
