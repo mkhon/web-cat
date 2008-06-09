@@ -1,5 +1,5 @@
 SessionId: WOGenericContainer {
     elementName = "session";
-    wossid = session.sessionID;
+    wosid = session.sessionID;
     timeout = sessionExpireTime;
 }
