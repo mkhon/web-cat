@@ -1,0 +1,9 @@
+<wo:XmlResponseWrapper>
+<web-cat-response>
+    <wo:if condition="~hasSession and session.user">
+    <wo name="SessionId"/>
+    </wo:if><wo:else>
+    <error>Invalid authentication credentials.</error>
+    </wo:else>
+</web-cat-response>
+</wo:XmlResponseWrapper>
