@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: webapi.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ |  $Id: webapi.java,v 1.2 2008/06/09 18:19:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.core.User;
  * queries from external tools.
  *
  * @author Stephen Edwards
- * @version $Id: webapi.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ * @version $Id: webapi.java,v 1.2 2008/06/09 18:19:52 stedwar2 Exp $
  */
 public class webapi
     extends ERXDirectAction
@@ -121,6 +121,10 @@ public class webapi
         if (institution != null)
         {
             domain = AuthenticationDomain.authDomainByName(institution);
+        }
+        else
+        {
+            domain = AuthenticationDomain.defaultDomain();
         }
 
         if (userName != null && password != null && domain != null)
