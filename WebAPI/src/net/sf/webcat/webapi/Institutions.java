@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoursesAndAssignments.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
+ |  $Id: Institutions.java,v 1.1 2008/06/19 01:22:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,26 +21,20 @@
 
 package net.sf.webcat.webapi;
 
-import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
 
-import er.extensions.ERXArrayUtilities;
-
-import net.sf.webcat.core.CourseOffering;
-import net.sf.webcat.core.Semester;
-import net.sf.webcat.grader.AssignmentOffering;
+import net.sf.webcat.core.AuthenticationDomain;
 
 //-------------------------------------------------------------------------
 /**
- * XML Response page for webapi/coursesAndAssignments requests.
+ * XML Response page for webapi/institutions requests.
  *
  * @author Stephen Edwards
- * @version $Id: CoursesAndAssignments.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
+ * @version $Id: Institutions.java,v 1.1 2008/06/19 01:22:17 stedwar2 Exp $
  */
-public class CoursesAndAssignments
+public class Institutions
     extends XmlResponsePage
 {
     //~ Constructor ...........................................................
@@ -51,7 +45,7 @@ public class CoursesAndAssignments
      *
      * @param context The page's context
      */
-    public CoursesAndAssignments(WOContext context)
+    public Institutions(WOContext context)
     {
         super(context);
     }
@@ -59,13 +53,8 @@ public class CoursesAndAssignments
 
     //~ KVC Properties ........................................................
 
-    public NSArray<Semester>           semesters;
-    public Semester                    aSemester;
-
-    public NSArray<CourseOffering>     courseOfferings;
-    public CourseOffering              aCourseOffering;
-
-    public AssignmentOffering          anAssignmentOffering;
+    public AuthenticationDomain          anInstitution;
+    public NSArray<AuthenticationDomain> institutions;
 
 
     //~ Methods ...............................................................
@@ -73,29 +62,7 @@ public class CoursesAndAssignments
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        // Look up the semesters
-        semesters = Semester.objectsForFetchAll(session().sessionContext());
-
-        // Calculate the courses this user can work with
-        courseOfferings =
-            ERXArrayUtilities.arrayByAddingObjectsFromArrayWithoutDuplicates(
-                session().user().teaching(),
-                session().user().TAFor());
-
-        // Finally, generate the response
+        institutions = AuthenticationDomain.authDomains();
         super.appendToResponse(response, context);
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve all the assignment offerings associated with the current
-     * course offering stored in aCourseOffering.
-     * @return the list of assignment offerings for this course offering
-     */
-    public NSArray<AssignmentOffering> assignmentOfferings()
-    {
-        return AssignmentOffering.objectsForCourseOffering(
-            session().sessionContext(), aCourseOffering);
     }
 }

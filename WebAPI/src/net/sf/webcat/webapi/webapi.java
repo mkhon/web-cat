@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: webapi.java,v 1.2 2008/06/09 18:19:52 stedwar2 Exp $
+ |  $Id: webapi.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.core.User;
  * queries from external tools.
  *
  * @author Stephen Edwards
- * @version $Id: webapi.java,v 1.2 2008/06/09 18:19:52 stedwar2 Exp $
+ * @version $Id: webapi.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
  */
 public class webapi
     extends ERXDirectAction
@@ -73,7 +73,8 @@ public class webapi
     public WOActionResults performActionNamed(String actionName)
     {
         if (!"default".equals(actionName)
-            && !"startSession".equals(actionName))
+            && !"startSession".equals(actionName)
+            && !"institutions".equals(actionName))
         {
             // require an active session for all other actions
             if (existingSession() == null)
@@ -161,6 +162,19 @@ public class webapi
         SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
         page.message = "session terminated";
         return page;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Generate a list of all institutions.
+     *
+     * @return The results in an XML response
+     */
+    public WOActionResults institutionsAction()
+    {
+        log.debug("institutionsAction()");
+        return pageWithName(Institutions.class);
     }
 
 
