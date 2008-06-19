@@ -4,10 +4,11 @@
       <wo name="Semester"/>
     </wo:loop></semesters>
     <courses><wo:loop list="$courseOfferings" item="$aCourseOffering">
-      <wo name="CourseOffering"/>
+      <wo name="CourseOffering">
+        <assignments><wo:loop list="$assignmentOfferings" item="$anAssignmentOffering">
+          <wo name="AssignmentOffering"/>
+        </wo:loop></assignments>
+      </wo>
     </wo:loop></courses>
-    <assignments><wo:loop list="$assignmentOfferings" item="$anAssignmentOffering">
-      <wo name="AssignmentOffering"/>
-    </wo:loop></assignments>
 </web-cat-response>
 </wo:XmlResponseWrapper>
