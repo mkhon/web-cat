@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCMenuHeader.java,v 1.2 2008/04/02 00:56:32 stedwar2 Exp $
+ |  $Id: WCMenuHeader.java,v 1.3 2008/09/17 00:18:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import net.sf.webcat.core.*;
  * The menu header for all of our direct-to-web pages.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCMenuHeader.java,v 1.2 2008/04/02 00:56:32 stedwar2 Exp $
+ *  @version $Id: WCMenuHeader.java,v 1.3 2008/09/17 00:18:52 stedwar2 Exp $
  */
 public class WCMenuHeader
     extends WOComponent
@@ -66,7 +66,7 @@ public class WCMenuHeader
         {
             WOComponent currentPage = context().page();
             _manipulatedEntityName =
-                D2W.factory().entityNameFromPage( currentPage );
+                D2W.entityNameFromPage( currentPage );
         }
         return _manipulatedEntityName;
     }

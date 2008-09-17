@@ -15,3 +15,7 @@ DateSelector: WOImage {
 	title     = "Select date";
 	id        = "~\"select\" + name";
 }
+
+Button: WOString {
+    value = "~\"select\" + name";
+}
