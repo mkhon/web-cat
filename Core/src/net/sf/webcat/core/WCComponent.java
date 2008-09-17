@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.14 2008/04/02 00:50:29 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.15 2008/09/17 00:24:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -57,7 +57,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.14 2008/04/02 00:50:29 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.15 2008/09/17 00:24:40 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -441,7 +441,7 @@ public class WCComponent
         }
         catch ( Exception e )
         {
-            ( (Application)application() ).emailExceptionToAdmins(
+            Application.emailExceptionToAdmins(
                 e,
                 context(),
                 "Exception trying to save component's local changes" );

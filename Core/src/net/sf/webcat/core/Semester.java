@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Semester.java,v 1.7 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: Semester.java,v 1.8 2008/09/17 00:24:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,6 +27,7 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 
 import java.io.*;
+import java.util.Calendar;
 
 import org.apache.log4j.*;
 
@@ -35,7 +36,7 @@ import org.apache.log4j.*;
  * Represents a single school semester.
  *
  * @author Stephen Edwards
- * @version $Id: Semester.java,v 1.7 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: Semester.java,v 1.8 2008/09/17 00:24:40 stedwar2 Exp $
  */
 public class Semester
     extends _Semester
@@ -213,10 +214,10 @@ public class Semester
     public void willUpdate()
     {
         java.util.GregorianCalendar now = new java.util.GregorianCalendar();
-        int thisMonth = now.get(now.MONTH) + 1;
+        int thisMonth = now.get(Calendar.MONTH) + 1;
         if (year() == 0)
         {
-            setYear(now.get(now.YEAR));
+            setYear(now.get(Calendar.YEAR));
         }
         if (season() == null)
         {

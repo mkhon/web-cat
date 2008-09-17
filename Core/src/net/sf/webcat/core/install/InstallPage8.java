@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage8.java,v 1.5 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: InstallPage8.java,v 1.6 2008/09/17 00:24:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage8.java,v 1.5 2008/04/02 00:50:30 stedwar2 Exp $
+ *  @version $Id: InstallPage8.java,v 1.6 2008/09/17 00:24:40 stedwar2 Exp $
  */
 public class InstallPage8
     extends InstallPage
@@ -92,8 +92,7 @@ public class InstallPage8
             ( (Application)Application.application() ).initializeApplication();
             ( (Application)Application.application() )
                 .notifyAdminsOfStartup();
-            ( (Application)Application.application() )
-                .sendAdminEmail( "webcat@vt.edu", null, true,
+            Application.sendAdminEmail( "webcat@vt.edu", null, true,
                     "New Web-CAT installation now active",
                     "Congratulations, "
                     + configuration.getProperty("coreAdminEmail")

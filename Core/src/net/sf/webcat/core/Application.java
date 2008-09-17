@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.34 2008/04/06 21:28:35 stedwar2 Exp $
+ |  $Id: Application.java,v 1.35 2008/09/17 00:24:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -48,7 +48,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.34 2008/04/06 21:28:35 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.35 2008/09/17 00:24:40 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.ERXApplication
@@ -1401,8 +1401,12 @@ public class Application
         try
         {
             errorLoggingContext.lock();
-            LoggedError loggedError = LoggedError.objectForException(
-                errorLoggingContext, anException );
+            LoggedError loggedError = null;
+            if (!needsInstallation())
+            {
+                loggedError = LoggedError.objectForException(
+                    errorLoggingContext, anException );
+            }
 
             if ( loggedError != null )
             {
@@ -1700,7 +1704,7 @@ public class Application
                 // wait for ten seconds to give the kill command time to
                 // work externally, since immediate return of the process
                 // may not always mean its work is complete
-                Thread.currentThread().sleep( 10000 );
+                Thread.sleep( 10000 );
             }
             catch ( Exception e )
             {

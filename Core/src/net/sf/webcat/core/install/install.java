@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: install.java,v 1.5 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: install.java,v 1.6 2008/09/17 00:24:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: install.java,v 1.5 2008/04/02 00:50:30 stedwar2 Exp $
+ * @version $Id: install.java,v 1.6 2008/09/17 00:24:40 stedwar2 Exp $
  */
 public class install
     extends ERXDirectAction
@@ -84,7 +84,8 @@ public class install
     public WOActionResults defaultAction()
     {
         Application app = (Application)Application.application();
-        WCConfigurationFile configuration = app.configurationProperties();
+        WCConfigurationFile configuration =
+        	Application.configurationProperties();
         if ( log.isDebugEnabled() )
         {
             log.debug( "defaultAction(): incoming configuration = "

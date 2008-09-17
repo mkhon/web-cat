@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage3.java,v 1.6 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: InstallPage3.java,v 1.7 2008/09/17 00:24:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage3.java,v 1.6 2008/04/02 00:50:30 stedwar2 Exp $
+ *  @version $Id: InstallPage3.java,v 1.7 2008/09/17 00:24:40 stedwar2 Exp $
  */
 public class InstallPage3
     extends InstallPage
@@ -199,8 +199,7 @@ public class InstallPage3
                 db.executeSQL( "use `" + dbname + "`" );
             }
             // Initialize database
-            ( (Application)Application.application() )
-                .configurationProperties().updateToSystemProperties();
+            Application.configurationProperties().updateToSystemProperties();
             updateEOModels();
 
             // Instead of calling initializeApplication(), let's just repeat
