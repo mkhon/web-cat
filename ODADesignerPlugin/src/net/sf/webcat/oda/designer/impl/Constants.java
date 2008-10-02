@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Constants.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: Constants.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,14 +21,13 @@
 
 package net.sf.webcat.oda.designer.impl;
 
-import net.sf.webcat.oda.designer.i18n.Messages;
 
 //------------------------------------------------------------------------
 /**
  * Various constants used by the data set editor.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: Constants.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: Constants.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  */
 public interface Constants
 {

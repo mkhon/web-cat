@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OverviewFormPage.java,v 1.3 2008/05/06 19:09:42 aallowat Exp $
+ |  $Id: OverviewFormPage.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,10 +22,12 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.lang.reflect.InvocationTargetException;
+
 import net.sf.webcat.oda.commons.ReportModelProblemFinder;
 import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
+
 import org.eclipse.birt.report.designer.internal.ui.command.WrapperCommandStack;
 import org.eclipse.birt.report.designer.internal.ui.editors.parts.event.ModelEventManager;
 import org.eclipse.birt.report.designer.internal.ui.views.data.DataViewPage;
@@ -50,24 +52,14 @@ import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.SectionPart;
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.widgets.ColumnLayout;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -79,7 +71,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * for a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: OverviewFormPage.java,v 1.3 2008/05/06 19:09:42 aallowat Exp $
+ * @version $Id: OverviewFormPage.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
  */
 public class OverviewFormPage extends ReportFormPage
 {
@@ -282,8 +274,11 @@ public class OverviewFormPage extends ReportFormPage
 
 
     // ----------------------------------------------------------
-    protected void hookModelEventManager(Object model)
+    @SuppressWarnings("deprecation")
+	protected void hookModelEventManager(Object model)
     {
+    	// TODO: replace this deprecated class
+    	
         getModelEventManager().hookRoot(model);
         getModelEventManager().hookCommandStack(new WrapperCommandStack());
     }

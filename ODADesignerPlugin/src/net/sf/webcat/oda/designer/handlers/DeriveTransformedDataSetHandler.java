@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DeriveTransformedDataSetHandler.java,v 1.1 2008/05/06 19:09:42 aallowat Exp $
+ |  $Id: DeriveTransformedDataSetHandler.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,13 +22,13 @@
 package net.sf.webcat.oda.designer.handlers;
 
 import net.sf.webcat.oda.designer.transform.CreateTransformedDataSetDialog;
+
 import org.eclipse.birt.report.designer.ui.editors.MultiPageReportEditor;
 import org.eclipse.birt.report.designer.ui.editors.ReportEditorProxy;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -39,7 +39,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * scripted data sets derived from other data sets.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DeriveTransformedDataSetHandler.java,v 1.1 2008/05/06 19:09:42 aallowat Exp $
+ * @version $Id: DeriveTransformedDataSetHandler.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  */
 public class DeriveTransformedDataSetHandler extends AbstractHandler
 {

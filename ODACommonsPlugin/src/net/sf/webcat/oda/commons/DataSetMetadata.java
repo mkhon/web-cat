@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetMetadata.java,v 1.2 2008/04/14 03:17:55 aallowat Exp $
+ |  $Id: DataSetMetadata.java,v 1.3 2008/10/02 17:10:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.oda.commons;
 
 import org.eclipse.birt.report.model.api.DataSetHandle;
-import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.birt.report.model.api.activity.SemanticException;
 import org.eclipse.birt.report.model.api.command.NameException;
 
@@ -35,7 +34,7 @@ import org.eclipse.birt.report.model.api.command.NameException;
  * Other useful utility methods are provided as well.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataSetMetadata.java,v 1.2 2008/04/14 03:17:55 aallowat Exp $
+ * @version $Id: DataSetMetadata.java,v 1.3 2008/10/02 17:10:27 aallowat Exp $
  */
 public class DataSetMetadata
 {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LicenseTable.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: LicenseTable.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,6 @@ package net.sf.webcat.oda.designer.metadata;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
-import com.ibm.icu.util.ULocale;
 
 //------------------------------------------------------------------------
 /**
@@ -32,7 +31,7 @@ import com.ibm.icu.util.ULocale;
  * can be selected for a report.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: LicenseTable.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: LicenseTable.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
  */
 public class LicenseTable
 {

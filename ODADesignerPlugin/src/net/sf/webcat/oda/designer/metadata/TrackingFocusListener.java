@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TrackingFocusListener.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ |  $Id: TrackingFocusListener.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,6 @@ package net.sf.webcat.oda.designer.metadata;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Widget;
  * that dirty states can be properly managed only if the value changes.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: TrackingFocusListener.java,v 1.1 2008/04/12 20:56:05 aallowat Exp $
+ * @version $Id: TrackingFocusListener.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  */
 public class TrackingFocusListener implements FocusListener
 {

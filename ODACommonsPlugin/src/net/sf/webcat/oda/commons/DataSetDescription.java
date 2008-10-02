@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DataSetDescription.java,v 1.4 2008/04/13 14:39:20 aallowat Exp $
+ |  $Id: DataSetDescription.java,v 1.5 2008/10/02 17:10:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,9 +23,7 @@ package net.sf.webcat.oda.commons;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,7 @@ import java.util.List;
  * descriptor.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DataSetDescription.java,v 1.4 2008/04/13 14:39:20 aallowat Exp $
+ * @version $Id: DataSetDescription.java,v 1.5 2008/10/02 17:10:27 aallowat Exp $
  */
 public class DataSetDescription
 {

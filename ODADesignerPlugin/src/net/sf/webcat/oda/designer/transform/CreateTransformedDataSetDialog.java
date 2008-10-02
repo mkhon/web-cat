@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateTransformedDataSetDialog.java,v 1.1 2008/05/06 19:09:42 aallowat Exp $
+ |  $Id: CreateTransformedDataSetDialog.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,15 +21,10 @@
 
 package net.sf.webcat.oda.designer.transform;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import net.sf.webcat.oda.commons.ReportModelProblem;
-import net.sf.webcat.oda.designer.DesignerActivator;
-import net.sf.webcat.oda.designer.i18n.Messages;
-import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
+
 import org.eclipse.birt.report.model.api.CellHandle;
 import org.eclipse.birt.report.model.api.ColumnHintHandle;
 import org.eclipse.birt.report.model.api.DataItemHandle;
@@ -40,7 +35,6 @@ import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.birt.report.model.api.OdaResultSetColumnHandle;
 import org.eclipse.birt.report.model.api.PropertyHandle;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
-import org.eclipse.birt.report.model.api.ResultSetColumnHandle;
 import org.eclipse.birt.report.model.api.RowHandle;
 import org.eclipse.birt.report.model.api.ScriptDataSetHandle;
 import org.eclipse.birt.report.model.api.ScriptDataSourceHandle;
@@ -53,14 +47,8 @@ import org.eclipse.birt.report.model.api.elements.structures.ColumnHint;
 import org.eclipse.birt.report.model.api.elements.structures.ComputedColumn;
 import org.eclipse.birt.report.model.api.elements.structures.HideRule;
 import org.eclipse.birt.report.model.api.elements.structures.ResultSetColumn;
-import org.eclipse.birt.report.model.api.extension.ReportItemFactory;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -79,7 +67,7 @@ import org.eclipse.swt.widgets.Text;
  * from another data set.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: CreateTransformedDataSetDialog.java,v 1.1 2008/05/06 19:09:42 aallowat Exp $
+ * @version $Id: CreateTransformedDataSetDialog.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  */
 public class CreateTransformedDataSetDialog extends TitleAreaDialog
 {

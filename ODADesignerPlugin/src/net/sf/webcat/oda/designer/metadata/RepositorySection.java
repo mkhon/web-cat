@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositorySection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: RepositorySection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,17 +23,15 @@ package net.sf.webcat.oda.designer.metadata;
 
 import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
+
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 
 //------------------------------------------------------------------------
 /**
@@ -42,7 +40,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * repository.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: RepositorySection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: RepositorySection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  */
 public class RepositorySection extends AbstractSection
 {

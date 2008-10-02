@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BrowserUtils.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: BrowserUtils.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,16 +23,16 @@ package net.sf.webcat.oda.designer.metadata;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 // ------------------------------------------------------------------------
 /**
  * A small class to ease opening an external browser.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: BrowserUtils.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: BrowserUtils.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
  */
 public class BrowserUtils
 {

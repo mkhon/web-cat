@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AppearanceBehaviorSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: AppearanceBehaviorSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,9 +21,9 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
-import java.util.Locale;
 import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
+
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import com.ibm.icu.util.ULocale;
 
 //------------------------------------------------------------------------
 /**
@@ -39,7 +38,7 @@ import com.ibm.icu.util.ULocale;
  * appearance and behavior of the report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: AppearanceBehaviorSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: AppearanceBehaviorSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  */
 public class AppearanceBehaviorSection extends AbstractSection
 {

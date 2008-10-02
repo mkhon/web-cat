@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CopyrightLicenseSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: CopyrightLicenseSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,24 +21,18 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
+
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 //------------------------------------------------------------------------
@@ -47,7 +41,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * and license of a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: CopyrightLicenseSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: CopyrightLicenseSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  */
 public class CopyrightLicenseSection extends AbstractSection
 {

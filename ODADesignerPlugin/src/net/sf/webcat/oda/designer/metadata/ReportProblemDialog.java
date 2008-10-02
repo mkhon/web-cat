@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportProblemDialog.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ReportProblemDialog.java,v 1.3 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,8 +22,7 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import net.sf.webcat.oda.commons.ReportModelProblem;
 import net.sf.webcat.oda.commons.ReportModelProblemFinder;
 import net.sf.webcat.oda.designer.DesignerActivator;
@@ -32,25 +31,19 @@ import net.sf.webcat.oda.designer.metadata.fixers.AddAuthorFixer;
 import net.sf.webcat.oda.designer.metadata.fixers.LicensePropertyFixer;
 import net.sf.webcat.oda.designer.metadata.fixers.TextPropertyFixer;
 import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
+
 import org.eclipse.core.runtime.Preferences;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.ColumnLayoutData;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -67,7 +60,7 @@ import org.eclipse.swt.widgets.Shell;
  * when it is saved.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ReportProblemDialog.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ReportProblemDialog.java,v 1.3 2008/10/02 17:10:26 aallowat Exp $
  */
 public class ReportProblemDialog extends TitleAreaDialog
 {

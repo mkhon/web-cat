@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebCATDataException.java,v 1.1 2008/04/08 18:20:41 aallowat Exp $
+ |  $Id: WebCATDataException.java,v 1.2 2008/10/02 17:10:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,13 +28,13 @@ package net.sf.webcat.oda.commons;
  * on Web-CAT.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: WebCATDataException.java,v 1.1 2008/04/08 18:20:41 aallowat Exp $
+ * @version $Id: WebCATDataException.java,v 1.2 2008/10/02 17:10:27 aallowat Exp $
  */
 public class WebCATDataException extends Exception
 {
     //~ Constructors ..........................................................
 
-    // ----------------------------------------------------------
+	// ----------------------------------------------------------
     /**
      * Initializes this exception with the specified cause.
      *
@@ -44,4 +44,11 @@ public class WebCATDataException extends Exception
     {
         super(cause);
     }
+
+
+    //~ Static/instance variables .............................................
+
+    /** Serialization version ID. */
+	private static final long serialVersionUID = 4405991602545557825L;
+
 }

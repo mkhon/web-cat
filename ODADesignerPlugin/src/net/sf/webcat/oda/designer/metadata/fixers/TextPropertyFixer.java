@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TextPropertyFixer.java,v 1.1 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: TextPropertyFixer.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,11 +27,10 @@ import net.sf.webcat.oda.commons.ReportModelProblem;
 import net.sf.webcat.oda.commons.ReportModelProblemFinder;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import net.sf.webcat.oda.designer.metadata.IReportProblemFixer;
+
 import org.eclipse.birt.report.model.api.DataSetHandle;
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +44,7 @@ import org.eclipse.swt.widgets.Text;
  * text property.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: TextPropertyFixer.java,v 1.1 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: TextPropertyFixer.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
  */
 public class TextPropertyFixer extends Composite implements IReportProblemFixer
 {

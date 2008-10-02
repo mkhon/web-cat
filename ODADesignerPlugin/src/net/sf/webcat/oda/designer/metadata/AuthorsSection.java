@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthorsSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: AuthorsSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,10 +21,12 @@
 
 package net.sf.webcat.oda.designer.metadata;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
 import net.sf.webcat.oda.commons.ReportMetadata;
 import net.sf.webcat.oda.designer.i18n.Messages;
+
 import org.eclipse.birt.report.model.api.ModuleHandle;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -36,9 +38,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -46,7 +45,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -56,7 +54,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * of a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: AuthorsSection.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: AuthorsSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  */
 public class AuthorsSection extends AbstractSection
 {

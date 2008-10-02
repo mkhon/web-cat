@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingPage.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ColumnMappingPage.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.sf.webcat.oda.commons.DataSetDescription;
 import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.contentassist.ContentAssistManager;
@@ -36,7 +37,7 @@ import net.sf.webcat.oda.designer.preview.PreviewQueryClause;
 import net.sf.webcat.oda.designer.preview.PreviewingResultCache;
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.eclipse.birt.report.model.api.DataSetHandle;
+
 import org.eclipse.datatools.connectivity.oda.OdaException;
 import org.eclipse.datatools.connectivity.oda.design.DataSetDesign;
 import org.eclipse.datatools.connectivity.oda.design.Property;
@@ -56,12 +57,10 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -79,7 +78,7 @@ import org.eclipse.swt.widgets.TableItem;
  * the entity and column mappings for the data set.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ColumnMappingPage.java,v 1.4 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ColumnMappingPage.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
  */
 public class ColumnMappingPage extends DataSetWizardPage
 {
