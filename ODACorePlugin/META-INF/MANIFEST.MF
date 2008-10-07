@@ -14,3 +14,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
 Eclipse-BuddyPolicy: app
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Virginia Tech Computer Science
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -40,3 +40,4 @@ Export-Package: net.sf.webcat.oda.designer,
  net.sf.webcat.oda.designer.preview,
  net.sf.webcat.oda.designer.util,
  net.sf.webcat.oda.designer.widgets
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

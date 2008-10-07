@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RefreshContentAssistHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ |  $Id: RefreshContentAssistHandler.java,v 1.3 2008/10/07 15:29:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,14 +33,13 @@ import org.eclipse.core.commands.ExecutionException;
  * refreshed from the Web-CAT server.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: RefreshContentAssistHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ * @version $Id: RefreshContentAssistHandler.java,v 1.3 2008/10/07 15:29:16 aallowat Exp $
  */
 public class RefreshContentAssistHandler extends AbstractHandler
 {
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
         ContentAssistManager manager = DesignerActivator.getDefault()

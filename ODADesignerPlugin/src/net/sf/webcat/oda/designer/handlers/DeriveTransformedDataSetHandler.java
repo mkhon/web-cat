@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DeriveTransformedDataSetHandler.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: DeriveTransformedDataSetHandler.java,v 1.3 2008/10/07 15:29:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,14 +39,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * scripted data sets derived from other data sets.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DeriveTransformedDataSetHandler.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: DeriveTransformedDataSetHandler.java,v 1.3 2008/10/07 15:29:16 aallowat Exp $
  */
 public class DeriveTransformedDataSetHandler extends AbstractHandler
 {
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
         IEditorPart part = HandlerUtil.getActiveEditor(event);

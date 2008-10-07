@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpenWebCATHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ |  $Id: OpenWebCATHandler.java,v 1.3 2008/10/07 15:29:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,14 +40,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * browser window.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: OpenWebCATHandler.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ * @version $Id: OpenWebCATHandler.java,v 1.3 2008/10/07 15:29:16 aallowat Exp $
  */
 public class OpenWebCATHandler extends AbstractHandler
 {
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
         IWorkbench workbench = HandlerUtil.getActiveWorkbenchWindowChecked(
