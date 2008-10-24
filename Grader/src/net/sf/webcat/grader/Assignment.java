@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.8 2008/04/06 21:35:14 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.9 2008/10/24 20:04:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * An assignment that can be given in one or more classes.
  *
  * @author Stephen Edwards
- * @version $Id: Assignment.java,v 1.8 2008/04/06 21:35:14 stedwar2 Exp $
+ * @version $Id: Assignment.java,v 1.9 2008/10/24 20:04:35 stedwar2 Exp $
  */
 public class Assignment
     extends _Assignment
@@ -350,7 +350,6 @@ public class Assignment
      */
     public static class NonDuplicateAssignmentNameQualifier
         extends EOQualifier
-        implements EOQualifierEvaluation
     {
         // ----------------------------------------------------------
         /**
