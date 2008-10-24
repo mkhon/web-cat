@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.5 2008/04/02 01:01:32 stedwar2 Exp $
+ |  $Id: WCServletContext.java,v 1.6 2008/10/24 19:54:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.5 2008/04/02 01:01:32 stedwar2 Exp $
+ *  @version $Id: WCServletContext.java,v 1.6 2008/10/24 19:54:52 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -381,7 +381,13 @@ public class WCServletContext
     }
 
 
-    //~ Instance/static variables .............................................
+    // ----------------------------------------------------------
+	public String getContextPath() {
+		return innerContext.getContextPath();
+	}
+
+
+	//~ Instance/static variables .............................................
 
     private ServletContext innerContext;
     private String         woClasspath        = null;
