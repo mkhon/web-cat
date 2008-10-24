@@ -125,17 +125,17 @@ public  class ERXRequest extends WORequest {
     		if (WOApplication.application().resourceRequestHandlerKey().equals(requestHandlerKey)) {
     			String requestHandlerPath = (String)valueForKeyPath("_uriDecomposed.requestHandlerPath");
         		requestHandlerPath = "file:/" +  requestHandlerPath.substring("wodata=/".length());
-                // result = requestHandlerPath.replace('+', ' ');
-                try
-                {
-                    result = java.net.URLDecoder.decode(
-                        requestHandlerPath, "UTF-8");
-                }
-                catch (java.io.UnsupportedEncodingException e)
-                {
-                    log.error("unable to decode wodata parameter", e);
-                    result = requestHandlerPath.replace('+', ' ');
-                }
+        		// result = requestHandlerPath.replace('+', ' ');
+        		try
+        		{
+        			result = java.net.URLDecoder.decode(
+        				requestHandlerPath, "UTF-8");
+        		}
+        		catch (java.io.UnsupportedEncodingException e)
+        		{
+        			log.error("unable to decode wodata parameter", e);
+        				result = requestHandlerPath.replace('+', ' ');
+        		}
     		}
     	}
 

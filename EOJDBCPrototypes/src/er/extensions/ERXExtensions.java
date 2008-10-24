@@ -72,7 +72,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     private static boolean _initialized;
 
     public ERXExtensions() {
-        // Nothing to do
+    	// Nothing to do
     }
 
     /** holds the default model group */
@@ -181,7 +181,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
      * validation template system is configured.
      */
     public void finishInitialization() {
-        bundleDidLoad(null);
+    	bundleDidLoad(null);
     	ERXJDBCAdaptor.registerJDBCAdaptor();
         ERXConfigurationManager.defaultManager().loadOptionalConfigurationFiles();
         ERXProperties.populateSystemProperties();
@@ -206,11 +206,6 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
                 EOQualifierSQLGeneration.Support.supportForClass(ERXRegExQualifier.class));
         registerSQLSupportForSelector(new NSSelector(ERXFullTextQualifier.FullTextContainsSelectorName),
                 EOQualifierSQLGeneration.Support.supportForClass(ERXFullTextQualifier.class));
-
-		if (!ERXApplication.isWO54()) {
-	        //AK: in 5.4 disable
-			EOQualifierSQLGeneration.Support.setSupportForClass(new ERXInOrQualifierSupport(), EOOrQualifier._CLASS);
-		}
 
 		EOQualifierSQLGeneration.Support.setSupportForClass(new ERXFullTextQualifierSupport(), ERXFullTextQualifier.class);
 
@@ -360,7 +355,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
     //		com.webobjects.logging.DebugGroupSQLGeneration we should
     //		be able to get the last part of the logger name and look up that log group and turn
     @SuppressWarnings("deprecation")
-    public static void configureAdaptorContextRapidTurnAround(Object anObserver) {
+	public static void configureAdaptorContextRapidTurnAround(Object anObserver) {
         if (!_isConfigureAdaptorContextRapidTurnAround) {
             // This allows enabling from the log4j system.
             adaptorLogger = Logger.getLogger("er.transaction.adaptor.EOAdaptorDebugEnabled");
@@ -913,7 +908,7 @@ public class ERXExtensions extends ERXFrameworkPrincipal {
             int count =  (fetchSpecNames != null) ? fetchSpecNames.count() : 0;
 
             if ( fetchSpecNames != null // to make javac null checker happy
-                 && count > 0 ) { //same check as ERXEOAccessUtilities.entityWithNamedIsShared(), but avoids duplicate work
+            	 && count > 0 ) { //same check as ERXEOAccessUtilities.entityWithNamedIsShared(), but avoids duplicate work
                 for (int index = 0 ; index < count ; ++index) {
                     String oneFetchSpecName = (String)fetchSpecNames.objectAtIndex(index);
                     EOFetchSpecification fs = entity.fetchSpecificationNamed(oneFetchSpecName);

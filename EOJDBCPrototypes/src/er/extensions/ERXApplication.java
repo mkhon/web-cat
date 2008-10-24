@@ -46,6 +46,7 @@ import com.webobjects.appserver.WOResourceManager;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.appserver.WOSession;
 import com.webobjects.appserver.WOTimer;
+import com.webobjects.appserver._private.WOProperties;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOTemporaryGlobalID;
 import com.webobjects.foundation.NSArray;
@@ -77,6 +78,7 @@ import er.extensions.migration.ERXMigrator;
  * handling exceptions.
  */
 
+@SuppressWarnings("deprecation")
 public abstract class ERXApplication extends ERXAjaxApplication implements ERXGracefulShutdown.GracefulApplication {
 	private static Boolean isWO54 = null;
 
@@ -450,7 +452,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 			try {
 				File jarFile = new File(jar);
 				if (!jarFile.exists() || jarFile.isDirectory()
-                    || isSystemJar(jar)) {
+					|| isSystemJar(jar)) {
 					return;
 				}
 				JarFile f = new JarFile(jar);
@@ -465,13 +467,13 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 						}
 						bundles.addObject(jar);
 					}
-                    else if (name.endsWith("plugin.properties")
-                             || name.endsWith("plugin.xml")
-                             || name.endsWith("about.html"))
-                    {
-                        // Ignore these files, since they are likely to be
-                        // duplicated across multiple jars
-                    }
+					else if (name.endsWith("plugin.properties")
+						     || name.endsWith("plugin.xml")
+							 || name.endsWith("about.html"))
+					{
+						// Ignore these files, since they are likely to be
+						// duplicated across multiple jars
+					}
 					else if (!(name.startsWith("src") || name.startsWith("META-INF"))) {
 						Entry e = new Entry(entry.getSize(), jar);
 						NSMutableSet<Entry> set = classes.objectForKey(name);
@@ -644,10 +646,16 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 */
 	public void installPatches() {
 		ERXPatcher.installPatches();
-		if (contextClassName().equals("WOContext"))
-			setContextClassName("er.extensions.ERXWOContext");
+		if (contextClassName().equals("WOContext")) {
+			if (ERXApplication.isWO54()) {
+				setContextClassName(ERXWOContext54.class.getName());
+			}
+			else {
+				setContextClassName(ERXWOContext.class.getName());
+			}
+		}
 		if (contextClassName().equals("WOServletContext") || contextClassName().equals("com.webobjects.appserver.jspservlet.WOServletContext"))
-			setContextClassName("er.extensions.ERXWOServletContext");
+			setContextClassName(ERXWOServletContext.class.getName());
 
 		ERXPatcher.setClassForName(ERXWOForm.class, "WOForm");
 		try {
@@ -696,11 +704,11 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 */
 	public ERXApplication() {
 		super();
-		if (!ERXConfigurationManager.defaultManager().isDeployedAsServlet() && !wasERXApplicationMainInvoked || allFrameworks == null) {
+		if (!ERXConfigurationManager.defaultManager().isDeployedAsServlet() && (!wasERXApplicationMainInvoked || allFrameworks == null)) {
 			_displayMainMethodWarning();
 		}
 		if (allFrameworks == null || allFrameworks.size() > 0) {
-			throw new RuntimeException("ERXExtensions have not been initialized. Please report the classpath and the rest of the bundles to the Wonder mailing list: " + "\nRemaining" + allFrameworks + "\n" + System.getProperty("java.class.path"));
+			throw new RuntimeException("ERXExtensions have not been initialized. Please report the classpath and the rest of the bundles to the Wonder mailing list: " + "\nRemaining frameworks: " + allFrameworks + "\nClasspath: " + System.getProperty("java.class.path"));
 		}
 		if ("JavaFoundation".equals(NSBundle.mainBundle().name())) {
 			throw new RuntimeException("Your main bundle is \"JavaFoundation\".  You are not launching this WO application properly.  If you are using Eclipse, most likely you launched your WOA as a \"Java Application\" instead of a \"WO Application\".");
@@ -869,7 +877,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * tasks.
 	 */
 	public void didFinishLaunching() {
-        // Nothing to do in this base class implementation
+		// Nothing to do in this base class implementation
 	}
 
 	/**
@@ -944,7 +952,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	@SuppressWarnings("all")
 	// Suppress @Override warning for 5.3
 	public WORequest createRequest(String method, String aurl, String anHTTPVersion, Map<String, ? extends List<String>> someHeaders, NSData content, Map<String, Object> someInfo) {
-		return _createRequest(method, aurl, anHTTPVersion, (someHeaders != null ? new NSDictionary<String, Object>(someHeaders, true) : null), content, (someInfo != null ? new NSDictionary<String, Object>(someInfo, true) : null));
+		return _createRequest(method, aurl, anHTTPVersion, (someHeaders != null ? new NSDictionary<String, Object>((Map<String, Object>) someHeaders, true) : null), content, (someInfo != null ? new NSDictionary<String, Object>(someInfo, true) : null));
 	}
 
 	/**
@@ -1012,6 +1020,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 *
 	 * @author ak
 	 */
+
 	protected void checkMemory() {
 		if (memoryThreshold != null) {
 			long max = Runtime.getRuntime().maxMemory();
@@ -1033,26 +1042,29 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 				boolean shouldRefuse = (used > threshold);
 				if (isRefusingNewSessions() != shouldRefuse) {
-					// not changing anything when the kill timer is set (we
-					// already refusing session by monitor)
-					boolean hasKillTimerSetting = ERXProperties.intForKey("ERTimeToKill") > 0;
-					if (_killTimer == null && hasKillTimerSetting) {
-						// using super, so we don't interfere with the kill
-						// timer, as
-						// this is called when we actually have a lot of
-						// sessions at the moment
-						super.refuseNewSessions(shouldRefuse);
-						log.error("Refuse new sessions set to: " + shouldRefuse);
+					if(isRefusingNewSessions()) {
+						// not changing anything when refuseNewSessions was called externally.
+						if(!refusingByMonitor) {
+							refuseNewSessions(false);
+							log.warn("Refuse new sessions set to: false");
+						} else {
+							log.debug("Refuse new sessions should be set to false, but we were refusing externally");
+						}
 					}
 					else {
-						if (hasKillTimerSetting) {
-							log.info("Refuse new sessions should be set to " + shouldRefuse + ", but kill timer is active or not set at all via ERTimeToKill");
-						}
+						// we are currently not refusing sessions, so start refusing, but reset the kill timer
+						refuseNewSessions(true);
+						resetKillTimer(false);
+						refusingByMonitor = false;
+						log.error("Refuse new sessions set to: true");
 					}
 				}
 			}
 		}
 	}
+
+	/** flag to indicate if we are refusing sessions by a call to refuseNewSessions() */
+	private boolean refusingByMonitor = false;
 
 	/**
 	 * Overridden to install/uninstall a timer that will terminate the
@@ -1062,14 +1074,33 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 */
 
 	@Override
-	public void refuseNewSessions(boolean value) {
+	public synchronized void refuseNewSessions(boolean value) {
+		boolean old = isRefusingNewSessions();
+		boolean oldDirectConnect = isDirectConnectEnabled();
+		if(oldDirectConnect) {
+			WOProperties.TheDirectConnectEnabledFlag = false;
+		}
 		super.refuseNewSessions(value);
+		if(oldDirectConnect) {
+			WOProperties.TheDirectConnectEnabledFlag = oldDirectConnect;
+		}
+
+		refusingByMonitor = isRefusingNewSessions();
+		log.debug("Refusing new sessions, was: " + old + ", should: " + value +  "  is:" + refusingByMonitor);
+		resetKillTimer(refusingByMonitor);
+	}
+
+	/**
+	 * Sets the kill timer.
+	 * @param install
+	 */
+	private void resetKillTimer(boolean install) {
 		// we assume that we changed our mind about killing the instance.
 		if (_killTimer != null) {
 			_killTimer.invalidate();
 			_killTimer = null;
 		}
-		if (isRefusingNewSessions()) {
+		if (install) {
 			int timeToKill = ERXProperties.intForKey("ERTimeToKill");
 			if (timeToKill > 0) {
 				log.warn("Registering kill timer in " + timeToKill + "seconds");
@@ -1426,6 +1457,10 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 */
 	@Override
 	public WOResponse dispatchRequest(WORequest request) {
+		if (ERXApplication.requestHandlingLog.isDebugEnabled()) {
+			ERXApplication.requestHandlingLog.debug(request);
+		}
+
 		WOResponse response = null;
 		try {
 			ERXApplication._startRequest();
@@ -1448,12 +1483,6 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 				response = super.dispatchRequest(request);
 			}
 
-			if (ERXApplication.requestHandlingLog.isDebugEnabled()) {
-				WOContext context = ERXWOContext.currentContext();
-				if (context != null && context.request() != null) {
-					ERXApplication.requestHandlingLog.debug(context.request());
-				}
-			}
 		}
 		finally {
 			ERXStats.logStatisticsForOperation(statsLog, "sum");
@@ -1468,10 +1497,22 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 			if ((contentType != null) && (contentType.startsWith("text/") || contentType.equals("application/x-javascript"))) {
 				String acceptEncoding = request.headerForKey("accept-encoding");
 				if ((acceptEncoding != null) && (acceptEncoding.toLowerCase().indexOf("gzip") != -1)) {
-					NSData input = response.content();
-					byte[] inputBytes = input._bytesNoCopy();
 					long start = System.currentTimeMillis();
-					byte[] compressedData = ERXCompressionUtilities.gzipByteArray(inputBytes);
+					long inputBytesLength;
+					InputStream contentInputStream = response.contentInputStream();
+					byte[] compressedData;
+					if (contentInputStream != null) {
+						inputBytesLength = response.contentInputStreamLength();
+						NSData compressedNSData = ERXCompressionUtilities.gzipInputStreamAsNSData(contentInputStream, (int)inputBytesLength);
+						compressedData = compressedNSData._bytesNoCopy();
+						response.setContentStream(null, 0, 0);
+					}
+					else {
+						NSData input = response.content();
+						byte[] inputBytes = input._bytesNoCopy();
+						inputBytesLength = inputBytes.length;
+						compressedData = ERXCompressionUtilities.gzipByteArray(inputBytes);
+					}
 					if (compressedData == null) {
 						// something went wrong
 					}
@@ -1480,7 +1521,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 						response.setHeader(String.valueOf(compressedData.length), "content-length");
 						response.setHeader("gzip", "content-encoding");
 						if (log.isDebugEnabled()) {
-							log.debug("before: " + inputBytes.length + ", after " + compressedData.length + ", time: " + (System.currentTimeMillis() - start));
+							log.debug("before: " + inputBytesLength + ", after " + compressedData.length + ", time: " + (System.currentTimeMillis() - start));
 						}
 					}
 				}
