@@ -3,29 +3,29 @@
         class = EOFetchSpecification; 
         entityName = ReportQuery; 
         fetchLimit = 0; 
-        isDeep = YES;
+        isDeep = YES; 
         qualifier = {
-        	class = EOAndQualifier;
-        	qualifiers = (
-		        {
-		            class = EOKeyValueQualifier; 
-		            key = wcEntityName; 
-		            selectorName = "isEqualTo:"; 
-		            value = {_key = wcEntityName; class = EOQualifierVariable; }; 
-		        }, 
-		        {
-		            class = EOKeyValueQualifier; 
-		            key = user; 
-		            selectorName = "isEqualTo:"; 
-		            value = {_key = user; class = EOQualifierVariable; }; 
-		        }, 
-		        {
-		            class = EOKeyValueQualifier; 
-		            key = description;
-		            selectorName = "isNotEqualTo:"; 
-		            value = null; 
-		        }
-        	);
-        };
-    };    
+            class = EOAndQualifier; 
+            qualifiers = (
+                {
+                    class = EOKeyValueQualifier; 
+                    key = user; 
+                    selectorName = "isEqualTo:"; 
+                    value = {"_key" = user; class = EOQualifierVariable; }; 
+                }, 
+                {
+                    class = EOKeyValueQualifier; 
+                    key = wcEntityName; 
+                    selectorName = "isEqualTo:"; 
+                    value = {"_key" = wcEntityName; class = EOQualifierVariable; }; 
+                }, 
+                {
+                    class = EOKeyValueQualifier; 
+                    key = description; 
+                    selectorName = "isNotEqualTo:"; 
+                    value = null; 
+                }
+            ); 
+        }; 
+    }; 
 }

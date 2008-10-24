@@ -347,7 +347,6 @@
         {className = "net.sf.webcat.reporter.ReportTemplate"; name = ReportTemplate; }
     ); 
     internalInfo = {
-        "_deletedEntityNamesInObjectStore" = (EnqueuedReportJob); 
         "_schemaSynchronizationOptions" = {
             EOSchemaSynchronizationForeignKeyConstraintsKey = YES; 
             EOSchemaSynchronizationPrimaryKeyConstraintsKey = YES; 
