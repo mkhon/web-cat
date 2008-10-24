@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PDFRenderingMethod.java,v 1.1 2008/04/16 20:48:23 aallowat Exp $
+ |  $Id: PDFRenderingMethod.java,v 1.2 2008/10/24 19:17:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * Render method for PDF reports.
  *
  * @author Tony Allevato
- * @version $Id: PDFRenderingMethod.java,v 1.1 2008/04/16 20:48:23 aallowat Exp $
+ * @version $Id: PDFRenderingMethod.java,v 1.2 2008/10/24 19:17:11 stedwar2 Exp $
  */
 public class PDFRenderingMethod extends AbstractRenderingMethod
 {
@@ -77,7 +77,7 @@ public class PDFRenderingMethod extends AbstractRenderingMethod
 
     // ----------------------------------------------------------
     public void appendContentToResponse(GeneratedReport report,
-            WOResponse response, WOContext context) throws IOException
+            WOResponse response, WOContext context)
     {
         NSMutableDictionary query = new NSMutableDictionary();
         query.setObjectForKey(report.id(), "reportId");
