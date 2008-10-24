@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LoggedError.java,v 1.3 2008/04/02 01:33:34 stedwar2 Exp $
+ |  $Id: LoggedError.java,v 1.4 2008/10/24 20:45:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import com.webobjects.eocontrol.*;
  * the error, and the number of times this specific error has occurred.
  *
  * @author
- * @version $Id: LoggedError.java,v 1.3 2008/04/02 01:33:34 stedwar2 Exp $
+ * @version $Id: LoggedError.java,v 1.4 2008/10/24 20:45:17 aallowat Exp $
  */
 public class LoggedError
     extends _LoggedError
@@ -79,9 +79,9 @@ public class LoggedError
         LoggedError result = null;
         NSArray results = objectsForExceptionLocation(
             context,
+            top.getClassName(),
             top.getLineNumber(),
             top.getMethodName(),
-            top.getClassName(),
             throwable.getClass().getName() );
         if ( results != null && results.count() > 0 )
         {

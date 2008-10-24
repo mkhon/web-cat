@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.5 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.6 2008/10/24 20:46:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditSubmissionProfilePage.java,v 1.5 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: EditSubmissionProfilePage.java,v 1.6 2008/10/24 20:46:48 aallowat Exp $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -210,14 +210,14 @@ public class EditSubmissionProfilePage
 
 
     // ----------------------------------------------------------
-    public Number maxFileUploadSize()
+    public Long maxFileUploadSize()
     {
         return submissionProfile.maxFileUploadSizeRaw();
     }
 
 
     // ----------------------------------------------------------
-    public void setMaxFileUploadSize( Number value )
+    public void setMaxFileUploadSize( Long value )
     {
         if ( value != null
              && !SubmissionProfile.maxFileUploadSizeIsWithinLimits(

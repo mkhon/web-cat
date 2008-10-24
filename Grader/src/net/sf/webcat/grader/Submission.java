@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.14 2008/10/24 20:05:20 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.15 2008/10/24 20:50:14 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.14 2008/10/24 20:05:20 stedwar2 Exp $
+ *  @version $Id: Submission.java,v 1.15 2008/10/24 20:50:14 aallowat Exp $
  */
 public class Submission
     extends _Submission
@@ -537,8 +537,8 @@ public class Submission
         if (user() == null || assignmentOffering() == null)
             return NSArray.EmptyArray;
 
-        return objectsForAllForUserAndAssignmentOffering(editingContext(),
-                user(), assignmentOffering());
+        return objectsForAllForAssignmentOfferingAndUser(editingContext(),
+                assignmentOffering(), user());
     }
 
 
@@ -583,8 +583,8 @@ public class Submission
         if (user() == null || assignmentOffering() == null) return null;
 
         NSArray<Submission> subs =
-            objectsForEarliestForUserAndAssignmentOffering(editingContext(),
-                    user(), assignmentOffering());
+            objectsForEarliestForAssignmentOfferingAndUser(editingContext(),
+                    assignmentOffering(), user());
 
         if (subs != null && subs.count() >= 1)
         {
@@ -613,8 +613,8 @@ public class Submission
         if (user() == null || assignmentOffering() == null) return null;
 
         NSArray<Submission> subs =
-            objectsForLatestForUserAndAssignmentOffering(editingContext(),
-                    user(), assignmentOffering());
+            objectsForLatestForAssignmentOfferingAndUser(editingContext(),
+                    assignmentOffering(), user());
 
         if (subs != null && subs.count() >= 1)
         {
@@ -644,8 +644,8 @@ public class Submission
         if (submitNo == 1) return null;
 
         NSArray<Submission> subs =
-            objectsForUserAssignmentOfferingAndSubmitNumber(editingContext(),
-                    user(), assignmentOffering(), submitNo - 1);
+            objectsForSpecificSubmission(editingContext(),
+                    assignmentOffering(), submitNo - 1, user());
 
         if (subs != null && subs.count() >= 1)
         {
@@ -682,8 +682,8 @@ public class Submission
         if (submitNo == count) return null;
 
         NSArray<Submission> subs =
-            objectsForUserAssignmentOfferingAndSubmitNumber(editingContext(),
-                    user(), assignmentOffering(), submitNo + 1);
+            objectsForSpecificSubmission(editingContext(),
+                    assignmentOffering(), submitNo + 1, user());
 
         if (subs != null && subs.count() >= 1)
         {

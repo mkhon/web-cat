@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: StepConfig.java,v 1.5 2008/10/24 20:46:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import net.sf.webcat.core.*;
  * Custom settings for a single grading {@link Step}.
  *
  * @author stedwar2
- * @version $Id: StepConfig.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: StepConfig.java,v 1.5 2008/10/24 20:46:47 aallowat Exp $
  */
 public class StepConfig
     extends _StepConfig
@@ -129,7 +129,7 @@ public class StepConfig
         er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             results,
             objectsForCourseAndScript(
-                context, scriptFileBinding, courseBinding )
+                context, courseBinding, scriptFileBinding )
             );
         if ( mine != null && !results.containsObject( mine ) )
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.6 2008/04/03 21:16:38 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * results).
  *
  * @author Stephen Edwards
- * @version $Id: EditStaffPage.java,v 1.6 2008/04/03 21:16:38 stedwar2 Exp $
+ * @version $Id: EditStaffPage.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -76,7 +76,7 @@ public class EditStaffPage
         staffDisplayGroup.setMasterObject( courseOffering() );
         staffDisplayGroup.setDetailKey( editInstructors
                         ? CourseOffering.INSTRUCTORS_KEY
-                        : CourseOffering.TAS_KEY );
+                        : CourseOffering.T_AS_KEY );
         staffDisplayGroup.fetch();
         log.debug(
             "current size = " + potentialDisplayGroup.numberOfObjectsPerBatch()

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.16 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.17 2008/10/24 20:46:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.16 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: AssignmentOffering.java,v 1.17 2008/10/24 20:46:48 aallowat Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -68,7 +68,7 @@ public class AssignmentOffering
     public static final String COURSE_OFFERING_INSTRUCTORS_KEY  =
         COURSE_OFFERING_KEY + "." + CourseOffering.INSTRUCTORS_KEY;
     public static final String COURSE_OFFERING_TAS_KEY  =
-        COURSE_OFFERING_KEY + "." + CourseOffering.TAS_KEY;
+        COURSE_OFFERING_KEY + "." + CourseOffering.T_AS_KEY;
     public static final String COURSE_OFFERING_CRN_KEY  =
         COURSE_OFFERING_KEY + "." + CourseOffering.CRN_KEY;
     public static final String COURSE_NUMBER_KEY  =
@@ -440,9 +440,9 @@ public class AssignmentOffering
      * Retrieve this object's <code>moodleId</code> value.
      * @return the value of the attribute
      */
-    public Number moodleId()
+    public Long moodleId()
     {
-        Number result = super.moodleId();
+        Long result = super.moodleId();
         if ( result == null && assignment() != null )
         {
             result = assignment().moodleId();

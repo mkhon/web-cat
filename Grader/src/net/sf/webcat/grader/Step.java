@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: Step.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
 import com.webobjects.eocontrol.*;
 \*==========================================================================*/
@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  * processing sequence for handling a given assignment.
  *
  * @author stedwar2
- * @version $Id: Step.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: Step.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
  */
 public class Step
     extends _Step
@@ -96,7 +96,7 @@ public class Step
 
 
     // ----------------------------------------------------------
-    public void setTimeoutRaw( Number value )
+    public void setTimeoutRaw( Integer value )
     {
         if ( value != null && !timeoutIsWithinLimits( value.intValue() ) )
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.8 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: UploadRosterPage.java,v 1.9 2008/10/24 20:46:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * This class allows a CSV file of new users to be added to a course.
  *
  * @author Stephen Edwards
- * @version $Id: UploadRosterPage.java,v 1.8 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: UploadRosterPage.java,v 1.9 2008/10/24 20:46:47 aallowat Exp $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -678,7 +678,7 @@ public class UploadRosterPage
                             setPropertyIfMissing( user, User.LAST_NAME_KEY,
                                 name.last );
                             setPropertyIfMissing( user,
-                                User.UNIVERSITY_IDNO_KEY, idNo );
+                                User.UNIVERSITY_ID_NO_KEY, idNo );
                             setPropertyIfMissing( user, User.EMAIL_KEY,
                                 email );
                             setPropertyIfMissing( user, User.URL_KEY, url );

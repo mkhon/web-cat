@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.9 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.10 2008/10/24 20:46:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.jdom.output.XMLOutputter;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author Stephen H. Edwards
- *  @version $Id: SubmissionFileStats.java,v 1.9 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: SubmissionFileStats.java,v 1.10 2008/10/24 20:46:47 aallowat Exp $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -346,7 +346,7 @@ public class SubmissionFileStats
      *
      * @param value The new value for this property
      */
-    public void setDeductionsRaw( Number value )
+    public void setDeductionsRaw( Double value )
     {
         staffDeductionsIsValid = false;
         super.setDeductionsRaw(value);

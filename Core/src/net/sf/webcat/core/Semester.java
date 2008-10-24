@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Semester.java,v 1.8 2008/09/17 00:24:40 stedwar2 Exp $
+ |  $Id: Semester.java,v 1.9 2008/10/24 20:45:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  * Represents a single school semester.
  *
  * @author Stephen Edwards
- * @version $Id: Semester.java,v 1.8 2008/09/17 00:24:40 stedwar2 Exp $
+ * @version $Id: Semester.java,v 1.9 2008/10/24 20:45:17 aallowat Exp $
  */
 public class Semester
     extends _Semester
@@ -92,7 +92,7 @@ public class Semester
      *
      * @param value The new value for this property
      */
-    public void setSeason( Number value )
+    public void setSeason( Integer value )
     {
         if (dirNeedingRenaming == null)
         {

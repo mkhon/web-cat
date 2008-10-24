@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.14 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.15 2008/10/24 20:46:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditAssignmentPage.java,v 1.14 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: EditAssignmentPage.java,v 1.15 2008/10/24 20:46:47 aallowat Exp $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -465,7 +465,7 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public Number stepTimeout()
+    public Integer stepTimeout()
     {
         log.debug( "step = " + thisStep );
         log.debug( "num steps = "
@@ -475,7 +475,7 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public void setStepTimeout( Number value )
+    public void setStepTimeout( Integer value )
     {
         if ( value != null && !Step.timeoutIsWithinLimits( value ) )
         {
