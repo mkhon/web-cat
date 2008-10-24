@@ -1,64 +1,42 @@
 {
     attributes = (
-        { name = id; prototypeName = id; },
+        {name = id; prototypeName = id; }, 
+        {columnName = CUSERID; name = userId; prototypeName = foreignId; }, 
+        {columnName = CQUEUETIME; name = queueTime; prototypeName = dateTime; }, 
         {
-            columnName = CUSERID;
-            name = userId;
-            prototypeName = foreignId;
-        },
-        {
-            columnName = CQUEUETIME;
-            name = queueTime;
-            prototypeName = dateTime;
-        },
-        {
-            columnName = CREPORTTEMPLATEID;
-            name = reportTemplateId;
-            prototypeName = foreignId;
-        },
-        {
-            columnName = CDESCRIPTION;
-            name = description;
-            prototypeName = mediumText;
-        },
-    );
-    attributesUsedForLocking = (
-        reportTemplateId,
-        userId,
-        description,
-    );
-    className = net.sf.webcat.reporter.EnqueuedReportGenerationJob;
-    classProperties = (
-        reportTemplate,
-        user,
-        queueTime,
-        description,
-        dataSetQueries,
-    );
-    externalName = TENQUEUEDREPORTGENERATIONJOB;
-    name = EnqueuedReportJob;
-    primaryKeyAttributes = (id);
+            columnName = CREPORTTEMPLATEID; 
+            name = reportTemplateId; 
+            prototypeName = foreignId; 
+        }, 
+        {columnName = CDESCRIPTION; name = description; prototypeName = mediumText; }
+    ); 
+    attributesUsedForLocking = (reportTemplateId, userId, description); 
+    className = "net.sf.webcat.reporter.EnqueuedReportGenerationJob"; 
+    classProperties = (reportTemplate, user, queueTime, description, dataSetQueries); 
+    externalName = TENQUEUEDREPORTGENERATIONJOB; 
+    name = EnqueuedReportGenerationJob; 
+    primaryKeyAttributes = (id); 
     relationships = (
         {
-            destination = ReportTemplate;
-            isToMany = N;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = id; sourceAttribute = reportTemplateId; });
-            name = reportTemplate;
-        },
+            destination = ReportTemplate; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = reportTemplateId; }); 
+            name = reportTemplate; 
+        }, 
         {
-            destination = User;
-            isToMany = N;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = id; sourceAttribute = userId; });
-            name = user;
-        },
+            destination = User; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
+            name = user; 
+        }, 
         {
-            destination = ReportDataSetQuery;
-            isToMany = Y;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = enqueuedReportJobId; sourceAttribute = id; });
-            name = dataSetQueries;
+            destination = ReportDataSetQuery; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = enqueuedReportJobId; sourceAttribute = id; }); 
+            name = dataSetQueries; 
         }
-    );
+    ); 
 }

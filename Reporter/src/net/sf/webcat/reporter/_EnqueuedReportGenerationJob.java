@@ -143,7 +143,7 @@ public abstract class _EnqueuedReportGenerationJob
     // To-many relationships ---
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
     // Fetch specifications ---
-    public static final String ENTITY_NAME = "EnqueuedReportJob";
+    public static final String ENTITY_NAME = "EnqueuedReportGenerationJob";
 
 
     //~ Methods ...............................................................
