@@ -1,0 +1,1 @@
+/usr/local/eogenerator/eogenerator -destination src -java -javaTemplate JavaSourceEOF52.eotemplate -model Reporter.eomodeld -packagedirs -refmodel ../EOJDBCPrototypes/EOJDBCPrototypes.eomodeld -refmodel ../Core/Core.eomodeld -refmodel ../Grader/Grader.eomodeld -subclassDestination src -subclassJavaTemplate JavaSubclassSourceEOF5.eotemplate -templatedir ../Core -verbose
