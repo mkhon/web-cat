@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EnqueuedReportGenerationJob.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: EnqueuedReportGenerationJob.java,v 1.2 2008/10/24 20:52:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.Application;
  * is handled by the {@link EnqueuedReportRenderJob} entity.
  *
  * @author Tony Allevato
- * @version $Id: EnqueuedReportGenerationJob.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: EnqueuedReportGenerationJob.java,v 1.2 2008/10/24 20:52:57 aallowat Exp $
  */
 public class EnqueuedReportGenerationJob
     extends _EnqueuedReportGenerationJob
@@ -40,7 +40,7 @@ public class EnqueuedReportGenerationJob
 
     // ----------------------------------------------------------
     /**
-     * Creates a new EnqueuedReportJob object.
+     * Creates a new EnqueuedReportGenerationJob object.
      */
     public EnqueuedReportGenerationJob()
     {
