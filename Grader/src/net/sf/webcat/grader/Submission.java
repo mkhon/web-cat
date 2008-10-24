@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.13 2008/10/08 14:11:15 aallowat Exp $
+ |  $Id: Submission.java,v 1.14 2008/10/24 20:05:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.13 2008/10/08 14:11:15 aallowat Exp $
+ *  @version $Id: Submission.java,v 1.14 2008/10/24 20:05:20 stedwar2 Exp $
  */
 public class Submission
     extends _Submission
@@ -153,7 +153,7 @@ public class Submission
             {
                 subInfo = ee.toString();
             }
-            ((Application)Application.application()).emailExceptionToAdmins(
+            Application.emailExceptionToAdmins(
                 e, null, "An exception was generated trying to retrieve the "
                 + "id for a submission.\n\nSubmission = " + subInfo );
             return er.extensions.ERXConstant.ZeroInteger;

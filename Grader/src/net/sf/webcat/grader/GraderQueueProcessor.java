@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.15 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.16 2008/10/24 20:04:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.15 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.16 2008/10/24 20:04:52 stedwar2 Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -966,11 +966,11 @@ public class GraderQueueProcessor
 
         generateCompositeResultFile(
             new File( job.submission().resultDirName(),
-                      submissionResult.resultFileName() ),
+                      SubmissionResult.resultFileName() ),
             inlineStudentReports );
         generateCompositeResultFile(
             new File( job.submission().resultDirName(),
-                      submissionResult.staffResultFileName() ),
+                      SubmissionResult.staffResultFileName() ),
             inlineStaffReports );
 
         editingContext.saveChanges();
