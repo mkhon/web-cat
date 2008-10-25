@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickReportToViewPage.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: PickReportToViewPage.java,v 1.7 2008/10/25 00:30:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import net.sf.webcat.core.MutableDictionary;
  * This page allows the user to select among already-generated reports.
  *
  * @author Tony Allevato
- * @version $Id: PickReportToViewPage.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: PickReportToViewPage.java,v 1.7 2008/10/25 00:30:21 aallowat Exp $
  */
 public class PickReportToViewPage
     extends ReporterComponent
@@ -90,6 +90,15 @@ public class PickReportToViewPage
     {
         commitReportRendering(generatedReport);
         return pageWithName(GeneratedReportPage.class.getName());
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent deleteReport()
+    {
+        localContext().deleteObject( generatedReport );
+        localContext().saveChanges();
+        return null;
     }
 
 

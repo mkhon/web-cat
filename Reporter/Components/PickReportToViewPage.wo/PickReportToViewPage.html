@@ -39,12 +39,14 @@
             <th>Report Title<webobject name="WCSortOrderTitle"/></th>
             <th>Template Version</th>
             <th>Date Generated<webobject name="WCSortOrderDate"/></th>
+            <th>Action</th>
         </tr>
         <wo:loop list="$generatedReportsDisplayGroup.displayedObjects" item="$generatedReport" index="$index">
             <wo:tr index="$index">
                 <td><wo:link action="$viewReport" string="$generatedReport.description"/></td>
                 <td><wo:str value="$generatedReport.reportTemplate.version"/></td>
                 <td><wo name="GeneratedReportTime"/></td>
+                <td><wo name="DeleteReport"/></td>
             </wo:tr>
         </wo:loop>
     </table></div>

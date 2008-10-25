@@ -9,35 +9,46 @@ BatchNavigatorQueue: net.sf.webcat.core.WCBatchNavigator {
 }
 
 WCSortOrderTitle: net.sf.webcat.core.WCSortOrder {
-	displayGroup = generatedReportsDisplayGroup;
-	displayKey = "Report Title";
-	key = "name";
+    displayGroup = generatedReportsDisplayGroup;
+    displayKey = "Report Title";
+    key = "name";
 }
 
 WCSortOrderDate: net.sf.webcat.core.WCSortOrder {
-	displayGroup = generatedReportsDisplayGroup;
-	displayKey = "Date Generated";
-	key = "generatedTime";
+    displayGroup = generatedReportsDisplayGroup;
+    displayKey = "Date Generated";
+    key = "generatedTime";
 }
 
 WCSortOrderTitleQueue: net.sf.webcat.core.WCSortOrder {
-	displayGroup = enqueuedReportsDisplayGroup;
-	displayKey = "Report Title";
-	key = "reportName";
+    displayGroup = enqueuedReportsDisplayGroup;
+    displayKey = "Report Title";
+    key = "reportName";
 }
 
 WCSortOrderDateQueue: net.sf.webcat.core.WCSortOrder {
-	displayGroup = enqueuedReportsDisplayGroup;
-	displayKey = "Date Requested";
-	key = "queueTime";
+    displayGroup = enqueuedReportsDisplayGroup;
+    displayKey = "Date Requested";
+    key = "queueTime";
 }
 
 EnqueuedReportTime: WOString {
-	value = enqueuedReport.queueTime;
-	formatter = session.timeFormatter;
+    value = enqueuedReport.queueTime;
+    formatter = session.timeFormatter;
 }
 
 GeneratedReportTime: WOString {
-	value = generatedReport.generatedTime;
-	formatter = session.timeFormatter;
+    value = generatedReport.generatedTime;
+    formatter = session.timeFormatter;
+}
+
+DeleteReport: WOActiveImage {
+    filename  = "icons/trash.gif";
+    framework = "Core";
+    action    = deleteReport;
+    border    = "0";
+    width     = "14";
+    height    = "17";
+    alt       = "Delete this report";
+    title     = "Delete this report";
 }
