@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationQueueProcessor.java,v 1.3 2008/05/28 16:12:05 stedwar2 Exp $
+ |  $Id: ReportGenerationQueueProcessor.java,v 1.4 2008/10/25 00:26:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -67,7 +67,7 @@ import org.eclipse.birt.report.engine.api.IRunTask;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationQueueProcessor.java,v 1.3 2008/05/28 16:12:05 stedwar2 Exp $
+ * @version $Id: ReportGenerationQueueProcessor.java,v 1.4 2008/10/25 00:26:36 aallowat Exp $
  */
 public class ReportGenerationQueueProcessor extends Thread
 {
@@ -349,8 +349,12 @@ public class ReportGenerationQueueProcessor extends Thread
         if (reportId != null)
         {
             GeneratedReport report = GeneratedReport.forId(context, idInt);
-            context.deleteObject(report);
-            context.saveChanges();
+
+            if (report != null)
+            {
+                context.deleteObject(report);
+                context.saveChanges();
+            }
 
             ReportGenerationTracker.getInstance().removeReportIdForJobId(idInt);
         }
