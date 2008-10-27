@@ -1,9 +1,8 @@
 AssignmentOffering: WOGenericContainer {
     elementName = "assignment-offering";
     id = anAssignmentOffering.id;
-    courseOffering = anAssignmentOffering.courseOffering.id;
     name = anAssignmentOffering.assignment.name;
-    description = anAssignmentOffering.assignment.description;
+    title = anAssignmentOffering.assignment.shortDescription;
     due = anAssignmentOffering.dueDate.getTime;
     published = anAssignmentOffering.publish;
 }

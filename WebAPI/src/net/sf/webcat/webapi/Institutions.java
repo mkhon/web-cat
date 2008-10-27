@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Institutions.java,v 1.1 2008/06/19 01:22:17 stedwar2 Exp $
+ |  $Id: Institutions.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import net.sf.webcat.core.AuthenticationDomain;
  * XML Response page for webapi/institutions requests.
  *
  * @author Stephen Edwards
- * @version $Id: Institutions.java,v 1.1 2008/06/19 01:22:17 stedwar2 Exp $
+ * @version $Id: Institutions.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  */
 public class Institutions
     extends XmlResponsePage
@@ -64,5 +64,17 @@ public class Institutions
     {
         institutions = AuthenticationDomain.authDomains();
         super.appendToResponse(response, context);
+    }
+
+    // ----------------------------------------------------------
+    public String symbolicName()
+    {
+        String result = anInstitution.propertyName();
+        int pos = result.indexOf('.');
+        if (pos >= 0)
+        {
+            result = result.substring(pos + 1);
+        }
+        return result;
     }
 }

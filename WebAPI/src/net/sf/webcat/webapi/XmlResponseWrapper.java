@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: XmlResponseWrapper.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ |  $Id: XmlResponseWrapper.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,9 @@ package net.sf.webcat.webapi;
 
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
+import com.webobjects.foundation.NSTimestamp;
+
+import net.sf.webcat.core.Session;
 
 //-------------------------------------------------------------------------
 /**
@@ -30,7 +33,7 @@ import com.webobjects.appserver.WOContext;
  * output.
  *
  * @author Stephen Edwards
- * @version $Id: XmlResponseWrapper.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ * @version $Id: XmlResponseWrapper.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  */
 public class XmlResponseWrapper
     extends WOComponent
@@ -46,5 +49,39 @@ public class XmlResponseWrapper
     public XmlResponseWrapper(WOContext context)
     {
         super(context);
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Determine whether or not to show the timeout attribute on the
+     * web-cat-response tag.
+     * @return true if the timeout should be shown.
+     */
+    public boolean showTimeout()
+    {
+        return hasSession() && ((Session)session()).user() != null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Returns when this page's session will expire.
+     * @return a Unix-style timestamp in milliseconds since
+     * January 1, 1970, 00:00:00 GMT.
+     */
+    public long sessionExpireTime()
+    {
+        if (hasSession())
+        {
+            return (new NSTimestamp()).getTime()         // now
+                + (long)(session().timeOut() * 1000);    // + session timeout
+        }
+        else
+        {
+            return 0L;
+        }
     }
 }

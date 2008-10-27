@@ -1,6 +1,5 @@
 Institution: WOGenericContainer {
     elementName = "institution";
     id = anInstitution.id;
-    name = anInstitution.propertyName;
-    displayableName = anInstitution.displayableName;
+    propName = symbolicName;
 }

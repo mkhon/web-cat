@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: webapi.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
+ |  $Id: webapi.java,v 1.4 2008/10/27 01:48:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.core.User;
  * queries from external tools.
  *
  * @author Stephen Edwards
- * @version $Id: webapi.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
+ * @version $Id: webapi.java,v 1.4 2008/10/27 01:48:55 stedwar2 Exp $
  */
 public class webapi
     extends ERXDirectAction
@@ -190,6 +190,35 @@ public class webapi
         log.debug("coursesAndAssignmentsAction()");
         session();
         return pageWithName(CoursesAndAssignments.class);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Generate a list of all students with a submission for the given
+     * assignment.
+     *
+     * @return The results in an XML response
+     */
+    public WOActionResults studentsAction()
+    {
+        log.debug("studentsAction()");
+        session();
+        return pageWithName(Students.class);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the data about a single submission.
+     *
+     * @return The results in an XML response
+     */
+    public WOActionResults submissionStatsAction()
+    {
+        log.debug("submissionStatsAction()");
+        session();
+        return pageWithName(SubmissionStats.class);
     }
 
 

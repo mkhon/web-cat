@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: XmlResponsePage.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ |  $Id: XmlResponsePage.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import er.extensions.ERXComponent;
  * A common base class for all of the XML response pages in this subsystem.
  *
  * @author Stephen Edwards
- * @version $Id: XmlResponsePage.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ * @version $Id: XmlResponsePage.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  */
 public class XmlResponsePage
     extends ERXComponent
@@ -81,25 +81,5 @@ public class XmlResponsePage
     public Application application()
     {
         return (Application)super.application();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns when this page's session will expire.
-     * @return a Unix-style timestamp in milliseconds since
-     * January 1, 1970, 00:00:00 GMT.
-     */
-    public long sessionExpireTime()
-    {
-        if (hasSession())
-        {
-            return (new NSTimestamp()).getTime()         // now
-                + (long)(session().timeOut() * 1000);    // + session timeout
-        }
-        else
-        {
-            return 0L;
-        }
     }
 }

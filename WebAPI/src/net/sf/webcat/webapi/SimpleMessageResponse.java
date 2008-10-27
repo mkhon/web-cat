@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SimpleMessageResponse.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ |  $Id: SimpleMessageResponse.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ import com.webobjects.appserver.WOContext;
  * default is an "invalid request" message.
  *
  * @author Stephen Edwards
- * @version $Id: SimpleMessageResponse.java,v 1.1 2008/06/09 18:07:31 stedwar2 Exp $
+ * @version $Id: SimpleMessageResponse.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
  */
 public class SimpleMessageResponse
 extends XmlResponsePage
@@ -51,4 +51,5 @@ extends XmlResponsePage
     //~ KVC Properties ........................................................
 
     public String message = "Invalid request";
+    public String elementName = "error";
 }
