@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.objectstyle.wolips.WO_CLASSPATH/DBUpdateEngine/EOJDBCPrototypes/ERExtensions/ERJars/JavaWOExtensions/JavaEOAccess/JavaEOControl/JavaFoundation/JavaJDBCAdaptor/JavaWebObjects/JavaXML"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DBUpdateEngine"/>
+	<classpathentry kind="lib" path="/Core/bin"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

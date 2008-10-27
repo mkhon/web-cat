@@ -1,0 +1,124 @@
+
+{
+    attributes = 
+    (
+       
+       {
+           allowsNull = Y;
+           columnName = hostId;
+           name = hostId;
+           prototypeName = foreignId;
+       }, 
+       
+       {
+           allowsNull = N;
+           name = id;
+           prototypeName = id;
+       }, 
+       
+       {
+           columnName = idOnHost;
+           name = idOnHost;
+           prototypeName = integer;
+           userInfo = 
+           {
+               isScalar = true;
+               scalarConversionMethodName = intValue;
+               scalarDefault = 0;
+               type = int;
+               valueClassName = Integer;
+           };
+       }, 
+       
+       {
+           allowsNull = N;
+           columnName = isAllocated;
+           name = isAllocated;
+           prototypeName = boolean;
+           userInfo = 
+           {
+               isScalar = true;
+               scalarDefault = false;
+               type = boolean;
+           };
+       }, 
+       
+       {
+           allowsNull = N;
+           columnName = isRunning;
+           name = isRunning;
+           prototypeName = boolean;
+           userInfo = 
+           {
+               isScalar = true;
+               scalarDefault = false;
+               type = boolean;
+           };
+       }, 
+       
+       {
+           allowsNull = Y;
+           columnName = queueId;
+           name = queueId;
+           prototypeName = foreignId;
+       }
+    );
+    attributesUsedForLocking = 
+    (
+       hostId, 
+       id, 
+       idOnHost, 
+       isAllocated, 
+       isRunning, 
+       queueId
+    );
+    className = net.sf.webcat.jobqueue.WorkerDescriptor;
+    classProperties = 
+    (
+       host, 
+       idOnHost, 
+       isAllocated, 
+       isRunning, 
+       queue
+    );
+    externalName = TWorkerDescriptor;
+    internalInfo = 
+    {};
+    name = WorkerDescriptor;
+    primaryKeyAttributes = 
+    (
+       id
+    );
+    relationships = 
+    (
+       
+       {
+           destination = HostDescriptor;
+           isMandatory = N;
+           joinSemantic = EOInnerJoin;
+           joins = 
+           (
+              
+              {
+                  destinationAttribute = id;
+                  sourceAttribute = hostId;
+              }
+           );
+           name = host;
+       }, 
+       
+       {
+           destination = QueueDescriptor;
+           joinSemantic = EOInnerJoin;
+           joins = 
+           (
+              
+              {
+                  destinationAttribute = id;
+                  sourceAttribute = queueId;
+              }
+           );
+           name = queue;
+       }
+    );
+}

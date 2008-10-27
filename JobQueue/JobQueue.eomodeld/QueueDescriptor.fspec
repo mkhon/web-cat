@@ -1,0 +1,19 @@
+
+{
+    jobEntityName = 
+    {
+        class = EOFetchSpecification;
+        entityName = QueueDescriptor;
+        qualifier = 
+        {
+            class = EOKeyValueQualifier;
+            key = jobEntityName;
+            selectorName = isEqualTo:;
+            value = 
+            {
+                _key = jobEntityName;
+                class = EOQualifierVariable;
+            };
+        };
+    };
+}

@@ -1,0 +1,25 @@
+# ===================================================================
+# JobQueue subsystem characteristics
+# ===================================================================
+subsystem.JobQueue=net.sf.webcat.jobqueue.JobQueue
+
+JobQueue.version.major=1
+JobQueue.version.minor=0
+JobQueue.version.revision=0
+JobQueue.requires=Core, EOJDBCPrototypes, DBUpdateEngine
+
+JobQueue.copyright=\
+	(c) 2008 Virginia Tech Department of Computer Science
+JobQueue.provider=Virginia Tech Computer Science
+JobQueue.provider.url=http\://web-cat.cs.vt.edu/updates
+JobQueue.info.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/JobQueueSubsystem
+JobQueue.history.url=\
+	http\://web-cat.cs.vt.edu/WCWiki/JobQueueSubsystem/ChangeHistory
+JobQueue.license=GNU Affero General Public License v.3
+JobQueue.license.url=http\://www.gnu.org/licenses/agpl.html
+
+JobQueue.description=\
+	This subsystem contains the infrastructure used for running job queues \
+	in other Web-CAT subsystems.  It provides common base classes and \
+	features used by other subsystems.
