@@ -210,8 +210,8 @@ public abstract class _QueueDescriptor
      */
     public long defaultJobWait()
     {
-        Number result =
-            (Number)storedValueForKey( "defaultJobWait" );
+        Long result =
+            (Long)storedValueForKey( "defaultJobWait" );
         return ( result == null )
             ? 0L
             : result.longValue();
@@ -232,9 +232,9 @@ public abstract class _QueueDescriptor
             log.debug( "setDefaultJobWait("
                 + value + "): was " + defaultJobWait() );
         }
-        Number actual =
+        Long actual =
             new Long( value );
-        setDefaultJobWaitRaw( actual );
+            setDefaultJobWaitRaw( actual );
     }
 
 
@@ -243,9 +243,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>defaultJobWait</code> value.
      * @return the value of the attribute
      */
-    public Number defaultJobWaitRaw()
+    public Long defaultJobWaitRaw()
     {
-        return (Number)storedValueForKey( "defaultJobWait" );
+        return (Long)storedValueForKey( "defaultJobWait" );
     }
 
 
@@ -256,7 +256,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setDefaultJobWaitRaw( Number value )
+    public void setDefaultJobWaitRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
@@ -274,8 +274,8 @@ public abstract class _QueueDescriptor
      */
     public long jobCount()
     {
-        Number result =
-            (Number)storedValueForKey( "jobCount" );
+        Long result =
+            (Long)storedValueForKey( "jobCount" );
         return ( result == null )
             ? 0L
             : result.longValue();
@@ -296,9 +296,9 @@ public abstract class _QueueDescriptor
             log.debug( "setJobCount("
                 + value + "): was " + jobCount() );
         }
-        Number actual =
+        Long actual =
             new Long( value );
-        setJobCountRaw( actual );
+            setJobCountRaw( actual );
     }
 
 
@@ -307,9 +307,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>jobCount</code> value.
      * @return the value of the attribute
      */
-    public Number jobCountRaw()
+    public Long jobCountRaw()
     {
-        return (Number)storedValueForKey( "jobCount" );
+        return (Long)storedValueForKey( "jobCount" );
     }
 
 
@@ -320,7 +320,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setJobCountRaw( Number value )
+    public void setJobCountRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
@@ -367,8 +367,8 @@ public abstract class _QueueDescriptor
      */
     public long jobsCountedWithWaits()
     {
-        Number result =
-            (Number)storedValueForKey( "jobsCountedWithWaits" );
+        Long result =
+            (Long)storedValueForKey( "jobsCountedWithWaits" );
         return ( result == null )
             ? 0L
             : result.longValue();
@@ -389,9 +389,9 @@ public abstract class _QueueDescriptor
             log.debug( "setJobsCountedWithWaits("
                 + value + "): was " + jobsCountedWithWaits() );
         }
-        Number actual =
+        Long actual =
             new Long( value );
-        setJobsCountedWithWaitsRaw( actual );
+            setJobsCountedWithWaitsRaw( actual );
     }
 
 
@@ -400,9 +400,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>jobsCountedWithWaits</code> value.
      * @return the value of the attribute
      */
-    public Number jobsCountedWithWaitsRaw()
+    public Long jobsCountedWithWaitsRaw()
     {
-        return (Number)storedValueForKey( "jobsCountedWithWaits" );
+        return (Long)storedValueForKey( "jobsCountedWithWaits" );
     }
 
 
@@ -413,7 +413,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setJobsCountedWithWaitsRaw( Number value )
+    public void setJobsCountedWithWaitsRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
@@ -431,8 +431,8 @@ public abstract class _QueueDescriptor
      */
     public long mostRecentJobWait()
     {
-        Number result =
-            (Number)storedValueForKey( "mostRecentJobWait" );
+        Long result =
+            (Long)storedValueForKey( "mostRecentJobWait" );
         return ( result == null )
             ? 0L
             : result.longValue();
@@ -453,9 +453,9 @@ public abstract class _QueueDescriptor
             log.debug( "setMostRecentJobWait("
                 + value + "): was " + mostRecentJobWait() );
         }
-        Number actual =
+        Long actual =
             new Long( value );
-        setMostRecentJobWaitRaw( actual );
+            setMostRecentJobWaitRaw( actual );
     }
 
 
@@ -464,9 +464,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>mostRecentJobWait</code> value.
      * @return the value of the attribute
      */
-    public Number mostRecentJobWaitRaw()
+    public Long mostRecentJobWaitRaw()
     {
-        return (Number)storedValueForKey( "mostRecentJobWait" );
+        return (Long)storedValueForKey( "mostRecentJobWait" );
     }
 
 
@@ -477,7 +477,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setMostRecentJobWaitRaw( Number value )
+    public void setMostRecentJobWaitRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
@@ -495,8 +495,8 @@ public abstract class _QueueDescriptor
      */
     public long newestEntryId()
     {
-        Number result =
-            (Number)storedValueForKey( "newestEntryId" );
+        Long result =
+            (Long)storedValueForKey( "newestEntryId" );
         return ( result == null )
             ? 0L
             : result.longValue();
@@ -517,9 +517,9 @@ public abstract class _QueueDescriptor
             log.debug( "setNewestEntryId("
                 + value + "): was " + newestEntryId() );
         }
-        Number actual =
+        Long actual =
             new Long( value );
-        setNewestEntryIdRaw( actual );
+            setNewestEntryIdRaw( actual );
     }
 
 
@@ -528,9 +528,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>newestEntryId</code> value.
      * @return the value of the attribute
      */
-    public Number newestEntryIdRaw()
+    public Long newestEntryIdRaw()
     {
-        return (Number)storedValueForKey( "newestEntryId" );
+        return (Long)storedValueForKey( "newestEntryId" );
     }
 
 
@@ -541,7 +541,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setNewestEntryIdRaw( Number value )
+    public void setNewestEntryIdRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
@@ -559,8 +559,8 @@ public abstract class _QueueDescriptor
      */
     public boolean requiresExclusiveHostAccess()
     {
-        Number result =
-            (Number)storedValueForKey( "requiresExclusiveHostAccess" );
+        Integer result =
+            (Integer)storedValueForKey( "requiresExclusiveHostAccess" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -581,9 +581,9 @@ public abstract class _QueueDescriptor
             log.debug( "setRequiresExclusiveHostAccess("
                 + value + "): was " + requiresExclusiveHostAccess() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setRequiresExclusiveHostAccessRaw( actual );
+            setRequiresExclusiveHostAccessRaw( actual );
     }
 
 
@@ -592,9 +592,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>requiresExclusiveHostAccess</code> value.
      * @return the value of the attribute
      */
-    public Number requiresExclusiveHostAccessRaw()
+    public Integer requiresExclusiveHostAccessRaw()
     {
-        return (Number)storedValueForKey( "requiresExclusiveHostAccess" );
+        return (Integer)storedValueForKey( "requiresExclusiveHostAccess" );
     }
 
 
@@ -605,7 +605,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setRequiresExclusiveHostAccessRaw( Number value )
+    public void setRequiresExclusiveHostAccessRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -623,8 +623,8 @@ public abstract class _QueueDescriptor
      */
     public long totalWaitForJobs()
     {
-        Number result =
-            (Number)storedValueForKey( "totalWaitForJobs" );
+        Long result =
+            (Long)storedValueForKey( "totalWaitForJobs" );
         return ( result == null )
             ? 0L
             : result.longValue();
@@ -645,9 +645,9 @@ public abstract class _QueueDescriptor
             log.debug( "setTotalWaitForJobs("
                 + value + "): was " + totalWaitForJobs() );
         }
-        Number actual =
+        Long actual =
             new Long( value );
-        setTotalWaitForJobsRaw( actual );
+            setTotalWaitForJobsRaw( actual );
     }
 
 
@@ -656,9 +656,9 @@ public abstract class _QueueDescriptor
      * Retrieve this object's <code>totalWaitForJobs</code> value.
      * @return the value of the attribute
      */
-    public Number totalWaitForJobsRaw()
+    public Long totalWaitForJobsRaw()
     {
-        return (Number)storedValueForKey( "totalWaitForJobs" );
+        return (Long)storedValueForKey( "totalWaitForJobs" );
     }
 
 
@@ -669,7 +669,7 @@ public abstract class _QueueDescriptor
      *
      * @param value The new value for this property
      */
-    public void setTotalWaitForJobsRaw( Number value )
+    public void setTotalWaitForJobsRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
@@ -890,7 +890,6 @@ public abstract class _QueueDescriptor
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForJobEntityName(ec"
-            
                 + ", " + jobEntityNameBinding
                 + "): " + result );
         }

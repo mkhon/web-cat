@@ -205,8 +205,8 @@ public abstract class _WorkerDescriptor
      */
     public int idOnHost()
     {
-        Number result =
-            (Number)storedValueForKey( "idOnHost" );
+        Integer result =
+            (Integer)storedValueForKey( "idOnHost" );
         return ( result == null )
             ? 0
             : result.intValue();
@@ -227,9 +227,9 @@ public abstract class _WorkerDescriptor
             log.debug( "setIdOnHost("
                 + value + "): was " + idOnHost() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value );
-        setIdOnHostRaw( actual );
+            setIdOnHostRaw( actual );
     }
 
 
@@ -238,9 +238,9 @@ public abstract class _WorkerDescriptor
      * Retrieve this object's <code>idOnHost</code> value.
      * @return the value of the attribute
      */
-    public Number idOnHostRaw()
+    public Integer idOnHostRaw()
     {
-        return (Number)storedValueForKey( "idOnHost" );
+        return (Integer)storedValueForKey( "idOnHost" );
     }
 
 
@@ -251,7 +251,7 @@ public abstract class _WorkerDescriptor
      *
      * @param value The new value for this property
      */
-    public void setIdOnHostRaw( Number value )
+    public void setIdOnHostRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -269,8 +269,8 @@ public abstract class _WorkerDescriptor
      */
     public boolean isAllocated()
     {
-        Number result =
-            (Number)storedValueForKey( "isAllocated" );
+        Integer result =
+            (Integer)storedValueForKey( "isAllocated" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -291,9 +291,9 @@ public abstract class _WorkerDescriptor
             log.debug( "setIsAllocated("
                 + value + "): was " + isAllocated() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setIsAllocatedRaw( actual );
+            setIsAllocatedRaw( actual );
     }
 
 
@@ -302,9 +302,9 @@ public abstract class _WorkerDescriptor
      * Retrieve this object's <code>isAllocated</code> value.
      * @return the value of the attribute
      */
-    public Number isAllocatedRaw()
+    public Integer isAllocatedRaw()
     {
-        return (Number)storedValueForKey( "isAllocated" );
+        return (Integer)storedValueForKey( "isAllocated" );
     }
 
 
@@ -315,7 +315,7 @@ public abstract class _WorkerDescriptor
      *
      * @param value The new value for this property
      */
-    public void setIsAllocatedRaw( Number value )
+    public void setIsAllocatedRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -333,8 +333,8 @@ public abstract class _WorkerDescriptor
      */
     public boolean isRunning()
     {
-        Number result =
-            (Number)storedValueForKey( "isRunning" );
+        Integer result =
+            (Integer)storedValueForKey( "isRunning" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -355,9 +355,9 @@ public abstract class _WorkerDescriptor
             log.debug( "setIsRunning("
                 + value + "): was " + isRunning() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setIsRunningRaw( actual );
+            setIsRunningRaw( actual );
     }
 
 
@@ -366,9 +366,9 @@ public abstract class _WorkerDescriptor
      * Retrieve this object's <code>isRunning</code> value.
      * @return the value of the attribute
      */
-    public Number isRunningRaw()
+    public Integer isRunningRaw()
     {
-        return (Number)storedValueForKey( "isRunning" );
+        return (Integer)storedValueForKey( "isRunning" );
     }
 
 
@@ -379,7 +379,7 @@ public abstract class _WorkerDescriptor
      *
      * @param value The new value for this property
      */
-    public void setIsRunningRaw( Number value )
+    public void setIsRunningRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {

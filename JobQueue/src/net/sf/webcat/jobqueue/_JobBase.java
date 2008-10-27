@@ -152,8 +152,8 @@ public abstract class _JobBase
      */
     public boolean isCancelled()
     {
-        Number result =
-            (Number)storedValueForKey( "isCancelled" );
+        Integer result =
+            (Integer)storedValueForKey( "isCancelled" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -174,9 +174,9 @@ public abstract class _JobBase
             log.debug( "setIsCancelled("
                 + value + "): was " + isCancelled() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setIsCancelledRaw( actual );
+            setIsCancelledRaw( actual );
     }
 
 
@@ -185,9 +185,9 @@ public abstract class _JobBase
      * Retrieve this object's <code>isCancelled</code> value.
      * @return the value of the attribute
      */
-    public Number isCancelledRaw()
+    public Integer isCancelledRaw()
     {
-        return (Number)storedValueForKey( "isCancelled" );
+        return (Integer)storedValueForKey( "isCancelled" );
     }
 
 
@@ -198,7 +198,7 @@ public abstract class _JobBase
      *
      * @param value The new value for this property
      */
-    public void setIsCancelledRaw( Number value )
+    public void setIsCancelledRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -216,8 +216,8 @@ public abstract class _JobBase
      */
     public boolean isPaused()
     {
-        Number result =
-            (Number)storedValueForKey( "isPaused" );
+        Integer result =
+            (Integer)storedValueForKey( "isPaused" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -238,9 +238,9 @@ public abstract class _JobBase
             log.debug( "setIsPaused("
                 + value + "): was " + isPaused() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setIsPausedRaw( actual );
+            setIsPausedRaw( actual );
     }
 
 
@@ -249,9 +249,9 @@ public abstract class _JobBase
      * Retrieve this object's <code>isPaused</code> value.
      * @return the value of the attribute
      */
-    public Number isPausedRaw()
+    public Integer isPausedRaw()
     {
-        return (Number)storedValueForKey( "isPaused" );
+        return (Integer)storedValueForKey( "isPaused" );
     }
 
 
@@ -262,7 +262,7 @@ public abstract class _JobBase
      *
      * @param value The new value for this property
      */
-    public void setIsPausedRaw( Number value )
+    public void setIsPausedRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -280,8 +280,8 @@ public abstract class _JobBase
      */
     public int priority()
     {
-        Number result =
-            (Number)storedValueForKey( "priority" );
+        Integer result =
+            (Integer)storedValueForKey( "priority" );
         return ( result == null )
             ? 0
             : result.intValue();
@@ -302,9 +302,9 @@ public abstract class _JobBase
             log.debug( "setPriority("
                 + value + "): was " + priority() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value );
-        setPriorityRaw( actual );
+            setPriorityRaw( actual );
     }
 
 
@@ -313,9 +313,9 @@ public abstract class _JobBase
      * Retrieve this object's <code>priority</code> value.
      * @return the value of the attribute
      */
-    public Number priorityRaw()
+    public Integer priorityRaw()
     {
-        return (Number)storedValueForKey( "priority" );
+        return (Integer)storedValueForKey( "priority" );
     }
 
 
@@ -326,7 +326,7 @@ public abstract class _JobBase
      *
      * @param value The new value for this property
      */
-    public void setPriorityRaw( Number value )
+    public void setPriorityRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {

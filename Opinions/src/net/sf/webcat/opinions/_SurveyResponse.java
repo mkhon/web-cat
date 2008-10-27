@@ -208,8 +208,8 @@ public abstract class _SurveyResponse
      */
     public boolean isStaff()
     {
-        Number result =
-            (Number)storedValueForKey( "isStaff" );
+        Integer result =
+            (Integer)storedValueForKey( "isStaff" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -230,9 +230,9 @@ public abstract class _SurveyResponse
             log.debug( "setIsStaff("
                 + value + "): was " + isStaff() );
         }
-        Number actual =
+        Integer actual =
             er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setIsStaffRaw( actual );
+            setIsStaffRaw( actual );
     }
 
 
@@ -241,9 +241,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>isStaff</code> value.
      * @return the value of the attribute
      */
-    public Number isStaffRaw()
+    public Integer isStaffRaw()
     {
-        return (Number)storedValueForKey( "isStaff" );
+        return (Integer)storedValueForKey( "isStaff" );
     }
 
 
@@ -254,7 +254,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setIsStaffRaw( Number value )
+    public void setIsStaffRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -270,9 +270,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>q1</code> value.
      * @return the value of the attribute
      */
-    public Number q1()
+    public Integer q1()
     {
-        return (Number)storedValueForKey( "q1" );
+        return (Integer)storedValueForKey( "q1" );
     }
 
 
@@ -283,7 +283,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setQ1( Number value )
+    public void setQ1( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -299,9 +299,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>q2</code> value.
      * @return the value of the attribute
      */
-    public Number q2()
+    public Integer q2()
     {
-        return (Number)storedValueForKey( "q2" );
+        return (Integer)storedValueForKey( "q2" );
     }
 
 
@@ -312,7 +312,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setQ2( Number value )
+    public void setQ2( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -328,9 +328,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>q3</code> value.
      * @return the value of the attribute
      */
-    public Number q3()
+    public Integer q3()
     {
-        return (Number)storedValueForKey( "q3" );
+        return (Integer)storedValueForKey( "q3" );
     }
 
 
@@ -341,7 +341,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setQ3( Number value )
+    public void setQ3( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -357,9 +357,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>q4</code> value.
      * @return the value of the attribute
      */
-    public Number q4()
+    public Integer q4()
     {
-        return (Number)storedValueForKey( "q4" );
+        return (Integer)storedValueForKey( "q4" );
     }
 
 
@@ -370,7 +370,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setQ4( Number value )
+    public void setQ4( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -386,9 +386,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>q5</code> value.
      * @return the value of the attribute
      */
-    public Number q5()
+    public Integer q5()
     {
-        return (Number)storedValueForKey( "q5" );
+        return (Integer)storedValueForKey( "q5" );
     }
 
 
@@ -399,7 +399,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setQ5( Number value )
+    public void setQ5( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -415,9 +415,9 @@ public abstract class _SurveyResponse
      * Retrieve this object's <code>q6</code> value.
      * @return the value of the attribute
      */
-    public Number q6()
+    public Integer q6()
     {
-        return (Number)storedValueForKey( "q6" );
+        return (Integer)storedValueForKey( "q6" );
     }
 
 
@@ -428,7 +428,7 @@ public abstract class _SurveyResponse
      *
      * @param value The new value for this property
      */
-    public void setQ6( Number value )
+    public void setQ6( Integer value )
     {
         if (log.isDebugEnabled())
         {
