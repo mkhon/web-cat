@@ -61,16 +61,28 @@ public abstract class _SurveyReminderJob
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
+     * @param enqueueTime
+     * @param isCancelled
+     * @param isPaused
+     * @param priority
      * @return The newly created object
      */
     public static SurveyReminderJob create(
-        EOEditingContext editingContext
+        EOEditingContext editingContext,
+        NSTimestamp enqueueTime,
+        boolean isCancelled,
+        boolean isPaused,
+        int priority
         )
     {
         SurveyReminderJob eoObject = (SurveyReminderJob)
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _SurveyReminderJob.ENTITY_NAME);
+        eoObject.setEnqueueTime(enqueueTime);
+        eoObject.setIsCancelled(isCancelled);
+        eoObject.setIsPaused(isPaused);
+        eoObject.setPriority(priority);
         return eoObject;
     }
 
@@ -136,8 +148,15 @@ public abstract class _SurveyReminderJob
 
     // Attributes ---
     public static final String DUE_TIME_KEY = "dueTime";
+    public static final String ENQUEUE_TIME_KEY = "enqueueTime";
+    public static final String IS_CANCELLED_KEY = "isCancelled";
+    public static final String IS_PAUSED_KEY = "isPaused";
+    public static final String PRIORITY_KEY = "priority";
+    public static final String SCHEDULED_TIME_KEY = "scheduledTime";
     // To-one relationships ---
     public static final String ASSIGNMENT_OFFERING_KEY = "assignmentOffering";
+    public static final String USER_KEY = "user";
+    public static final String WORKER_KEY = "worker";
     // To-many relationships ---
     // Fetch specifications ---
     public static final String ENTITY_NAME = "SurveyReminderJob";
@@ -220,6 +239,256 @@ public abstract class _SurveyReminderJob
 
     // ----------------------------------------------------------
     /**
+     * Retrieve this object's <code>enqueueTime</code> value.
+     * @return the value of the attribute
+     */
+    public NSTimestamp enqueueTime()
+    {
+        return (NSTimestamp)storedValueForKey( "enqueueTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>enqueueTime</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setEnqueueTime( NSTimestamp value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setEnqueueTime("
+                + value + "): was " + enqueueTime() );
+        }
+        takeStoredValueForKey( value, "enqueueTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isCancelled</code> value.
+     * @return the value of the attribute
+     */
+    public boolean isCancelled()
+    {
+        Integer result =
+            (Integer)storedValueForKey( "isCancelled" );
+        return ( result == null )
+            ? false
+            : ( result.intValue() > 0 );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isCancelled</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsCancelled( boolean value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsCancelled("
+                + value + "): was " + isCancelled() );
+        }
+        Integer actual =
+            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            setIsCancelledRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isCancelled</code> value.
+     * @return the value of the attribute
+     */
+    public Integer isCancelledRaw()
+    {
+        return (Integer)storedValueForKey( "isCancelled" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isCancelled</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsCancelledRaw( Integer value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsCancelledRaw("
+                + value + "): was " + isCancelledRaw() );
+        }
+        takeStoredValueForKey( value, "isCancelled" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isPaused</code> value.
+     * @return the value of the attribute
+     */
+    public boolean isPaused()
+    {
+        Integer result =
+            (Integer)storedValueForKey( "isPaused" );
+        return ( result == null )
+            ? false
+            : ( result.intValue() > 0 );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isPaused</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsPaused( boolean value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsPaused("
+                + value + "): was " + isPaused() );
+        }
+        Integer actual =
+            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            setIsPausedRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isPaused</code> value.
+     * @return the value of the attribute
+     */
+    public Integer isPausedRaw()
+    {
+        return (Integer)storedValueForKey( "isPaused" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isPaused</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsPausedRaw( Integer value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsPausedRaw("
+                + value + "): was " + isPausedRaw() );
+        }
+        takeStoredValueForKey( value, "isPaused" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>priority</code> value.
+     * @return the value of the attribute
+     */
+    public int priority()
+    {
+        Integer result =
+            (Integer)storedValueForKey( "priority" );
+        return ( result == null )
+            ? 0
+            : result.intValue();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>priority</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setPriority( int value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPriority("
+                + value + "): was " + priority() );
+        }
+        Integer actual =
+            er.extensions.ERXConstant.integerForInt( value );
+            setPriorityRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>priority</code> value.
+     * @return the value of the attribute
+     */
+    public Integer priorityRaw()
+    {
+        return (Integer)storedValueForKey( "priority" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>priority</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setPriorityRaw( Integer value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPriorityRaw("
+                + value + "): was " + priorityRaw() );
+        }
+        takeStoredValueForKey( value, "priority" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>scheduledTime</code> value.
+     * @return the value of the attribute
+     */
+    public NSTimestamp scheduledTime()
+    {
+        return (NSTimestamp)storedValueForKey( "scheduledTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>scheduledTime</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setScheduledTime( NSTimestamp value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setScheduledTime("
+                + value + "): was " + scheduledTime() );
+        }
+        takeStoredValueForKey( value, "scheduledTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve the entity pointed to by the <code>assignmentOffering</code>
      * relationship.
      * @return the entity in the relationship
@@ -275,6 +544,128 @@ public abstract class _SurveyReminderJob
         else
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "assignmentOffering" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entity pointed to by the <code>user</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public net.sf.webcat.core.User user()
+    {
+        return (net.sf.webcat.core.User)storedValueForKey( "user" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>user</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setUserRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setUser( net.sf.webcat.core.User value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUser("
+                + value + "): was " + user() );
+        }
+        takeStoredValueForKey( value, "user" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>user</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setUserRelationship(
+        net.sf.webcat.core.User value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUserRelationship("
+                + value + "): was " + user() );
+        }
+        if ( value == null )
+        {
+            net.sf.webcat.core.User object = user();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "user" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "user" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entity pointed to by the <code>worker</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public net.sf.webcat.jobqueue.WorkerDescriptor worker()
+    {
+        return (net.sf.webcat.jobqueue.WorkerDescriptor)storedValueForKey( "worker" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>worker</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setWorkerRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setWorker( net.sf.webcat.jobqueue.WorkerDescriptor value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setWorker("
+                + value + "): was " + worker() );
+        }
+        takeStoredValueForKey( value, "worker" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>worker</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setWorkerRelationship(
+        net.sf.webcat.jobqueue.WorkerDescriptor value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setWorkerRelationship("
+                + value + "): was " + worker() );
+        }
+        if ( value == null )
+        {
+            net.sf.webcat.jobqueue.WorkerDescriptor object = worker();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "worker" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "worker" );
         }
     }
 
