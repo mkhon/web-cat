@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.8 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  Generates the grader subsystem's rows in the system status block.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderHomeStatus.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: GraderHomeStatus.java,v 1.8 2008/10/28 19:20:16 aallowat Exp $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -105,7 +105,7 @@ public class GraderHomeStatus
                 user()
             ) );
         qualifiers.addObject( new EOKeyValueQualifier(
-                AssignmentOffering.COURSE_OFFERING_TAS_KEY,
+                AssignmentOffering.COURSE_OFFERING_GRADERS_KEY,
                 EOQualifier.QualifierOperatorContains,
                 user()
             ) );
@@ -188,7 +188,7 @@ public class GraderHomeStatus
     {
         boolean result =
             assignment.courseOffering().isInstructor( user() )
-            || assignment.courseOffering().isTA( user() );
+            || assignment.courseOffering().isGrader( user() );
         log.debug( "can grade = " + result );
         return result;
     }

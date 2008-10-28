@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionComponent.java,v 1.5 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: GraderSubmissionComponent.java,v 1.6 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import com.webobjects.foundation.*;
  *  the current submission selection from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSubmissionComponent.java,v 1.5 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: GraderSubmissionComponent.java,v 1.6 2008/10/28 19:20:16 aallowat Exp $
  */
 public class GraderSubmissionComponent
     extends GraderAssignmentComponent
@@ -86,7 +86,7 @@ public class GraderSubmissionComponent
                   || submission.assignmentOffering().courseOffering()
                       .isInstructor( user )
                   || submission.assignmentOffering().courseOffering()
-                      .isTA( user ) )
+                      .isGrader( user ) )
              && startWith( submission.assignmentOffering().courseOffering() ) )
         {
             prefs().setSubmissionRelationship( submission );

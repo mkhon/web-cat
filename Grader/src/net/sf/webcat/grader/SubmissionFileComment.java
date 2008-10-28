@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileComment.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: SubmissionFileComment.java,v 1.5 2008/10/28 19:20:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Represents one TA comment on one source file in a submission.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionFileComment.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: SubmissionFileComment.java,v 1.5 2008/10/28 19:20:15 aallowat Exp $
  */
 public class SubmissionFileComment
     extends _SubmissionFileComment
@@ -176,7 +176,7 @@ public class SubmissionFileComment
             .submission().assignmentOffering().courseOffering();
         if ( target <= TO_FACULTY_AND_TAS )
         {
-            NSArray tas = course.TAs();
+            NSArray tas = course.graders();
             for ( int i = 0; i < tas.count(); i++ )
             {
                 if ( user == tas.objectAtIndex( i ) )

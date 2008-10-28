@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.8 2008/04/03 21:16:38 stedwar2 Exp $
+ |  $Id: EditCoursePage.java,v 1.9 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: EditCoursePage.java,v 1.8 2008/04/03 21:16:38 stedwar2 Exp $
+*  @version $Id: EditCoursePage.java,v 1.9 2008/10/28 19:20:16 aallowat Exp $
 */
 public class EditCoursePage
     extends GraderCourseEditComponent
@@ -125,7 +125,7 @@ public class EditCoursePage
      */
     public WOComponent removeTA()
     {
-        courseOffering().removeFromTAsRelationship( aUser );
+        courseOffering().removeFromGradersRelationship( aUser );
         return null;
     }
 
@@ -249,7 +249,7 @@ public class EditCoursePage
         if ( offering != null
              && ( sessionUser.enrolledIn().contains(  offering )
                   || offering.isInstructor( sessionUser )
-                  || offering.isTA( sessionUser ) ) )
+                  || offering.isGrader( sessionUser ) ) )
         {
             result = true;
             coreSelections().setCourseRelationship( offering.course() );

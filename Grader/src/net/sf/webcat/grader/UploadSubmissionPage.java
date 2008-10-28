@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.9 2008/04/11 23:06:05 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.10 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.9 2008/04/11 23:06:05 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.10 2008/10/28 19:20:16 aallowat Exp $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -181,7 +181,7 @@ public class UploadSubmissionPage
                 wcSession().primeUser().localInstance(localContext());
             if ( deadline.before( new NSTimestamp() )
                  && !course.isInstructor( primeUser )
-                 && !course.isTA( primeUser ) )
+                 && !course.isGrader( primeUser ) )
             {
                 error(
                     "Unfortunately, the final deadline for this assignment "

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentGraphPage.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: AssignmentGraphPage.java,v 1.5 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.grader.*;
  * Presents graphs of this assignment's data.
  *
  * @author  Stephen Edwards
- * @version $Id: AssignmentGraphPage.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: AssignmentGraphPage.java,v 1.5 2008/10/28 19:20:16 aallowat Exp $
  */
 public class AssignmentGraphPage
     extends GraderAssignmentComponent
@@ -88,7 +88,7 @@ public class AssignmentGraphPage
     {
         CourseOffering course = prefs().assignmentOffering().courseOffering();
         boolean result = course.isInstructor( user() )
-            || course.isTA( user() );
+            || course.isGrader( user() );
         System.out.println( "isStaff = " + result );
         return result;
     }

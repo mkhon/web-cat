@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.10 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.11 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.10 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.11 2008/10/28 19:20:16 aallowat Exp $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -90,7 +90,7 @@ public class StudentsForAssignmentPage
             coreSelections().courseOffering().instructors() );
         er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             students,
-            coreSelections().courseOffering().TAs() );
+            coreSelections().courseOffering().graders() );
         NSMutableArray submissions = new NSMutableArray();
         highScore = 0.0;
         lowScore  = 0.0;

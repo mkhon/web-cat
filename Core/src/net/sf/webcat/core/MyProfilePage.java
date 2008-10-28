@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.9 2008/04/06 21:26:22 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.10 2008/10/28 19:19:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.9 2008/04/06 21:26:22 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.10 2008/10/28 19:19:37 aallowat Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -230,7 +230,7 @@ public class MyProfilePage
             User me = user();
             NSMutableArray offerings = me.enrolledIn().mutableClone();
             ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates( offerings,
-                me.TAFor() );
+                me.graderFor() );
             ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates( offerings,
                 me.teaching() );
             for ( int i = 0; i < offerings.count(); i++ )
@@ -258,7 +258,7 @@ public class MyProfilePage
                 }
                 crnList = "?crns=" + crnList;
                 if ( me.accessLevel() > 0
-                     && ( me.TAFor().count() > 0 || me.teaching().count() > 0 ) )
+                     && ( me.graderFor().count() > 0 || me.teaching().count() > 0 ) )
                 {
                     crnList += "&staff=true";
                 }

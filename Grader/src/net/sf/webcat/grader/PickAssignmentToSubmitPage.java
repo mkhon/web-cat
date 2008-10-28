@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToSubmitPage.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: PickAssignmentToSubmitPage.java,v 1.8 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToSubmitPage.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToSubmitPage.java,v 1.8 2008/10/28 19:20:16 aallowat Exp $
  */
 public class PickAssignmentToSubmitPage
     extends GraderCourseComponent
@@ -96,7 +96,7 @@ public class PickAssignmentToSubmitPage
             // assigments which are still open
             //
             if ( !(  selectedCourse.isInstructor( user() )
-                            || selectedCourse.isTA( user() ) ) )
+                            || selectedCourse.isGrader( user() ) ) )
             {
                 qualifiers.addObject( new EOKeyValueQualifier(
                                   AssignmentOffering.AVAILABLE_FROM_KEY,
@@ -120,7 +120,7 @@ public class PickAssignmentToSubmitPage
         // assignments which are published
         //
         if ( !(  selectedCourse.isInstructor( user() )
-              || selectedCourse.isTA( user() ) ) )
+              || selectedCourse.isGrader( user() ) ) )
         {
             log.debug( "hiding unpublished assignments" );
             qualifiers.addObject( new EOKeyValueQualifier(

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
+ |  $Id: EditStaffPage.java,v 1.8 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * results).
  *
  * @author Stephen Edwards
- * @version $Id: EditStaffPage.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
+ * @version $Id: EditStaffPage.java,v 1.8 2008/10/28 19:20:16 aallowat Exp $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -76,7 +76,7 @@ public class EditStaffPage
         staffDisplayGroup.setMasterObject( courseOffering() );
         staffDisplayGroup.setDetailKey( editInstructors
                         ? CourseOffering.INSTRUCTORS_KEY
-                        : CourseOffering.T_AS_KEY );
+                        : CourseOffering.GRADERS_KEY );
         staffDisplayGroup.fetch();
         log.debug(
             "current size = " + potentialDisplayGroup.numberOfObjectsPerBatch()
@@ -132,7 +132,7 @@ public class EditStaffPage
             {
                 aUser.setAccessLevel( User.GTA_PRIVILEGES );
             }
-            courseOffering().addToTAsRelationship( aUser );
+            courseOffering().addToGradersRelationship( aUser );
         }
         return null;
     }
@@ -147,7 +147,7 @@ public class EditStaffPage
         }
         else
         {
-            courseOffering().removeFromTAsRelationship( aUser );
+            courseOffering().removeFromGradersRelationship( aUser );
         }
         return null;
     }

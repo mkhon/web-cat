@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.17 2008/10/24 20:46:48 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.18 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.17 2008/10/24 20:46:48 aallowat Exp $
+ * @version $Id: AssignmentOffering.java,v 1.18 2008/10/28 19:20:16 aallowat Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -67,8 +67,8 @@ public class AssignmentOffering
         COURSE_OFFERING_KEY + "." + CourseOffering.STUDENTS_KEY;
     public static final String COURSE_OFFERING_INSTRUCTORS_KEY  =
         COURSE_OFFERING_KEY + "." + CourseOffering.INSTRUCTORS_KEY;
-    public static final String COURSE_OFFERING_TAS_KEY  =
-        COURSE_OFFERING_KEY + "." + CourseOffering.T_AS_KEY;
+    public static final String COURSE_OFFERING_GRADERS_KEY  =
+        COURSE_OFFERING_KEY + "." + CourseOffering.GRADERS_KEY;
     public static final String COURSE_OFFERING_CRN_KEY  =
         COURSE_OFFERING_KEY + "." + CourseOffering.CRN_KEY;
     public static final String COURSE_NUMBER_KEY  =
@@ -181,7 +181,7 @@ public class AssignmentOffering
     {
         boolean result = false;
         if ( courseOffering().instructors().containsObject( user )
-             || courseOffering().TAs().containsObject( user ) )
+             || courseOffering().graders().containsObject( user ) )
         {
             result = true;
         }
@@ -357,7 +357,7 @@ public class AssignmentOffering
         NSArray staff = courseOffering().instructors();
         students.removeObjectsInArray( staff );
         students.addObjectsFromArray( staff );
-        staff = courseOffering().TAs();
+        staff = courseOffering().graders();
         students.removeObjectsInArray( staff );
         students.addObjectsFromArray( staff );
         for ( int i = 0; i < students.count(); i++ )
@@ -562,9 +562,9 @@ public class AssignmentOffering
                         )));
                 }
             }
-            people = this.courseOffering().TAs();
+            people = this.courseOffering().graders();
             // Not a TA
-            if (this.courseOffering().TAs().count() > 0)
+            if (this.courseOffering().graders().count() > 0)
             {
                 for (int i = 0; i < people.count(); i++)
                 {

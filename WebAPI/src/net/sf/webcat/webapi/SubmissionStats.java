@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionStats.java,v 1.1 2008/10/27 01:48:55 stedwar2 Exp $
+ |  $Id: SubmissionStats.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.grader.Submission;
  * XML Response page for webapi/submissionStats requests.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionStats.java,v 1.1 2008/10/27 01:48:55 stedwar2 Exp $
+ * @version $Id: SubmissionStats.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
  */
 public class SubmissionStats
     extends XmlResponsePage
@@ -85,7 +85,7 @@ public class SubmissionStats
         }
         if (!submission.assignmentOffering().courseOffering().instructors()
                 .contains(session().user())
-            && !submission.assignmentOffering().courseOffering().TAs()
+            && !submission.assignmentOffering().courseOffering().graders()
                 .contains(session().user()))
         {
             log.error("unauthorized attempt to retrieve submission data "

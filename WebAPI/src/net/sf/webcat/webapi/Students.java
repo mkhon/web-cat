@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Students.java,v 1.1 2008/10/27 01:48:55 stedwar2 Exp $
+ |  $Id: Students.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import net.sf.webcat.grader.Submission;
  * XML Response page for webapi/students requests.
  *
  * @author Stephen Edwards
- * @version $Id: Students.java,v 1.1 2008/10/27 01:48:55 stedwar2 Exp $
+ * @version $Id: Students.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
  */
 public class Students
     extends XmlResponsePage
@@ -100,7 +100,7 @@ public class Students
         }
         if (!assignmentOffering.courseOffering().instructors().contains(
                 session().user())
-            && !assignmentOffering.courseOffering().TAs().contains(
+            && !assignmentOffering.courseOffering().graders().contains(
                 session().user()))
         {
             log.error("unauthorized attempt to retrieve assignment data "
@@ -124,7 +124,7 @@ public class Students
                 assignmentOffering.courseOffering().instructors());
             ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
                 students,
-                assignmentOffering.courseOffering().TAs());
+                assignmentOffering.courseOffering().graders());
         }
 
         submissions = new NSMutableArray<Submission>();

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.11 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.12 2008/10/28 19:19:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.11 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: CourseOffering.java,v 1.12 2008/10/28 19:19:37 aallowat Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -195,19 +195,52 @@ public class CourseOffering
 
     // ----------------------------------------------------------
     /**
-     * Returns true if the given user is a TA for this
+     * Returns true if the given user is a grader (TA) for this
      * course offering
      *
      * @param user     The user to check
-     * @return true if the user is a TA for the offering
+     * @return true if the user is a grader for the offering
+     * 
+     * @deprecated Use the {@link #isGrader(User)} method instead.
      */
+    @Deprecated
     public boolean isTA( User user )
     {
-        NSArray tas = TAs();
+        return isGrader(user);
+    }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Returns true if the given user is a grader (TA) for this
+     * course offering
+     *
+     * @param user     The user to check
+     * @return true if the user is a grader for the offering
+     */
+    public boolean isGrader( User user )
+    {
+        NSArray tas = graders();
         return ( ( tas.indexOfObject( user ) ) != NSArray.NotFound );
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the array of graders (TAs) for this course offering.
+     * 
+     * @return the array of users who are designated as graders for this
+     *     course offering
+     *     
+     * @deprecated Use the {@link #graders()} method instead.
+     */
+    @Deprecated
+    public NSArray<User> TAs()
+    {
+        return graders();
+    }
+    
+    
     // ----------------------------------------------------------
     /* (non-Javadoc)
      * @see net.sf.webcat.core._CourseOffering#setCourse(net.sf.webcat.core.Course)

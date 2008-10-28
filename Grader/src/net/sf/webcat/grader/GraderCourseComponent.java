@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderCourseComponent.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderCourseComponent.java,v 1.5 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.*;
  *  selections from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderCourseComponent.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: GraderCourseComponent.java,v 1.5 2008/10/28 19:20:16 aallowat Exp $
  */
 public class GraderCourseComponent
     extends GraderComponent
@@ -86,7 +86,7 @@ public class GraderCourseComponent
         if ( offering != null
              && ( user.enrolledIn().contains(  offering )
                   || offering.isInstructor( user )
-                  || offering.isTA( user ) ) )
+                  || offering.isGrader( user ) ) )
         {
             result = true;
             coreSelections().setCourseRelationship( offering.course() );

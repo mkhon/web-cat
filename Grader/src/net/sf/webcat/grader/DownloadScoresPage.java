@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: DownloadScoresPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * as a CSV file.
  *
  * @author Stephen Edwards
- * @version $Id: DownloadScoresPage.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: DownloadScoresPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
  */
 public class DownloadScoresPage
     extends GraderAssignmentComponent
@@ -236,7 +236,7 @@ public class DownloadScoresPage
             students.removeObjectsInArray(
                 coreSelections().courseOffering().instructors() );
             students.removeObjectsInArray(
-                coreSelections().courseOffering().TAs() );
+                coreSelections().courseOffering().graders() );
         }
         else
         {
@@ -247,7 +247,7 @@ public class DownloadScoresPage
             er.extensions.ERXArrayUtilities
                 .addObjectsFromArrayWithoutDuplicates(
                 students,
-                coreSelections().courseOffering().TAs() );
+                coreSelections().courseOffering().graders() );
         }
         submissionsToExport = new NSMutableArray();
         if ( students != null )

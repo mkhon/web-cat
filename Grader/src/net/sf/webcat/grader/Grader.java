@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.13 2008/05/28 15:45:04 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.14 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.13 2008/05/28 15:45:04 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.14 2008/10/28 19:20:16 aallowat Exp $
 */
 public class Grader
    extends Subsystem
@@ -483,7 +483,7 @@ public class Grader
                            + thisAssignment.assignment().name() );
                 CourseOffering co = thisAssignment.courseOffering();
                 if ( co.isInstructor( session.user() )
-                     || co.isTA( session.user() )
+                     || co.isGrader( session.user() )
                      || ( currentTime.after( thisAssignment.availableFrom() )
                      && currentTime.before( thisAssignment.lateDeadline() ) ) )
                 {
@@ -558,7 +558,7 @@ public class Grader
                         CourseOffering co = ao.courseOffering();
                         if ( session.user().hasAdminPrivileges()
                              || co.isInstructor(session.user())
-                             || co.isTA(session.user()) )
+                             || co.isGrader(session.user()) )
                         {
                             i++;
                         }

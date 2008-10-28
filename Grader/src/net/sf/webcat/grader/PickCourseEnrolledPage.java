@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.8 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.9 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.8 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.9 2008/10/28 19:20:16 aallowat Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent
@@ -126,8 +126,8 @@ public class PickCourseEnrolledPage
                 semester ));
             courseDisplayGroup.updateDisplayedObjects();
         }
-        coursesTAed = user.TAForButNotStudent(semester);
-        coursesTaught = user.instructorForButNotTAOrStudent(semester);
+        coursesTAed = user.graderForButNotStudent(semester);
+        coursesTaught = user.instructorForButNotGraderOrStudent(semester);
         coursesAdmined = user.adminForButNoOtherRelationships(semester);
         if ( log.isDebugEnabled() )
         {

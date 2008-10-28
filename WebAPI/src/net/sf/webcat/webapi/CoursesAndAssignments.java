@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoursesAndAssignments.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
+ |  $Id: CoursesAndAssignments.java,v 1.4 2008/10/28 19:20:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import net.sf.webcat.grader.AssignmentOffering;
  * XML Response page for webapi/coursesAndAssignments requests.
  *
  * @author Stephen Edwards
- * @version $Id: CoursesAndAssignments.java,v 1.3 2008/06/19 01:22:17 stedwar2 Exp $
+ * @version $Id: CoursesAndAssignments.java,v 1.4 2008/10/28 19:20:37 aallowat Exp $
  */
 public class CoursesAndAssignments
     extends XmlResponsePage
@@ -80,7 +80,7 @@ public class CoursesAndAssignments
         courseOfferings =
             ERXArrayUtilities.arrayByAddingObjectsFromArrayWithoutDuplicates(
                 session().user().teaching(),
-                session().user().TAFor());
+                session().user().graderFor());
 
         // Finally, generate the response
         super.appendToResponse(response, context);

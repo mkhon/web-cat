@@ -717,13 +717,13 @@
                                 class = EOKeyValueQualifier;
                                 key = propertyKey;
                                 selectorName = "isEqualTo:";
-                                value = "TAFor";
+                                value = "graderFor";
                             },
                             {
                                 class = EOKeyValueQualifier;
                                 key = propertyKey;
                                 selectorName = "isEqualTo:";
-                                value = "TAs";
+                                value = "graders";
                             },
                             {
                                 class = EOKeyValueQualifier;

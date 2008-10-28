@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.6 2008/04/11 23:06:05 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @version $Id: ConfirmSubmissionPage.java,v 1.6 2008/04/11 23:06:05 stedwar2 Exp $
+ * @version $Id: ConfirmSubmissionPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -160,7 +160,7 @@ public class ConfirmSubmissionPage
         User primeUser = wcSession().primeUser().localInstance(localContext());
         if ( deadline.before( submitTime )
              && !course.isInstructor( primeUser )
-             && !course.isTA( primeUser ) )
+             && !course.isGrader( primeUser ) )
         {
             error(
                 "Unfortunately, the final deadline for this assignment "
