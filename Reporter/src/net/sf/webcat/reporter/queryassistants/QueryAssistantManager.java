@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueryAssistantManager.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: QueryAssistantManager.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * stored in the subsystem's resources.
  *
  * @author aallowat
- * @version $Id: QueryAssistantManager.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: QueryAssistantManager.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
  */
 public class QueryAssistantManager
 {
@@ -50,66 +50,102 @@ public class QueryAssistantManager
      * Get the singleton instance of this class.
      * @return The single shared instance of this class
      */
-	public static QueryAssistantManager getInstance()
-	{
-		if (instance == null)
+    public static QueryAssistantManager getInstance()
+    {
+        if (instance == null)
         {
-			instance = new QueryAssistantManager();
+            instance = new QueryAssistantManager();
         }
-		return instance;
-	}
+        return instance;
+    }
 
 
     // ----------------------------------------------------------
     /**
      * The constructor is private, since this is a singleton class.
      */
-	private QueryAssistantManager()
-	{
-		NSBundle myBundle = NSBundle.bundleForClass(getClass());
+    private QueryAssistantManager()
+    {
+        NSBundle myBundle = NSBundle.bundleForClass(getClass());
 
-		NSData data = new NSData(myBundle.bytesForResourcePath(
-			"QueryAssistants.plist"));
-		NSDictionary<String, Object> plist = (NSDictionary<String, Object>)
-			NSPropertyListSerialization.propertyListFromData(data, "UTF-8");
+        NSData data = new NSData(myBundle.bytesForResourcePath(
+            "QueryAssistants.plist"));
+        NSDictionary<String, Object> plist = (NSDictionary<String, Object>)
+            NSPropertyListSerialization.propertyListFromData(data, "UTF-8");
 
-		assistantMap = new
-            NSMutableDictionary<String, NSArray<QueryAssistantDescriptor>>();
+        assistants = new
+            NSMutableDictionary<String, QueryAssistantDescriptor>();
+        entitiesToIds = new
+            NSMutableDictionary<String, NSMutableArray<String>>();
 
-		for (String entity : plist.allKeys())
-		{
-			NSMutableArray<QueryAssistantDescriptor> assistants =
-				new NSMutableArray<QueryAssistantDescriptor>();
+        for (String id : plist.allKeys())
+        {
+            NSDictionary<String, Object> asstInPlist =
+                (NSDictionary<String, Object>)plist.objectForKey(id);
 
-			NSArray<NSDictionary<String, Object>> assistantsInPlist =
-				(NSArray<NSDictionary<String, Object>>)plist
-                    .objectForKey(entity);
+            NSArray<String> entities =
+                (NSArray<String>)asstInPlist.objectForKey("entities");
+            String modelName =
+                (String)asstInPlist.objectForKey("modelName");
+            String editorComponentName =
+                (String)asstInPlist.objectForKey("editorComponentName");
+            String previewComponentName =
+                (String)asstInPlist.objectForKey("previewComponentName");
+            String description =
+                (String)asstInPlist.objectForKey("description");
 
-			for(NSDictionary<String, Object> asstInPlist : assistantsInPlist)
-			{
-				String modelName =
-					(String)asstInPlist.objectForKey("modelName");
-				String componentName =
-					(String)asstInPlist.objectForKey("componentName");
-				String description =
-					(String)asstInPlist.objectForKey("description");
+            boolean success = verifyClassInheritance(modelName,
+                    AbstractQueryAssistantModel.class);
 
-				boolean success = verifyClassInheritance(modelName,
-						AbstractQueryAssistantModel.class);
+            if (success)
+            {
+                QueryAssistantDescriptor qad =
+                    new QueryAssistantDescriptor(
+                        id, entities, modelName, editorComponentName,
+                        previewComponentName, description);
 
-				if (success)
-				{
-					QueryAssistantDescriptor qad =
-						new QueryAssistantDescriptor(
-                            modelName, componentName, description);
+                assistants.setObjectForKey(qad, id);
 
-					assistants.addObject(qad);
-				}
-			}
+                if (entities != null)
+                {
+                    // Add the query assistant to each entity in the map.
 
-			assistantMap.setObjectForKey(assistants, entity);
-		}
-	}
+                    for (String entityName : entities)
+                    {
+                        NSMutableArray<String> ids =
+                            entitiesToIds.objectForKey(entityName);
+
+                        if (ids == null)
+                        {
+                            ids = new NSMutableArray<String>();
+                            entitiesToIds.setObjectForKey(ids, entityName);
+                        }
+
+                        ids.addObject(id);
+                    }
+                }
+                else
+                {
+                    // Add the query assistant to the "blank" array in the map.
+                    // We use a blank entry because we don't know which
+                    // entities will be in the map until we've processed them
+                    // all, so we just merge this array with the one for a
+                    // specific entity in the assistantsForEntity method.
+
+                    NSMutableArray<String> ids =
+                        entitiesToIds.objectForKey("");
+
+                    if (ids == null)
+                    {
+                        ids = new NSMutableArray<String>();
+                        entitiesToIds.setObjectForKey(ids, "");
+                    }
+
+                    ids.addObject(id);
+                }
+            }
+        }
+    }
 
 
     //~ Public Methods ........................................................
@@ -120,50 +156,77 @@ public class QueryAssistantManager
         NSMutableArray<QueryAssistantDescriptor> array =
             new NSMutableArray<QueryAssistantDescriptor>();
 
-        array.addObjectsFromArray(assistantMap.objectForKey(entity));
-        array.addObjectsFromArray(assistantMap.objectForKey("*"));
+        NSArray<String> ids;
+
+        // Add the query assistants for this specific entity type.
+
+        ids = entitiesToIds.objectForKey(entity);
+        if (ids != null)
+        {
+            for (String id : ids)
+            {
+                array.addObject(assistantWithId(id));
+            }
+        }
+
+        // Add the query assistants that apply to all entity types.
+
+        ids = entitiesToIds.objectForKey("");
+        if (ids != null)
+        {
+            for (String id : ids)
+            {
+                array.addObject(assistantWithId(id));
+            }
+        }
 
         return array;
+    }
+
+
+    public QueryAssistantDescriptor assistantWithId(String id)
+    {
+        return assistants.objectForKey(id);
     }
 
 
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-	private boolean verifyClassInheritance(String className,
-			Class<?> superclass)
-	{
-		Class<?> klass = null;
+    private boolean verifyClassInheritance(String className,
+            Class<?> superclass)
+    {
+        Class<?> klass = null;
 
-		try
-		{
-			klass = Class.forName(className);
-		}
-		catch(Exception e)
-		{
-			log.error("Could not find a class named " + className +
-					". This query assistant will not be available.");
-			return false;
-		}
+        try
+        {
+            klass = Class.forName(className);
+        }
+        catch(Exception e)
+        {
+            log.error("Could not find a class named " + className +
+                    ". This query assistant will not be available.");
+            return false;
+        }
 
-		if(klass != null)
-		{
-			if(!superclass.isAssignableFrom(klass))
-			{
-				log.error("The class " + className + " does not" +
-						"inherit from " + superclass.getCanonicalName() + ". " +
-						"This query assistant will not be available.");
-			}
-		}
+        if(klass != null)
+        {
+            if(!superclass.isAssignableFrom(klass))
+            {
+                log.error("The class " + className + " does not" +
+                        "inherit from " + superclass.getCanonicalName() + ". " +
+                        "This query assistant will not be available.");
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
 
     //~ Instance/static variables .............................................
 
-	private NSMutableDictionary<String, NSArray<QueryAssistantDescriptor>>
-        assistantMap;
-	private static QueryAssistantManager instance;
-	private static Logger log = Logger.getLogger(QueryAssistantManager.class);
+    private NSMutableDictionary<String, QueryAssistantDescriptor> assistants;
+    private NSMutableDictionary<String, NSMutableArray<String>> entitiesToIds;
+    private static QueryAssistantManager instance;
+    private static Logger log = Logger.getLogger(QueryAssistantManager.class);
 }

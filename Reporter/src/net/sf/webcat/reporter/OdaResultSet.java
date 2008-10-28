@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.7 2008/10/28 15:52:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,7 +47,7 @@ import ognl.webobjects.WOOgnl;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.7 2008/10/28 15:52:23 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -98,7 +98,7 @@ public class OdaResultSet
     {
         recycleEditingContext();
 
-        EOQualifier qualifier = QualifierUtils.qualifierWithEOsForGIDs(
+        EOQualifier qualifier = QualifierSerialization.convertGIDsToEOs(
             query.qualifier(), editingContext);
 
         EOQualifier[] quals = QualifierUtils.partitionQualifier(

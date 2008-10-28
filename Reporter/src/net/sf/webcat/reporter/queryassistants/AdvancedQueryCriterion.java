@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryCriterion.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: AdvancedQueryCriterion.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,9 +30,9 @@ import com.webobjects.foundation.NSKeyValueCoding;
  * value.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryCriterion.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: AdvancedQueryCriterion.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
  */
-public class AdvancedQueryCriterion
+public class AdvancedQueryCriterion implements NSKeyValueCoding
 {
     //~ Constructor ...........................................................
 
@@ -45,118 +45,133 @@ public class AdvancedQueryCriterion
 
     //~ Public Constants ......................................................
 
-	public static final int COMPARAND_LITERAL = 0;
-	public static final int COMPARAND_KEYPATH = 1;
+    public static final int COMPARAND_LITERAL = 0;
+    public static final int COMPARAND_KEYPATH = 1;
 
 
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-	public String keyPath()
-	{
-		return keyPath;
-	}
+    public String keyPath()
+    {
+        return keyPath;
+    }
 
 
     // ----------------------------------------------------------
-	public void setKeyPath(String kp)
-	{
-		keyPath = kp;
-	}
+    public void setKeyPath(String kp)
+    {
+        keyPath = kp;
+    }
 
 
     // ----------------------------------------------------------
-	public Class<?> castType()
-	{
-		return castType;
-	}
+    public Class<?> castType()
+    {
+        return castType;
+    }
 
 
     // ----------------------------------------------------------
-	public void setCastType(Class<?> ct)
-	{
-		castType = ct;
-	}
+    public void setCastType(Class<?> ct)
+    {
+        castType = ct;
+    }
 
 
     // ----------------------------------------------------------
-	public void setComparison(AdvancedQueryComparison c)
-	{
-		comparison = c;
-	}
+    public void setComparison(AdvancedQueryComparison c)
+    {
+        comparison = c;
+    }
 
 
     // ----------------------------------------------------------
-	public int comparandType()
-	{
-		return comparandType;
-	}
+    public int comparandType()
+    {
+        return comparandType;
+    }
 
 
     // ----------------------------------------------------------
-	public void setComparandType(int ct)
-	{
-		comparandType = ct;
-	}
+    public void setComparandType(int ct)
+    {
+        comparandType = ct;
+    }
 
 
     // ----------------------------------------------------------
-	public Object value()
-	{
-		if (value == NSKeyValueCoding.NullValue)
+    public Object value()
+    {
+        if (value == NSKeyValueCoding.NullValue)
         {
-			return null;
+            return null;
         }
-		else
+        else
         {
-			return value;
+            return value;
         }
-	}
+    }
 
 
     // ----------------------------------------------------------
-	public void setValue(Object v)
-	{
-		value = v;
-	}
+    public void setValue(Object v)
+    {
+        value = v;
+    }
 
 
     // ----------------------------------------------------------
-	public String toString()
-	{
-		StringBuffer buffer = new StringBuffer();
+    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer();
 
-		buffer.append("AdvancedQueryCriterion = { ");
-		buffer.append("keyPath = " + keyPath);
-		buffer.append(", comparison = " + comparison);
-		buffer.append(", comparandType = ");
+        buffer.append("AdvancedQueryCriterion = { ");
+        buffer.append("keyPath = " + keyPath);
+        buffer.append(", comparison = " + comparison);
+        buffer.append(", comparandType = ");
 
-		if (comparandType == COMPARAND_LITERAL)
+        if (comparandType == COMPARAND_LITERAL)
         {
-			buffer.append("LITERAL");
+            buffer.append("LITERAL");
         }
-		else if(comparandType == COMPARAND_KEYPATH)
+        else if(comparandType == COMPARAND_KEYPATH)
         {
-			buffer.append("KEYPATH");
+            buffer.append("KEYPATH");
         }
 
-		buffer.append(", value = " + value);
-		buffer.append(" }");
+        buffer.append(", value = " + value);
+        buffer.append(" }");
 
-		return buffer.toString();
-	}
+        return buffer.toString();
+    }
+
+
+    // ----------------------------------------------------------
+    public void takeValueForKey(Object value, String key)
+    {
+        NSKeyValueCoding.DefaultImplementation.takeValueForKey(
+            this, value, key);
+    }
+
+
+    // ----------------------------------------------------------
+    public Object valueForKey(String key)
+    {
+        return NSKeyValueCoding.DefaultImplementation.valueForKey(this, key);
+    }
 
 
     //~ Instance/static variables .............................................
 
     /*
-	 * The type of the right hand side of the comparison (keypath or literal).
-	 * The term "comparand" is derived from the gerundive of the Latin
-	 * "comparare" in the sense of "that which is to be compared"; this is
-	 * analogous to such mathematical terms as "addend", "minuend", and
-	 * "subtrahend".
-	 */
-	private int comparandType;
+     * The type of the right hand side of the comparison (keypath or literal).
+     * The term "comparand" is derived from the gerundive of the Latin
+     * "comparare" in the sense of "that which is to be compared"; this is
+     * analogous to such mathematical terms as "addend", "minuend", and
+     * "subtrahend".
+     */
+    private int comparandType;
 
     private String keyPath;
     private Class<?> castType;

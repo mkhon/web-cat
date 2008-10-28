@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GenerationSummaryPage.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: GenerationSummaryPage.java,v 1.7 2008/10/28 15:52:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,17 +21,20 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.appserver.*;
+import net.sf.webcat.reporter.queryassistants.AbstractQueryAssistantModel;
+import net.sf.webcat.reporter.queryassistants.QueryAssistantDescriptor;
+import com.webobjects.appserver.WOComponent;
+import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WOResponse;
+import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSTimestamp;
-import com.webobjects.foundation.NSTimestampFormatter;
 
 //-------------------------------------------------------------------------
 /**
  * This page summarizes the report that will be generated.
  *
  * @author  Tony Allevato
- * @version $Id: GenerationSummaryPage.java,v 1.6 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: GenerationSummaryPage.java,v 1.7 2008/10/28 15:52:23 aallowat Exp $
  */
 public class GenerationSummaryPage
     extends ReporterComponent
@@ -108,5 +111,49 @@ public class GenerationSummaryPage
 
         commitReportGeneration();
         return pageWithName(GeneratedReportPage.class.getName());
+    }
+
+
+    // ----------------------------------------------------------
+    public String previewComponentNameAtIndex()
+    {
+        return localPageController().queryAssistantAtIndex(index).
+            previewComponentName();
+    }
+
+
+    // ----------------------------------------------------------
+    public ReportDataSet dataSetAtIndex()
+    {
+        return dataSets.objectAtIndex(index);
+    }
+
+
+    // ----------------------------------------------------------
+    public void setDataSetAtIndex(ReportDataSet dummy)
+    {
+        // Keep KVC from complaining.
+    }
+
+
+    // ----------------------------------------------------------
+    public AbstractQueryAssistantModel modelAtIndex()
+    {
+        QueryAssistantDescriptor qad =
+            localPageController().queryAssistantAtIndex(index);
+        ReportQuery query = queryForLocalDataSetId(dataSetAtIndex().id());
+
+        AbstractQueryAssistantModel model = qad.createModel();
+        EOQualifier q = QualifierSerialization.convertGIDsToEOs(
+                query.qualifier(), localContext());
+        model.takeValuesFromQualifier(q);
+        return model;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setModelAtIndex(AbstractQueryAssistantModel dummy)
+    {
+        // Keep KVC from complaining.
     }
 }

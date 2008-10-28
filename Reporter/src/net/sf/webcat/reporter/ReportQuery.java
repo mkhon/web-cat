@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportQuery.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReportQuery.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,10 +31,9 @@ import net.sf.webcat.core.MutableDictionary;
  * determines the data that will go into a result set.
  *
  * @author Tony Allevato
- * @version $Id: ReportQuery.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReportQuery.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
  */
-public class ReportQuery
-    extends _ReportQuery
+public class ReportQuery extends _ReportQuery
 {
     //~ Constructor ...........................................................
 
@@ -53,36 +52,113 @@ public class ReportQuery
     // ----------------------------------------------------------
     /**
      * Gets the qualifier that applies to this query.
+     *
      * @return the qualifier
      */
     public EOQualifier qualifier()
     {
         MutableDictionary info = queryInfo();
 
-        if(info == null)
+        if (info == null)
+        {
             return null;
+        }
         else
-            return (EOQualifier)info.objectForKey("qualifier");
+        {
+            return (EOQualifier) info.objectForKey(KEY_QUALIFIER);
+        }
     }
 
 
     // ----------------------------------------------------------
     /**
      * Sets the qualifier that applies to this query.
-     * @param q the qualifier to use
+     *
+     * @param q
+     *            the qualifier to use
      */
     public void setQualifier(EOQualifier q)
     {
-        if(queryInfo() == null)
-            setQueryInfo(new MutableDictionary());
-
-        if(q == null)
+        if (queryInfo() == null)
         {
-            queryInfo().removeObjectForKey("qualifier");
+            setQueryInfo(new MutableDictionary());
+        }
+
+        if (q == null)
+        {
+            queryInfo().removeObjectForKey(KEY_QUALIFIER);
         }
         else
         {
-            queryInfo().setObjectForKey(q, "qualifier");
+            queryInfo().setObjectForKey(q, KEY_QUALIFIER);
         }
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the identifier of the query assistant that was used to construct
+     * this query.
+     *
+     * @return the id of the query assistant
+     */
+    public String queryAssistantId()
+    {
+        MutableDictionary info = queryInfo();
+
+        // Since older queries did not store the query assistant that was used
+        // to construct them, we put in a special case to fallback to the
+        // advanced query builder, which should handle any of the queries
+        // created up to the time that this was done.
+
+        if (info == null)
+        {
+            return FALLBACK_QUERY_ASSISTANT;
+        }
+        else
+        {
+            String id = (String) info.objectForKey(KEY_QUERY_ASSISTANT_ID);
+
+            return (id != null) ? id : FALLBACK_QUERY_ASSISTANT;
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets the identifier of the query assistant that was used to construct
+     * this query.
+     *
+     * @param id
+     *            the id of the query assistant
+     */
+    public void setQueryAssistantId(String id)
+    {
+        if (queryInfo() == null)
+        {
+            setQueryInfo(new MutableDictionary());
+        }
+
+        if (id == null)
+        {
+            queryInfo().removeObjectForKey(KEY_QUERY_ASSISTANT_ID);
+        }
+        else
+        {
+            queryInfo().setObjectForKey(id, KEY_QUERY_ASSISTANT_ID);
+        }
+    }
+
+
+    //~ Static/instance variables .............................................
+
+    /*
+     * A safe fallback for older queries that did not keep track of the query
+     * assistant used to construct them.
+     */
+    private static final String FALLBACK_QUERY_ASSISTANT =
+        "net.sf.webcat.reporter.queryassistants.advancedQuery";
+
+    private static final String KEY_QUALIFIER = "qualifier";
+    private static final String KEY_QUERY_ASSISTANT_ID = "queryAssistantId";
 }

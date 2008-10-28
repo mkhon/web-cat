@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryUtils.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: AdvancedQueryUtils.java,v 1.5 2008/10/28 15:52:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * A collection of static utility methods.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryUtils.java,v 1.4 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: AdvancedQueryUtils.java,v 1.5 2008/10/28 15:52:30 aallowat Exp $
  */
 public class AdvancedQueryUtils
 {
@@ -57,234 +57,239 @@ public class AdvancedQueryUtils
     //~ Public Constants ......................................................
 
     public static final int TYPE_STRING = 0;
-	public static final int TYPE_INTEGER = 1;
-	public static final int TYPE_DOUBLE = 2;
-	public static final int TYPE_BOOLEAN = 3;
-	public static final int TYPE_TIMESTAMP = 4;
-	public static final int TYPE_ENTITY = 5;
+    public static final int TYPE_INTEGER = 1;
+    public static final int TYPE_DOUBLE = 2;
+    public static final int TYPE_BOOLEAN = 3;
+    public static final int TYPE_TIMESTAMP = 4;
+    public static final int TYPE_ENTITY = 5;
+    public static final int TYPE_ARRAY = 6;
 
 
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
-	public static int typeOfKeyPath(String entityType, String keypath)
-	{
-		KeyPathParser parser = new KeyPathParser(entityType, keypath);
-		Class<?> klass = parser.theClass();
+    public static int typeOfKeyPath(String entityType, String keypath)
+    {
+        KeyPathParser parser = new KeyPathParser(entityType, keypath);
+        Class<?> klass = parser.theClass();
 
-		return typeOfClass(klass);
-	}
+        return typeOfClass(klass);
+    }
 
 
     // ----------------------------------------------------------
-	public static int typeOfClass(Class<?> klass)
-	{
-		if (String.class.isAssignableFrom(klass))
-		{
-			return TYPE_STRING;
-		}
-		else if (Integer.class.isAssignableFrom(klass)
+    public static int typeOfClass(Class<?> klass)
+    {
+        if (String.class.isAssignableFrom(klass))
+        {
+            return TYPE_STRING;
+        }
+        else if (Integer.class.isAssignableFrom(klass)
                  || klass == Integer.TYPE)
-		{
-			return TYPE_INTEGER;
-		}
-		else if (Double.class.isAssignableFrom(klass)
+        {
+            return TYPE_INTEGER;
+        }
+        else if (Double.class.isAssignableFrom(klass)
                  || klass == Double.TYPE)
-		{
-			return TYPE_DOUBLE;
-		}
-		else if (Boolean.class.isAssignableFrom(klass)
+        {
+            return TYPE_DOUBLE;
+        }
+        else if (Boolean.class.isAssignableFrom(klass)
                  || klass == Boolean.TYPE)
-		{
-			return TYPE_BOOLEAN;
-		}
-		else if (java.util.Date.class.isAssignableFrom(klass))
-		{
-			return TYPE_TIMESTAMP;
-		}
-		else if (EOEnterpriseObject.class.isAssignableFrom(klass))
-		{
-			return TYPE_ENTITY;
-		}
-		else
-		{
-			return TYPE_STRING;
-		}
-	}
+        {
+            return TYPE_BOOLEAN;
+        }
+        else if (java.util.Date.class.isAssignableFrom(klass))
+        {
+            return TYPE_TIMESTAMP;
+        }
+        else if (EOEnterpriseObject.class.isAssignableFrom(klass))
+        {
+            return TYPE_ENTITY;
+        }
+        else if (NSArray.class.isAssignableFrom(klass))
+        {
+            return TYPE_ARRAY;
+        }
+        else
+        {
+            return TYPE_STRING;
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public static Object valueRangeForPreviewRepresentation(
+    public static Object valueRangeForPreviewRepresentation(
         int type, String rep, EOEditingContext ec)
-	{
-		NSMutableDictionary<String, Object> dict =
-			new NSMutableDictionary<String, Object>();
+    {
+        NSMutableDictionary<String, Object> dict =
+            new NSMutableDictionary<String, Object>();
 
-		String[] parts = rep.split(",");
-		dict.setObjectForKey(
-			singleValueForPreviewRepresentation(type, parts[0], ec),
-			"minimumValue");
-		dict.setObjectForKey(
-			singleValueForPreviewRepresentation(type, parts[1], ec),
-			"maximumValue");
+        String[] parts = rep.split(",");
+        dict.setObjectForKey(
+            singleValueForPreviewRepresentation(type, parts[0], ec),
+            "minimumValue");
+        dict.setObjectForKey(
+            singleValueForPreviewRepresentation(type, parts[1], ec),
+            "maximumValue");
 
-		return dict;
-	}
+        return dict;
+    }
 
 
     // ----------------------------------------------------------
-	public static Object singleValueForPreviewRepresentation(
+    public static Object singleValueForPreviewRepresentation(
         int type, String rep, EOEditingContext ec)
-	{
-		switch (type)
-		{
-			case TYPE_STRING:
-				return rep;
+    {
+        switch (type)
+        {
+            case TYPE_STRING:
+                return rep;
 
-			case TYPE_INTEGER:
-	    		try
-	    		{
-	    			return Integer.parseInt(rep.trim());
-	    		}
-	    		catch (NumberFormatException e)
-	    		{
-	    			return null;
-	    		}
+            case TYPE_INTEGER:
+                try
+                {
+                    return Integer.parseInt(rep.trim());
+                }
+                catch (NumberFormatException e)
+                {
+                    return null;
+                }
 
-			case TYPE_DOUBLE:
-	    		try
-	    		{
-	    			return Double.parseDouble(rep.trim());
-	    		}
-	    		catch (NumberFormatException e)
-	    		{
-	    			return null;
-	    		}
+            case TYPE_DOUBLE:
+                try
+                {
+                    return Double.parseDouble(rep.trim());
+                }
+                catch (NumberFormatException e)
+                {
+                    return null;
+                }
 
-			case TYPE_BOOLEAN:
-				return Boolean.parseBoolean(rep);
+            case TYPE_BOOLEAN:
+                return Boolean.parseBoolean(rep);
 
-			case TYPE_TIMESTAMP:
-				return timestampFromRepresentation(rep);
+            case TYPE_TIMESTAMP:
+                return timestampFromRepresentation(rep);
 
-			case TYPE_ENTITY:
-				try
-	    		{
-					String[] parts = rep.split(":");
-					String entity = parts[0];
-					int id = Integer.parseInt(parts[1]);
+            case TYPE_ENTITY:
+                try
+                {
+                    String[] parts = rep.split(":");
+                    String entity = parts[0];
+                    int id = Integer.parseInt(parts[1]);
 
-	    			return objectWithId(id, entity, ec);
-	    		}
-	    		catch (Exception e)
-	    		{
-	    			log.warn("Exception trying to find object " + rep, e);
-	    			return null;
-	    		}
+                    return objectWithId(id, entity, ec);
+                }
+                catch (Exception e)
+                {
+                    log.warn("Exception trying to find object " + rep, e);
+                    return null;
+                }
 
-			default:
-				return null;
-		}
-	}
+            default:
+                return null;
+        }
+    }
 
 
     // ----------------------------------------------------------
-	public static Object multipleValuesForPreviewRepresentation(
+    public static Object multipleValuesForPreviewRepresentation(
         int type, String rep, EOEditingContext ec)
-	{
+    {
         String[] values = rep.split(",");
         NSMutableArray array = new NSMutableArray();
-		switch (type)
-		{
-			case TYPE_STRING:
-			{
+        switch (type)
+        {
+            case TYPE_STRING:
+            {
                 for (String item : values)
-		    	{
-		    		array.addObject(item.trim());
-		    	}
-		    	return array;
-			}
+                {
+                    array.addObject(item.trim());
+                }
+                return array;
+            }
 
-			case TYPE_INTEGER:
-			{
-		    	for (String item : values)
-		    	{
-		    		try
-		    		{
-		    			array.addObject(Integer.parseInt(item.trim()));
-		    		}
-		    		catch (NumberFormatException e)
-		    		{
+            case TYPE_INTEGER:
+            {
+                for (String item : values)
+                {
+                    try
+                    {
+                        array.addObject(Integer.parseInt(item.trim()));
+                    }
+                    catch (NumberFormatException e)
+                    {
                         // Ignore the erroneous value
-		    		}
-		    	}
-		    	return array;
-			}
+                    }
+                }
+                return array;
+            }
 
-			case TYPE_DOUBLE:
-			{
-		    	for (String item : values)
-		    	{
-		    		try
-		    		{
-		    			array.addObject(Double.parseDouble(item.trim()));
-		    		}
-		    		catch (NumberFormatException e)
-		    		{
+            case TYPE_DOUBLE:
+            {
+                for (String item : values)
+                {
+                    try
+                    {
+                        array.addObject(Double.parseDouble(item.trim()));
+                    }
+                    catch (NumberFormatException e)
+                    {
                         // Ignore the erroneous value
-		    		}
-		    	}
-		    	return array;
-			}
+                    }
+                }
+                return array;
+            }
 
-			case TYPE_ENTITY:
-			{
-		    	for (String itemRep : values)
-		    	{
-					try
-		    		{
-						String[] parts = itemRep.split(":");
-						String entity = parts[0];
-						int id = Integer.parseInt(parts[1]);
+            case TYPE_ENTITY:
+            {
+                for (String itemRep : values)
+                {
+                    try
+                    {
+                        String[] parts = itemRep.split(":");
+                        String entity = parts[0];
+                        int id = Integer.parseInt(parts[1]);
 
-						EOEnterpriseObject object =
+                        EOEnterpriseObject object =
                             objectWithId(id, entity, ec);
 
-						if (object != null)
-						{
-							array.addObject(object);
-						}
-						else
-						{
-							log.warn("No object found for entity "
+                        if (object != null)
+                        {
+                            array.addObject(object);
+                        }
+                        else
+                        {
+                            log.warn("No object found for entity "
                                 + entity + " with id " + id + "!");
-						}
-		    		}
-		    		catch (Exception e)
-		    		{
-		    			log.warn(
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        log.warn(
                             "Exception trying to find object " + itemRep, e);
-		    		}
-		    	}
-		    	return array;
-			}
+                    }
+                }
+                return array;
+            }
 
-			default:
-				return null;
-		}
-	}
+            default:
+                return null;
+        }
+    }
 
 
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-	private static EOEnterpriseObject objectWithId(
+    private static EOEnterpriseObject objectWithId(
         int id, String entity, EOEditingContext ec)
-	{
+    {
         if (id > 0)
         {
             NSArray<EOEnterpriseObject> results =
-            	EOUtilities.objectsMatchingKeyAndValue(
+                EOUtilities.objectsMatchingKeyAndValue(
                     ec, entity, "id", new Integer(id));
 
             if (results != null && results.count() > 0)
@@ -298,29 +303,29 @@ public class AdvancedQueryUtils
 
 
     // ----------------------------------------------------------
-	private static NSTimestamp timestampFromRepresentation(String rep)
-	{
-		try
-		{
-			String[] parts = rep.split(" ");
-			return new NSTimestamp(
-				Integer.parseInt(parts[0]),
-				Integer.parseInt(parts[1]) + 1,
-				Integer.parseInt(parts[2]),
-				Integer.parseInt(parts[3]),
-				Integer.parseInt(parts[4]),
-				0,
+    private static NSTimestamp timestampFromRepresentation(String rep)
+    {
+        try
+        {
+            String[] parts = rep.split(" ");
+            return new NSTimestamp(
+                Integer.parseInt(parts[0]),
+                Integer.parseInt(parts[1]) + 1,
+                Integer.parseInt(parts[2]),
+                Integer.parseInt(parts[3]),
+                Integer.parseInt(parts[4]),
+                0,
                 TimeZone.getDefault());
-		}
-		catch (NumberFormatException e)
-		{
-			return null;
-		}
-	}
+        }
+        catch (NumberFormatException e)
+        {
+            return null;
+        }
+    }
 
 
     //~ Instance/static variables .............................................
 
     private static final Logger log =
-		Logger.getLogger(AdvancedQueryUtils.class);
+        Logger.getLogger(AdvancedQueryUtils.class);
 }

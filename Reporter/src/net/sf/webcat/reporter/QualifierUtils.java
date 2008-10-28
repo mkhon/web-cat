@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QualifierUtils.java,v 1.5 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: QualifierUtils.java,v 1.6 2008/10/28 15:52:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.ERXInQualifier;
  * Utility methods to operate on qualifiers.
  *
  * @author Tony Allevato
- * @version $Id: QualifierUtils.java,v 1.5 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: QualifierUtils.java,v 1.6 2008/10/28 15:52:23 aallowat Exp $
  */
 public class QualifierUtils
 {
@@ -184,6 +184,7 @@ public class QualifierUtils
             terms.addObject(new EOKeyValueQualifier(key,
                 EOQualifier.QualifierOperatorEqual, choice));
         }
+
         return new EOOrQualifier(terms);
     }
 
@@ -271,181 +272,30 @@ public class QualifierUtils
             return null;
         }
     }
-
-
+    
+    
     // ----------------------------------------------------------
     /**
-     * Deeply traverses a qualifier tree and returns a new qualifier where
-     * any EOs have been replaced by EOGlobalIDs that refer to them. This is
-     * used before a qualifier is serialized into the database.
-     *
-     * @param q the qualifier to convert
-     * @param ec the editing context to use
-     * @return a new qualifier that has had EOs replaced by EOGlobalIDs
+     * Shortcut method to return a subquery qualifier that determines if the
+     * object at a keypath is in a given relationship. Unlike a normal
+     * EOKeyComparisonQualifier that does this, the qualifier returned here can
+     * be properly negated with EONotQualifier to determine if the object is
+     * NOT in the relationship.
+     * 
+     * ".id" is automatically appended to the ends of the relationships passed
+     * into this function.
+     * 
+     * @param keyPath the key path of the object to test (a to-one relationship)
+     * @param relationship the relationship in which to look for keyPath
+     *     (a to-many relationship)
+     * @return the qualifier
      */
-    public static EOQualifier qualifierWithGIDsForEOs(
-        EOQualifier q, EOEditingContext ec)
+    public static EOQualifier qualifierForKeyPathInRelationship(String keyPath,
+            String relationship)
     {
-        if (q == null)
-        {
-            return null;
-        }
-        else if (q instanceof EOAndQualifier)
-        {
-            EOAndQualifier aq = (EOAndQualifier)q;
-            NSMutableArray<EOQualifier> children =
-                new NSMutableArray<EOQualifier>();
-
-            for (EOQualifier oldChild : (NSArray<EOQualifier>)aq.qualifiers())
-            {
-                children.addObject(qualifierWithGIDsForEOs(oldChild, ec));
-            }
-            return new EOAndQualifier(children);
-        }
-        else if (q instanceof EOOrQualifier)
-        {
-            EOOrQualifier oq = (EOOrQualifier)q;
-            NSMutableArray<EOQualifier> children =
-                new NSMutableArray<EOQualifier>();
-
-            for (EOQualifier oldChild : (NSArray<EOQualifier>)oq.qualifiers())
-            {
-                children.addObject(qualifierWithGIDsForEOs(oldChild, ec));
-            }
-            return new EOOrQualifier(children);
-        }
-        else if (q instanceof EONotQualifier)
-        {
-            EONotQualifier nq = (EONotQualifier)q;
-            return new EONotQualifier(qualifierWithGIDsForEOs(nq.qualifier(), ec));
-        }
-        else if (q instanceof ERXInQualifier)
-        {
-            ERXInQualifier iq = (ERXInQualifier)q;
-            NSMutableArray<Object> values = new NSMutableArray<Object>();
-
-            for (Object value : iq.values())
-            {
-                if (value instanceof EOEnterpriseObject)
-                {
-                    values.addObject(
-                        ec.globalIDForObject((EOEnterpriseObject)value));
-                }
-                else
-                {
-                    values.addObject(value);
-                }
-            }
-            return new ERXInQualifier(iq.key(), values);
-        }
-        else if (q instanceof EOKeyValueQualifier)
-        {
-            EOKeyValueQualifier kvq = (EOKeyValueQualifier)q;
-            Object value;
-
-            if (kvq.value() instanceof EOEnterpriseObject)
-            {
-                value = ec.globalIDForObject((EOEnterpriseObject)kvq.value());
-            }
-            else
-            {
-                value = kvq.value();
-            }
-            return new EOKeyValueQualifier(kvq.key(), kvq.selector(), value);
-        }
-        else
-        {
-            return (EOQualifier)q.clone();
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Deeply traverses a qualifier tree and returns a new qualifier where
-     * any EOGlobalIDs have been replaced by the EOs that they refer to. This
-     * is used to reconstitute a qualifier after it has been read in from the
-     * database.
-     *
-     * @param q the qualifier to convert
-     * @param ec the editing context to use
-     * @return a new qualifier that has had EOGlobalIDs replaced by EOs
-     */
-    public static EOQualifier qualifierWithEOsForGIDs(
-        EOQualifier q, EOEditingContext ec)
-    {
-        if (q == null)
-        {
-            return null;
-        }
-        else if (q instanceof EOAndQualifier)
-        {
-            EOAndQualifier aq = (EOAndQualifier)q;
-            NSMutableArray<EOQualifier> children =
-                new NSMutableArray<EOQualifier>();
-
-            for (EOQualifier oldChild : (NSArray<EOQualifier>)aq.qualifiers())
-            {
-                children.addObject(qualifierWithEOsForGIDs(oldChild, ec));
-            }
-
-            return new EOAndQualifier(children);
-        }
-        else if (q instanceof EOOrQualifier)
-        {
-            EOOrQualifier oq = (EOOrQualifier)q;
-            NSMutableArray<EOQualifier> children =
-                new NSMutableArray<EOQualifier>();
-
-            for (EOQualifier oldChild : (NSArray<EOQualifier>)oq.qualifiers())
-            {
-                children.addObject(qualifierWithEOsForGIDs(oldChild, ec));
-            }
-            return new EOOrQualifier(children);
-        }
-        else if (q instanceof EONotQualifier)
-        {
-            EONotQualifier nq = (EONotQualifier)q;
-            return new EONotQualifier(
-                qualifierWithEOsForGIDs(nq.qualifier(), ec));
-        }
-        else if (q instanceof ERXInQualifier)
-        {
-            ERXInQualifier iq = (ERXInQualifier)q;
-            NSMutableArray<Object> values = new NSMutableArray<Object>();
-
-            for (Object value : iq.values())
-            {
-                if (value instanceof EOGlobalID)
-                {
-                    values.addObject(
-                        ec.faultForGlobalID((EOGlobalID)value, ec));
-                }
-                else
-                {
-                    values.addObject(value);
-                }
-            }
-            return new ERXInQualifier(iq.key(), values);
-        }
-        else if (q instanceof EOKeyValueQualifier)
-        {
-            EOKeyValueQualifier kvq = (EOKeyValueQualifier)q;
-            Object value;
-
-            if (kvq.value() instanceof EOGlobalID)
-            {
-                value = ec.faultForGlobalID((EOGlobalID)kvq.value(), ec);
-            }
-            else
-            {
-                value = kvq.value();
-            }
-            return new EOKeyValueQualifier(kvq.key(), kvq.selector(), value);
-        }
-        else
-        {
-            return (EOQualifier)q.clone();
-        }
+        return new QualifierInSubquery(
+                new EOKeyComparisonQualifier(keyPath + ".id",
+                        EOQualifier.QualifierOperatorEqual,
+                        relationship + ".id"));
     }
 }

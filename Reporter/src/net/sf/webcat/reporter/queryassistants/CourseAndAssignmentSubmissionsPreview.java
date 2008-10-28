@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickTemplateToGeneratePage.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsPreview.java,v 1.1 2008/10/28 15:52:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -19,30 +19,30 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package net.sf.webcat.reporter;
+package net.sf.webcat.reporter.queryassistants;
 
-import com.webobjects.appserver.WOComponent;
+import net.sf.webcat.core.CourseOffering;
+import net.sf.webcat.reporter.ReportDataSet;
+import net.sf.webcat.reporter.ReporterComponent;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.foundation.NSArray;
 
 //-------------------------------------------------------------------------
 /**
- * This page allows the user to select the template to use for a new report.
+ * The previewer associated with CourseAndAssignmentSubmissionAssistant.
  *
- * @author Tony Allevato
- * @version $Id: PickTemplateToGeneratePage.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
+ * @author aallowat
+ * @version $Id: CourseAndAssignmentSubmissionsPreview.java,v 1.1 2008/10/28 15:52:30 aallowat Exp $
  */
-public class PickTemplateToGeneratePage
-    extends ReporterComponent
+public class CourseAndAssignmentSubmissionsPreview extends ReporterComponent
 {
     //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     /**
-     * Create a new page.
-     * @param context The page's context
+     * Create a new object.
+     * @param context the page's context
      */
-    public PickTemplateToGeneratePage(WOContext context)
+    public CourseAndAssignmentSubmissionsPreview(WOContext context)
     {
         super(context);
     }
@@ -50,34 +50,27 @@ public class PickTemplateToGeneratePage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public NSArray<ReportTemplate> reportTemplates;
-    public ReportTemplate reportTemplate;
+    public ReportDataSet dataSet;
+    public CourseAndAssignmentSubmissionsModel model;
+
+    // Repetition variables
+    public CourseOffering courseOffering;
     public int index;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public NSArray<ReportTemplate> reportTemplates()
+    /**
+     * Gets a value indicating whether the current index in the repetition is
+     * not the last course offering in the model (for delimiting the list by
+     * commas when displayed).
+     *
+     * @return true if the current index is not the last course offering;
+     *     false if it is.
+     */
+    public boolean indexIsNotLastCourseOffering()
     {
-        if (reportTemplates == null)
-        {
-            reportTemplates =
-                ReportTemplate.objectsForAllTemplates(localContext());
-        }
-        return reportTemplates;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOComponent templateChosen()
-    {
-        clearLocalReportState();
-
-        setLocalReportTemplate(reportTemplate);
-        setLocalCurrentReportDataSet(0);
-        createLocalPageController();
-
-        return localPageController().nextPage();
+        return (index < model.courseOfferings().count() - 1);
     }
 }
