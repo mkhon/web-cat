@@ -1,25 +1,22 @@
 <wo:PageWithNavigation title="Report Generation Summary">
 <wo:form id="summaryForm" multipleSubmit="$true" action="$goNext">
 
-<!--
+<wo:if condition="$dataSets.count">
 <h2>Data Set Query Summary</h2>
 
-<wo:if condition="$dataSets.count">
 <p>Below is a summary of the queries that will be used to select data for this
 report. If you would like to make any changes, please click the <b>Back</b>
 button below.</p>
-<ul>
-<wo:loop list="$dataSets" item="$dataSet" index="$index">
-	<li>
-		<b><wo:str value="$dataSet.name"/>:</b>
-		<wo:str value="$querySummaryForDataSet"/>
-	</li>
+<wo:loop count="$dataSets.count" index="$index">
+    <div>
+        <b>Data set:</b> <wo:str value="$dataSetAtIndex.name"/><br/>
+        <div style="padding-left: 2em">
+        <wo:WOSwitchComponent WOComponentName="$previewComponentNameAtIndex" dataSet="$dataSetAtIndex" model="$modelAtIndex"/>
+        </div>
+    </div>
 </wo:loop>
 </ul>
-</wo:if><wo:else>
-<p>There are no queries used in this report.</p>
-</wo:else>
--->
+</wo:if>
 
 <h2>Description of Generated Report Document</h2>
 

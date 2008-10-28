@@ -1,74 +1,75 @@
 StringFieldSingle : WOTextField {
-	value = stringValueOfRepresentedValue;
-	size = 15;
+    value = stringValueOfRepresentedValue;
+    size = 15;
 }
 
 StringFieldMulti : WOTextField {
-	value = commaDelimitedStringValuesOfRepresentedValueArray;
-	size = 20;
-	default = "separate values with commas";
+    value = commaDelimitedStringValuesOfRepresentedValueArray;
+    size = 20;
+    default = "separate values with commas";
 }
 
 IntegerFieldSingle : WOTextField {
-	value = integerValueOfRepresentedValue;
-	size = 10;
-	numberformat = "#";
+    value = integerValueOfRepresentedValue;
+    size = 10;
+    numberformat = "#";
 }
 
 IntegerFieldMulti : WOTextField {
-	value = commaDelimitedIntegerValuesOfRepresentedValueArray;
-	size = 20;
-	default = "separate values with commas";
+    value = commaDelimitedIntegerValuesOfRepresentedValueArray;
+    size = 20;
+    default = "separate values with commas";
 }
 
 DoubleFieldSingle : WOTextField {
-	value = doubleValueOfRepresentedValue;
-	size = 10;
+    value = doubleValueOfRepresentedValue;
+    size = 10;
+    numberformat = "#.#";
 }
 
 DoubleFieldMulti : WOTextField {
-	value = commaDelimitedDoubleValuesOfRepresentedValueArray;
-	size = 20;
-	default = "separate values with commas";
+    value = commaDelimitedDoubleValuesOfRepresentedValueArray;
+    size = 20;
+    default = "separate values with commas";
 }
 
 BooleanFieldSingle : WOPopUpButton {
-	list = booleanValues;
-	item = booleanValueInList;
-	displayString = displayStringForBooleanValue;
-	selection = booleanValueOfRepresentedValue;
+    list = booleanValues;
+    item = booleanValueInList;
+    displayString = displayStringForBooleanValue;
+    selection = booleanValueOfRepresentedValue;
 }
 
 TimestampFieldSingle : WOTextField {
-	size = 20;
+    size = 20;
     formatter = session.timeFormatter;
-	value = timestampValueOfRepresentedValue;
-	id = calendarFieldId;
-	readonly = 1;
+    value = timestampValueOfRepresentedValue;
+    id = calendarFieldId;
+    readonly = 1;
 }
 
 TimestampSelector : WOImage {
-	filename = "icons/cal.gif";
-	framework = "Grader";
-	width    = 16;
-	height   = 16;
-	alt      = "Select date";
-	title    = "Select date";
-	id       = calendarButtonId;
+    filename = "icons/cal.gif";
+    framework = "Grader";
+    width    = 16;
+    height   = 16;
+    alt      = "Select date";
+    title    = "Select date";
+    id       = calendarButtonId;
 }
 
 EntityFieldSingle : WOPopUpButton {
-	list = entityValues;
-	item = entityValueInList;
-	displayString = displayStringForEntityValue;
-	selection = entityValueOfRepresentedValue;
+    list = entityValues;
+    item = entityValueInList;
+    displayString = displayStringForEntityValue;
+    selection = entityValueOfRepresentedValue;
 }
 
 EntityFieldMulti : WOBrowser {
-	list = entityValues;
-	item = entityValueInList;
-	displayString = displayStringForEntityValue;
-	selections = entityValuesOfRepresentedValueArray;
-	multiple = true;
-	style = "vertical-align: top";
+    list = entityValues;
+    item = entityValueInList;
+    displayString = displayStringForEntityValue;
+    selections = entityValuesOfRepresentedValueArray;
+    multiple = true;
+    style = "vertical-align: top";
 }

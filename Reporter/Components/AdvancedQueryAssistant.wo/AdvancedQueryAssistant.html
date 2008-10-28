@@ -9,70 +9,70 @@ objects that satisfy <b>all</b> of the following conditions:
 <wo:adiv id="criteriaContainer">
 <div class="shadow" style="width: 90%">
 <table style="display: table; width: 100%"><tbody>
-	<wo:loop list="$model.criteria" item="$criterion" index="$index">
-		<wo:tr index="$index">
-			<td style="white-space: nowrap; font-size: small; text-align: left; width: 100%">
-				<wo name="RowBusyIndicator"/>
-				<wo name="KeyPath"><wo name="KeyPathDisplayString"/></wo>
-				<wo name="KeyPathChangeUpdater"/>
-				<script>
-				Event.observe($('<wo:str value="~'keyPath_' + index + '_field'"/>'), 'keypress',
-				function(event) {
-					updateRowControls(event, <wo:str value="$index"/>);
-				});
-				</script>
-				<wo:aspan id="$idForCurrentCastTypeContainer">
-					<wo:if condition="$isCurrentKeyPathValid">
-						<wo:if condition="$doesCurrentKeyPathNeedCast">
-							as <wo name="KeyPathCastType"/>
-							<wo name="KeyPathCastTypeObserver"/>
-						</wo:if>
-						<wo:aspan id="$idForCurrentComparisonContainer">
-							<wo name="Comparison"/>
-							<wo name="ComparisonObserver"/>
-							<wo:aspan id="$idForCurrentComparandTypeContainer">
-								<wo:if condition="$doesCurrentComparisonHaveSecondOperand">
-									<wo:if condition="$doesCurrentCriterionUseComparand">
-										the <wo name="ComparandType"/>
-										<wo name="ComparandTypeObserver"/>
-									</wo:if><wo:else>
-										<wo:if condition="~isCurrentCriterionOperandBetween() || doesCurrentComparisonSupportMultipleValues()">
-											the values
-										</wo:if><wo:else>
-											the value
-										</wo:else>
-									</wo:else>
-									<wo:aspan id="$idForCurrentValueContainer">
-										<wo:if condition="$doesCurrentComparisonHaveSecondOperand">
-											<wo:if condition="$isCurrentCriterionOperandSimple">
-												<wo name="Value"/>
-											</wo:if>
-											<wo:if condition="$isCurrentCriterionOperandKeyPath">
-												<wo name="OtherKeyPath"/>
-											</wo:if>
-											<wo:if condition="$isCurrentCriterionOperandBetween">
-												<wo name="MinimumValue"/> and <wo name="MaximumValue"/>
-											</wo:if>
-										</wo:if>
-									</wo:aspan>
-								</wo:if>
-							</wo:aspan>
-						</wo:aspan>
-					</wo:if><wo:else>
-						<wo:if condition="~currentKeyPath().trim().length() == 0">
-							Enter the key path to filter on.
-						</wo:if><wo:else>
-							The key path is invalid.
-						</wo:else>
-					</wo:else>
-				</wo:aspan>
-			</td>
-			<td style="white-space: nowrap; text-align: right; vertical-align: top">
-				<wo name="RemoveCriterion"><wo:WOImage alt="Remove this condition" border="0" filename="images/criterion_remove.gif" width="20" height="21"/></wo>
-				<wo name="AddCriterion"><wo:WOImage alt="Add a condition below this one" border="0" filename="images/criterion_add.gif" width="20" height="21"/></wo>
-			</td>
-		</wo:tr>
-	</wo:loop>
+    <wo:loop list="$model.criteria" item="$criterion" index="$index">
+        <wo:tr index="$index">
+            <td style="white-space: nowrap; font-size: small; text-align: left; width: 100%">
+                <wo name="RowBusyIndicator"/>
+                <wo name="KeyPath"><wo name="KeyPathDisplayString"/></wo>
+                <wo name="KeyPathChangeUpdater"/>
+                <script>
+                Event.observe($('<wo:str value="~'keyPath_' + index + '_field'"/>'), 'keypress',
+                function(event) {
+                    updateRowControls(event, <wo:str value="$index"/>);
+                });
+                </script>
+                <wo:aspan id="$idForCurrentCastTypeContainer">
+                    <wo:if condition="$isCurrentKeyPathValid">
+                        <wo:if condition="$doesCurrentKeyPathNeedCast">
+                            as <wo name="KeyPathCastType"/>
+                            <wo name="KeyPathCastTypeObserver"/>
+                        </wo:if>
+                        <wo:aspan id="$idForCurrentComparisonContainer">
+                            <wo name="Comparison"/>
+                            <wo name="ComparisonObserver"/>
+                            <wo:aspan id="$idForCurrentComparandTypeContainer">
+                                <wo:if condition="$doesCurrentComparisonHaveSecondOperand">
+                                    <wo:if condition="$doesCurrentCriterionUseComparand">
+                                        the <wo name="ComparandType"/>
+                                        <wo name="ComparandTypeObserver"/>
+                                    </wo:if><wo:else>
+                                        <wo:if condition="~isCurrentCriterionOperandBetween() || doesCurrentComparisonSupportMultipleValues()">
+                                            the values
+                                        </wo:if><wo:else>
+                                            the value
+                                        </wo:else>
+                                    </wo:else>
+                                    <wo:aspan id="$idForCurrentValueContainer">
+                                        <wo:if condition="$doesCurrentComparisonHaveSecondOperand">
+                                            <wo:if condition="$isCurrentCriterionOperandSimple">
+                                                <wo name="Value"/>
+                                            </wo:if>
+                                            <wo:if condition="$isCurrentCriterionOperandKeyPath">
+                                                <wo name="OtherKeyPath"/>
+                                            </wo:if>
+                                            <wo:if condition="$isCurrentCriterionOperandBetween">
+                                                <wo name="MinimumValue"/> and <wo name="MaximumValue"/>
+                                            </wo:if>
+                                        </wo:if>
+                                    </wo:aspan>
+                                </wo:if>
+                            </wo:aspan>
+                        </wo:aspan>
+                    </wo:if><wo:else>
+                        <wo:if condition="~currentKeyPath().trim().length() == 0">
+                            Enter the key path to filter on.
+                        </wo:if><wo:else>
+                            The key path is invalid.
+                        </wo:else>
+                    </wo:else>
+                </wo:aspan>
+            </td>
+            <td style="white-space: nowrap; text-align: right; vertical-align: top">
+                <wo name="RemoveCriterion"><wo:WOImage alt="Remove this condition" border="0" filename="images/criterion_remove.gif" width="20" height="21"/></wo>
+                <wo name="AddCriterion"><wo:WOImage alt="Add a condition below this one" border="0" filename="images/criterion_add.gif" width="20" height="21"/></wo>
+            </td>
+        </wo:tr>
+    </wo:loop>
 </tbody></table>
 </div>
 <script>Behaviour.apply();</script>

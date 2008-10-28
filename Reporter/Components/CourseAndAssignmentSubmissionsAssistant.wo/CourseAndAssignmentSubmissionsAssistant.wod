@@ -1,35 +1,56 @@
 CourseOfferingTree: AjaxTree {
-	id = "courseOfferingTree";
-	class = "tree";
-	delegate = courseDelegate;
-	root = courseRoot;
-	item = currentNode;
-	showRoot = false;
+    id = "courseOfferingTree";
+    class = "tree";
+    delegate = courseDelegate;
+    root = courseRoot;
+    item = currentNode;
+    showRoot = false;
 }
 
-
 CourseNodeCheckbox: WOCheckBox {
-	id = "~'checkbox_' + currentNode.id";
-	checked = currentNode.checked;
-	onClick = "startBusy();";
+    id = "~'checkbox_' + currentNode.id";
+    checked = currentNode.checked;
+    onClick = "startBusy();";
 }
 
 CourseNodeCheckboxObserver: AjaxObserveField {
-	fullSubmit = true;
-	action = currentNode.toggle;
-	observeFieldID = "~'checkbox_' + currentNode.id";
-	// Since courseTreeContainer contains an update trigger, this optionally
-	// also refreshes the assignment list if the check state is changed.
-	updateContainerID = "courseTreeContainer";
+    fullSubmit = true;
+    action = currentNode.toggle;
+    observeFieldID = "~'checkbox_' + currentNode.id";
+    // Since courseTreeContainer contains an update trigger, this optionally
+    // also refreshes the assignment list if the check state is changed.
+    updateContainerID = "courseTreeContainer";
 }
 
 AssignmentRadio: WORadioButton {
-	name = "selectedAssignment";
-	value = assignment;
-	selection = model.assignment;
+    name = "selectedAssignment";
+    value = assignment;
+    selection = model.assignment;
 }
 
 AssignmentInfo: net.sf.webcat.core.PopUpInfo {
     title   = "Assignments";
     message = "The assignments listed here are those that belong to <b>all</b> of the courses chosen to the left.";
+}
+
+SubmissionForGradingInfo: net.sf.webcat.core.PopUpInfo {
+    title   = "Submission For Grading";
+    message = "The <b>submission for grading</b> for a student is the one that has been manually graded by the instructor or TA, if any. If none have yet been manually graded, the most recent submission by that student is used.";
+}
+
+IncludeAllSubmissions: WORadioButton {
+    name = "includeWhichSubmissions";
+    value = false;
+    selection = model.includeOnlySubmissionsForGrading;
+}
+
+IncludeGradedSubmissions: WORadioButton {
+    name = "includeWhichSubmissions";
+    value = true;
+    selection = model.includeOnlySubmissionsForGrading;
+}
+
+IncludeCourseStaff: WOCheckBox {
+    name = "includeCourseStaff";
+    checked = model.includeCourseStaff;
 }
