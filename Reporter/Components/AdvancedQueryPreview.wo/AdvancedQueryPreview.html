@@ -1,0 +1,15 @@
+Includes all <b><wo:str value="$dataSet.wcEntityName"/></b> objects that satisfy <b>all</b> of the following conditions:
+<ul>
+<wo:loop list="$model.criteria" item="$criterion">
+    <li>
+    <b><wo:str value="$criterion.keyPath"/></b>
+    <wo:str value="$criterion.comparison"/>
+    <wo:if condition="$isCriterionComparandLiteral">
+        the value
+    </wo:if><wo:else>
+        the key path
+    </wo:else>
+    <b><wo:str value="$criterion.value"/></b>
+    </li>
+</wo:loop>
+</ul>
