@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryModel.java,v 1.6 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: AdvancedQueryModel.java,v 1.7 2008/10/29 18:57:50 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import com.webobjects.foundation.NSMutableArray;
  * A query model implementation.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryModel.java,v 1.6 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: AdvancedQueryModel.java,v 1.7 2008/10/29 18:57:50 aallowat Exp $
  */
 public class AdvancedQueryModel
     extends AbstractQueryAssistantModel
@@ -63,7 +63,6 @@ public class AdvancedQueryModel
 
             if (termQual != null)
             {
-                System.out.println(termQual.toString());
                 terms.addObject(termQual);
             }
         }
