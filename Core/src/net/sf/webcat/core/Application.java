@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.36 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: Application.java,v 1.37 2008/10/29 21:05:06 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.36 2008/10/29 14:15:51 aallowat Exp $
+ * @version $Id: Application.java,v 1.37 2008/10/29 21:05:06 aallowat Exp $
  */
 public class Application
 	extends er.extensions.appserver.ERXApplication
@@ -1586,6 +1586,35 @@ public class Application
      * @param ec the editing context to release
      */
     public static void releasePeerEditingContext( EOEditingContext ec )
+    {
+        ec.dispose();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new read-only editing context, typically used to prevent
+     * outside code (such as report template expressions) from modifying the
+     * contents of the object store.
+     * 
+     * @return the new editing context
+     */
+    public static ReadOnlyEditingContext newReadOnlyEditingContext()
+    {
+        ReadOnlyEditingContext result = new ReadOnlyEditingContext();
+        result.setUndoManager( null );
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Used to get rid of a read-only editing context that will no longer be
+     * used.
+     * @param ec the editing context to release
+     */
+    public static void releaseReadOnlyEditingContext( 
+            ReadOnlyEditingContext ec )
     {
         ec.dispose();
     }
