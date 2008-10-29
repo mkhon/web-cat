@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.9 2008/10/29 21:04:39 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,6 +47,7 @@ import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.Enumeration;
 import net.sf.webcat.core.Application;
+import net.sf.webcat.core.ReadOnlyEditingContext;
 import net.sf.webcat.reporter.QualifierUtils;
 import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
 import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
@@ -68,7 +69,7 @@ import ognl.enhance.ExpressionAccessor;
  * response end-of-data marker is true.
  *
  * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: designerPreview.java,v 1.9 2008/10/29 21:04:39 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -103,7 +104,9 @@ public class designerPreview
         int timeout = Integer.parseInt(
             request().formValueForKey(PARAM_TIMEOUT).toString());
 
-        EOEditingContext context = Application.newPeerEditingContext();
+        ReadOnlyEditingContext context =
+            Application.newReadOnlyEditingContext();
+        context.setSuppressesLogAfterFirstAttempt(true);
 
         EOQualifier fastQualifier = null;
         EOQualifier slowQualifier = null;
@@ -348,8 +351,16 @@ public class designerPreview
 
             // Recycle the editing context after we've processed this batch to
             // flush out all of the current objects.
-            Application.releasePeerEditingContext(iterator.editingContext());
-            iterator.setEditingContext(Application.newPeerEditingContext());
+            ReadOnlyEditingContext oldEC =
+                (ReadOnlyEditingContext) iterator.editingContext();
+            boolean suppressLog = oldEC.isLoggingSuppressed();            
+            Application.releaseReadOnlyEditingContext(oldEC);
+            
+            ReadOnlyEditingContext newEC =
+                Application.newReadOnlyEditingContext();
+            newEC.setSuppressesLogAfterFirstAttempt(true);
+            newEC.setLoggingSuppressed(suppressLog);
+            iterator.setEditingContext(newEC);
         }
 
         return recordsRetrieved;

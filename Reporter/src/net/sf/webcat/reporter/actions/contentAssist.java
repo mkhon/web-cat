@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: contentAssist.java,v 1.8 2008/10/29 21:04:39 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,6 +37,7 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 import er.extensions.appserver.ERXDirectAction;
 import net.sf.webcat.core.Application;
+import net.sf.webcat.core.ReadOnlyEditingContext;
 import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.reporter.EntityUtils;
 import net.sf.webcat.reporter.queryassistants.KVCAttributeFinder;
@@ -48,7 +49,7 @@ import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
  * entities and key paths, used for content assistance and previewing purposes.
  *
  * @author Tony Allevato
- * @version $Id: contentAssist.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: contentAssist.java,v 1.8 2008/10/29 21:04:39 aallowat Exp $
  */
 public class contentAssist
     extends ERXDirectAction
@@ -148,7 +149,7 @@ public class contentAssist
     {
         WOResponse response = new WOResponse();
 
-        EOEditingContext ec = Application.newPeerEditingContext();
+        ReadOnlyEditingContext ec = Application.newReadOnlyEditingContext();
 
         for (String entityName : OBJECTS_TO_DESCRIBE)
         {
@@ -173,6 +174,8 @@ public class contentAssist
                     object.toString() + "\n");
             }
         }
+
+        Application.releaseReadOnlyEditingContext(ec);
 
         return response;
     }
