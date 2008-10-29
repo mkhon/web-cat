@@ -1,0 +1,56 @@
+
+{
+    EOModelVersion = 2.1;
+    adaptorName = JDBC;
+    connectionDictionary =
+    {
+        username = "";
+        driver = com.mysql.jdbc.Driver;
+        URL = "";
+        password = "";
+        plugin = MySQL;
+    };
+    entities =
+    (
+
+       {
+           className = SurveyReminderJob;
+           name = SurveyReminderJob;
+           parent = JobBase;
+       },
+
+       {
+           className = SurveyResponse;
+           name = SurveyResponse;
+       }
+    );
+    internalInfo =
+    {
+        _deletedEntityNamesInObjectStore =
+        (
+
+        );
+    };
+    userInfo =
+    {
+        _EntityModeler =
+        {
+            activeDatabaseConfigName = Default;
+            databaseConfigs =
+            {
+                Default =
+                {
+                    adaptorName = JDBC;
+                    connectionDictionary =
+                    {
+                        username = "";
+                        driver = com.mysql.jdbc.Driver;
+                        URL = "";
+                        password = "";
+                        plugin = MySQL;
+                    };
+                };
+            };
+        };
+    };
+}

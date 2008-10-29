@@ -1,0 +1,58 @@
+
+{
+    EOModelVersion = 2.1;
+    adaptorName = JDBC;
+    connectionDictionary =
+    {
+        username = "";
+        driver = com.mysql.jdbc.Driver;
+        URL = "";
+        password = "";
+        plugin = MySQL;
+    };
+    entities =
+    (
+
+       {
+           className = net.sf.webcat.jobqueue.HostDescriptor;
+           name = HostDescriptor;
+       },
+
+       {
+           className = net.sf.webcat.jobqueue.JobBase;
+           name = JobBase;
+       },
+
+       {
+           className = net.sf.webcat.jobqueue.QueueDescriptor;
+           name = QueueDescriptor;
+       },
+
+       {
+           className = net.sf.webcat.jobqueue.WorkerDescriptor;
+           name = WorkerDescriptor;
+       }
+    );
+    userInfo =
+    {
+        _EntityModeler =
+        {
+            activeDatabaseConfigName = Default;
+            databaseConfigs =
+            {
+                Default =
+                {
+                    adaptorName = JDBC;
+                    connectionDictionary =
+                    {
+                        username = "";
+                        driver = com.mysql.jdbc.Driver;
+                        URL = "";
+                        password = "";
+                        plugin = MySQL;
+                    };
+                };
+            };
+        };
+    };
+}
