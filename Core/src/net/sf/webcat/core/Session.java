@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.19 2008/06/11 01:27:11 stedwar2 Exp $
+ |  $Id: Session.java,v 1.20 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXMutableDictionary;
+import er.extensions.foundation.ERXMutableDictionary;
 import java.util.*;
 
 import net.sf.webcat.core.WOEC.*;
@@ -38,10 +38,10 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.19 2008/06/11 01:27:11 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.20 2008/10/29 14:15:51 aallowat Exp $
  */
 public class Session
-    extends er.extensions.ERXSession
+    extends er.extensions.appserver.ERXSession
 {
     //~ Constructors ..........................................................
 

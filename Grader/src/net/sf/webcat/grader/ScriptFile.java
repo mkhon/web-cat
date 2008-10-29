@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScriptFile.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: ScriptFile.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.grader;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.foundation.ERXValueUtilities;
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  *  Represents an uploaded grading script.
  *
  *  @author Stephen Edwards
- *  @version $Id: ScriptFile.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: ScriptFile.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
  */
 public class ScriptFile
     extends _ScriptFile
@@ -304,7 +305,7 @@ public class ScriptFile
                 }
                 setLastModified(
                     new NSTimestamp( configPlist.lastModified() ) );
-                if ( er.extensions.ERXValueUtilities.booleanValue(
+                if ( ERXValueUtilities.booleanValue(
                      configDescription().get( AUTO_PUBLISH_KEY ) ) )
                 {
                     setIsPublished( true );
@@ -331,7 +332,7 @@ public class ScriptFile
      */
     public int timeoutMultiplier()
     {
-        return er.extensions.ERXValueUtilities.intValueWithDefault(
+        return ERXValueUtilities.intValueWithDefault(
             configDescription().valueForKey( "timeoutMultiplier" ), 1 );
     }
 
@@ -343,7 +344,7 @@ public class ScriptFile
      */
     public int timeoutInternalPadding()
     {
-        return er.extensions.ERXValueUtilities.intValueWithDefault(
+        return ERXValueUtilities.intValueWithDefault(
             configDescription().valueForKey( "timeoutInternalPadding" ), 0 );
     }
 

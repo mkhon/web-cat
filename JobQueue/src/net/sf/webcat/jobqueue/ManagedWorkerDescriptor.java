@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedWorkerDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: ManagedWorkerDescriptor.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXConstant;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 import net.sf.webcat.core.IndependentEOManager;
@@ -33,7 +34,7 @@ import net.sf.webcat.core.IndependentEOManager;
  * A subclass of IndependentEOManager that holds one {@link WorkerDescriptor}.
  *
  * @author stedwar2
- * @version $Id: ManagedWorkerDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: ManagedWorkerDescriptor.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
  */
 public  class ManagedWorkerDescriptor
     extends IndependentEOManager
@@ -78,7 +79,7 @@ public  class ManagedWorkerDescriptor
     public void setIdOnHost(int value)
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt( value ),
+            ERXConstant.integerForInt( value ),
             WorkerDescriptor.ID_ON_HOST_KEY);
     }
 
@@ -108,7 +109,7 @@ public  class ManagedWorkerDescriptor
     public void setIsAllocated(boolean value)
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt(value ? 1 : 0),
+            ERXConstant.integerForInt(value ? 1 : 0),
             WorkerDescriptor.IS_ALLOCATED_KEY);
     }
 
@@ -138,7 +139,7 @@ public  class ManagedWorkerDescriptor
     public void setIsRunning(boolean value)
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt(value ? 1 : 0),
+            ERXConstant.integerForInt(value ? 1 : 0),
             WorkerDescriptor.IS_RUNNING_KEY);
     }
 

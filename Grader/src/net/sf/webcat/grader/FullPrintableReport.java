@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.8 2008/04/11 22:50:04 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.*;
+import er.extensions.foundation.ERXArrayUtilities;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Present a complete, printable view of all feedback about this submission.
  *
  * @author Stephen Edwards
- * @version $Id: FullPrintableReport.java,v 1.8 2008/04/11 22:50:04 stedwar2 Exp $
+ * @version $Id: FullPrintableReport.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
  */
 public class FullPrintableReport
     extends GraderComponent

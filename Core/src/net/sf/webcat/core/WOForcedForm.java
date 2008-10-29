@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOForcedForm.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: WOForcedForm.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,8 @@ package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
-import er.extensions.*;
+import er.extensions.components._private.ERXWOForm;
+
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -33,7 +34,7 @@ import org.apache.log4j.Logger;
  *  to fail in some circumstances; use with extreme caution.
  *
  *  @author  stedwar2
- *  @version $Id: WOForcedForm.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ *  @version $Id: WOForcedForm.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public class WOForcedForm
     extends ERXWOForm

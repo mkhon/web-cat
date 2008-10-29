@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MutableArray.java,v 1.4 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: MutableArray.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,10 +40,10 @@ import org.apache.log4j.Logger;
  *  usage details.
  *
  *  @author  Stephen Edwards
- *  @version $Id: MutableArray.java,v 1.4 2008/04/02 00:50:26 stedwar2 Exp $
+ *  @version $Id: MutableArray.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  */
 public class MutableArray
-    extends er.extensions.ERXMutableArray
+    extends er.extensions.foundation.ERXMutableArray
     implements MutableContainer
 {
     //~ Constructors ..........................................................
@@ -294,7 +294,7 @@ public class MutableArray
      * compatible with the method in the base class, but the actual object
      * belongs to this subclass)
      */
-    public static er.extensions.ERXMutableArray fromPropertyList(
+    public static er.extensions.foundation.ERXMutableArray fromPropertyList(
         String plist )
     {
         NSArray a = (NSArray)NSPropertyListSerialization.

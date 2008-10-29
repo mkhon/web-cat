@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.11 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.grader;
 import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
+import er.extensions.foundation.ERXArrayUtilities;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.webcat.core.*;
@@ -35,7 +36,7 @@ import org.apache.log4j.Logger;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author Stephen Edwards
- * @version $Id: StudentsForAssignmentPage.java,v 1.11 2008/10/28 19:20:16 aallowat Exp $
+ * @version $Id: StudentsForAssignmentPage.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -85,10 +86,10 @@ public class StudentsForAssignmentPage
         }
         NSMutableArray students =
             coreSelections().courseOffering().students().mutableClone();
-        er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             students,
             coreSelections().courseOffering().instructors() );
-        er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             students,
             coreSelections().courseOffering().graders() );
         NSMutableArray submissions = new NSMutableArray();

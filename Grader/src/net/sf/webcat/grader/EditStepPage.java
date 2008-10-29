@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStepPage.java,v 1.5 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: EditStepPage.java,v 1.6 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,6 @@ package net.sf.webcat.grader;
 
 import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
-import er.extensions.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.zip.ZipFile;
@@ -36,7 +35,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditStepPage.java,v 1.5 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: EditStepPage.java,v 1.6 2008/10/29 14:15:21 aallowat Exp $
  */
 public class EditStepPage
     extends GraderComponent

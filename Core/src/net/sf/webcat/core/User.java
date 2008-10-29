@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.17 2008/10/28 19:19:37 aallowat Exp $
+ |  $Id: User.java,v 1.18 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,7 +26,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 
-import er.extensions.*;
+import er.extensions.foundation.ERXArrayUtilities;
 
 import java.util.*;
 import org.apache.log4j.*;
@@ -49,7 +49,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.17 2008/10/28 19:19:37 aallowat Exp $
+ * @version $Id: User.java,v 1.18 2008/10/29 14:15:51 aallowat Exp $
  */
 public class User
     extends _User

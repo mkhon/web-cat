@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: webapi.java,v 1.4 2008/10/27 01:48:55 stedwar2 Exp $
+ |  $Id: webapi.java,v 1.5 2008/10/29 14:12:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.webapi;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOSession;
-import er.extensions.ERXDirectAction;
+import er.extensions.appserver.ERXDirectAction;
 import org.apache.log4j.Logger;
 
 import net.sf.webcat.core.AuthenticationDomain;
@@ -37,7 +37,7 @@ import net.sf.webcat.core.User;
  * queries from external tools.
  *
  * @author Stephen Edwards
- * @version $Id: webapi.java,v 1.4 2008/10/27 01:48:55 stedwar2 Exp $
+ * @version $Id: webapi.java,v 1.5 2008/10/29 14:12:19 aallowat Exp $
  */
 public class webapi
     extends ERXDirectAction

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.14 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: Grader.java,v 1.15 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,7 +26,7 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import net.sf.webcat.dbupdate.UpdateEngine;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import java.util.Enumeration;
 import java.io.*;
 import java.util.zip.*;
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.14 2008/10/28 19:20:16 aallowat Exp $
+*  @version $Id: Grader.java,v 1.15 2008/10/29 14:15:21 aallowat Exp $
 */
 public class Grader
    extends Subsystem

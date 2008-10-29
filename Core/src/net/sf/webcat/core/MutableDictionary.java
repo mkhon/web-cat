@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MutableDictionary.java,v 1.3 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: MutableDictionary.java,v 1.4 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,7 @@
 package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
-import er.extensions.ERXFileUtilities;
+import er.extensions.foundation.ERXFileUtilities;
 import java.io.*;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
@@ -51,10 +51,10 @@ import org.apache.log4j.Logger;
  *  {@link #setHasChanged(boolean)} method (see below).
  *
  *  @author  Stephen Edwards
- *  @version $Id: MutableDictionary.java,v 1.3 2008/04/02 00:50:27 stedwar2 Exp $
+ *  @version $Id: MutableDictionary.java,v 1.4 2008/10/29 14:15:51 aallowat Exp $
  */
 public class MutableDictionary
-    extends er.extensions.ERXMutableDictionary
+    extends er.extensions.foundation.ERXMutableDictionary
     implements MutableContainer
 {
     //~ Constructors ..........................................................
@@ -212,7 +212,7 @@ public class MutableDictionary
      * compatible with the method in the base class, but the actual object
      * belongs to this subclass)
      */
-    public static er.extensions.ERXMutableDictionary fromPropertyList(
+    public static er.extensions.foundation.ERXMutableDictionary fromPropertyList(
         String plist )
     {
         NSDictionary dict = (NSDictionary)NSPropertyListSerialization.

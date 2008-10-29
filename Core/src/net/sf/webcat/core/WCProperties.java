@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCProperties.java,v 1.5 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: WCProperties.java,v 1.6 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,8 +22,8 @@
 package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
-import er.extensions.ERXProperties;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXProperties;
+import er.extensions.foundation.ERXValueUtilities;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
@@ -51,7 +51,7 @@ import org.apache.log4j.Logger;
  * support is based on code written by Chris Mair.
  *
  * @author Stephen Edwards
- * @version $Id: WCProperties.java,v 1.5 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: WCProperties.java,v 1.6 2008/10/29 14:15:51 aallowat Exp $
  */
 public class WCProperties
     extends java.util.Properties

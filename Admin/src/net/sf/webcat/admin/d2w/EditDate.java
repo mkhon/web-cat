@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditDate.java,v 1.4 2008/04/02 00:56:34 stedwar2 Exp $
+ |  $Id: EditDate.java,v 1.5 2008/10/29 14:16:32 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,15 +27,16 @@ import com.webobjects.foundation.*;
 
 //-------------------------------------------------------------------------
 /**
- * A customized version of {@link er.directtoweb.ERDEditDateJavascript}
+ * A customized version of
+ * {@link er.directtoweb.components.ERDEditDateJavascript}
  * that uses the user's specified date formatting and selected time zone,
  * and also uses Web-CAT's preferred date picker widget.
  *
  *  @author edwards
- *  @version $Id: EditDate.java,v 1.4 2008/04/02 00:56:34 stedwar2 Exp $
+ *  @version $Id: EditDate.java,v 1.5 2008/10/29 14:16:32 aallowat Exp $
  */
 public class EditDate
-    extends er.directtoweb.ERDCustomEditComponent
+    extends er.directtoweb.components.ERDCustomEditComponent
 {
     //~ Constructors ..........................................................
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.9 2008/10/24 20:04:35 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.10 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.grader;
 import com.webobjects.foundation.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
-import er.extensions.ERXArrayUtilities;
+import er.extensions.foundation.ERXArrayUtilities;
 import java.io.File;
 import java.util.*;
 import net.sf.webcat.core.*;
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * An assignment that can be given in one or more classes.
  *
  * @author Stephen Edwards
- * @version $Id: Assignment.java,v 1.9 2008/10/24 20:04:35 stedwar2 Exp $
+ * @version $Id: Assignment.java,v 1.10 2008/10/29 14:15:21 aallowat Exp $
  */
 public class Assignment
     extends _Assignment
@@ -152,7 +152,7 @@ public class Assignment
 
     // ----------------------------------------------------------
     /* (non-Javadoc)
-     * @see er.extensions.ERXGenericRecord#didUpdate()
+     * @see er.extensions.eof.ERXGenericRecord#didUpdate()
      */
     public void didUpdate()
     {

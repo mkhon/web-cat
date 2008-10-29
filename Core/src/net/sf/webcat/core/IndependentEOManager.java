@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.6 2008/04/06 21:30:51 stedwar2 Exp $
+ |  $Id: IndependentEOManager.java,v 1.7 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * resolve them automatically.
  *
  * @author stedwar2
- * @version $Id: IndependentEOManager.java,v 1.6 2008/04/06 21:30:51 stedwar2 Exp $
+ * @version $Id: IndependentEOManager.java,v 1.7 2008/10/29 14:15:51 aallowat Exp $
  */
 public class IndependentEOManager
     implements EOManager
@@ -103,7 +103,7 @@ public class IndependentEOManager
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 

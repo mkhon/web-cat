@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: GeneratedReportPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import java.io.File;
 import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.grader.FinalReportPage;
@@ -42,7 +42,7 @@ import org.eclipse.birt.core.exception.BirtException;
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent

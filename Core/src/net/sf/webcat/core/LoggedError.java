@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LoggedError.java,v 1.4 2008/10/24 20:45:17 aallowat Exp $
+ |  $Id: LoggedError.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import com.webobjects.eocontrol.*;
  * the error, and the number of times this specific error has occurred.
  *
  * @author
- * @version $Id: LoggedError.java,v 1.4 2008/10/24 20:45:17 aallowat Exp $
+ * @version $Id: LoggedError.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  */
 public class LoggedError
     extends _LoggedError
@@ -89,7 +89,7 @@ public class LoggedError
         }
         else
         {
-            result = (LoggedError)er.extensions.ERXEOControlUtilities
+            result = (LoggedError)er.extensions.eof.ERXEOControlUtilities
                 .createAndInsertObject( context, ENTITY_NAME );
             result.setLine( top.getLineNumber() );
             result.setExceptionName( throwable.getClass().getName() );

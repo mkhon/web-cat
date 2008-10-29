@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @version version suppressed to control auto-generation
  */
 public abstract class _ReportQuery
-    extends er.extensions.ERXGenericRecord
+    extends er.extensions.eof.ERXGenericRecord
     implements net.sf.webcat.core.MutableContainer.MutableContainerOwner
 {
     //~ Constructors ..........................................................
@@ -132,7 +132,7 @@ public abstract class _ReportQuery
     public static ReportQuery forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -194,7 +194,7 @@ public abstract class _ReportQuery
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -238,7 +238,7 @@ public abstract class _ReportQuery
      */
     public net.sf.webcat.core.MutableDictionary queryInfo()
     {
-    	NSData dbValue =
+        NSData dbValue =
             (NSData)storedValueForKey( "queryInfo" );
         if ( queryInfoRawCache != dbValue )
         {
@@ -337,8 +337,8 @@ public abstract class _ReportQuery
      */
     public boolean updateMutableFields()
     {
-        Number result =
-            (Number)storedValueForKey( "updateMutableFields" );
+        Integer result =
+            (Integer)storedValueForKey( "updateMutableFields" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -359,9 +359,9 @@ public abstract class _ReportQuery
             log.debug( "setUpdateMutableFields("
                 + value + "): was " + updateMutableFields() );
         }
-        Number actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setUpdateMutableFieldsRaw( actual );
+        Integer actual =
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
+            setUpdateMutableFieldsRaw( actual );
     }
 
 
@@ -370,9 +370,9 @@ public abstract class _ReportQuery
      * Retrieve this object's <code>updateMutableFields</code> value.
      * @return the value of the attribute
      */
-    public Number updateMutableFieldsRaw()
+    public Integer updateMutableFieldsRaw()
     {
-        return (Number)storedValueForKey( "updateMutableFields" );
+        return (Integer)storedValueForKey( "updateMutableFields" );
     }
 
 
@@ -383,7 +383,7 @@ public abstract class _ReportQuery
      *
      * @param value The new value for this property
      */
-    public void setUpdateMutableFieldsRaw( Number value )
+    public void setUpdateMutableFieldsRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -767,7 +767,6 @@ public abstract class _ReportQuery
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForUserAndEntitySavedQueries(ec"
-            
                 + ", " + userBinding
                 + ", " + wcEntityNameBinding
                 + "): " + result );

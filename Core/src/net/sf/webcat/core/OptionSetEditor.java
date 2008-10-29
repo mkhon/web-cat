@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionSetEditor.java,v 1.5 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: OptionSetEditor.java,v 1.6 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,7 @@ package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  current page will be reloaded on basic form submissions.
  *
  *  @author  stedwar2
- *  @version $Id: OptionSetEditor.java,v 1.5 2008/04/02 00:50:26 stedwar2 Exp $
+ *  @version $Id: OptionSetEditor.java,v 1.6 2008/10/29 14:15:51 aallowat Exp $
  */
 public class OptionSetEditor
     extends WCComponent

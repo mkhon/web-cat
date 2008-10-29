@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Log4JConfigurationPage.java,v 1.2 2008/04/02 00:56:33 stedwar2 Exp $
+ |  $Id: Log4JConfigurationPage.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,10 +33,10 @@ import org.apache.log4j.Logger;
  * A component for managing log4J settings.
  *
  *  @author edwards
- *  @version $Id: Log4JConfigurationPage.java,v 1.2 2008/04/02 00:56:33 stedwar2 Exp $
+ *  @version $Id: Log4JConfigurationPage.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  */
 public class Log4JConfigurationPage
-    extends er.extensions.ERXLog4JConfiguration
+    extends er.extensions.logging.ERXLog4JConfiguration
 {
     //~ Constructors ..........................................................
 

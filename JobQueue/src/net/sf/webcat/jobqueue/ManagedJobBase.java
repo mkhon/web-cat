@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedJobBase.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: ManagedJobBase.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXConstant;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 import net.sf.webcat.core.IndependentEOManager;
@@ -33,7 +34,7 @@ import net.sf.webcat.core.IndependentEOManager;
  * A subclass of IndependentEOManager that holds one {@link JobBase}.
  *
  * @author stedwar2
- * @version $Id: ManagedJobBase.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: ManagedJobBase.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
  */
 public abstract class ManagedJobBase
     extends IndependentEOManager
@@ -102,7 +103,7 @@ public abstract class ManagedJobBase
     public void setIsCancelled( boolean value )
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt(value ? 1 : 0),
+            ERXConstant.integerForInt(value ? 1 : 0),
             JobBase.IS_CANCELLED_KEY);
     }
 
@@ -132,7 +133,7 @@ public abstract class ManagedJobBase
     public void setIsPaused( boolean value )
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt(value ? 1 : 0),
+            ERXConstant.integerForInt(value ? 1 : 0),
             JobBase.IS_PAUSED_KEY);
     }
 
@@ -162,7 +163,7 @@ public abstract class ManagedJobBase
     public void setPriority(int value)
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt(value),
+            ERXConstant.integerForInt(value),
             JobBase.PRIORITY_KEY);
     }
 

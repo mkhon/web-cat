@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage5.java,v 1.5 2008/04/21 02:44:31 stedwar2 Exp $
+ |  $Id: InstallPage5.java,v 1.6 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,7 @@ import com.sun.org.apache.xerces.internal.util.URI.MalformedURIException;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage5.java,v 1.5 2008/04/21 02:44:31 stedwar2 Exp $
+ *  @version $Id: InstallPage5.java,v 1.6 2008/10/29 14:15:51 aallowat Exp $
  */
 public class InstallPage5
     extends InstallPage

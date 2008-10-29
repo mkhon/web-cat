@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.7 2008/04/02 00:56:32 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.8 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,8 +24,8 @@ package net.sf.webcat.admin;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXArrayUtilities;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXArrayUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.7 2008/04/02 00:56:32 stedwar2 Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.8 2008/10/29 14:16:31 aallowat Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent

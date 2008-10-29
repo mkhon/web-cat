@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.9 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,7 +27,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 
-import er.extensions.*;
+import er.extensions.foundation.*;
 
 import java.io.File;
 import java.util.*;
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author Stephen Edwards
- * @version $Id: AuthenticationDomain.java,v 1.9 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: AuthenticationDomain.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain

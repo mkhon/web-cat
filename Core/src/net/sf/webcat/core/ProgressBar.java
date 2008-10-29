@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ProgressBar.java,v 1.2 2008/04/02 00:50:29 stedwar2 Exp $
+ |  $Id: ProgressBar.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,14 +23,12 @@ package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
 
-import er.extensions.*;
-
 //-------------------------------------------------------------------------
 /**
  * A basic, CSS-style-controlled progress bar component.
  *
  * @author Stephen Edwards
- * @version $Id: ProgressBar.java,v 1.2 2008/04/02 00:50:29 stedwar2 Exp $
+ * @version $Id: ProgressBar.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public class ProgressBar
     extends WOComponent

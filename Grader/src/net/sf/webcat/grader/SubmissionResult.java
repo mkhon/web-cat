@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,6 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import com.webobjects.foundation.NSValidation.*;
-import er.extensions.*;
 import java.io.File;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
@@ -35,7 +34,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: SubmissionResult.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult

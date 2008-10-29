@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @version version suppressed to control auto-generation
  */
 public abstract class _ReportDataSet
-    extends er.extensions.ERXGenericRecord
+    extends er.extensions.eof.ERXGenericRecord
     implements net.sf.webcat.core.MutableContainer.MutableContainerOwner
 {
     //~ Constructors ..........................................................
@@ -132,7 +132,7 @@ public abstract class _ReportDataSet
     public static ReportDataSet forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -194,7 +194,7 @@ public abstract class _ReportDataSet
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -209,7 +209,7 @@ public abstract class _ReportDataSet
      */
     public net.sf.webcat.core.MutableArray constraints()
     {
-    	NSData dbValue =
+        NSData dbValue =
             (NSData)storedValueForKey( "constraints" );
         if ( constraintsRawCache != dbValue )
         {
@@ -366,8 +366,8 @@ public abstract class _ReportDataSet
      */
     public int referenceCount()
     {
-        Number result =
-            (Number)storedValueForKey( "referenceCount" );
+        Integer result =
+            (Integer)storedValueForKey( "referenceCount" );
         return ( result == null )
             ? 0
             : result.intValue();
@@ -388,9 +388,9 @@ public abstract class _ReportDataSet
             log.debug( "setReferenceCount("
                 + value + "): was " + referenceCount() );
         }
-        Number actual =
-            er.extensions.ERXConstant.integerForInt( value );
-        setReferenceCountRaw( actual );
+        Integer actual =
+            er.extensions.eof.ERXConstant.integerForInt( value );
+            setReferenceCountRaw( actual );
     }
 
 
@@ -399,9 +399,9 @@ public abstract class _ReportDataSet
      * Retrieve this object's <code>referenceCount</code> value.
      * @return the value of the attribute
      */
-    public Number referenceCountRaw()
+    public Integer referenceCountRaw()
     {
-        return (Number)storedValueForKey( "referenceCount" );
+        return (Integer)storedValueForKey( "referenceCount" );
     }
 
 
@@ -412,7 +412,7 @@ public abstract class _ReportDataSet
      *
      * @param value The new value for this property
      */
-    public void setReferenceCountRaw( Number value )
+    public void setReferenceCountRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -430,8 +430,8 @@ public abstract class _ReportDataSet
      */
     public boolean updateMutableFields()
     {
-        Number result =
-            (Number)storedValueForKey( "updateMutableFields" );
+        Integer result =
+            (Integer)storedValueForKey( "updateMutableFields" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -452,9 +452,9 @@ public abstract class _ReportDataSet
             log.debug( "setUpdateMutableFields("
                 + value + "): was " + updateMutableFields() );
         }
-        Number actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setUpdateMutableFieldsRaw( actual );
+        Integer actual =
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
+            setUpdateMutableFieldsRaw( actual );
     }
 
 
@@ -463,9 +463,9 @@ public abstract class _ReportDataSet
      * Retrieve this object's <code>updateMutableFields</code> value.
      * @return the value of the attribute
      */
-    public Number updateMutableFieldsRaw()
+    public Integer updateMutableFieldsRaw()
     {
-        return (Number)storedValueForKey( "updateMutableFields" );
+        return (Integer)storedValueForKey( "updateMutableFields" );
     }
 
 
@@ -476,7 +476,7 @@ public abstract class _ReportDataSet
      *
      * @param value The new value for this property
      */
-    public void setUpdateMutableFieldsRaw( Number value )
+    public void setUpdateMutableFieldsRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryModel.java,v 1.5 2008/10/28 15:52:30 aallowat Exp $
+ |  $Id: AdvancedQueryModel.java,v 1.6 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,29 +21,17 @@
 
 package net.sf.webcat.reporter.queryassistants;
 
-import net.sf.webcat.core.Application;
-import com.webobjects.eoaccess.EOAdaptor;
-import com.webobjects.eoaccess.EOEntity;
-import com.webobjects.eoaccess.EOEntityClassDescription;
-import com.webobjects.eoaccess.EOModel;
-import com.webobjects.eoaccess.EOSQLExpression;
-import com.webobjects.eoaccess.EOSQLExpressionFactory;
 import com.webobjects.eocontrol.EOAndQualifier;
-import com.webobjects.eocontrol.EOClassDescription;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
-import com.webobjects.jdbcadaptor.JDBCExpression;
-import er.extensions.ERXSQLHelper;
 
 //-------------------------------------------------------------------------
 /**
  * A query model implementation.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryModel.java,v 1.5 2008/10/28 15:52:30 aallowat Exp $
+ * @version $Id: AdvancedQueryModel.java,v 1.6 2008/10/29 14:14:59 aallowat Exp $
  */
 public class AdvancedQueryModel
     extends AbstractQueryAssistantModel

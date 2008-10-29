@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PopAuthenticator.java,v 1.4 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: PopAuthenticator.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,8 +25,6 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
-import er.extensions.*;
-
 import java.io.*;
 import java.net.*;
 
@@ -45,7 +43,7 @@ import org.apache.log4j.Logger;
  *  POP server to use for authentication.
  *
  *  @author Stephen Edwards
- *  @version $Id: PopAuthenticator.java,v 1.4 2008/04/02 00:50:27 stedwar2 Exp $
+ *  @version $Id: PopAuthenticator.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  */
 public class PopAuthenticator
     implements UserAuthenticator

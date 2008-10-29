@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LongResponseTaskWithProgress.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: LongResponseTaskWithProgress.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,7 @@
 
 package net.sf.webcat.core;
 
-import er.extensions.ERXLongResponseTask;
+import er.extensions.concurrency.ERXLongResponseTask;
 
 //-------------------------------------------------------------------------
 /**
@@ -29,7 +29,7 @@ import er.extensions.ERXLongResponseTask;
  * displaying a progress bar.
  *
  * @author Stephen Edwards
- * @version $Id: LongResponseTaskWithProgress.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: LongResponseTaskWithProgress.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public abstract class LongResponseTaskWithProgress
     extends ERXLongResponseTask.DefaultImplementation

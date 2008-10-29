@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSystemStatusRows.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: GraderSystemStatusRows.java,v 1.5 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.grader;
 import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import net.sf.webcat.core.*;
 import org.apache.log4j.*;
 
@@ -33,7 +33,7 @@ import org.apache.log4j.*;
  *  Generates the grader subsystem's rows in the system status block.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSystemStatusRows.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: GraderSystemStatusRows.java,v 1.5 2008/10/29 14:15:21 aallowat Exp $
  */
 public class GraderSystemStatusRows
     extends WOComponent

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,7 +26,7 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import com.Ostermiller.util.ExcelCSVParser;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import java.io.*;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.11 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: CourseRosterPage.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent

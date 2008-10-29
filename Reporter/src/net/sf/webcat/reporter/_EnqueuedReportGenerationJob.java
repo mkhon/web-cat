@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @version version suppressed to control auto-generation
  */
 public abstract class _EnqueuedReportGenerationJob
-    extends er.extensions.ERXGenericRecord
+    extends er.extensions.eof.ERXGenericRecord
 {
     //~ Constructors ..........................................................
 
@@ -128,7 +128,7 @@ public abstract class _EnqueuedReportGenerationJob
     public static EnqueuedReportGenerationJob forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -143,6 +143,7 @@ public abstract class _EnqueuedReportGenerationJob
     // To-many relationships ---
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
     // Fetch specifications ---
+    public static final String USER_FSPEC = "user";
     public static final String ENTITY_NAME = "EnqueuedReportGenerationJob";
 
 
@@ -188,7 +189,7 @@ public abstract class _EnqueuedReportGenerationJob
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -547,6 +548,45 @@ public abstract class _EnqueuedReportGenerationJob
         while ( objects.hasMoreElements() )
             deleteDataSetQueriesRelationship(
                 (net.sf.webcat.reporter.ReportDataSetQuery)objects.nextElement() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>User</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<EnqueuedReportGenerationJob> objectsForUser(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "user", "EnqueuedReportGenerationJob" );
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if ( userBinding != null )
+        {
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForUser(ec"
+                + ", " + userBinding
+                + "): " + result );
+        }
+        return result;
     }
 
 

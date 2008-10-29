@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCListPageTemplate.java,v 1.4 2008/04/02 00:56:33 stedwar2 Exp $
+ |  $Id: WCListPageTemplate.java,v 1.5 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,10 +34,10 @@ import org.apache.log4j.Logger;
  * The template for D2W list pages in Web-CAT.
  *
  * @author edwards
- * @version $Id: WCListPageTemplate.java,v 1.4 2008/04/02 00:56:33 stedwar2 Exp $
+ * @version $Id: WCListPageTemplate.java,v 1.5 2008/10/29 14:16:31 aallowat Exp $
  */
 public class WCListPageTemplate
-    extends er.directtoweb.ERD2WListPage
+    extends er.directtoweb.pages.ERD2WListPage
 {
     //~ Constructors ..........................................................
 

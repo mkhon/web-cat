@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: XmlResponsePage.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
+ |  $Id: XmlResponsePage.java,v 1.3 2008/10/29 14:12:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,14 +28,14 @@ import com.webobjects.foundation.NSTimestamp;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Session;
 
-import er.extensions.ERXComponent;
+import er.extensions.components.ERXComponent;
 
 //-------------------------------------------------------------------------
 /**
  * A common base class for all of the XML response pages in this subsystem.
  *
  * @author Stephen Edwards
- * @version $Id: XmlResponsePage.java,v 1.2 2008/10/27 01:48:55 stedwar2 Exp $
+ * @version $Id: XmlResponsePage.java,v 1.3 2008/10/29 14:12:19 aallowat Exp $
  */
 public class XmlResponsePage
     extends ERXComponent

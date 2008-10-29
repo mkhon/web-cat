@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LockErrorScreamerEditingContext.java,v 1.2 2008/04/02 00:50:28 stedwar2 Exp $
+ |  $Id: LockErrorScreamerEditingContext.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,10 +36,10 @@ import org.apache.log4j.Logger;
  *  enhanced by Anthony Ingraldi (a.m.ingraldi at larc.nasa.gov).
  *
  * @author Jonathan 'Wolf' Rentzsch
- * @version $Id: LockErrorScreamerEditingContext.java,v 1.2 2008/04/02 00:50:28 stedwar2 Exp $
+ * @version $Id: LockErrorScreamerEditingContext.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public class LockErrorScreamerEditingContext
-    extends er.extensions.ERXEC
+    extends er.extensions.eof.ERXEC
 {
     //~ Constructors ..........................................................
 

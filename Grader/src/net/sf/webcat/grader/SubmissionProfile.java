@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.grader;
 
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.foundation.ERXArrayUtilities;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.7 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: SubmissionProfile.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -189,7 +190,7 @@ public class SubmissionProfile
     {
         NSMutableArray results =
             objectsForCourse( context, course ).mutableClone();
-        er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             results,
             objectsForUser( context, user ) );
         if ( mine != null && !results.containsObject( mine ) )

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DisplayLineCount.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ |  $Id: DisplayLineCount.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,15 +28,16 @@ import java.util.regex.*;
 
 //-------------------------------------------------------------------------
 /**
- * A customized version of {@link er.directtoweb.ERD2WDisplayString}
+ * A customized version of
+ * {@link er.directtoweb.components.strings.ERD2WDisplayString}
  * for displaying long strings.  It simply shows a count of the number
  * of lines and characters.
  *
  *  @author edwards
- *  @version $Id: DisplayLineCount.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ *  @version $Id: DisplayLineCount.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  */
 public class DisplayLineCount
-    extends er.directtoweb.ERD2WDisplayString
+    extends er.directtoweb.components.strings.ERD2WDisplayString
 {
     //~ Constructors ..........................................................
 

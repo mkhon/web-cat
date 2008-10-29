@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionCountChart.java,v 1.2 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: SubmissionCountChart.java,v 1.3 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,7 @@ package net.sf.webcat.grader.graphs;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import net.sf.webcat.grader.*;
 import org.jfree.chart.*;
 import org.jfree.chart.axis.*;
@@ -35,7 +35,7 @@ import org.jfree.data.xy.IntervalXYDataset;
  * A histogram component, implemented using JFreeChart.
  *
  * @author  Stephen Edwards
- * @version $Id: SubmissionCountChart.java,v 1.2 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: SubmissionCountChart.java,v 1.3 2008/10/29 14:15:21 aallowat Exp $
  */
 public class SubmissionCountChart
     extends HistogramChart

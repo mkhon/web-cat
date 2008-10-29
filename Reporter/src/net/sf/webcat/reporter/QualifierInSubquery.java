@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QualifierInSubquery.java,v 1.1 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: QualifierInSubquery.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,7 @@
 package net.sf.webcat.reporter;
 
 import com.webobjects.eocontrol.EOQualifier;
-import er.extensions.ERXQualifierInSubquery;
+import er.extensions.eof.qualifiers.ERXQualifierInSubquery;
 
 //-------------------------------------------------------------------------
 /**
@@ -31,7 +31,7 @@ import er.extensions.ERXQualifierInSubquery;
  * an AdvancedQueryCriterion.
  * 
  * @author Tony Allevato
- * @version $Id: QualifierInSubquery.java,v 1.1 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: QualifierInSubquery.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  */
 public class QualifierInSubquery extends ERXQualifierInSubquery
 {

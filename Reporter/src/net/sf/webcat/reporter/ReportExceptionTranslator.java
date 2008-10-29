@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportExceptionTranslator.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReportExceptionTranslator.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,7 @@ import net.sf.webcat.core.MutableArray;
 import net.sf.webcat.core.MutableDictionary;
 import org.eclipse.birt.core.exception.BirtException;
 import com.webobjects.foundation.NSArray;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 
 // ------------------------------------------------------------------------
 /**
@@ -34,7 +34,7 @@ import er.extensions.ERXConstant;
  * "message" keys.
  *
  * @author Tony Allevato
- * @version $Id: ReportExceptionTranslator.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReportExceptionTranslator.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  */
 public class ReportExceptionTranslator
 {

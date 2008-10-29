@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.9 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,10 +37,10 @@ import org.apache.log4j.Logger;
  *  frameworksBaseURL() setting.
  *
  *  @author  stedwar2
- *  @version $Id: WCResourceManager.java,v 1.9 2008/04/02 00:50:26 stedwar2 Exp $
+ *  @version $Id: WCResourceManager.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
  */
 public class WCResourceManager
-    extends er.extensions.ERXResourceManager
+    extends er.extensions.appserver.ERXResourceManager
 {
     //~ Constructors ..........................................................
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemFragmentCollector.java,v 1.2 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: SubsystemFragmentCollector.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *  in pages/components defined elsewhere in the application (like in Core).
  *
  *  @author  Stephen Edwards
- *  @version $Id: SubsystemFragmentCollector.java,v 1.2 2008/04/02 00:50:26 stedwar2 Exp $
+ *  @version $Id: SubsystemFragmentCollector.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public class SubsystemFragmentCollector
     extends WOComponent
@@ -76,7 +76,10 @@ public class SubsystemFragmentCollector
             bindingDefinitions = wodBuffer.toString();
             log.debug( "bindingDefinitions =\n" + bindingDefinitions );
         }
-        return templateWithHTMLString( htmlTemplate, bindingDefinitions, null );
+        return templateWithHTMLString( null, null,
+                htmlTemplate, bindingDefinitions, null,
+                Application.application().associationFactoryRegistry(),
+                Application.application().namespaceProvider());
     }
 
 

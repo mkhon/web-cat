@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: DownloadScoresPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,6 +25,7 @@ import com.Ostermiller.util.ExcelCSVPrinter;
 import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
+import er.extensions.foundation.ERXArrayUtilities;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import net.sf.webcat.core.*;
@@ -36,7 +37,7 @@ import org.apache.log4j.Logger;
  * as a CSV file.
  *
  * @author Stephen Edwards
- * @version $Id: DownloadScoresPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
+ * @version $Id: DownloadScoresPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  */
 public class DownloadScoresPage
     extends GraderAssignmentComponent
@@ -240,12 +241,10 @@ public class DownloadScoresPage
         }
         else
         {
-            er.extensions.ERXArrayUtilities
-                .addObjectsFromArrayWithoutDuplicates(
+            ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
                 students,
                 coreSelections().courseOffering().instructors() );
-            er.extensions.ERXArrayUtilities
-                .addObjectsFromArrayWithoutDuplicates(
+            ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
                 students,
                 coreSelections().courseOffering().graders() );
         }

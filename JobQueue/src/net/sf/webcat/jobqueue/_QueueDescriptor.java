@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @version version suppressed to control auto-generation
  */
 public abstract class _QueueDescriptor
-    extends er.extensions.ERXGenericRecord
+    extends er.extensions.eof.ERXGenericRecord
 {
     //~ Constructors ..........................................................
 
@@ -134,7 +134,7 @@ public abstract class _QueueDescriptor
     public static QueueDescriptor forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -199,7 +199,7 @@ public abstract class _QueueDescriptor
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -582,7 +582,7 @@ public abstract class _QueueDescriptor
                 + value + "): was " + requiresExclusiveHostAccess() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
             setRequiresExclusiveHostAccessRaw( actual );
     }
 

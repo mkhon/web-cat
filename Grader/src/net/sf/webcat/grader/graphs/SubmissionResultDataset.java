@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultDataset.java,v 1.2 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: SubmissionResultDataset.java,v 1.3 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,6 @@ package net.sf.webcat.grader.graphs;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
-import er.extensions.*;
 import net.sf.webcat.grader.*;
 
 import org.jfree.data.xy.TableXYDataset;
@@ -35,7 +34,7 @@ import org.jfree.data.xy.AbstractXYDataset;
  * results.
  *
  * @author  Stephen Edwards
- * @version $Id: SubmissionResultDataset.java,v 1.2 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: SubmissionResultDataset.java,v 1.3 2008/10/29 14:15:21 aallowat Exp $
  */
 public class SubmissionResultDataset
     extends AbstractXYDataset

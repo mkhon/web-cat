@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DisplayClassNameWithoutPackage.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ |  $Id: DisplayClassNameWithoutPackage.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,14 +27,15 @@ import java.sql.*;
 
 //-------------------------------------------------------------------------
 /**
- * A customized version of {@link er.directtoweb.ERD2WDisplayString}
+ * A customized version of
+ * {@link er.directtoweb.components.strings.ERD2WDisplayString}
  * for displaying class names--it strips off the leading package qualification.
  *
  *  @author edwards
- *  @version $Id: DisplayClassNameWithoutPackage.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ *  @version $Id: DisplayClassNameWithoutPackage.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  */
 public class DisplayClassNameWithoutPackage
-    extends er.directtoweb.ERD2WDisplayString
+    extends er.directtoweb.components.strings.ERD2WDisplayString
 {
     //~ Constructors ..........................................................
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.10 2008/10/28 19:19:37 aallowat Exp $
+ |  $Id: MyProfilePage.java,v 1.11 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,7 @@ package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXArrayUtilities;
+import er.extensions.foundation.ERXArrayUtilities;
 import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.10 2008/10/28 19:19:37 aallowat Exp $
+*  @version $Id: MyProfilePage.java,v 1.11 2008/10/29 14:15:51 aallowat Exp $
 */
 public class MyProfilePage
     extends WCComponent

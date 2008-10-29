@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LongResponse.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: LongResponse.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,7 @@ package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
 
-import er.extensions.*;
+import er.extensions.concurrency.ERXLongResponse;
 
 //-------------------------------------------------------------------------
 /**
@@ -34,7 +34,7 @@ import er.extensions.*;
  * completed.
  *
  * @author Stephen Edwards
- * @version $Id: LongResponse.java,v 1.2 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: LongResponse.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public class LongResponse
     extends ERXLongResponse

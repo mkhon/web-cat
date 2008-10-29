@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @version version suppressed to control auto-generation
  */
 public abstract class _ReportTemplate
-    extends er.extensions.ERXGenericRecord
+    extends er.extensions.eof.ERXGenericRecord
 {
     //~ Constructors ..........................................................
 
@@ -131,7 +131,7 @@ public abstract class _ReportTemplate
     public static ReportTemplate forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -203,7 +203,7 @@ public abstract class _ReportTemplate
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -330,8 +330,8 @@ public abstract class _ReportTemplate
      */
     public boolean isPublished()
     {
-        Number result =
-            (Number)storedValueForKey( "isPublished" );
+        Integer result =
+            (Integer)storedValueForKey( "isPublished" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -352,9 +352,9 @@ public abstract class _ReportTemplate
             log.debug( "setIsPublished("
                 + value + "): was " + isPublished() );
         }
-        Number actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
-        setIsPublishedRaw( actual );
+        Integer actual =
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
+            setIsPublishedRaw( actual );
     }
 
 
@@ -363,9 +363,9 @@ public abstract class _ReportTemplate
      * Retrieve this object's <code>isPublished</code> value.
      * @return the value of the attribute
      */
-    public Number isPublishedRaw()
+    public Integer isPublishedRaw()
     {
-        return (Number)storedValueForKey( "isPublished" );
+        return (Integer)storedValueForKey( "isPublished" );
     }
 
 
@@ -376,7 +376,7 @@ public abstract class _ReportTemplate
      *
      * @param value The new value for this property
      */
-    public void setIsPublishedRaw( Number value )
+    public void setIsPublishedRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
@@ -1152,7 +1152,6 @@ public abstract class _ReportTemplate
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForAllTemplates(ec"
-            
                 + "): " + result );
         }
         return result;

@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @version version suppressed to control auto-generation
  */
 public abstract class _WorkerDescriptor
-    extends er.extensions.ERXGenericRecord
+    extends er.extensions.eof.ERXGenericRecord
 {
     //~ Constructors ..........................................................
 
@@ -134,7 +134,7 @@ public abstract class _WorkerDescriptor
     public static WorkerDescriptor forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -194,7 +194,7 @@ public abstract class _WorkerDescriptor
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -228,7 +228,7 @@ public abstract class _WorkerDescriptor
                 + value + "): was " + idOnHost() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value );
+            er.extensions.eof.ERXConstant.integerForInt( value );
             setIdOnHostRaw( actual );
     }
 
@@ -292,7 +292,7 @@ public abstract class _WorkerDescriptor
                 + value + "): was " + isAllocated() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
             setIsAllocatedRaw( actual );
     }
 
@@ -356,7 +356,7 @@ public abstract class _WorkerDescriptor
                 + value + "): was " + isRunning() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
             setIsRunningRaw( actual );
     }
 

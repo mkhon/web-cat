@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.9 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.10 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,8 @@ package net.sf.webcat.grader;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.*;
+import er.extensions.eof.ERXConstant;
+import er.extensions.foundation.ERXValueUtilities;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
@@ -33,7 +34,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.9 2008/10/28 19:20:16 aallowat Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.10 2008/10/29 14:15:21 aallowat Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent

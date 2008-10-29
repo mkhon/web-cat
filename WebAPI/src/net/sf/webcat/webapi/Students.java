@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Students.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
+ |  $Id: Students.java,v 1.3 2008/10/29 14:12:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,8 +30,8 @@ import com.webobjects.foundation.NSMutableArray;
 
 import org.apache.log4j.Logger;
 
-import er.extensions.ERXArrayUtilities;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXArrayUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import net.sf.webcat.core.Status;
 import net.sf.webcat.core.User;
 import net.sf.webcat.grader.AssignmentOffering;
@@ -42,7 +42,7 @@ import net.sf.webcat.grader.Submission;
  * XML Response page for webapi/students requests.
  *
  * @author Stephen Edwards
- * @version $Id: Students.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
+ * @version $Id: Students.java,v 1.3 2008/10/29 14:12:19 aallowat Exp $
  */
 public class Students
     extends XmlResponsePage

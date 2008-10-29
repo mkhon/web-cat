@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage3.java,v 1.7 2008/09/17 00:24:40 stedwar2 Exp $
+ |  $Id: InstallPage3.java,v 1.8 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,8 +28,7 @@ import com.webobjects.foundation.NSValidation.ValidationException;
 import net.sf.webcat.dbupdate.*;
 import net.sf.webcat.dbupdate.Database;
 import net.sf.webcat.dbupdate.MySQLDatabase;
-import er.extensions.ERXConfigurationManager;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
@@ -43,7 +42,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage3.java,v 1.7 2008/09/17 00:24:40 stedwar2 Exp $
+ *  @version $Id: InstallPage3.java,v 1.8 2008/10/29 14:15:51 aallowat Exp $
  */
 public class InstallPage3
     extends InstallPage

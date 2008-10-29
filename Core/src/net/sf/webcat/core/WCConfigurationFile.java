@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCConfigurationFile.java,v 1.4 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: WCConfigurationFile.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import sun.security.action.*;
  *  for managing an installation configuration file.
  *
  *  @author  stedwar2
- *  @version $Id: WCConfigurationFile.java,v 1.4 2008/04/02 00:50:26 stedwar2 Exp $
+ *  @version $Id: WCConfigurationFile.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  */
 public class WCConfigurationFile
     extends WCProperties
@@ -168,8 +168,8 @@ public class WCConfigurationFile
             Map.Entry e = (Map.Entry)i.next();
             System.setProperty( (String)e.getKey(), e.getValue().toString() );
         }
-        er.extensions.ERXSystem.updateProperties();
-        er.extensions.ERXLogger.configureLoggingWithSystemProperties();
+        er.extensions.foundation.ERXSystem.updateProperties();
+        er.extensions.logging.ERXLogger.configureLoggingWithSystemProperties();
     }
 
 

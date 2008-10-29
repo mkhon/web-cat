@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Semester.java,v 1.9 2008/10/24 20:45:17 aallowat Exp $
+ |  $Id: Semester.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  * Represents a single school semester.
  *
  * @author Stephen Edwards
- * @version $Id: Semester.java,v 1.9 2008/10/24 20:45:17 aallowat Exp $
+ * @version $Id: Semester.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
  */
 public class Semester
     extends _Semester
@@ -271,7 +271,7 @@ public class Semester
 
     // ----------------------------------------------------------
     /* (non-Javadoc)
-     * @see er.extensions.ERXGenericRecord#didUpdate()
+     * @see er.extensions.eof.ERXGenericRecord#didUpdate()
      */
     public void didUpdate()
     {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
+ |  $Id: Step.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
 import com.webobjects.eocontrol.*;
 \*==========================================================================*/
@@ -8,7 +8,7 @@ package net.sf.webcat.grader;
 
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import java.io.*;
 import org.apache.log4j.Logger;
 
@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  * processing sequence for handling a given assignment.
  *
  * @author stedwar2
- * @version $Id: Step.java,v 1.7 2008/10/24 20:46:48 aallowat Exp $
+ * @version $Id: Step.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  */
 public class Step
     extends _Step

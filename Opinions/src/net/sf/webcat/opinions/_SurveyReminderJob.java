@@ -140,7 +140,7 @@ public abstract class _SurveyReminderJob
     public static SurveyReminderJob forId(
         EOEditingContext ec, String id )
     {
-        return forId( ec, er.extensions.ERXValueUtilities.intValue( id ) );
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -204,7 +204,7 @@ public abstract class _SurveyReminderJob
         }
         catch (Exception e)
         {
-            return er.extensions.ERXConstant.ZeroInteger;
+            return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
 
@@ -296,7 +296,7 @@ public abstract class _SurveyReminderJob
                 + value + "): was " + isCancelled() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
             setIsCancelledRaw( actual );
     }
 
@@ -360,7 +360,7 @@ public abstract class _SurveyReminderJob
                 + value + "): was " + isPaused() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value ? 1 : 0 );
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
             setIsPausedRaw( actual );
     }
 
@@ -424,7 +424,7 @@ public abstract class _SurveyReminderJob
                 + value + "): was " + priority() );
         }
         Integer actual =
-            er.extensions.ERXConstant.integerForInt( value );
+            er.extensions.eof.ERXConstant.integerForInt( value );
             setPriorityRaw( actual );
     }
 

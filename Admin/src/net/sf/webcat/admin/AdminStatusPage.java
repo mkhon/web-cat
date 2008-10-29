@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdminStatusPage.java,v 1.3 2008/04/02 00:56:28 stedwar2 Exp $
+ |  $Id: AdminStatusPage.java,v 1.4 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,7 @@ package net.sf.webcat.admin;
 
 import com.webobjects.appserver.*;
 import com.webobjects.directtoweb.*;
-import er.extensions.ERXApplication;
+import er.extensions.appserver.ERXApplication;
 import net.sf.webcat.core.*;
 
 //-------------------------------------------------------------------------
@@ -32,7 +32,7 @@ import net.sf.webcat.core.*;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: AdminStatusPage.java,v 1.3 2008/04/02 00:56:28 stedwar2 Exp $
+*  @version $Id: AdminStatusPage.java,v 1.4 2008/10/29 14:16:31 aallowat Exp $
 */
 public class AdminStatusPage
     extends WCComponent

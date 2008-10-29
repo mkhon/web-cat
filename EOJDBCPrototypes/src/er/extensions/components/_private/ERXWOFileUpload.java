@@ -1,4 +1,4 @@
-package er.extensions;
+package er.extensions.components._private;
 import org.apache.log4j.Logger;
 
 import com.webobjects.appserver.WOContext;
@@ -7,6 +7,9 @@ import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.appserver._private.WODynamicElementCreationException;
 import com.webobjects.foundation.NSDictionary;
+
+import er.extensions.appserver.ERXSession;
+import er.extensions.appserver.ERXWOContext;
 
 /**
  * Enhanced WOFileUpload.
@@ -22,7 +25,7 @@ public class ERXWOFileUpload extends com.webobjects.appserver._private.WOFileUpl
 
     /** logging support */
     private static final Logger log = Logger.getLogger(ERXWOFileUpload.class);
-
+	
     /**
      * Public constructor
      */
@@ -39,7 +42,7 @@ public class ERXWOFileUpload extends com.webobjects.appserver._private.WOFileUpl
     		throw new IllegalArgumentException("This form is missing a 'enctype=multipart/form-data' attribute. It is required for WOFileUpload to work.");
     	}
     }
-
+    
     @Override
 	public void takeValuesFromRequest(WORequest worequest, WOContext wocontext) {
     	try {
@@ -71,7 +74,7 @@ public class ERXWOFileUpload extends com.webobjects.appserver._private.WOFileUpl
             }
         }
     }
-
+    
     @Override
 	public void appendToResponse(WOResponse response, WOContext context) {
         checkEnctype(context);

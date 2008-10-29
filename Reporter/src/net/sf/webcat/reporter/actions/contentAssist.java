@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.6 2008/10/28 18:37:54 aallowat Exp $
+ |  $Id: contentAssist.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.ERXDirectAction;
+import er.extensions.appserver.ERXDirectAction;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.reporter.EntityUtils;
@@ -48,7 +48,7 @@ import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
  * entities and key paths, used for content assistance and previewing purposes.
  *
  * @author Tony Allevato
- * @version $Id: contentAssist.java,v 1.6 2008/10/28 18:37:54 aallowat Exp $
+ * @version $Id: contentAssist.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
  */
 public class contentAssist
     extends ERXDirectAction
@@ -87,10 +87,9 @@ public class contentAssist
                 versions.objectForKey(subsystem) + "\n");
         }
 
-        for (EOModel model :
-            (NSArray<EOModel>)EOModelGroup.defaultGroup().models())
+        for (EOModel model : EOModelGroup.defaultGroup().models())
         {
-            for (EOEntity entity : (NSArray<EOEntity>)model.entities())
+            for (EOEntity entity : model.entities())
             {
                 String className = entity.className();
                 boolean exclude = false;

@@ -90,13 +90,13 @@ log4j.logger.NSLog = WARN
 # properties file.
 # -------------------------------------------------------------------
 log4j.rootLogger = WARN, console
-log4j.loggerFactory=er.extensions.ERXLogger$Factory
+log4j.loggerFactory=er.extensions.logging.ERXLogger$Factory
 
 # -------------------------------------------------------------------
 # A few basic appender configurations
 # -------------------------------------------------------------------
 log4j.appender.console                = org.apache.log4j.ConsoleAppender
-log4j.appender.console.layout         = er.extensions.ERXPatternLayout
+log4j.appender.console.layout         = er.extensions.logging.ERXPatternLayout
 log4j.appender.console.ImmediateFlush = true
 log4j.appender.console.layout.ConversionPattern = %5p [%t] %c{1}: %m%n
 
@@ -105,6 +105,6 @@ log4j.appender.logfile.file           = web-cat.log
 log4j.appender.logfile.ImmediateFlush = true
 log4j.appender.logfile.MaxFileSize    = 200000
 log4j.appender.logfile.MaxBackupIndex = 2
-log4j.appender.logfile.layout         = er.extensions.ERXPatternLayout
+log4j.appender.logfile.layout         = er.extensions.logging.ERXPatternLayout
 log4j.appender.logfile.ImmediateFlush = true
 log4j.appender.logfile.layout.ConversionPattern = %5p %d{DATE} [%t] %c{1}: %m%n

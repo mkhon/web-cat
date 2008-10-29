@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EclipseSubmitterDefinitions.java,v 1.2 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: EclipseSubmitterDefinitions.java,v 1.3 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,6 @@ package net.sf.webcat.grader.actions;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.*;
 import net.sf.webcat.core.*;
 import net.sf.webcat.grader.*;
 import org.apache.log4j.Logger;
@@ -35,7 +34,7 @@ import org.apache.log4j.Logger;
  * the Eclipse submitter plugin.
  *
  * @author Stephen Edwards
- * @version $Id: EclipseSubmitterDefinitions.java,v 1.2 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: EclipseSubmitterDefinitions.java,v 1.3 2008/10/29 14:15:21 aallowat Exp $
  */
 public class EclipseSubmitterDefinitions
     extends BlueJSubmitterDefinitions

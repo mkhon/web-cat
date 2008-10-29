@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditTimeZoneName.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ |  $Id: EditTimeZoneName.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,10 +32,10 @@ import net.sf.webcat.core.*;
  * A customized edit component for selecting time zone names.
  *
  *  @author edwards
- *  @version $Id: EditTimeZoneName.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ *  @version $Id: EditTimeZoneName.java,v 1.3 2008/10/29 14:16:31 aallowat Exp $
  */
 public class EditTimeZoneName
-    extends er.directtoweb.ERDCustomEditComponent
+    extends er.directtoweb.components.ERDCustomEditComponent
 {
     //~ Constructors ..........................................................
 

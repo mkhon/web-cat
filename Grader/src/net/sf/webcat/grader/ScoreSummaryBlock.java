@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.7 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,7 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import er.extensions.*;
+import er.extensions.foundation.ERXValueUtilities;
 import net.sf.webcat.core.*;
 import net.sf.webcat.grader.graphs.*;
 import org.apache.log4j.Logger;
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: ScoreSummaryBlock.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: ScoreSummaryBlock.java,v 1.7 2008/10/29 14:15:21 aallowat Exp $
  */
 public class ScoreSummaryBlock
     extends GraderComponent

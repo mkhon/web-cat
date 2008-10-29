@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PasswordChangeRequestPage.java,v 1.2 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: PasswordChangeRequestPage.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,8 +26,6 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
-import er.extensions.*;
-
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -35,7 +33,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: PasswordChangeRequestPage.java,v 1.2 2008/04/02 00:50:30 stedwar2 Exp $
+ *  @version $Id: PasswordChangeRequestPage.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
  */
 public class PasswordChangeRequestPage
     extends WOComponent

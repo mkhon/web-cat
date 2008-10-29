@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectActionRepositoryIdProvider.java,v 1.2 2008/04/21 02:59:15 stedwar2 Exp $
+ |  $Id: DirectActionRepositoryIdProvider.java,v 1.3 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.reporter;
 import net.sf.webcat.core.Application;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.ERXWOContext;
+import er.extensions.appserver.ERXWOContext;
 
 // ------------------------------------------------------------------------
 /**
@@ -32,7 +32,7 @@ import er.extensions.ERXWOContext;
  * direct action URL parameterized with the database ID of a report template.
  *
  * @author Tony Allevato
- * @version $Id: DirectActionRepositoryIdProvider.java,v 1.2 2008/04/21 02:59:15 stedwar2 Exp $
+ * @version $Id: DirectActionRepositoryIdProvider.java,v 1.3 2008/10/29 14:14:59 aallowat Exp $
  */
 public class DirectActionRepositoryIdProvider implements IRepositoryIdProvider
 {

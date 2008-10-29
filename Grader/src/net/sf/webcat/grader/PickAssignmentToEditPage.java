@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToEditPage.java,v 1.7 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: PickAssignmentToEditPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToEditPage.java,v 1.7 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: PickAssignmentToEditPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
  */
 public class PickAssignmentToEditPage
     extends GraderCourseComponent

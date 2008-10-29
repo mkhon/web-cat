@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QualifierUtils.java,v 1.6 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: QualifierUtils.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,14 +35,14 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.ERXInQualifier;
+import er.extensions.eof.qualifiers.ERXInQualifier;
 
 //-------------------------------------------------------------------------
 /**
  * Utility methods to operate on qualifiers.
  *
  * @author Tony Allevato
- * @version $Id: QualifierUtils.java,v 1.6 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: QualifierUtils.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
  */
 public class QualifierUtils
 {
@@ -123,7 +123,7 @@ public class QualifierUtils
             NSMutableArray<EOQualifier> nonFetchQualifiers =
                 new NSMutableArray<EOQualifier>();
 
-            for (EOQualifier childQ : (NSArray<EOQualifier>)aq.qualifiers())
+            for (EOQualifier childQ : aq.qualifiers())
             {
                 if (isQualifierFetchable(childQ, entityName))
                 {

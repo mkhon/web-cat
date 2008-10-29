@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TemplateLibraryPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: TemplateLibraryPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,7 +26,7 @@ import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import java.io.File;
 import java.util.Iterator;
 import net.sf.webcat.core.DeliverFile;
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * templates or manage existing ones.
  *
  * @author Tony Allevato
- * @version $Id: TemplateLibraryPage.java,v 1.8 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: TemplateLibraryPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
  */
 public class TemplateLibraryPage
     extends WCComponent

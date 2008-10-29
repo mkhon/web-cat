@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterLongResponse.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReporterLongResponse.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,7 @@
 package net.sf.webcat.reporter;
 
 import com.webobjects.appserver.*;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * real content is ready, and then updates the content using AJAX.
  *
  * @author Tony Allevato
- * @version $Id: ReporterLongResponse.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReporterLongResponse.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
  */
 public class ReporterLongResponse
     extends WOComponent

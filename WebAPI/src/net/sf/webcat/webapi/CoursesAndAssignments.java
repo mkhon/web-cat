@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoursesAndAssignments.java,v 1.4 2008/10/28 19:20:37 aallowat Exp $
+ |  $Id: CoursesAndAssignments.java,v 1.5 2008/10/29 14:12:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,7 +27,7 @@ import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 
-import er.extensions.ERXArrayUtilities;
+import er.extensions.foundation.ERXArrayUtilities;
 
 import net.sf.webcat.core.CourseOffering;
 import net.sf.webcat.core.Semester;
@@ -38,7 +38,7 @@ import net.sf.webcat.grader.AssignmentOffering;
  * XML Response page for webapi/coursesAndAssignments requests.
  *
  * @author Stephen Edwards
- * @version $Id: CoursesAndAssignments.java,v 1.4 2008/10/28 19:20:37 aallowat Exp $
+ * @version $Id: CoursesAndAssignments.java,v 1.5 2008/10/29 14:12:19 aallowat Exp $
  */
 public class CoursesAndAssignments
     extends XmlResponsePage

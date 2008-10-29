@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOEC.java,v 1.4 2008/04/05 17:51:36 stedwar2 Exp $
+ |  $Id: WOEC.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,10 +32,10 @@ import org.apache.log4j.Logger;
  *  down an obscure WO bug.
  *
  *  @author  Stephen Edwards
- *  @version $Id: WOEC.java,v 1.4 2008/04/05 17:51:36 stedwar2 Exp $
+ *  @version $Id: WOEC.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  */
 public class WOEC
-    extends er.extensions.ERXEC
+    extends er.extensions.eof.ERXEC
 {
     //~ Constructors ..........................................................
 
@@ -83,7 +83,7 @@ public class WOEC
 
     // ----------------------------------------------------------
     public static class WOECFactory
-        extends er.extensions.ERXEC.DefaultFactory
+        extends er.extensions.eof.ERXEC.DefaultFactory
     {
         protected EOEditingContext _createEditingContext( EOObjectStore parent )
         {
@@ -97,7 +97,7 @@ public class WOEC
     // ----------------------------------------------------------
     public static void installWOECFactory()
     {
-        er.extensions.ERXEC.setFactory( new WOECFactory() );
+        er.extensions.eof.ERXEC.setFactory( new WOECFactory() );
     }
 
 

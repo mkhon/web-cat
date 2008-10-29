@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.7 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: OptionEditPanel.java,v 1.8 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,7 +27,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.*;
-import er.extensions.ERXConstant;
+import er.extensions.eof.ERXConstant;
 import org.apache.log4j.*;
 
 //-------------------------------------------------------------------------
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.7 2008/04/02 00:50:26 stedwar2 Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.8 2008/10/29 14:15:51 aallowat Exp $
  */
 public class OptionEditPanel
     extends WCComponent

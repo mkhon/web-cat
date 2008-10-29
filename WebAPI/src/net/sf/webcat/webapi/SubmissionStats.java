@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionStats.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
+ |  $Id: SubmissionStats.java,v 1.3 2008/10/29 14:12:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,7 +27,7 @@ import com.webobjects.appserver.WOResponse;
 
 import org.apache.log4j.Logger;
 
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import net.sf.webcat.grader.Submission;
 
 //-------------------------------------------------------------------------
@@ -35,7 +35,7 @@ import net.sf.webcat.grader.Submission;
  * XML Response page for webapi/submissionStats requests.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionStats.java,v 1.2 2008/10/28 19:20:37 aallowat Exp $
+ * @version $Id: SubmissionStats.java,v 1.3 2008/10/29 14:12:19 aallowat Exp $
  */
 public class SubmissionStats
     extends XmlResponsePage

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QualifierSerialization.java,v 1.1 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: QualifierSerialization.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.ERXInQualifier;
+import er.extensions.eof.qualifiers.ERXInQualifier;
 import er.extensions.qualifiers.ERXKeyValueQualifier;
 
 //-------------------------------------------------------------------------
@@ -42,7 +42,7 @@ import er.extensions.qualifiers.ERXKeyValueQualifier;
  * and vice-versa.
  *
  * @author Tony Allevato
- * @version $Id: QualifierSerialization.java,v 1.1 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: QualifierSerialization.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  */
 public class QualifierSerialization
 {
@@ -148,7 +148,7 @@ public class QualifierSerialization
             NSMutableArray<EOQualifier> children =
                 new NSMutableArray<EOQualifier>();
 
-            for (EOQualifier child : (NSArray<EOQualifier>) aq.qualifiers())
+            for (EOQualifier child : aq.qualifiers())
             {
                 children.addObject(QualifierSerialization.convertEOsToGIDs(
                         child, ec));
@@ -166,7 +166,7 @@ public class QualifierSerialization
             NSMutableArray<EOQualifier> children =
                 new NSMutableArray<EOQualifier>();
 
-            for (EOQualifier child : (NSArray<EOQualifier>) aq.qualifiers())
+            for (EOQualifier child : aq.qualifiers())
             {
                 children.addObject(QualifierSerialization.convertGIDsToEOs(child,
                         ec));
@@ -188,7 +188,7 @@ public class QualifierSerialization
             NSMutableArray<EOQualifier> children =
                 new NSMutableArray<EOQualifier>();
 
-            for (EOQualifier child : (NSArray<EOQualifier>) oq.qualifiers())
+            for (EOQualifier child : oq.qualifiers())
             {
                 children.addObject(QualifierSerialization.convertEOsToGIDs(child,
                         ec));
@@ -206,7 +206,7 @@ public class QualifierSerialization
             NSMutableArray<EOQualifier> children =
                 new NSMutableArray<EOQualifier>();
 
-            for (EOQualifier child : (NSArray<EOQualifier>) oq.qualifiers())
+            for (EOQualifier child : oq.qualifiers())
             {
                 children.addObject(QualifierSerialization.convertGIDsToEOs(child,
                         ec));

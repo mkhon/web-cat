@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage7.java,v 1.4 2008/04/02 00:50:30 stedwar2 Exp $
+ |  $Id: InstallPage7.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.core.install;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import java.util.Calendar;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage7.java,v 1.4 2008/04/02 00:50:30 stedwar2 Exp $
+ *  @version $Id: InstallPage7.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
  */
 public class InstallPage7
     extends InstallPage

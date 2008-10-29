@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.5 2008/10/24 20:46:47 aallowat Exp $
+ |  $Id: StepConfig.java,v 1.6 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.grader;
 
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.foundation.ERXArrayUtilities;
 import net.sf.webcat.core.*;
 
 // -------------------------------------------------------------------------
@@ -30,7 +31,7 @@ import net.sf.webcat.core.*;
  * Custom settings for a single grading {@link Step}.
  *
  * @author stedwar2
- * @version $Id: StepConfig.java,v 1.5 2008/10/24 20:46:47 aallowat Exp $
+ * @version $Id: StepConfig.java,v 1.6 2008/10/29 14:15:21 aallowat Exp $
  */
 public class StepConfig
     extends _StepConfig
@@ -126,7 +127,7 @@ public class StepConfig
         // in the second query will overly restrict the results of the first!
         NSMutableArray results = objectsForUser( context, userBinding )
             .mutableClone();
-        er.extensions.ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             results,
             objectsForCourseAndScript(
                 context, courseBinding, scriptFileBinding )

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.13 2008/05/28 16:12:05 stedwar2 Exp $
+ |  $Id: Reporter.java,v 1.14 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,8 +36,8 @@ import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.ERXConstant;
-import er.extensions.ERXEOControlUtilities;
+import er.extensions.eof.ERXConstant;
+import er.extensions.eof.ERXEOControlUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -91,7 +91,7 @@ import org.eclipse.birt.report.model.api.SessionHandle;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.13 2008/05/28 16:12:05 stedwar2 Exp $
+ * @version $Id: Reporter.java,v 1.14 2008/10/29 14:14:59 aallowat Exp $
  */
 public class Reporter
     extends Subsystem

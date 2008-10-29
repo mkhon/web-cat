@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TabDescriptor.java,v 1.3 2008/04/02 00:50:25 stedwar2 Exp $
+ |  $Id: TabDescriptor.java,v 1.4 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,7 @@ package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
 import com.webobjects.foundation.NSComparator.*;
-import er.extensions.ERXValueUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  what level it is at in hierarchical navigation.
  *
  *  @author Stephen Edwards
- *  @version $Id: TabDescriptor.java,v 1.3 2008/04/02 00:50:25 stedwar2 Exp $
+ *  @version $Id: TabDescriptor.java,v 1.4 2008/10/29 14:15:51 aallowat Exp $
  */
 public class TabDescriptor
 {

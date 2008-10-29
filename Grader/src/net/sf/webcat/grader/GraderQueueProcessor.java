@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.16 2008/10/24 20:04:52 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.17 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,8 +24,8 @@ package net.sf.webcat.grader;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.*;
-import er.extensions.ERXConstant;
+import er.extensions.appserver.ERXApplication;
+import er.extensions.eof.ERXConstant;
 import java.io.*;
 import java.util.*;
 import net.sf.webcat.archives.FileUtilities;
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.16 2008/10/24 20:04:52 stedwar2 Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.17 2008/10/29 14:15:21 aallowat Exp $
  */
 public class GraderQueueProcessor
     extends Thread

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.12 2008/04/11 23:06:05 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.13 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,7 +26,6 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
-import er.extensions.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import net.sf.webcat.core.*;
@@ -38,7 +37,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.12 2008/04/11 23:06:05 stedwar2 Exp $
+ *  @version $Id: GraderComponent.java,v 1.13 2008/10/29 14:15:21 aallowat Exp $
  */
 public class GraderComponent
     extends WCCourseComponent

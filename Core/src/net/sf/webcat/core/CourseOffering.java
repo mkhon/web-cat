@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.12 2008/10/28 19:19:37 aallowat Exp $
+ |  $Id: CourseOffering.java,v 1.13 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * semester).
  *
  * @author Stephen Edwards
- * @version $Id: CourseOffering.java,v 1.12 2008/10/28 19:19:37 aallowat Exp $
+ * @version $Id: CourseOffering.java,v 1.13 2008/10/29 14:15:51 aallowat Exp $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -354,7 +354,7 @@ public class CourseOffering
 
     // ----------------------------------------------------------
     /* (non-Javadoc)
-     * @see er.extensions.ERXGenericRecord#didUpdate()
+     * @see er.extensions.eof.ERXGenericRecord#didUpdate()
      */
     public void didUpdate()
     {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.7 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,7 +27,7 @@ import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSTimestamp;
-import er.extensions.ERXFetchSpecificationBatchIterator;
+import er.extensions.eof.ERXFetchSpecificationBatchIterator;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Enumeration;
@@ -47,7 +47,7 @@ import ognl.webobjects.WOOgnl;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.7 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet

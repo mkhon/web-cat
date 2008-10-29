@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedQueueDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: ManagedQueueDescriptor.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXConstant;
 
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
@@ -34,7 +35,7 @@ import net.sf.webcat.core.IndependentEOManager;
  * A subclass of IndependentEOManager that holds one {@link QueueDescriptor}.
  *
  * @author stedwar2
- * @version $Id: ManagedQueueDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: ManagedQueueDescriptor.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
  */
 public class ManagedQueueDescriptor
     extends IndependentEOManager
@@ -246,7 +247,7 @@ public class ManagedQueueDescriptor
     public void setRequiresExclusiveHostAccess(boolean value)
     {
         takeValueForKey(
-            er.extensions.ERXConstant.integerForInt(value ? 1 : 0),
+            ERXConstant.integerForInt(value ? 1 : 0),
             QueueDescriptor.REQUIRES_EXCLUSIVE_HOST_ACCESS_KEY);
     }
 

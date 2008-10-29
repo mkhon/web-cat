@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.7 2008/04/15 04:09:23 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,8 +38,8 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
-import er.extensions.ERXDirectAction;
-import er.extensions.ERXFetchSpecificationBatchIterator;
+import er.extensions.appserver.ERXDirectAction;
+import er.extensions.eof.ERXFetchSpecificationBatchIterator;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -68,7 +68,7 @@ import ognl.enhance.ExpressionAccessor;
  * response end-of-data marker is true.
  *
  * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.7 2008/04/15 04:09:23 aallowat Exp $
+ * @version $Id: designerPreview.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction

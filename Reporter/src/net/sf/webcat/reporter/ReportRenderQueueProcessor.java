@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportRenderQueueProcessor.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReportRenderQueueProcessor.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSTimestamp;
-import er.extensions.ERXApplication;
+import er.extensions.appserver.ERXApplication;
 
 // -------------------------------------------------------------------------
 /**
@@ -45,7 +45,7 @@ import er.extensions.ERXApplication;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportRenderQueueProcessor.java,v 1.1 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReportRenderQueueProcessor.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
  */
 public class ReportRenderQueueProcessor extends Thread
 {

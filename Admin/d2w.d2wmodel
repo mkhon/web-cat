@@ -1020,7 +1020,7 @@
     	{"class" = "com.webobjects.directtoweb.Rule"; "author" = "45"; "lhs" = {"class" = "EOAndQualifier"; "qualifiers" = (
     		{"class" = "EOKeyValueQualifier"; "key" = "task"; "selectorName" = "isEqualTo:"; "value" = "edit"; },
     		{"class" = "EOOrQualifier"; "qualifiers" = ({"class" = "EOKeyValueQualifier"; "key" = "smartAttribute.prototype.name"; "selectorName" = "isEqualTo:"; "value" = "mediumText"; }, {"class" = "EOKeyValueQualifier"; "key" = "smartAttribute.prototype.name"; "selectorName" = "isEqualTo:"; "value" = "largeText"; }); }
-    	); }; "rhs" = {"class" = "com.webobjects.directtoweb.Assignment"; "keyPath" = "componentName"; "value" = "er.directtoweb.ERD2WEditLargeString"; }; },
+    	); }; "rhs" = {"class" = "com.webobjects.directtoweb.Assignment"; "keyPath" = "componentName"; "value" = "er.directtoweb.components.strings.ERD2WEditLargeString"; }; },
     	{"class" = "com.webobjects.directtoweb.Rule"; "author" = "45"; "lhs" = {"class" = "EOAndQualifier"; "qualifiers" = (
     		{"class" = "EOKeyValueQualifier"; "key" = "task"; "selectorName" = "isEqualTo:"; "value" = "edit"; },
     		{"class" = "EOOrQualifier"; "qualifiers" = ({"class" = "EOKeyValueQualifier"; "key" = "smartAttribute.prototype.name"; "selectorName" = "isEqualTo:"; "value" = "mediumText"; }, {"class" = "EOKeyValueQualifier"; "key" = "smartAttribute.prototype.name"; "selectorName" = "isEqualTo:"; "value" = "largeText"; }); }

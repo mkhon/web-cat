@@ -1,4 +1,4 @@
-package er.extensions;
+package er.extensions.appserver;
 import java.util.Enumeration;
 
 import org.apache.log4j.Logger;
@@ -17,6 +17,9 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 
+import er.extensions.foundation.ERXProperties;
+import er.extensions.localization.ERXLocalizer;
+
 /** Subclass of WORequest that fixes several Bugs.
  * The ID's are #2924761 and #2961017. It can also be extended to handle
  * #2957558 ("de-at" is converted to "German" instead of "German_Austria").
@@ -34,7 +37,7 @@ public  class ERXRequest extends WORequest {
     protected static final NSArray<String> HOST_ADDRESS_KEYS = new NSArray<String>(new String[]{"pc-remote-addr", "remote_host", "remote_addr", "remote_user", "x-webobjects-remote-addr"});
 
     protected static final NSArray<String> HOST_NAME_KEYS = new NSArray<String>(new String[]{"x-forwarded-host", "Host", "x-webobjects-server-name", "server_name", "http_host"});
-
+    
     /** NSArray to keep browserLanguages in. */
     protected NSArray<String> _browserLanguages;
 
@@ -42,14 +45,14 @@ public  class ERXRequest extends WORequest {
     protected ERXBrowser _browser;
 
     /**
-     * Specifies whether https should be overridden to be enabled or disabled app-wide. This is
-     * useful if you are developing with DirectConnect and you want to be able to specif secure
+     * Specifies whether https should be overridden to be enabled or disabled app-wide. This is 
+     * useful if you are developing with DirectConnect and you want to be able to specif secure 
      * forms and links, but you want to be able to continue testing them without setting up SSL.
-     *
+     * 
      * Defaults to false, set er.extensions.ERXRequest.secureDisabled=true to turn it off.
      */
     protected boolean _secureDisabled;
-
+    
      /** Simply call superclass constructor */
     public ERXRequest(String string, String string0, String string1,
                       NSDictionary nsdictionary, NSData nsdata,
@@ -59,9 +62,27 @@ public  class ERXRequest extends WORequest {
         if (isBrowserFormValueEncodingOverrideEnabled() && browser().formValueEncoding() != null) {
             setDefaultFormValueEncoding(browser().formValueEncoding());
         }
-        _secureDisabled = ERXProperties.booleanForKeyWithDefault("er.extensions.ERXRequest.secureDisabled", false);
+        _secureDisabled = ERXRequest._isSecureDisabled();
     }
-
+    
+    /**
+     * Returns true if er.extensions.ERXRequest.secureDisabled is true.
+     * 
+     * @return true if er.extensions.ERXRequest.secureDisabled is true
+     */
+    public static boolean _isSecureDisabled() {
+        return ERXProperties.booleanForKeyWithDefault("er.extensions.ERXRequest.secureDisabled", false);
+    }
+    
+    /**
+     * Returns true if er.extensions.ERXRequest.secureDisabled is true.
+     * 
+     * @return true if er.extensions.ERXRequest.secureDisabled is true
+     */
+    public boolean isSecureDisabled() {
+    	return _secureDisabled;
+    }
+    
     public boolean isBrowserFormValueEncodingOverrideEnabled() {
         if (isBrowserFormValueEncodingOverrideEnabled == null) {
             isBrowserFormValueEncodingOverrideEnabled = ERXProperties.booleanForKeyWithDefault("er.extensions.ERXRequest.BrowserFormValueEncodingOverrideEnabled", false) ? Boolean.TRUE : Boolean.FALSE;
@@ -72,7 +93,7 @@ public  class ERXRequest extends WORequest {
     public WOContext context() {
     	return _context();
     }
-
+    
     /** Returns a cooked version of the languages the user has set in his Browser.
      * Adds "Nonlocalized" and {@link ERXLocalizer#defaultLanguage()} if not
      * already present. Transforms regionalized en_us to English_US as a key.
@@ -115,7 +136,7 @@ public  class ERXRequest extends WORequest {
         }
         return _browserLanguages;
     }
-
+    
     @Override
 	public String stringFormValueForKey(String key) {
     	String result = super.stringFormValueForKey(key);
@@ -125,17 +146,17 @@ public  class ERXRequest extends WORequest {
     		if (WOApplication.application().resourceRequestHandlerKey().equals(requestHandlerKey)) {
     			String requestHandlerPath = (String)valueForKeyPath("_uriDecomposed.requestHandlerPath");
         		requestHandlerPath = "file:/" +  requestHandlerPath.substring("wodata=/".length());
-        		// result = requestHandlerPath.replace('+', ' ');
-        		try
-        		{
-        			result = java.net.URLDecoder.decode(
-        				requestHandlerPath, "UTF-8");
-        		}
-        		catch (java.io.UnsupportedEncodingException e)
-        		{
-        			log.error("unable to decode wodata parameter", e);
-        				result = requestHandlerPath.replace('+', ' ');
-        		}
+                // result = requestHandlerPath.replace('+', ' ');
+                try
+                {
+                    result = java.net.URLDecoder.decode(
+                        requestHandlerPath, "UTF-8");
+                }
+                catch (java.io.UnsupportedEncodingException e)
+                {
+                    log.error("unable to decode wodata parameter", e);
+                        result = requestHandlerPath.replace('+', ' ');
+                }
     		}
     	}
 
@@ -151,7 +172,7 @@ public  class ERXRequest extends WORequest {
         if (_browser == null) {
             ERXBrowserFactory browserFactory = ERXBrowserFactory.factory();
             _browser = browserFactory.browserMatchingRequest(this);
-            browserFactory.retainBrowser(_browser);
+            browserFactory.retainBrowser(_browser);            
         }
         return _browser;
     }
@@ -166,22 +187,22 @@ public  class ERXRequest extends WORequest {
         }
         super.finalize();
     }
-
+    
     /**
      * Returns whether or not this request is secure.
-     *
+     * 
      * @return whether or not this request is secure
      */
     public boolean isSecure() {
     	return ERXRequest.isRequestSecure(this);
     }
-
+    
     @Override
 	public void _completeURLPrefix(StringBuffer stringbuffer, boolean secure, int port) {
     	if (_secureDisabled) {
     		secure = false;
     	}
-
+    	
     	String serverName = _serverName();
         String portStr;
         if (port == 0) {
@@ -200,12 +221,12 @@ public  class ERXRequest extends WORequest {
    			stringbuffer = stringbuffer.append(portStr);
         }
     }
-
+    
     /**
      * Returns whether or not the given request is secure.
      * MS: I found this somewhere else a while ago, but I have no idea where or
      * I'd give attribution.
-     *
+     * 
      * @param request the request to check
      * @return whether or not the given request is secure.
      */
@@ -219,10 +240,10 @@ public  class ERXRequest extends WORequest {
 	        if (serverPort == null) {
 	          serverPort = request.headerForKey("x-webobjects-server-port");
 	        }
-
+	
 	        // Apache and some other web servers use this to indicate HTTPS mode.
 	        String httpsMode = request.headerForKey("https");
-
+	
 	        // If either the https header is 'on' or the server port is 443 then we
 	        // consider this to be an HTTP request.
 	        isRequestSecure = ((httpsMode != null && httpsMode.equalsIgnoreCase("on")) || (serverPort != null && "443".equals(serverPort)));
@@ -232,7 +253,7 @@ public  class ERXRequest extends WORequest {
     }
 
     private static class _LanguageComparator extends NSComparator {
-
+        
         private static float quality(String languageString) {
             float result=0f;
             if (languageString!=null) {
@@ -246,17 +267,17 @@ public  class ERXRequest extends WORequest {
             }
             return result;
         }
-
+        
         @Override
 		public int compare(Object o1, Object o2) {
             float f1=quality((String)o1);
             float f2=quality((String)o2);
             return f1<f2 ? OrderedDescending : ( f1==f2 ? OrderedSame : OrderedAscending ); // we want DESCENDING SORT!!
         }
-
+        
     }
 
-
+    
     /** Translates ("de", "en-us;q=0.33", "en", "en-gb;q=0.66") to ("de", "en_gb", "en-us", "en").
      * @param languages NSArray of Strings
         * @return sorted NSArray of normalized Strings
@@ -282,11 +303,11 @@ public  class ERXRequest extends WORequest {
             offset = language.indexOf('-');
             if (offset > 0) {
                 String langPrefix = language.substring(0, offset);  //  "en" part of "en-us"
-                if (!languagePrefix.containsObject(langPrefix)) {
+                if (!languagePrefix.containsObject(langPrefix)) { 
                     languagePrefix.insertObjectAtIndex(langPrefix, 0);
                 }
                 // converts "en-us" into "en_us";
-
+                
                 String cooked = language.replace('-', '_');
                 language = cooked;
             }
@@ -309,18 +330,18 @@ public  class ERXRequest extends WORequest {
             log.warn(t);
             return NSDictionary.EmptyDictionary;
         }
-    }
+    }    
 
     /**
-     * Overridden because the super implementation would pull in all
-     * content even if the request is supposed to be streaming and thus
+     * Overridden because the super implementation would pull in all 
+     * content even if the request is supposed to be streaming and thus 
      * very large. Will now return <code>false</code> if the request
      * handler is streaming.
      */
     @Override
 	public boolean isSessionIDInRequest() {
         ERXApplication app = (ERXApplication)WOApplication.application();
-
+        
         if (app.isStreamingRequestHandlerKey(requestHandlerKey())) {
             return false;
         } else {
@@ -329,8 +350,8 @@ public  class ERXRequest extends WORequest {
     }
 
     /**
-     * Overridden because the super implementation would pull in all
-     * content even if the request is supposed to be streaming and thus
+     * Overridden because the super implementation would pull in all 
+     * content even if the request is supposed to be streaming and thus 
      * very large. Will now look for the session ID only in the cookie
      * values.
      */
@@ -341,7 +362,7 @@ public  class ERXRequest extends WORequest {
         boolean wis = WOApplication.application().streamActionRequestHandlerKey().equals(requestHandlerKey());
         boolean alternateStreaming = app.isStreamingRequestHandlerKey(requestHandlerKey());
         boolean streaming = wis || alternateStreaming;
-
+        
         String sessionID = null;
         if(inCookiesFirst) {
             sessionID = cookieValueForKey("wosid");
@@ -358,10 +379,10 @@ public  class ERXRequest extends WORequest {
         }
         return sessionID;
     }
-
+    
     /**
      * Utility method to set credentials for basic authorization.
-     *
+     * 
      */
     public void setCredentials(String userName, String password) {
         String up = userName + ":" + password;
@@ -370,7 +391,7 @@ public  class ERXRequest extends WORequest {
         String encodedString = coder.encode(bytes);
         setHeader("Basic " +  encodedString, "authorization");
     }
-
+    
     /**
      * @deprecated Use remoteHostAddress() instead
      */
@@ -383,7 +404,7 @@ public  class ERXRequest extends WORequest {
      * Returns the remote client host address. Works in various setups, like
      * direct connect, deployed etc. If no host name can be found,
      * returns "UNKNOWN".
-     *
+     * 
      * @return remote client host address
      */
     public String remoteHostAddress() {
@@ -393,18 +414,18 @@ public  class ERXRequest extends WORequest {
             }
         }
         for (String key : HOST_ADDRESS_KEYS) {
-        	String remoteAddressHeaderValue = headerForKey(key);
+        	String remoteAddressHeaderValue = headerForKey(key); 
 			if (remoteAddressHeaderValue != null) {
 				return remoteAddressHeaderValue;
 			}
 		}
         return UNKNOWN_HOST;
     }
-
+    
     /**
      * Returns the remote client host name. If no host name can be found,
      * returns "UNKNOWN".
-     *
+     * 
      * @return remote client host name
      */
     public String remoteHostName() {

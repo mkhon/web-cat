@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.18 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.19 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,10 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.*;
+import er.extensions.eof.ERXConstant;
+import er.extensions.eof.qualifiers.ERXInQualifier;
+import er.extensions.foundation.ERXArrayUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
@@ -39,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.18 2008/10/28 19:20:16 aallowat Exp $
+ * @version $Id: AssignmentOffering.java,v 1.19 2008/10/29 14:15:21 aallowat Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering

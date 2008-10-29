@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
-import er.extensions.ERXQ;
+import er.extensions.eof.ERXQ;
 import net.sf.webcat.core.CourseOffering;
 import net.sf.webcat.grader.Assignment;
 import net.sf.webcat.reporter.QualifierInSubquery;
@@ -41,7 +41,7 @@ import net.sf.webcat.reporter.QualifierUtils;
  * {@link CourseAndAssignmentSubmissionsAssistant}.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsModel.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsModel.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
  */
 public class CourseAndAssignmentSubmissionsModel
     extends AbstractQueryAssistantModel

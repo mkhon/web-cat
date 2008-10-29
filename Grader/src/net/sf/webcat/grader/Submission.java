@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.15 2008/10/24 20:50:14 aallowat Exp $
+ |  $Id: Submission.java,v 1.16 2008/10/29 14:15:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,8 +24,9 @@ package net.sf.webcat.grader;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import er.extensions.ERXEOControlUtilities;
-import er.extensions.ERXQ;
+import er.extensions.eof.ERXConstant;
+import er.extensions.eof.ERXEOControlUtilities;
+import er.extensions.eof.ERXQ;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.15 2008/10/24 20:50:14 aallowat Exp $
+ *  @version $Id: Submission.java,v 1.16 2008/10/29 14:15:21 aallowat Exp $
  */
 public class Submission
     extends _Submission
@@ -156,7 +157,7 @@ public class Submission
             Application.emailExceptionToAdmins(
                 e, null, "An exception was generated trying to retrieve the "
                 + "id for a submission.\n\nSubmission = " + subInfo );
-            return er.extensions.ERXConstant.ZeroInteger;
+            return ERXConstant.ZeroInteger;
         }
     }
 

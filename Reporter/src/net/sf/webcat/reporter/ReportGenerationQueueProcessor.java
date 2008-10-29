@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationQueueProcessor.java,v 1.4 2008/10/25 00:26:36 aallowat Exp $
+ |  $Id: ReportGenerationQueueProcessor.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSTimestamp;
-import er.extensions.ERXApplication;
-import er.extensions.ERXConstant;
+import er.extensions.appserver.ERXApplication;
+import er.extensions.eof.ERXConstant;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -67,7 +67,7 @@ import org.eclipse.birt.report.engine.api.IRunTask;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationQueueProcessor.java,v 1.4 2008/10/25 00:26:36 aallowat Exp $
+ * @version $Id: ReportGenerationQueueProcessor.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
  */
 public class ReportGenerationQueueProcessor extends Thread
 {

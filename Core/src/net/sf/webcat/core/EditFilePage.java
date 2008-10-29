@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFilePage.java,v 1.3 2008/04/02 00:50:29 stedwar2 Exp $
+ |  $Id: EditFilePage.java,v 1.4 2008/10/29 14:15:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,7 @@ package net.sf.webcat.core;
 import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
 
-import er.extensions.ERXFileUtilities;
+import er.extensions.foundation.ERXFileUtilities;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.zip.ZipFile;
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditFilePage.java,v 1.3 2008/04/02 00:50:29 stedwar2 Exp $
+ * @version $Id: EditFilePage.java,v 1.4 2008/10/29 14:15:51 aallowat Exp $
  */
 public class EditFilePage
     extends WCComponent
