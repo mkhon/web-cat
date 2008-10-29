@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PreviewingResultSet.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: PreviewingResultSet.java,v 1.3 2008/10/29 21:00:01 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import net.sf.webcat.oda.designer.DesignerActivator;
  * TODO: real description
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: PreviewingResultSet.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: PreviewingResultSet.java,v 1.3 2008/10/29 21:00:01 aallowat Exp $
  */
 public class PreviewingResultSet implements IWebCATResultSet
 {
@@ -176,9 +176,20 @@ public class PreviewingResultSet implements IWebCATResultSet
             wasValueNull = false;
 
             if (value instanceof Timestamp)
+            {
                 return (Timestamp) value;
+            }
             else
-                return new Timestamp(Long.parseLong(value.toString()));
+            {
+                try
+                {
+                    return new Timestamp(Long.parseLong(value.toString()));
+                }
+                catch (NumberFormatException e)
+                {
+                    throw formatException(columnIndex, value, "Timestamp");
+                }
+            }
         }
     }
 
@@ -198,9 +209,20 @@ public class PreviewingResultSet implements IWebCATResultSet
             wasValueNull = false;
 
             if (value instanceof BigDecimal)
+            {
                 return (BigDecimal) value;
+            }
             else
-                return new BigDecimal(value.toString());
+            {
+                try
+                {
+                    return new BigDecimal(value.toString());
+                }
+                catch (NumberFormatException e)
+                {
+                    throw formatException(columnIndex, value, "Decimal");
+                }
+            }
         }
     }
 
@@ -220,9 +242,20 @@ public class PreviewingResultSet implements IWebCATResultSet
             wasValueNull = false;
 
             if (value instanceof Number)
+            {
                 return ((Number) value).doubleValue();
+            }
             else
-                return Double.parseDouble(value.toString());
+            {
+                try
+                {
+                    return Double.parseDouble(value.toString());
+                }
+                catch (NumberFormatException e)
+                {
+                    throw formatException(columnIndex, value, "Float");
+                }
+            }
         }
     }
 
@@ -243,7 +276,27 @@ public class PreviewingResultSet implements IWebCATResultSet
             if (value instanceof Number)
                 return ((Number) value).intValue();
             else
-                return Integer.parseInt(value.toString());
+            {
+                // Try to parse the string as an integer. If this fails (for
+                // example, if it's a floating point value), then try it as a
+                // double and take the floor.
+
+                try
+                {
+                    return Integer.parseInt(value.toString());
+                }
+                catch (NumberFormatException e)
+                {
+                    try
+                    {
+                        return (int) Double.parseDouble(value.toString());
+                    }
+                    catch (IllegalArgumentException e2)
+                    {
+                        throw formatException(columnIndex, value, "Integer");
+                    }
+                }
+            }
         }
     }
 
@@ -279,6 +332,17 @@ public class PreviewingResultSet implements IWebCATResultSet
     private int rowCount()
     {
         return Math.min(recordCount, maxRecords);
+    }
+
+
+    private IllegalArgumentException formatException(int columnIndex,
+            Object value, String destinationType)
+    {
+        return new IllegalArgumentException(
+                "The result (\"" + value.toString() +
+                "\") of the expression [ " + expressions[columnIndex] +
+                " ] could not be converted " +
+                "to type " + destinationType + ".");
     }
 
 
