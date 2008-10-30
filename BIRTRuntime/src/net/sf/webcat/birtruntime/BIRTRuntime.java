@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BIRTRuntime.java,v 1.4 2008/04/06 21:25:24 stedwar2 Exp $
+ |  $Id: BIRTRuntime.java,v 1.5 2008/10/30 22:21:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -47,7 +47,7 @@ import net.sf.webcat.core.Subsystem;
  *  Initializes the BIRT runtime for use in report generation.
  *
  *  @author  Anthony Allevato
- *  @version $Id: BIRTRuntime.java,v 1.4 2008/04/06 21:25:24 stedwar2 Exp $
+ *  @version $Id: BIRTRuntime.java,v 1.5 2008/10/30 22:21:31 aallowat Exp $
  */
 public class BIRTRuntime
     extends Subsystem
@@ -148,28 +148,35 @@ public class BIRTRuntime
             .configurationProperties().getProperty("grader.submissiondir") +
             "/ReporterWorkspace";
 
-        // Copy the initial config area files from the ReportEngine subfolder
-        // into the new config area if they aren't already there.
-
+        // Delete the old configuration area. There aren't any settings here
+        // that need to persist, and the caching really just causes problems
+        // when versions of the BIRT runtime are upgraded.
+        
         File configAreaDir = new File(configArea);
-        if(!configAreaDir.exists())
+        if(configAreaDir.exists())
         {
-            configAreaDir.mkdirs();
-
-            File configSrcDir = new File(reportEnginePath + "/configuration");
-
-            try
-            {
-                net.sf.webcat.archives.FileUtilities
-                    .copyDirectoryContentsIfNecessary(configSrcDir,
-                            configAreaDir);
-            }
-            catch (IOException e)
-            {
-                log.fatal("Could not copy BIRT configuration data into " +
-                        "Web-CAT storage location", e);
-            }
+            net.sf.webcat.archives.FileUtilities.deleteDirectory(configAreaDir);
         }
+
+        // Copy the initial config area files from the ReportEngine subfolder.
+
+        configAreaDir.mkdirs();
+
+        File configSrcDir = new File(reportEnginePath + "/configuration");
+
+        try
+        {
+            net.sf.webcat.archives.FileUtilities
+                .copyDirectoryContentsIfNecessary(configSrcDir,
+                        configAreaDir);
+        }
+        catch (IOException e)
+        {
+            log.fatal("Could not copy BIRT configuration data into " +
+                    "Web-CAT storage location", e);
+        }
+
+        // Direct OSGI to use the new configuration and workspace areas.
 
         Map osgiConfig = new Hashtable();
         osgiConfig.put("osgi.configuration.area", configArea);
