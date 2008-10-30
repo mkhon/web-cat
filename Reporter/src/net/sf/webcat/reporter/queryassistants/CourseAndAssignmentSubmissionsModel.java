@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.6 2008/10/30 16:08:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import net.sf.webcat.reporter.QualifierUtils;
  * {@link CourseAndAssignmentSubmissionsAssistant}.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsModel.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsModel.java,v 1.6 2008/10/30 16:08:10 aallowat Exp $
  */
 public class CourseAndAssignmentSubmissionsModel
     extends AbstractQueryAssistantModel
@@ -92,7 +92,7 @@ public class CourseAndAssignmentSubmissionsModel
                 EOQualifier q2 =
                     QualifierUtils.qualifierForKeyPathInRelationship(
                         "user",
-                        "assignmentOffering.courseOffering.TAs");
+                        "assignmentOffering.courseOffering.graders");
 
                 terms.addObject(ERXQ.not(q1));
                 terms.addObject(ERXQ.not(q2));
@@ -113,7 +113,7 @@ public class CourseAndAssignmentSubmissionsModel
         includeOnlySubmissionsForGrading = true;
 
         boolean foundSubsForGradingQualifier = false;
-        boolean excludeTAs = false;
+        boolean excludeGraders = false;
         boolean excludeInstructors = false;
 
         if (qualifier instanceof EOAndQualifier)
@@ -174,9 +174,9 @@ public class CourseAndAssignmentSubmissionsModel
                                 {
                                     excludeInstructors = true;
                                 }
-                                else if ("assignmentOffering.courseOffering.TAs.id".equals(kcq.rightKey()))
+                                else if ("assignmentOffering.courseOffering.graders.id".equals(kcq.rightKey()))
                                 {
-                                    excludeTAs = true;
+                                    excludeGraders = true;
                                 }
                             }
                         }
@@ -190,7 +190,7 @@ public class CourseAndAssignmentSubmissionsModel
             includeOnlySubmissionsForGrading = false;
         }
 
-        if (!excludeInstructors && !excludeTAs && qualifier != null)
+        if (!excludeInstructors && !excludeGraders && qualifier != null)
         {
             includeCourseStaff = true;
         }
