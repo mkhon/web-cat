@@ -4,7 +4,7 @@
 subsystem.BIRTRuntime=net.sf.webcat.birtruntime.BIRTRuntime
 
 BIRTRuntime.version.major=1
-BIRTRuntime.version.minor=0
+BIRTRuntime.version.minor=1
 BIRTRuntime.version.revision=0
 BIRTRuntime.requires=Core
 
@@ -25,5 +25,4 @@ BIRTRuntime.description=\
     It provides for automatic update control over this runtime and, given \
     its size, alleviates the need to re-download the entire package when \
     the Reporter functionality is updated. This version of the runtime \
-    subsystem contains BIRT runtime 2.2.1 and version 1.0.0 of the Web-CAT \
-    BIRT data plug-in.
+    subsystem contains BIRT runtime 2.3.1.
