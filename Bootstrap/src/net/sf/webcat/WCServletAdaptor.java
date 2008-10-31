@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.10 2008/04/02 01:01:33 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.11 2008/10/31 16:01:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.10 2008/04/02 01:01:33 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.11 2008/10/31 16:01:33 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -88,6 +88,19 @@ public class WCServletAdaptor
         try
         {
             super.init();
+        }
+        catch (NoClassDefFoundError e)
+        {
+        	initFailed = e;
+//        	for (StackTraceElement frame : e.getStackTrace())
+//        	{
+//        		String fileName = frame.getFileName();
+//        		if (fileName != null && fileName.toLowerCase().contains("gcj"))
+//        		{
+//        			gcjDetected = true;
+//        			break;
+//        		}
+//        	}
         }
         catch ( javax.servlet.UnavailableException e )
         {
@@ -223,22 +236,33 @@ public class WCServletAdaptor
         out.println( "<p>Web-CAT threw an unexpected exception during " );
         out.println( "initialization.  Please shut down the web application " );
         out.println( "and fix the problem.</p>" );
+        String vmName = System.getProperty("java.vm.name");
+        if (vmName != null && vmName.toLowerCase().contains("gcj"))
+        {
+        	out.println("<p>In this case, it appears that you are <b>using");
+        	out.println("gcj</b> to run your servlet container.  Web-CAT ");
+        	out.println("does not run properly under gcj at this time.");
+        	out.println("Please install Sun's JDK and");
+        	out.println("<a href=\"http://web-cat.org/WCWiki/");
+        	out.println("SwitchToSunJdk\">configure your servlet");
+        	out.println("container</a> to use it instead.</p>");
+        }
         out.println( "<p>For more information, locate your " );
         out.println( "servlet container's <b>stdout log file</b> and " );
         out.println( "examine it to identify the exception stack trace.</p>" );
         out.println( "<p>For assistance, send the stdout log file to " );
         out.println( "the Web-CAT project team at " );
         out.println( "<a href=\"mailto:webcat@vt.edu\">webcat@vt.edu</a>.</p>" );
-//        out.println( "<pre>" );
-//        initFailed.printStackTrace( out );
-//        Throwable nested = initFailed.getCause();
-//        while ( nested != null )
-//        {
-//            out.println( "\nCaused by:" );
-//            nested.printStackTrace( out );
-//            nested = nested.getCause();
-//        }
-//        out.println( "</pre>" );
+        out.println( "<pre>" );
+        initFailed.printStackTrace( out );
+        Throwable nested = initFailed.getCause();
+        while ( nested != null )
+        {
+            out.println( "\nCaused by:" );
+            nested.printStackTrace( out );
+            nested = nested.getCause();
+        }
+        out.println( "</pre>" );
         out.println( "</body></html>" );
         out.flush();
         out.close();
