@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.8 2008/10/29 21:04:39 aallowat Exp $
+ |  $Id: contentAssist.java,v 1.9 2008/11/05 19:40:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,9 @@
 
 package net.sf.webcat.reporter.actions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
@@ -49,7 +52,7 @@ import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
  * entities and key paths, used for content assistance and previewing purposes.
  *
  * @author Tony Allevato
- * @version $Id: contentAssist.java,v 1.8 2008/10/29 21:04:39 aallowat Exp $
+ * @version $Id: contentAssist.java,v 1.9 2008/11/05 19:40:56 aallowat Exp $
  */
 public class contentAssist
     extends ERXDirectAction
@@ -80,6 +83,50 @@ public class contentAssist
     {
         WOResponse response = new WOResponse();
 
+        int designerVersion = designerVersionFromRequest();
+
+        if (designerVersion <= VERSION_1_0_0)
+        {
+            // Use the old-style response.
+            appendEntityDescriptions1_0_0(response);
+        }
+        else
+        {
+            try
+            {
+                appendEntityDescriptions1_1_0(response);
+            }
+            catch (JSONException e)
+            {
+                // Ignore it for now.
+            }
+        }
+
+        return response;
+    }
+
+
+    // ----------------------------------------------------------
+    private int designerVersionFromRequest()
+    {
+        String versionString =
+            (String) request().formValueForKey("designerVersion");
+
+        if (versionString == null)
+        {
+            return 1 * 256 * 256;
+        }
+        else
+        {
+            return Integer.parseInt((String)
+                    request().formValueForKey("designerVersion"));
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    private void appendEntityDescriptions1_0_0(WOResponse response)
+    {
         NSDictionary<String, String> versions = subsystemVersions();
 
         for (String subsystem : versions.allKeys())
@@ -122,7 +169,8 @@ public class contentAssist
                     for (KVCAttributeInfo attr : attributes)
                     {
                         response.appendContentString("attribute:" +
-                                attr.name() + "," + attr.type() + "\n");
+                                attr.name() + "," + attr.type() +
+                                "\n");
                     }
                 }
                 catch (ClassNotFoundException e)
@@ -132,11 +180,93 @@ public class contentAssist
                 }
             }
         }
+    }
+    
+    
+    // ----------------------------------------------------------
+    private void appendEntityDescriptions1_1_0(WOResponse response)
+    throws JSONException
+    {
+        NSDictionary<String, String> versions = subsystemVersions();
 
-        return response;
+        JSONObject root = new JSONObject();
+
+        JSONArray subsystemArray = new JSONArray();
+        
+        for (String subsystem : versions.allKeys())
+        {
+            JSONObject subsObj = new JSONObject();
+            subsObj.put("name", subsystem);
+            subsObj.put("version", versions.objectForKey(subsystem));
+            subsystemArray.put(subsObj);
+        }
+        
+        root.put("subsystems", subsystemArray);
+
+        JSONArray entityArray = new JSONArray();
+
+        for (EOModel model : EOModelGroup.defaultGroup().models())
+        {
+            for (EOEntity entity : model.entities())
+            {
+                String className = entity.className();
+                boolean exclude = false;
+
+                for (String toExclude : ENTITIES_TO_EXCLUDE)
+                {
+                    if (toExclude.equals(className))
+                    {
+                        exclude = true;
+                        break;
+                    }
+                }
+
+                if (exclude)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    Class<?> klass = Class.forName(className);
+
+                    JSONObject entityObj = new JSONObject();
+                    entityObj.put("name", klass.getSimpleName());
+
+                    JSONArray attributeArray = new JSONArray();
+
+                    NSArray<KVCAttributeInfo> attributes =
+                        KVCAttributeFinder.attributesForClass(klass, "");
+
+                    for (KVCAttributeInfo attr : attributes)
+                    {
+                        JSONObject attrObj = new JSONObject();
+                        attrObj.put("name", attr.name());
+                        attrObj.put("type", attr.type());
+                        attrObj.put("properties",
+                                new JSONObject(attr.allPropertyValues()));
+                        
+                        attributeArray.put(attrObj);
+                    }
+                    
+                    entityObj.put("attributes", attributeArray);
+                    
+                    entityArray.put(entityObj);
+                }
+                catch (ClassNotFoundException e)
+                {
+                    // If, for some reason, the class was not found, just don't
+                    // output any keys for it.
+                }
+            }
+        }
+        
+        root.put("entities", entityArray);
+        
+        response.appendContentString(root.toString());
     }
 
-
+    
     // ----------------------------------------------------------
     /**
      * An action that returns as its response a list of active objects for
@@ -149,6 +279,32 @@ public class contentAssist
     {
         WOResponse response = new WOResponse();
 
+        int designerVersion = designerVersionFromRequest();
+
+        if (designerVersion <= VERSION_1_0_0)
+        {
+            // Use the old-style response.
+            appendObjectDescriptions1_0_0(response);
+        }
+        else
+        {
+            try
+            {
+                appendObjectDescriptions1_1_0(response);
+            }
+            catch (JSONException e)
+            {
+                // Ignore it for now.
+            }
+        }
+
+        return response;
+    }
+    
+
+    // ----------------------------------------------------------
+    public void appendObjectDescriptions1_0_0(WOResponse response)
+    {
         ReadOnlyEditingContext ec = Application.newReadOnlyEditingContext();
 
         for (String entityName : OBJECTS_TO_DESCRIBE)
@@ -176,11 +332,61 @@ public class contentAssist
         }
 
         Application.releaseReadOnlyEditingContext(ec);
-
-        return response;
     }
 
 
+    // ----------------------------------------------------------
+    public void appendObjectDescriptions1_1_0(WOResponse response)
+    throws JSONException
+    {
+        ReadOnlyEditingContext ec = Application.newReadOnlyEditingContext();
+
+        JSONObject root = new JSONObject();
+
+        JSONArray entityArray = new JSONArray();
+
+        for (String entityName : OBJECTS_TO_DESCRIBE)
+        {
+            NSArray<EOSortOrdering> orderings =
+                EntityUtils.sortOrderingsForEntityNamed(entityName);
+
+            EOFetchSpecification fetchSpec = new EOFetchSpecification(
+                entityName, null, orderings);
+            fetchSpec.setFetchLimit(250);
+
+            NSArray<EOEnterpriseObject> objects =
+                ec.objectsWithFetchSpecification(fetchSpec);
+
+            JSONObject entityObj = new JSONObject();
+            entityObj.put("name", entityName);
+
+            JSONArray objectArray = new JSONArray();
+
+            for (EOEnterpriseObject object : objects)
+            {
+                Number id = (Number)EOUtilities.primaryKeyForObject(
+                    ec, object).objectForKey( "id" );
+
+                JSONObject objectObj = new JSONObject();
+                objectObj.put("id", id.intValue());
+                objectObj.put("representation", object.toString());
+
+                objectArray.put(objectObj);
+            }
+            
+            entityObj.put("objects", objectArray);
+            
+            entityArray.put(entityObj);
+        }
+
+        root.put("entities", entityArray);
+
+        response.appendContentString(root.toString());
+
+        Application.releaseReadOnlyEditingContext(ec);
+    }
+
+    
     // ----------------------------------------------------------
     /**
      * An action that returns as its response a list of the subsystems installed
@@ -241,6 +447,9 @@ public class contentAssist
 
 
     //~ Instance/static variables .............................................
+
+    private static final int VERSION_1_0_0 = 256 * 256;
+    private static final int VERSION_1_1_0 = 256 * 256 + 256;
 
     private static final String[] ENTITIES_TO_EXCLUDE = {
         "CoreSelections", "ERXGenericRecord", "GraderPrefs", "LoginSession",

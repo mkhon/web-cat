@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: KVCAttributeFinder.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: KVCAttributeFinder.java,v 1.8 2008/11/05 19:40:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import java.math.BigDecimal;
  * up the KVC-accesssible attributes for a class.
  *
  * @author aallowat
- * @version $Id: KVCAttributeFinder.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: KVCAttributeFinder.java,v 1.8 2008/11/05 19:40:56 aallowat Exp $
  */
 public class KVCAttributeFinder
 {
@@ -242,7 +242,7 @@ public class KVCAttributeFinder
 				if (!attrs.containsObject(name))
 				{
 					KVCAttributeInfo attr = new KVCAttributeInfo(
-                        name, method.getReturnType().getSimpleName());
+                        name, method.getReturnType().getSimpleName(), method);
 					attrs.addObject(attr);
 				}
 			}
@@ -279,7 +279,7 @@ public class KVCAttributeFinder
 				if (!attrs.containsObject(name))
 				{
 					KVCAttributeInfo attr = new KVCAttributeInfo(
-                        name, field.getType().getSimpleName());
+                        name, field.getType().getSimpleName(), field);
 					attrs.addObject(attr);
 				}
 			}
@@ -290,7 +290,6 @@ public class KVCAttributeFinder
     // ----------------------------------------------------------
 	private static boolean typeIsAcceptable(Class<?> klass)
 	{
-		//return acceptableTypes.containsObject(klass);
 		return klass != Void.class && klass != Void.TYPE;
 	}
 

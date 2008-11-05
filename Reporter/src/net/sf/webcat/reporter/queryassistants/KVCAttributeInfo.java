@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: KVCAttributeInfo.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ |  $Id: KVCAttributeInfo.java,v 1.4 2008/11/05 19:40:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,13 +21,17 @@
 
 package net.sf.webcat.reporter.queryassistants;
 
+import java.lang.reflect.AccessibleObject;
+import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableDictionary;
+
 //-------------------------------------------------------------------------
 /**
  * Describes one KVC-accessible attribute of a class, including its name
  * and type.
  *
  * @author aallowat
- * @version $Id: KVCAttributeInfo.java,v 1.3 2008/04/02 01:36:38 stedwar2 Exp $
+ * @version $Id: KVCAttributeInfo.java,v 1.4 2008/11/05 19:40:56 aallowat Exp $
  */
 public class KVCAttributeInfo
 {
@@ -38,11 +42,23 @@ public class KVCAttributeInfo
      * Create an object.
      * @param name The name of this attribute
      * @param type The type of this attribute
+     * @param accObject The reflection object representing the attribute, either
+     *     a Field or Method, used to provide annotation access for extended
+     *     properties
      */
-	public KVCAttributeInfo(String name, String type)
+	public KVCAttributeInfo(String name, String type,
+	        AccessibleObject accObject)
 	{
 		this.name = name;
 		this.type = type;
+		
+		properties = new NSMutableDictionary<String, Object>();
+
+		Deprecated annDeprecated = accObject.getAnnotation(Deprecated.class);
+		if (annDeprecated != null)
+		{
+		    properties.setObjectForKey(Boolean.TRUE, PROP_DEPRECATED);
+		}
 	}
 
 
@@ -61,9 +77,26 @@ public class KVCAttributeInfo
 		return type;
 	}
 
+	
+    // ----------------------------------------------------------
+	public Object valueForProperty(String property)
+	{
+	    return properties.valueForKey(property);
+	}
+	
 
-    //~ Instance/static variables .............................................
+    // ----------------------------------------------------------
+    public NSDictionary<String, Object> allPropertyValues()
+    {
+        return properties;
+    }
+
+    
+	//~ Instance/static variables .............................................
+
+	public static final String PROP_DEPRECATED = "deprecated";
 
 	private String name;
 	private String type;
+	private NSMutableDictionary<String, Object> properties;
 }
