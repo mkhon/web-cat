@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.6 2008/10/24 19:54:52 stedwar2 Exp $
+ |  $Id: WCServletContext.java,v 1.7 2008/11/06 16:10:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat;
 
 import java.io.*;
+import java.lang.reflect.*;
 import java.net.*;
 import java.util.*;
 import javax.servlet.*;
@@ -36,7 +37,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.6 2008/10/24 19:54:52 stedwar2 Exp $
+ *  @version $Id: WCServletContext.java,v 1.7 2008/11/06 16:10:15 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -382,15 +383,45 @@ public class WCServletContext
 
 
     // ----------------------------------------------------------
-	public String getContextPath() {
-		return innerContext.getContextPath();
+	public String getContextPath()
+    {
+        if (getContextPath == null)
+        {
+            try
+            {
+                getContextPath = innerContext.getClass()
+                    .getMethod("getContextPath", (Class<?>[])null);
+            }
+            catch (NoSuchMethodException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        String result = null;
+        if (getContextPath != null)
+        {
+            try
+            {
+                result = (String)getContextPath.invoke(null);
+            }
+            catch (IllegalAccessException e)
+            {
+                throw new RuntimeException(e);
+            }
+            catch (java.lang.reflect.InvocationTargetException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
 	}
 
 
 	//~ Instance/static variables .............................................
 
     private ServletContext innerContext;
-    private String         woClasspath        = null;
+    private String         woClasspath = null;
+    private Method         getContextPath;
 
 //    private static final String RESOURCES_JAVA_SUBDIR
 //        = "[/\\\\]Resources[/\\\\]Java([/\\\\]?)$";
