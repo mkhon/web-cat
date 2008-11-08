@@ -11,17 +11,17 @@
 subsystem.webcat
 
 webcat.version.major=1
-webcat.version.minor=3
-webcat.version.revision=1
+webcat.version.minor=4
+webcat.version.revision=0
 
-webcat.copyright=(c) 2006 Virginia Tech Department of Computer Science
+webcat.copyright=(c) 2006-2008 Virginia Tech Department of Computer Science
 webcat.provider=Virginia Tech Computer Science
 webcat.provider.url=http://web-cat.cs.vt.edu/updates
 webcat.info.url=http://web-cat.cs.vt.edu/WCWiki/WebCatApplication
 webcat.history.url=\
 	http://web-cat.cs.vt.edu/WCWiki/WebCatApplication/ChangeHistory
-webcat.license=GNU General Public License v.2
-webcat.license.url=http://www.gnu.org/copyleft/gpl.html
+webcat.license=GNU Affero General Public License v.3
+webcat.license.url=http://www.gnu.org/licenses/agpl.html
 
 webcat.description=\
     This bundle is not a real subsystem. It is the main application \
@@ -52,12 +52,13 @@ WOAllowsConcurrentRequestHandling = true
 # Configure ERExtensions settings
 # -------------------------------------------------------------------
 dbConnectDriverGLOBAL = com.mysql.jdbc.Driver
+er.extensions.ERXApplication.useEditingContextUnlocker=true
 er.extensions.ERXEC.defaultAutomaticLockUnlock = true
+er.extensions.ERXEC.defaultCoalesceAutoLocks=true
 ognl.active          = true
 ognl.helperFunctions = true
 ognl.inlineBindings  = true
 er.extensions.ERXNSLogLog4jBridge.ignoreNSLogSettings = true
-
 
 # -------------------------------------------------------------------
 # Configure WebObjects logging info
@@ -90,13 +91,13 @@ log4j.logger.NSLog = WARN
 # properties file.
 # -------------------------------------------------------------------
 log4j.rootLogger = WARN, console
-log4j.loggerFactory=er.extensions.logging.ERXLogger$Factory
+log4j.loggerFactory=er.extensions.ERXLogger$Factory
 
 # -------------------------------------------------------------------
 # A few basic appender configurations
 # -------------------------------------------------------------------
 log4j.appender.console                = org.apache.log4j.ConsoleAppender
-log4j.appender.console.layout         = er.extensions.logging.ERXPatternLayout
+log4j.appender.console.layout         = er.extensions.ERXPatternLayout
 log4j.appender.console.ImmediateFlush = true
 log4j.appender.console.layout.ConversionPattern = %5p [%t] %c{1}: %m%n
 
@@ -105,6 +106,6 @@ log4j.appender.logfile.file           = web-cat.log
 log4j.appender.logfile.ImmediateFlush = true
 log4j.appender.logfile.MaxFileSize    = 200000
 log4j.appender.logfile.MaxBackupIndex = 2
-log4j.appender.logfile.layout         = er.extensions.logging.ERXPatternLayout
+log4j.appender.logfile.layout         = er.extensions.ERXPatternLayout
 log4j.appender.logfile.ImmediateFlush = true
 log4j.appender.logfile.layout.ConversionPattern = %5p %d{DATE} [%t] %c{1}: %m%n
