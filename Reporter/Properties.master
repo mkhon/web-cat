@@ -5,7 +5,7 @@ subsystem.Reporter=net.sf.webcat.reporter.Reporter
 
 Reporter.version.major=1
 Reporter.version.minor=0
-Reporter.version.revision=2
+Reporter.version.revision=3
 Reporter.requires=BIRTRuntime, Core, Grader
 
 Reporter.copyright=(c) 2007-2008 Virginia Tech Department of Computer Science
