@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BIRTRuntime.java,v 1.5 2008/10/30 22:21:31 aallowat Exp $
+ |  $Id: BIRTRuntime.java,v 1.6 2008/11/11 16:15:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -22,9 +22,12 @@
 package net.sf.webcat.birtruntime;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.EngineConfig;
@@ -47,7 +50,7 @@ import net.sf.webcat.core.Subsystem;
  *  Initializes the BIRT runtime for use in report generation.
  *
  *  @author  Anthony Allevato
- *  @version $Id: BIRTRuntime.java,v 1.5 2008/10/30 22:21:31 aallowat Exp $
+ *  @version $Id: BIRTRuntime.java,v 1.6 2008/11/11 16:15:44 aallowat Exp $
  */
 public class BIRTRuntime
     extends Subsystem
@@ -173,6 +176,24 @@ public class BIRTRuntime
         catch (IOException e)
         {
             log.fatal("Could not copy BIRT configuration data into " +
+                    "Web-CAT storage location", e);
+        }
+
+        // Manually add the required osgi.parentClassloader property into the
+        // config.ini file so that the Web-CAT/BIRT data bridge works properly.
+
+        File configIniFile = new File(configAreaDir, "config.ini");
+
+        try
+        {
+            Properties configProps = new Properties();
+            configProps.load(new FileInputStream(configIniFile));
+            configProps.setProperty("osgi.parentClassloader", "fwk");
+            configProps.store(new FileOutputStream(configIniFile), "");
+        }
+        catch (IOException e)
+        {
+            log.fatal("Could not update BIRT configuration properties in " +
                     "Web-CAT storage location", e);
         }
 
