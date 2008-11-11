@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistIOUtils.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ContentAssistIOUtils.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,13 +27,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 //------------------------------------------------------------------------
 /**
  * Methods that read and write cached content assist information to the disk.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ContentAssistIOUtils.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ContentAssistIOUtils.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  */
 public class ContentAssistIOUtils
 {
@@ -113,40 +117,50 @@ public class ContentAssistIOUtils
         subsystemVersions.clear();
         entityDescriptions.clear();
 
-        ArrayList<ContentAssistAttributeInfo> attributes = null;
-
-        String line;
-        while ((line = reader.readLine()) != null)
+        try
         {
-            String[] parts = line.split(":"); //$NON-NLS-1$
-
-            if (parts.length > 0)
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONObject root = new JSONObject(tokener);
+            
+            JSONArray subsystemArray = root.getJSONArray("subsystems");
+            for (int i = 0; i < subsystemArray.length(); i++)
             {
-                if (parts[0].equals("version")) //$NON-NLS-1$
-                {
-                    String[] versionParts = parts[1].split(","); //$NON-NLS-1$
-
-                    if (versionParts.length == 2)
-                    {
-                        subsystemVersions.put(versionParts[0], versionParts[1]);
-                    }
-                }
-                else if (parts[0].equals("entity")) //$NON-NLS-1$
-                {
-                    attributes = new ArrayList<ContentAssistAttributeInfo>();
-                    entityDescriptions.put(parts[1], attributes);
-                }
-                else if (parts[0].equals("attribute")) //$NON-NLS-1$
-                {
-                    String[] attrParts = parts[1].split(","); //$NON-NLS-1$
-
-                    if (attrParts.length == 2 && attributes != null)
-                    {
-                        attributes.add(new ContentAssistAttributeInfo(
-                                attrParts[0], attrParts[1]));
-                    }
-                }
+                JSONObject subsObj = subsystemArray.getJSONObject(i);
+                subsystemVersions.put(subsObj.getString("name"),
+                        subsObj.getString("version"));
             }
+            
+            JSONArray entityArray = root.getJSONArray("entities");
+            for (int i = 0; i < entityArray.length(); i++)
+            {
+                JSONObject entityObj = entityArray.getJSONObject(i);
+                
+                String name = entityObj.getString("name");
+                JSONArray attrArray = entityObj.getJSONArray("attributes");
+
+                ArrayList<ContentAssistAttributeInfo> attrs =
+                    new ArrayList<ContentAssistAttributeInfo>();
+
+                for (int j = 0; j < attrArray.length(); j++)
+                {
+                    JSONObject attrObj = attrArray.getJSONObject(j);
+                    
+                    String attrName = attrObj.getString("name");
+                    String type = attrObj.getString("type");
+                    JSONObject props = attrObj.getJSONObject("properties");
+                    
+                    ContentAssistAttributeInfo attrInfo =
+                        new ContentAssistAttributeInfo(attrName, type, props);
+                    
+                    attrs.add(attrInfo);
+                }
+                
+                entityDescriptions.put(name, attrs);
+            }
+        }
+        catch (JSONException e)
+        {
+            // Do nothing for now.
         }
     }
 
@@ -171,30 +185,54 @@ public class ContentAssistIOUtils
             Map<String, List<ContentAssistAttributeInfo>> entityDescriptions,
             BufferedWriter writer) throws IOException
     {
-        for (String subsystem : subsystemVersions.keySet())
+        try
         {
-            writer.write("version:"); //$NON-NLS-1$
-            writer.write(subsystem);
-            writer.write(","); //$NON-NLS-1$
-            writer.write(subsystemVersions.get(subsystem));
-            writer.newLine();
-        }
-
-        for (String entity : entityDescriptions.keySet())
-        {
-            writer.write("entity:"); //$NON-NLS-1$
-            writer.write(entity);
-            writer.newLine();
-
-            for (ContentAssistAttributeInfo attrInfo : entityDescriptions
-                    .get(entity))
+            JSONObject root = new JSONObject();
+    
+            JSONArray subsystemArray = new JSONArray();
+            
+            for (String subsystem : subsystemVersions.keySet())
             {
-                writer.write("attribute:"); //$NON-NLS-1$
-                writer.write(attrInfo.name());
-                writer.write(","); //$NON-NLS-1$
-                writer.write(attrInfo.type());
-                writer.newLine();
+                JSONObject subsObj = new JSONObject();
+                subsObj.put("name", subsystem);
+                subsObj.put("version", subsystemVersions.get(subsystem));
+                subsystemArray.put(subsObj);
             }
+            
+            root.put("subsystems", subsystemArray);
+    
+            JSONArray entityArray = new JSONArray();
+    
+            for (String entity : entityDescriptions.keySet())
+            {
+                JSONObject entityObj = new JSONObject();
+                entityObj.put("name", entity);
+
+                JSONArray attributeArray = new JSONArray();
+
+                for (ContentAssistAttributeInfo attrInfo :
+                    entityDescriptions.get(entity))
+                {
+                    JSONObject attrObj = new JSONObject();
+                    attrObj.put("name", attrInfo.name());
+                    attrObj.put("type", attrInfo.type());
+                    attrObj.put("properties", attrInfo.allPropertyValues());
+                    
+                    attributeArray.put(attrObj);
+                }
+                
+                entityObj.put("attributes", attributeArray);
+                
+                entityArray.put(entityObj);
+            }
+            
+            root.put("entities", entityArray);
+            
+            writer.write(root.toString(4));
+        }
+        catch (JSONException e)
+        {
+            // Do nothing.
         }
     }
 
@@ -218,37 +256,41 @@ public class ContentAssistIOUtils
     {
         objectDescriptions.clear();
 
-        ArrayList<ContentAssistObjectDescription> objects = null;
-        String currentType = null;
-
-        String line;
-        while ((line = reader.readLine()) != null)
+        try
         {
-            if (line.startsWith("entity:")) //$NON-NLS-1$
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONObject root = new JSONObject(tokener);
+
+            JSONArray entities = root.getJSONArray("entities");
+            
+            for (int i = 0; i < entities.length(); i++)
             {
-                String rest = line.substring("entity:".length()); //$NON-NLS-1$
+                JSONObject entityObj = entities.getJSONObject(i);
+                
+                String name = entityObj.getString("name");
+                JSONArray objectArray = entityObj.getJSONArray("objects");
+                
+                ArrayList<ContentAssistObjectDescription> objects =
+                    new ArrayList<ContentAssistObjectDescription>();
 
-                currentType = rest;
-                objects = new ArrayList<ContentAssistObjectDescription>();
-                objectDescriptions.put(rest, objects);
-            }
-            else if (line.startsWith("object:")) //$NON-NLS-1$
-            {
-                String rest = line.substring("object:".length()); //$NON-NLS-1$
-
-                int commaIndex = rest.indexOf(',');
-
-                String idString = rest.substring(0, commaIndex);
-                String desc = rest.substring(commaIndex + 1);
-
-                int id = Integer.parseInt(idString);
-
-                if (objects != null)
+                for (int j = 0; j < objectArray.length(); j++)
                 {
-                    objects.add(new ContentAssistObjectDescription(currentType,
-                            id, desc));
+                    JSONObject objectObj = objectArray.getJSONObject(j);
+                    
+                    int id = objectObj.getInt("id");
+                    String representation =
+                        objectObj.getString("representation");
+                    
+                    objects.add(new ContentAssistObjectDescription(
+                            name, id, representation));
                 }
+                
+                objectDescriptions.put(name, objects);
             }
+        }
+        catch (JSONException e)
+        {
+            // Ignore for now.
         }
     }
 
@@ -270,21 +312,41 @@ public class ContentAssistIOUtils
             Map<String, List<ContentAssistObjectDescription>> objectDescriptions,
             BufferedWriter writer) throws IOException
     {
-        for (String entity : objectDescriptions.keySet())
+        try
         {
-            writer.write("entity:"); //$NON-NLS-1$
-            writer.write(entity);
-            writer.newLine();
-
-            for (ContentAssistObjectDescription objDesc : objectDescriptions
-                    .get(entity))
+            JSONObject root = new JSONObject();
+    
+            JSONArray entityArray = new JSONArray();
+    
+            for (String entityName : objectDescriptions.keySet())
             {
-                writer.write("object:"); //$NON-NLS-1$
-                writer.write(Integer.toString(objDesc.id()));
-                writer.write(","); //$NON-NLS-1$
-                writer.write(objDesc.description());
-                writer.newLine();
+                JSONObject entityObj = new JSONObject();
+                entityObj.put("name", entityName);
+    
+                JSONArray objectArray = new JSONArray();
+    
+                for (ContentAssistObjectDescription objDesc : objectDescriptions
+                        .get(entityName))
+                {
+                    JSONObject objectObj = new JSONObject();
+                    objectObj.put("id", objDesc.id());
+                    objectObj.put("representation", objDesc.description());
+    
+                    objectArray.put(objectObj);
+                }
+                
+                entityObj.put("objects", objectArray);
+                
+                entityArray.put(entityObj);
             }
+    
+            root.put("entities", entityArray);
+            
+            writer.write(root.toString(4));
+        }
+        catch (JSONException e)
+        {
+            // Do nothing.
         }
     }
 }

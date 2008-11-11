@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %plugin.name
 Bundle-SymbolicName: net.sf.webcat.oda.designer;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Bundle-Localization: plugin
 Bundle-Activator: net.sf.webcat.oda.designer.DesignerActivator
 Bundle-Vendor: %plugin.vendor
@@ -29,7 +29,10 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/javassist.jar,
  lib/ognl-2.7.3.jar,
- lib/velocity-1.5.jar
+ lib/velocity-1.5.jar,
+ lib/commons-collections-3.1.jar,
+ lib/commons-lang-2.1.jar,
+ lib/json.jar
 Export-Package: net.sf.webcat.oda.designer,
  net.sf.webcat.oda.designer.contentassist,
  net.sf.webcat.oda.designer.handlers,

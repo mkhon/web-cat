@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DesignerActivator.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ |  $Id: DesignerActivator.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: DesignerActivator.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ * @version $Id: DesignerActivator.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  */
 public class DesignerActivator extends AbstractUIPlugin implements IStartup
 {
@@ -187,6 +187,35 @@ public class DesignerActivator extends AbstractUIPlugin implements IStartup
         return previewQueryManager;
     }
 
+
+    // ----------------------------------------------------------
+    /**
+     * Convenience function to return an integer representation of the designer
+     * plug-in's version identifier. Used to communicate the designer version
+     * to Web-CAT for previewing and content-assist operations.
+     * 
+     * @return the integer representation of the designer version
+     */
+    public int getVersionAsInteger()
+    {
+        String version = (String) getBundle().getHeaders().get(
+                org.osgi.framework.Constants.BUNDLE_VERSION);
+
+        String[] parts = version.split("\\.");
+
+        int major = 0, minor = 0, revision = 0;
+        
+        if (parts.length >= 1)
+            major = Integer.parseInt(parts[0]);
+        
+        if (parts.length >= 2)
+            minor = Integer.parseInt(parts[1]);
+        
+        if (parts.length >= 3)
+            revision = Integer.parseInt(parts[2]);
+        
+        return (major * 256 * 256) + (minor * 256) + revision;
+    }
 
     //~ Static/instance variables .............................................
 

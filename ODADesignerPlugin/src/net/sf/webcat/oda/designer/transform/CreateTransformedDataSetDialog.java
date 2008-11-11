@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateTransformedDataSetDialog.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: CreateTransformedDataSetDialog.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,10 +21,21 @@
 
 package net.sf.webcat.oda.designer.transform;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import net.sf.webcat.oda.designer.DesignerActivator;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
+import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.eclipse.birt.report.model.api.CellHandle;
 import org.eclipse.birt.report.model.api.ColumnHintHandle;
 import org.eclipse.birt.report.model.api.DataItemHandle;
@@ -47,6 +58,8 @@ import org.eclipse.birt.report.model.api.elements.structures.ColumnHint;
 import org.eclipse.birt.report.model.api.elements.structures.ComputedColumn;
 import org.eclipse.birt.report.model.api.elements.structures.HideRule;
 import org.eclipse.birt.report.model.api.elements.structures.ResultSetColumn;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -67,7 +80,7 @@ import org.eclipse.swt.widgets.Text;
  * from another data set.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: CreateTransformedDataSetDialog.java,v 1.2 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: CreateTransformedDataSetDialog.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  */
 public class CreateTransformedDataSetDialog extends TitleAreaDialog
 {
@@ -91,9 +104,41 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
         setShellStyle(style);
 
         this.model = model;
+        
+        initializeVelocity();
     }
 
 
+    private void initializeVelocity()
+    {
+        velocity = new VelocityEngine();
+        
+        try
+        {
+            URL url = FileLocator.find(
+                    DesignerActivator.getDefault().getBundle(),
+                    new Path("velocity"), null);
+            
+            url = FileLocator.resolve(url);
+
+            Properties props = new Properties();
+            props.setProperty(RuntimeConstants.RESOURCE_LOADER, "url");
+            props.setProperty("url.resource.loader.description",
+                    "Velocity URL Resource Loader");
+            props.setProperty("url.resource.loader.class",
+                    URLResourceLoader.class.getName());
+            props.setProperty("url.resource.loader.root",
+                    url.toString());
+            
+            velocity.init(props);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
     // ----------------------------------------------------------
     @Override
     protected Control createContents(Composite parent)
@@ -326,21 +371,23 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
             scriptDataSource = scriptedDataSources.get(index);
         }
 
-        // Add script code to the source data set to store the data in
-        // intermediate JavaScript objects.
-
-        String varName = sanitizeDataSetName(sourceDataSet);
+        String varName = sanitizeDataSetName(sourceDataSet) + "_results";
 
         Properties params = new Properties();
+        params.setProperty(PROP_RESULTS_VARIABLE_NAME_KEY, varName);
         params.setProperty(PROP_GROUPING_KEY, groupingKeyField.getText());
         params.setProperty(PROP_AGGREGATION, aggregationField.getText());
         params.setProperty(PROP_AGGREGATION_KEY, aggregationKeyField.getText());
-        addSourceDataSetScripts(sourceDataSet, varName, params);
+
+        // Add script code to the source data set to store the data in
+        // intermediate JavaScript objects.
+
+        addSourceDataSetScripts(sourceDataSet, params);
 
         // Create the new scripted data set.
 
         ScriptDataSetHandle newDataSet = createScriptedDataSet(elementFactory,
-                scriptDataSource, varName);
+                scriptDataSource, params);
 
         copyDataSetColumns(elementFactory, sourceDataSet, newDataSet);
 
@@ -474,19 +521,20 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
 
     // ----------------------------------------------------------
     private void addSourceDataSetScripts(DataSetHandle sourceDataSet,
-            String varName, Properties params) throws SemanticException
+            Properties params) throws SemanticException
     {
-        String groupingKey = params.getProperty(PROP_GROUPING_KEY);
-        String aggregation = params.getProperty(PROP_AGGREGATION);
-        String aggKey = params.getProperty(PROP_AGGREGATION_KEY);
+//        String groupingKey = params.getProperty(PROP_GROUPING_KEY);
+//        String aggregation = params.getProperty(PROP_AGGREGATION);
+//        String aggKey = params.getProperty(PROP_AGGREGATION_KEY);
 
-        String resultsName = varName + "_results";
+/*        StringBuilder buffer = new StringBuilder(256);
+        buffer.append(resultsName + " = new java.util.Hashtable();\n");*/
 
-        StringBuilder buffer = new StringBuilder(256);
-        buffer.append(resultsName + " = new java.util.Hashtable();\n");
-        sourceDataSet.setAfterOpen(buffer.toString());
+        StringWriter writer = new StringWriter();
+        mergeTemplate("dsxform_source_afterOpen.jstemplate", params, writer);
+        sourceDataSet.setAfterOpen(writer.toString());
 
-        buffer = new StringBuilder(512);
+/*        buffer = new StringBuilder(512);
         buffer.append("var key = row[\"" + groupingKey + "\"];\n");
         buffer.append("var put = false;\n\n");
         buffer.append("if (" + resultsName + ".containsKey(key))\n");
@@ -523,8 +571,11 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
         buffer.append("        bundle[name] = row[name];\n");
         buffer.append("    }\n\n");
         buffer.append("    " + resultsName + ".put(key, bundle);\n");
-        buffer.append("}\n");
-        sourceDataSet.setOnFetch(buffer.toString());
+        buffer.append("}\n");*/
+        
+        writer = new StringWriter();
+        mergeTemplate("dsxform_source_onFetch.jstemplate", params, writer);
+        sourceDataSet.setOnFetch(writer.toString());
     }
 
 
@@ -545,11 +596,9 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
      */
     private ScriptDataSetHandle createScriptedDataSet(
             ElementFactory elementFactory,
-            ScriptDataSourceHandle scriptDataSource, String varName)
+            ScriptDataSourceHandle scriptDataSource, Properties params)
             throws SemanticException, ContentException, NameException
     {
-        String resultsName = varName + "_results";
-
         String dataSetName = dataSetNameField.getText();
         ScriptDataSetHandle newDataSet = elementFactory
                 .newScriptDataSet(dataSetName);
@@ -558,7 +607,15 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
 
         // Build the JavaScript code for the data set.
 
-        StringBuilder buffer = new StringBuilder();
+        StringWriter writer = new StringWriter();
+        mergeTemplate("dsxform_derived_open.jstemplate", params, writer);
+        newDataSet.setOpen(writer.toString());
+
+        writer = new StringWriter();
+        mergeTemplate("dsxform_derived_fetch.jstemplate", params, writer);
+        newDataSet.setFetch(writer.toString());
+        
+/*        StringBuilder buffer = new StringBuilder();
         buffer
                 .append("iterator = " + resultsName
                         + ".entrySet().iterator();\n");
@@ -578,7 +635,7 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
         buffer.append("    return false;\n");
         buffer.append("}\n");
         newDataSet.setFetch(buffer.toString());
-
+*/
         return newDataSet;
     }
 
@@ -638,14 +695,33 @@ public class CreateTransformedDataSetDialog extends TitleAreaDialog
     }
 
 
+    private void mergeTemplate(String name, Properties params, Writer writer)
+    {
+        try
+        {
+            VelocityContext context = new VelocityContext(params);
+
+            Template template = velocity.getTemplate(name);
+            template.merge(context, writer);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
     //~ Static/instance variables .............................................
 
+    private static final String PROP_RESULTS_VARIABLE_NAME_KEY =
+        "resultsVariableName";
     private static final String PROP_GROUPING_KEY = "groupingKey";
     private static final String PROP_AGGREGATION = "aggregation";
     private static final String PROP_AGGREGATION_KEY = "aggregationKey";
 
     private ModuleHandle model;
     private List<ScriptDataSourceHandle> scriptedDataSources;
+    private VelocityEngine velocity;
 
     private Text dataSetNameField;
     private Combo sourceDataSetField;

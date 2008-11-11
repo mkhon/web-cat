@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistAttributeInfo.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ContentAssistAttributeInfo.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,12 +21,15 @@
 
 package net.sf.webcat.oda.designer.contentassist;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 // ------------------------------------------------------------------------
 /**
  * Attributes about a type that are displayed in a content assist request.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ContentAssistAttributeInfo.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ContentAssistAttributeInfo.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  */
 public class ContentAssistAttributeInfo
 {
@@ -39,10 +42,12 @@ public class ContentAssistAttributeInfo
      * @param name the name of the property
      * @param type the type of the property
      */
-    public ContentAssistAttributeInfo(String name, String type)
+    public ContentAssistAttributeInfo(String name, String type,
+            JSONObject properties)
     {
         this.name = name;
         this.type = type;
+        this.properties = properties;
     }
 
 
@@ -69,10 +74,42 @@ public class ContentAssistAttributeInfo
     {
         return type;
     }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * 
+     *
+     * @return
+     */
+    public Object valueForProperty(String property)
+    {
+        try
+        {
+            return properties.get(property);
+        }
+        catch (JSONException e)
+        {
+            return null;
+        }
+    }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * 
+     *
+     * @return
+     */
+    public JSONObject allPropertyValues()
+    {
+        return properties;
+    }
 
 
     //~ Static/instance variables .............................................
 
     private String name;
     private String type;
+    private JSONObject properties;
 }

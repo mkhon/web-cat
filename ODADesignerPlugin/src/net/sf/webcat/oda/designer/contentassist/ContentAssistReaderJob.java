@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistReaderJob.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ContentAssistReaderJob.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.eclipse.core.runtime.jobs.Job;
  * A background job that retrieves content assist information from the server.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ContentAssistReaderJob.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ContentAssistReaderJob.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
  */
 public class ContentAssistReaderJob extends Job
 {
@@ -72,6 +72,8 @@ public class ContentAssistReaderJob extends Job
         Hashtable<String, String> params = new Hashtable<String, String>();
         params.put("username", manager.username); //$NON-NLS-1$
         params.put("password", manager.password); //$NON-NLS-1$
+        params.put("designerVersion", Integer.toString(
+                DesignerActivator.getDefault().getVersionAsInteger()));
 
         WOActionDispatcher dispatcher = new WOActionDispatcher(
                 manager.serverUrl);
