@@ -5,7 +5,7 @@ subsystem.BIRTRuntime=net.sf.webcat.birtruntime.BIRTRuntime
 
 BIRTRuntime.version.major=1
 BIRTRuntime.version.minor=1
-BIRTRuntime.version.revision=0
+BIRTRuntime.version.revision=1
 BIRTRuntime.requires=Core
 
 BIRTRuntime.copyright=\
