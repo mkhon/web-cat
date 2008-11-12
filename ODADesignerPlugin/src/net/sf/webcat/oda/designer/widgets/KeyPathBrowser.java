@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: KeyPathBrowser.java,v 1.3 2008/04/13 22:04:53 aallowat Exp $
+ |  $Id: KeyPathBrowser.java,v 1.4 2008/11/12 01:13:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,6 +29,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,7 +47,7 @@ import org.eclipse.swt.widgets.TableItem;
  * a hierarchy using a horizontal sliding panel.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: KeyPathBrowser.java,v 1.3 2008/04/13 22:04:53 aallowat Exp $
+ * @version $Id: KeyPathBrowser.java,v 1.4 2008/11/12 01:13:48 aallowat Exp $
  */
 public class KeyPathBrowser extends Composite
 {
@@ -371,6 +372,12 @@ public class KeyPathBrowser extends Composite
 
                 item.setData("className", className); // $NON_NLS_1$ //$NON-NLS-1$
                 item.setData("key", key); // $NON_NLS_1$ //$NON-NLS-1$
+
+                Color fgColor = keyLabelProvider.getForegroundColor(className,
+                        key);
+                
+                if (fgColor != null)
+                    item.setForeground(fgColor);
 
                 item.setText(keyLabelProvider.getLabel(className, key));
                 item.setImage(keyLabelProvider.getImage(className, key));

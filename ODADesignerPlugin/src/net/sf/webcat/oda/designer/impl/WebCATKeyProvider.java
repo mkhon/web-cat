@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebCATKeyProvider.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: WebCATKeyProvider.java,v 1.4 2008/11/12 01:13:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,8 +21,12 @@
 
 package net.sf.webcat.oda.designer.impl;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import net.sf.webcat.oda.designer.DesignerActivator;
+import net.sf.webcat.oda.designer.contentassist.ContentAssistAttributeInfo;
 import net.sf.webcat.oda.designer.contentassist.ContentAssistManager;
 import net.sf.webcat.oda.designer.util.ImageUtils;
 import net.sf.webcat.oda.designer.widgets.IKeyLabelProvider;
@@ -35,7 +39,7 @@ import net.sf.webcat.oda.designer.widgets.IKeyProvider;
  * assist manager.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: WebCATKeyProvider.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: WebCATKeyProvider.java,v 1.4 2008/11/12 01:13:48 aallowat Exp $
  */
 public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
 {
@@ -49,6 +53,8 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
 
         propertyImage = ImageUtils.getImage("icons/keypath/property.gif"); //$NON-NLS-1$
         methodImage = ImageUtils.getImage("icons/keypath/method.gif"); //$NON-NLS-1$
+        deprecatedPropertyImage = ImageUtils.getImage("icons/keypath/property-deprecated.gif"); //$NON-NLS-1$
+        deprecatedMethodImage = ImageUtils.getImage("icons/keypath/method-deprecated.gif"); //$NON-NLS-1$
     }
 
 
@@ -59,6 +65,8 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     {
         propertyImage.dispose();
         methodImage.dispose();
+        deprecatedPropertyImage.dispose();
+        deprecatedMethodImage.dispose();
     }
 
 
@@ -86,10 +94,38 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
     // ----------------------------------------------------------
     public Image getImage(String className, String key)
     {
-        if (contentAssist.isEntity(getKeyType(className, key)))
-            return methodImage;
+        ContentAssistAttributeInfo attrInfo =
+            contentAssist.getAttributeInfo(className, key);
+
+        Object depObj = attrInfo.valueForProperty("deprecated");
+        boolean deprecated =
+            (depObj instanceof Boolean) ? (Boolean) depObj : false;
+
+        boolean resultIsEntity = contentAssist.isEntity(
+                getKeyType(className, key));
+        
+        if (resultIsEntity)
+        {
+            if (deprecated)
+            {
+                return deprecatedMethodImage;
+            }
+            else
+            {
+                return methodImage;
+            }
+        }
         else
-            return propertyImage;
+        {
+            if (deprecated)
+            {
+                return deprecatedPropertyImage;
+            }
+            else
+            {
+                return propertyImage;
+            }
+        }
     }
 
 
@@ -100,10 +136,33 @@ public class WebCATKeyProvider implements IKeyProvider, IKeyLabelProvider
         return key + " (" + destType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    
+    // ----------------------------------------------------------
+    public Color getForegroundColor(String className, String key)
+    {
+        ContentAssistAttributeInfo attrInfo =
+            contentAssist.getAttributeInfo(className, key);
 
+        Object depObj = attrInfo.valueForProperty("deprecated");
+        boolean deprecated =
+            (depObj instanceof Boolean) ? (Boolean) depObj : false;
+
+        if (deprecated)
+        {
+            return Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    
     //~ Static/instance variables .............................................
 
     private ContentAssistManager contentAssist;
     private Image propertyImage;
     private Image methodImage;
+    private Image deprecatedPropertyImage;
+    private Image deprecatedMethodImage;
 }

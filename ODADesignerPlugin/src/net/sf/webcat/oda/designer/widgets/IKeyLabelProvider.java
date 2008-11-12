@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IKeyLabelProvider.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ |  $Id: IKeyLabelProvider.java,v 1.3 2008/11/12 01:13:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.oda.designer.widgets;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 //------------------------------------------------------------------------
@@ -28,7 +29,7 @@ import org.eclipse.swt.graphics.Image;
  * A label provider for the KeyBrowser widget.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: IKeyLabelProvider.java,v 1.2 2008/04/13 22:04:53 aallowat Exp $
+ * @version $Id: IKeyLabelProvider.java,v 1.3 2008/11/12 01:13:48 aallowat Exp $
  */
 public interface IKeyLabelProvider
 {
@@ -60,4 +61,19 @@ public interface IKeyLabelProvider
      * @return the image to display for the key
      */
     Image getImage(String className, String key);
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Gets the foreground color used to draw the label for the key of the
+     * specified class.
+     * 
+     * @param className
+     *            the name of the class that contains the key
+     * @parak key
+     *            the key
+     *            
+     * @return the color to draw the label, or null to use the default
+     */
+    Color getForegroundColor(String className, String key);
 }

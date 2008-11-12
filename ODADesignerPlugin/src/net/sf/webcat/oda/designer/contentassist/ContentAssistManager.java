@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistManager.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ContentAssistManager.java,v 1.3 2008/11/12 01:13:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.eclipse.core.runtime.IPath;
  * the Web-CAT server in order to ease the editing of data sets for the user.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ContentAssistManager.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ContentAssistManager.java,v 1.3 2008/11/12 01:13:48 aallowat Exp $
  */
 public class ContentAssistManager
 {
@@ -274,6 +274,28 @@ public class ContentAssistManager
     }
 
 
+    // ----------------------------------------------------------
+    public ContentAssistAttributeInfo getAttributeInfo(String entity,
+            String attribute)
+    {
+        if (isEntity(entity))
+        {
+            List<ContentAssistAttributeInfo> attrs = entityDescriptions
+                    .get(entity);
+
+            for (ContentAssistAttributeInfo attrInfo : attrs)
+            {
+                if (attrInfo.name().equals(attribute))
+                {
+                    return attrInfo;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    
     // ----------------------------------------------------------
     public String getKeyPathType(String rootClass, String keyPath)
     {
