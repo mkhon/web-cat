@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CreateTransformedDataSetDialog.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
+ |  $Id: CreateTransformedDataSetDialog.java,v 1.4 2008/11/12 01:13:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,20 +21,17 @@
 
 package net.sf.webcat.oda.designer.transform;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import net.sf.webcat.oda.designer.DesignerActivator;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.eclipse.birt.report.model.api.CellHandle;
 import org.eclipse.birt.report.model.api.ColumnHintHandle;
@@ -80,7 +77,7 @@ import org.eclipse.swt.widgets.Text;
  * from another data set.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: CreateTransformedDataSetDialog.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
+ * @version $Id: CreateTransformedDataSetDialog.java,v 1.4 2008/11/12 01:13:17 aallowat Exp $
  */
 public class CreateTransformedDataSetDialog extends TitleAreaDialog
 {
