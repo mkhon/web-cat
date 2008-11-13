@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.14 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: Reporter.java,v 1.15 2008/11/13 00:51:26 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -61,6 +61,7 @@ import net.sf.webcat.reporter.internal.rendering.CSVRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.ExcelRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.HTMLRenderingMethod;
 import net.sf.webcat.reporter.internal.rendering.PDFRenderingMethod;
+import ognl.OgnlRuntime;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.IExtension;
@@ -91,7 +92,7 @@ import org.eclipse.birt.report.model.api.SessionHandle;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.14 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.15 2008/11/13 00:51:26 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -372,10 +373,10 @@ public class Reporter
 
         Application.releasePeerEditingContext(ec);
 
-        if (log.isDebugEnabled())
+        /*if (log.isDebugEnabled())
         {
             log.debug("refreshThrottleStatus(): " + isThrottled());
-        }
+        }*/
 
         return isThrottled();
     }

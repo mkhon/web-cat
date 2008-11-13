@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.9 2008/10/29 21:04:39 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.10 2008/11/13 00:51:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,25 @@
 
 package net.sf.webcat.reporter.actions;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.StringReader;
+import java.util.Enumeration;
+import net.sf.webcat.core.Application;
+import net.sf.webcat.core.ReadOnlyEditingContext;
+import net.sf.webcat.reporter.QualifierUtils;
+import net.sf.webcat.reporter.ReportUtilityEnvironment;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryModel;
+import net.sf.webcat.reporter.queryassistants.AdvancedQueryUtils;
+import ognl.Node;
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+import ognl.enhance.ExpressionAccessor;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
@@ -34,31 +53,11 @@ import com.webobjects.eocontrol.EOGenericRecord;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
-import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
 import er.extensions.appserver.ERXDirectAction;
 import er.extensions.eof.ERXFetchSpecificationBatchIterator;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.StringReader;
-import java.util.Enumeration;
-import net.sf.webcat.core.Application;
-import net.sf.webcat.core.ReadOnlyEditingContext;
-import net.sf.webcat.reporter.QualifierUtils;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryModel;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryUtils;
-import net.sf.webcat.reporter.queryassistants.KeyPathParser;
-import ognl.Node;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlException;
-import ognl.enhance.ExpressionAccessor;
 
 //-------------------------------------------------------------------------
 /**
@@ -69,7 +68,7 @@ import ognl.enhance.ExpressionAccessor;
  * response end-of-data marker is true.
  *
  * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.9 2008/10/29 21:04:39 aallowat Exp $
+ * @version $Id: designerPreview.java,v 1.10 2008/11/13 00:51:27 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -129,7 +128,8 @@ public class designerPreview
 
         try
         {
-            OgnlContext ognlContext = new OgnlContext();
+            OgnlContext ognlContext =
+                ReportUtilityEnvironment.newOgnlContext();
 
             EOEntity rootEntity = EOUtilities.entityNamed(context, entityType);
 
@@ -143,7 +143,6 @@ public class designerPreview
                 new ERXFetchSpecificationBatchIterator(spec, context);
             iterator.setBatchSize(50);
 
-            session.setObjectForKey(ognlContext, SESSION_OGNLCONTEXT);
             session.setObjectForKey(iterator, SESSION_ITERATOR);
             session.setObjectForKey(compiled, SESSION_EXPRESSIONS);
             session.setObjectForKey(expressions, SESSION_EXPRESSION_STRINGS);
@@ -295,9 +294,6 @@ public class designerPreview
         {
             if (iterator.hasNextBatch())
             {
-                OgnlContext ognlContext =
-                    (OgnlContext)session.objectForKey(SESSION_OGNLCONTEXT);
-
                 ExpressionAccessor[] expressions = (ExpressionAccessor[])
                     session.objectForKey(SESSION_EXPRESSIONS);
 
@@ -322,6 +318,9 @@ public class designerPreview
 
                     for (int i = 0; i < expressions.length; i++)
                     {
+                        OgnlContext ognlContext =
+                            ReportUtilityEnvironment.newOgnlContext();
+
                         Object value = getValueOfExpression(expressions[i],
                             ognlContext, eo, expressionStrings[i]);
 
@@ -377,8 +376,6 @@ public class designerPreview
         ExpressionAccessor[] compiled =
             new ExpressionAccessor[expressions.length];
         NSMutableArray prefetchedRelationships = new NSMutableArray();
-
-        ognlContext = new OgnlContext();
 
         int i = 0;
         for (String expression : expressions)
@@ -447,6 +444,7 @@ public class designerPreview
         String             expressionString)
     {
         Object result = null;
+        ognlContext.setRoot(object);
 
         try
         {
@@ -456,6 +454,7 @@ public class designerPreview
         {
             // Translate the expression into something a little easier for the
             // user to read.
+            
             String msg = String.format(
                 "In the expression (%s), the key \"%s\" is not recognized "
                 + "by the source object (which is of type \"%s\")",
@@ -469,10 +468,28 @@ public class designerPreview
         {
             if (e instanceof OgnlException)
             {
-                return null;
+                // This hack is unsatisfactory, but it's really the only good
+                // way to let null values in an OGNL expression that would
+                // normally cause errors propagate out as a null column value
+                // instead.
+
+                if (e.getMessage().startsWith("source is null"))
+                {
+                    return null;
+                }
+                else
+                {
+                    log.error("Exception thrown while evaluating column " +
+                            "expression", e);
+
+                    throw new IllegalArgumentException(e);
+                }
             }
             else
             {
+                log.error("Exception thrown while evaluating column " +
+                        "expression", e);
+
                 throw new IllegalArgumentException(e);
             }
         }
@@ -573,9 +590,6 @@ public class designerPreview
 
     private static final String SESSION_EXPRESSION_STRINGS =
         "net.sf.webcat.reporter.actions.designerPreview.expressionStrings";
-
-    private static final String SESSION_OGNLCONTEXT =
-        "net.sf.webcat.reporter.actions.designerPreview.ognlContext";
 
     private static final String SESSION_SLOW_QUALIFIER =
         "net.sf.webcat.reporter.actions.designerPreview.slowQualifier";
