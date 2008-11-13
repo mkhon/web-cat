@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CopyrightLicenseSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: CopyrightLicenseSection.java,v 1.6 2008/11/13 19:05:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * and license of a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: CopyrightLicenseSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: CopyrightLicenseSection.java,v 1.6 2008/11/13 19:05:18 aallowat Exp $
  */
 public class CopyrightLicenseSection extends AbstractSection
 {
@@ -72,9 +72,11 @@ public class CopyrightLicenseSection extends AbstractSection
 
         createLabel(parent, Messages.COPYRIGHT_COPYRIGHT, SWT.CENTER);
         copyrightField = createText(parent, false, SWT.NONE);
-
+        setGridWidthHint(copyrightField, 64);
+        
         createLabel(parent, Messages.COPYRIGHT_LICENSE, SWT.CENTER);
         licenseField = createCombo(parent);
+        setGridWidthHint(licenseField, 64);
 
         for (String license : LicenseTable.getInstance().getLicenses())
         {
@@ -100,6 +102,7 @@ public class CopyrightLicenseSection extends AbstractSection
         Composite urlComp = createGridComposite(parent, 2, false);
 
         licenseURLField = createText(urlComp, false, SWT.NONE);
+        setGridWidthHint(licenseURLField, 64);
 
         licenseURLGoButton = createButton(urlComp, Messages.COPYRIGHT_GO, null);
         licenseURLGoButton.addSelectionListener(new SelectionAdapter()

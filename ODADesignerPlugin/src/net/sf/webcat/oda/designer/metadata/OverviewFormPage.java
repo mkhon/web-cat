@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OverviewFormPage.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: OverviewFormPage.java,v 1.5 2008/11/13 19:05:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,12 +22,10 @@
 package net.sf.webcat.oda.designer.metadata;
 
 import java.lang.reflect.InvocationTargetException;
-
 import net.sf.webcat.oda.commons.ReportModelProblemFinder;
 import net.sf.webcat.oda.designer.DesignerActivator;
 import net.sf.webcat.oda.designer.i18n.Messages;
 import net.sf.webcat.oda.designer.preferences.IPreferencesConstants;
-
 import org.eclipse.birt.report.designer.internal.ui.command.WrapperCommandStack;
 import org.eclipse.birt.report.designer.internal.ui.editors.parts.event.ModelEventManager;
 import org.eclipse.birt.report.designer.internal.ui.views.data.DataViewPage;
@@ -71,7 +69,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * for a report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: OverviewFormPage.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: OverviewFormPage.java,v 1.5 2008/11/13 19:05:18 aallowat Exp $
  */
 public class OverviewFormPage extends ReportFormPage
 {
@@ -320,12 +318,12 @@ public class OverviewFormPage extends ReportFormPage
         {
             managedForm = new ManagedForm(parent);
 
-            TableWrapLayout layout = new TableWrapLayout();
+/*            TableWrapLayout layout = new TableWrapLayout();
             layout.numColumns = 2;
             layout.makeColumnsEqualWidth = false;
-            managedForm.getForm().getBody().setLayout(layout);
+            managedForm.getForm().getBody().setLayout(layout);*/
 
-            FormToolkit toolkit = managedForm.getToolkit();
+            FormToolkit toolkit = managedForm.getToolkit(); 
             toolkit.decorateFormHeading(managedForm.getForm().getForm());
             managedForm.getForm().setText(Messages.OVERVIEW_PAGE_TITLE);
 
@@ -361,49 +359,35 @@ public class OverviewFormPage extends ReportFormPage
 
         FormToolkit toolkit = managedForm.getToolkit();
 
-        final Composite leftPane = managedForm.getToolkit().createComposite(
-                parent);
         TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 1;
-        layout.makeColumnsEqualWidth = true;
-        leftPane.setLayout(layout);
+        layout.numColumns = 2;
+        layout.makeColumnsEqualWidth = false;
+        parent.setLayout(layout);
 
-        twd = new TableWrapData(TableWrapData.FILL_GRAB);
-        leftPane.setLayoutData(twd);
-
-        final Composite rightPane = managedForm.getToolkit().createComposite(
-                parent);
-        layout = new TableWrapLayout();
-        layout.numColumns = 1;
-        layout.makeColumnsEqualWidth = true;
-        rightPane.setLayout(layout);
-
-        twd = new TableWrapData(TableWrapData.FILL_GRAB);
-        rightPane.setLayoutData(twd);
-
-        part = new GeneralInfoSection(this, leftPane, toolkit, getModel());
+        part = new GeneralInfoSection(this, parent, toolkit, getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
 
-        part = new AuthorsSection(this, rightPane, toolkit, getModel());
+        part = new AuthorsSection(this, parent, toolkit, getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
 
-        part = new CopyrightLicenseSection(this, rightPane, toolkit, getModel());
+        part = new CopyrightLicenseSection(this, parent, toolkit, getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
 
-        part = new AppearanceBehaviorSection(this, rightPane, toolkit,
+        part = new AppearanceBehaviorSection(this, parent, toolkit,
                 getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
 
-        part = new RepositorySection(this, leftPane, toolkit, getModel());
+        part = new RepositorySection(this, parent, toolkit, getModel());
         twd = new TableWrapData(TableWrapData.FILL_GRAB);
+        twd.colspan = 2;
         part.getSection().setLayoutData(twd);
         managedForm.addPart(part);
     }

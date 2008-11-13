@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositorySection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: RepositorySection.java,v 1.6 2008/11/13 19:05:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 
 //------------------------------------------------------------------------
 /**
@@ -40,7 +42,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * repository.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: RepositorySection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: RepositorySection.java,v 1.6 2008/11/13 19:05:18 aallowat Exp $
  */
 public class RepositorySection extends AbstractSection
 {
@@ -52,7 +54,8 @@ public class RepositorySection extends AbstractSection
     {
         super(formPage, parent, toolkit, model,
                 Messages.REPOSITORY_SECTION_TITLE,
-                Messages.REPOSITORY_SECTION_DESCRIPTION);
+                Messages.REPOSITORY_SECTION_DESCRIPTION,
+                Section.TWISTIE);
     }
 
 
@@ -65,11 +68,14 @@ public class RepositorySection extends AbstractSection
         GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
 
+        GridData gd;
+        
         createLabel(parent, Messages.REPOSITORY_ID, SWT.CENTER);
-        idField = createFormText(parent, false);
-        idField.setColor("disabled", Display.getCurrent().getSystemColor( //$NON-NLS-1$
-                SWT.COLOR_GRAY));
-
+        idField = getToolkit().createHyperlink(parent, null, SWT.NONE);
+        gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        gd.widthHint = 256;
+        idField.setLayoutData(gd);
+        
         createLabel(parent, Messages.REPOSITORY_VERSION, SWT.CENTER);
         versionField = createFormText(parent, false);
         versionField.setColor("disabled", Display.getCurrent().getSystemColor( //$NON-NLS-1$
@@ -81,15 +87,16 @@ public class RepositorySection extends AbstractSection
                 .getSystemColor(SWT.COLOR_GRAY));
 
         createLabel(parent, Messages.REPOSITORY_ROOT_ID, SWT.CENTER);
-        rootIdField = createFormText(parent, false);
-        rootIdField.setColor("disabled", Display.getCurrent().getSystemColor( //$NON-NLS-1$
-                SWT.COLOR_GRAY));
+        rootIdField = getToolkit().createHyperlink(parent, null, SWT.NONE);
+        gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        gd.widthHint = 256;
+        rootIdField.setLayoutData(gd);
 
         createLabel(parent, Messages.REPOSITORY_CHANGE_HISTORY, SWT.LEAD);
         changeHistoryField = createFormText(parent, true);
         changeHistoryField.setColor("disabled", Display.getCurrent() //$NON-NLS-1$
                 .getSystemColor(SWT.COLOR_GRAY));
-        GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gd = new GridData(SWT.FILL, SWT.FILL, true, true);
         gd.minimumHeight = 56;
         changeHistoryField.setLayoutData(gd);
     }
@@ -105,20 +112,40 @@ public class RepositorySection extends AbstractSection
         String id = ReportMetadata.getRepositoryId(module);
 
         if (id == null)
-            text = NOT_YET_UPLOADED;
+        {
+            idField.setEnabled(false);
+            idField.setUnderlined(false);
+            idField.setForeground(idField.getDisplay().getSystemColor(
+                    SWT.COLOR_GRAY));
+            idField.setText(Messages.REPOSITORY_SECTION_NOT_YET_UPLOADED);
+        }
         else
-            text = "<form>" + id + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
-
-        idField.setText(text, true, true);
+        {
+            idField.setEnabled(true);
+            idField.setUnderlined(true);
+            idField.setForeground(idField.getDisplay().getSystemColor(
+                    SWT.COLOR_DARK_BLUE));
+            idField.setText(id);
+        }
 
         String rootId = ReportMetadata.getRepositoryRootId(module);
 
         if (rootId == null)
-            text = NOT_YET_UPLOADED;
+        {
+            rootIdField.setEnabled(false);
+            rootIdField.setUnderlined(false);
+            rootIdField.setForeground(rootIdField.getDisplay().getSystemColor(
+                    SWT.COLOR_GRAY));
+            rootIdField.setText(Messages.REPOSITORY_SECTION_NOT_YET_UPLOADED);
+        }
         else
-            text = "<form>" + rootId + "</form>"; //$NON-NLS-1$ //$NON-NLS-2$
-
-        rootIdField.setText(text, true, true);
+        {
+            rootIdField.setEnabled(true);
+            rootIdField.setUnderlined(true);
+            rootIdField.setForeground(rootIdField.getDisplay().getSystemColor(
+                    SWT.COLOR_DARK_BLUE));
+            rootIdField.setText(rootId);
+        }
 
         String version = ReportMetadata.getRepositoryVersion(module);
 
@@ -156,9 +183,9 @@ public class RepositorySection extends AbstractSection
             + Messages.REPOSITORY_SECTION_NOT_YET_UPLOADED
             + "</span></p></form>"; //$NON-NLS-1$ //$NON-NLS-2$
 
-    private FormText idField;
+    private Hyperlink idField;
     private FormText versionField;
     private FormText uploadDateField;
-    private FormText rootIdField;
+    private Hyperlink rootIdField;
     private FormText changeHistoryField;
 }

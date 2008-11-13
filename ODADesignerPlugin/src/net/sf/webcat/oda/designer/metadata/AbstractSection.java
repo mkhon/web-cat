@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractSection.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: AbstractSection.java,v 1.5 2008/11/13 19:05:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * report designer form pages.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: AbstractSection.java,v 1.4 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: AbstractSection.java,v 1.5 2008/11/13 19:05:18 aallowat Exp $
  */
 public abstract class AbstractSection extends SectionPart
 {
@@ -72,7 +72,33 @@ public abstract class AbstractSection extends SectionPart
             FormToolkit toolkit, ModuleHandle model, String title,
             String description)
     {
-        super(parent, toolkit, Section.TITLE_BAR | Section.DESCRIPTION);
+        this(formPage, parent, toolkit, model, title, description, 0);
+    }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Creates a section.
+     *
+     * @param formPage
+     *            the form page that will own this section
+     * @param parent
+     *            the Composite container that should be the parent of this
+     *            section
+     * @param toolkit
+     *            the form toolkit of the form page
+     * @param model
+     *            the report design that this section will edit
+     * @param title
+     *            the title of the section
+     * @param description
+     *            the description of the section
+     */
+    public AbstractSection(OverviewFormPage formPage, Composite parent,
+            FormToolkit toolkit, ModuleHandle model, String title,
+            String description, int style)
+    {
+        super(parent, toolkit, Section.TITLE_BAR | Section.DESCRIPTION | style);
 
         this.formPage = formPage;
         this.model = model;
@@ -283,6 +309,13 @@ public abstract class AbstractSection extends SectionPart
     }
 
 
+    protected void setGridWidthHint(Control control, int hint)
+    {
+        GridData gd = (GridData) control.getLayoutData();
+        gd.widthHint = hint; 
+    }
+    
+    
     // ----------------------------------------------------------
     protected void safeSetText(Text control, String value)
     {

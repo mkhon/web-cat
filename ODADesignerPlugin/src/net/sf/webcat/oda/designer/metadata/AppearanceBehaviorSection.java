@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AppearanceBehaviorSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: AppearanceBehaviorSection.java,v 1.6 2008/11/13 19:05:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * appearance and behavior of the report template.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: AppearanceBehaviorSection.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: AppearanceBehaviorSection.java,v 1.6 2008/11/13 19:05:18 aallowat Exp $
  */
 public class AppearanceBehaviorSection extends AbstractSection
 {
@@ -68,6 +68,7 @@ public class AppearanceBehaviorSection extends AbstractSection
         label = createLabel(parent, Messages.APP_BEHAV_LANGUAGE, SWT.CENTER);
         label.setToolTipText(Messages.APP_BEHAV_LANGUAGE_TOOLTIP);
         languageField = createCombo(parent);
+        setGridWidthHint(languageField, 64);
 
         for (String language : LanguageTable.getInstance().getDisplayNames())
         {
@@ -78,6 +79,7 @@ public class AppearanceBehaviorSection extends AbstractSection
                 SWT.CENTER);
         label.setToolTipText(Messages.APP_BEHAV_PREFERRED_RENDERER_TOOLTIP);
         rendererField = createCombo(parent);
+        setGridWidthHint(rendererField, 64);
 
         rendererField.add("html");
         rendererField.add("pdf");
