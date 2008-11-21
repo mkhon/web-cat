@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.objectstyle.wolips.ContainerInitializer"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/eddo-1_3.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.0.jar"/>
