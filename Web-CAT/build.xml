@@ -1,6 +1,7 @@
 <project name="Web-CAT" default="build.redistributable.war" basedir=".">
 
   <property name="project.name.for.version" value="webcat"/>
+  <property name="framework.name"           value="webcat"/>
   <import file="../Core/framework.xml"/>
 
 
@@ -57,13 +58,6 @@
   <!-- basic initializations  ........................................ -->
   <target name="init.build.traditional" depends="setProps">
     <property name="dest.dir" value="${install.dir}"/>
-    <tstamp/>
-    <copy file="Properties.master" tofile="Properties"/>
-    <propertyfile file="Properties"
-      comment="This file is automatically rewritten by ANT, so all formatting will be trashed.">
-      <entry key="webcat.version.date" value="${DSTAMP}"/>
-    </propertyfile>
-    <echo message="stamp = ${DSTAMP}"/>
   </target>
 
 
@@ -89,6 +83,7 @@
                CloverForPlugins
                PerlForPlugins
                PMDForPlugins
+      	       BIRTRuntime
                Reporter"/>
     </subant>
   </target>
@@ -103,7 +98,6 @@
 
     <!-- add webXML="true" to generate a web.xml file -->
     <woapplication name="${project.name}"
-      stdFrameworks="false"
       destDir="${dest.dir}/${project.name}/WEB-INF"
       customInfoPListContent="${customInfoPListContent}"
       principalClass="${principalClass}"
@@ -120,23 +114,24 @@
         <includesfile name="woproject/resources.include.patternset"/>
         <excludesfile name="woproject/resources.exclude.patternset"/>
       </patternset></resources>
-      <frameworks root="${wo.wosystemroot}" embed="true"><patternset>
-        <includesfile name="woproject/ant.frameworks.wo.wosystemroot"/>
-      </patternset></frameworks>
-      <frameworks root="${wo.wolocalroot}" embed="true"><patternset>
-        <includesfile name="woproject/ant.frameworks.wo.wolocalroot"/>
-      </patternset></frameworks>
-      <frameworks root="${user.home}" embed="true"><patternset>
-        <includesfile name="woproject/ant.frameworks.user.home"/>
-      </patternset></frameworks>
-      <otherclasspath root="${wo.wosystemroot}"><patternset>
-        <includesfile name="woproject/ant.classpaths.wo.wosystemroot"/>
-      </patternset></otherclasspath>
+
+      <frameworks root="ProjectLocal" embed="true" eclipse="true" />
+      <frameworks root="External"     embed="true" eclipse="true" />
+      <frameworks root="Local"        embed="true" eclipse="true">
+        <exclude name="**/WOOgnl.framework/Resources/Java/ognl*.jar"/>
+      </frameworks>
+      <frameworks root="User"         embed="true" eclipse="true" />
+      <frameworks root="System"       embed="true" eclipse="true" />
+      <frameworks root="Network"      embed="true" eclipse="true" />
+
       <lib dir=".">
         <include name="**/*.jar"/>
         <exclude name="**/*.woa/**"/>
       </lib>
     </woapplication>
+    <mkdir dir="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Library"/>
+    <move file="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Frameworks"
+      todir="${dest.dir}/${project.name}/WEB-INF/${project.name}.woa/Contents/Library"/>
   </target>
 
 
@@ -149,7 +144,6 @@
 
     <!-- add webXML="true" to generate a web.xml file -->
     <woapplication name="${project.name}"
-      stdFrameworks="false"
       destDir="${dest.dir}"
       customInfoPListContent="${customInfoPListContent}"
       principalClass="${principalClass}"
@@ -166,21 +160,16 @@
         <includesfile name="woproject/resources.include.patternset"/>
         <excludesfile name="woproject/resources.exclude.patternset"/>
       </patternset></resources>
-      <frameworks root="${wo.wosystemroot}"><patternset>
-        <includesfile name="woproject/ant.frameworks.wo.wosystemroot"/>
-        <exclude name="**/JavaWOJSPServlet.framework/WebServerResources/com/"/>
-        <exclude name="**/JavaWOJSPServlet.framework/WebServerResources/*.orig"/>
-      </patternset></frameworks>
-      <frameworks root="${wo.wolocalroot}"><patternset>
-        <includesfile name="woproject/ant.frameworks.wo.wolocalroot"/>
-      <exclude name="**/WOOgnl.framework/Resources/Java/ognl*.jar"/>
-      </patternset></frameworks>
-      <frameworks root="${user.home}"><patternset>
-        <includesfile name="woproject/ant.frameworks.user.home"/>
-      </patternset></frameworks>
-      <otherclasspath root="${wo.wosystemroot}"><patternset>
-        <includesfile name="woproject/ant.classpaths.wo.wosystemroot"/>
-      </patternset></otherclasspath>
+
+      <frameworks root="ProjectLocal" embed="false" eclipse="true" />
+      <frameworks root="External"     embed="false" eclipse="true" />
+      <frameworks root="Local"        embed="false" eclipse="true">
+        <exclude name="**/WOOgnl.framework/Resources/Java/ognl*.jar"/>
+      </frameworks>
+      <frameworks root="User"         embed="false" eclipse="true" />
+      <frameworks root="System"       embed="false" eclipse="true" />
+      <frameworks root="Network"      embed="false" eclipse="true" />
+
       <lib dir=".">
         <include name="**/*.jar"/>
         <exclude name="**/*.woa/**"/>
