@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.37 2008/10/29 21:05:06 aallowat Exp $
+ |  $Id: Application.java,v 1.38 2008/11/21 16:42:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.37 2008/10/29 21:05:06 aallowat Exp $
+ * @version $Id: Application.java,v 1.38 2008/11/21 16:42:04 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.appserver.ERXApplication
@@ -516,7 +516,7 @@ public class Application
         }
         if ( urlHostPrefix != null )
         {
-            dest = dest.replaceFirst( "^http(s)?://[^/]*", urlHostPrefix );
+            dest = dest.replaceFirst( "^http(s)?://[^/]*(/)?", urlHostPrefix );
         }
         dest = dest.replaceFirst( "^http(s)?:",
             "http"
@@ -1176,7 +1176,23 @@ public class Application
             message.setContent( multipart );
 
             // Send the message
-            javax.mail.Transport.send( message );
+            if ("donotsendmail".equals(
+                    configurationProperties().getProperty( "mail.smtp.host" )))
+            {
+            	if (log.isDebugEnabled())
+            	{
+            		log.debug( "E-MAIL DISABLED: unsent message:\nTo: "
+                        + ( to == null ? "null" : to )
+                        + "\ntoAdmins: " + toAdmins
+                        + "\nSubject: " + ( subject == null ? "null" : subject )
+                        + "\nBody:\n" + ( body == null ? "null" : body )
+                        );
+            	}
+            }
+            else
+            {
+            	javax.mail.Transport.send( message );
+            }
         }
         catch ( Exception e )
         {
