@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.8 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: OptionEditPanel.java,v 1.9 2008/11/21 16:42:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.8 2008/10/29 14:15:51 aallowat Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.9 2008/11/21 16:42:21 stedwar2 Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -271,7 +271,7 @@ public class OptionEditPanel
     // ----------------------------------------------------------
     public Object choiceLabel()
     {
-        Object result = choice.objectForKey( "label" );
+        Object result = choice == null ? null : choice.objectForKey( "label" );
         if ( result == null )
         {
             result = choiceValue();
@@ -283,7 +283,7 @@ public class OptionEditPanel
     // ----------------------------------------------------------
     public Object choiceValue()
     {
-        return choice.objectForKey( "value" );
+        return choice == null ? null : choice.objectForKey( "value" );
     }
 
 
