@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.5 2008/12/02 22:23:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.5 2008/12/02 22:23:20 aallowat Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -176,15 +176,29 @@ public class GraderDatabaseUpdates
 
     // ----------------------------------------------------------
     /**
-     * Drop the unused hasSuspendedSubs attribute from AssignmentOffering.
+     * Drop the unused courseOfferingId attribute from GraderPrefs, and add
+     * to Submission a field indicating whether it is the "submission for
+     * grading."
      * @throws SQLException on error
      */
-//    public void updateIncrement7() throws SQLException
-//    {
-//        database().executeSQL(
-//            "alter table TGRADERPREFS drop "
-//            + "CCOURSEOFFERINGID" );
-//    }
+    public void updateIncrement7() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TGRADERPREFS drop "
+            + "CCOURSEOFFERINGID" );
+        
+        database().executeSQL(
+            "alter table TSUBMISSION add "
+            + "CISSUBMISSIONFORGRADING BIT");
+
+        database().executeSQL(
+                "alter table TSUBMISSIONRESULT modify "
+                + "CISMOSTRECENT BIT");
+
+/*        database().executeSQL(
+                "alter table TSUBMISSIONRESULT add "
+                + "CFINALSCORE DOUBLE");*/
+    }
 
 
     //~ Private Methods .......................................................

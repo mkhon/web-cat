@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.9 2008/12/02 22:23:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
+ *  @version $Id: SubmissionResult.java,v 1.9 2008/12/02 22:23:20 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -276,8 +276,8 @@ public class SubmissionResult
             + earlyBonus() - latePenalty();
         return ( result >= 0.0 ) ? result : 0.0;
     }
-
-
+    
+    
     // ----------------------------------------------------------
     /**
      * Check whether manual grading has been completed on this
@@ -458,6 +458,19 @@ public class SubmissionResult
         return ( result >= 0.0 ) ? result : 0.0;
     }
 
+
+    // ----------------------------------------------------------
+    @Override
+    public boolean isMostRecent()
+    {
+        if (isMostRecentRaw() == null)
+        {
+            setAsMostRecentIfNecessary();
+        }
+
+        return super.isMostRecent();
+    }
+    
 
     // ----------------------------------------------------------
     /**
