@@ -24,6 +24,11 @@
                 accessLevel = 40;
                 priority = 4;
             };
+            "Debugging" = {
+                pageName = net.sf.webcat.reporter.DebuggingPage;
+                accessLevel = 40;
+                priority = 100;
+            };
         };
     };
 }
