@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.38 2008/11/21 16:42:04 stedwar2 Exp $
+ |  $Id: Application.java,v 1.39 2008/12/02 22:22:06 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.38 2008/11/21 16:42:04 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.39 2008/12/02 22:22:06 aallowat Exp $
  */
 public class Application
 	extends er.extensions.appserver.ERXApplication
@@ -1631,6 +1631,34 @@ public class Application
      */
     public static void releaseReadOnlyEditingContext( 
             ReadOnlyEditingContext ec )
+    {
+        ec.dispose();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new migrating editing context, used to handle the updating of
+     * objects when migrating their attribute values.
+     * 
+     * @return the new editing context
+     */
+    public static MigratingEditingContext newMigratingEditingContext()
+    {
+        MigratingEditingContext result = new MigratingEditingContext();
+        result.setUndoManager( null );
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Used to get rid of a migrating editing context that will no longer be
+     * used.
+     * @param ec the editing context to release
+     */
+    public static void releaseMigratingEditingContext( 
+            MigratingEditingContext ec )
     {
         ec.dispose();
     }
