@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractSection.java,v 1.5 2008/11/13 19:05:18 aallowat Exp $
+ |  $Id: AbstractSection.java,v 1.6 2008/12/12 02:12:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * report designer form pages.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: AbstractSection.java,v 1.5 2008/11/13 19:05:18 aallowat Exp $
+ * @version $Id: AbstractSection.java,v 1.6 2008/12/12 02:12:58 aallowat Exp $
  */
 public abstract class AbstractSection extends SectionPart
 {
@@ -74,8 +74,8 @@ public abstract class AbstractSection extends SectionPart
     {
         this(formPage, parent, toolkit, model, title, description, 0);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Creates a section.
@@ -93,6 +93,8 @@ public abstract class AbstractSection extends SectionPart
      *            the title of the section
      * @param description
      *            the description of the section
+     * @param style
+     *            SWT styles to apply to this section widget
      */
     public AbstractSection(OverviewFormPage formPage, Composite parent,
             FormToolkit toolkit, ModuleHandle model, String title,
@@ -312,10 +314,10 @@ public abstract class AbstractSection extends SectionPart
     protected void setGridWidthHint(Control control, int hint)
     {
         GridData gd = (GridData) control.getLayoutData();
-        gd.widthHint = hint; 
+        gd.widthHint = hint;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     protected void safeSetText(Text control, String value)
     {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: KeyPathBrowser.java,v 1.4 2008/11/12 01:13:48 aallowat Exp $
+ |  $Id: KeyPathBrowser.java,v 1.5 2008/12/12 02:12:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.TableItem;
  * a hierarchy using a horizontal sliding panel.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: KeyPathBrowser.java,v 1.4 2008/11/12 01:13:48 aallowat Exp $
+ * @version $Id: KeyPathBrowser.java,v 1.5 2008/12/12 02:12:58 aallowat Exp $
  */
 public class KeyPathBrowser extends Composite
 {
@@ -375,7 +375,7 @@ public class KeyPathBrowser extends Composite
 
                 Color fgColor = keyLabelProvider.getForegroundColor(className,
                         key);
-                
+
                 if (fgColor != null)
                     item.setForeground(fgColor);
 
@@ -389,10 +389,6 @@ public class KeyPathBrowser extends Composite
 
 
     // ----------------------------------------------------------
-    /**
-     *
-     * @param provider
-     */
     public void setKeyProvider(IKeyProvider provider)
     {
         keyProvider = provider;
@@ -401,10 +397,6 @@ public class KeyPathBrowser extends Composite
 
 
     // ----------------------------------------------------------
-    /**
-     *
-     * @return
-     */
     public IKeyProvider getKeyProvider()
     {
         return keyProvider;

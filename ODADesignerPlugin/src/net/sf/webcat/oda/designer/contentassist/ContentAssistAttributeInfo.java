@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentAssistAttributeInfo.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
+ |  $Id: ContentAssistAttributeInfo.java,v 1.4 2008/12/12 02:12:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Attributes about a type that are displayed in a content assist request.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ContentAssistAttributeInfo.java,v 1.3 2008/11/11 15:26:19 aallowat Exp $
+ * @version $Id: ContentAssistAttributeInfo.java,v 1.4 2008/12/12 02:12:58 aallowat Exp $
  */
 public class ContentAssistAttributeInfo
 {
@@ -41,6 +41,7 @@ public class ContentAssistAttributeInfo
      *
      * @param name the name of the property
      * @param type the type of the property
+     * @param properties additional properties associated with this attribute
      */
     public ContentAssistAttributeInfo(String name, String type,
             JSONObject properties)
@@ -74,13 +75,15 @@ public class ContentAssistAttributeInfo
     {
         return type;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
-     * 
+     * Gets the value of the specified property.
      *
-     * @return
+     * @param property the name of the property to retrieve
+     *
+     * @return the value of the specified property
      */
     public Object valueForProperty(String property)
     {
@@ -93,13 +96,14 @@ public class ContentAssistAttributeInfo
             return null;
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
-     * 
+     * Gets the names and values of all properties for this attribute.
      *
-     * @return
+     * @return a JSONObject containing the names and values of all properties
+     *     for this attribute
      */
     public JSONObject allPropertyValues()
     {

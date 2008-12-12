@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlExpressionBuilder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: OgnlExpressionBuilder.java,v 1.4 2008/12/12 02:12:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -56,7 +56,7 @@ import org.eclipse.swt.widgets.ToolItem;
  * TODO: real description
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: OgnlExpressionBuilder.java,v 1.3 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: OgnlExpressionBuilder.java,v 1.4 2008/12/12 02:12:58 aallowat Exp $
  */
 public class OgnlExpressionBuilder extends TitleAreaDialog
 {
@@ -425,8 +425,9 @@ public class OgnlExpressionBuilder extends TitleAreaDialog
 
     // ----------------------------------------------------------
     /**
+     * Gets the OGNL expression entered into the expression builder.
      *
-     * @return
+     * @return the expression entered into the builder
      */
     public String getExpression()
     {
