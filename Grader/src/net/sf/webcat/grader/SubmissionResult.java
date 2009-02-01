@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.9 2008/12/02 22:23:20 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.10 2009/02/01 22:38:45 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -25,7 +25,10 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import com.webobjects.foundation.NSValidation.*;
+import er.extensions.foundation.ERXFileUtilities;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
@@ -34,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.9 2008/12/02 22:23:20 aallowat Exp $
+ *  @version $Id: SubmissionResult.java,v 1.10 2009/02/01 22:38:45 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -645,7 +648,7 @@ public class SubmissionResult
         }
     }
 
-
+    
     //~ Instance/static variables .............................................
 
     private File propertiesFile;
