@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterDatabaseUpdates.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: ReporterDatabaseUpdates.java,v 1.8 2009/02/01 22:51:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: ReporterDatabaseUpdates.java,v 1.7 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.8 2009/02/01 22:51:04 aallowat Exp $
  */
 public class ReporterDatabaseUpdates
     extends UpdateSet
@@ -67,6 +67,21 @@ public class ReporterDatabaseUpdates
         createEnqueuedReportGenerationJobTable();
         createEnqueuedReportRenderJobTable();
         createGeneratedReportTable();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add support for input parameters to report templates.
+     *  
+     * @throws SQLException on error
+     */
+    public void updateIncrement1() throws SQLException
+    {
+        database().executeSQL("ALTER TABLE TREPORTTEMPLATE ADD COLUMN "
+                + "CPARAMETERS BLOB");
+        database().executeSQL("ALTER TABLE TREPORTTEMPLATE ADD COLUMN "
+                + "CUPDATEMUTABLEFIELDS BIT NOT NULL");
     }
 
 
