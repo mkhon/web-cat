@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryComparison.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: AdvancedQueryComparison.java,v 1.10 2009/02/01 22:51:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSSelector;
 import er.extensions.eof.qualifiers.ERXBetweenQualifier;
 import er.extensions.eof.qualifiers.ERXQualifierInSubquery;
-import net.sf.webcat.reporter.QualifierInSubquery;
+import net.sf.webcat.core.QualifierInSubquery;
 import net.sf.webcat.reporter.QualifierUtils;
 
 //-------------------------------------------------------------------------
@@ -45,7 +45,7 @@ import net.sf.webcat.reporter.QualifierUtils;
  * by the advanced query assistant.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryComparison.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: AdvancedQueryComparison.java,v 1.10 2009/02/01 22:51:15 aallowat Exp $
  */
 public abstract class AdvancedQueryComparison
 {

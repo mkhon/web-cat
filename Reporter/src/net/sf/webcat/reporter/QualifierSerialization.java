@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QualifierSerialization.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: QualifierSerialization.java,v 1.3 2009/02/01 22:50:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.reporter;
 
+import net.sf.webcat.core.QualifierInSubquery;
 import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -42,7 +43,7 @@ import er.extensions.qualifiers.ERXKeyValueQualifier;
  * and vice-versa.
  *
  * @author Tony Allevato
- * @version $Id: QualifierSerialization.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: QualifierSerialization.java,v 1.3 2009/02/01 22:50:41 aallowat Exp $
  */
 public class QualifierSerialization
 {

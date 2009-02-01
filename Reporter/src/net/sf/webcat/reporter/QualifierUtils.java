@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QualifierUtils.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: QualifierUtils.java,v 1.8 2009/02/01 22:50:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.reporter;
 
+import net.sf.webcat.core.QualifierInSubquery;
 import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOClassDescription;
 import com.webobjects.eocontrol.EOEditingContext;
@@ -42,7 +43,7 @@ import er.extensions.eof.qualifiers.ERXInQualifier;
  * Utility methods to operate on qualifiers.
  *
  * @author Tony Allevato
- * @version $Id: QualifierUtils.java,v 1.7 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: QualifierUtils.java,v 1.8 2009/02/01 22:50:53 aallowat Exp $
  */
 public class QualifierUtils
 {
