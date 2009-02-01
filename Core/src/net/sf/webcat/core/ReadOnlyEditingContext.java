@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReadOnlyEditingContext.java,v 1.1 2008/10/29 21:05:06 aallowat Exp $
+ |  $Id: ReadOnlyEditingContext.java,v 1.2 2009/02/01 22:08:01 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,11 @@ package net.sf.webcat.core;
 import org.apache.log4j.Logger;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
+import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOGlobalID;
+import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableArray;
 import er.extensions.eof.ERXEC;
 
 //-------------------------------------------------------------------------
@@ -41,11 +45,43 @@ import er.extensions.eof.ERXEC;
  * </p>
  * 
  * @author Tony Allevato
- * @version $Id: ReadOnlyEditingContext.java,v 1.1 2008/10/29 21:05:06 aallowat Exp $
+ * @version $Id: ReadOnlyEditingContext.java,v 1.2 2009/02/01 22:08:01 aallowat Exp $
  */
 public class ReadOnlyEditingContext extends ERXEC
 {
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public NSArray objectsWithFetchSpecification(EOFetchSpecification fspec,
+            EOEditingContext ec)
+    {
+        // Augment the qualifier and use that for the original database fetch.
+        EOFetchSpecification augFspec = (EOFetchSpecification) fspec.clone();
+
+        EOQualifier q = fspec.qualifier();
+        
+        QualifierAugmenter augmenter = new QualifierAugmenter(
+                fspec.entityName(), q);
+        augFspec.setQualifier(augmenter.augmentedQualifier());
+
+        NSArray objects = super.objectsWithFetchSpecification(augFspec, ec);
+
+        if (augmenter.isSignificantDifference())
+        {
+            // Since the objects have been fetched, this has caused their
+            // migratory attributes to be populated. We can now filter this
+            // array in-memory with the original qualifier.
+
+            if (!fspec.fetchesRawRows())
+            {
+                objects = EOQualifier.filteredArrayWithQualifier(objects, q);
+            }
+        }
+
+        return objects;
+    }
+
 
     // ----------------------------------------------------------
     @Override

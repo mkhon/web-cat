@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MigratingEditingContext.java,v 1.1 2008/12/02 22:22:06 aallowat Exp $
+ |  $Id: MigratingEditingContext.java,v 1.2 2009/02/01 22:08:01 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.core;
 
+import com.webobjects.eocontrol.EOEditingContext;
 import er.extensions.eof.ERXEC;
 
 //-------------------------------------------------------------------------
@@ -32,9 +33,20 @@ import er.extensions.eof.ERXEC;
  * has to be loaded into a child context for migration.
  * 
  * @author Tony Allevato
- * @version $Id: MigratingEditingContext.java,v 1.1 2008/12/02 22:22:06 aallowat Exp $
+ * @version $Id: MigratingEditingContext.java,v 1.2 2009/02/01 22:08:01 aallowat Exp $
  */
 public class MigratingEditingContext extends ERXEC
 {
-    // No new functionality added.
+    // ----------------------------------------------------------
+    public MigratingEditingContext()
+    {
+        super();
+    }
+    
+
+    // ----------------------------------------------------------
+    public MigratingEditingContext(EOEditingContext parent)
+    {
+        super(parent);
+    }
 }
