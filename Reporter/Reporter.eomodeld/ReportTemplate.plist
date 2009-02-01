@@ -76,6 +76,26 @@
             name = preferredRenderer;
             prototypeName = tinyText;
         },
+        {
+            columnName = CPARAMETERS;
+            name = parameters;
+            prototypeName = mutableArray;
+            userInfo = {
+                adaptorValueConversionMethodName = archiveData;
+                valueFactoryMethodName = objectWithArchiveData;
+                isMutable = true;
+                valueClassName = net.sf.webcat.core.MutableArray;
+            };
+        },
+        {
+            name = updateMutableFields;
+            prototypeName = updateMutableFields;
+            userInfo = {
+                isScalar = true;
+                scalarDefault = false;
+                type = boolean;
+            };
+        }
     );
     attributesUsedForLocking = (
         name,
@@ -91,6 +111,7 @@
         designElementsRaw,
         preferredRenderer,
         language,
+        updateMutableFields,
     );
     className = net.sf.webcat.reporter.ReportTemplate;
     classProperties = (
@@ -110,6 +131,8 @@
         designElementsRaw,
         preferredRenderer,
         language,
+        parameters,
+        updateMutableFields,
     );
     externalName = TREPORTTEMPLATE;
     name = ReportTemplate;

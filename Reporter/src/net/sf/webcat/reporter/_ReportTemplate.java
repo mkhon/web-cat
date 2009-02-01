@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class _ReportTemplate
     extends er.extensions.eof.ERXGenericRecord
+    implements net.sf.webcat.core.MutableContainer.MutableContainerOwner
 {
     //~ Constructors ..........................................................
 
@@ -62,11 +63,13 @@ public abstract class _ReportTemplate
      * @param editingContext The context in which the new object will be
      * inserted
      * @param isPublished
+     * @param updateMutableFields
      * @return The newly created object
      */
     public static ReportTemplate create(
         EOEditingContext editingContext,
-        boolean isPublished
+        boolean isPublished,
+        boolean updateMutableFields
         )
     {
         ReportTemplate eoObject = (ReportTemplate)
@@ -74,6 +77,7 @@ public abstract class _ReportTemplate
                 editingContext,
                 _ReportTemplate.ENTITY_NAME);
         eoObject.setIsPublished(isPublished);
+        eoObject.setUpdateMutableFields(updateMutableFields);
         return eoObject;
     }
 
@@ -145,7 +149,9 @@ public abstract class _ReportTemplate
     public static final String IS_PUBLISHED_KEY = "isPublished";
     public static final String LANGUAGE_KEY = "language";
     public static final String NAME_KEY = "name";
+    public static final String PARAMETERS_KEY = "parameters";
     public static final String PREFERRED_RENDERER_KEY = "preferredRenderer";
+    public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
     public static final String UPLOADED_TIME_KEY = "uploadedTime";
     public static final String VERSION_KEY = "version";
     // To-one relationships ---
@@ -445,6 +451,109 @@ public abstract class _ReportTemplate
     }
 
 
+    //-- Local mutable cache --
+    private net.sf.webcat.core.MutableArray parametersCache;
+    private NSData parametersRawCache;
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>parameters</code> value.
+     * @return the value of the attribute
+     */
+    public net.sf.webcat.core.MutableArray parameters()
+    {
+        NSData dbValue =
+            (NSData)storedValueForKey( "parameters" );
+        if ( parametersRawCache != dbValue )
+        {
+            if ( dbValue != null && dbValue.equals( parametersRawCache ) )
+            {
+                // They are still equal, so just update the raw cache
+                parametersRawCache = dbValue;
+            }
+            else
+            {
+                // Underlying attribute may have changed because
+                // of a concurrent update through another editing
+                // context, so throw away current values.
+                parametersRawCache = dbValue;
+                net.sf.webcat.core.MutableArray newValue =
+                    net.sf.webcat.core.MutableArray
+                    .objectWithArchiveData( dbValue );
+                if ( parametersCache != null )
+                {
+                    parametersCache.copyFrom( newValue );
+                }
+                else
+                {
+                    parametersCache = newValue;
+                }
+                parametersCache.setOwner( this );
+                setUpdateMutableFields( true );
+            }
+        }
+        else if ( dbValue == null && parametersCache == null )
+        {
+            parametersCache =
+                net.sf.webcat.core.MutableArray
+                .objectWithArchiveData( dbValue );
+             parametersCache.setOwner( this );
+             setUpdateMutableFields( true );
+        }
+        return parametersCache;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>parameters</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setParameters( net.sf.webcat.core.MutableArray value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setParameters("
+                + value + ")" );
+        }
+        if ( parametersCache == null )
+        {
+            parametersCache = value;
+            value.setHasChanged( false );
+            parametersRawCache = value.archiveData();
+            takeStoredValueForKey( parametersRawCache, "parameters" );
+        }
+        else if ( parametersCache != value )  // ( parametersCache != null )
+        {
+            parametersCache.copyFrom( value );
+            setUpdateMutableFields( true );
+        }
+        else  // ( parametersCache == non-null value )
+        {
+            // no nothing
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Clear the value of this object's <code>parameters</code>
+     * property.
+     */
+    public void clearParameters()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "clearParameters()" );
+        }
+        takeStoredValueForKey( null, "parameters" );
+        parametersRawCache = null;
+        parametersCache = null;
+    }
+
+
     // ----------------------------------------------------------
     /**
      * Retrieve this object's <code>preferredRenderer</code> value.
@@ -471,6 +580,70 @@ public abstract class _ReportTemplate
                 + value + "): was " + preferredRenderer() );
         }
         takeStoredValueForKey( value, "preferredRenderer" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>updateMutableFields</code> value.
+     * @return the value of the attribute
+     */
+    public boolean updateMutableFields()
+    {
+        Integer result =
+            (Integer)storedValueForKey( "updateMutableFields" );
+        return ( result == null )
+            ? false
+            : ( result.intValue() > 0 );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>updateMutableFields</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setUpdateMutableFields( boolean value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUpdateMutableFields("
+                + value + "): was " + updateMutableFields() );
+        }
+        Integer actual =
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
+            setUpdateMutableFieldsRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>updateMutableFields</code> value.
+     * @return the value of the attribute
+     */
+    public Integer updateMutableFieldsRaw()
+    {
+        return (Integer)storedValueForKey( "updateMutableFields" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>updateMutableFields</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setUpdateMutableFieldsRaw( Integer value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setUpdateMutableFieldsRaw("
+                + value + "): was " + updateMutableFieldsRaw() );
+        }
+        takeStoredValueForKey( value, "updateMutableFields" );
     }
 
 
@@ -529,6 +702,72 @@ public abstract class _ReportTemplate
                 + value + "): was " + version() );
         }
         takeStoredValueForKey( value, "version" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called just before this object is saved to the database.
+     */
+    public void saveMutables()
+    {
+        log.debug("saveMutables()");
+        if ( parametersCache != null
+            && parametersCache.hasChanged() )
+        {
+            parametersRawCache = parametersCache.archiveData();
+            takeStoredValueForKey( parametersRawCache, "parameters" );
+            parametersCache.setHasChanged( false );
+        }
+
+        setUpdateMutableFields( false );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called just before this object is saved to the database.
+     */
+    public void willUpdate()
+    {
+        log.debug("willUpdate()");
+        saveMutables();
+        super.willUpdate();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called just before this object is inserted into the database.
+     */
+    public void willInsert()
+    {
+        log.debug("willInsert()");
+        saveMutables();
+        super.willInsert();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called when the object is invalidated.
+     */
+    public void flushCaches()
+    {
+        log.debug("flushCaches()");
+        parametersCache = null;
+        parametersRawCache  = null;
+        super.flushCaches();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called when an owned mutable container object is changed.
+     */
+    public void mutableContainerHasChanged()
+    {
+        setUpdateMutableFields( true );
     }
 
 

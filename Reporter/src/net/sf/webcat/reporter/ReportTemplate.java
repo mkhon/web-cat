@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.11 2008/05/27 20:55:42 stedwar2 Exp $
+ |  $Id: ReportTemplate.java,v 1.12 2009/02/01 21:57:46 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,8 @@ package net.sf.webcat.reporter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
+import net.sf.webcat.core.MutableArray;
+import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.core.User;
 import net.sf.webcat.oda.commons.DataSetDescription;
 import net.sf.webcat.oda.commons.DataSetMetadata;
@@ -48,7 +50,7 @@ import com.webobjects.foundation.NSTimestamp;
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.11 2008/05/27 20:55:42 stedwar2 Exp $
+ * @version $Id: ReportTemplate.java,v 1.12 2009/02/01 21:57:46 aallowat Exp $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -168,6 +170,26 @@ public class ReportTemplate extends _ReportTemplate
         else
         {
             return successors.objectAtIndex(0);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public MutableArray parameters()
+    {
+        // Older reports will have a null parameter set, so to ensure clean
+        // code elsewhere we just return an empty array for these.
+        
+        MutableArray params = super.parameters();
+        
+        if (params == null)
+        {
+            return new MutableArray();
+        }
+        else
+        {
+            return params;
         }
     }
 
@@ -307,6 +329,17 @@ public class ReportTemplate extends _ReportTemplate
                 return null;
             }
 
+            msg = template.visitReportParameters(reportHandle);
+            if (msg != null)
+            {
+                log.error("Error processing report parameters: " + msg);
+                errors.setObjectForKey(msg, msg);
+                ec.deleteObject(template);
+                templateFile.delete();
+                ec.saveChanges();
+                return null;
+            }
+            
             msg = template.deeplyVisitTemplate(ec, reportHandle);
             if (msg != null)
             {
@@ -449,6 +482,18 @@ public class ReportTemplate extends _ReportTemplate
     }
 
 
+    // ----------------------------------------------------------
+    private String visitReportParameters(ReportDesignHandle reportHandle)
+    {
+        ReportParameterVisitor visitor = new ReportParameterVisitor();
+        visitor.apply(reportHandle);
+        
+        setParameters(new MutableArray(visitor.parameterGroups()));
+
+        return null;
+    }
+    
+    
     // ----------------------------------------------------------
     /**
      * Collects information about the report template by performing a deep
