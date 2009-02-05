@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.5 2008/12/02 22:23:20 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.6 2009/02/05 17:53:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.5 2008/12/02 22:23:20 aallowat Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.6 2009/02/05 17:53:15 aallowat Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -198,6 +198,27 @@ public class GraderDatabaseUpdates
 /*        database().executeSQL(
                 "alter table TSUBMISSIONRESULT add "
                 + "CFINALSCORE DOUBLE");*/
+    }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Creates the TRESULTBLOB table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement8() throws SQLException
+    {
+        if ( !database().hasTable( "TRESULTBLOB" ) )
+        {
+            log.info( "creating table TRESULTBLOB" );
+            database().executeSQL(
+                "CREATE TABLE TRESULTBLOB "
+                + "(OID INTEGER NOT NULL , CRESULTID INTEGER , "
+                + "CSUBMISSIONID INTEGER , CTAG TINYTEXT , CCONTENTS BLOB , "
+                + "CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
+            database().executeSQL(
+                "ALTER TABLE TRESULTBLOB ADD PRIMARY KEY (OID)" );
+        }
     }
 
 

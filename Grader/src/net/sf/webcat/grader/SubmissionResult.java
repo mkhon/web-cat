@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.10 2009/02/01 22:38:45 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.11 2009/02/05 17:53:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.10 2009/02/01 22:38:45 aallowat Exp $
+ *  @version $Id: SubmissionResult.java,v 1.11 2009/02/05 17:53:15 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -514,6 +514,11 @@ public class SubmissionResult
      */
     public void setAsMostRecentIfNecessary()
     {
+        if ( submission() == null )
+        {
+            return;
+        }
+
         EOEditingContext ec = editingContext();
         if ( log.isDebugEnabled() )
         {
