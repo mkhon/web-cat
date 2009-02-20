@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.6 2009/02/05 17:53:15 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.7 2009/02/20 02:30:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.6 2009/02/05 17:53:15 aallowat Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.7 2009/02/20 02:30:13 aallowat Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -203,21 +203,21 @@ public class GraderDatabaseUpdates
     
     // ----------------------------------------------------------
     /**
-     * Creates the TRESULTBLOB table.
+     * Creates the TRESULTOUTCOME table.
      * @throws SQLException on error
      */
     public void updateIncrement8() throws SQLException
     {
-        if ( !database().hasTable( "TRESULTBLOB" ) )
+        if ( !database().hasTable( "TRESULTOUTCOME" ) )
         {
-            log.info( "creating table TRESULTBLOB" );
+            log.info( "creating table TRESULTOUTCOME" );
             database().executeSQL(
-                "CREATE TABLE TRESULTBLOB "
+                "CREATE TABLE TRESULTOUTCOME "
                 + "(OID INTEGER NOT NULL , CRESULTID INTEGER , "
-                + "CSUBMISSIONID INTEGER , CTAG TINYTEXT , CCONTENTS BLOB , "
-                + "CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
+                + "CSUBMISSIONID INTEGER , CINDEX INTEGER , CTAG TINYTEXT , "
+                + "CCONTENTS BLOB , CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
             database().executeSQL(
-                "ALTER TABLE TRESULTBLOB ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE TRESULTOUTCOME ADD PRIMARY KEY (OID)" );
         }
     }
 

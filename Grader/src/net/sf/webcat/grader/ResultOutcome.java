@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ResultBlob.java,v 1.1 2009/02/05 17:53:15 aallowat Exp $
+ |  $Id: ResultOutcome.java,v 1.1 2009/02/20 02:30:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -29,18 +29,18 @@ import com.webobjects.foundation.*;
  * TODO: place a real description here.
  *
  * @author
- * @version $Id: ResultBlob.java,v 1.1 2009/02/05 17:53:15 aallowat Exp $
+ * @version $Id: ResultOutcome.java,v 1.1 2009/02/20 02:30:13 aallowat Exp $
  */
-public class ResultBlob
-    extends _ResultBlob
+public class ResultOutcome
+    extends _ResultOutcome
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
-     * Creates a new ResultBlob object.
+     * Creates a new ResultOutcome object.
      */
-    public ResultBlob()
+    public ResultOutcome()
     {
         super();
     }
