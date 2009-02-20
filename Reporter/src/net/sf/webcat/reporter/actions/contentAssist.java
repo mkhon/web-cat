@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.9 2008/11/05 19:40:56 aallowat Exp $
+ |  $Id: contentAssist.java,v 1.10 2009/02/20 02:30:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,9 +40,9 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 import er.extensions.appserver.ERXDirectAction;
 import net.sf.webcat.core.Application;
+import net.sf.webcat.core.EntityUtils;
 import net.sf.webcat.core.ReadOnlyEditingContext;
 import net.sf.webcat.core.Subsystem;
-import net.sf.webcat.reporter.EntityUtils;
 import net.sf.webcat.reporter.queryassistants.KVCAttributeFinder;
 import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
 
@@ -52,7 +52,7 @@ import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
  * entities and key paths, used for content assistance and previewing purposes.
  *
  * @author Tony Allevato
- * @version $Id: contentAssist.java,v 1.9 2008/11/05 19:40:56 aallowat Exp $
+ * @version $Id: contentAssist.java,v 1.10 2009/02/20 02:30:49 aallowat Exp $
  */
 public class contentAssist
     extends ERXDirectAction

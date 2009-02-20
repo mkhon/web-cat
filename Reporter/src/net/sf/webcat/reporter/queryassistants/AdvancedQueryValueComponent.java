@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryValueComponent.java,v 1.7 2008/10/28 18:37:54 aallowat Exp $
+ |  $Id: AdvancedQueryValueComponent.java,v 1.8 2009/02/20 02:30:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,8 +22,8 @@
 package net.sf.webcat.reporter.queryassistants;
 
 import java.text.ParseException;
+import net.sf.webcat.core.EntityUtils;
 import net.sf.webcat.core.WCComponent;
-import net.sf.webcat.reporter.EntityUtils;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.eocontrol.EOClassDescription;
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSTimestampFormatter;
  * in this particular query clause.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryValueComponent.java,v 1.7 2008/10/28 18:37:54 aallowat Exp $
+ * @version $Id: AdvancedQueryValueComponent.java,v 1.8 2009/02/20 02:30:49 aallowat Exp $
  */
 public class AdvancedQueryValueComponent
     extends WCComponent
