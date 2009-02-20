@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoUtils.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: DojoUtils.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import er.extensions.appserver.ERXResponseRewriter.TagMissingBehavior;
  * Various helpful utility functions used by the Dojo support classes.
  * 
  * @author Tony Allevato
- * @author $Id: DojoUtils.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @author $Id: DojoUtils.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public class DojoUtils
 {
@@ -51,62 +51,6 @@ public class DojoUtils
 
 
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    /**
-     * Returns a JavaScript hash string containing the key-value pairs in the
-     * specified dictionary.
-     * 
-     * TODO: This is very basic and doesn't support nested arrays/dictionaries.
-     * We might want to support this eventually; we can't just shove the values
-     * into a JSONObject and toString it because it will double-quote the key
-     * names, which is kind of annoying when we need to use this as an HTML
-     * attribute value.
-     * 
-     * @param dictionary
-     *            a dictionary containing key-value pairs
-     * @return a String representation of the JavaScript hash containing the
-     *         values in the dictionary
-     */
-    public static String hashStringForDictionary(
-            NSDictionary<String, Object> dictionary)
-    {
-        StringBuilder builder = new StringBuilder(256);
-        builder.append('{');
-
-        String[] keys = dictionary.keySet().toArray(
-                new String[dictionary.size()]);
-
-        for (int i = 0; i < keys.length; i++)
-        {
-            String key = keys[i];
-
-            builder.append(key);
-            builder.append(':');
-
-            Object value = dictionary.objectForKey(key);
-
-            if (value instanceof Number)
-            {
-                builder.append(value.toString());
-            }
-            else
-            {
-                builder.append('\'');
-                builder.append(value.toString());
-                builder.append('\'');
-            }
-
-            if (i != keys.length - 1)
-            {
-                builder.append(", ");
-            }
-        }
-
-        builder.append('}');
-        return builder.toString();
-    }
-
 
     // ----------------------------------------------------------
     public static String doubleToSingleQuotes(String str)

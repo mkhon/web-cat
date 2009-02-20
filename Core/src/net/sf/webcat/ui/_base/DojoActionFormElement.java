@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoActionFormElement.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: DojoActionFormElement.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -141,7 +141,7 @@ import er.extensions.components.ERXComponentUtilities;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: DojoActionFormElement.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: DojoActionFormElement.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public abstract class DojoActionFormElement extends DojoFormElement
 {
@@ -341,28 +341,26 @@ public abstract class DojoActionFormElement extends DojoFormElement
         
         if (_directActionName != null)
         {
+            // TODO may need work
+
             actionUrl = context.directActionURLForActionNamed(
                     (String) _directActionName.valueInComponent(component),
                     ERXComponentUtilities.queryParametersInComponent(
                             _associations, component)).replaceAll("&amp;", "&");
+
+            response.appendContentString(
+                    _remoteHelper.invokeRemoteActionCall("this",
+                            actionUrl, null, context));
         }
         else
         {
-            actionUrl = AjaxUtils.ajaxComponentActionUrl(context);
+            response.appendContentString(
+                    _remoteHelper.partialSubmitCall("this", nameInContext(context),
+                            null, context));
         }
-        
-        response.appendContentString(
-                _remoteHelper.xhrMethodCallWithURL("this", actionUrl, context));
     }
     
     
-    // ----------------------------------------------------------
-/*    public void takeValuesFromRequest(WORequest request, WOContext context)
-    {
-        // Do nothing.
-    }
-*/
-
     // ----------------------------------------------------------
     public WOActionResults invokeAction(WORequest request, WOContext context)
     {

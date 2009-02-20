@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCLink.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCLink.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -151,7 +151,7 @@ import er.extensions.components.ERXComponentUtilities;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCLink.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCLink.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public class WCLink extends WOHTMLDynamicElement
 {
@@ -606,7 +606,8 @@ public class WCLink extends WOHTMLDynamicElement
         }
         
         response.appendContentString(
-                _remoteHelper.xhrMethodCallWithURL("this", actionUrl, context));
+                _remoteHelper.invokeRemoteActionCall("this", actionUrl, null,
+                        context));
     }
     
     

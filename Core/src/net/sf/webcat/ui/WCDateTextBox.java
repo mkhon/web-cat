@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDateTextBox.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCDateTextBox.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.ui;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import net.sf.webcat.ui._base.DojoFormElement;
+import net.sf.webcat.ui.util.DojoOptions;
 import net.sf.webcat.ui.util.DojoUtils;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOContext;
@@ -49,7 +50,7 @@ import com.webobjects.foundation.NSTimestamp;
  * </ul>
  * 
  * @author Tony Allevato
- * @version $Id: WCDateTextBox.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCDateTextBox.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public class WCDateTextBox extends DojoFormElement
 {
@@ -119,33 +120,25 @@ public class WCDateTextBox extends DojoFormElement
 
     // ----------------------------------------------------------
     @Override
-    public void appendAttributesToResponse(WOResponse response,
-            WOContext context)
+    public DojoOptions additionalConstraints(WOContext context)
     {
-        super.appendAttributesToResponse(response, context);
-
         // Append constraints based on the date format, if one was provided.
 
-        NSMutableDictionary<String, Object> constraints =
-            new NSMutableDictionary<String, Object>();
+        DojoOptions manualConstraints = new DojoOptions();
 
-        if (_dateformat != null)
+        if(_dateformat != null)
         {
-            String dateFormat = (String) _dateformat.valueInComponent(context
-                    .component());
+            String dateFormat =
+                (String)_dateformat.valueInComponent(context.component());
 
-            if (dateFormat != null)
+            if(dateFormat != null)
             {
-                constraints.setObjectForKey(
-                        dateFormatToDatePattern(dateFormat), "datePattern");
+                manualConstraints.putValue("datePattern",
+                        dateFormatToDatePattern(dateFormat));
             }
         }
 
-        String constraintsString = DojoUtils
-                .hashStringForDictionary(constraints);
-
-        _appendTagAttributeAndValueToResponse(response, "constraints",
-                constraintsString, false);
+        return manualConstraints;
     }
 
 

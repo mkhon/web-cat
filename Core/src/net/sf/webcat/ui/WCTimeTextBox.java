@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTimeTextBox.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: WCTimeTextBox.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.ui;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import net.sf.webcat.ui._base.DojoFormElement;
+import net.sf.webcat.ui.util.DojoOptions;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOElement;
@@ -36,7 +37,7 @@ import com.webobjects.foundation.NSTimestamp;
  * A text box that lets the user select a time from a popup control.
  * 
  * @author Tony Allevato
- * @version $Id: WCTimeTextBox.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: WCTimeTextBox.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public class WCTimeTextBox extends DojoFormElement
 {
@@ -106,12 +107,11 @@ public class WCTimeTextBox extends DojoFormElement
     
 	// ----------------------------------------------------------
 	@Override
-    public NSDictionary<String, Object> additionalConstraints(WOContext context)
+    public DojoOptions additionalConstraints(WOContext context)
     {
         // Append constraints based on the date format, if one was provided.
 
-        NSMutableDictionary<String, Object> manualConstraints =
-            new NSMutableDictionary<String, Object>();
+        DojoOptions manualConstraints = new DojoOptions();
 
         if(_dateformat != null)
         {
@@ -120,8 +120,8 @@ public class WCTimeTextBox extends DojoFormElement
 
         	if(dateFormat != null)
         	{
-                manualConstraints.setObjectForKey(
-                        dateFormatToDatePattern(dateFormat), "datePattern");
+                manualConstraints.putValue("datePattern",
+                        dateFormatToDatePattern(dateFormat));
         	}
         }
 

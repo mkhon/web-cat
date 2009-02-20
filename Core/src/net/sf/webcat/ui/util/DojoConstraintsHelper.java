@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoConstraintsHelper.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: DojoConstraintsHelper.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import com.webobjects.foundation._NSDictionaryUtilities;
  * that is appropriate for use as the "constraints" attribute.
  * 
  * @author Tony Allevato
- * @version $Id: DojoConstraintsHelper.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: DojoConstraintsHelper.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public class DojoConstraintsHelper
 {
@@ -80,10 +80,9 @@ public class DojoConstraintsHelper
      * @return a string representing the constraints hash
      */
     public String constraintsFromBindingValues(WOContext context,
-            NSDictionary<String, Object> additionalConstraints)
+            DojoOptions additionalConstraints)
     {
-        NSMutableDictionary<String, Object> constraints =
-            new NSMutableDictionary<String, Object>();
+        DojoOptions constraints = new DojoOptions();
 
         if (_constraintAssociations != null)
         {
@@ -95,19 +94,19 @@ public class DojoConstraintsHelper
                 if (assoc != null)
                 {
                     Object value = assoc.valueInComponent(context.component());
-                    constraints.setObjectForKey(value, constraint);
+                    constraints.putValue(constraint, value);
                 }
             }
         }
 
         if (additionalConstraints != null)
         {
-            constraints.addEntriesFromDictionary(additionalConstraints);
+            constraints.putAll(additionalConstraints);
         }
 
         if (!constraints.isEmpty())
         {
-            return DojoUtils.hashStringForDictionary(constraints);
+            return constraints.toString();
         }
         else
         {

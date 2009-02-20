@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoFormElement.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: DojoFormElement.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,11 +21,11 @@
 
 package net.sf.webcat.ui._base;
 
-
-import java.awt.Button;
 import java.util.List;
+import net.sf.webcat.ui.WCButton;
 import net.sf.webcat.ui.WCDateTextBox;
 import net.sf.webcat.ui.util.DojoConstraintsHelper;
+import net.sf.webcat.ui.util.DojoOptions;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOElement;
@@ -36,11 +36,10 @@ import com.webobjects.foundation.NSDictionary;
 // ------------------------------------------------------------------------
 /**
  * A base class for any Dojo elements that contain a form field that should be
- * submitted as part of a form submit operation on a page. (For example, a
- * {@link WCDateTextBox} does, but a {@link Button} does not).
+ * submitted as part of a form submit operation on a page.
  * 
  * @author Tony Allevato
- * @version $Id: DojoFormElement.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: DojoFormElement.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
  */
 public abstract class DojoFormElement extends DojoElement
 {
@@ -113,7 +112,7 @@ public abstract class DojoFormElement extends DojoElement
         {
             String name = nameInContext(context);
 
-            if (name != null && name.length() > 0)
+            if (name != null && name.length() > 0 && _value != null)
             {
                 String stringValue = request.stringFormValueForKey(name);
                 Object value = objectForStringValue(stringValue);
@@ -342,7 +341,7 @@ public abstract class DojoFormElement extends DojoElement
      * @return a dictionary containing additional constraints that should be
      *     merged with any user-supplied constraints
      */
-    protected NSDictionary<String, Object> additionalConstraints(
+    protected DojoOptions additionalConstraints(
             WOContext context)
     {
         return null;
