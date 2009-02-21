@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.12 2008/11/08 02:20:16 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.13 2009/02/21 21:51:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import javax.servlet.http.*;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletAdaptor.java,v 1.12 2008/11/08 02:20:16 stedwar2 Exp $
+ *  @version $Id: WCServletAdaptor.java,v 1.13 2009/02/21 21:51:52 stedwar2 Exp $
  */
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
@@ -252,17 +252,28 @@ public class WCServletAdaptor
         out.println( "examine it to identify the exception stack trace.</p>" );
         out.println( "<p>For assistance, send the stdout log file to " );
         out.println( "the Web-CAT project team at " );
-        out.println( "<a href=\"mailto:webcat@vt.edu\">webcat@vt.edu</a>.</p>" );
-        out.println( "<pre>" );
-        initFailed.printStackTrace( out );
-        Throwable nested = initFailed.getCause();
-        while ( nested != null )
+        out.println( "<a href=\"mailto:webcat@vt.edu\">webcat@vt.edu</a>.</p>");
+        Throwable nested = initFailed;
+        while (nested.getCause() != null)
         {
-            out.println( "\nCaused by:" );
-            nested.printStackTrace( out );
-            nested = nested.getCause();
+        	nested = nested.getCause();
         }
+        out.println( "<h2>Root Cause</h2>\n<pre>" );
+        nested.printStackTrace( out );
         out.println( "</pre>" );
+        if (nested != initFailed)
+        {
+        	out.println( "<h2>Full Exception Details</h2>\n<pre>" );
+        	initFailed.printStackTrace( out );
+        	nested = initFailed.getCause();
+        	while ( nested != null )
+        	{
+        		out.println( "\nCaused by:" );
+        		nested.printStackTrace( out );
+        		nested = nested.getCause();
+        	}
+        	out.println( "</pre>" );
+        }
         out.println( "</body></html>" );
         out.flush();
         out.close();
