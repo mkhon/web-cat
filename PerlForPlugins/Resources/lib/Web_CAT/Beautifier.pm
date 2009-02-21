@@ -33,6 +33,7 @@ use Carp;
     "scm"    => "scheme",
     "scheme" => "scheme",
     "script" => "ascii",
+    "ss"     => "scheme",
     "txt"    => "ascii",
     "text"   => "ascii",
     "xml"    => "xml",
