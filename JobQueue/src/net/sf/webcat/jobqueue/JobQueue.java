@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.2 2009/02/21 22:32:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * corresponding queues using the central database as the mediator.
  *
  * @author Stephen Edwards
- * @version $Id: JobQueue.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: JobQueue.java,v 1.2 2009/02/21 22:32:14 stedwar2 Exp $
  */
 public class JobQueue
     extends Subsystem
@@ -97,11 +97,12 @@ public class JobQueue
      *        when creating the descriptor, if one does not already exist.
      * @return The registered descriptor
      */
-    public static EOEnterpriseObject registerDescriptor(
-        EOEditingContext context,
-        String           descriptorEntityName,
-        NSDictionary     searchBindings,
-        NSDictionary     initializationBindings)
+    @SuppressWarnings("unchecked")
+	public static EOEnterpriseObject registerDescriptor(
+        EOEditingContext        context,
+        String                  descriptorEntityName,
+        NSDictionary<String, ?> searchBindings,
+        NSDictionary<String, ?> initializationBindings)
     {
         ensureInitialized();
         if (log.isDebugEnabled())
@@ -122,11 +123,13 @@ public class JobQueue
                     EOEnterpriseObject descriptor =
                         EOUtilities.createAndInsertInstance(
                             context, descriptorEntityName);
-                    descriptor.reapplyChangesFromDictionary(searchBindings);
+                    descriptor.reapplyChangesFromDictionary(
+                    		(NSDictionary<String, Object>)searchBindings);
                     log.debug("descriptor not found: creating a new one");
                     if (initializationBindings != null)
                     {
                         descriptor.reapplyChangesFromDictionary(
+                        	(NSDictionary<String, Object>)
                             initializationBindings);
                         if (log.isDebugEnabled())
                         {
@@ -157,7 +160,12 @@ public class JobQueue
             }
             else
             {
-                log.debug("multiple descriptors found");
+            	if (log.isDebugEnabled())
+            	{
+            		log.debug(descriptors.count() == 1
+            				  ? "one descriptor found"
+            				  : "multiple descriptors found");
+            	}
                 while (descriptors.count() > 1)
                 {
                     try
@@ -207,9 +215,9 @@ public class JobQueue
      *        when creating the descriptor, if one does not already exist.
      */
     public static void registerDescriptor(
-        String       descriptorEntityName,
-        NSDictionary searchBindings,
-        NSDictionary initializationBindings)
+        String                  descriptorEntityName,
+        NSDictionary<String, ?> searchBindings,
+        NSDictionary<String, ?> initializationBindings)
     {
         EOEditingContext ec = Application.newPeerEditingContext();
         registerDescriptor(
