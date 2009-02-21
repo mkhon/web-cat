@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/javassist-3.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/ognl-2.7.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/ognl-2.7.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Bootstrap"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/ERExtensions"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/ERJars"/>
