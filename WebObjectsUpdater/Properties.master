@@ -4,17 +4,17 @@
 subsystem.WebObjectsUpdater=
 
 WebObjectsUpdater.version.major=1
-WebObjectsUpdater.version.minor=1
-WebObjectsUpdater.version.revision=2
+WebObjectsUpdater.version.minor=2
+WebObjectsUpdater.version.revision=0
 
 WebObjectsUpdater.copyright=\
 	(c) 2007-2008 Virginia Tech Department of Computer Science
 WebObjectsUpdater.provider=Virginia Tech Computer Science
 WebObjectsUpdater.provider.url=http\://web-cat.cs.vt.edu/updates
 WebObjectsUpdater.info.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/WebObjectsUpdater
+	http\://web-cat.org/WCWiki/WebObjectsUpdater
 WebObjectsUpdater.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/WebObjectsUpdater/ChangeHistory
+	http\://web-cat.org/WCWiki/WebObjectsUpdater/ChangeHistory
 WebObjectsUpdater.license=GNU Affero General Public License v.3
 WebObjectsUpdater.license.url=http\://www.gnu.org/licenses/agpl.html
 
