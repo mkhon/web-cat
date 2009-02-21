@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: HostDescriptor.java,v 1.2 2009/02/21 22:32:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.jobqueue;
 
+import net.sf.webcat.core.Application;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
@@ -30,7 +31,7 @@ import com.webobjects.foundation.*;
  * servers operating on a single shared database.
  *
  * @author
- * @version $Id: HostDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: HostDescriptor.java,v 1.2 2009/02/21 22:32:31 stedwar2 Exp $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -44,6 +45,41 @@ public class HostDescriptor
     public HostDescriptor()
     {
         super();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Registers a host in the database, if it has not already been
+     * registered.
+     * @param context The editing context to use.
+     * @param hostName The name of the host.
+     * @return The registered descriptor.
+     */
+    public static HostDescriptor registerHost(
+        EOEditingContext context, String hostName)
+    {
+        return (HostDescriptor)JobQueue.registerDescriptor(
+            context,
+            ENTITY_NAME,
+            new NSDictionary<String, String>(
+                hostName,
+                HOST_NAME_KEY),
+            null);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Registers a host in the database, if it has not already been
+     * registered.
+     * @param hostName The name of the host.
+     */
+    public static void registerHost(String hostName)
+    {
+        EOEditingContext ec = Application.newPeerEditingContext();
+        registerHost(ec, hostName);
+        Application.releasePeerEditingContext(ec);
     }
 
 
