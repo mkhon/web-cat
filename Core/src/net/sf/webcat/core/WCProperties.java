@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCProperties.java,v 1.7 2008/10/31 18:26:47 aallowat Exp $
+ |  $Id: WCProperties.java,v 1.8 2009/02/24 14:52:45 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,7 +51,7 @@ import org.apache.log4j.Logger;
  * support is based on code written by Chris Mair.
  *
  * @author Stephen Edwards
- * @version $Id: WCProperties.java,v 1.7 2008/10/31 18:26:47 aallowat Exp $
+ * @version $Id: WCProperties.java,v 1.8 2009/02/24 14:52:45 aallowat Exp $
  */
 public class WCProperties
     extends java.util.Properties
@@ -794,10 +794,17 @@ public class WCProperties
     {
         Object coercedValue = null;
 
-        if ( property.startsWith( "(" ) )
+        if ( !numericsOnly && property.startsWith( "(" ) )
         {
             // Try to parse the value as an array
-            coercedValue = ERXValueUtilities.arrayValue( property );
+            try
+            {
+                coercedValue = ERXValueUtilities.arrayValue( property );
+            }
+            catch (IllegalArgumentException e)
+            {
+                coercedValue = null;
+            }
             
             if ( coercedValue != null )
             {
@@ -809,11 +816,19 @@ public class WCProperties
             }
         }
 
-        if ( coercedValue == null && property.startsWith( "{" ) )
+        if ( !numericsOnly && coercedValue == null
+                && property.startsWith( "{" ) )
         {
             // Try to parse the value as a dictionary
-            coercedValue = ERXValueUtilities.dictionaryValue( property );
-
+            try
+            {
+                coercedValue = ERXValueUtilities.dictionaryValue( property );
+            }
+            catch (IllegalArgumentException e)
+            {
+                coercedValue = null;
+            }
+            
             if ( coercedValue != null )
             {
                 // If we got a dictionary, recursively perform conversions of
