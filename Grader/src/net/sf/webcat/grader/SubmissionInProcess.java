@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionInProcess.java,v 1.3 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: SubmissionInProcess.java,v 1.4 2009/02/25 18:32:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import java.io.*;
  * that has been started (but not yet completed).
  *
  * @author stedwar2
- * @version $Id: SubmissionInProcess.java,v 1.3 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: SubmissionInProcess.java,v 1.4 2009/02/25 18:32:23 stedwar2 Exp $
  */
 public class SubmissionInProcess
 {
@@ -89,6 +89,32 @@ public class SubmissionInProcess
     public void setUploadedFileName( String name )
     {
         uploadedFileName = name;
+        if (uploadedFileName == null) return;
+
+        // Depending on the client's browser and OS, the file name
+        // might be a relative or absolute path, rather than just
+        // a file name.  Try to strip off any leading directory
+        // component in an OS-agnostic way.
+        if (uploadedFileName.endsWith("/") || uploadedFileName.endsWith("\\"))
+        {
+            uploadedFileName = uploadedFileName.substring(
+                0, uploadedFileName.length() - 1);
+        }
+        int pos = uploadedFileName.lastIndexOf('/');
+        if (pos >= 0)
+        {
+            uploadedFileName = uploadedFileName.substring(pos + 1);
+        }
+        pos = uploadedFileName.lastIndexOf('\\');
+        if (pos >= 0)
+        {
+            uploadedFileName = uploadedFileName.substring(pos + 1);
+        }
+        if ("".equals(uploadedFileName))
+        {
+            // Give it a default, if trimming the dir eliminated everything
+            uploadedFileName = "file";
+        }
     }
 
 
