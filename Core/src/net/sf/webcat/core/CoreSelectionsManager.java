@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreSelectionsManager.java,v 1.4 2008/04/05 17:51:36 stedwar2 Exp $
+ |  $Id: CoreSelectionsManager.java,v 1.5 2009/03/31 13:39:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ import com.webobjects.eocontrol.*;
  *  {@link CoreSelections} object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CoreSelectionsManager.java,v 1.4 2008/04/05 17:51:36 stedwar2 Exp $
+ *  @version $Id: CoreSelectionsManager.java,v 1.5 2009/03/31 13:39:27 stedwar2 Exp $
  */
 public class CoreSelectionsManager
     extends CachingEOManager
@@ -98,5 +98,19 @@ public class CoreSelectionsManager
     {
         addObjectToBothSidesOfRelationshipWithKey(
             value, CoreSelections.COURSE_OFFERING_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    public Semester semester()
+    {
+        return (Semester)valueForKey(CoreSelections.SEMESTER_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    public void setSemesterRelationship(Semester semester)
+    {
+        takeValueForKey(semester, CoreSelections.SEMESTER_KEY);
     }
 }
