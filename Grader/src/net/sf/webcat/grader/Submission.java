@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.19 2009/02/01 22:38:45 aallowat Exp $
+ |  $Id: Submission.java,v 1.20 2009/03/31 13:29:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.19 2009/02/01 22:38:45 aallowat Exp $
+ *  @version $Id: Submission.java,v 1.20 2009/03/31 13:29:44 aallowat Exp $
  */
 public class Submission
     extends _Submission
@@ -551,8 +551,10 @@ public class Submission
         if (user() == null || assignmentOffering() == null)
             return NSArray.EmptyArray;
 
-        return objectsForAllForAssignmentOfferingAndUser(editingContext(),
-                assignmentOffering(), user());
+        NSArray<Submission> subs = objectsForAllForAssignmentOfferingAndUser(
+                editingContext(), assignmentOffering(), user());
+        
+        return (subs != null) ? subs : NSArray.EmptyArray;
     }
 
 
@@ -747,6 +749,11 @@ public class Submission
      */
     public boolean hasCoverage()
     {
+        if (result() == null)
+        {
+            return false;
+        }
+
         NSArray<SubmissionFileStats> files = result().submissionFileStats();
         
         int totalElements = 0;
@@ -794,6 +801,11 @@ public class Submission
      */
     public boolean hasLOC()
     {
+        if (result() == null)
+        {
+            return false;
+        }
+
         NSArray<SubmissionFileStats> files = result().submissionFileStats();
         
         int totalLOC = 0;
@@ -842,6 +854,11 @@ public class Submission
      */
     public boolean hasCorrectnessScore()
     {
+        if (result() == null)
+        {
+            return false;
+        }
+
         return result().correctnessScore() > 0;
     }
 
