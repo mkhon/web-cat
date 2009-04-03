@@ -2,7 +2,7 @@ Date: WOTextField {
 	size      = 20;
     formatter = session.timeFormatter;
 	value     = objectPropertyValue;
-	id        = name;
+	id        = controlId;
 	readonly  = 1;
 }
 
@@ -13,9 +13,9 @@ DateSelector: WOImage {
 	height    = 16;
 	alt       = "Select date";
 	title     = "Select date";
-	id        = "~\"select\" + name";
+	id        = "~\"select\" + controlId";
 }
 
 Button: WOString {
-    value = "~\"select\" + name";
+    value = "~\"select\" + controlId";
 }
