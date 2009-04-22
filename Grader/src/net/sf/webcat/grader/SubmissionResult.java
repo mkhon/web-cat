@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.12 2009/02/21 22:34:14 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.13 2009/04/22 21:09:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.12 2009/02/21 22:34:14 stedwar2 Exp $
+ *  @version $Id: SubmissionResult.java,v 1.13 2009/04/22 21:09:21 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -407,12 +407,12 @@ public class SubmissionResult
      * included.
      * @return the score
      */
-    public double graphableScore()
+    public double automatedScore()
     {
         double result = correctnessScore() + toolScore();
         if ( log.isDebugEnabled() )
         {
-            log.debug( "graphableScore() = " + result );
+            log.debug( "automatedScore() = " + result );
         }
         return ( result >= 0.0 ) ? result : 0.0;
     }
@@ -450,12 +450,12 @@ public class SubmissionResult
         if ( wasMostRecent && !value )
         {
             submission().assignmentOffering().graphSummary().removeSubmission(
-                graphableScore() );
+                automatedScore() );
         }
         else if ( !wasMostRecent && value )
         {
             submission().assignmentOffering().graphSummary().addSubmission(
-                graphableScore() );
+                automatedScore() );
         }
         super.setIsMostRecent( value );
     }

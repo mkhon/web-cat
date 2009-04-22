@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: GraderHomeStatus.java,v 1.10 2009/04/22 21:09:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  Generates the grader subsystem's rows in the system status block.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderHomeStatus.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
+ *  @version $Id: GraderHomeStatus.java,v 1.10 2009/04/22 21:09:21 aallowat Exp $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -162,7 +162,7 @@ public class GraderHomeStatus
             user() );
         return ( subResult == null )
             ? null
-            : new Double( subResult.graphableScore() );
+            : new Double( subResult.automatedScore() );
     }
 
 

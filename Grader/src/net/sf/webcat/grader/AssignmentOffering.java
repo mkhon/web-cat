@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.19 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.20 2009/04/22 21:09:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.19 2008/10/29 14:15:21 aallowat Exp $
+ * @version $Id: AssignmentOffering.java,v 1.20 2009/04/22 21:09:21 aallowat Exp $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -277,7 +277,7 @@ public class AssignmentOffering
             {
                 SubmissionResult sr =
                     (SubmissionResult)subs.objectAtIndex( i );
-                summary.addSubmission( sr.graphableScore() );
+                summary.addSubmission( sr.automatedScore() );
             }
         }
         return summary;

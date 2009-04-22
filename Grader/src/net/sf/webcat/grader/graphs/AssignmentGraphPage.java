@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentGraphPage.java,v 1.5 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: AssignmentGraphPage.java,v 1.6 2009/04/22 21:09:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.grader.*;
  * Presents graphs of this assignment's data.
  *
  * @author  Stephen Edwards
- * @version $Id: AssignmentGraphPage.java,v 1.5 2008/10/28 19:20:16 aallowat Exp $
+ * @version $Id: AssignmentGraphPage.java,v 1.6 2009/04/22 21:09:22 aallowat Exp $
  */
 public class AssignmentGraphPage
     extends GraderAssignmentComponent
@@ -66,7 +66,7 @@ public class AssignmentGraphPage
             .mostRecentSubmissionResultFor( user() );
         mostRecentScore = ( subResult == null )
             ? null
-            : new Double( subResult.graphableScore() );
+            : new Double( subResult.automatedScore() );
         pastSubResults = SubmissionResult.objectsForUser(
             localContext(),
             prefs().assignmentOffering(),
