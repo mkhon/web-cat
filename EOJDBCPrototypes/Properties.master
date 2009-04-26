@@ -8,7 +8,7 @@ EOJDBCPrototypes.version.minor=1
 EOJDBCPrototypes.version.revision=8
 
 EOJDBCPrototypes.copyright=\
-	(c) 2006-2008 Virginia Tech Department of Computer Science
+	(c) 2006-2009 Virginia Tech Department of Computer Science
 EOJDBCPrototypes.provider=Virginia Tech Computer Science
 EOJDBCPrototypes.provider.url=http\://web-cat.cs.vt.edu/updates
 EOJDBCPrototypes.info.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes
