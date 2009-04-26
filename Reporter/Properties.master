@@ -4,11 +4,11 @@
 subsystem.Reporter=net.sf.webcat.reporter.Reporter
 
 Reporter.version.major=1
-Reporter.version.minor=0
-Reporter.version.revision=4
+Reporter.version.minor=1
+Reporter.version.revision=0
 Reporter.requires=BIRTRuntime, Core, Grader
 
-Reporter.copyright=(c) 2007-2008 Virginia Tech Department of Computer Science
+Reporter.copyright=(c) 2007-2009 Virginia Tech Department of Computer Science
 Reporter.provider=Virginia Tech Computer Science
 Reporter.provider.url=http\://web-cat.cs.vt.edu/updates
 Reporter.info.url=http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem
