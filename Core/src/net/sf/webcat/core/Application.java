@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.39 2008/12/02 22:22:06 aallowat Exp $
+ |  $Id: Application.java,v 1.40 2009/04/27 17:03:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.39 2008/12/02 22:22:06 aallowat Exp $
+ * @version $Id: Application.java,v 1.40 2009/04/27 17:03:26 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.appserver.ERXApplication
@@ -505,7 +505,7 @@ public class Application
                     Pattern.CASE_INSENSITIVE ).matcher( result );
                 if ( matcher.find() )
                 {
-                    urlHostPrefix = matcher.group();
+                    urlHostPrefix = matcher.group() + "/";
                 }
             }
             if (urlHostPrefix == null && request != null)
@@ -1612,7 +1612,7 @@ public class Application
      * Creates a new read-only editing context, typically used to prevent
      * outside code (such as report template expressions) from modifying the
      * contents of the object store.
-     * 
+     *
      * @return the new editing context
      */
     public static ReadOnlyEditingContext newReadOnlyEditingContext()
@@ -1629,7 +1629,7 @@ public class Application
      * used.
      * @param ec the editing context to release
      */
-    public static void releaseReadOnlyEditingContext( 
+    public static void releaseReadOnlyEditingContext(
             ReadOnlyEditingContext ec )
     {
         ec.dispose();
@@ -1640,7 +1640,7 @@ public class Application
     /**
      * Creates a new migrating editing context, used to handle the updating of
      * objects when migrating their attribute values.
-     * 
+     *
      * @return the new editing context
      */
     public static MigratingEditingContext newMigratingEditingContext()
@@ -1657,7 +1657,7 @@ public class Application
      * used.
      * @param ec the editing context to release
      */
-    public static void releaseMigratingEditingContext( 
+    public static void releaseMigratingEditingContext(
             MigratingEditingContext ec )
     {
         ec.dispose();
