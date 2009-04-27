@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.10 2008/04/05 21:47:34 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.11 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *  communicate with subsystems.
  *
  *  @author Stephen Edwards
- *  @version $Id: Subsystem.java,v 1.10 2008/04/05 21:47:34 stedwar2 Exp $
+ *  @version $Id: Subsystem.java,v 1.11 2009/04/27 17:10:53 stedwar2 Exp $
  */
 public class Subsystem
 {
@@ -331,6 +331,40 @@ public class Subsystem
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Get the string path name for this subsystem's Resources directory.
+     * This is designed for use by subclasses that want to locate internal
+     * resources for use in setting up environment variable or plug-in
+     * property values.
+     *
+     * @return The Resources directory name as a string
+     */
+    @SuppressWarnings( "deprecation" )
+    public String myResourcesDir()
+    {
+        if ( myResourcesDir == null )
+        {
+            // First, look for an overriding property, like those that
+            // might be used for non-servlet deployment scenarios.
+            myResourcesDir = Application.configurationProperties()
+                .getProperty( name() + ".Resources" );
+        }
+        if ( myResourcesDir == null )
+        {
+            NSBundle myBundle = myBundle();
+            if ( myBundle != null )
+            {
+                // Note that the resourcePath() method is deprecated, but it
+                // is the best way to get what we need here, so we'll use it
+                // anyway, rather than re-implementing it.
+                myResourcesDir = myBundle.resourcePath();
+            }
+        }
+        return myResourcesDir;
+    }
+
+
     //~ Protected Methods .....................................................
 
     // ----------------------------------------------------------
@@ -356,45 +390,11 @@ public class Subsystem
 
     // ----------------------------------------------------------
     /**
-     * Get the string path name for this subsystem's Resources directory.
-     * This is designed for use by subclasses that want to locate internal
-     * resources for use in setting up environment variable or plug-in
-     * property values.
-     *
-     * @return The Resources directory name as a string
-     */
-    @SuppressWarnings( "deprecation" )
-    protected String myResourcesDir()
-    {
-        if ( myResourcesDir == null )
-        {
-            // First, look for an overriding property, like those that
-            // might be used for non-servlet deployment scenarios.
-            myResourcesDir = Application.configurationProperties()
-                .getProperty( name() + ".Resources" );
-        }
-        if ( myResourcesDir == null )
-        {
-            NSBundle myBundle = myBundle();
-            if ( myBundle != null )
-            {
-                // Note that the resourcePath() method is deprecated, but it
-                // is the best way to get what we need here, so we'll use it
-                // anyway, rather than re-implementing it.
-                myResourcesDir = myBundle.resourcePath();
-            }
-        }
-        return myResourcesDir;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Loads this subsystem's tab definitions.  The default implementation
      * pulls them from the subsystem's Tabs.plist resource file.
      * @return the loaded tab definitions, or null if the subsystem has none
      */
-    protected NSArray loadTabs()
+    protected NSArray<TabDescriptor> loadTabs()
     {
         NSBundle bundle = myBundle();
         if (bundle != null)
@@ -581,7 +581,7 @@ public class Subsystem
     private FeatureDescriptor descriptor;
     private NSDictionary      options;
 
-    private NSArray subsystemTabTemplate;
+    private NSArray<TabDescriptor> subsystemTabTemplate;
 
     static Logger log = Logger.getLogger( Subsystem.class );
 }

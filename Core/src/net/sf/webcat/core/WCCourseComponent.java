@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.7 2008/05/28 15:42:36 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.8 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
+import com.webobjects.foundation.NSMutableArray;
 
 import org.apache.log4j.*;
 
@@ -31,7 +32,7 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @version $Id: WCCourseComponent.java,v 1.7 2008/05/28 15:42:36 stedwar2 Exp $
+ * @version $Id: WCCourseComponent.java,v 1.8 2009/04/27 17:10:53 stedwar2 Exp $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -113,6 +114,104 @@ public class WCCourseComponent
     }
 
 
+    // ----------------------------------------------------------
+    public NSMutableArray<INavigatorObject> courseOfferings()
+    {
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public INavigatorObject selectedCourseOffering()
+    {
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setSelectedCourseOffering(INavigatorObject selected)
+    {
+    }
+
+
+    // ----------------------------------------------------------
+    public NSMutableArray<INavigatorObject> semesters()
+    {
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public INavigatorObject selectedSemester()
+    {
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setSelectedSemester(INavigatorObject selected)
+    {
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean allowsAllSemesters()
+    {
+        return allowsAllSemesters;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setAllowsAllSemesters(boolean value)
+    {
+        allowsAllSemesters = value;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean allowsAllOfferingsForCourse()
+    {
+        return allowsAllOfferingsForCourse;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setAllowsAllOfferingsForCourse(boolean value)
+    {
+        allowsAllOfferingsForCourse = value;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean includeWhatImTeaching()
+    {
+        // TODO: implement
+        return includeWhatImTeaching;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setIncludeWhatImTeaching(boolean value)
+    {
+        // TODO: implement
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean includeAdminAccess()
+    {
+        // TODO: implement
+        return includeAdminAccess;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setIncludeAdminAccess(boolean value)
+    {
+        // TODO: implement
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -136,6 +235,21 @@ public class WCCourseComponent
         CoreSelectionsManager.class.getName();
     private static final String ECMANAGER_KEY =
         EOManager.ECManager.class.getName();
+
+    private NSMutableArray<INavigatorObject> courseOfferings;
+    private INavigatorObject selectedCourseOffering;
+
+    private NSMutableArray<INavigatorObject> semesters;
+    private INavigatorObject selectedSemester;
+
+    private boolean allowsAllSemesters = true;
+    private boolean allowsAllOfferingsForCourse = true;
+
+    private Boolean includeWhatImTeaching;
+    private Boolean includeAdminAccess;
+
+    private static final String SEMESTER_PREF_KEY = "semester";
+    private static final String COURSE_OFFERING_SET_KEY = "courseOfferingSet";
 
     static Logger log = Logger.getLogger( WCCourseComponent.class );
 }

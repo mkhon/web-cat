@@ -1,6 +1,7 @@
 <webobject name="Page">
 <webobject name="SystemStatus"/>
-<webobject name="CanRestart"><webobject name="Form"><webobject name="ThrowException"/>
+<wo:net.sf.webcat.core.WCPageModule title="Shutdown Controls" open="false">
+<webobject name="CanRestart"><webobject name="Form"><webobject name="ThrowException">Force Exception</webobject>
 <webobject name="GracefulShutdown"/>
 <webobject name="DieNow"/>
 </webobject></webobject><webobject name="CannotRestart">
@@ -8,4 +9,5 @@
 to edit the settings for the <b>Core subsystem</b> and provide a value for
 the <b>Web-CAT Shutdown/Restart External Command</b> setting.
 </p></webobject>
+</wo:net.sf.webcat.core.WCPageModule>
 </webobject>

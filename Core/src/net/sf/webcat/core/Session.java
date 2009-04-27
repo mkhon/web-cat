@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.20 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: Session.java,v 1.21 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.20 2008/10/29 14:15:51 aallowat Exp $
+ * @version $Id: Session.java,v 1.21 2009/04/27 17:10:53 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -652,6 +652,19 @@ public class Session
             }
         }
         return timeFormatter;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get the theme to use for this session.
+     * @return The Theme to use
+     */
+    public Theme theme()
+    {
+        return (user() == null || user().theme() == null)
+            ? Theme.defaultTheme()
+            :  user().theme();
     }
 
 

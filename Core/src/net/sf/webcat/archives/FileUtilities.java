@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.4 2008/04/02 00:50:31 stedwar2 Exp $
+ |  $Id: FileUtilities.java,v 1.5 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -127,6 +127,10 @@ public class FileUtilities
                 newDir.mkdir();
                 copyDirectoryContents( fileList[i], newDir );
             }
+            else if (fileList[i].getName().equals(".DS_Store"))
+            {
+                // ignore these for Mac OSX
+            }
             else
             {
                 copyFileToDir( fileList[i], destination );
@@ -158,6 +162,10 @@ public class FileUtilities
                 File newDir = new File( destination, fileList[i].getName() );
                 newDir.mkdir();
                 copyDirectoryContentsIfNecessary( fileList[i], newDir );
+            }
+            else if (fileList[i].getName().equals(".DS_Store"))
+            {
+                // ignore these for Mac OSX
             }
             else
             {

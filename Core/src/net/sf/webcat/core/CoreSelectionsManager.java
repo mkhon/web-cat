@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreSelectionsManager.java,v 1.5 2009/03/31 13:39:27 stedwar2 Exp $
+ |  $Id: CoreSelectionsManager.java,v 1.6 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ import com.webobjects.eocontrol.*;
  *  {@link CoreSelections} object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CoreSelectionsManager.java,v 1.5 2009/03/31 13:39:27 stedwar2 Exp $
+ *  @version $Id: CoreSelectionsManager.java,v 1.6 2009/04/27 17:10:53 stedwar2 Exp $
  */
 public class CoreSelectionsManager
     extends CachingEOManager
@@ -47,6 +47,10 @@ public class CoreSelectionsManager
     public CoreSelectionsManager(CoreSelections selections, ECManager manager)
     {
         super(selections, manager);
+        System.out.println("creating CoreSelectionsManager("
+            + selections.hashCode()
+            + " => " + selections
+            + ", " + manager + ")");
     }
 
 

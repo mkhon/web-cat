@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.10 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.11 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.10 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.11 2009/04/27 17:10:53 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -174,6 +174,19 @@ public class CoreDatabaseUpdates
         database().executeSQL(
             "alter table TCOURSEOFFERING add CLABEL TINYTEXT" );
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds label key to CourseOffering.
+     * @throws SQLException on error
+     */
+//    public void updateIncrement9() throws SQLException
+//    {
+//        createThemesTable();
+//        database().executeSQL(
+//            "ALTER TABLE TUSER ADD CTHEMEID INTEGER" );
+//    }
 
 
     //~ Private Methods .......................................................
@@ -481,6 +494,28 @@ public class CoreDatabaseUpdates
                 + "OID INTEGER NOT NULL, userId INTEGER NOT NULL)" );
             database().executeSQL(
                 "ALTER TABLE PasswordChangeRequest ADD PRIMARY KEY (OID)" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create the TUPLOADEDSCRIPTFILES table, if needed.
+     * @throws SQLException on error
+     */
+    private void createThemesTable() throws SQLException
+    {
+        if ( !database().hasTable( "TTHEMES" ) )
+        {
+            log.info( "creating table TTHEMES" );
+            database().executeSQL(
+                "CREATE TABLE TTHEMES "
+                + "(CDIRNAME TINYTEXT NOT NULL, OID INTEGER NOT NULL, "
+                + "CISFORTHEMEDEVELOPERS BIT , "
+                + "CLASTUPDATE DATETIME , CNAME TINYTEXT , "
+                + "CPROPERTIES BLOB , CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
+            database().executeSQL(
+                "ALTER TABLE TTHEMES ADD PRIMARY KEY (OID)" );
         }
     }
 

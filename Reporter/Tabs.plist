@@ -1,34 +1,38 @@
 {
-    "Reports" = {
+  staff = {
+    children = {
+      "Reports" = {
         accessLevel = 40;
-        priority = 300;
+        priority = 500;
         children = {
-            Generate = {
-           		pageName   = net.sf.webcat.reporter.PickTemplateToGeneratePage;
-                accessLevel = 40;
-           		priority   = 1;
-           		wantsStart = YES;
-            };
-            View = {
-                pageName = net.sf.webcat.reporter.PickReportToViewPage;
-                accessLevel = 40;
-                priority = 2;
-            };
-            Schedule = {
-                pageName = net.sf.webcat.reporter.ScheduleReportPage;
-                accessLevel = 40;
-                priority = 3;
-            };
-            "Template Library" = {
-                pageName = net.sf.webcat.reporter.TemplateLibraryPage;
-                accessLevel = 40;
-                priority = 4;
-            };
-            "Debugging" = {
-                pageName = net.sf.webcat.reporter.DebuggingPage;
-                accessLevel = 40;
-                priority = 100;
-            };
+          Generate = {
+            pageName   = net.sf.webcat.reporter.PickTemplateToGeneratePage;
+            accessLevel = 40;
+            priority   = 1;
+            wantsStart = YES;
+          };
+          View = {
+            pageName = net.sf.webcat.reporter.PickReportToViewPage;
+            accessLevel = 40;
+            priority = 2;
+          };
+          Schedule = {
+            pageName = net.sf.webcat.reporter.ScheduleReportPage;
+            accessLevel = 40;
+            priority = 3;
+          };
+          "Templates" = {
+            pageName = net.sf.webcat.reporter.TemplateLibraryPage;
+            accessLevel = 40;
+            priority = 4;
+          };
+          "Debugging" = {
+            pageName = net.sf.webcat.reporter.DebuggingPage;
+            accessLevel = 40;
+            priority = 100;
+          };
         };
+      };
     };
+  };
 }

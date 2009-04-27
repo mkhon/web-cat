@@ -1,40 +1,40 @@
 {
-    "Administer" = {
+  admin = {
+    accessLevel = 75;
+    priority    = 1000;
+    children = {
+      Status = {
+        pageName    = net.sf.webcat.admin.AdminStatusPage;
         accessLevel = 75;
-        priority = 1000;
-        children = {
-            Status = {
-                pageName = net.sf.webcat.admin.AdminStatusPage;
-                accessLevel = 75;
-                priority = 1;
-                wantsStart = YES;
-                id = AdminHome;
-            };
-            Subsystems = {
-                pageName = net.sf.webcat.admin.SubsystemManagerPage;
-                accessLevel = 90;
-                priority = 2;
-            };
-            System = {
-                pageName = net.sf.webcat.admin.SettingsPage;
-                accessLevel = 90;
-                priority = 3;
-            };
-            "Edit Database" = {
-                pageName = net.sf.webcat.admin.EntryEditPage;
-                accessLevel = 90;
-                priority = 4;
-            };
-//            "Message Test" = {
-//                pageName = net.sf.webcat.admin.tests.NoticeTestPage;
-//                accessLevel = 90;
-//                priority = 5;
-//            };
-            "License" = {
-                pageName = net.sf.webcat.admin.AdminLicensePage;
-                accessLevel = 90;
-                priority = 6;
-            };
-        };
+        priority    = 1;
+        wantsStart  = YES;
+        id          = AdminHome;
+      };
+      Subsystems = {
+        pageName    = net.sf.webcat.admin.SubsystemManagerPage;
+        accessLevel = 90;
+        priority    = 2;
+      };
+      System = {
+        pageName    = net.sf.webcat.admin.SettingsPage;
+        accessLevel = 90;
+        priority    = 3;
+      };
+      "Edit Database" = {
+        pageName    = net.sf.webcat.admin.EntryEditPage;
+        accessLevel = 90;
+        priority    = 4;
+      };
+//      "Message Test" = {
+//        pageName    = net.sf.webcat.admin.tests.NoticeTestPage;
+//        accessLevel = 90;
+//        priority    = 5;
+//      };
+      "License" = {
+        pageName    = net.sf.webcat.admin.AdminLicensePage;
+        accessLevel = 90;
+        priority    = 6;
+      };
     };
+  };
 }

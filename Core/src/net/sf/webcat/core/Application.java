@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.40 2009/04/27 17:03:26 stedwar2 Exp $
+ |  $Id: Application.java,v 1.41 2009/04/27 17:10:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.40 2009/04/27 17:03:26 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.41 2009/04/27 17:10:53 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.appserver.ERXApplication
@@ -315,8 +315,11 @@ public class Application
             releasePeerEditingContext( ec );
         }
         NSLog.debug.setIsEnabled(nsLogDebugEnabled);
+
+        // Force common objects to be loaded into the shared editing context
         AuthenticationDomain.refreshAuthDomains();
         Language.refreshLanguages();
+        Theme.refreshThemes();
 
         NSLog.debug.setAllowedDebugLevel( NSLog.DebugLevelInformational );
         NSLog.allowDebugLoggingForGroups( NSLog.DebugGroupMultithreading );
@@ -1982,7 +1985,7 @@ public class Application
         String lastStaticHtmlDirName = configurationProperties()
             .getProperty( "last.static.html.dir" );
         String staticHtmlBase = configurationProperties().getProperty(
-        "static.html.baseURL" );
+            "static.html.baseURL" );
 
         if ( staticHtmlDirName != null && staticHtmlBase != null )
         {

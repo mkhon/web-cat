@@ -22,7 +22,7 @@ GracefulShutdown: WOSubmitButton {
     value = " Graceful Shutdown ";
 }
 
-Page : net.sf.webcat.core.PageWithNavigation {
+Page : net.sf.webcat.core.WCPageWithNavigation {
 	title     = "System Status";
 }
 
@@ -30,7 +30,6 @@ SystemStatus: SystemStatusBlock {
     includeSeparator = true;
 }
 
-ThrowException: WOSubmitButton {
+ThrowException: net.sf.webcat.ui.WCButton {
     action = throwException;   // VALID
-    value = " Force Exception ";
 }
