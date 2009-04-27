@@ -591,7 +591,19 @@ sub munge
                     {
                         if ($self->{highlightfile}->{nocase}) { $checkword = $self->{context}->{validkeys}{$checkword}; }
                         my $category = $self->{highlightfile}->{keywords}{$checkword};
-                        my $outchunk = $self->{context}->{category_parts}{$category}[0].$currword.$self->{context}->{category_parts}{$category}[1];
+                        my $outchunk = "";
+                        if (defined $self->{context}->{category_parts}{$category}[0])
+                        {
+                            $outchunk = $self->{context}->{category_parts}{$category}[0];
+                        }
+                        if (defined $currword)
+                        {
+                            $outchunk .= $currword;
+                        }
+                        if (defined $self->{context}->{category_parts}{$category}[1])
+                        {
+                            $outchunk .= $self->{context}->{category_parts}{$category}[1];
+                        }
                         $strout .= $outchunk;
                         # TODO: Linkscripts
                     }
