@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCValidationTextBox.java,v 1.2 2009/04/28 15:25:06 aallowat Exp $
+ |  $Id: WCSimpleTextArea.java,v 1.1 2009/04/28 15:25:06 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,29 +28,25 @@ import com.webobjects.foundation.NSDictionary;
 
 //------------------------------------------------------------------------
 /**
- * A text box that uses a regular expression to validate its contents.
- *
+ * A basic text area that automatically takes on Dojo styling.
+ * 
  * <h2>Bindings</h2>
- * <table>
- * <tr>
- * <td>{@code regExp}</td>
- * <td>The regular expression used to validate the textbox's contents.</td>
- * </tr>
- * <tr>
- * <td>{@code invalidMessage}</td>
- * <td>The message displayed when the contents of the textbox are invalid.</td>
- * </tr>
- * </table>
+ * <dl>
+ * <dt>rows</dt>
+ * <dd>The number of rows to display in the text area.</dd>
+ * <dt>cols</dt>
+ * <dd>The number of columns wide to make the text area.</dd>
+ * </dl>
  * 
  * @author Tony Allevato
- * @version $Id: WCValidationTextBox.java,v 1.2 2009/04/28 15:25:06 aallowat Exp $
+ * @version $Id: WCSimpleTextArea.java,v 1.1 2009/04/28 15:25:06 aallowat Exp $
  */
-public class WCValidationTextBox extends WCTextBox
+public class WCSimpleTextArea extends WCTextBox
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public WCValidationTextBox(String name,
+    public WCSimpleTextArea(String name,
             NSDictionary<String, WOAssociation> someAssociations,
             WOElement template)
     {
@@ -64,6 +60,6 @@ public class WCValidationTextBox extends WCTextBox
     @Override
     public String dojoType()
     {
-        return "dijit.form.ValidationTextBox";
+        return "dijit.form.SimpleTextarea";
     }
 }
