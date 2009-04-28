@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTitlePane.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCTitlePane.java,v 1.2 2009/04/28 15:26:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -54,7 +54,7 @@ import er.ajax.AjaxUtils;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCTitlePane.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCTitlePane.java,v 1.2 2009/04/28 15:26:51 aallowat Exp $
  */
 public class WCTitlePane extends WCContentPane
 {
@@ -77,7 +77,7 @@ public class WCTitlePane extends WCContentPane
     @Override
     public String dojoType()
     {
-        return "dijit.TitlePane";
+        return "webcat.TitlePane";
     }
 
     
