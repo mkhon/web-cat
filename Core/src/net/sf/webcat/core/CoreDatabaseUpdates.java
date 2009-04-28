@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.11 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.12 2009/04/28 15:24:09 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.11 2009/04/27 17:10:53 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.12 2009/04/28 15:24:09 aallowat Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -181,12 +181,12 @@ public class CoreDatabaseUpdates
      * Adds label key to CourseOffering.
      * @throws SQLException on error
      */
-//    public void updateIncrement9() throws SQLException
-//    {
-//        createThemesTable();
-//        database().executeSQL(
-//            "ALTER TABLE TUSER ADD CTHEMEID INTEGER" );
-//    }
+    public void updateIncrement9() throws SQLException
+    {
+        createThemesTable();
+        database().executeSQL(
+            "ALTER TABLE TUSER ADD CTHEMEID INTEGER" );
+    }
 
 
     //~ Private Methods .......................................................
