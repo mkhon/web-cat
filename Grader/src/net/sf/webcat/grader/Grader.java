@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.15 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: Grader.java,v 1.16 2009/05/03 17:09:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.15 2008/10/29 14:15:21 aallowat Exp $
+*  @version $Id: Grader.java,v 1.16 2009/05/03 17:09:26 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -651,7 +651,7 @@ public class Grader
             result.clearSubmission();
             result.submissionInProcess().clearUpload();
             result.message =
-                "You file submission is empty.  "
+                "Your file submission is empty.  "
                 + "Please choose an appropriate file.";
             return result.generateResponse();
         }
@@ -661,7 +661,7 @@ public class Grader
             result.clearSubmission();
             result.submissionInProcess().clearUpload();
             result.message =
-                "You file exceeds the file size limit for this "
+                "Your file exceeds the file size limit for this "
                 + "assignment ("
                 + assignment.assignment().submissionProfile()
                       .effectiveMaxFileUploadSize()
