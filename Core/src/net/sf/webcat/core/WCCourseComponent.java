@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.8 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.9 2009/05/03 17:16:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -32,7 +32,8 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @version $Id: WCCourseComponent.java,v 1.8 2009/04/27 17:10:53 stedwar2 Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.9 $ $Date: 2009/05/03 17:16:55 $
  */
 public class WCCourseComponent
     extends WCComponent
