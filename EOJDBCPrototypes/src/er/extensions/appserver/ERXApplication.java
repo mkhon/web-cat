@@ -715,6 +715,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * order, class path order, checks patches etc.
 	 */
 	public static void setup(String[] argv) {
+	    if (_loader == null)
+	    {
 		System.out.println("setup(" + Arrays.toString(argv) + ")");
 		System.out.println("    _DisableClasspathReorder = "
 				+ System.getProperty("_DisableClasspathReorder"));
@@ -739,6 +741,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		ERXConfigurationManager.defaultManager().setCommandLineArguments(argv);
 		ERXFrameworkPrincipal.setUpFrameworkPrincipalClass(ERXExtensions.class);
 		ERXStats.initStatisticsIfNecessary();
+	    }
 	}
 
 	/**
