@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.3 2009/05/03 17:16:55 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.4 2009/05/03 19:33:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $ $Date: 2009/05/03 17:16:55 $
+ * @version $Revision: 1.4 $ $Date: 2009/05/03 19:33:27 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -100,7 +100,7 @@ public class CoreNavigator
 
     public boolean allowsAllSemesters = true;
     public boolean allowsAllOfferingsForCourse = true;
-    public boolean startOpen = false;
+    public Boolean startOpen;
 
     public ComponentIDGenerator idFor;
 
@@ -114,6 +114,12 @@ public class CoreNavigator
     public void appendToResponse(WOResponse response, WOContext context)
     {
         log.debug("entering appendToResponse()");
+
+        if (startOpen == null)
+        {
+            startOpen = Boolean.valueOf(
+                selectionsParent.forceNavigatorSelection());
+        }
 
         idFor = new ComponentIDGenerator(this);
 
