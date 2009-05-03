@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageModule.java,v 1.2 2009/04/28 15:27:59 aallowat Exp $
+ |  $Id: WCPageModule.java,v 1.3 2009/05/03 17:15:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * and which will be rendered with the <code>.module</code> CSS class.
  *
  * @author Stephen Edwards
- * @version $Id: WCPageModule.java,v 1.2 2009/04/28 15:27:59 aallowat Exp $
+ * @version $Id: WCPageModule.java,v 1.3 2009/05/03 17:15:06 stedwar2 Exp $
  */
 public class WCPageModule
     extends WOComponent
@@ -78,7 +78,7 @@ public class WCPageModule
     {
         return (String)valueForBinding("id");
     }
-    
+
 
     // ----------------------------------------------------------
     public boolean showsLoadingMessageOnRefresh()
@@ -86,20 +86,13 @@ public class WCPageModule
         return ERXValueUtilities.booleanValueWithDefault(
                 valueForBinding("showsLoadingMessageOnRefresh"), true);
     }
-    
+
 
     // ----------------------------------------------------------
     public boolean isCollapsible()
     {
         return ERXValueUtilities.booleanValueWithDefault(
             valueForBinding("collapsible"), true);
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean isStatic()
-    {
-        return ERXValueUtilities.booleanValue(valueForBinding("static"));
     }
 
 
