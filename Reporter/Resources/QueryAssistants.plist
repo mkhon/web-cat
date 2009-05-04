@@ -22,17 +22,6 @@
  *       - model: an instance of the class specified in modelName that
  *             represents the query internally for the model
  *
- * previewComponentName: Value is a String that specifies the fully-qualified
- *     name of the WebObjects component that will be rendered on the final page
- *     of the report generation wizard to display a summary of the query that
- *     the user entered, for last-chance verification purposes. This component
- *     should essentially render the same information as the editor component,
- *     but without editing capabilities, and the information may be summarized
- *     in a concise manner. This component must have the following bindings:
- *       - dataSet: the ReportDataSet object for which the query is being made
- *       - model: an instance of the class specified in modelName that
- *             represents the query internally for the model
- *
  * description: Value is a String that provides a description of the query
  *     assistant to the user. If this string contains a pipe '|' character,
  *     then the portion of the description before the pipe will be rendered as
@@ -46,14 +35,25 @@
         entities = ( Submission );
         modelName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentSubmissionsModel";
         editorComponentName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentSubmissionsAssistant";
-        previewComponentName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentSubmissionsPreview";
         description = "Get submissions for an assignment| by selecting a set of courses and an assignment offered in those courses.";
+        stylesheets = ( "queryassistants/course-and-assignment.css" );
+        javascripts = ( "queryassistants/course-and-assignment.js" );
+    };
+
+    "net.sf.webcat.reporter.queryassistants.courseAndAssignmentResultOutcomes" = {
+        entities = ( ResultOutcome );
+        modelName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentResultOutcomesModel";
+        editorComponentName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentResultOutcomesAssistant";
+        description = "Get result outcomes for an assignment| by selecting a set of courses and an assignment offered in those courses.";
+        stylesheets = ( "queryassistants/course-and-assignment.css" );
+        javascripts = ( "queryassistants/course-and-assignment.js" );
     };
 
     "net.sf.webcat.reporter.queryassistants.advancedQuery" = {
         modelName = "net.sf.webcat.reporter.queryassistants.AdvancedQueryModel";
         editorComponentName = "net.sf.webcat.reporter.queryassistants.AdvancedQueryAssistant";
-        previewComponentName = "net.sf.webcat.reporter.queryassistants.AdvancedQueryPreview";
         description = "Construct an advanced query| to filter objects that satisfy a set of criteria.";
+        stylesheets = ( "queryassistants/advanced.css" );
+        javascripts = ( "queryassistants/advanced.js" );
     };
 }
