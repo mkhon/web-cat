@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.7 2009/02/21 22:15:21 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.8 2009/05/07 15:19:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditSubmissionProfilePage.java,v 1.7 2009/02/21 22:15:21 stedwar2 Exp $
+ * @version $Id: EditSubmissionProfilePage.java,v 1.8 2009/05/07 15:19:39 stedwar2 Exp $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -210,15 +210,50 @@ public class EditSubmissionProfilePage
 
 
     // ----------------------------------------------------------
-    public Long maxFileUploadSize()
+    public String maxFileUploadSize()
     {
-        return submissionProfile.maxFileUploadSizeRaw();
+        return SubmissionProfile.formatSizeValue(
+            submissionProfile.maxFileUploadSizeRaw());
     }
 
 
     // ----------------------------------------------------------
-    public void setMaxFileUploadSize( Long value )
+    public String maxMaxFileUploadSize()
     {
+        return SubmissionProfile.formatSizeValue(
+            SubmissionProfile.maxMaxFileUploadSize());
+    }
+
+
+    // ----------------------------------------------------------
+    public String defaultMaxFileUploadSize()
+    {
+        return SubmissionProfile.formatSizeValue(
+            SubmissionProfile.defaultMaxFileUploadSize());
+    }
+
+
+    // ----------------------------------------------------------
+    public void setMaxFileUploadSize( String valueAsString )
+    {
+        Long value = null;
+        if (valueAsString != null)
+        {
+            try
+            {
+                value = new Long(
+                    SubmissionProfile.parseFormattedLong(valueAsString));
+            }
+            catch (NumberFormatException e)
+            {
+                // set error message if size is out of range
+                error(
+                    "Unable to interpret \"" + valueAsString + "\" as a "
+                    + "number for the max upload size.",
+                    "formatMaxSize" );
+            }
+        }
+        clearMessage( "formatMaxSize" );
         if ( value != null
              && value.longValue() > SubmissionProfile.maxMaxFileUploadSize() )
         {
@@ -234,7 +269,7 @@ public class EditSubmissionProfilePage
             clearMessage( "tooLarge" );
         }
         // This will automatically restrict to the max value anyway
-        submissionProfile.setMaxFileUploadSize( value );
+        submissionProfile.setMaxFileUploadSize(value);
     }
 
 
