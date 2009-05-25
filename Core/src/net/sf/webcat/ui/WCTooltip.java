@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTooltip.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCTooltip.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -58,7 +58,7 @@ import com.webobjects.foundation.NSDictionary;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCTooltip.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCTooltip.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  */
 public class WCTooltip extends DojoElement
 {
@@ -69,7 +69,7 @@ public class WCTooltip extends DojoElement
             NSDictionary<String, WOAssociation> someAssociations,
             WOElement template)
     {
-        super("div", someAssociations, template);
+        super("span", someAssociations, template);
     }
 
 

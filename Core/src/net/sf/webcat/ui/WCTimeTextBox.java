@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTimeTextBox.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
+ |  $Id: WCTimeTextBox.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import com.webobjects.foundation.NSTimestamp;
  * A text box that lets the user select a time from a popup control.
  * 
  * @author Tony Allevato
- * @version $Id: WCTimeTextBox.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
+ * @version $Id: WCTimeTextBox.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
  */
 public class WCTimeTextBox extends DojoFormElement
 {
@@ -73,7 +73,7 @@ public class WCTimeTextBox extends DojoFormElement
 
 	// ----------------------------------------------------------
 	@Override
-	protected String stringValueForObject(Object value)
+	protected String stringValueForObject(Object value, WOContext context)
 	{
         // Append the date set in the value binding, if it exists. Dojo
         // requires that this be string in ISO date format, so we convert it
@@ -85,7 +85,7 @@ public class WCTimeTextBox extends DojoFormElement
 
 	// ----------------------------------------------------------
 	@Override
-    protected Object objectForStringValue(String stringValue)
+    protected Object objectForStringValue(String stringValue, WOContext context)
     {
     	// When Dojo populates the shadowed text field with the selected date,
     	// it always formats it in ISO date format.

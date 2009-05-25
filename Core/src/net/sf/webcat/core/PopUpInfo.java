@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PopUpInfo.java,v 1.3 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: PopUpInfo.java,v 1.4 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
+import net.sf.webcat.ui.util.ComponentIDGenerator;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
  * info/help message.
  *
  * @author Stephen Edwards
- * @version $Id: PopUpInfo.java,v 1.3 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: PopUpInfo.java,v 1.4 2009/05/25 16:51:20 aallowat Exp $
  */
 public class PopUpInfo
     extends WOComponent
@@ -48,9 +49,22 @@ public class PopUpInfo
         super( context );
     }
 
+    //~ KVC attributes (must be public) .......................................
+
+    public ComponentIDGenerator idFor;
+
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
+    public void appendToResponse(WOResponse response, WOContext context)
+    {
+        idFor = new ComponentIDGenerator(this);
+        
+        super.appendToResponse(response, context);
+    }
+    
+    
     // ----------------------------------------------------------
     public boolean isStateless()
     {

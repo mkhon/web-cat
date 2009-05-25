@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StringCell.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: StringCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -19,7 +19,7 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package net.sf.webcat.ui.table;
+package net.sf.webcat.ui;
 
 import java.text.Format;
 import com.webobjects.appserver.WOContext;
@@ -45,9 +45,9 @@ import com.webobjects.foundation.NSDictionary;
  * </ul>
  * 
  * @author Tony Allevato
- * @version $Id: StringCell.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: StringCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  */
-public class StringCell extends AbstractObjectTableCell
+public class StringCell extends WCTableCell
 {
     //~ Constructor ...........................................................
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoActionFormElement.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
+ |  $Id: DojoActionFormElement.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -141,7 +141,7 @@ import er.extensions.components.ERXComponentUtilities;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: DojoActionFormElement.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
+ * @version $Id: DojoActionFormElement.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
  */
 public abstract class DojoActionFormElement extends DojoFormElement
 {
@@ -355,8 +355,8 @@ public abstract class DojoActionFormElement extends DojoFormElement
         else
         {
             response.appendContentString(
-                    _remoteHelper.partialSubmitCall("this", nameInContext(context),
-                            null, context));
+                    _remoteHelper.partialSubmitCall("this",
+                            nameInContext(context), null, context));
         }
     }
     

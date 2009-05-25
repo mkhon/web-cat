@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTable.java,v 1.2 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: WCStyledTable.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,21 +29,21 @@ import com.webobjects.appserver.*;
  * the standard Web-CAT way.
  *
  * @author Stephen Edwards
- * @version $Id: WCTable.java,v 1.2 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: WCStyledTable.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  */
 
-public class WCTable
+public class WCStyledTable
 extends WOComponent
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
-     * Creates a new WCTable object.
+     * Creates a new WCStyledTable object.
      *
      * @param context The page's context
      */
-    public WCTable( WOContext context )
+    public WCStyledTable( WOContext context )
     {
         super( context );
     }

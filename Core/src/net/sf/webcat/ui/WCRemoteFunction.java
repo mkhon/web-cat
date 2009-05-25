@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCRemoteFunction.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
+ |  $Id: WCRemoteFunction.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,8 @@
 package net.sf.webcat.ui;
 
 import org.apache.log4j.Logger;
+import net.sf.webcat.core.Application;
+import net.sf.webcat.ui.util.DojoOptions;
 import net.sf.webcat.ui.util.DojoRemoteHelper;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOAssociation;
@@ -47,7 +49,7 @@ import er.extensions.components.ERXComponentUtilities;
  * instead of webcat.partialSubmit)
  * 
  * @author Tony ALlevato
- * @version $Id: WCRemoteFunction.java,v 1.2 2009/02/20 02:27:21 aallowat Exp $
+ * @version $Id: WCRemoteFunction.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
  */
 public class WCRemoteFunction extends WOHTMLDynamicElement
 {
@@ -113,9 +115,18 @@ public class WCRemoteFunction extends WOHTMLDynamicElement
         script.append(_remoteHelper.invokeRemoteActionCall(
                 "widget", actionUrl, null, context));
         script.append("}");
-        
-        ERXResponseRewriter.addScriptCodeInHead(response, context,
-                script.toString());
+
+        if (Application.isAjaxRequest(context.request()))
+        {
+            response.appendContentString("<script type=\"text/javascript\">");
+            response.appendContentString(script.toString());
+            response.appendContentString("</script>");
+        }
+        else
+        {
+            ERXResponseRewriter.addScriptCodeInHead(response, context,
+                    script.toString());
+        }
     }
 
 
@@ -151,7 +162,10 @@ public class WCRemoteFunction extends WOHTMLDynamicElement
         AjaxUtils.createResponse(request, context);
         AjaxUtils.mutableUserInfo(request);
 
-        result = (WOActionResults) _action.valueInComponent(component);
+        if (_action != null)
+        {
+            result = (WOActionResults) _action.valueInComponent(component);
+        }
         
         AjaxUtils.updateMutableUserInfoWithAjaxInfo(context);
 

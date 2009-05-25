@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ComponentIDGenerator.java,v 1.1 2009/02/20 02:27:21 aallowat Exp $
+ |  $Id: ComponentIDGenerator.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -60,7 +60,7 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  * generated above would be "_0_5_3_aUniqueIdentifierString".
  * 
  * @author Tony Allevato
- * @version $Id: ComponentIDGenerator.java,v 1.1 2009/02/20 02:27:21 aallowat Exp $
+ * @version $Id: ComponentIDGenerator.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  */
 public class ComponentIDGenerator implements NSKeyValueCodingAdditions
 {
@@ -85,7 +85,14 @@ public class ComponentIDGenerator implements NSKeyValueCodingAdditions
     // ----------------------------------------------------------
     public Object valueForKey(String key)
     {
-        return idBase + "_" + key;
+        if (COMPONENT_ID_PREFIX.equals(key))
+        {
+            return idBase;
+        }
+        else
+        {
+            return idBase + "_" + key;
+        }
     }
     
 
@@ -99,12 +106,21 @@ public class ComponentIDGenerator implements NSKeyValueCodingAdditions
     // ----------------------------------------------------------
     public Object valueForKeyPath(String keypath)
     {
-        String suffix = keypath.replace('.', '_');
-        return idBase + "_" + suffix;
+        if (COMPONENT_ID_PREFIX.equals(keypath))
+        {
+            return idBase;
+        }
+        else
+        {
+            String suffix = keypath.replace('.', '_');
+            return idBase + "_" + suffix;
+        }
     } 
 
 
     //~ Static/instance variables .............................................
+
+    private static final String COMPONENT_ID_PREFIX = "ComponentIDPrefix";
 
     private String idBase;
 }

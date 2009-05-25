@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCContentPane.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCContentPane.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -48,7 +48,7 @@ import er.extensions.appserver.ERXWOContext;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCContentPane.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCContentPane.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  */
 public class WCContentPane extends DojoElement
 {
@@ -59,8 +59,7 @@ public class WCContentPane extends DojoElement
             NSDictionary<String, WOAssociation> someAssociations,
             WOElement template)
     {
-        super("div", someAssociations, template);
-
+        super(name, someAssociations, template);
     }
 
 
@@ -71,6 +70,14 @@ public class WCContentPane extends DojoElement
     public String dojoType()
     {
         return "webcat.ContentPane";
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public String elementName()
+    {
+        return "div";
     }
 
 
@@ -144,4 +151,9 @@ public class WCContentPane extends DojoElement
 
         return id;
     }
+    
+
+    //~ Static/instance variables .............................................
+
+    protected WOAssociation _elementName;
 }

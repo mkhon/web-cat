@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDateTimePicker.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: WCDateTimePicker.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -58,7 +58,7 @@ import com.webobjects.foundation.NSTimestamp;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCDateTimePicker.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: WCDateTimePicker.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  */
 public class WCDateTimePicker extends WOComponent
 {
@@ -133,6 +133,12 @@ public class WCDateTimePicker extends WOComponent
     public void setValue(NSTimestamp aValue)
     {
         GregorianCalendar aValueCalendar = new GregorianCalendar();
+        
+        if (aValue == null)
+        {
+            aValue = new NSTimestamp();
+        }
+
         aValueCalendar.setTime(aValue);
 
         GregorianCalendar datePartCalendar = new GregorianCalendar();

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCFilteringSelect.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCFilteringSelect.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSDictionary;
  * An enhanced version of the HTML {@code select} tag.
  * 
  * @author Tony Allevato
- * @version $Id: WCFilteringSelect.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCFilteringSelect.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
  */
 public class WCFilteringSelect extends DojoSingleSelectionListFormElement
 {
@@ -56,7 +56,7 @@ public class WCFilteringSelect extends DojoSingleSelectionListFormElement
 	@Override
 	public String dojoType()
 	{
-		return "dijit.form.FilteringSelect";
+		return "webcat.FilteringSelect";
 	}
 
 

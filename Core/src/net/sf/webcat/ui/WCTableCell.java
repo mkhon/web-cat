@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractObjectTableCell.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: WCTableCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -19,7 +19,7 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package net.sf.webcat.ui.table;
+package net.sf.webcat.ui;
 
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
@@ -30,14 +30,14 @@ import com.webobjects.foundation.NSDictionary;
  * An abstract class that all ObjectTable cell classes must extend.
  * 
  * @author Tony Allevato
- * @version $Id: AbstractObjectTableCell.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: WCTableCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  */
-public abstract class AbstractObjectTableCell extends WOComponent
+public abstract class WCTableCell extends WOComponent
 {
     //~ Constructors ..........................................................
     
     // ----------------------------------------------------------
-    public AbstractObjectTableCell(WOContext context)
+    public WCTableCell(WOContext context)
     {
         super(context);
     }

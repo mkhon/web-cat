@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BooleanActionCell.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: BooleanActionCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -19,7 +19,7 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package net.sf.webcat.ui.table;
+package net.sf.webcat.ui;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSBundle;
@@ -41,9 +41,9 @@ import com.webobjects.foundation.NSDictionary;
  * </ul>
  * 
  * @author Tony Allevato
- * @version $Id: BooleanActionCell.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: BooleanActionCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
  */
-public class BooleanActionCell extends AbstractObjectTableCell
+public class BooleanActionCell extends WCTableCell
 {
     //~ Constructors ..........................................................
 
