@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueryAssistantDescriptor.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
+ |  $Id: QueryAssistantDescriptor.java,v 1.5 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.reporter.queryassistants;
 
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCoding;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
  * Query assistant support class.
  *
  * @author aallowat
- * @version $Id: QueryAssistantDescriptor.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
+ * @version $Id: QueryAssistantDescriptor.java,v 1.5 2009/05/27 14:31:52 aallowat Exp $
  */
 public class QueryAssistantDescriptor
     implements NSKeyValueCoding
@@ -39,27 +40,17 @@ public class QueryAssistantDescriptor
 
     // ----------------------------------------------------------
     /**
-     * This is the default constructor
+     * TODO real description
+     *
      * @param anId     The unique id of the query assistant
-     * @param ents     The array of entity types that this query assistant is
-     *                 valid for
-     * @param modName  The name of the model used by this query assistant
-     * @param editorCompName The name of the component implementing this query
+     * @param anInfo   A dictionary containing properties about the query
      *                 assistant
-     * @param previewCompName The name of the component implementing the preview
-     *                 for this query assistant
-     * @param desc     A description
      */
     public QueryAssistantDescriptor(
-        String anId, NSArray<String> ents, String modName,
-        String editorCompName, String previewCompName, String desc)
+        String anId, NSDictionary<String, Object> anInfo)
     {
         id = anId;
-        entities = ents;
-        modelName = modName;
-        editorComponentName = editorCompName;
-        previewComponentName = previewCompName;
-        description = desc;
+        info = anInfo;
     }
 
 
@@ -75,44 +66,51 @@ public class QueryAssistantDescriptor
     // ----------------------------------------------------------
     public NSArray<String> entities()
     {
-        return entities;
+        return (NSArray<String>) info.objectForKey("entities");
     }
 
 
     // ----------------------------------------------------------
     public String modelName()
     {
-        return modelName;
+        return (String) info.objectForKey("modelName");
     }
 
 
     // ----------------------------------------------------------
     public String editorComponentName()
     {
-        return editorComponentName;
-    }
-
-
-    // ----------------------------------------------------------
-    public String previewComponentName()
-    {
-        return previewComponentName;
+        return (String) info.objectForKey("editorComponentName");
     }
 
 
     // ----------------------------------------------------------
     public String description()
     {
-        return description;
+        return (String) info.objectForKey("description");
     }
 
 
+    // ----------------------------------------------------------
+    public NSArray<String> stylesheets()
+    {
+        return (NSArray<String>) info.objectForKey("stylesheets");
+    }
+
+    
+    // ----------------------------------------------------------
+    public NSArray<String> javascripts()
+    {
+        return (NSArray<String>) info.objectForKey("javascripts");
+    }
+
+    
     // ----------------------------------------------------------
     public AbstractQueryAssistantModel createModel()
     {
         try
         {
-            Class<?> klass = Class.forName(modelName);
+            Class<?> klass = Class.forName(modelName());
             return (AbstractQueryAssistantModel)klass.newInstance();
         }
         catch (Exception e)
@@ -120,7 +118,9 @@ public class QueryAssistantDescriptor
             // This shouldn't happen because we check at load time if the
             // class exists.
             log.error(
-                "Could not create query assistant model of type " + modelName);
+                "Could not create query assistant model of type "
+                    + modelName());
+
             return null;
         }
     }
@@ -144,11 +144,7 @@ public class QueryAssistantDescriptor
     //~ Instance/static variables .............................................
 
     private String id;
-    private NSArray<String> entities;
-    private String modelName;
-    private String editorComponentName;
-    private String previewComponentName;
-    private String description;
+    private NSDictionary<String, Object> info;
 
     private static final Logger log =
         Logger.getLogger(QueryAssistantDescriptor.class);

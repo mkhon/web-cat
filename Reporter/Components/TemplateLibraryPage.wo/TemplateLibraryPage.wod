@@ -1,3 +1,11 @@
+Page : net.sf.webcat.core.WCPageWithNavigation {
+	title = "Report Template Library";
+}
+
+Form : WCForm {
+    multipleSubmit = true;
+    enctype = "multipart/form-data";
+}
 
 Date: WOString {
     dateformat = "%m/%d/%y %I:%M%p";
@@ -16,6 +24,7 @@ DownloadNow: WOActiveImage {
 }
 
 TemplateUpload: WOFileUpload {
+    dojoType = "dojox.form.FileInput";
     data     = uploadedData;
     filePath = uploadedName;
     size     = 60;
@@ -32,8 +41,8 @@ Publish: WOActiveImage {
     action    = togglePublished;
 }
 
-TerseDescriptions: WOSubmitButton {
-    value  = "Hide Descriptions";
+TerseDescriptions: WCButton {
+    label  = "Hide Descriptions";
     action = toggleVerboseDescriptions;
 }
 
@@ -48,12 +57,12 @@ Unpublish: WOActiveImage {
     action    = togglePublished;
 }
 
-Upload: WOSubmitButton {
-    value = "Upload File & Install";
+Upload: WCButton {
+    label = "Upload File & Install";
     action = upload;
 }
 
-VerboseDescriptions: WOSubmitButton {
-    value  = "Show Descriptions";
+VerboseDescriptions: WCButton {
+    label  = "Show Descriptions";
     action = toggleVerboseDescriptions;
 }

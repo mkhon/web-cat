@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HTMLRenderingMethod.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
+ |  $Id: HTMLRenderingMethod.java,v 1.6 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
  * Render method for HTML-viewable reports.
  *
  * @author Tony Allevato
- * @version $Id: HTMLRenderingMethod.java,v 1.5 2008/04/16 20:48:23 aallowat Exp $
+ * @version $Id: HTMLRenderingMethod.java,v 1.6 2009/05/27 14:31:52 aallowat Exp $
  */
 public class HTMLRenderingMethod
     extends AbstractRenderingMethod
@@ -103,12 +103,16 @@ public class HTMLRenderingMethod
         GeneratedReport report, WOResponse response, WOContext context)
         throws IOException
     {
+        response.appendContentString("<div id=\"reportBlock\">\n");
+
         String htmlPath = report.renderedResourcePath(REPORT_ROOT_HTML);
         File htmlFile = new File(htmlPath);
 
         NSData htmlData = new NSData(
             new FileInputStream(htmlFile), (int)htmlFile.length());
         response.appendContentData(htmlData);
+        
+        response.appendContentString("</div>\n");
     }
 
 

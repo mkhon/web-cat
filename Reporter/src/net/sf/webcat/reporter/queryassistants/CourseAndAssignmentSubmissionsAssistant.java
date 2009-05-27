@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.reporter.queryassistants;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.eocontrol.EOGenericRecord;
 import com.webobjects.eocontrol.EOKeyValueQualifier;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.eocontrol.EOSortOrdering;
@@ -33,13 +34,19 @@ import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import er.ajax.AjaxTreeModel;
 import er.extensions.eof.ERXEOControlUtilities;
+import er.extensions.eof.ERXQ;
+import er.extensions.eof.ERXS;
 import net.sf.webcat.core.Course;
 import net.sf.webcat.core.CourseOffering;
+import net.sf.webcat.core.Department;
+import net.sf.webcat.core.Semester;
 import net.sf.webcat.grader.Assignment;
 import net.sf.webcat.grader.AssignmentOffering;
 import net.sf.webcat.reporter.QualifierUtils;
 import net.sf.webcat.reporter.ReportDataSet;
 import net.sf.webcat.reporter.ReporterComponent;
+import net.sf.webcat.ui.AbstractTreeModel;
+import net.sf.webcat.ui.util.ComponentIDGenerator;
 
 //-------------------------------------------------------------------------
 /**
@@ -48,7 +55,7 @@ import net.sf.webcat.reporter.ReporterComponent;
  * a specified set of course offerings.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.8 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends ReporterComponent
@@ -70,328 +77,187 @@ public class CourseAndAssignmentSubmissionsAssistant
 
 	public ReportDataSet                       dataSet;
 	public CourseAndAssignmentSubmissionsModel model;
-	public CourseTreeNode                      currentNode;
 	public Assignment                          assignment;
-	public CourseTreeNode                      courseRoot;
-	public CourseTreeDelegate                  courseDelegate;
 	public int                                 index;
+	public CourseTreeModel                     courseModel;
+	public Course                              courseInRepetition;
+	public Assignment                          assignmentInRepetition;
+	public ComponentIDGenerator                idFor;
 
 
-    //~ Public Nested Classes .................................................
+	//~ Public Nested Classes .................................................
 
-    // ----------------------------------------------------------
-    /**
-     * Represents a single node in the AJAX-based tree view provided by
-     * this component.
-     */
-    public class CourseTreeNode
+	public class CourseTreeModel extends AbstractTreeModel
 	{
-        //~ Constructor .......................................................
-
-        // ----------------------------------------------------------
-        public CourseTreeNode(CourseTreeNode parent, Object data)
-        {
-            id = getUniqueId();
-            this.data = data;
-            this.parent = parent;
-        }
-
-
-        //~ KVC Attributes (must be public) ...................................
-
-        public String id;
-		public Object data;
-		public CourseTreeNode parent;
-		public NSArray<CourseTreeNode> children;
-
-
         //~ Public Methods ....................................................
 
         // ----------------------------------------------------------
-        public boolean isChecked()
-		{
-			if (children == null || children.isEmpty())
-			{
-				if (data instanceof CourseOffering)
-                {
-					return model.containsCourseOffering((CourseOffering)data);
-                }
-				else
-                {
-					return false;
-                }
-			}
-			else
-			{
-				boolean allChecked = true;
-				for (CourseTreeNode child : children)
-				{
-					if (!child.isChecked())
-					{
-						allChecked = false;
-						break;
-					}
-				}
-				return allChecked;
-			}
-		}
-
-
-        // ----------------------------------------------------------
-		/**
-		 * This method is a no-op. The problem with this setter is that the
-		 * checked state of EVERY node in the tree gets submitted as part of
-		 * the AJAX update, so if the node that is toggled by the user is
-		 * a parent of another node, then the child node would get set after
-		 * the parent was, which could in turn modify the parent's logical
-		 * state. Thus, the checking is handled by the toggle() action below,
-		 * which will only be invoked on the node that was directly touched by
-		 * the user.
-         * @param value is ignored
-		 */
-		public void setChecked(boolean value)
-		{
-            // no-op
-		}
-
-
-        // ----------------------------------------------------------
-		public WOActionResults toggle()
-		{
-			checkStateChanged = true;
-			setCheckedRecursively(!isChecked());
-			return null;
-		}
-
-
-        //~ Private Methods ...................................................
-
-        // ----------------------------------------------------------
-        private void setCheckedRecursively(boolean value)
+        @Override
+        protected NSArray<?> childrenOfItem(Object parentItem)
         {
-            if (children == null || children.isEmpty())
+            if (parentItem == null)
             {
-                if (data instanceof CourseOffering)
-                {
-                    CourseOffering offering = (CourseOffering)data;
-
-                    if (value)
-                    {
-                        model.addCourseOffering(offering);
-                    }
-                    else
-                    {
-                        model.removeCourseOffering(offering);
-                    }
-                }
+                return allSemesters();
+            }
+            else if (parentItem instanceof Semester)
+            {
+                return courseOfferingsForSemester((Semester) parentItem);
             }
             else
             {
-                for (CourseTreeNode child : children)
-                {
-                    child.setCheckedRecursively(value);
-                }
+                return null;
             }
         }
-	}
-
-
-    // ----------------------------------------------------------
-    /**
-     * Handles AJAX manipulations of the tree view.
-     */
-	public class CourseTreeDelegate
-        implements AjaxTreeModel.Delegate
-	{
-        //~ Public Methods ....................................................
-
+        
+        
         // ----------------------------------------------------------
-		public NSArray<?> childrenTreeNodes(Object arg0)
-		{
-			CourseTreeNode node = (CourseTreeNode)arg0;
-			return node.children;
-		}
-
-
+        @Override
+        protected boolean itemHasChildren(Object parentItem)
+        {
+            return !(parentItem instanceof CourseOffering);
+        }
+        
+        
         // ----------------------------------------------------------
-		public boolean isLeaf(Object arg0)
-		{
-			CourseTreeNode node = (CourseTreeNode)arg0;
-			return (node.data instanceof CourseOffering);
-		}
-
-
-        // ----------------------------------------------------------
-		public Object parentTreeNode(Object arg0)
-		{
-			CourseTreeNode node = (CourseTreeNode)arg0;
-
-			if (node == null)
+        @Override
+        protected String idForItem(Object item)
+        {
+            if (item instanceof EOGenericRecord)
             {
-				return null;
+                EOGenericRecord record = (EOGenericRecord) item;
+                return "id_" + record.entityName() + "_"
+                    + record.valueForKey("id");
             }
-			else
+            else
             {
-				return node.parent;
+                return null;
             }
-		}
+        }
+	    
+        
+        // ----------------------------------------------------------
+        @Override
+        protected String labelForItem(Object item)
+        {
+            if (item instanceof Semester)
+            {
+                Semester s = (Semester) item;
+                return "<b>" + s.seasonName() + " " + s.year() + "</b>";
+            }
+            else if (item instanceof CourseOffering)
+            {
+                CourseOffering co = (CourseOffering) item;
+                return "<b>" + co.course().deptNumberAndName() + "</b> ("
+                    + co.crn() + ")";
+            }
+            else
+            {
+                return "";
+            }
+        }
+        
 
+        // ----------------------------------------------------------
+        private NSArray<Semester> allSemesters()
+        {
+            NSMutableArray<EOSortOrdering> orderings =
+                new NSMutableArray<EOSortOrdering>();
+            orderings.addObject(ERXS.asc(Semester.YEAR_KEY));
+            orderings.addObject(ERXS.asc(Semester.SEASON_KEY));
+
+            EOFetchSpecification fspec = new EOFetchSpecification(
+                    Semester.ENTITY_NAME, null, orderings);
+            return localContext().objectsWithFetchSpecification(fspec);
+        }
+        
+
+        // ----------------------------------------------------------
+        private NSArray<CourseOffering> courseOfferingsForSemester(
+                Semester semester)
+        {
+            NSArray<CourseOffering> offerings =
+                CourseOffering.objectsForForSemester(localContext(), semester);
+
+            return ERXS.sorted(offerings,
+                    ERXS.ascInsensitive(
+                            CourseOffering.COURSE_KEY + "." +
+                            Course.DEPARTMENT_KEY + "." +
+                            Department.ABBREVIATION_KEY),
+                    ERXS.asc(
+                            CourseOffering.COURSE_NUMBER_KEY),
+                    ERXS.asc(CourseOffering.CRN_KEY));
+        }
 	}
 
 
     //~ Public Methods ........................................................
 
-
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-    	courseDelegate = new CourseTreeDelegate();
-    	courseRoot = new CourseTreeNode(null, null);
-
-    	EOFetchSpecification fetch =
-            new EOFetchSpecification("Course", null, null);
-
-    	NSArray<Course> courses = localContext().
-    		objectsWithFetchSpecification(fetch);
-
-    	NSMutableArray<EOSortOrdering> sortOrdering =
-    		new NSMutableArray<EOSortOrdering>();
-    	sortOrdering.addObject(new EOSortOrdering("deptNumberAndName",
-    	    EOSortOrdering.CompareAscending));
-
-    	courses = EOSortOrdering.sortedArrayUsingKeyOrderArray(courses,
-    	    sortOrdering);
-
-    	NSMutableArray<CourseTreeNode> courseNodes =
-    		new NSMutableArray<CourseTreeNode>();
-
-    	for (Course c : courses)
-    	{
-    		CourseTreeNode ctn = new CourseTreeNode(courseRoot, c);
-    		courseNodes.addObject(ctn);
-
-    		// Why did this disappear?!
-//    		NSArray<CourseOffering> offerings = c.offerings();
-    		EOFetchSpecification fs = new EOFetchSpecification("CourseOffering",
-    		    EOQualifier.qualifierWithQualifierFormat("course = %@",
-    		        new NSArray<Object>(new Object[] { c })), null);
-    		NSArray<CourseOffering> offerings =
-    			localContext().objectsWithFetchSpecification(fs);
-
-    		NSMutableArray<CourseTreeNode> courseOfferingNodes =
-    			new NSMutableArray<CourseTreeNode>();
-    		for (CourseOffering co : offerings)
-    		{
-    			courseOfferingNodes.addObject(new CourseTreeNode(ctn, co));
-    		}
-
-    		ctn.children = courseOfferingNodes;
-    	}
-
-    	courseRoot.children = courseNodes;
+        idFor = new ComponentIDGenerator(this);
+    	courseModel = new CourseTreeModel();
 
     	super.appendToResponse(response, context);
     }
 
 
     // ----------------------------------------------------------
-    public boolean isCurrentNodeCourse()
+    public NSArray<Assignment> assignmentsForCourseInRepetition()
     {
-    	return currentNode.data instanceof Course;
+        NSMutableArray<EOSortOrdering> sortOrderings =
+            new NSMutableArray<EOSortOrdering>();
+        sortOrderings.addObject(ERXS.asc(Assignment.NAME_KEY));
+
+        EOFetchSpecification fetchSpec =
+            new EOFetchSpecification(Assignment.ENTITY_NAME,
+                    ERXQ.containsObject(
+                            Assignment.COURSES_KEY, courseInRepetition),
+                    sortOrderings);
+        fetchSpec.setUsesDistinct(true);
+
+        return localContext().objectsWithFetchSpecification(fetchSpec);
+    }
+    
+
+    // ----------------------------------------------------------
+    public void pruneAssignmentsFromUnselectedCourses()
+    {
+        model.pruneAssignmentsFromUnselectedCourses();
     }
 
 
     // ----------------------------------------------------------
-    public boolean isCurrentNodeCourseOffering()
+    public void immediatelyUpdateAssignmentSelection(int assignmentId,
+            boolean checked)
     {
-    	return currentNode.data instanceof CourseOffering;
-    }
+        Assignment assignment = Assignment.forId(localContext(), assignmentId);
 
-
-    // ----------------------------------------------------------
-    public NSArray<String> containersToUpdate()
-    {
-    	NSMutableArray<String> array = new NSMutableArray<String>();
-
-    	if (checkStateChanged)
-    	{
-    		array.addObject("assignmentContainer");
-    		checkStateChanged = false;
-    	}
-
-    	return array;
-    }
-
-
-    // ----------------------------------------------------------
-    public NSArray<Assignment> assignments()
-    {
-    	EOFetchSpecification fetchSpec =
-            new EOFetchSpecification("Assignment", null, null);
-    	NSArray<Assignment> allAssignments =
-            localContext().objectsWithFetchSpecification(fetchSpec);
-
-    	NSMutableArray<Assignment> assignments =
-    		new NSMutableArray<Assignment>();
-
-    	for (Assignment assn : allAssignments)
-    	{
-    		boolean matches = true;
-
-    		if (model.courseOfferings().isEmpty())
+        if (checked)
+        {
+            if (!model.containsAssignment(assignment))
             {
-    			matches = false;
+                model.addAssignment(assignment);
             }
-
-    		for (CourseOffering sco : model.courseOfferings())
-    		{
-    			boolean found = false;
-
-       			for (AssignmentOffering ao : assn.offerings())
-       			{
-       				CourseOffering co = ao.courseOffering();
-
-       				if (co.equals(sco))
-       				{
-       					found = true;
-       					break;
-       				}
-        		}
-
-       			if (found == false)
-       			{
-       				matches = false;
-       				break;
-       			}
-    		}
-
-    		if (matches)
-            {
-    			assignments.addObject(assn);
-            }
-    	}
-
-    	NSMutableArray<EOSortOrdering> sortOrderings =
-    		new NSMutableArray<EOSortOrdering>();
-    	sortOrderings.addObject(
-            new EOSortOrdering("titleString", EOSortOrdering.CompareAscending));
-    	EOSortOrdering.sortArrayUsingKeyOrderArray(assignments, sortOrderings);
-
-    	return assignments;
+        }
+        else
+        {
+            model.removeAssignment(assignment);
+        }
     }
 
-
-    //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-    private static String getUniqueId()
+    public boolean isAssignmentInRepetitionChecked()
     {
-        return "courseTreeNode_" + Integer.toString(nextIdNumber++);
+        return model.containsAssignment(assignmentInRepetition);
     }
-
-
-    //~ Instance/static variables .............................................
-
-    private boolean checkStateChanged = false;
-    private static int nextIdNumber = 0;
+    
+    
+    // ----------------------------------------------------------
+    public void setAssignmentInRepetitionChecked(boolean value)
+    {
+        immediatelyUpdateAssignmentSelection(
+                assignmentInRepetition.id().intValue(), value);
+    }
 }

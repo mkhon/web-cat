@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReport.java,v 1.7 2008/10/25 00:28:42 aallowat Exp $
+ |  $Id: GeneratedReport.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import com.webobjects.foundation.NSData;
  * report template.
  *
  * @author Tony Allevato
- * @version $Id: GeneratedReport.java,v 1.7 2008/10/25 00:28:42 aallowat Exp $
+ * @version $Id: GeneratedReport.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
@@ -87,7 +87,7 @@ public class GeneratedReport
     {
         StringBuffer dir = new StringBuffer( 50 );
         dir.append( net.sf.webcat.core.Application
-            .configurationProperties().getProperty( "grader.workarea" ) );
+            .configurationProperties().getProperty( "grader.submissiondir" ) );
         dir.append( "/" );
         dir.append( RENDERED_REPORTS_SUBDIR_NAME );
         dir.append( "/" );

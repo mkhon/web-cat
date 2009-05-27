@@ -1,40 +1,66 @@
-<wo:ImportResource type="stylesheet" filename="queryassistants/advanced.css"/>
-<wo:ImportResource type="script" filename="queryassistants/advanced.js"/>
+<wo name="RPC"/>
+<script type="text/javascript">
+<wo:str value="$idFor.advancedQueryAssistant"/> = new webcat.reporter.AdvancedQueryAssistant(<wo:str value="$idFor.JSONRPC"/>.page, "<wo:str value="$idFor.ComponentIDPrefix"/>");
+</script>
 
 <p>
 This query will include <b><wo:str value="$dataSet.wcEntityName"/></b>
 objects that satisfy <b>all</b> of the following conditions:
 </p>
 
-<wo:adiv id="criteriaContainer">
-<div class="shadow" style="width: 90%">
-<table style="display: table; width: 100%"><tbody>
+<wo name="CriteriaContainer">
+<wo:WCStyledTable>
+<tbody>
     <wo:loop list="$model.criteria" item="$criterion" index="$index">
         <wo:tr index="$index">
             <td style="white-space: nowrap; font-size: small; text-align: left; width: 100%">
                 <wo name="RowBusyIndicator"/>
-                <wo name="KeyPath"><wo name="KeyPathDisplayString"/></wo>
+                <wo name="KeyPath">
+                    <script type="dojo/connect" event="onKeyPress" args="evt">
+                        <wo:str value="$idFor.advancedQueryAssistant"/>.enqueueRowUpdate(this, evt, <wo:str value="$index"/>);
+                    </script>
+                    <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
+                        <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
+                    </script>
+                </wo>
                 <wo name="KeyPathChangeUpdater"/>
-                <script>
-                Event.observe($('<wo:str value="~'keyPath_' + index + '_field'"/>'), 'keypress',
-                function(event) {
-                    updateRowControls(event, <wo:str value="$index"/>);
-                });
-                </script>
-                <wo:aspan id="$idForCurrentCastTypeContainer">
+                <wo name="CastTypeContainer">
                     <wo:if condition="$isCurrentKeyPathValid">
                         <wo:if condition="$doesCurrentKeyPathNeedCast">
-                            as <wo name="KeyPathCastType"/>
-                            <wo name="KeyPathCastTypeObserver"/>
+                            as
+                            <wo name="CastType">
+			                    <script type="dojo/connect" event="onChange" args="evt">
+			                        <wo:str value="$idFor.advancedQueryAssistant"/>.updateCastType(this, evt, <wo:str value="$index"/>);
+			                    </script>
+			                    <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
+			                        <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
+			                    </script>
+                            </wo>
+                            <wo name="CastTypeUpdater"/>
                         </wo:if>
-                        <wo:aspan id="$idForCurrentComparisonContainer">
-                            <wo name="Comparison"/>
-                            <wo name="ComparisonObserver"/>
-                            <wo:aspan id="$idForCurrentComparandTypeContainer">
+                        <wo name="ComparisonContainer">
+                            <wo name="Comparison">
+                                <script type="dojo/connect" event="onChange" args="evt">
+                                    <wo:str value="$idFor.advancedQueryAssistant"/>.updateComparison(this, evt, <wo:str value="$index"/>);
+                                </script>
+                                <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
+                                    <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
+                                </script>
+                            </wo>
+                            <wo name="ComparisonUpdater"/>
+                            <wo name="ComparandTypeContainer">
                                 <wo:if condition="$doesCurrentComparisonHaveSecondOperand">
                                     <wo:if condition="$doesCurrentCriterionUseComparand">
-                                        the <wo name="ComparandType"/>
-                                        <wo name="ComparandTypeObserver"/>
+                                        the
+                                        <wo name="ComparandType">
+			                                <script type="dojo/connect" event="onChange" args="evt">
+			                                    <wo:str value="$idFor.advancedQueryAssistant"/>.updateComparandType(this, evt, <wo:str value="$index"/>);
+			                                </script>
+			                                <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
+			                                    <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
+			                                </script>
+                                        </wo>
+                                        <wo name="ComparandTypeUpdater"/>
                                     </wo:if><wo:else>
                                         <wo:if condition="~isCurrentCriterionOperandBetween() || doesCurrentComparisonSupportMultipleValues()">
                                             the values
@@ -42,7 +68,7 @@ objects that satisfy <b>all</b> of the following conditions:
                                             the value
                                         </wo:else>
                                     </wo:else>
-                                    <wo:aspan id="$idForCurrentValueContainer">
+                                    <wo name="ValueContainer">
                                         <wo:if condition="$doesCurrentComparisonHaveSecondOperand">
                                             <wo:if condition="$isCurrentCriterionOperandSimple">
                                                 <wo name="Value"/>
@@ -54,10 +80,10 @@ objects that satisfy <b>all</b> of the following conditions:
                                                 <wo name="MinimumValue"/> and <wo name="MaximumValue"/>
                                             </wo:if>
                                         </wo:if>
-                                    </wo:aspan>
+                                    </wo>
                                 </wo:if>
-                            </wo:aspan>
-                        </wo:aspan>
+                            </wo>
+                        </wo>
                     </wo:if><wo:else>
                         <wo:if condition="~currentKeyPath().trim().length() == 0">
                             Enter the key path to filter on.
@@ -65,15 +91,14 @@ objects that satisfy <b>all</b> of the following conditions:
                             The key path is invalid.
                         </wo:else>
                     </wo:else>
-                </wo:aspan>
+                </wo>
             </td>
             <td style="white-space: nowrap; text-align: right; vertical-align: top">
-                <wo name="RemoveCriterion"><wo:WOImage alt="Remove this condition" border="0" filename="images/criterion_remove.gif" width="20" height="21"/></wo>
-                <wo name="AddCriterion"><wo:WOImage alt="Add a condition below this one" border="0" filename="images/criterion_add.gif" width="20" height="21"/></wo>
+                <wo name="RemoveCriterion">&minus;</wo>
+                <wo name="AddCriterion">+</wo>
             </td>
         </wo:tr>
     </wo:loop>
-</tbody></table>
-</div>
-<script>Behaviour.apply();</script>
-</wo:adiv>
+</tbody>
+</wo:WCStyledTable>
+</wo>

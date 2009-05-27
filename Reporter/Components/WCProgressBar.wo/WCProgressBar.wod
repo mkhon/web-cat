@@ -1,14 +1,9 @@
-Bar: WOImage {
-    framework = "Core";
-    filename  = "images/progressBar.gif";
-    width     = width;
-    height    = "22";
-    alt       = percentLabel;
-    class     = "progressbar";
-    style = "border: 1px solid gray";
+Bar: WCDiv {
+    dojoType = "dijit.ProgressBar";
+    progress = percentLabel;
 }
 
-Indicator: WOImage {
+Spinner: WOImage {
     framework = "Core";
     filename  = "icons/indicator.gif";
     width     = "16";

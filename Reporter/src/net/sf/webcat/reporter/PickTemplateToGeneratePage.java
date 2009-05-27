@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickTemplateToGeneratePage.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: PickTemplateToGeneratePage.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,16 +21,27 @@
 
 package net.sf.webcat.reporter;
 
+import net.sf.webcat.core.Course;
+import net.sf.webcat.core.CourseOffering;
+import net.sf.webcat.core.Department;
+import net.sf.webcat.core.Semester;
+import net.sf.webcat.ui.AbstractTreeModel;
+import net.sf.webcat.ui.util.WCTableLayoutBuilder;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WODisplayGroup;
+import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableArray;
+import er.extensions.eof.ERXS;
 
 //-------------------------------------------------------------------------
 /**
  * This page allows the user to select the template to use for a new report.
  *
  * @author Tony Allevato
- * @version $Id: PickTemplateToGeneratePage.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: PickTemplateToGeneratePage.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
  */
 public class PickTemplateToGeneratePage
     extends ReporterComponent
@@ -50,22 +61,25 @@ public class PickTemplateToGeneratePage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public NSArray<ReportTemplate> reportTemplates;
-    public ReportTemplate reportTemplate;
-    public int index;
+    public WODisplayGroup reportTemplatesDisplayGroup;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public NSArray<ReportTemplate> reportTemplates()
+    public WODisplayGroup reportTemplatesDisplayGroup()
     {
-        if (reportTemplates == null)
+        if (reportTemplatesDisplayGroup == null)
         {
-            reportTemplates =
-                ReportTemplate.objectsForAllTemplates(localContext());
+            NSArray<ReportTemplate> templates =
+                ReportTemplate.templatesAccessibleByUser(
+                        localContext(), user());
+
+            reportTemplatesDisplayGroup = new WODisplayGroup();
+            reportTemplatesDisplayGroup.setObjectArray(templates);
         }
-        return reportTemplates;
+
+        return reportTemplatesDisplayGroup;
     }
 
 
@@ -74,10 +88,11 @@ public class PickTemplateToGeneratePage
     {
         clearLocalReportState();
 
-        setLocalReportTemplate(reportTemplate);
-        setLocalCurrentReportDataSet(0);
-        createLocalPageController();
+        ReportTemplate template =
+            (ReportTemplate) reportTemplatesDisplayGroup.selectedObject();
 
-        return localPageController().nextPage();
+        setLocalReportTemplate(template);
+        
+        return pageWithName(DescribeReportInputsPage.class.getName());
     }
 }

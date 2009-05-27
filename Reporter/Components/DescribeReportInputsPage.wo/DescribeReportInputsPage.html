@@ -1,0 +1,87 @@
+<wo name="Page">
+<wo:loop list="$stylesheetsToImport" item="$stylesheetToImport">
+<wo:ImportResource type="stylesheet" filename="$stylesheetToImport"/>
+</wo:loop>
+<wo:loop list="$javascriptsToImport" item="$javascriptToImport">
+<wo:ImportResource type="script" filename="$javascriptToImport"/>
+</wo:loop>
+
+<wo:WCForm multipleSubmit="$true">
+
+<wo:WCPageModule title="Identification and Rendering">
+<div class="floatLeft">Generating report template <span class="hl"><wo:str value="$localReportTemplate.name"/> (v<wo:str value="$localReportTemplate.version" />)</span></div>
+<div class="floatRight"><wo name="ChangeReportTemplate" /></div>
+<div class="clear">&nbsp;</div>
+<table style="border: none;">
+<tr><td class="R">Description:</td><td><wo:WCTextBox length="60" value="$reportDescription"/></td></tr>
+<tr><td class="R">Render this report as:</td><td><wo name="RenderingMethod"/></td></tr>
+</table>
+</wo:WCPageModule>
+
+<!-- data sets -->
+<wo:loop list="$localReportTemplate.dataSets" item="$dataSet" index="$dataSetIndex">
+<wo:WCPageModule title="$titleForDataSetPageModule">
+<wo:if condition="$dataSet.description">
+<p><b>Find:</b> <wo:str value="$dataSet.description" /></p>
+</wo:if>
+<wo:WCContentPane id="$idForQueryAssistantContainer">
+<wo:if condition="$selectedModelOrQueryForDataSet.isEditing">
+    <div class="floatLeft">
+        <b>Method:</b>
+        <wo:str value="$selectedModelOrQueryForDataSet.displayableSummary" />
+    </div>
+    <div class="floatRight">
+        <wo name="RevertEditing" />
+    </div>
+    <div class="clear">&nbsp;</div>
+    <wo:if condition="$selectedModelOrQueryForDataSet.queryAssistant">
+        <wo name="QueryAssistantComponent" />
+    </wo:if>
+</wo:if><wo:else>
+	<p>
+	To assist in the construction of a query for this data set,
+	please choose how you would like to select the objects for the query:
+	</p>
+	<ul>
+	<wo:loop list="$queryAssistantsForDataSet" item="$queryAssistant">
+	    <li><p>
+	    <wo name="ChooseQueryAssistant">
+	       <wo:str value="$linkPartOfQueryAssistantDescription"/>
+	    </wo>
+	    <wo:str value="$nonLinkPartOfQueryAssistantDescription"/>
+	    </p></li>
+	</wo:loop>
+    <wo:if condition="$savedQueriesApplicableToDataSet.count">
+        <li><p>Or, choose a previously saved query:
+            <wo name="SavedQueries" /> <wo name="UseSavedQuery" />
+        </p></li>
+    </wo:if>
+	</ul>
+</wo:else>
+
+<wo:if condition="$selectedModelOrQueryForDataSet.queryAssistant">
+<h3>Save This Query</h3>
+<p>If you would like to save this query to use it again later, enter a
+short description for it below. If you do not wish to save it, leave the field
+blank.</p>
+<wo name="QueryDescription" />
+</wo:if>
+
+</wo:WCContentPane>
+
+</wo:WCPageModule>
+</wo:loop>
+
+<!-- parameters -->
+<wo:if condition="$localReportTemplate.parameters.count">
+<wo:WCPageModule title="Report Parameters">
+<wo:loop list="$localReportTemplate.parameters" item="$parameter">
+<wo name="ReportParameter" />
+</wo:loop>
+</wo:WCPageModule>
+</wo:if>
+
+<wo name="GenerateReport"/>
+
+</wo:WCForm>
+</wo>

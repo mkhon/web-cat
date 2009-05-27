@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.12 2009/02/01 21:57:46 aallowat Exp $
+ |  $Id: ReportTemplate.java,v 1.13 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,17 +40,19 @@ import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSMutableSet;
 import com.webobjects.foundation.NSSet;
 import com.webobjects.foundation.NSTimestamp;
+import er.extensions.foundation.ERXArrayUtilities;
 
 // -------------------------------------------------------------------------
 /**
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.12 2009/02/01 21:57:46 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.13 2009/05/27 14:31:52 aallowat Exp $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -426,6 +428,46 @@ public class ReportTemplate extends _ReportTemplate
         String checksum = ChecksumUtils.checksumFromContentsOfFile(new File(
                 filePath()));
         setChecksum(checksum);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the array of all report templates that are accessible by the
+     * specified user. This is the union of that user's own uploaded templates
+     * and all of the published templates.
+     * 
+     * @param ec the editing context to load the templates into
+     * @param user the user
+     * 
+     * @return the array of report templates accessible by the user
+     */
+    public static NSArray<ReportTemplate> templatesAccessibleByUser(
+            EOEditingContext ec, User user)
+    {
+        // Admins have access to everything, so just short-circuit this.
+
+        if (user.hasAdminPrivileges())
+        {
+            return objectsForAllTemplates(ec);
+        }
+
+        NSArray<ReportTemplate> userTemplates =
+            objectsForUploadedByUser(ec, user);
+        
+        NSArray<ReportTemplate> publishedTemplates =
+            objectsForPublishedReports(ec);
+        
+        NSMutableArray<ReportTemplate> allTemplates =
+            new NSMutableArray<ReportTemplate>();
+        
+        allTemplates.addObjectsFromArray(userTemplates);
+        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(allTemplates,
+                publishedTemplates);
+        
+        ERXArrayUtilities.sortArrayWithKey(allTemplates, "name");
+
+        return allTemplates;
     }
 
 

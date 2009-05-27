@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickReportToViewPage.java,v 1.7 2008/10/25 00:30:21 aallowat Exp $
+ |  $Id: PickReportToViewPage.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import net.sf.webcat.core.MutableDictionary;
  * This page allows the user to select among already-generated reports.
  *
  * @author Tony Allevato
- * @version $Id: PickReportToViewPage.java,v 1.7 2008/10/25 00:30:21 aallowat Exp $
+ * @version $Id: PickReportToViewPage.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
  */
 public class PickReportToViewPage
     extends ReporterComponent
@@ -55,11 +55,7 @@ public class PickReportToViewPage
     //~ KVC Attributes (must be public) .......................................
 
     public WODisplayGroup generatedReportsDisplayGroup;
-    public GeneratedReport generatedReport;
-    public int index;
     public WODisplayGroup enqueuedReportsDisplayGroup;
-    public EnqueuedReportGenerationJob enqueuedReport;
-    public int enqueuedIndex;
 
 
     //~ Methods ...............................................................
@@ -67,19 +63,15 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        EODatabaseDataSource source = (EODatabaseDataSource)
-            generatedReportsDisplayGroup.dataSource();
-
-        NSMutableDictionary bindings = new NSMutableDictionary();
+        NSMutableDictionary bindings;
+        
+        bindings = generatedReportsDisplayGroup.queryBindings();
         bindings.setObjectForKey(user(), "user");
-        source.setQualifierBindings(bindings);
+        generatedReportsDisplayGroup.fetch();
 
-        source = (EODatabaseDataSource)
-            enqueuedReportsDisplayGroup.dataSource();
-
-        bindings = new NSMutableDictionary();
+        bindings = enqueuedReportsDisplayGroup.queryBindings();
         bindings.setObjectForKey(user(), "user");
-        source.setQualifierBindings(bindings);
+        enqueuedReportsDisplayGroup.fetch();
 
         super.appendToResponse(response, context);
     }
@@ -88,16 +80,34 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public WOComponent viewReport()
     {
-        commitReportRendering(generatedReport);
-        return pageWithName(GeneratedReportPage.class.getName());
+        GeneratedReport report = (GeneratedReport)
+            generatedReportsDisplayGroup.selectedObject();
+
+        if (report != null)
+        {
+            commitReportRendering(report);
+            return pageWithName(GeneratedReportPage.class.getName());
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
     // ----------------------------------------------------------
     public WOComponent deleteReport()
     {
-        localContext().deleteObject( generatedReport );
+        NSArray<GeneratedReport> reports =
+            generatedReportsDisplayGroup.selectedObjects();
+        
+        for (GeneratedReport report : reports)
+        {
+            localContext().deleteObject(report);
+        }
+
         localContext().saveChanges();
+
         return null;
     }
 
@@ -105,20 +115,17 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public WOComponent viewReportProgress()
     {
-        setLocalReportGenerationJob(enqueuedReport);
-        return pageWithName(GeneratedReportPage.class.getName());
-    }
+        EnqueuedReportGenerationJob job = (EnqueuedReportGenerationJob)
+            enqueuedReportsDisplayGroup.selectedObject();
 
-
-    // ----------------------------------------------------------
-    public String enqueuedReportProgress()
-    {
-        int jobId = enqueuedReport.id().intValue();
-
-        float workDone = ReportGenerationTracker.getInstance().
-            fractionOfWorkDoneForJobId(jobId);
-
-        int percent = (int)Math.floor(workDone * 100 + 0.5);
-        return "" + percent + "%";
+        if (job != null)
+        {
+            setLocalReportGenerationJob(job);
+            return pageWithName(GeneratedReportPage.class.getName());
+        }
+        else
+        {
+            return null;
+        }
     }
 }

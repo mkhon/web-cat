@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportExceptionTranslator.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: ReportExceptionTranslator.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,10 +21,13 @@
 
 package net.sf.webcat.reporter;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import net.sf.webcat.core.MutableArray;
 import net.sf.webcat.core.MutableDictionary;
 import org.eclipse.birt.core.exception.BirtException;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableSet;
 import er.extensions.eof.ERXConstant;
 
 // ------------------------------------------------------------------------
@@ -34,7 +37,7 @@ import er.extensions.eof.ERXConstant;
  * "message" keys.
  *
  * @author Tony Allevato
- * @version $Id: ReportExceptionTranslator.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: ReportExceptionTranslator.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
  */
 public class ReportExceptionTranslator
 {
@@ -76,7 +79,48 @@ public class ReportExceptionTranslator
                     .integerForInt(BirtException.ERROR), "severity");
         }
 
-        if (e.getCause() != null)
+        MutableArray chain = new MutableArray();
+        errorInfo.setObjectForKey(chain, "chain");
+
+        Throwable t = e;
+
+        if (t != null)
+        {
+            boolean done = false;
+            String lastMessage = null;
+            NSMutableSet<Throwable> seenExceptions =
+                new NSMutableSet<Throwable>();
+    
+            do
+            {
+                MutableDictionary exInfo = new MutableDictionary();
+                exInfo.setObjectForKey(t.getClass().getName(), "type");
+                
+                String msg = t.getMessage();
+                if (msg != null && !msg.equals(lastMessage))
+                {
+                    lastMessage = msg;
+                    exInfo.setObjectForKey(msg, "message");
+                }
+                
+                StringWriter writer = new StringWriter();
+                t.printStackTrace(new PrintWriter(writer));
+                writer.flush();
+                exInfo.setObjectForKey(writer.toString(), "stackTrace");
+
+                chain.addObject(exInfo);
+                seenExceptions.addObject(t);
+
+                Throwable lastT = t;
+                t = t.getCause();
+    
+                done = (t == null || t == lastT
+                        || seenExceptions.containsObject(t));
+            }
+            while (!done);
+        }
+
+/*        if (e.getCause() != null)
         {
             if (e.getCause().getMessage() != null)
             {
@@ -89,8 +133,11 @@ public class ReportExceptionTranslator
             }
         }
 
-        errorInfo.setObjectForKey(e.getMessage(), "message");
-
+        if (e.getMessage() != null)
+        {
+            errorInfo.setObjectForKey(e.getMessage(), "message");
+        }
+*/
         return errorInfo;
     }
 

@@ -1,0 +1,31 @@
+Page: WCPageWithNavigation {
+    title = "Generate a Report";
+}
+
+ReportTemplateTable: WCTable {
+    displayGroup = reportTemplatesDisplayGroup;
+    canSort = true;
+}
+
+NameFilter: WCTableFilter {
+    name = "Name";
+    keyPath = "name";
+    type = "string";
+}
+
+NameColumn: WCTableColumn {
+    name = "Report Template";
+    componentName = "ActionURLCell";
+    keyPath = "name";
+    properties.action = "templateChosen";
+}
+
+VersionColumn: WCTableColumn {
+    name = "Version";
+    keyPath = "version";
+}
+
+InstalledByColumn: WCTableColumn {
+    name = "Installed By";
+    keyPath = "user.name";
+}

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.10 2008/11/13 00:51:26 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.11 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,11 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Enumeration;
 import java.util.Map;
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.ReadOnlyEditingContext;
+import net.sf.webcat.grader.Submission;
 import net.sf.webcat.oda.commons.IWebCATResultSet;
 import net.sf.webcat.oda.commons.WebCATDataException;
 import ognl.Node;
@@ -48,7 +51,7 @@ import ognl.webobjects.WOOgnl;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.10 2008/11/13 00:51:26 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.11 2009/05/27 14:31:52 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -73,6 +76,7 @@ public class OdaResultSet
         currentRow = 0;
         rawCurrentRow = 0;
         lastThrottleCheck = 0;
+        currentBatchSize = 100;
     }
 
 
@@ -111,6 +115,7 @@ public class OdaResultSet
             query.wcEntityName(), fetchQualifier, null);
         iterator =
             new ERXFetchSpecificationBatchIterator(fetch, editingContext);
+        iterator.setBatchSize(currentBatchSize);
 
         ReportGenerationTracker.getInstance().startNextDataSetForJobId(jobId,
                 iterator.count());
@@ -173,6 +178,20 @@ public class OdaResultSet
             currentRow++;
         }
 
+        if (log.isDebugEnabled())
+        {
+            // CAUTION: Since this row logging occurs on every row AND it is
+            // possible that the toString() method for an object might
+            // indirectly fetch other objects in order to display a human-
+            // readable representation of itself, DEBUG level logging on this
+            // class should only be enabled when absolutely necessary.
+
+            String msg = "Row " + rawCurrentRow + ": "
+                + currentObject.toString();
+
+//            log.debug(msg);
+        }
+
         return hasNext;
     }
 
@@ -232,17 +251,6 @@ public class OdaResultSet
         throws WebCATDataException
     {
         return evaluate(column, NSTimestamp.class);
-/*        ExpressionAccessor accessor = accessors[column];
-        Object result = accessor.get(defaultContext, currentObject);
-
-        if (result instanceof NSTimestamp)
-        {
-            return (NSTimestamp)result;
-        }
-        else
-        {
-            return tryFallbackConversions(column, result, NSTimestamp.class);
-        }*/
     }
 
 
@@ -278,8 +286,72 @@ public class OdaResultSet
 
 
     // ----------------------------------------------------------
+    private void updateMovingAverageAndRest()
+    {
+        batchTimeEnd = batchTimeStart;
+        batchTimeStart = System.currentTimeMillis();
+
+        if (batchTimeEnd == 0)
+        {
+            // Bail out if this is the first time through.  The batch size is
+            // already set to a default value that we'll use to begin the
+            // calculations.
+
+            return;
+        }
+
+        // Note that this subtraction is "backwards" because of the way I've
+        // reset the variables above.
+        double avgTimePerRow =
+            ((double) (batchTimeStart - batchTimeEnd)) / currentBatchSize;
+
+        // Compute moving average.
+        if (currentMovingAverage == 0)
+        {
+            currentMovingAverage = avgTimePerRow;
+        }
+        else
+        {
+            currentMovingAverage =
+                ((MOVING_AVERAGE_WINDOW_SIZE - 1) * currentMovingAverage +
+                avgTimePerRow) / MOVING_AVERAGE_WINDOW_SIZE;
+        }
+
+        log.debug("Last_batch_size," + currentBatchSize + ",Last_batch_time," + (batchTimeStart - batchTimeEnd) + ",Avg_time_per_row," + avgTimePerRow + ",Current_moving_avg," + currentMovingAverage);
+
+        // Compute the new batch size.
+        long workTime = (long) (BATCH_TIME_SLICE * BATCH_LOAD_FACTOR);
+        currentBatchSize = (int) (workTime / currentMovingAverage);
+        
+        if (currentBatchSize < BATCH_SIZE_MIN)
+        {
+            currentBatchSize = BATCH_SIZE_MIN;
+        }
+        else if (currentBatchSize > BATCH_SIZE_MAX)
+        {
+            currentBatchSize = BATCH_SIZE_MAX;
+        }
+
+        iterator.setBatchSize(currentBatchSize);
+        
+        try
+        {
+            long sleepTime =
+                (long) (BATCH_TIME_SLICE * (1 - BATCH_LOAD_FACTOR));
+            Thread.sleep(sleepTime);
+        }
+        catch (InterruptedException e)
+        {
+            // Do nothing.
+        }
+    }
+    
+    
+    // ----------------------------------------------------------
     private boolean getNextBatch()
     {
+        updateMovingAverageAndRest();
+
         if (iterator.hasNextBatch())
         {
             boolean getBatch = true;
@@ -294,6 +366,7 @@ public class OdaResultSet
                     currentBatch = EOQualifier.filteredArrayWithQualifier(
                         currentBatch, inMemoryQualifier);
                 }
+
                 if (currentBatch.isEmpty())
                 {
                     getBatch = iterator.hasNextBatch();
@@ -305,6 +378,7 @@ public class OdaResultSet
                 }
             }
         }
+
         return false;
     }
 
@@ -460,8 +534,25 @@ public class OdaResultSet
     private Object currentObject;
     private boolean wasNull;
     private long lastThrottleCheck;
+    private long batchTimeStart;
+    private long batchTimeEnd;
+    private int currentBatchSize;
+    private double currentMovingAverage;
 
     private static final long MILLIS_BETWEEN_THROTTLE_CHECK = 3000;
     private static final long MILLIS_TO_THROTTLE = 5000;
     private static final int PROGRESS_STEP_SIZE = 10;
+
+    // TODO: Add these as Reporter subsystem configuration options; cache their
+    // values when this object is created
+    /* Ideal amount of time to spend on each batch */
+    private static final int BATCH_TIME_SLICE = 600;
+    /* Fraction of the time slice to spend working (instead of resting) */
+    private static final float BATCH_LOAD_FACTOR = 0.75f;
+    private static final int BATCH_SIZE_MIN = 25;
+    private static final int BATCH_SIZE_MAX = 250;
+
+    private static final int MOVING_AVERAGE_WINDOW_SIZE = 10; 
+    
+    private static final Logger log = Logger.getLogger(OdaResultSet.class);
 }

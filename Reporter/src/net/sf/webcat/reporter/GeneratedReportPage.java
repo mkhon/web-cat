@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: GeneratedReportPage.java,v 1.10 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,6 +32,7 @@ import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
 import er.extensions.eof.ERXConstant;
 import java.io.File;
+import net.sf.webcat.core.MutableArray;
 import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.grader.FinalReportPage;
 import org.apache.log4j.Logger;
@@ -42,7 +43,7 @@ import org.eclipse.birt.core.exception.BirtException;
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.10 2009/05/27 14:31:52 aallowat Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -69,7 +70,6 @@ public class GeneratedReportPage
     public ReporterLongResponseDelegate longResponseDelegate;
     public IRenderingMethod renderingMethod;
     public IRenderingMethod selectedRenderingMethod;
-    public MutableDictionary error;
 
 
     //~ Public Methods ........................................................
@@ -148,69 +148,6 @@ public class GeneratedReportPage
         {
             return generatedReport.renderingErrors();
         }
-    }
-
-
-    // ----------------------------------------------------------
-    public String errorSeverity()
-    {
-        int severity = (Integer)error.objectForKey("severity");
-
-        switch (severity)
-        {
-            case BirtException.OK:
-                return "OK";
-
-            case BirtException.INFO:
-                return "INFO";
-
-            case BirtException.WARNING:
-                return "WARNING";
-
-            case BirtException.ERROR:
-                return "ERROR";
-
-            case BirtException.CANCEL:
-                return "CANCEL";
-        }
-
-        return "ERROR";
-    }
-
-
-    // ----------------------------------------------------------
-    public String errorCssClass()
-    {
-        int severity = (Integer)error.objectForKey("severity");
-
-        switch (severity)
-        {
-            case BirtException.OK:
-            case BirtException.INFO:
-            case BirtException.CANCEL:
-                return "infoBox";
-
-            case BirtException.WARNING:
-                return "warningBox";
-
-            case BirtException.ERROR:
-                return "errorBox";
-        }
-        return "errorBox";
-    }
-
-
-    // ----------------------------------------------------------
-    public String errorMessage()
-    {
-        return (String)error.objectForKey("message");
-    }
-
-
-    // ----------------------------------------------------------
-    public String errorCause()
-    {
-        return (String)error.objectForKey("cause");
     }
 
 

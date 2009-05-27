@@ -164,6 +164,8 @@ public abstract class _ReportTemplate
     public static final String DATA_SETS_KEY = "dataSets";
     // Fetch specifications ---
     public static final String ALL_TEMPLATES_FSPEC = "allTemplates";
+    public static final String PUBLISHED_REPORTS_FSPEC = "publishedReports";
+    public static final String UPLOADED_BY_USER_FSPEC = "uploadedByUser";
     public static final String ENTITY_NAME = "ReportTemplate";
 
 
@@ -1391,6 +1393,71 @@ public abstract class _ReportTemplate
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForAllTemplates(ec"
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>PublishedReports</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @return an NSArray of the entities retrieved
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<ReportTemplate> objectsForPublishedReports(
+            EOEditingContext context
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "publishedReports", "ReportTemplate" );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForPublishedReports(ec"
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>UploadedByUser</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<ReportTemplate> objectsForUploadedByUser(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "uploadedByUser", "ReportTemplate" );
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if ( userBinding != null )
+        {
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForUploadedByUser(ec"
+                + ", " + userBinding
                 + "): " + result );
         }
         return result;

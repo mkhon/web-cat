@@ -1,7 +1,7 @@
-<wo:PageWithNavigation title="Report Template Library">
-<wo:form multipleSubmit="$true" enctype="multipart/form-data">
+<wo name="Page">
+<wo name="Form">
 
-<h2>Published Report Templates (Available to All)</h2>
+<wo:WCPageModule title="Published Report Templates (Available to Everyone)">
 
 <!--
     Displays the table of published report templates if any exist.
@@ -42,12 +42,14 @@
     <p><span class="hl">No published report templates</span> have been installed.</p>
 </wo:else>
 
+</wo:WCPageModule>
+
 <!--
     Displays the list of all unpublished report templates if the current user
     has administrator privileges.
 -->
 <wo:if condition="$user.hasAdminPrivileges">
-    <h2>Unpublished Report Templates (for Individual Use)</h2>
+    <wo:WCPageModule title="Unpublished Report Templates (for Individual Use)">
     <wo:if condition="$unpublishedTemplateGroup.displayedObjects.count">
         <div class="shadow"><table><tbody>
         <tr>
@@ -84,6 +86,7 @@
     <wo:else>
         <p><span class="hl">No unpublished report templates</span> have been installed.</p>
     </wo:else>
+    </wo:WCPageModule>
 </wo:if>
 
 <!--
@@ -91,7 +94,7 @@
     display the list of unpublished report templates for that user.
 -->
 <wo:else>
-    <h2>Personal Report Templates (for Your Individual Use)</h2>
+    <wo:WCPageModule title="Personal Report Templates (for Your Individual Use)">
     <wo:if condition="$personalTemplateGroup.displayedObjects.count">
         <div class="shadow"><table><tbody>
         <tr>
@@ -127,9 +130,10 @@
     <wo:else>
         <p>You have not yet installed any personal report templates.</p>
     </wo:else>
+    </wo:WCPageModule>
 </wo:else>
 
-<h2>Manually Upload a New Report Template</h2>
+<wo:WCPageModule title="Upload a New Report Template">
 <p>
 Upload a new template: <wo name="TemplateUpload"/> <wo name="Upload"/>
 </p>
@@ -137,6 +141,7 @@ Upload a new template: <wo name="TemplateUpload"/> <wo name="Upload"/>
 A report template is a <b>.rptdesign</b> file that contains the report layout,
 data set definitions, and meta-data describing the template.
 </p>
+</wo:WCPageModule>
 
-</wo:form>
-</wo:PageWithNavigation>
+</wo>
+</wo>

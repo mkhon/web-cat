@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EnqueuedReportGenerationJob.java,v 1.2 2008/10/24 20:52:57 aallowat Exp $
+ |  $Id: EnqueuedReportGenerationJob.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.Application;
  * is handled by the {@link EnqueuedReportRenderJob} entity.
  *
  * @author Tony Allevato
- * @version $Id: EnqueuedReportGenerationJob.java,v 1.2 2008/10/24 20:52:57 aallowat Exp $
+ * @version $Id: EnqueuedReportGenerationJob.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
  */
 public class EnqueuedReportGenerationJob
     extends _EnqueuedReportGenerationJob
@@ -50,4 +50,18 @@ public class EnqueuedReportGenerationJob
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the percentage of progress made on this job while it is being
+     * generated.
+     * 
+     * @return the progress percentage, an integer between 0 and 100
+     */
+    public int progressPercentage()
+    {
+        float workDone = ReportGenerationTracker.getInstance().
+            fractionOfWorkDoneForJobId(id().intValue());
+
+        return (int)Math.floor(workDone * 100 + 0.5);
+    }
 }

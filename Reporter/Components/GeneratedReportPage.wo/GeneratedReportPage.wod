@@ -1,19 +1,41 @@
+Page : net.sf.webcat.core.WCPageWithNavigation {
+    title = "Your Generated Report";
+}
+
+MainBlock : net.sf.webcat.core.WCPageModule {
+    isCollapsible = false;
+}
+
 LongResponse: net.sf.webcat.reporter.ReporterLongResponse {
     delegate = longResponseDelegate;
     workingMessage = "Your report is being generated. You are free to continue using Web-CAT while the report runs in the background. To come back and check the progress of this report, visit the <b>View</b> submenu in the <b>Reports</b> section of Web-CAT.";
     cancellationMessage = "You have <b>canceled</b> the generation of this report. Use one of the tabs above to return to Web-CAT.";
 }
 
-RenderingMethod: WOPopUpButton {
+GenerationErrors: ReportErrorsBlock {
+    errors = generatedReportErrors;
+}
+
+RenderingErrors: ReportErrorsBlock {
+    errors = renderingErrors;
+}
+
+RenderingMethod: WCFilteringSelect {
     list = renderingMethods;
     item = renderingMethod;
     selection = selectedRenderingMethod;
     displayString = renderingMethod.displayName;  // VALID
 }
 
-Rerender: WOSubmitButton {
-    value = "Re-render Report";
+Rerender: WCButton {
+    label = "Re-render Report";
     action = rerenderReport;
+}
+
+DynamicReportContainer: WCContentPane {
+    parseOnLoad = false;
+    alwaysDynamic = true;
+    showsLoadingMessageOnRefresh = true;
 }
 
 ReportContents: net.sf.webcat.reporter.ReportContentsBlock {

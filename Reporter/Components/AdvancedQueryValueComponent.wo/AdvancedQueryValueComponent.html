@@ -14,18 +14,7 @@
                 <wo name="BooleanFieldSingle"/>
             </wo:if><wo:else>
                 <wo:if condition="$isValueTypeTimestamp">
-                    <wo name="TimestampFieldSingle"/>&nbsp;<webobject name="TimestampSelector"/>
-                        <script type="text/javascript">
-                            Calendar.setup({
-                                inputField     :    "<wo:str value="$calendarFieldId"/>",
-                                ifFormat       :    "<wo:str value="~session.timeFormatter.pattern"/>",
-                                button         :    "<wo:str value="$calendarButtonId"/>",
-                                align          :    "bl",
-                                showsTime      :    true,
-                                timeFormat     :    12,
-                                singleClick    :    false
-                            });
-                        </script>
+                    <wo name="TimestampFieldSingle"/>
                 </wo:if><wo:else>
                     <wo:if condition="$isValueTypeEntity">
                         <wo:if condition="$multipleSelect"><wo name="EntityFieldMulti"/></wo:if>
@@ -36,4 +25,3 @@
         </wo:else>
     </wo:else>
 </wo:else>
-<script>Behaviour.apply();</script>

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationQueueProcessor.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: ReportGenerationQueueProcessor.java,v 1.6 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -67,7 +67,7 @@ import org.eclipse.birt.report.engine.api.IRunTask;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationQueueProcessor.java,v 1.5 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: ReportGenerationQueueProcessor.java,v 1.6 2009/05/27 14:31:52 aallowat Exp $
  */
 public class ReportGenerationQueueProcessor extends Thread
 {
@@ -365,8 +365,10 @@ public class ReportGenerationQueueProcessor extends Thread
     private boolean generateReportDocument(EnqueuedReportGenerationJob job,
             GeneratedReport report) throws ReportGenerationException
     {
-        GenerateReportThread exeThread = new GenerateReportThread(job.id(),
-                report.id());
+        ThreadGroup group = new ThreadGroup("Report Generation Thread Group");
+        group.setMaxPriority((NORM_PRIORITY + MIN_PRIORITY) / 2); 
+        GenerateReportThread exeThread = new GenerateReportThread(
+                group, job.id(), report.id());
 
         try
         {
@@ -379,6 +381,8 @@ public class ReportGenerationQueueProcessor extends Thread
         {
             // Nothing to do
         }
+
+        group.destroy();
 
         if (exeThread.generationErrors() != null)
         {
@@ -441,8 +445,11 @@ public class ReportGenerationQueueProcessor extends Thread
         //~ Constructor .......................................................
 
         // ----------------------------------------------------------
-        public GenerateReportThread(Number jobId, Number reportId)
+        public GenerateReportThread(ThreadGroup group,
+                Number jobId, Number reportId)
         {
+            super(group, "Report Generation Thread");
+
             this.jobId = jobId.intValue();
             this.reportId = reportId.intValue();
         }

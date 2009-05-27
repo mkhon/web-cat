@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdvancedQueryAssistant.java,v 1.6 2008/10/28 15:52:30 aallowat Exp $
+ |  $Id: AdvancedQueryAssistant.java,v 1.7 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,8 @@ package net.sf.webcat.reporter.queryassistants;
 
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WORequest;
+import com.webobjects.appserver.WOResponse;
 import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
@@ -32,6 +34,7 @@ import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSTimestamp;
 import net.sf.webcat.reporter.ReportDataSet;
 import net.sf.webcat.reporter.ReporterComponent;
+import net.sf.webcat.ui.util.ComponentIDGenerator;
 
 //-------------------------------------------------------------------------
 /**
@@ -39,7 +42,7 @@ import net.sf.webcat.reporter.ReporterComponent;
  * by adding/combining key/value qualifiers of various kinds.
  *
  * @author aallowat
- * @version $Id: AdvancedQueryAssistant.java,v 1.6 2008/10/28 15:52:30 aallowat Exp $
+ * @version $Id: AdvancedQueryAssistant.java,v 1.7 2009/05/27 14:31:52 aallowat Exp $
  */
 public class AdvancedQueryAssistant
     extends ReporterComponent
@@ -70,8 +73,33 @@ public class AdvancedQueryAssistant
     public int index;
     public KVCAttributeInfo keyPathCompletionItem;
 
+    public ComponentIDGenerator idFor;
+
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public void appendToResponse(WOResponse response, WOContext context)
+    {
+        idFor = new ComponentIDGenerator(this);
+
+        super.appendToResponse(response, context);
+    }
+
+    
+    // ----------------------------------------------------------
+    public void takeValuesFromRequest(WORequest request, WOContext context)
+    {
+/*        for(String key : request.formValues().keySet())
+        {
+            System.out.println(key + " = " + request.formValues().objectForKey(key));
+        }
+        System.out.println("-----------");*/
+
+        super.takeValuesFromRequest(request, context);
+    }
+
 
     // ----------------------------------------------------------
     public NSArray<KVCAttributeInfo> keyPathCompletionItems()
@@ -117,8 +145,11 @@ public class AdvancedQueryAssistant
 
 
     // ----------------------------------------------------------
-    public void setCurrentKeyPath(String value)
+    public void immediatelySetKeyPathAtIndex(String value, int index)
     {
+        AdvancedQueryCriterion criterion =
+            model.criteria().objectAtIndex(index);
+
         criterion.setKeyPath(value);
 
         if (criterion.comparison() == null)
@@ -126,6 +157,13 @@ public class AdvancedQueryAssistant
             criterion.setComparison(
                 comparisonsForCurrentKeyPath().objectAtIndex(0));
         }
+    }
+
+
+    // ----------------------------------------------------------
+    public void setCurrentKeyPath(String value)
+    {
+        immediatelySetKeyPathAtIndex(value, index);
     }
 
 
@@ -179,6 +217,16 @@ public class AdvancedQueryAssistant
 
 
     // ----------------------------------------------------------
+    public void immediatelySetCastTypeAtIndex(int castTypeIndex, int index)
+    {
+        AdvancedQueryCriterion criterion =
+            model.criteria().objectAtIndex(index);
+
+        criterion.setCastType(castTypes().objectAtIndex(castTypeIndex));
+    }
+
+
+    // ----------------------------------------------------------
     public void setCurrentCastType(Class<?> value)
     {
         if (value == null)
@@ -228,7 +276,14 @@ public class AdvancedQueryAssistant
     public NSArray<AdvancedQueryComparison> comparisonsForCurrentKeyPath()
     {
         String keypath = currentKeyPath();
+        return comparisonsForKeyPath(keypath, criterion.castType());
+    }
 
+
+    // ----------------------------------------------------------
+    public NSArray<AdvancedQueryComparison> comparisonsForKeyPath(
+            String keypath, Class<?> castType)
+    {
         KeyPathParser kpp = new KeyPathParser(
             dataSet.wcEntityName(), keypath);
 
@@ -236,8 +291,7 @@ public class AdvancedQueryAssistant
 
         if (klass == Object.class)
         {
-            return AdvancedQueryComparison
-                .comparisonsForType(currentCastType());
+            return AdvancedQueryComparison.comparisonsForType(castType);
         }
         else
         {
@@ -271,13 +325,39 @@ public class AdvancedQueryAssistant
 
 
     // ----------------------------------------------------------
+    public void immediatelySetComparisonAtIndex(int comparisonIndex,
+            int castTypeIndex, int index)
+    {
+        AdvancedQueryCriterion criterion =
+            model.criteria().objectAtIndex(index);
+
+        Class<?> castType = castTypes().objectAtIndex(castTypeIndex);
+
+        AdvancedQueryComparison comparison =
+            comparisonsForKeyPath(criterion.keyPath(), castType).objectAtIndex(
+                    comparisonIndex);
+
+        setComparisonForCriterion(comparison, criterion);
+    }
+    
+    
+    // ----------------------------------------------------------
     public void setCurrentComparison(AdvancedQueryComparison comparison)
+    {
+        setComparisonForCriterion(comparison, criterion);
+    }
+
+
+    // ----------------------------------------------------------
+    public void setComparisonForCriterion(AdvancedQueryComparison comparison,
+            AdvancedQueryCriterion criterion)
     {
         /*
          * If the keypath operand support for either the old or the new
          * comparison differ, we reset the comparand back to LITERAL so that
          * it doesn't cause problems later.
          */
+
         if (comparison == null)
         {
             comparison = comparisonsForCurrentKeyPath().objectAtIndex(0);
@@ -311,7 +391,25 @@ public class AdvancedQueryAssistant
 
 
     // ----------------------------------------------------------
+    public void immediatelySetComparandTypeAtIndex(int comparandType, int index)
+    {
+        AdvancedQueryCriterion criterion =
+            model.criteria().objectAtIndex(index);
+
+        setComparandTypeForCriterion(comparandType, criterion);
+    }
+    
+    
+    // ----------------------------------------------------------
     public void setCurrentComparandType(Integer type)
+    {
+        setComparandTypeForCriterion(type, criterion);
+    }
+
+
+    // ----------------------------------------------------------
+    public void setComparandTypeForCriterion(Integer type,
+            AdvancedQueryCriterion criterion)
     {
         if (type == null)
         {

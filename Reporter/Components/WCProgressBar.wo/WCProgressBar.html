@@ -1,16 +1,10 @@
-<div style="width: 100%; text-align:center">
-	<div style="width: 67%; text-align: left; padding: 8px">
-		<div>
-			<wo:if condition="$taskDescription">
-				<p><wo:str value="$taskDescription" escapeHTML="$false"/></p>
-			</wo:if>
-		</div>
-		<div class="progressbarback">
-			<webobject name="Bar"/>
-		</div>
-		<div class="progresslabel">
-			<webobject name="Indicator"/>
-			<wo:str value="$percent"/>%
-		</div>
+<div style="width: 67%; margin-left: auto; margin-right: auto; text-align: center">
+	<div style="text-align: left">
+		<wo:if condition="$taskDescription">
+			<p><wo:str value="$taskDescription" escapeHTML="$false"/></p>
+		</wo:if>
 	</div>
+    <div>
+        <wo name="Bar"/>
+    </div>
 </div>

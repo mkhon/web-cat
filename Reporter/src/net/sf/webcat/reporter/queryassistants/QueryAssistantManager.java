@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueryAssistantManager.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
+ |  $Id: QueryAssistantManager.java,v 1.5 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * stored in the subsystem's resources.
  *
  * @author aallowat
- * @version $Id: QueryAssistantManager.java,v 1.4 2008/10/28 15:52:30 aallowat Exp $
+ * @version $Id: QueryAssistantManager.java,v 1.5 2009/05/27 14:31:52 aallowat Exp $
  */
 public class QueryAssistantManager
 {
@@ -87,12 +87,6 @@ public class QueryAssistantManager
                 (NSArray<String>)asstInPlist.objectForKey("entities");
             String modelName =
                 (String)asstInPlist.objectForKey("modelName");
-            String editorComponentName =
-                (String)asstInPlist.objectForKey("editorComponentName");
-            String previewComponentName =
-                (String)asstInPlist.objectForKey("previewComponentName");
-            String description =
-                (String)asstInPlist.objectForKey("description");
 
             boolean success = verifyClassInheritance(modelName,
                     AbstractQueryAssistantModel.class);
@@ -100,9 +94,7 @@ public class QueryAssistantManager
             if (success)
             {
                 QueryAssistantDescriptor qad =
-                    new QueryAssistantDescriptor(
-                        id, entities, modelName, editorComponentName,
-                        previewComponentName, description);
+                    new QueryAssistantDescriptor(id, asstInPlist);
 
                 assistants.setObjectForKey(qad, id);
 
@@ -184,9 +176,17 @@ public class QueryAssistantManager
     }
 
 
+    // ----------------------------------------------------------
     public QueryAssistantDescriptor assistantWithId(String id)
     {
         return assistants.objectForKey(id);
+    }
+    
+    
+    // ----------------------------------------------------------
+    public NSArray<QueryAssistantDescriptor> allAssistants()
+    {
+        return assistants.allValues();
     }
 
 

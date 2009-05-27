@@ -1,68 +1,57 @@
-StringFieldSingle : WOTextField {
+StringFieldSingle : WCTextBox {
     value = stringValueOfRepresentedValue;
     size = 15;
 }
 
-StringFieldMulti : WOTextField {
+StringFieldMulti : WCTextBox {
     value = commaDelimitedStringValuesOfRepresentedValueArray;
     size = 20;
-    default = "separate values with commas";
+//    default = "separate values with commas";
 }
 
-IntegerFieldSingle : WOTextField {
+IntegerFieldSingle : WCTextBox {
     value = integerValueOfRepresentedValue;
     size = 10;
     numberformat = "#";
 }
 
-IntegerFieldMulti : WOTextField {
+IntegerFieldMulti : WCTextBox {
     value = commaDelimitedIntegerValuesOfRepresentedValueArray;
     size = 20;
-    default = "separate values with commas";
+//    default = "separate values with commas";
 }
 
-DoubleFieldSingle : WOTextField {
+DoubleFieldSingle : WCTextBox {
     value = doubleValueOfRepresentedValue;
     size = 10;
     numberformat = "#.#";
 }
 
-DoubleFieldMulti : WOTextField {
+DoubleFieldMulti : WCTextBox {
     value = commaDelimitedDoubleValuesOfRepresentedValueArray;
     size = 20;
-    default = "separate values with commas";
+//    default = "separate values with commas";
 }
 
-BooleanFieldSingle : WOPopUpButton {
+BooleanFieldSingle : WCFilteringSelect {
     list = booleanValues;
     item = booleanValueInList;
     displayString = displayStringForBooleanValue;
     selection = booleanValueOfRepresentedValue;
 }
 
-TimestampFieldSingle : WOTextField {
-    size = 20;
-    formatter = session.timeFormatter;
+TimestampFieldSingle : WCDateTimePicker {
+//    size = 20;
+//    formatter = session.timeFormatter;
     value = timestampValueOfRepresentedValue;
-    id = calendarFieldId;
-    readonly = 1;
 }
 
-TimestampSelector : WOImage {
-    filename = "icons/cal.gif";
-    framework = "Grader";
-    width    = 16;
-    height   = 16;
-    alt      = "Select date";
-    title    = "Select date";
-    id       = calendarButtonId;
-}
-
-EntityFieldSingle : WOPopUpButton {
+EntityFieldSingle : WCFilteringSelect {
     list = entityValues;
     item = entityValueInList;
     displayString = displayStringForEntityValue;
     selection = entityValueOfRepresentedValue;
+    maximumWidth = 180;
 }
 
 EntityFieldMulti : WOBrowser {

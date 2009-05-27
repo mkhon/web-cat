@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterComponent.java,v 1.9 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: ReporterComponent.java,v 1.10 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.reporter;
 
 import net.sf.webcat.core.WCComponent;
+import net.sf.webcat.reporter.queryassistants.ModelOrQueryWrapper;
 import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eocontrol.EOEditingContext;
@@ -36,7 +37,7 @@ import com.webobjects.foundation.NSTimestamp;
  * A base class for pages in the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReporterComponent.java,v 1.9 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: ReporterComponent.java,v 1.10 2009/05/27 14:31:52 aallowat Exp $
  */
 public class ReporterComponent
     extends WCComponent
@@ -64,9 +65,9 @@ public class ReporterComponent
         transientState().removeObjectForKey(KEY_REPORT_TEMPLATE);
         transientState().removeObjectForKey(KEY_GENERATED_REPORT);
         transientState().removeObjectForKey(KEY_RENDERING_METHOD);
-        transientState().removeObjectForKey(KEY_CURRENT_DATASET);
-        transientState().removeObjectForKey(KEY_QUERIES);
-        transientState().removeObjectForKey(KEY_PAGE_CONTROLLER);
+//        transientState().removeObjectForKey(KEY_CURRENT_DATASET);
+//        transientState().removeObjectForKey(KEY_QUERIES);
+//        transientState().removeObjectForKey(KEY_PAGE_CONTROLLER);
     }
 
 
@@ -114,7 +115,7 @@ public class ReporterComponent
     }
 
 
-    // ----------------------------------------------------------
+/*    // ----------------------------------------------------------
     public int localCurrentReportDataSet()
     {
         return (Integer)transientState().objectForKey(KEY_CURRENT_DATASET);
@@ -125,7 +126,7 @@ public class ReporterComponent
     public void setLocalCurrentReportDataSet(int value)
     {
         transientState().setObjectForKey(value, KEY_CURRENT_DATASET);
-    }
+    }*/
 
 
     // ----------------------------------------------------------
@@ -158,7 +159,7 @@ public class ReporterComponent
 
 
     // ----------------------------------------------------------
-    public void createLocalPageController()
+/*    public void createLocalPageController()
     {
         QueryPageController controller = new QueryPageController(
             this, localReportTemplate().dataSets());
@@ -172,11 +173,11 @@ public class ReporterComponent
     {
         return (QueryPageController)transientState().objectForKey(
             KEY_PAGE_CONTROLLER);
-    }
+    }*/
 
 
     // ----------------------------------------------------------
-    public String componentForLocalDataSetId(Number dataSetId)
+/*    public String componentForLocalDataSetId(Number dataSetId)
     {
         NSDictionary<Number, NSDictionary<String, Object>> queryMap =
             (NSDictionary<Number, NSDictionary<String, Object>>)
@@ -324,11 +325,11 @@ public class ReporterComponent
         applyLocalChanges();
 
         commitExistingQueryForDataSet(dataSet, query);
-    }
+    }*/
 
 
     // ----------------------------------------------------------
-    public void commitExistingQueryForDataSet(
+/*    public void commitExistingQueryForDataSet(
         ReportDataSet dataSet, ReportQuery query)
     {
         NSMutableDictionary<Number, NSMutableDictionary<String, Object>>
@@ -355,11 +356,11 @@ public class ReporterComponent
         }
 
            queryInfo.setObjectForKey(query, "query");
-    }
+    }*/
 
 
     // ----------------------------------------------------------
-    public String commitReportGeneration()
+    public String commitReportGeneration(ModelOrQueryWrapper[] modelWrappers)
     {
         String errorMessage = null;
         log.debug("committing report generation");
@@ -383,13 +384,10 @@ public class ReporterComponent
 
         // Create ReportDataSetQuery objects to map all of the data sets in
         // the transient state to the queries that were created for them.
-        NSArray<Number> dataSetIds = localDataSetIds();
-        for (Number dataSetId : dataSetIds)
+        for (ModelOrQueryWrapper modelWrapper : modelWrappers)
         {
-            ReportDataSet dataSet =
-                ReportDataSet.forId(ec, dataSetId.intValue());
-
-            ReportQuery query = queryForLocalDataSetId(dataSetId);
+            ReportDataSet dataSet = modelWrapper.dataSet();
+            ReportQuery query = modelWrapper.commitAndGetQuery(ec, user());
 
             ReportDataSetQuery dataSetQuery =
                 job.createDataSetQueriesRelationship();
@@ -452,12 +450,12 @@ public class ReporterComponent
         "net.sf.webcat.reporter.generatedReport";
     private static final String KEY_RENDERING_METHOD =
         "net.sf.webcat.reporter.renderingMethod";
-    private static final String KEY_CURRENT_DATASET =
-        "net.sf.webcat.reporter.currentDataSet";
-    private static final String KEY_QUERIES =
-        "net.sf.webcat.reporter.queries";
-    private static final String KEY_PAGE_CONTROLLER =
-        "net.sf.webcat.reporter.pageController";
+//    private static final String KEY_CURRENT_DATASET =
+//        "net.sf.webcat.reporter.currentDataSet";
+//    private static final String KEY_QUERIES =
+//        "net.sf.webcat.reporter.queries";
+//    private static final String KEY_PAGE_CONTROLLER =
+//        "net.sf.webcat.reporter.pageController";
 
     static Logger log = Logger.getLogger( ReporterComponent.class );
 

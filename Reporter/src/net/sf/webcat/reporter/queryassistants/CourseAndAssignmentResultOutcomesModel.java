@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: CourseAndAssignmentResultOutcomesModel.java,v 1.1 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,8 +30,6 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import er.extensions.eof.ERXQ;
-import er.extensions.foundation.ERXArrayUtilities;
-import net.sf.webcat.core.Course;
 import net.sf.webcat.core.CourseOffering;
 import net.sf.webcat.core.QualifierInSubquery;
 import net.sf.webcat.grader.Assignment;
@@ -40,21 +38,22 @@ import net.sf.webcat.reporter.QualifierUtils;
 //-------------------------------------------------------------------------
 /**
  * The model of the query built by a
- * {@link CourseAndAssignmentSubmissionsAssistant}.
+ * {@link CourseAndAssignmentResultOutcomesAssistant}.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsModel.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: CourseAndAssignmentResultOutcomesModel.java,v 1.1 2009/05/27 14:31:52 aallowat Exp $
  */
-public class CourseAndAssignmentSubmissionsModel
+public class CourseAndAssignmentResultOutcomesModel
     extends AbstractQueryAssistantModel
 {
     //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
-    public CourseAndAssignmentSubmissionsModel()
+    public CourseAndAssignmentResultOutcomesModel()
     {
-        selectedCourseModelItems = new NSMutableArray<Object>();
-        assignments = new NSMutableArray<Assignment>();
+        courseOfferings = new NSMutableArray<CourseOffering>();
+        tags = null;
+        assignment = null;
         includeCourseStaff = false;
         includeOnlySubmissionsForGrading = true;
     }
@@ -64,7 +63,7 @@ public class CourseAndAssignmentSubmissionsModel
     @Override
     public EOQualifier qualifierFromValues()
     {
-        if (selectedCourseModelItems.isEmpty() || assignments.isEmpty())
+        if (courseOfferings.isEmpty() || assignment == null)
         {
             return null;
         }
@@ -74,30 +73,37 @@ public class CourseAndAssignmentSubmissionsModel
                 new NSMutableArray<EOQualifier>();
 
             terms.addObject(QualifierUtils.qualifierForInCondition(
-                "assignmentOffering.courseOffering", selectedCourseOfferings()));
+                    "submission.assignmentOffering.courseOffering",
+                    courseOfferings));
 
-            terms.addObject(QualifierUtils.qualifierForInCondition(
-                    "assignmentOffering.assignment", assignments));
+            terms.addObject(ERXQ.equals(
+                    "submission.assignmentOffering.assignment",
+                    assignment));
 
             if (includeOnlySubmissionsForGrading)
             {
-                terms.addObject(ERXQ.isTrue("submissionForGrading"));
+                terms.addObject(ERXQ.isTrue("submission.submissionForGrading"));
             }
 
             if (!includeCourseStaff)
             {
                 EOQualifier q1 =
                     QualifierUtils.qualifierForKeyPathInRelationship(
-                        "user",
-                        "assignmentOffering.courseOffering.instructors");
+                        "submission.user",
+                        "submission.assignmentOffering.courseOffering.instructors");
                 
                 EOQualifier q2 =
                     QualifierUtils.qualifierForKeyPathInRelationship(
-                        "user",
-                        "assignmentOffering.courseOffering.graders");
+                        "submission.user",
+                        "submission.assignmentOffering.courseOffering.graders");
 
                 terms.addObject(ERXQ.not(q1));
                 terms.addObject(ERXQ.not(q2));
+            }
+
+            if (!tags.isEmpty())
+            {
+                terms.addObject(ERXQ.in("tag", tags));
             }
 
             return new EOAndQualifier(terms);
@@ -109,8 +115,8 @@ public class CourseAndAssignmentSubmissionsModel
     @Override
     public void takeValuesFromQualifier(EOQualifier qualifier)
     {
-        selectedCourseModelItems = new NSMutableArray<Object>();
-        assignments = new NSMutableArray<Assignment>();
+        courseOfferings = new NSMutableArray<CourseOffering>();
+        assignment = null;
         includeCourseStaff = false;
         includeOnlySubmissionsForGrading = true;
 
@@ -133,23 +139,28 @@ public class CourseAndAssignmentSubmissionsModel
                     String key = (String)info.objectForKey("key");
                     NSArray<?> values = (NSArray<?>)info.objectForKey("values");
 
-                    if ("assignmentOffering.courseOffering".equals(key))
+                    if ("submission.assignmentOffering.courseOffering".equals(key))
                     {
-                        selectedCourseModelItems =
-                            new NSMutableArray<Object>(values);
+                        courseOfferings =
+                            new NSMutableArray<CourseOffering>(
+                                (NSArray<CourseOffering>)values);
                     }
-                    else if ("assignmentOffering.assignment".equals(key))
+                    else if ("tags".equals(key))
                     {
-                        assignments =
-                            new NSMutableArray<Assignment>(
-                                (NSArray<Assignment>)values);
+                        tags = new NSMutableArray<String>(
+                                (NSArray<String>)values);
                     }
                 }
                 else if (q instanceof EOKeyValueQualifier)
                 {
                     EOKeyValueQualifier kvq = (EOKeyValueQualifier)q;
-
-                    if ("submissionForGrading".equals(kvq.key())
+                    if ("submission.assignmentOffering.assignment".equals(kvq.key())
+                        && EOQualifier.QualifierOperatorEqual.equals(
+                               kvq.selector()))
+                    {
+                        assignment = (Assignment)kvq.value();
+                    }
+                    else if ("submission.submissionForGrading".equals(kvq.key())
                             && EOQualifier.QualifierOperatorEqual.equals(kvq.selector())
                             && Boolean.TRUE.equals(kvq.value()))
                     {
@@ -169,14 +180,14 @@ public class CourseAndAssignmentSubmissionsModel
                             EOKeyComparisonQualifier kcq =
                                 (EOKeyComparisonQualifier) qis.qualifier();
     
-                            if ("user.id".equals(kcq.leftKey())
+                            if ("submission.user.id".equals(kcq.leftKey())
                                     && EOQualifier.QualifierOperatorEqual.equals(kcq.selector()))
                             {
-                                if ("assignmentOffering.courseOffering.instructors.id".equals(kcq.rightKey()))
+                                if ("submission.assignmentOffering.courseOffering.instructors.id".equals(kcq.rightKey()))
                                 {
                                     excludeInstructors = true;
                                 }
-                                else if ("assignmentOffering.courseOffering.graders.id".equals(kcq.rightKey()))
+                                else if ("submission.assignmentOffering.courseOffering.graders.id".equals(kcq.rightKey()))
                                 {
                                     excludeGraders = true;
                                 }
@@ -200,117 +211,88 @@ public class CourseAndAssignmentSubmissionsModel
 
 
     // ----------------------------------------------------------
-    public void pruneAssignmentsFromUnselectedCourses()
+    public String tags()
     {
-        NSArray<Course> selectedCourses = selectedCourses();
-
-        for (int i = 0; i < assignments.count(); )
+        StringBuffer buffer = new StringBuffer();
+        
+        if (tags != null && tags.count() > 0)
         {
-            Assignment a = assignments.objectAtIndex(i);
+            buffer.append(tags.objectAtIndex(0));
+
+            for (int i = 1; i < tags.count(); i++)
+            {
+                buffer.append(", ");
+                buffer.append(tags.objectAtIndex(i));
+            }
+        }
+
+        return buffer.toString();
+    }
+
+
+    // ----------------------------------------------------------
+    public void setTags(String tagString)
+    {
+        tags = new NSMutableArray<String>();
+
+        if (tagString != null)
+        {
+            String[] tagArray = tagString.split(",");
             
-            NSArray<Course> assignmentCourses = (NSArray<Course>)
-                a.valueForKeyPath(Assignment.COURSES_KEY);
-            
-            if (ERXArrayUtilities.arrayContainsAnyObjectFromArray(
-                    assignmentCourses, selectedCourses))
+            for (String tag : tagArray)
             {
-                i++;
-            }
-            else
-            {
-                assignments.removeObjectAtIndex(i);
+                tags.addObject(tag.trim());
             }
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
-    public NSArray<Object> selectedCourseModelItems()
+    public NSArray<CourseOffering> courseOfferings()
     {
-        return selectedCourseModelItems;
+        return courseOfferings;
     }
 
 
     // ----------------------------------------------------------
-    public void setSelectedCourseModelItems(NSArray<Object> array)
+    public void setCourseOfferings(NSArray<CourseOffering> co)
     {
-        selectedCourseModelItems = new NSMutableArray<Object>(array);
-    }
-    
-
-    // ----------------------------------------------------------
-    public NSArray<CourseOffering> selectedCourseOfferings()
-    {
-        NSMutableArray<CourseOffering> array =
-            new NSMutableArray<CourseOffering>();
-        
-        for (Object obj : selectedCourseModelItems)
-        {
-            if (obj instanceof CourseOffering)
-            {
-                array.addObject(obj);
-            }
-        }
-        
-        return array;
-    }
-    
-
-    // ----------------------------------------------------------
-    public NSArray<Course> selectedCourses()
-    {
-        NSMutableArray<Course> courses = new NSMutableArray<Course>();
-
-        for (Object obj : selectedCourseModelItems)
-        {
-            if (obj instanceof CourseOffering)
-            {
-                CourseOffering co = (CourseOffering) obj;
-                Course c = co.course();
-                
-                if (!courses.contains(c))
-                {
-                    courses.addObject(c);
-                }
-            }
-        }
-        
-        return courses;
+        courseOfferings = new NSMutableArray<CourseOffering>(co);
     }
 
 
     // ----------------------------------------------------------
-    public NSArray<Assignment> assignments()
+    public void addCourseOffering(CourseOffering co)
     {
-        return assignments;
+        courseOfferings.addObject(co);
     }
 
 
     // ----------------------------------------------------------
-    public void setAssignments(NSArray<Assignment> a)
+    public void removeCourseOffering(CourseOffering co)
     {
-        assignments = new NSMutableArray<Assignment>(a);
+        courseOfferings.removeObject(co);
     }
 
 
     // ----------------------------------------------------------
-    public void addAssignment(Assignment a)
+    public boolean containsCourseOffering(CourseOffering co)
     {
-        assignments.addObject(a);
+        return courseOfferings.contains(co);
     }
 
 
     // ----------------------------------------------------------
-    public void removeAssignment(Assignment a)
+    public Assignment assignment()
     {
-        assignments.removeObject(a);
+        return assignment;
     }
 
 
     // ----------------------------------------------------------
-    public boolean containsAssignment(Assignment a)
+    public void setAssignment(Assignment a)
     {
-        return assignments.contains(a);
+        assignment = a;
     }
 
 
@@ -344,8 +326,9 @@ public class CourseAndAssignmentSubmissionsModel
 
     //~ Instance/static variables .............................................
 
-    private NSMutableArray<Object> selectedCourseModelItems;
-    private NSMutableArray<Assignment> assignments;
+    private NSMutableArray<CourseOffering> courseOfferings;
+    private Assignment assignment;
+    private NSMutableArray<String> tags;
     private boolean includeOnlySubmissionsForGrading;
     private boolean includeCourseStaff;
 }

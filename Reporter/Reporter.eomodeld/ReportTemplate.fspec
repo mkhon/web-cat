@@ -12,4 +12,42 @@
             }
         ); 
     }; 
+    uploadedByUser = {
+        class = EOFetchSpecification;
+        entityName = ReportTemplate;
+        fetchLimit = 0;
+        isDeep = YES;
+        qualifier = {
+            class = EOKeyValueQualifier;
+            key = user;
+            selectorName = "isEqualTo:";
+            value = {_key = user; class = EOQualifierVariable; };
+        };
+        sortOrderings = (
+            {
+                class = EOSortOrdering; 
+                key = name; 
+                selectorName = "compareAscending:"; 
+            }
+        ); 
+    };
+    publishedReports = {
+        class = EOFetchSpecification;
+        entityName = ReportTemplate;
+        fetchLimit = 0;
+        isDeep = YES;
+        qualifier = {
+            class = EOKeyValueQualifier;
+            key = isPublished;
+            selectorName = "isEqualTo:";
+            value = {class = NSNumber; value = 1; };
+        };
+        sortOrderings = (
+            {
+                class = EOSortOrdering; 
+                key = name; 
+                selectorName = "compareAscending:"; 
+            }
+        ); 
+    };
 }

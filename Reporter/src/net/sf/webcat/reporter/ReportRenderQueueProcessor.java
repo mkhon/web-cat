@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportRenderQueueProcessor.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: ReportRenderQueueProcessor.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXApplication;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportRenderQueueProcessor.java,v 1.2 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: ReportRenderQueueProcessor.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
  */
 public class ReportRenderQueueProcessor extends Thread
 {
@@ -362,13 +362,13 @@ public class ReportRenderQueueProcessor extends Thread
 
             if (method != null)
             {
-                NSMutableDictionary options = new NSMutableDictionary();
-                options.setObjectForKey(job.renderedResourceActionUrl(),
-                    IRenderingMethod.OPTION_ACTION_URL);
-                controller = method.prepareToRender(report, options);
-
                 try
                 {
+                    NSMutableDictionary options = new NSMutableDictionary();
+                    options.setObjectForKey(job.renderedResourceActionUrl(),
+                        IRenderingMethod.OPTION_ACTION_URL);
+                    controller = method.prepareToRender(report, options);
+
                     controller.render();
                     controller = null;
                     report.markAsRenderedWithMethod(job.renderingMethod());

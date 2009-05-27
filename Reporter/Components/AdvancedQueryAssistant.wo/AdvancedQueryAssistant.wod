@@ -1,80 +1,93 @@
+RPC : WCJSONRPC {
+    name = idFor.JSONRPC;
+    proxyName = "page";
+}
+
+CriteriaContainer : WCContentPane {
+    id = idFor.criteriaContainer;
+}
+
 RowBusyIndicator : WOImage {
     filename = "images/busy.gif";
-    id = "~'busy_' + index";
+    id = "~idFor.busy + '_' + index";
     style = "vertical-align: middle; visibility: hidden";
 }
 
-KeyPath : AjaxAutoComplete {
-    id = "~'keyPath_' + index";
-    default = "enter a key path";
-    list = keyPathCompletionItems;
-    item = keyPathCompletionItem;
+KeyPath : WCTextBox {
+    id = "~idFor.keyPath + '_' + index";
+//    default = "enter a key path";
+//    list = keyPathCompletionItems;
+//    item = keyPathCompletionItem;
     value = currentKeyPath;
-    minChars = 0;
+//    minChars = 0;
 }
 
 KeyPathDisplayString : WOString {
     value = displayStringForKeyPathCompletionItem;
 }
 
-KeyPathChangeUpdater : AjaxSubmitButton {
-    fullSubmit = true;
-    functionName = "~'updateRowAfterKeyPath_' + index";
-    updateContainerID = idForCurrentCastTypeContainer;
-    onLoading = "~'function() { startBusyForRow(' + index + '); }'";
-    onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+KeyPathChangeUpdater : WCRemoteFunction {
+    jsId = "~idFor.updateRowAfterKeyPath + '_' + index";
+    remote.refreshPanes = "~idFor.castTypeContainer + '_' + index";
 }
 
-KeyPathCastType : WOPopUpButton {
-    id = "~'castType_' + index";
+CastTypeContainer : WCContentSpan {
+    id = "~idFor.castTypeContainer + '_' + index";
+}
+
+CastType : WCFilteringSelect {
+    id = "~idFor.castType + '_' + index";
     list = castTypes;
     item = castType;
     selection = currentCastType;
     displayString = displayStringForCastType;
 }
 
-KeyPathCastTypeObserver : AjaxObserveField {
-    fullSubmit = true;
-    observeFieldID = "~'castType_' + index";
-    updateContainerID = idForCurrentComparisonContainer;
-    onLoading = "~'function() { startBusyForRow(' + index + '); }'";
-    onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+CastTypeUpdater : WCRemoteFunction {
+    jsId = "~idFor.updateRowAfterCastType + '_' + index";
+    remote.refreshPanes = "~idFor.comparisonContainer + '_' + index";
 }
 
-OtherKeyPath : WOTextField {
-    id = "~'otherKeyPath_' + index";
-    value = currentRepresentedValue;
-    default = "enter a key path";
+ComparisonContainer : WCContentSpan {
+    id = "~idFor.comparisonContainer + '_' + index";
 }
 
-Comparison : WOPopUpButton {
-    id = "~'comparison_' + index";
+Comparison : WCFilteringSelect {
+    id = "~idFor.comparison + '_' + index";
     list = comparisonsForCurrentKeyPath;
     selection = currentComparison;
 }
 
-ComparisonObserver : AjaxObserveField {
-    fullSubmit = true;
-    observeFieldID = "~'comparison_' + index";
-    updateContainerID = idForCurrentComparandTypeContainer;
-    onLoading = "~'function() { startBusyForRow(' + index + '); }'";
-    onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+ComparisonUpdater : WCRemoteFunction {
+    jsId = "~idFor.updateRowAfterComparison + '_' + index";
+    remote.refreshPanes = "~idFor.comparandTypeContainer + '_' + index";
 }
 
-ComparandType : WOPopUpButton {
-    id = "~'comparandType_' + index";
+ComparandTypeContainer : WCContentSpan {
+    id = "~idFor.comparandTypeContainer + '_' + index";
+}
+
+ComparandType : WCFilteringSelect {
+    id = "~idFor.comparandType + '_' + index";
     list = validComparandTypesForCurrentComparison;
     item = comparandType;
     displayString = displayStringForComparandType;
     selection = currentComparandType;
 }
 
-ComparandTypeObserver : AjaxObserveField {
-    fullSubmit = true;
-    observeFieldID = "~'comparandType_' + index";
-    updateContainerID = idForCurrentValueContainer;
-    onLoading = "~'function() { startBusyForRow(' + index + '); }'";
-    onComplete = "~'function() { stopBusyForRow(' + index + '); }'";
+ComparandTypeUpdater : WCRemoteFunction {
+    jsId = "~idFor.updateRowAfterComparandType + '_' + index";
+    remote.refreshPanes = "~idFor.valueContainer + '_' + index";
+}
+
+ValueContainer : WCContentSpan {
+    id = "~idFor.valueContainer + '_' + index";
+}
+
+OtherKeyPath : WCTextBox {
+    id = "~idFor.otherKeyPath + '_' + index";
+    value = currentRepresentedValue;
+//    default = "enter a key path";
 }
 
 Value : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponent {
@@ -95,14 +108,12 @@ MaximumValue : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponen
     representedValue = maximumValueOfCurrentRepresentedValue;
 }
 
-AddCriterion: AjaxSubmitButton {
-    button = false;
+AddCriterion: WCButton {
     action = addCriterion;
-    updateContainerID = "criteriaContainer";
+    remote.refreshPanes = idFor.criteriaContainer;
 }
 
-RemoveCriterion: AjaxSubmitButton {
-    button = false;
+RemoveCriterion: WCButton {
     action = removeCriterion;
-    updateContainerID = "criteriaContainer";
+    remote.refreshPanes = idFor.criteriaContainer;
 }

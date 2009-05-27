@@ -1,0 +1,60 @@
+Page: net.sf.webcat.core.WCPageWithNavigation {
+}
+
+ChangeReportTemplate: WCButton {
+    label = "Change Template...";
+    action = changeReportTemplate;
+}
+
+ChooseQueryAssistant: WCLink {
+    action = chooseQueryAssistantForDataSet;
+    remote.refreshPanes = idForQueryAssistantContainer;
+}
+
+RevertEditing: WCButton {
+    label = "Change Method...";
+    action = revertEditingForDataSet;
+    remote.refreshPanes = idForQueryAssistantContainer;
+}
+
+SavedQueries: WCFilteringSelect {
+    id = idForSavedQueryPickerForDataSet;
+    list = savedQueriesApplicableToDataSet;
+    item = savedQuery;
+    displayString = savedQuery.description;
+    selection = selectedSavedQueryForDataSet;
+}
+
+UseSavedQuery: WCButton {
+    label = "Use this query";
+    action = useSavedQuery;
+    remote.refreshPanes = idForQueryAssistantContainer;
+}
+
+QueryAssistantComponent: WOSwitchComponent {
+    WOComponentName = selectedModelOrQueryForDataSet.queryAssistant.editorComponentName;
+    dataSet = dataSet;
+    model = selectedModelOrQueryForDataSet.model;
+}
+
+QueryDescription: WCTextBox {
+    value = selectedModelOrQueryForDataSet.descriptionToSave;
+    size = 50;
+}
+
+ReportParameter: ReportParameterValueComponent {
+    parameter = parameter;
+    value = valueForParameter;
+}
+
+RenderingMethod: WCFilteringSelect {
+    list = renderingMethods;
+    item = renderingMethod;
+    selection = selectedRenderingMethod;
+    displayString = renderingMethod.displayName;  // VALID
+}
+
+GenerateReport: WCButton {
+    label = "Generate Report";
+    action = generateReport;
+}

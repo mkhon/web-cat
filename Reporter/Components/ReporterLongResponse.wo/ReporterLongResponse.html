@@ -1,7 +1,12 @@
 <wo:form><wo name="PeriodicUpdater">
+    <script type="dojo/connect">
+        periodicUpdaterTimer = setInterval(dojo.hitch(this, function() {
+            this.refresh();
+        }), 6000); 
+    </script>
     <wo:if condition="$isDone">
         <script>
-        periodicUpdaterStop();
+            clearInterval(periodicUpdaterTimer);
         </script>
         <wo:content/>
     </wo:if><wo:else>
@@ -14,8 +19,17 @@
             <wo:if condition="$workingMessage">
                 <p><wo:str value="$workingMessage" escapeHTML="$false"/></p>
             </wo:if>
+            <div style="text-align: center">
             <wo name="ProgressBar"/>
-            <p><wo name="CancelButton"/></p>
+            <p>
+                <wo name="CancelButton">
+                    <script type="dojo/method" event="onClick" args="evt">
+                        this.setAttribute("disabled", true);
+                        this.setLabel("Canceling...");
+                    </script>
+                </wo>
+            </p>
+            </div>
         </wo:else>
     </wo:else>
 </wo></wo:form>

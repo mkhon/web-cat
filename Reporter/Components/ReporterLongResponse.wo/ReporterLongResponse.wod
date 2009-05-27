@@ -1,15 +1,13 @@
-CancelButton: AjaxSubmitButton {
-    value = "Cancel";
+CancelButton: WCButton {
     id = "longResponseCancelButton";
+    label = "Cancel";
     disabled = cannotCancel;
-    onClick = "$('longResponseCancelButton').disable(); $('longResponseCancelButton').value = 'Canceling...';";
+    remote = true;
     action = cancelJob;
 }
 
-PeriodicUpdater: AjaxUpdateContainer {
+PeriodicUpdater: WCContentPane {
     id = "periodicUpdater";
-    frequency = 3;
-    decay = 1;
 }
 
 ProgressBar: net.sf.webcat.reporter.WCProgressBar {
