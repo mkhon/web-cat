@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.3 2009/05/29 15:05:55 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.4 2009/05/29 19:24:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -78,7 +78,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $ $Date: 2009/05/29 15:05:55 $
+ * @version $Revision: 1.4 $ $Date: 2009/05/29 19:24:52 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -111,12 +111,12 @@ public class GraderNavigator
     {
         log.debug("entering awake()");
         super.awake();
-        if (!(selectionsParent instanceof GraderComponent))
+        if (!(selectionsParent instanceof GraderAssignmentComponent))
         {
             throw new IllegalStateException("GraderNavigator can only be "
-                + "embedded inside a GraderComponent page");
+                + "embedded inside a GraderAssignmentComponent page");
         }
-        graderParent = (GraderComponent)selectionsParent;
+        graderParent = (GraderAssignmentComponent)selectionsParent;
 
         log.debug("selected assignment = " + selectedAssignment);
         log.debug("leaving awake()");
@@ -364,6 +364,6 @@ public class GraderNavigator
 
     //~ Static/instance variables .............................................
 
-    protected GraderComponent graderParent;
+    protected GraderAssignmentComponent graderParent;
     static Logger log = Logger.getLogger(GraderNavigator.class);
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderAssignmentComponent.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: GraderAssignmentComponent.java,v 1.5 2009/05/29 19:24:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.*;
  *  assignment selections from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderAssignmentComponent.java,v 1.4 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: GraderAssignmentComponent.java,v 1.5 2009/05/29 19:24:52 stedwar2 Exp $
  */
 public class GraderAssignmentComponent
     extends GraderCourseComponent
@@ -51,6 +51,63 @@ public class GraderAssignmentComponent
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * This method determines whether any embedded navigator will
+     * automatically pop up to force a selection and page reload.
+     * @return True if the navigator should start out by opening automatically.
+     */
+    public boolean forceNavigatorSelection()
+    {
+        boolean result = super.forceNavigatorSelection();
+        if (prefs().assignment() == null)
+        {
+            result = true;
+        }
+        else if (!result && requiresAssignmentOffering())
+        {
+            AssignmentOffering ao = prefs().assignmentOffering();
+            Assignment assignment = prefs().assignment();
+            if (ao == null && assignment != null)
+            {
+                CourseOffering co = bestMatchingCourseOffering();
+                for (AssignmentOffering offering : assignment.offerings())
+                {
+                    if (offering.courseOffering() == co)
+                    {
+                        prefs().setAssignmentOfferingRelationship(offering);
+                        if (coreSelections().courseOffering() != co)
+                        {
+                            coreSelections().setCourseOfferingRelationship(co);
+                            if (coreSelections().course() != co.course())
+                            {
+                                coreSelections().setCourseRelationship(null);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            result = (prefs().assignmentOffering() == null);
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * This method determines whether the current page requires the
+     * user to have a selected AssignmentOffering.
+     * The default implementation returns true, but is designed
+     * to be overridden in subclasses.
+     * @return True if the page requires a selected assignment offering.
+     */
+    public boolean requiresAssignmentOffering()
+    {
+        return true;
+    }
+
 
     // ----------------------------------------------------------
     /**

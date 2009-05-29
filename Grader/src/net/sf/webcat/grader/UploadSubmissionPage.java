@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.10 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.11 2009/05/29 19:24:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.10 2008/10/28 19:20:16 aallowat Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.11 2009/05/29 19:24:52 stedwar2 Exp $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -291,6 +291,13 @@ public class UploadSubmissionPage
         clearSubmission();
         resetPrimeUser();
         super.cancelLocalChanges();
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean allowsAllOfferingsForCourse()
+    {
+        return false;
     }
 
 
