@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
+ |  $Id: WCBasePage.java,v 1.4 2009/05/29 14:54:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -72,7 +72,7 @@ import org.apache.log4j.Logger;
  * </table>
  *
  * @author Tony Allevato
- * @version $Id: WCBasePage.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
+ * @version $Id: WCBasePage.java,v 1.4 2009/05/29 14:54:21 aallowat Exp $
  */
 public class WCBasePage
     extends WOComponent
@@ -233,7 +233,10 @@ public class WCBasePage
      */
     public String pageFramework()
     {
-        return NSBundle.bundleForClass(parent().getClass()).name();
+        WOComponent root = this;
+        while (root.parent() != null) root = root.parent();
+
+        return NSBundle.bundleForClass(root.getClass()).name();
     }
 
 
@@ -331,7 +334,10 @@ public class WCBasePage
     protected String pageSpecificResourcePath(String directory,
             String extension)
     {
-        return directory + "/" + parent().getClass().getSimpleName() + "." +
+        WOComponent root = this;
+        while (root.parent() != null) root = root.parent();
+        
+        return directory + "/" + root.getClass().getSimpleName() + "." +
             extension;
     }
 

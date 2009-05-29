@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCContentPane.java,v 1.3 2009/05/27 14:24:08 aallowat Exp $
+ |  $Id: WCContentPane.java,v 1.4 2009/05/29 14:54:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import er.extensions.appserver.ERXWOContext;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCContentPane.java,v 1.3 2009/05/27 14:24:08 aallowat Exp $
+ * @version $Id: WCContentPane.java,v 1.4 2009/05/29 14:54:21 aallowat Exp $
  */
 public class WCContentPane extends DojoElement
 {
@@ -62,9 +62,7 @@ public class WCContentPane extends DojoElement
     {
         super(name, someAssociations, template);
         
-        // We don't remove the "alwaysDynamic" binding from the associations
-        // dictionary here because we need to pass it through as an attribute
-        // to the Dojo element itself.
+        _alwaysDynamic = _associations.removeObjectForKey("alwaysDynamic");
     }
 
 
@@ -124,6 +122,11 @@ public class WCContentPane extends DojoElement
 
         appendTagAttributeToResponse(response, "href",
                         AjaxUtils.ajaxComponentActionUrl(context));
+
+        if (alwaysDynamicInContext(context))
+        {
+            appendTagAttributeToResponse(response, "alwaysDynamic", "true");
+        }
     }
 
 
@@ -131,7 +134,7 @@ public class WCContentPane extends DojoElement
     public void appendChildrenToResponse(WOResponse response, WOContext context)
     {
         boolean isAjax = ERXApplication.isAjaxRequest(context.request());
-        
+
         if (isAjax || (!isAjax && !alwaysDynamicInContext(context)))
         {
             super.appendChildrenToResponse(response, context);
@@ -142,11 +145,9 @@ public class WCContentPane extends DojoElement
     // ----------------------------------------------------------
     protected boolean alwaysDynamicInContext(WOContext context)
     {
-        if (_associations != null
-                && _associations.objectForKey("alwaysDynamic") != null)
+        if (_alwaysDynamic != null)
         {
-            return _associations.objectForKey("alwaysDynamic").
-                booleanValueInComponent(context.component());
+            return _alwaysDynamic.booleanValueInComponent(context.component());
         }
         else
         {
@@ -187,4 +188,6 @@ public class WCContentPane extends DojoElement
     
 
     //~ Static/instance variables .............................................
+    
+    protected WOAssociation _alwaysDynamic;
 }
