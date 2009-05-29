@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.7 2009/02/20 02:30:13 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.8 2009/05/29 15:05:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.7 2009/02/20 02:30:13 aallowat Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.8 2009/05/29 15:05:55 stedwar2 Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -186,7 +186,7 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TGRADERPREFS drop "
             + "CCOURSEOFFERINGID" );
-        
+
         database().executeSQL(
             "alter table TSUBMISSION add "
             + "CISSUBMISSIONFORGRADING BIT");
@@ -199,8 +199,8 @@ public class GraderDatabaseUpdates
                 "alter table TSUBMISSIONRESULT add "
                 + "CFINALSCORE DOUBLE");*/
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Creates the TRESULTOUTCOME table.
@@ -219,6 +219,19 @@ public class GraderDatabaseUpdates
             database().executeSQL(
                 "ALTER TABLE TRESULTOUTCOME ADD PRIMARY KEY (OID)" );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds support for global configuration parameters for plug-ins.
+     * @throws SQLException on error
+     */
+    public void updateIncrement9() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TGRADERPREFS add "
+            + "CASSIGNID INTEGER" );
     }
 
 

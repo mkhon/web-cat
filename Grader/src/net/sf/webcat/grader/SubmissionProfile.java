@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.10 2009/05/07 15:19:39 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.11 2009/05/29 15:05:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,7 +31,8 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @version $Id: SubmissionProfile.java,v 1.10 2009/05/07 15:19:39 stedwar2 Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.11 $ $Date: 2009/05/29 15:05:55 $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
