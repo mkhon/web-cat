@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.5 2009/05/29 14:59:24 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.6 2009/05/29 19:17:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.5 $ $Date: 2009/05/29 14:59:24 $
+ * @version $Revision: 1.6 $ $Date: 2009/05/29 19:17:00 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -98,8 +98,8 @@ public class CoreNavigator
     public INavigatorObject semesterInRepetition;
     public INavigatorObject selectedSemester;
 
-    public boolean allowsAllSemesters = true;
-    public boolean allowsAllOfferingsForCourse = true;
+    public Boolean allowsAllSemesters;
+    public Boolean allowsAllOfferingsForCourse;
     public Boolean startOpen;
 
     public ComponentIDGenerator idFor;
@@ -114,12 +114,6 @@ public class CoreNavigator
     public void appendToResponse(WOResponse response, WOContext context)
     {
         log.debug("entering appendToResponse()");
-
-        if (startOpen == null)
-        {
-            startOpen = Boolean.valueOf(
-                selectionsParent.forceNavigatorSelection());
-        }
 
         idFor = new ComponentIDGenerator(this);
 
@@ -143,6 +137,22 @@ public class CoreNavigator
                     + "embedded inside a WCCourseComponent page");
             }
 
+            if (allowsAllSemesters == null)
+            {
+                allowsAllSemesters = Boolean.valueOf(
+                    selectionsParent.allowsAllSemesters());
+            }
+            if (allowsAllOfferingsForCourse == null)
+            {
+                allowsAllOfferingsForCourse = Boolean.valueOf(
+                    selectionsParent.allowsAllOfferingsForCourse());
+            }
+            if (startOpen == null)
+            {
+                startOpen = Boolean.valueOf(
+                    selectionsParent.forceNavigatorSelection());
+            }
+
             Semester semester = selectionsParent.coreSelections().semester();
             if (semester != null)
             {
@@ -151,18 +161,21 @@ public class CoreNavigator
             }
 
             // Handle course preference
-            CourseOffering co =
-                selectionsParent.coreSelections().courseOffering();
-            if (co != null)
+            Course course = selectionsParent.coreSelections().course();
+            if (course != null && allowsAllOfferingsForCourse)
             {
-                selectedCourseOffering =
-                    new CoreNavigatorObjects.SingleCourseOffering(co);
-                wantOfferingsForCourse = null;
+                wantOfferingsForCourse = course;
             }
             else
             {
-                wantOfferingsForCourse =
-                    selectionsParent.coreSelections().course();
+                CourseOffering co =
+                    selectionsParent.coreSelections().courseOffering();
+                if (co != null)
+                {
+                    selectedCourseOffering =
+                        new CoreNavigatorObjects.SingleCourseOffering(co);
+                    wantOfferingsForCourse = null;
+                }
             }
         }
         log.debug("selected semester = " + selectedSemester);
@@ -383,15 +396,22 @@ public class CoreNavigator
                 if (allOfferings)
                 {
                     selectionsParent.coreSelections()
-                        .setCourseOfferingRelationship(null);
+                    .setCourseRelationship(co.course());
+                    CourseOffering co2 =
+                        selectionsParent.coreSelections().courseOffering();
+                    if (co2 != null && co2.course() != co.course())
+                    {
+                        selectionsParent.coreSelections()
+                            .setCourseOfferingRelationship(null);
+                    }
                 }
                 else
                 {
                     selectionsParent.coreSelections()
+                        .setCourseRelationship(null);
+                    selectionsParent.coreSelections()
                         .setCourseOfferingRelationship(co);
                 }
-                selectionsParent.coreSelections()
-                    .setCourseRelationship(co.course());
             }
         }
 

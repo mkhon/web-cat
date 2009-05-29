@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.10 2009/05/03 19:33:27 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.11 2009/05/29 19:17:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.*;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.10 $ $Date: 2009/05/03 19:33:27 $
+ * @version $Revision: 1.11 $ $Date: 2009/05/29 19:17:00 $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -125,7 +125,103 @@ public class WCCourseComponent
      */
     public boolean forceNavigatorSelection()
     {
+        if (!allowsAllOfferingsForCourse()
+            && coreSelections().courseOffering() == null)
+        {
+            // Try to guess a course offering from the course
+            CourseOffering bestOffering = bestMatchingCourseOffering();
+            if (bestOffering != null)
+            {
+                coreSelections().setCourseOfferingRelationship(
+                    bestOffering);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         return false;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * This method determines whether any embedded navigator will
+     * allow users to select "all" offerings for a course.
+     * The default implementation returns true, but is designed
+     * to be overridden in subclasses.
+     * @return True if the navigator should allow selection of all courses.
+     */
+    protected CourseOffering bestMatchingCourseOffering()
+    {
+        CourseOffering bestOffering = coreSelections().courseOffering();
+        if (bestOffering == null)
+        {
+            Course course = coreSelections().course();
+            if (course != null)
+            {
+                for (CourseOffering offering : user().enrolledIn())
+                {
+                    if (offering.course() == course)
+                    {
+                        bestOffering = offering;
+                        break;
+                    }
+                }
+                if (bestOffering == null)
+                {
+                    for (CourseOffering offering : user().teaching())
+                    {
+                        if (offering.course() == course)
+                        {
+                            bestOffering = offering;
+                            break;
+                        }
+                    }
+                }
+                if (bestOffering == null)
+                {
+                    for (CourseOffering offering : user().graderFor())
+                    {
+                        if (offering.course() == course)
+                        {
+                            bestOffering = offering;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return bestOffering;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * This method determines whether any embedded navigator will
+     * allow users to select "all" offerings for a course.
+     * The default implementation returns true, but is designed
+     * to be overridden in subclasses.
+     * @return True if the navigator should allow selection of all courses.
+     */
+    public boolean allowsAllOfferingsForCourse()
+    {
+        return true;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * This method determines whether any embedded navigator will
+     * allow users to select "all" semesters.
+     * The default implementation returns true, but is designed
+     * to be overridden in subclasses.
+     * @return True if the navigator should allow viewing of all semesters.
+     */
+    public boolean allowsAllSemesters()
+    {
+        return true;
     }
 
 
@@ -152,21 +248,6 @@ public class WCCourseComponent
         CoreSelectionsManager.class.getName();
     private static final String ECMANAGER_KEY =
         EOManager.ECManager.class.getName();
-
-    private NSMutableArray<INavigatorObject> courseOfferings;
-    private INavigatorObject selectedCourseOffering;
-
-    private NSMutableArray<INavigatorObject> semesters;
-    private INavigatorObject selectedSemester;
-
-    private boolean allowsAllSemesters = true;
-    private boolean allowsAllOfferingsForCourse = true;
-
-    private Boolean includeWhatImTeaching;
-    private Boolean includeAdminAccess;
-
-    private static final String SEMESTER_PREF_KEY = "semester";
-    private static final String COURSE_OFFERING_SET_KEY = "courseOfferingSet";
 
     static Logger log = Logger.getLogger( WCCourseComponent.class );
 }
