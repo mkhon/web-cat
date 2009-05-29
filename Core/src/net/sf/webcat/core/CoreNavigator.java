@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.4 2009/05/03 19:33:27 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.5 2009/05/29 14:59:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $ $Date: 2009/05/03 19:33:27 $
+ * @version $Revision: 1.5 $ $Date: 2009/05/29 14:59:24 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -400,9 +400,6 @@ public class CoreNavigator
 
 
     // ----------------------------------------------------------
-    /**
-     * @param includeWhatImTeaching the includeWhatImTeaching to set
-     */
     public void setIncludeWhatImTeaching(boolean includeWhatImTeaching)
     {
         selectionsParent.coreSelections().setIncludeWhatImTeaching(
@@ -411,9 +408,6 @@ public class CoreNavigator
 
 
     // ----------------------------------------------------------
-    /**
-     * @return the includeWhatImTeaching
-     */
     public boolean includeWhatImTeaching()
     {
         return selectionsParent.coreSelections().includeWhatImTeaching();
@@ -421,9 +415,6 @@ public class CoreNavigator
 
 
     // ----------------------------------------------------------
-    /**
-     * @param includeAdminAccess the includeAdminAccess to set
-     */
     public void setIncludeAdminAccess(boolean includeAdminAccess)
     {
         selectionsParent.coreSelections().setIncludeAdminAccess(
@@ -432,9 +423,6 @@ public class CoreNavigator
 
 
     // ----------------------------------------------------------
-    /**
-     * @return the includeAdminAccess
-     */
     public boolean includeAdminAccess()
     {
         return selectionsParent.coreSelections().includeAdminAccess();
@@ -465,7 +453,7 @@ public class CoreNavigator
 
     //~ Static/instance variables .............................................
 
-    private WCCourseComponent selectionsParent = null;
+    protected WCCourseComponent selectionsParent = null;
     private Course wantOfferingsForCourse;
     static Logger log = Logger.getLogger(CoreNavigator.class);
 }
