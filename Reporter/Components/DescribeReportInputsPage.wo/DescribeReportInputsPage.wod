@@ -47,13 +47,6 @@ ReportParameter: ReportParameterValueComponent {
     value = valueForParameter;
 }
 
-RenderingMethod: WCFilteringSelect {
-    list = renderingMethods;
-    item = renderingMethod;
-    selection = selectedRenderingMethod;
-    displayString = renderingMethod.displayName;  // VALID
-}
-
 GenerateReport: WCButton {
     label = "Generate Report";
     action = generateReport;

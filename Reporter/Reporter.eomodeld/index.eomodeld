@@ -331,10 +331,6 @@
             name = EnqueuedReportGenerationJob; 
         }, 
         {
-            className = "net.sf.webcat.reporter.EnqueuedReportRenderJob"; 
-            name = EnqueuedReportRenderJob; 
-        }, 
-        {
             className = "net.sf.webcat.reporter.GeneratedReport"; 
             name = GeneratedReport; 
         }, 

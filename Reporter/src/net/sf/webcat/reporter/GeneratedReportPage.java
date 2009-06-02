@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.10 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: GeneratedReportPage.java,v 1.11 2009/06/02 19:59:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,18 +32,27 @@ import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
 import er.extensions.eof.ERXConstant;
 import java.io.File;
+import java.util.List;
+import java.util.Properties;
+import net.sf.webcat.core.DeliverFile;
 import net.sf.webcat.core.MutableArray;
 import net.sf.webcat.core.MutableDictionary;
 import net.sf.webcat.grader.FinalReportPage;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
+import org.eclipse.birt.report.engine.api.EngineException;
+import org.eclipse.birt.report.engine.api.IDataExtractionTask;
+import org.eclipse.birt.report.engine.api.IReportDocument;
+import org.eclipse.birt.report.engine.api.IResultSetItem;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 //-------------------------------------------------------------------------
 /**
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.10 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.11 2009/06/02 19:59:12 aallowat Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -67,11 +76,12 @@ public class GeneratedReportPage
     public int refreshTimeout = 15;
     public GeneratedReport generatedReport;
     public Number reportGenerationJobId;
-    public ReporterLongResponseDelegate longResponseDelegate;
-    public IRenderingMethod renderingMethod;
-    public IRenderingMethod selectedRenderingMethod;
+    public int currentPageNumber = 0;
+    public NSArray<String> resultSetsToExtract;
+    public String resultSet;
+    public int resultSetIndex;
 
-
+    
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
@@ -79,7 +89,7 @@ public class GeneratedReportPage
     {
         EnqueuedReportGenerationJob genJob = localReportGenerationJob();
 
-        if(genJob != null)
+        if (genJob != null)
         {
             reportGenerationJobId = genJob.id();
         }
@@ -94,35 +104,225 @@ public class GeneratedReportPage
 
         generatedReport = localGeneratedReport();
 
-        longResponseDelegate = new Delegate();
+        if (generatedReport != null)
+        {
+            // If the report has already been generated, start with page 1
+            // instead of 0 (which is a placeholder that indicates nothing is
+            // ready yet).
+            currentPageNumber = 1;
+        }
 
         super.appendToResponse(response, context);
     }
 
 
     // ----------------------------------------------------------
-    public ReporterComponent self()
+    public boolean isReportComplete()
     {
-        return this;
+        if (generatedReport == null)
+        {
+            return false;
+        }
+        else
+        {
+            Properties props = generatedReport.renderingProperties();
+            return Boolean.valueOf(props.getProperty("isComplete", "false"));
+        }
+    }
+
+    
+    // ----------------------------------------------------------
+    public String mainBlockTitle()
+    {
+        String prefix = "Your Report";
+
+        if (generatedReport == null)
+        {
+            if (reportGenerationJobId != null)
+            {
+                EnqueuedReportGenerationJob job =
+                    EnqueuedReportGenerationJob.forId(localContext(),
+                        reportGenerationJobId.intValue());
+                
+                if (job != null)
+                {
+                    return prefix + ": " + job.description();
+                }
+            }
+
+            return prefix;
+        }
+        else
+        {
+            return prefix + ": " + generatedReport.description();
+        }
     }
 
 
     // ----------------------------------------------------------
-    public boolean isReportRendered()
+    public void setCurrentPageNumber(int pageNum)
     {
-        return (generatedReport != null
-                && generatedReport.isRenderedWithMethod(localRenderingMethod()));
+        currentPageNumber = pageNum;
+    }
+    
+
+    // ----------------------------------------------------------
+    public int highestPageSoFar()
+    {
+        if (generatedReport == null)
+        {
+            return 0;
+        }
+        else
+        {
+            Properties props = generatedReport.renderingProperties();
+            return Integer.valueOf(props.getProperty(
+                    "highestRenderedPageNumber", "0"));
+        }
+    }
+
+    
+    // ----------------------------------------------------------
+    public synchronized JSONObject pollReportStatus()
+    {
+        JSONObject result = new JSONObject();
+        
+        try
+        {
+            if (generatedReport == null && reportGenerationJobId != null)
+            {
+                Integer reportId =
+                    ReportGenerationTracker.getInstance().reportIdForJobId(
+                        reportGenerationJobId.intValue());
+
+                if(reportId != null)
+                {
+                    // The GeneratedReport was created while we have been
+                    // observing the progress, so store it for future
+                    // updates.
+
+                    generatedReport = GeneratedReport.forId(
+                            localContext(), reportId);
+
+                    // The new state will be picked up in the
+                    // (generatedReport != null) block below.
+                }
+                else
+                {
+                    result.put("isStarted", false);
+                    result.put("queuePosition", queuePosition());
+                }
+            }
+
+            if (generatedReport != null)
+            {
+                Properties props = generatedReport.renderingProperties();
+
+                int highestPage = Integer.valueOf(props.getProperty(
+                        "highestRenderedPageNumber", "0"));
+
+                if (currentPageNumber == 0 && highestPage > 0)
+                {
+                    // Kick off the first page once it's ready.
+                    currentPageNumber = 1;
+                }
+
+                result.put("isStarted", true);
+                result.put("highestRenderedPageNumber", highestPage);
+
+                result.put("isComplete",
+                        Boolean.valueOf(props.getProperty(
+                                "isComplete", "false")));
+
+                if (reportGenerationJobId == null)
+                {
+                    result.put("progress", 100);
+                }
+                else
+                {
+                    ReportGenerationTracker tracker =
+                        ReportGenerationTracker.getInstance();
+
+                    int progress = (int) (tracker.fractionOfWorkDoneForJobId(
+                            reportGenerationJobId.intValue()) * 100 + 0.5);
+                    result.put("progress", progress);
+                }
+            }
+        }
+        catch (JSONException e)
+        {
+            // Do nothing.
+        }
+
+        return result;
     }
 
 
     // ----------------------------------------------------------
-    public boolean reportHasRenderingErrors()
+    public String initialProgress()
     {
-        return (generatedReport != null
-                && generatedReport.hasRenderingErrors());
+        if (reportGenerationJobId == null)
+        {
+            return "0%";
+        }
+        else
+        {
+            ReportGenerationTracker tracker =
+                ReportGenerationTracker.getInstance();
+            int progress = (int) (tracker.fractionOfWorkDoneForJobId(
+                    reportGenerationJobId.intValue()) * 100 + 0.5);
+            
+            return "" + progress + "%";
+        }
+    }
+    
+    
+    // ----------------------------------------------------------
+    public NSArray<?> resultSetsToExtract()
+    {
+        if (resultSetsToExtract == null)
+        {
+            NSMutableArray<String> resultSets = new NSMutableArray<String>();
+
+            IReportDocument document = generatedReport.openReportDocument();
+            IDataExtractionTask task =
+                Reporter.getInstance().createDataExtractionTask(document);
+
+            try
+            {
+                List<IResultSetItem> list = task.getResultSetList();
+
+                for (IResultSetItem item : list)
+                {
+                    resultSets.addObject(item.getResultSetName());
+                }
+            }
+            catch (EngineException e)
+            {
+                log.error("There was an error reading the result sets to be "
+                        + "extracted from the report:", e);
+            }
+
+            document.close();
+
+            resultSetsToExtract = resultSets;
+        }
+        
+        return resultSetsToExtract;
     }
 
 
+    // ----------------------------------------------------------
+    public void cancelReport()
+    {
+        if (reportGenerationJobId != null)
+        {
+            Reporter.getInstance().reportGenerationQueueProcessor()
+                .cancelJobWithId(localContext(), reportGenerationJobId);
+        }
+    }
+    
+    
     // ----------------------------------------------------------
     public NSArray<MutableDictionary> generatedReportErrors()
     {
@@ -152,21 +352,69 @@ public class GeneratedReportPage
 
 
     // ----------------------------------------------------------
-    public NSArray<IRenderingMethod> renderingMethods()
+    private WOActionResults saveWithSaver(AbstractReportSaver saver)
     {
-        return Reporter.getInstance().allRenderingMethods();
+        DeliverFile file = (DeliverFile) pageWithName(
+                DeliverFile.class.getName());
+
+        Throwable error = saver.deliverTo(file);
+        
+        if (error != null)
+        {
+            ReportDownloadErrorPage page =
+                (ReportDownloadErrorPage) pageWithName(
+                    ReportDownloadErrorPage.class.getName());
+            page.throwable = error;
+            page.generatedReport = generatedReport;
+            return page;
+        }
+        else
+        {
+            return file;
+        }
     }
-
-
+    
+    
     // ----------------------------------------------------------
-    public WOComponent rerenderReport()
+    public WOActionResults savePDF()
     {
-        setLocalRenderingMethod(selectedRenderingMethod.methodName());
-        commitReportRendering(generatedReport);
-        return pageWithName(GeneratedReportPage.class.getName());
+        PDFReportSaver saver = new PDFReportSaver(generatedReport);
+        return saveWithSaver(saver);
     }
-
-
+    
+    
+    // ----------------------------------------------------------
+    public WOActionResults saveExcel()
+    {
+        ExcelReportSaver saver = new ExcelReportSaver(generatedReport);
+        return saveWithSaver(saver);
+    }
+    
+    
+    // ----------------------------------------------------------
+    public WOActionResults saveZippedHTML()
+    {
+        HTMLReportSaver saver = new HTMLReportSaver(generatedReport);
+        return saveWithSaver(saver);
+    }
+    
+    
+    // ----------------------------------------------------------
+    public WOActionResults saveZippedCSV()
+    {
+        CSVReportSaver saver = new CSVReportSaver(generatedReport, null);
+        return saveWithSaver(saver);
+    }
+    
+    
+    // ----------------------------------------------------------
+    public WOActionResults saveOneCSV()
+    {
+        CSVReportSaver saver = new CSVReportSaver(generatedReport, resultSet);
+        return saveWithSaver(saver);
+    }
+    
+    
     // ----------------------------------------------------------
     public int queuedJobCount()
     {
@@ -228,173 +476,6 @@ public class GeneratedReportPage
     {
         ensureJobDataIsInitialized();
         return FinalReportPage.formatForSmallTime( jobData.mostRecentWait );
-    }
-
-
-    // ----------------------------------------------------------
-    private class Delegate extends ReporterLongResponseDelegate
-    {
-        // ----------------------------------------------------------
-        /**
-         * Cache the
-         */
-        public void longResponseAwakened()
-        {
-            if (generatedReport == null)
-            {
-                if (reportGenerationJobId != null)
-                {
-                    Integer reportId =
-                        ReportGenerationTracker.getInstance().reportIdForJobId(
-                            reportGenerationJobId.intValue());
-
-                    if(reportId != null)
-                    {
-                        // The GeneratedReport was created while we have been
-                        // observing the progress, so store it for future
-                        // updates.
-
-                        generatedReport = GeneratedReport.forId(
-                                localContext(), reportId);
-
-                        // The new state will be picked up in the
-                        // (generatedReport != null) block below.
-                    }
-                    else
-                    {
-                        // There is a generation job, but no report ID has been
-                        // registered for it yet in the tracker, so it is still
-                        // in the queue.
-
-                        state = STATE_ENQUEUED;
-                    }
-                }
-
-                // No else clause; if reportGenerationJobId == null, then
-                // generatedReport will not be null
-            }
-
-            if (generatedReport != null)
-            {
-                boolean ready =
-                    isReportRendered() || reportHasRenderingErrors();
-
-                if (ready)
-                {
-                    // The report is rendered, so the state is "ready".
-
-                    state = STATE_READY;
-                }
-                else if (generatedReport.isComplete())
-                {
-                    NSArray<EnqueuedReportRenderJob> jobs =
-                        EnqueuedReportRenderJob.objectsForGeneratedReport(
-                                localContext(), generatedReport);
-
-                    if (jobs.count() == 0)
-                    {
-                        // If the report is complete, it is not "ready", and
-                        // there are no rendering jobs currently in the queue
-                        // for it, then we commit one now.
-
-                        commitReportRendering(generatedReport);
-                    }
-
-                    state = STATE_RENDERING;
-                }
-                else
-                {
-                    // The GeneratedReport has been created but it is not yet
-                    // complete.
-
-                    state = STATE_GENERATING;
-                }
-            }
-        }
-
-
-        // ----------------------------------------------------------
-        public float fractionOfWorkDone()
-        {
-            switch (state)
-            {
-            case STATE_ENQUEUED:
-                return 0.00f;
-
-            case STATE_GENERATING:
-                ReportGenerationTracker tracker =
-                    ReportGenerationTracker.getInstance();
-
-                return tracker.fractionOfWorkDoneForJobId(
-                        reportGenerationJobId.intValue()) * GENERATING_FRACTION;
-
-            case STATE_RENDERING:
-                return GENERATING_FRACTION;
-
-            case STATE_READY:
-                return 1.00f;
-
-            default:
-                return 0.00f;
-            }
-        }
-
-
-        // ----------------------------------------------------------
-        public boolean isDone()
-        {
-            return (state == STATE_READY);
-        }
-
-
-        // ----------------------------------------------------------
-        public String workDescription()
-        {
-            switch (state)
-            {
-            case STATE_ENQUEUED:
-                return String.format("Your report is currently in the queue "
-                        + "and will be processed shortly (queue position %d).",
-                        queuePosition());
-
-            case STATE_GENERATING:
-                return "Your report is currently being generated.";
-
-            case STATE_RENDERING:
-                return "Your report has been generated and is now being rendered.";
-
-            default:
-                return "";
-            }
-        }
-
-
-        // ----------------------------------------------------------
-        public boolean canCancel()
-        {
-            // Right now we don't permit canceling in the render phase, only in
-            // the generation phase. This may change in the future.
-
-            return (state == STATE_ENQUEUED || state == STATE_GENERATING);
-        }
-
-
-        // ----------------------------------------------------------
-        public void cancel()
-        {
-            Reporter.getInstance().reportGenerationQueueProcessor()
-                .cancelJobWithId(localContext(), reportGenerationJobId);
-        }
-
-
-        private static final int STATE_ENQUEUED = 0;
-        private static final int STATE_GENERATING = 1;
-        private static final int STATE_RENDERING = 2;
-        private static final int STATE_READY = 3;
-
-        private static final float GENERATING_FRACTION = 0.95f;
-
-        private int state;
     }
 
 

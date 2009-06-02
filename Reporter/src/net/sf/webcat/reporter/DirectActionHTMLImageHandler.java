@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterHTMLImageHandler.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: DirectActionHTMLImageHandler.java,v 1.1 2009/06/02 19:59:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,12 +41,12 @@ import org.eclipse.birt.report.engine.api.script.IReportContext;
 
 //-------------------------------------------------------------------------
 /**
- * A BIRT image handler for HTML-rendered reports.
+ * A BIRT image handler for online HTML-rendered reports.
  *
  * @author Tony Allevato
- * @version $Id: ReporterHTMLImageHandler.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: DirectActionHTMLImageHandler.java,v 1.1 2009/06/02 19:59:12 aallowat Exp $
  */
-public class ReporterHTMLImageHandler
+public class DirectActionHTMLImageHandler
     extends HTMLImageHandler
 {
     //~ Constructor ...........................................................
@@ -58,7 +58,7 @@ public class ReporterHTMLImageHandler
      * @param renderedResourceActionUrl The base URL for accessing rendered
      *     images in the final report
      */
-    public ReporterHTMLImageHandler(
+    public DirectActionHTMLImageHandler(
         GeneratedReport report, String renderedResourceActionUrl)
     {
         this.report = report;
@@ -269,5 +269,5 @@ public class ReporterHTMLImageHandler
         new NSMutableDictionary<String, String>();
 
     private static Logger log =
-        Logger.getLogger(ReporterHTMLImageHandler.class);
+        Logger.getLogger(DirectActionHTMLImageHandler.class);
 }

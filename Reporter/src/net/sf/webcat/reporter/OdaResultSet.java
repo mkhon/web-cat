@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.11 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.12 2009/06/02 19:59:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,7 +51,7 @@ import ognl.webobjects.WOOgnl;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.11 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.12 2009/06/02 19:59:12 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -161,10 +161,16 @@ public class OdaResultSet
         throttleIfNecessary();
         boolean hasNext = true;
         rawCurrentRow++;
-        if (rawCurrentRow % PROGRESS_STEP_SIZE == 0)
+        
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastProgressUpdateTime >=
+            TIME_BETWEEN_PROGRESS_UPDATES)
         {
             ReportGenerationTracker.getInstance().doWorkForJobId(jobId,
-                    PROGRESS_STEP_SIZE);
+                    rawCurrentRow - rowCountAtLastProgressUpdate);
+
+            lastProgressUpdateTime = currentTime;
+            rowCountAtLastProgressUpdate = rawCurrentRow;
         }
 
         if (currentBatchEnum == null || !currentBatchEnum.hasMoreElements())
@@ -186,9 +192,8 @@ public class OdaResultSet
             // readable representation of itself, DEBUG level logging on this
             // class should only be enabled when absolutely necessary.
 
-            String msg = "Row " + rawCurrentRow + ": "
-                + currentObject.toString();
-
+//            String msg = "Row " + rawCurrentRow + ": "
+//                + currentObject.toString();
 //            log.debug(msg);
         }
 
@@ -317,7 +322,9 @@ public class OdaResultSet
                 avgTimePerRow) / MOVING_AVERAGE_WINDOW_SIZE;
         }
 
-        log.debug("Last_batch_size," + currentBatchSize + ",Last_batch_time," + (batchTimeStart - batchTimeEnd) + ",Avg_time_per_row," + avgTimePerRow + ",Current_moving_avg," + currentMovingAverage);
+        //log.debug("Last_batch_size," + currentBatchSize + ",Last_batch_time,"
+        //  + (batchTimeStart - batchTimeEnd) + ",Avg_time_per_row,"
+        //  + avgTimePerRow + ",Current_moving_avg," + currentMovingAverage);
 
         // Compute the new batch size.
         long workTime = (long) (BATCH_TIME_SLICE * BATCH_LOAD_FACTOR);
@@ -538,10 +545,13 @@ public class OdaResultSet
     private long batchTimeEnd;
     private int currentBatchSize;
     private double currentMovingAverage;
+    private long lastProgressUpdateTime;
+    private int rowCountAtLastProgressUpdate;
+
+    private static final long TIME_BETWEEN_PROGRESS_UPDATES = 4000;
 
     private static final long MILLIS_BETWEEN_THROTTLE_CHECK = 3000;
     private static final long MILLIS_TO_THROTTLE = 5000;
-    private static final int PROGRESS_STEP_SIZE = 10;
 
     // TODO: Add these as Reporter subsystem configuration options; cache their
     // values when this object is created

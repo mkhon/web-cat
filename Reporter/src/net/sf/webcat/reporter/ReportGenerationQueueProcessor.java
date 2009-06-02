@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationQueueProcessor.java,v 1.6 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: ReportGenerationQueueProcessor.java,v 1.7 2009/06/02 19:59:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -56,6 +56,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.IEngineTask;
+import org.eclipse.birt.report.engine.api.IPageHandler;
 import org.eclipse.birt.report.engine.api.IRenderTask;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunTask;
@@ -67,7 +68,7 @@ import org.eclipse.birt.report.engine.api.IRunTask;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationQueueProcessor.java,v 1.6 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: ReportGenerationQueueProcessor.java,v 1.7 2009/06/02 19:59:12 aallowat Exp $
  */
 public class ReportGenerationQueueProcessor extends Thread
 {
@@ -476,6 +477,11 @@ public class ReportGenerationQueueProcessor extends Thread
                 log.debug("Generation thread: setting up run task");
                 runTask = Reporter.getInstance().setupRunTaskForJob(job);
                 runTask.setErrorHandlingOption(IEngineTask.CANCEL_ON_ERROR);
+                
+                IPageHandler pageHandler = ReportPageRenderer.getInstance()
+                    .createPageHandlerForReport(report);
+
+                runTask.setPageHandler(pageHandler);
 
                 log.debug("Generation thread: running BIRT reporting task");
                 runTask.run(reportPath);

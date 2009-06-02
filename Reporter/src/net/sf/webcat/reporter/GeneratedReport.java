@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReport.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: GeneratedReport.java,v 1.9 2009/06/02 19:59:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,8 +23,12 @@ package net.sf.webcat.reporter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
+import org.apache.log4j.Logger;
+import org.eclipse.birt.report.engine.api.IReportDocument;
 import net.sf.webcat.core.MutableArray;
 import net.sf.webcat.core.User;
 import com.webobjects.eocontrol.EOEditingContext;
@@ -37,7 +41,7 @@ import com.webobjects.foundation.NSData;
  * report template.
  *
  * @author Tony Allevato
- * @version $Id: GeneratedReport.java,v 1.8 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: GeneratedReport.java,v 1.9 2009/06/02 19:59:12 aallowat Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
@@ -98,9 +102,120 @@ public class GeneratedReport
 
 
     // ----------------------------------------------------------
+    /**
+     * Gets rid of the rendered files for this report (everything except for
+     * the rendering.properties file). This can be used in a cronjob to free up
+     * space if necessary, since the pages can always be re-rendered on demand.
+     */
+    public void clearRenderedFiles()
+    {
+        File dir = new File(renderedResourcesDir());
+        for (File file : dir.listFiles())
+        {
+            if (!file.getName().equals(RENDER_PROPERTIES_FILE))
+            {
+                file.delete();
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public String renderedHTMLPagePath(int pageNumber)
+    {
+        return renderedResourcePath("page" + pageNumber + ".html");
+    }
+
+
+    // ----------------------------------------------------------
     public String renderedResourcePath(String filename)
     {
         return renderedResourcesDir() + "/" + filename;
+    }
+
+
+    // ----------------------------------------------------------
+    public synchronized Properties renderingProperties()
+    {
+        Properties props = new Properties();
+        FileInputStream stream = null;
+
+        try
+        {
+            stream = new FileInputStream(
+                    renderedResourcePath(RENDER_PROPERTIES_FILE));
+
+            props.load(stream);
+        }
+        catch (FileNotFoundException e)
+        {
+            // Do nothing.
+        }
+        catch (IOException e)
+        {
+            log.error("An error occurred loading the render properties for"
+                    + " the report \"" + description() + "\" (id=" + id()
+                    + "): ", e);
+        }
+        finally
+        {
+            if (stream != null)
+            {
+                try
+                {
+                    stream.close();
+                }
+                catch (IOException e2)
+                {
+                    // Do nothing.
+                }
+            }
+        }
+
+        return props;
+    }
+
+
+    // ----------------------------------------------------------
+    public synchronized void setRenderingProperties(Properties props)
+    {
+        FileOutputStream stream = null;
+
+        try
+        {
+            stream = new FileOutputStream(
+                    renderedResourcePath(RENDER_PROPERTIES_FILE));
+
+            props.store(stream, null);
+        }
+        catch (IOException e)
+        {
+            log.error("An error occurred saving the render properties for"
+                    + " the report \"" + description() + "\" (id=" + id()
+                    + "): ", e);
+        }
+        finally
+        {
+            if (stream != null)
+            {
+                try
+                {
+                    stream.close();
+                }
+                catch (IOException e2)
+                {
+                    // Do nothing.
+                }
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public void prepareRenderingArea()
+    {
+        new File(renderedResourcesDir()).mkdirs();
+        new File(renderedResourcePath(RENDER_PROPERTIES_FILE)).delete();
     }
 
 
@@ -172,45 +287,6 @@ public class GeneratedReport
 
 
     // ----------------------------------------------------------
-    public void markAsRenderedWithMethod(String method)
-    {
-        File renderDir = new File(renderedResourcesDir());
-        if (renderDir.exists())
-        {
-            try
-            {
-                String tokenName = RENDER_TOKEN_PREFIX + method;
-                File renderToken = new File(renderDir, tokenName);
-                FileOutputStream stream = new FileOutputStream(renderToken);
-                stream.write(0);
-                stream.close();
-            }
-            catch (IOException e)
-            {
-                log.error("Could not create render-complete token: ", e);
-            }
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    public boolean isRenderedWithMethod(String method)
-    {
-        File renderDir = new File(renderedResourcesDir());
-        if (renderDir.exists())
-        {
-            String tokenName = RENDER_TOKEN_PREFIX + method;
-            File renderToken = new File(renderDir, tokenName);
-            if (renderToken.exists())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    // ----------------------------------------------------------
     public String generatedReportDir()
     {
         return generatedReportDirForUser(user());
@@ -221,6 +297,14 @@ public class GeneratedReport
     public String generatedReportFile()
     {
         return generatedReportFilePathForUser(user(), id());
+    }
+    
+    
+    // ----------------------------------------------------------
+    public IReportDocument openReportDocument()
+    {
+        String path = generatedReportFile();
+        return Reporter.getInstance().openReportDocument(path);
     }
 
 
@@ -275,8 +359,6 @@ public class GeneratedReport
 
     public static final String REPORT_EXTENSION = ".rptdocument";
 
-    private static final String RENDER_TOKEN_PREFIX = ".rendered.";
-
     private static final String RENDER_ERRORS_FILE = ".renderingErrors";
 
     private static final String GENERATED_REPORTS_SUBDIR_NAME =
@@ -285,7 +367,11 @@ public class GeneratedReport
     private static final String RENDERED_REPORTS_SUBDIR_NAME =
         "RenderedReports";
 
+    private static final String RENDER_PROPERTIES_FILE = "rendering.properties";
+
     private String reportDocToDelete;
 
     private String renderedDirToDelete;
+    
+    private static final Logger log = Logger.getLogger(GeneratedReport.class);
 }

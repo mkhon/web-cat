@@ -1,3 +1,190 @@
+<wo name="Page">
+<script type="text/javascript">
+dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
+{
+    // ----------------------------------------------------------
+    constructor: function(pageRPC, pageContainerID)
+    {
+        this._pageRPC = pageRPC;
+        this._currentPage = 0;
+        this._pagesSoFar = 0;
+        this._isComplete = false;
+        this._pageContainerID = pageContainerID;
+    },
+    
+    
+    // ----------------------------------------------------------
+    initializeFromCompleteReport: function(numPages)
+    {
+        this._currentPage = 1;
+        this._pagesSoFar = numPages;
+        this._isComplete = true;
+    },
+
+
+    // ----------------------------------------------------------
+    start: function()
+    {
+        dojo.style("progressArea", "display", "block");
+
+        this._interval = setInterval(dojo.hitch(this, function() {        
+            this._pageRPC.pollReportStatus(
+                dojo.hitch(this, this._pollReportStatusCallback));
+        }), 5000);
+    },
+    
+    
+    // ----------------------------------------------------------
+    _pollReportStatusCallback: function(result, e)
+	{
+	    dijit.byId("reportProgressBar").update({
+	        'progress': result.progress
+	    });
+	
+	    this._isStarted = result.isStarted;
+	    this._queuePosition = result.queuePosition;
+	    this._isComplete = result.isComplete;
+	    this._pagesSoFar = result.highestRenderedPageNumber;
+	
+	    var messageNode = dojo.byId("progressMessage");
+	    if (this._isStarted)
+	    {
+	        messageNode.innerHTML = "<p>Your report is currently " +
+	            "being generated. As pages of the report become " +
+	            "available, you can view them below.</p>";
+	    }
+	    else
+	    {
+	        messageNode.innerHTML = "<p>Your report is currently in " +
+	            "position " + this._queuePosition + " in the queue." +
+	            "</p>";
+	    }
+	
+	    if (this._pagesSoFar == 0 && result.highestRenderedPageNumber > 0)
+	    {
+	        // If the first page just got rendered for the first time,
+	        // go ahead and force-refresh the content pane so that it
+	        // gets displayed to the user.
+
+	        this._currentPage = 1;
+	        this._loadPage();
+	        this._updatePageIndicator();
+	    }
+	    else
+	    {
+	        this._updatePageIndicator();
+	    }
+	    
+	    if (result.isComplete == true)
+	    {
+            this._currentPage = 1;
+            this._loadPage();
+            this._updatePageIndicator();
+
+	        this.stop();
+	        dojo.style("progressArea", "display", "none");
+	    }
+	},
+
+
+    // ----------------------------------------------------------
+    _loadPage: function()
+    {
+        this._pageRPC.setCurrentPageNumber(dojo.hitch(this, function()
+        {
+            dijit.byId("reportPageContainer").refresh();
+            this._updatePageIndicator();
+        }), this._currentPage);
+    },
+    
+    
+    // ----------------------------------------------------------
+    _updatePageIndicator: function()
+    {
+        if (this._pagesSoFar == 0)
+        {
+            dojo.byId("pageIndicator").innerHTML = "No pages available yet";
+        }
+        else
+        {
+	        var pageIndicator = "Page "
+	           + this._currentPage + " (of " + this._pagesSoFar;
+	           
+	        pageIndicator += (this._isComplete == true) ?
+	            " total)" : " so far)";
+	        dojo.byId("pageIndicator").innerHTML = pageIndicator;
+	    }
+	    
+	    if (this._isComplete)
+	    {
+	        // Update the popup menu so that the user can save the report.
+            dijit.byId("saveDialogContainer").refresh();
+	    }
+    },
+
+
+    // ----------------------------------------------------------
+    stop: function()
+    {
+        clearInterval(this._interval);
+        delete this._interval;
+    },
+    
+    
+    // ----------------------------------------------------------
+    goToFirstPage: function()
+    {
+        if (this._pagesSoFar == 0) return;
+
+        this._currentPage = 1;
+        this._loadPage();
+    },
+    
+    
+    // ----------------------------------------------------------
+    goToPreviousPage: function()
+    {
+        if (this._pagesSoFar == 0) return;
+
+        if (this._currentPage > 1)
+            this._currentPage--;
+
+        this._loadPage();
+    },
+
+    
+    // ----------------------------------------------------------
+    goToNextPage: function()
+    {
+        if (this._pagesSoFar == 0) return;
+
+        if (this._currentPage < this._pagesSoFar)
+            this._currentPage++;
+
+        this._loadPage();
+    },
+
+
+    // ----------------------------------------------------------
+    goToLastPage: function()
+    {
+        if (this._pagesSoFar == 0) return;
+
+        this._currentPage = this._pagesSoFar;
+        this._loadPage();
+    },
+    
+    
+    // ----------------------------------------------------------
+    cancel: function()
+    {
+        dijit.byId("cancelButton").attr("label", "Canceling...");
+        dijit.byId("cancelButton").attr("disabled", true);
+        this._pageRPC.cancelReport();
+    }
+});
+</script>
+
 <style>
 .infoBox {
     background-color: white;
@@ -27,36 +214,139 @@
 }
 
 </style>
-<wo name="Page">
+<wo name="RPC"/>
+
 <wo name="MainBlock">
-    <wo name="LongResponse">
-        <p>Re-render this report as: <webobject name="RenderingMethod"/><webobject name="Rerender"/></p>
-        <hr style="width: 100%"/>
-        <wo:if condition="$generatedReportErrors.count">
-            <p>The following warnings and/or errors were produced during the
-            generation of this report:</p>
-            <wo name="GenerationErrors" />
-            <p><b>Report ID:</b> <wo:str value="$generatedReport.id"/></p>
+    <wo:not condition="$isReportComplete">
+	<div id="progressArea" style="text-align: center">
+	    <div style="text-align: left">
+	        <div id="progressMessage">
+	            <wo:if condition="$generatedReport">
+	                <p>Your report is currently being generated. As pages of the
+	                report become available, you can view them below.</p>
+	            </wo:if><wo:else>
+	                <p>Your report is currently in position
+	                <wo:str value="$queuePosition"/> in the queue.</p>
+	            </wo:else>
+	        </div>
+            <p>While you are waiting for your report to finish, you may
+            navigate to other parts of Web-CAT and return here at any time
+            to check the progress of the report.</p>
+	    </div>
+	    <div>
+	        <div style="width: 80%; float: left">
+	           <wo name="ProgressBar"/>
+	        </div>
+	        <div style="float: right">
+		        <wo name="Cancel">
+		            <span>Cancel</span>
+		            <script type="dojo/method" event="onClick" args="evt">
+		                reportWatcher.cancel();
+		            </script>
+		        </wo>
+		    </div>
+		    <div style="clear: both"></div>
+	    </div>
+	</div>
+	</wo:not>
+
+	<div dojoType="dijit.Toolbar">
+		<wo name="GoToFirstPage">
+		    <script type="dojo/method" event="onClick" args="evt">
+		        reportWatcher.goToFirstPage();
+		    </script>
+		</wo>
+		<wo name="GoToPreviousPage">
+            <script type="dojo/method" event="onClick" args="evt">
+                reportWatcher.goToPreviousPage();
+            </script>
+		</wo>
+		<wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
+        <span id="pageIndicator">
+    		<wo:not condition="$highestPageSoFar">
+		        No pages available yet
+			</wo:not><wo:else>
+	            Page
+	            <span id="currentPageNumber"><wo:str value="$currentPageNumber"/></span>
+	            (of
+	            <span id="highestPageNumber"><wo:str value="$highestPageSoFar"/></span>
+	            <wo:if condition="$isReportComplete">
+                    total)
+	            </wo:if><wo:else>
+                    available so far)
+	            </wo:else>
+			</wo:else>
+		</span>
+		<wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
+		<wo name="GoToNextPage">
+            <script type="dojo/method" event="onClick" args="evt">
+                reportWatcher.goToNextPage();
+            </script>
+		</wo>
+		<wo name="GoToLastPage">
+            <script type="dojo/method" event="onClick" args="evt">
+                reportWatcher.goToLastPage();
+            </script>
+		</wo>
+        <wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
+        <wo:WCSpan dojoType="dijit.form.DropDownButton">
+	        <span>Save this report</span>
+	        <wo:WCDiv dojoType="dijit.TooltipDialog" style="display: none">
+	           <wo:WCContentPane id="saveDialogContainer">
+	               <wo:WCForm>
+	               <wo:if condition="$isReportComplete">
+	                   <fieldset>
+                       Save this report as:
+                       <ul>
+                           <li><wo name="SavePDF">PDF</wo></li>
+                           <li><wo name="SaveExcel">Microsoft Excel</wo></li>
+                           <li><wo name="SaveZippedHTML">Zip containing all HTML and images</wo></li>
+                       </ul>
+                       </fieldset>
+                       <fieldset>
+                       Or, extract data from the following report elements as CSV files:
+                       <ul>
+                           <li><wo name="SaveAllCSV"><emph>Self-contained zip of all data</emph></wo></li>
+                           <wo:loop list="$resultSetsToExtract" item="$resultSet" index="$resultSetIndex">
+                               <li><wo name="SaveOneCSV"><wo:str value="~resultSetIndex+1"/>. <wo:str value="$resultSet"/></wo></li>
+                           </wo:loop>
+                       </ul>
+                       </fieldset>
+	               </wo:if><wo:else>
+	                   These options are only available when the report has
+	                   been completed.
+	               </wo:else>
+	               </wo:WCForm>
+	           </wo:WCContentPane>
+            </wo:WCDiv>
+        </wo:WCSpan>
+	</div>
+
+    <wo name="CurrentReportPageContainer">
+        <wo:if condition="~currentPageNumber gt 0"> 
+            <wo name="CurrentReportPageContent"/>
         </wo:if>
-        <wo:if condition="$isReportRendered">
-            <wo name="DynamicReportContainer">
-                <wo name="ReportContents"/>
-            </wo>
-        </wo:if><wo:else>
-            <wo:not condition="$generatedReportErrors.count">        
-	            <p>Web-CAT was unable to render the report.
-	            <wo:if condition="$generatedReportErrors.count">This is likely an
-	            effect of the errors that are displayed above.</wo:if></p>
-	            <wo:if condition="$reportHasRenderingErrors">
-	            <wo:if condition="$renderingErrors.count">
-	                <p>The following warnings and/or errors were produced during the
-	                rendering of this report:</p>
-	                <wo name="RenderingErrors" />
-	            </wo:if>
-	            </wo:if>
-                <p><b>Report ID:</b> <wo:str value="$generatedReport.id"/></p>
-	        </wo:not>
-        </wo:else>
     </wo>
+    <script type="text/javascript">
+        dojo.addOnLoad(function() {
+            reportWatcher = new webcat.reporter.GeneratedReportWatcher(jsonrpc.page, "reportPageContainer");
+            dojo.connect(dijit.byId("reportPageContainer"), "onDownloadEnd", function() {  });
+        <wo:if condition="$isReportComplete">
+            reportWatcher.initializeFromCompleteReport(<wo:str value="$highestPageSoFar"/>);
+        </wo:if><wo:else>
+	        reportWatcher.start();
+        </wo:else>
+        });
+    </script>
 </wo>
+
+<wo:if condition="$generatedReportErrors.count">
+<wo name="ErrorBlock">
+    <p>The following warnings and/or errors were produced during the
+    generation of this report:</p>
+    <wo name="GenerationErrors" />
+    <p><b>Report ID:</b> <wo:str value="$generatedReport.id"/></p>
+</wo>
+</wo:if>
+
 </wo>

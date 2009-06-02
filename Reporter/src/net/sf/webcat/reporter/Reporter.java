@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.15 2008/11/13 00:51:26 aallowat Exp $
+ |  $Id: Reporter.java,v 1.16 2009/06/02 19:59:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,78 +21,39 @@
 
 package net.sf.webcat.reporter;
 
-import com.ibm.icu.util.ULocale;
-import com.webobjects.appserver.WOContext;
-import com.webobjects.eoaccess.EOUtilities;
-import com.webobjects.eocontrol.EOAndQualifier;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOFetchSpecification;
-import com.webobjects.eocontrol.EOKeyValueQualifier;
-import com.webobjects.eocontrol.EOQualifier;
-import com.webobjects.eocontrol.EOSortOrdering;
-import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSBundle;
-import com.webobjects.foundation.NSData;
-import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableArray;
-import com.webobjects.foundation.NSMutableDictionary;
-import er.extensions.eof.ERXConstant;
-import er.extensions.eof.ERXEOControlUtilities;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Hashtable;
 import java.util.Map;
 import net.sf.webcat.birtruntime.BIRTRuntime;
 import net.sf.webcat.core.Application;
-import net.sf.webcat.core.Session;
 import net.sf.webcat.core.Subsystem;
-import net.sf.webcat.core.TabDescriptor;
-import net.sf.webcat.dbupdate.UpdateEngine;
 import net.sf.webcat.grader.EnqueuedJob;
 import net.sf.webcat.grader.Grader;
-import net.sf.webcat.grader.GraderQueue;
-import net.sf.webcat.grader.GraderQueueProcessor;
-import net.sf.webcat.reporter.internal.rendering.CSVRenderingMethod;
-import net.sf.webcat.reporter.internal.rendering.ExcelRenderingMethod;
-import net.sf.webcat.reporter.internal.rendering.HTMLRenderingMethod;
-import net.sf.webcat.reporter.internal.rendering.PDFRenderingMethod;
-import ognl.OgnlRuntime;
 import org.apache.log4j.Logger;
-import org.eclipse.birt.core.exception.BirtException;
-import org.eclipse.birt.core.framework.IExtension;
-import org.eclipse.birt.core.framework.IExtensionPoint;
-import org.eclipse.birt.core.framework.IExtensionRegistry;
-import org.eclipse.birt.core.framework.Platform;
-import org.eclipse.birt.core.framework.PlatformConfig;
-import org.eclipse.birt.report.engine.api.EngineConfig;
 import org.eclipse.birt.report.engine.api.EngineException;
-import org.eclipse.birt.report.engine.api.HTMLRenderOption;
 import org.eclipse.birt.report.engine.api.IDataExtractionTask;
 import org.eclipse.birt.report.engine.api.IGetParameterDefinitionTask;
-import org.eclipse.birt.report.engine.api.IRenderTask;
 import org.eclipse.birt.report.engine.api.IReportDocument;
 import org.eclipse.birt.report.engine.api.IReportEngine;
-import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunTask;
-import org.eclipse.birt.report.engine.api.script.element.IReportDesign;
-import org.eclipse.birt.report.model.api.DesignConfig;
-import org.eclipse.birt.report.model.api.DesignEngine;
 import org.eclipse.birt.report.model.api.IDesignEngine;
-import org.eclipse.birt.report.model.api.IDesignEngineFactory;
 import org.eclipse.birt.report.model.api.SessionHandle;
+import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eocontrol.EOAndQualifier;
+import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOKeyValueQualifier;
+import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableArray;
+import er.extensions.eof.ERXConstant;
+import er.extensions.eof.ERXEOControlUtilities;
 
 //-------------------------------------------------------------------------
 /**
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.15 2008/11/13 00:51:26 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.16 2009/06/02 19:59:12 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -121,15 +82,9 @@ public class Reporter
     {
         super.init();
 
-        // Initialize the rendering methods that are available for reporting.
-        initializeRenderingMethods();
-
         // Create the queue and the queueprocessor
         reportGenerationQueue          = new ReportGenerationQueue();
         reportGenerationQueueProcessor = new ReportGenerationQueueProcessor( reportGenerationQueue );
-
-        reportRenderQueue = new ReportRenderQueue();
-        reportRenderQueueProcessor = new ReportRenderQueueProcessor( reportRenderQueue );
 
         log.info("Creating global report design session");
 
@@ -139,7 +94,6 @@ public class Reporter
 
         // Kick off the processor thread
         reportGenerationQueueProcessor.start();
-        reportRenderQueueProcessor.start();
 
         if ( Application.configurationProperties().booleanForKey(
                 "reporter.resumeSuspendedJobs" ) )
@@ -167,23 +121,6 @@ public class Reporter
                 Application.releasePeerEditingContext( ec );
             }
         }
-    }
-
-
-    // ----------------------------------------------------------
-    private void initializeRenderingMethods()
-    {
-        IReportEngine reportEngine =
-            BIRTRuntime.getInstance().getReportEngine();
-
-        // Initialize the available report rendering methods.
-
-        NSMutableArray methods = new NSMutableArray();
-        methods.addObject(new HTMLRenderingMethod(reportEngine));
-        methods.addObject(new PDFRenderingMethod(reportEngine));
-        methods.addObject(new CSVRenderingMethod(reportEngine));
-        methods.addObject(new ExcelRenderingMethod(reportEngine));
-        renderingMethods = methods;
     }
 
 
@@ -289,33 +226,6 @@ public class Reporter
 
 
     // ----------------------------------------------------------
-    public NSArray allRenderingMethods()
-    {
-        return renderingMethods;
-    }
-
-
-    // ----------------------------------------------------------
-    public IRenderingMethod renderingMethodWithName(String name)
-    {
-        for (int i = 0; i < renderingMethods.count(); i++)
-        {
-            IRenderingMethod method =
-                (IRenderingMethod)renderingMethods.objectAtIndex(i);
-
-            if (method.methodName().equals(name))
-            {
-                return method;
-            }
-        }
-
-        log.error("Could not find a report rendering method with name "
-            + name + "!");
-        return null;
-    }
-
-
-    // ----------------------------------------------------------
     public ReportGenerationQueue reportGenerationQueue()
     {
         return reportGenerationQueue;
@@ -326,20 +236,6 @@ public class Reporter
     public ReportGenerationQueueProcessor reportGenerationQueueProcessor()
     {
         return reportGenerationQueueProcessor;
-    }
-
-
-    // ----------------------------------------------------------
-    public ReportRenderQueue reportRenderQueue()
-    {
-        return reportRenderQueue;
-    }
-
-
-    // ----------------------------------------------------------
-    public ReportRenderQueueProcessor reportRenderQueueProcessor()
-    {
-        return reportRenderQueueProcessor;
     }
 
 
@@ -405,17 +301,11 @@ public class Reporter
      */
     private static Reporter instance;
 
-    private NSArray renderingMethods;
-
     /** this is the main single report queue */
     private static ReportGenerationQueue reportGenerationQueue;
 
     /** this is the queue processor for processing report jobs */
     private static ReportGenerationQueueProcessor reportGenerationQueueProcessor;
-
-    private static ReportRenderQueue reportRenderQueue;
-
-    private static ReportRenderQueueProcessor reportRenderQueueProcessor;
 
     private SessionHandle designSession;
 
