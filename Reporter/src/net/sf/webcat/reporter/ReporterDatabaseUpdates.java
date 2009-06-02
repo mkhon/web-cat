@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterDatabaseUpdates.java,v 1.8 2009/02/01 22:51:04 aallowat Exp $
+ |  $Id: ReporterDatabaseUpdates.java,v 1.9 2009/06/02 20:13:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: ReporterDatabaseUpdates.java,v 1.8 2009/02/01 22:51:04 aallowat Exp $
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.9 2009/06/02 20:13:16 aallowat Exp $
  */
 public class ReporterDatabaseUpdates
     extends UpdateSet
@@ -82,6 +82,19 @@ public class ReporterDatabaseUpdates
                 + "CPARAMETERS BLOB");
         database().executeSQL("ALTER TABLE TREPORTTEMPLATE ADD COLUMN "
                 + "CUPDATEMUTABLEFIELDS BIT NOT NULL");
+    }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Drops the no-longer-used EnqueuedReportRenderJob table from the
+     * database.
+     *  
+     * @throws SQLException on error
+     */
+    public void updateIncrement2() throws SQLException
+    {
+        database().executeSQL("DROP TABLE TENQUEUEDREPORTRENDERJOB");
     }
 
 
