@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DeliverFile.java,v 1.3 2008/04/11 12:38:46 aallowat Exp $
+ |  $Id: DeliverFile.java,v 1.4 2009/06/02 19:57:34 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  content will be displayed or downloaded.
  *
  *  @author  Stephen Edwards
- *  @version $Id: DeliverFile.java,v 1.3 2008/04/11 12:38:46 aallowat Exp $
+ *  @version $Id: DeliverFile.java,v 1.4 2009/06/02 19:57:34 aallowat Exp $
  */
 public class DeliverFile
     extends WOComponent
@@ -176,14 +176,9 @@ public class DeliverFile
     {
         if ( fileName == null )
         {
-            log.debug( "no file name provided" );
             if ( fileData == null )
             {
-                log.error( "no file name specified" );
-            }
-            else
-            {
-                log.warn( "no file name specified" );
+                log.error( "no file name or file data specified" );
             }
             fileName = new File( "file.dat" );
         }
