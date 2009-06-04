@@ -1,6 +1,7 @@
 <wo name="RPC"/>
+<wo name="ContentAssistDataStore"/>
 <script type="text/javascript">
-<wo:str value="$idFor.advancedQueryAssistant"/> = new webcat.reporter.AdvancedQueryAssistant(<wo:str value="$idFor.JSONRPC"/>.page, "<wo:str value="$idFor.ComponentIDPrefix"/>");
+<wo:str value="$idFor.advancedQueryAssistant"/> = new webcat.reporter.AdvancedQueryAssistant(<wo:str value="$idFor.JSONRPC"/>.page, "<wo:str value="$idFor.ComponentIDPrefix"/>", "<wo:str value="$dataSet.wcEntityName"/>", "<wo:str value="$contentAssistActionURL"/>");
 </script>
 
 <p>
@@ -16,8 +17,11 @@ objects that satisfy <b>all</b> of the following conditions:
             <td style="white-space: nowrap; font-size: small; text-align: left; width: 100%">
                 <wo name="RowBusyIndicator"/>
                 <wo name="KeyPath">
-                    <script type="dojo/connect" event="onKeyPress" args="evt">
-                        <wo:str value="$idFor.advancedQueryAssistant"/>.enqueueRowUpdate(this, evt, <wo:str value="$index"/>);
+                    <script type="dojo/connect" event="onKeyUp" args="evt">
+                        <wo:str value="$idFor.advancedQueryAssistant"/>.enqueueRowUpdateFromKeyUp(this, evt, <wo:str value="$index"/>);
+                    </script>
+                    <script type="dojo/connect" event="onChange" args="newValue">
+                        <wo:str value="$idFor.advancedQueryAssistant"/>.enqueueRowUpdate(this, newValue, <wo:str value="$index"/>);
                     </script>
                     <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
                         <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
@@ -29,12 +33,12 @@ objects that satisfy <b>all</b> of the following conditions:
                         <wo:if condition="$doesCurrentKeyPathNeedCast">
                             as
                             <wo name="CastType">
-			                    <script type="dojo/connect" event="onChange" args="evt">
-			                        <wo:str value="$idFor.advancedQueryAssistant"/>.updateCastType(this, evt, <wo:str value="$index"/>);
-			                    </script>
-			                    <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
-			                        <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
-			                    </script>
+                                <script type="dojo/connect" event="onChange" args="evt">
+                                    <wo:str value="$idFor.advancedQueryAssistant"/>.updateCastType(this, evt, <wo:str value="$index"/>);
+                                </script>
+                                <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
+                                    <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
+                                </script>
                             </wo>
                             <wo name="CastTypeUpdater"/>
                         </wo:if>
@@ -53,12 +57,12 @@ objects that satisfy <b>all</b> of the following conditions:
                                     <wo:if condition="$doesCurrentCriterionUseComparand">
                                         the
                                         <wo name="ComparandType">
-			                                <script type="dojo/connect" event="onChange" args="evt">
-			                                    <wo:str value="$idFor.advancedQueryAssistant"/>.updateComparandType(this, evt, <wo:str value="$index"/>);
-			                                </script>
-			                                <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
-			                                    <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
-			                                </script>
+                                            <script type="dojo/connect" event="onChange" args="evt">
+                                                <wo:str value="$idFor.advancedQueryAssistant"/>.updateComparandType(this, evt, <wo:str value="$index"/>);
+                                            </script>
+                                            <script type="dojo/method" event="onRemoteEnd" args="ioArgs, response">
+                                                <wo:str value="$idFor.advancedQueryAssistant"/>.stopBusyForRow(<wo:str value="$index"/>);
+                                            </script>
                                         </wo>
                                         <wo name="ComparandTypeUpdater"/>
                                     </wo:if><wo:else>

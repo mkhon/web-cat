@@ -3,6 +3,12 @@ RPC : WCJSONRPC {
     proxyName = "page";
 }
 
+ContentAssistDataStore : WCDiv {
+    dojoType = "webcat.reporter.ContentAssistDataStore";
+    jsId = idFor.contentAssistDataStore;
+    url = contentAssistActionURL;
+}
+
 CriteriaContainer : WCContentPane {
     id = idFor.criteriaContainer;
 }
@@ -13,17 +19,14 @@ RowBusyIndicator : WOImage {
     style = "vertical-align: middle; visibility: hidden";
 }
 
-KeyPath : WCTextBox {
+KeyPath : WCComboBox {
     id = "~idFor.keyPath + '_' + index";
-//    default = "enter a key path";
-//    list = keyPathCompletionItems;
-//    item = keyPathCompletionItem;
+    ignoreCase = false;
+    store = idFor.contentAssistDataStore;
+    query = "~'{rootType:\'' + dataSet.wcEntityName + '\'}'";
+    labelAttr = "label";
+    autoComplete = false;
     value = currentKeyPath;
-//    minChars = 0;
-}
-
-KeyPathDisplayString : WOString {
-    value = displayStringForKeyPathCompletionItem;
 }
 
 KeyPathChangeUpdater : WCRemoteFunction {
@@ -87,7 +90,6 @@ ValueContainer : WCContentSpan {
 OtherKeyPath : WCTextBox {
     id = "~idFor.otherKeyPath + '_' + index";
     value = currentRepresentedValue;
-//    default = "enter a key path";
 }
 
 Value : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponent {
