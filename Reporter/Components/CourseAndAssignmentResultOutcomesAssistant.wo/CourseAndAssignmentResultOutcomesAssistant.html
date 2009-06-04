@@ -1,59 +1,50 @@
-<wo:ImportResource type="stylesheet" filename="queryassistants/course-and-assignment.css"/>
-<wo:ImportResource type="script" filename="queryassistants/course-and-assignment.js"/>
+<wo name="RPC"/>
 
-
-<div style="float: left; width: 48%; max-width: 48%">
-
+<div class="floatLeft width50">
 <p>1. Choose one or more <b>course offerings.</b></p>
-<wo:adiv id="courseTreeContainer" class="scrollPane" style="height: 300px;">
-<wo name="CourseOfferingTree">
-    <wo name="CourseNodeCheckbox"/>
-    <wo:if condition="$isCurrentNodeCourse">
-        <b><wo:str value="$currentNode.data.deptNumber"/>:</b> <wo:str value="$currentNode.data.name"/>
-    </wo:if>
-    <wo:if condition="$isCurrentNodeCourseOffering">
-        <wo:str value="$currentNode.data.compactName"/>
-    </wo:if>
-    <wo name="CourseNodeCheckboxObserver"/>
+<div style="border: 1px solid gray; overflow: auto; max-height: 250px; height: 250px">
+<wo name="CourseTree">
+    <script type="dojo/connect" event="onCheckChanged" args="item,checked,node">
+        if (!checked)
+        {
+            <wo:str value="$idFor.JSONRPC"/>.page.pruneAssignmentsFromUnselectedCourses(
+                function() {
+                    webcat.refreshContentPanes("<wo:str value="$idFor.assignmentPane"/>");
+                });
+        }
+        else
+        {
+            webcat.refreshContentPanes("<wo:str value="$idFor.assignmentPane"/>");
+        }
+    </script>
 </wo>
-<wo:AjaxUpdateTrigger updateContainerIDs="$containersToUpdate"/>
-</wo:adiv>
+</div>
 </div>
 
-<div style="float: right; width: 48%; max-width: 48%">
+<div class="floatRight width50">
 <p>2. Choose an <b>assignment.</b> <wo name="AssignmentInfo"/></p>
-
-<wo:adiv id="assignmentContainer" onRefreshComplete="stopBusy();">
-<wo:if condition="$assignments.count">
-    <div class="scrollPane" style="max-height: 300px;"><table style="border: none; width: 100%"><tbody>
-        <wo:loop list="$assignments" item="$assignment" index="$index">
-            <wo:tr index="$index">
-                <td><wo name="AssignmentRadio"/></td>
-                <td><span style="font-size: small"><wo:str value="$assignment.titleString"/></span></td>
-            </wo:tr>
+<wo name="AssignmentPane">
+    <wo:loop list="$model.selectedCourses" item="$courseInRepetition">
+        <b><wo:str value="$courseInRepetition.name"/></b><br/>
+        <wo:loop list="$assignmentsForCourseInRepetition" item="$assignmentInRepetition">
+            <wo name="AssignmentCheckbox">
+                <script type="dojo/connect" event="onChange" args="evt">
+                    <wo:str value="$idFor.JSONRPC"/>.page.immediatelyUpdateAssignmentSelection(<wo:str value="$assignmentInRepetition.id"/>, this.checked);
+                </script>
+            </wo>
+            <wo:str value="$assignmentInRepetition.name"/><br/>
         </wo:loop>
-    </tbody></table></div>
-</wo:if><wo:else>
-    <p style="border: 1px solid gray; padding: 16px"><b>
-    There are no assignments available that are offered in all of the courses
-    that you have selected.
-    </b></p>
-</wo:else>
-</wo:adiv>
-<div id="assignmentContainerBusy" style="display: none">
-    <wo:WOImage filename="images/busy_big.gif"/>
-</div>
+    </wo:loop>
+</wo>
 </div>
 
-<div class="spacer">&nbsp;</div>
+<div class="clear">&nbsp;</div>
 
 <p>3. Specify <b>other options.</b></p>
 Enter the <b>tag(s)</b> that represent the result outcomes that you want to retrieve. To include multiple tags, separate them with commas.<br/>
 <wo name="TagNames"/>
 <hr />
-<wo name="IncludeAllSubmissions"/> Consider <b>all</b> submissions from each student.<br/>
-<wo name="IncludeGradedSubmissions"/> Consider only the <b>submission for grading</b> <wo name="SubmissionForGradingInfo"/> from each student.<br/>
+<wo name="IncludeAllSubmissions"/> Include <b>all</b> submissions from each student.<br/>
+<wo name="IncludeGradedSubmissions"/> Include only the <b>submission for grading</b> <wo name="SubmissionForGradingInfo"/> from each student.<br/>
 <hr />
-<wo name="IncludeCourseStaff"/> Consider submissions made by <b>course staff</b> (instructors and TAs).<br/>
-
-<div class="spacer">&nbsp;</div>
+<wo name="IncludeCourseStaff"/> Include submissions made by <b>course staff</b> (instructors and TAs).<br/>

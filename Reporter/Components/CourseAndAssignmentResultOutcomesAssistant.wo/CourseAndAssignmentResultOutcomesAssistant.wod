@@ -1,31 +1,22 @@
-CourseOfferingTree: AjaxTree {
-    id = "courseOfferingTree";
-    class = "tree";
-    delegate = courseDelegate;
-    root = courseRoot;
-    item = currentNode;
+RPC: WCJSONRPC {
+    name = idFor.JSONRPC;
+    proxyName = "page";
+}
+
+CourseTree: WCCheckTree {
+    id = "courseTree";
+    model = courseModel;
+    checkedItems = model.selectedCourseModelItems;
     showRoot = false;
 }
 
-CourseNodeCheckbox: WOCheckBox {
-    id = "~'checkbox_' + currentNode.id";
-    checked = currentNode.checked;
-    onClick = "startBusy();";
+AssignmentPane: WCContentPane {
+    style = "border: 1px solid gray; overflow: auto; max-height: 250px; height: 250px";
+    id = idFor.assignmentPane;
 }
 
-CourseNodeCheckboxObserver: AjaxObserveField {
-    fullSubmit = true;
-    action = currentNode.toggle;
-    observeFieldID = "~'checkbox_' + currentNode.id";
-    // Since courseTreeContainer contains an update trigger, this optionally
-    // also refreshes the assignment list if the check state is changed.
-    updateContainerID = "courseTreeContainer";
-}
-
-AssignmentRadio: WORadioButton {
-    name = "selectedAssignment";
-    value = assignment;
-    selection = model.assignment;
+AssignmentCheckbox: WCCheckBox {
+    checked = assignmentInRepetitionChecked;
 }
 
 AssignmentInfo: net.sf.webcat.core.PopUpInfo {
@@ -43,19 +34,19 @@ TagNames: WOTextField {
     size = 60;
 }
 
-IncludeAllSubmissions: WORadioButton {
+IncludeAllSubmissions: WCRadioButton {
     name = "includeWhichSubmissions";
     value = false;
     selection = model.includeOnlySubmissionsForGrading;
 }
 
-IncludeGradedSubmissions: WORadioButton {
+IncludeGradedSubmissions: WCRadioButton {
     name = "includeWhichSubmissions";
     value = true;
     selection = model.includeOnlySubmissionsForGrading;
 }
 
-IncludeCourseStaff: WOCheckBox {
+IncludeCourseStaff: WCCheckBox {
     name = "includeCourseStaff";
     checked = model.includeCourseStaff;
 }
