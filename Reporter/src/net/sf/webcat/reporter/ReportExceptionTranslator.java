@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportExceptionTranslator.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: ReportExceptionTranslator.java,v 1.4 2009/06/04 16:30:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import er.extensions.eof.ERXConstant;
  * "message" keys.
  *
  * @author Tony Allevato
- * @version $Id: ReportExceptionTranslator.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: ReportExceptionTranslator.java,v 1.4 2009/06/04 16:30:35 aallowat Exp $
  */
 public class ReportExceptionTranslator
 {
@@ -120,24 +120,6 @@ public class ReportExceptionTranslator
             while (!done);
         }
 
-/*        if (e.getCause() != null)
-        {
-            if (e.getCause().getMessage() != null)
-            {
-                errorInfo.setObjectForKey(e.getCause().getMessage(),
-                        "cause");
-            }
-            else
-            {
-                errorInfo.setObjectForKey(e.getCause().toString(), "cause");
-            }
-        }
-
-        if (e.getMessage() != null)
-        {
-            errorInfo.setObjectForKey(e.getMessage(), "message");
-        }
-*/
         return errorInfo;
     }
 

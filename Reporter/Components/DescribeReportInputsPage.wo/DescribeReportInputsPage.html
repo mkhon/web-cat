@@ -12,9 +12,12 @@
 <div class="floatLeft">Generating report template <span class="hl"><wo:str value="$localReportTemplate.name"/> (v<wo:str value="$localReportTemplate.version" />)</span></div>
 <div class="floatRight"><wo name="ChangeReportTemplate" /></div>
 <div class="clear">&nbsp;</div>
-<table style="border: none;">
-<tr><td class="R">Description:</td><td><wo:WCTextBox length="60" value="$reportDescription"/></td></tr>
-</table>
+<p>
+You can enter a title for the generated report here, which will be used to identify the
+report when viewing it later. If you leave this blank, the name of the report template
+will be used.<br/>
+<wo:WCTextBox size="60" value="$reportDescription"/>
+</p>
 </wo:WCPageModule>
 
 <!-- data sets -->

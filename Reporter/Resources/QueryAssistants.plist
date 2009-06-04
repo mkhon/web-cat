@@ -43,8 +43,6 @@
         modelName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentResultOutcomesModel";
         editorComponentName = "net.sf.webcat.reporter.queryassistants.CourseAndAssignmentResultOutcomesAssistant";
         description = "Get result outcomes for an assignment| by selecting a set of courses and an assignment offered in those courses.";
-        stylesheets = ( "queryassistants/course-and-assignment.css" );
-        javascripts = ( "queryassistants/course-and-assignment.js" );
     };
 
     "net.sf.webcat.reporter.queryassistants.advancedQuery" = {

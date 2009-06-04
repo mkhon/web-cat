@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTable.java,v 1.2 2009/06/02 19:56:55 aallowat Exp $
+ |  $Id: WCTable.java,v 1.3 2009/06/04 16:29:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -104,7 +104,7 @@ import er.extensions.foundation.ERXStringUtilities;
  *     selected at a time (defaults to false)     
  * 
  * @author Tony Allevato
- * @version $Id: WCTable.java,v 1.2 2009/06/02 19:56:55 aallowat Exp $
+ * @version $Id: WCTable.java,v 1.3 2009/06/04 16:29:20 aallowat Exp $
  */
 public class WCTable extends WOComponent
 {
@@ -751,13 +751,6 @@ public class WCTable extends WOComponent
                     + "your table will not work as expected.");
         }
 
-        // Clear out the previous state when the table component is awoken
-        // (this is important if we have multiple tables on the same page).
-        ERXWOContext.contextDictionary().removeObjectForKey(
-                CURRENT_DATA_TABLE_LAYOUT_KEY);
-        ERXWOContext.contextDictionary().removeObjectForKey(
-                CURRENT_DATA_TABLE_FILTERS_KEY);
-
         setCurrentTable(this);
     }
     
@@ -793,6 +786,13 @@ public class WCTable extends WOComponent
             ERXWOContext.contextDictionary().setObjectForKey(table,
                     CURRENT_DATA_TABLE_KEY);
         }
+
+        // Clear out the previous state when the table component is awakened
+        // (this is important if we have multiple tables on the same page).
+        ERXWOContext.contextDictionary().removeObjectForKey(
+                CURRENT_DATA_TABLE_LAYOUT_KEY);
+        ERXWOContext.contextDictionary().removeObjectForKey(
+                CURRENT_DATA_TABLE_FILTERS_KEY);
     }
 
 

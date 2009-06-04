@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.10 2009/02/20 02:30:49 aallowat Exp $
+ |  $Id: contentAssist.java,v 1.11 2009/06/04 16:30:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,8 +36,10 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSComparator;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
+import com.webobjects.foundation.NSComparator.ComparisonException;
 import er.extensions.appserver.ERXDirectAction;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.EntityUtils;
@@ -52,7 +54,7 @@ import net.sf.webcat.reporter.queryassistants.KVCAttributeInfo;
  * entities and key paths, used for content assistance and previewing purposes.
  *
  * @author Tony Allevato
- * @version $Id: contentAssist.java,v 1.10 2009/02/20 02:30:49 aallowat Exp $
+ * @version $Id: contentAssist.java,v 1.11 2009/06/04 16:30:35 aallowat Exp $
  */
 public class contentAssist
     extends ERXDirectAction
@@ -237,6 +239,26 @@ public class contentAssist
 
                     NSArray<KVCAttributeInfo> attributes =
                         KVCAttributeFinder.attributesForClass(klass, "");
+
+                    try
+                    {
+                        attributes =
+                            attributes.sortedArrayUsingComparator(new NSComparator() {
+                                @Override
+                                public int compare(Object _lhs, Object _rhs)
+                                        throws ComparisonException
+                                {
+                                    KVCAttributeInfo lhs = (KVCAttributeInfo) _lhs;
+                                    KVCAttributeInfo rhs = (KVCAttributeInfo) _rhs;
+                                    
+                                    return lhs.name().compareTo(rhs.name());
+                                }
+                            });
+                    }
+                    catch (ComparisonException e)
+                    {
+                        // Do nothing.
+                    }
 
                     for (KVCAttributeInfo attr : attributes)
                     {
