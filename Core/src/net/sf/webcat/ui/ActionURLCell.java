@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ActionURLCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
+ |  $Id: ActionURLCell.java,v 1.2 2009/06/09 17:25:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -48,7 +48,7 @@ import com.webobjects.foundation.NSDictionary;
  * </ul>
  * 
  * @author Tony Allevato
- * @version $Id: ActionURLCell.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
+ * @version $Id: ActionURLCell.java,v 1.2 2009/06/09 17:25:12 aallowat Exp $
  */
 public class ActionURLCell extends WCTableCell
 {
@@ -115,6 +115,11 @@ public class ActionURLCell extends WCTableCell
      */
     public String formattedValue()
     {
+        if (value == null)
+        {
+            return "";
+        }
+
         if (formatter != null)
         {
             return formatter.format(value);
