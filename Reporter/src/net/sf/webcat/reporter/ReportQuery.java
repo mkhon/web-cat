@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportQuery.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
+ |  $Id: ReportQuery.java,v 1.9 2009/06/09 17:43:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.MutableDictionary;
  * determines the data that will go into a result set.
  *
  * @author Tony Allevato
- * @version $Id: ReportQuery.java,v 1.8 2008/10/28 15:52:23 aallowat Exp $
+ * @version $Id: ReportQuery.java,v 1.9 2009/06/09 17:43:10 aallowat Exp $
  */
 public class ReportQuery extends _ReportQuery
 {
@@ -65,7 +65,8 @@ public class ReportQuery extends _ReportQuery
         }
         else
         {
-            return (EOQualifier) info.objectForKey(KEY_QUALIFIER);
+            EOQualifier q = (EOQualifier) info.objectForKey(KEY_QUALIFIER);
+            return q;
         }
     }
 

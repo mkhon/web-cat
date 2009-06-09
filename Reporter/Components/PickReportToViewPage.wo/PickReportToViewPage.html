@@ -1,4 +1,4 @@
-<wo page="Page">
+<wo page="Page"><wo page="Form">
 
 <wo:if condition="$enqueuedReportsDisplayGroup.allObjects.count">
 <wo:WCPageModule title="Reports Currently Queued">
@@ -20,9 +20,20 @@
         <wo name="TemplateVersionColumn"/>
         <wo name="GeneratedTimeColumn"/>
     </wo>
+    <wo name="DeleteReports">
+        <script type="dojo/connect" event="onClick" args="evt">
+            webcat.confirm("Confirm Delete",
+                "Are you sure you want to delete the selected reports? " +
+                "This operation cannot be undone.",
+                {
+                    onYes: function() { deleteSelectedReports(); }
+                });
+        </script>
+    </wo>
+    <wo name="DeleteReportsAction"/>
 </wo:if><wo:else>
     <p>There are currently no <b>generated reports</b> available for you to view.</p>
 </wo:else>
 </wo:WCPageModule>
 
-</wo>
+</wo></wo>

@@ -2,6 +2,10 @@ Page : net.sf.webcat.core.WCPageWithNavigation {
     title = "View a Report";
 }
 
+Form : WCForm {
+    multipleSubmit = true;
+}
+
 EnqueuedJobTable: WCTable {
     displayGroup = enqueuedReportsDisplayGroup;
     canSort = true;
@@ -61,4 +65,13 @@ GeneratedTimeColumn: WCTableColumn {
     name = "Generated at";
     keyPath = "generatedTime";
     properties.formatter = session.timeFormatter;
+}
+
+DeleteReports: WCButton {
+    label = "Delete Selected Reports";
+}
+
+DeleteReportsAction: WCActionFunction {
+    jsId = "deleteSelectedReports";
+    action = deleteSelectedReports;
 }
