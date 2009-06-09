@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCButton.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ |  $Id: WCButton.java,v 1.2 2009/06/09 17:25:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import net.sf.webcat.ui._base.DojoActionFormElement;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: WCButton.java,v 1.1 2009/02/04 18:54:02 aallowat Exp $
+ * @version $Id: WCButton.java,v 1.2 2009/06/09 17:25:40 aallowat Exp $
  */
 public class WCButton extends DojoActionFormElement
 {
@@ -78,7 +78,8 @@ public class WCButton extends DojoActionFormElement
     @Override
     public String inputTypeInContext(WOContext context)
     {
-        if (_remoteHelper.isRemoteInContext(context))
+        if (_remoteHelper.isRemoteInContext(context) ||
+                !hasActionInContext(context))
         {
             return "button";
         }

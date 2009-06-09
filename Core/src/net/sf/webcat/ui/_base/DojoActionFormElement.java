@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoActionFormElement.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
+ |  $Id: DojoActionFormElement.java,v 1.4 2009/06/09 17:25:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -141,7 +141,7 @@ import er.extensions.components.ERXComponentUtilities;
  * </table>
  * 
  * @author Tony Allevato
- * @version $Id: DojoActionFormElement.java,v 1.3 2009/05/25 16:51:20 aallowat Exp $
+ * @version $Id: DojoActionFormElement.java,v 1.4 2009/06/09 17:25:40 aallowat Exp $
  */
 public abstract class DojoActionFormElement extends DojoFormElement
 {
@@ -225,7 +225,8 @@ public abstract class DojoActionFormElement extends DojoFormElement
     {
         super.appendToResponse(response, context);
 
-        if (needsShadowButton() && !_remoteHelper.isRemoteInContext(context))
+        if (needsShadowButton() && !_remoteHelper.isRemoteInContext(context) &&
+                hasActionInContext(context))
         {
             appendShadowButtonToResponse(response, context);
         }
@@ -313,7 +314,7 @@ public abstract class DojoActionFormElement extends DojoFormElement
     protected void appendShadowButtonToResponse(WOResponse response,
             WOContext context)
     {
-        WOResponse subresponse = new WOResponse();
+        WOResponse subresponse = response ;//new WOResponse();
 
         subresponse.appendContentString("<button type=\"submit\" ");
         subresponse._appendTagAttributeAndValue("id",
@@ -324,9 +325,9 @@ public abstract class DojoActionFormElement extends DojoFormElement
                 false);
         subresponse.appendContentString("></button>");
 
-        ERXResponseRewriter.insertInResponseBeforeTag(response, context,
-                subresponse.contentString(), WCForm.SHADOW_BUTTON_REGION_END,
-                ERXResponseRewriter.TagMissingBehavior.Inline);
+//        ERXResponseRewriter.insertInResponseBeforeTag(response, context,
+//                subresponse.contentString(), WCForm.SHADOW_BUTTON_REGION_END,
+//                ERXResponseRewriter.TagMissingBehavior.Inline);
     }
 
 
@@ -387,7 +388,10 @@ public abstract class DojoActionFormElement extends DojoFormElement
         AjaxUtils.createResponse(request, context);
         AjaxUtils.mutableUserInfo(request);
 
-        result = (WOActionResults) _action.valueInComponent(component);
+        if (_action != null)
+        {
+            result = (WOActionResults) _action.valueInComponent(component);
+        }
         
         AjaxUtils.updateMutableUserInfoWithAjaxInfo(context);
 
