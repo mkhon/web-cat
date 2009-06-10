@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCMenuItem.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCMenuItem.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.NSDictionary;
  * TODO describe bindings
  * 
  * @author Tony Allevato
- * @version $Id: WCMenuItem.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCMenuItem.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  */
 public class WCMenuItem extends DojoActionFormElement
 {
@@ -60,7 +60,7 @@ public class WCMenuItem extends DojoActionFormElement
     
     
     // ----------------------------------------------------------
-    protected boolean needsShadowButton()
+    protected boolean usesFakeFullSubmit()
     {
         return true;
     }

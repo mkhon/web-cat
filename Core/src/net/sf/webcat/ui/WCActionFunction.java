@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCActionFunction.java,v 1.1 2009/06/09 17:25:40 aallowat Exp $
+ |  $Id: WCActionFunction.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -57,7 +57,7 @@ import er.extensions.components.ERXComponentUtilities;
  * will not be updated.
  * 
  * @author Tony ALlevato
- * @version $Id: WCActionFunction.java,v 1.1 2009/06/09 17:25:40 aallowat Exp $
+ * @version $Id: WCActionFunction.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  */
 public class WCActionFunction extends DojoActionFormElement
 {
@@ -86,7 +86,7 @@ public class WCActionFunction extends DojoActionFormElement
 
     // ----------------------------------------------------------
     @Override
-    protected boolean needsShadowButton()
+    protected boolean usesFakeFullSubmit()
     {
         return true;
     }
@@ -141,9 +141,8 @@ public class WCActionFunction extends DojoActionFormElement
         }
         else
         {
-            script.append("dojo.byId('"
-                    + shadowButtonIdInContext(context)
-                    + "').click();");
+            response.appendContentString(WCForm.scriptToPerformFakeFullSubmit(
+                    context, nameInContext(context)));
         }
 
         script.append("}");
@@ -192,6 +191,4 @@ public class WCActionFunction extends DojoActionFormElement
     //~ Static/instance variables .............................................
     
     protected WOAssociation _jsId;
-
-    private static final Logger log = Logger.getLogger(WCActionFunction.class);
 }

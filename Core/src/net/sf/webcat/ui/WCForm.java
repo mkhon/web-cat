@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCForm.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCForm.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.ui;
 
+import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOElement;
@@ -30,15 +31,13 @@ import er.extensions.components._private.ERXWOForm;
 
 //--------------------------------------------------------------------------
 /**
- * A small hack to ERXWOForm that inserts some comment tags after the form open
- * tag so that "shadow buttons" (i.e., hidden buttons that exist to allow div
- * tags like menu items to invoke actions) can be added inside the form. This
- * is necessary since, for example, menu items upon parsing get moved to the
- * end of the document outside of the form, so the buttons cannot be inlined
- * there and still correctly submit the form.
+ * This class used to have more functionality, until we removed the idea of
+ * "shadow buttons" and instead create buttons dynamically for elements that
+ * need to submit forms but aren't buttons themselves. We leave it here for
+ * future enhancements.
  * 
  * @author Tony Allevato
- * @version $Id: WCForm.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCForm.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  */
 public class WCForm extends ERXWOForm
 {
@@ -56,21 +55,22 @@ public class WCForm extends ERXWOForm
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    protected void _appendOpenTagToResponse(WOResponse response,
-            WOContext context)
+    public static String scriptToPerformFakeFullSubmit(WOContext context,
+            String fieldName)
     {
-        super._appendOpenTagToResponse(response, context);
+        String formName = formName(context, null);
+        if (formName == null)
+        {
+            log.warn("An element that uses a faked full form submit must be "
+                    + "contained within a form.");
+        }
         
-        response.appendContentString(SHADOW_BUTTON_REGION_START);
-        response.appendContentString("\n");
-        response.appendContentString(SHADOW_BUTTON_REGION_END);
+        return "webcat.fakeFullSubmit('" + formName + "', '"
+            + fieldName + "');";
     }
     
-
+    
     //~ Static/instance variables .............................................
 
-    public static final String SHADOW_BUTTON_REGION_START =
-        "<!-- WC SHADOW BUTTON REGION START -->";
-    public static final String SHADOW_BUTTON_REGION_END =
-        "<!-- WC SHADOW BUTTON REGION END -->";
+    private static Logger log = Logger.getLogger(WCForm.class);
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComboButton.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCComboButton.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import net.sf.webcat.ui._base.DojoActionFormElement;
  * as display a drop-down menu that can contain actions of its own.
  * 
  * @author Tony Allevato
- * @version $Id: WCComboButton.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCComboButton.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
  */
 public class WCComboButton extends DojoActionFormElement
 {
@@ -58,7 +58,7 @@ public class WCComboButton extends DojoActionFormElement
     
     
     // ----------------------------------------------------------
-    protected boolean needsShadowButton()
+    protected boolean usesFakeFullSubmit()
     {
         return true;
     }    
