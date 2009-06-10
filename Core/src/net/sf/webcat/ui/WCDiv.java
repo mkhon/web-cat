@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDiv.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCDiv.java,v 1.2 2009/06/10 17:52:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.ui;
 
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOElement;
+import com.webobjects.appserver._private.WODynamicElementCreationException;
 import com.webobjects.foundation.NSDictionary;
 import net.sf.webcat.ui._base.DojoGenericElement;
 
@@ -35,7 +36,7 @@ import net.sf.webcat.ui._base.DojoGenericElement;
  * WOString elements to evaluate them.
  * 
  * @author Tony Allevato
- * @version $Id: WCDiv.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCDiv.java,v 1.2 2009/06/10 17:52:08 aallowat Exp $
  */
 public class WCDiv extends DojoGenericElement
 {
@@ -47,5 +48,12 @@ public class WCDiv extends DojoGenericElement
             WOElement template)
     {
         super("div", someAssociations, template);
+        
+        if (_dojoType == null)
+        {
+            throw new WODynamicElementCreationException(
+                    "<" + getClass().getName() + "> 'dojoType' binding must "
+                    + "be specified.");
+        }
     }
 }
