@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCActionFunction.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
+ |  $Id: WCActionFunction.java,v 1.3 2009/06/11 13:26:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -57,7 +57,7 @@ import er.extensions.components.ERXComponentUtilities;
  * will not be updated.
  * 
  * @author Tony ALlevato
- * @version $Id: WCActionFunction.java,v 1.2 2009/06/10 17:51:20 aallowat Exp $
+ * @version $Id: WCActionFunction.java,v 1.3 2009/06/11 13:26:41 aallowat Exp $
  */
 public class WCActionFunction extends DojoActionFormElement
 {
@@ -141,7 +141,7 @@ public class WCActionFunction extends DojoActionFormElement
         }
         else
         {
-            response.appendContentString(WCForm.scriptToPerformFakeFullSubmit(
+            script.append(WCForm.scriptToPerformFakeFullSubmit(
                     context, nameInContext(context)));
         }
 
