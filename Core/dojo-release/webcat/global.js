@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: global.js,v 1.2 2009/06/10 17:51:03 aallowat Exp $
+ |  $Id: global.js,v 1.3 2009/06/11 15:31:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -72,7 +72,11 @@ webcat.fakeFullSubmit = function(/* String */ formName, /* String */ fieldName)
         value: '__shadow',
         style: { display: 'none' },
     }, form, 'last');
+
     button.click();
+    
+    // We could destroy the button here, but since the page is going to be
+    // reloaded at this point anyway, it doesn't seem to matter.
 };
 
 
