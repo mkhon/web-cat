@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.16 2009/06/02 19:59:12 aallowat Exp $
+ |  $Id: Reporter.java,v 1.17 2009/06/11 15:35:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,13 +47,14 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import er.extensions.eof.ERXConstant;
 import er.extensions.eof.ERXEOControlUtilities;
+import er.extensions.eof.ERXQ;
 
 //-------------------------------------------------------------------------
 /**
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.16 2009/06/02 19:59:12 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.17 2009/06/11 15:35:22 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -251,21 +252,13 @@ public class Reporter
     {
         EOEditingContext ec = Application.newPeerEditingContext();
 
-        NSMutableArray qualifiers = new NSMutableArray();
-        qualifiers.addObject( new EOKeyValueQualifier(
-            EnqueuedJob.DISCARDED_KEY,
-            EOQualifier.QualifierOperatorEqual,
-            ERXConstant.integerForInt( 0 )
-        ) );
-        qualifiers.addObject( new EOKeyValueQualifier(
-            EnqueuedJob.PAUSED_KEY,
-            EOQualifier.QualifierOperatorEqual,
-            ERXConstant.integerForInt( 0 )
-        ) );
+        EOQualifier qualifier = ERXQ.and(
+                ERXQ.is(EnqueuedJob.DISCARDED_KEY, 0),
+                ERXQ.is(EnqueuedJob.PAUSED_KEY, 0));
 
         jobCountAtLastThrottleCheck =
             ERXEOControlUtilities.objectCountWithQualifier(ec,
-                EnqueuedJob.ENTITY_NAME, new EOAndQualifier(qualifiers));
+                EnqueuedJob.ENTITY_NAME, qualifier);
 
         Application.releasePeerEditingContext(ec);
 

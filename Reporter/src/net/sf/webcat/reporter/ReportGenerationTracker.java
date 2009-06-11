@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationTracker.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: ReportGenerationTracker.java,v 1.4 2009/06/11 15:35:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.reporter;
 
+import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 
 // ------------------------------------------------------------------------
@@ -71,7 +72,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * previously the responsibility of the old ProgressManager class.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationTracker.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: ReportGenerationTracker.java,v 1.4 2009/06/11 15:35:22 aallowat Exp $
  */
 public class ReportGenerationTracker
 {
@@ -85,6 +86,8 @@ public class ReportGenerationTracker
     {
         jobToReportMap = new NSMutableDictionary<Integer, Integer>();
         jobToProgressMap = new NSMutableDictionary<Integer, ReportProgress>();
+        jobToErrorInfoMap = new NSMutableDictionary<Integer,
+            NSDictionary<String, Object>>();
     }
 
 
@@ -158,24 +161,49 @@ public class ReportGenerationTracker
     public synchronized void startNextDataSetForJobId(int jobId, int totalWork)
     {
         ReportProgress progress = jobToProgressMap.objectForKey(jobId);
-        progress.startNextDataSet(totalWork);
+        
+        if (progress != null)
+        {
+            progress.startNextDataSet(totalWork);
+        }
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Used to determine if a job exists with the specified job id. Usually
+     * this is used as a cancellation check.
+     * 
+     * @param jobId
+     *            the ID of the job generating the report
+     * 
+     * @return
+     *            true if the job exists; otherwise, false
+     */
+    public synchronized boolean doesJobExistWithId(int jobId)
+    {
+        return jobToProgressMap.containsKey(jobId);
+    }
+
+    
     // ----------------------------------------------------------
     /**
      * Called after a batch of rows has been generated in a report to update its
      * progress.
      *
      * @param jobId
-     *            the ID of the job genrerating the report
+     *            the ID of the job generating the report
      * @param units
      *            the number of rows that were generated
      */
     public synchronized void doWorkForJobId(int jobId, int units)
     {
         ReportProgress progress = jobToProgressMap.objectForKey(jobId);
-        progress.doWork(units);
+        
+        if (progress != null)
+        {
+            progress.doWork(units);
+        }
     }
 
 
@@ -190,7 +218,11 @@ public class ReportGenerationTracker
     public synchronized void completeDataSetForJobId(int jobId)
     {
         ReportProgress progress = jobToProgressMap.objectForKey(jobId);
-        progress.completeDataSet();
+        
+        if (progress != null)
+        {
+            progress.completeDataSet();
+        }
     }
 
 
@@ -228,6 +260,72 @@ public class ReportGenerationTracker
     {
         jobToReportMap.removeObjectForKey(jobId);
         jobToProgressMap.removeObjectForKey(jobId);
+    }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Called by an OdaResultSet when an exception occurs during the evaluation
+     * of a column. This information is stored in the tracker and retrieved by
+     * the queue processor so that a more useful error explanation can be
+     * passed to the user.
+     * 
+     * @param jobId
+     *            the ID of the job
+     * @param dataSetName
+     *            the name of the data set that was being evaluated
+     * @param columnIndex
+     *            the 0-based index of the column that was being evaluated (it
+     *            will be stored as 1-based to be consistent with BIRT's
+     *            exception traces)
+     * @param columnName the name of the column that was being evaluated (not
+     *            yet used because the BIRT/Web-CAT bridge doesn't pass this
+     *            information to the OdaResultSet)
+     * @param expression
+     *            the OGNL expression that was being evaluated for the column
+     * @param reason
+     *            the reason for the error, as obtained from the exception
+     */
+    public synchronized void setLastErrorInfoForJobId(
+            int jobId, String dataSetName, int columnIndex, String columnName,
+            String expression, String reason)
+    {
+        NSMutableDictionary<String, Object> info =
+            new NSMutableDictionary<String, Object>();
+
+        if (dataSetName != null)
+            info.setObjectForKey(dataSetName, LAST_ERROR_DATA_SET_NAME);
+        
+        info.setObjectForKey(columnIndex + 1, LAST_ERROR_COLUMN_INDEX);
+        
+        if (columnName != null)
+            info.setObjectForKey(columnName, LAST_ERROR_COLUMN_NAME);
+        
+        if (expression != null)
+            info.setObjectForKey(expression, LAST_ERROR_EXPRESSION);
+
+        if (reason != null)
+            info.setObjectForKey(reason, LAST_ERROR_REASON);
+
+        jobToErrorInfoMap.setObjectForKey(info, jobId);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called by the report generation queue to retrieve extra information
+     * about an error that occurred during report generation.
+     * 
+     * @param jobId
+     *            the ID of the job
+     *            
+     * @return a dictionary containing information about the error, or null if
+     *         there is no extra information
+     */
+    public synchronized NSDictionary<String, Object> lastErrorInfoForJobId(
+            int jobId)
+    {
+        return jobToErrorInfoMap.objectForKey(jobId);
     }
 
 
@@ -407,4 +505,13 @@ public class ReportGenerationTracker
     private NSMutableDictionary<Integer, Integer> jobToReportMap;
 
     private NSMutableDictionary<Integer, ReportProgress> jobToProgressMap;
+    
+    private NSMutableDictionary<Integer, NSDictionary<String, Object>>
+        jobToErrorInfoMap;
+
+    public static final String LAST_ERROR_DATA_SET_NAME = "dataSetName";
+    public static final String LAST_ERROR_COLUMN_INDEX = "columnIndex";
+    public static final String LAST_ERROR_COLUMN_NAME = "columnName";
+    public static final String LAST_ERROR_EXPRESSION = "expression";
+    public static final String LAST_ERROR_REASON = "reason";
 }

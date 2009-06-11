@@ -9,16 +9,23 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
         this._currentPage = 0;
         this._pagesSoFar = 0;
         this._isComplete = false;
+        this._hasErrors = false;
         this._pageContainerID = pageContainerID;
     },
     
     
     // ----------------------------------------------------------
-    initializeFromCompleteReport: function(numPages)
+    initializeFromCompleteReport: function(numPages, hasErrors)
     {
         this._currentPage = 1;
         this._pagesSoFar = numPages;
         this._isComplete = true;
+        this._hasErrors = hasErrors;
+
+        if (hasErrors)
+        {
+            dojo.style("errorNotification", "display", "block");
+        }
     },
 
 
@@ -37,17 +44,32 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
     // ----------------------------------------------------------
     _pollReportStatusCallback: function(result, e)
 	{
+	    if (!result) return;
+
 	    dijit.byId("reportProgressBar").update({
 	        'progress': result.progress
 	    });
-	
+
 	    this._isStarted = result.isStarted;
+        this._isCanceled = result.isCanceled;
 	    this._queuePosition = result.queuePosition;
 	    this._isComplete = result.isComplete;
+	    this._hasErrors = result.hasErrors;
 	    this._pagesSoFar = result.highestRenderedPageNumber;
 	
 	    var messageNode = dojo.byId("progressMessage");
-	    if (this._isStarted)
+	    
+	    if (this._isCanceled)
+	    {
+            messageNode.innerHTML = "<p>You have <b>canceled</b> the " +
+	            "generation of this report.</p>";
+
+            this.stop();
+            dojo.style("progressArea", "display", "none");
+            
+            return;
+	    }
+	    else if (this._isStarted)
 	    {
 	        messageNode.innerHTML = "<p>Your report is currently " +
 	            "being generated. As pages of the report become " +
@@ -74,15 +96,20 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
 	    {
 	        this._updatePageIndicator();
 	    }
-	    
-	    if (result.isComplete == true)
+
+	    if (result.isComplete || result.hasErrors)
 	    {
             this._currentPage = 1;
             this._loadPage();
             this._updatePageIndicator();
 
-	        this.stop();
-	        dojo.style("progressArea", "display", "none");
+            this.stop();
+            dojo.style("progressArea", "display", "none");
+            
+            if (result.hasErrors)
+            {
+                dojo.style("errorNotification", "display", "block");
+            }
 	    }
 	},
 
@@ -101,7 +128,7 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
     // ----------------------------------------------------------
     _updatePageIndicator: function()
     {
-        if (this._pagesSoFar == 0)
+        if (!this._pagesSoFar)
         {
             dojo.byId("pageIndicator").innerHTML = "No pages available yet";
         }
@@ -119,6 +146,11 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
 	    {
 	        // Update the popup menu so that the user can save the report.
             dijit.byId("saveDialogContainer").refresh();
+	    }
+	    
+	    if (this._hasErrors)
+	    {
+	       dijit.byId("errorBlock").refresh();
 	    }
     },
 
@@ -238,17 +270,21 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
 	           <wo name="ProgressBar"/>
 	        </div>
 	        <div style="float: right">
-		        <wo name="Cancel">
-		            <span>Cancel</span>
-		            <script type="dojo/method" event="onClick" args="evt">
-		                reportWatcher.cancel();
-		            </script>
-		        </wo>
+		        <!-- wo name="Cancel" -->
+		            <!-- span>Cancel</span -->
+		            <!-- script type="dojo/method" event="onClick" args="evt" -->
+		            <!--     reportWatcher.cancel(); -->
+		            <!-- /script -->
+		        <!-- /wo -->
 		    </div>
 		    <div style="clear: both"></div>
 	    </div>
 	</div>
 	</wo:not>
+    <div id="errorNotification" class="errorBox" style="display: none">
+    Your report caused errors that prevented it from being completely generated.
+    <wo name="ClickToSeeErrors">Click here</wo> to see them.
+    </div>	
 
 	<div dojoType="dijit.Toolbar">
 		<wo name="GoToFirstPage">
@@ -294,7 +330,7 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
 	        <wo:WCDiv dojoType="dijit.TooltipDialog" style="display: none">
 	           <wo:WCContentPane id="saveDialogContainer">
 	               <wo:WCForm>
-	               <wo:if condition="$isReportComplete">
+	               <wo:if condition="~isReportComplete && !generatedReportErrors">
 	                   <fieldset>
                        Save this report as:
                        <ul>
@@ -332,7 +368,7 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
             reportWatcher = new webcat.reporter.GeneratedReportWatcher(jsonrpc.page, "reportPageContainer");
             dojo.connect(dijit.byId("reportPageContainer"), "onDownloadEnd", function() {  });
         <wo:if condition="$isReportComplete">
-            reportWatcher.initializeFromCompleteReport(<wo:str value="$highestPageSoFar"/>);
+            reportWatcher.initializeFromCompleteReport(<wo:str value="$highestPageSoFar"/>, <wo:if condition="$generatedReportErrors.count">true</wo:if><wo:else>false</wo:else>);
         </wo:if><wo:else>
 	        reportWatcher.start();
         </wo:else>
@@ -340,13 +376,26 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
     </script>
 </wo>
 
+<wo name="ErrorBlockContainer">
 <wo:if condition="$generatedReportErrors.count">
+<a name="errors"></a>
 <wo name="ErrorBlock">
     <p>The following warnings and/or errors were produced during the
-    generation of this report:</p>
+    generation of this report.
+    <wo:if condition="$generatedReportExtraErrorInfo">
+    The error occurred at this point in the data access process:
+    <ul>
+        <li><b>Data set name:</b> <wo:str value="$generatedReportExtraErrorInfo.dataSetName"/></li>
+        <li><b>Column number:</b> <wo:str value="$generatedReportExtraErrorInfo.columnIndex"/></li>
+        <li><b>Expression:</b><br/><pre><wo:str value="$generatedReportExtraErrorInfo.expression"/></pre></li>
+        <li><b>Reason:</b> <wo:str value="$generatedReportExtraErrorInfo.reason"/></li>
+    </ul>
+    </wo:if>
+    </p>
     <wo name="GenerationErrors" />
     <p><b>Report ID:</b> <wo:str value="$generatedReport.id"/></p>
 </wo>
 </wo:if>
+</wo>
 
 </wo>

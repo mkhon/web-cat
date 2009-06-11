@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.12 2009/06/02 19:59:12 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.13 2009/06/11 15:35:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,7 +51,7 @@ import ognl.webobjects.WOOgnl;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.12 2009/06/02 19:59:12 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.13 2009/06/11 15:35:22 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -62,14 +62,18 @@ public class OdaResultSet
     /**
      * Create a result set.
      *
+     * @param dataSetId
+     *      The ID of the ReportDataSet for which this result set is being
+     *      generated
      * @param jobId
      *      The ID of the EnqueuedReportGenerationJob that is generated the
      *      report that will contain this data
      * @param query
      *      The query defining this result set
      */
-    public OdaResultSet(Number jobId, ReportQuery query)
+    public OdaResultSet(int dataSetId, Number jobId, ReportQuery query)
     {
+        this.dataSetId = dataSetId;
         this.jobId = jobId.intValue();
         this.query = query;
 
@@ -142,6 +146,7 @@ public class OdaResultSet
             {
                 throw new WebCATDataException(e);
             }
+
             i++;
         }
     }
@@ -166,7 +171,17 @@ public class OdaResultSet
         if (currentTime - lastProgressUpdateTime >=
             TIME_BETWEEN_PROGRESS_UPDATES)
         {
-            ReportGenerationTracker.getInstance().doWorkForJobId(jobId,
+            ReportGenerationTracker tracker =
+                ReportGenerationTracker.getInstance();
+
+            // Check to see if the report has been canceled. If it has, we just
+            // return no more rows here.
+            if (!tracker.doesJobExistWithId(jobId))
+            {
+                return false;
+            }
+
+            tracker.doWorkForJobId(jobId,
                     rawCurrentRow - rowCountAtLastProgressUpdate);
 
             lastProgressUpdateTime = currentTime;
@@ -192,9 +207,9 @@ public class OdaResultSet
             // readable representation of itself, DEBUG level logging on this
             // class should only be enabled when absolutely necessary.
 
-//            String msg = "Row " + rawCurrentRow + ": "
-//                + currentObject.toString();
-//            log.debug(msg);
+            //String msg = "Row " + rawCurrentRow + ": "
+            //    + currentObject.toString();
+            //log.debug(msg);
         }
 
         return hasNext;
@@ -425,27 +440,59 @@ public class OdaResultSet
         {
             result = accessor.get(defaultContext, currentObject);
         }
+        catch (NullPointerException e)
+        {
+            // If anything property along the key path evaluated to null, we
+            // don't want to bail out; we'll just set the column value to null
+            // and keep going.
+
+            result = null;
+        }
         catch (NSKeyValueCoding.UnknownKeyException e)
         {
             // Translate the expression into something a little easier for the
             // user to read.
-            String msg = String.format(
-                "In the expression (%s), the key \"%s\" is not recognized " +
-                "by the source object (which is of type \"%s\")",
-                expressions[column],
-                e.key(),
-                e.object().getClass().getName());
 
-            throw new WebCATDataException(new IllegalArgumentException(msg));
+            String msg = String.format(
+                    "In the expression above, the property \"%s\" is not " +
+                    "recognized by the source object (which is of type \"%s\")",
+                    e.key(), e.object().getClass().getName());
+
+            ReportGenerationTracker rgt = ReportGenerationTracker.getInstance();
+            ReportDataSet dataSet = ReportDataSet.forId(editingContext, dataSetId);
+            rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column, null,
+                    expressions[column], msg);
+            
+            // Rethrow the original exception.
+
+            throw new WebCATDataException(e);
         }
         catch (Exception e)
         {
             if (e instanceof OgnlException)
             {
-                wasNull = true;
-                return null;
+                result = null;
             }
-            throw new WebCATDataException(e);
+            else
+            {
+                // Before rethrowing the exception, pass the extra information
+                // about where the error occurred to the report generation
+                // tracker so that the queue processor can pass it along to the
+                // user. This gets us better feedback than the standard BIRT
+                // error message, which is something like "cannot get value
+                // from column: N" with no other information.
+    
+                ReportGenerationTracker rgt =
+                    ReportGenerationTracker.getInstance();
+
+                ReportDataSet dataSet = ReportDataSet.forId(
+                        editingContext, dataSetId);
+                
+                rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column,
+                        null, expressions[column], e.getMessage());
+    
+                throw new WebCATDataException(e);
+            }
         }
 
         if (result == null)
@@ -525,6 +572,7 @@ public class OdaResultSet
     
     //~ Instance/static variables .............................................
 
+    private int dataSetId;
     private int jobId;
     private ReportQuery query;
     private ReadOnlyEditingContext editingContext;

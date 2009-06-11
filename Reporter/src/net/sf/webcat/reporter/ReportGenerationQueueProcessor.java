@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationQueueProcessor.java,v 1.7 2009/06/02 19:59:12 aallowat Exp $
+ |  $Id: ReportGenerationQueueProcessor.java,v 1.8 2009/06/11 15:35:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -68,7 +68,7 @@ import org.eclipse.birt.report.engine.api.IRunTask;
  * GraderQueueProcessor from the Grader subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationQueueProcessor.java,v 1.7 2009/06/02 19:59:12 aallowat Exp $
+ * @version $Id: ReportGenerationQueueProcessor.java,v 1.8 2009/06/11 15:35:22 aallowat Exp $
  */
 public class ReportGenerationQueueProcessor extends Thread
 {
@@ -291,12 +291,30 @@ public class ReportGenerationQueueProcessor extends Thread
 
         if (wasCanceled)
         {
+            // Delete the GeneratedReport (and accompanying file) if it was
+            // already created by this point.
+
+            editingContext.deleteObject(job);
+            editingContext.deleteObject(report);
+            editingContext.saveChanges();
+
             return;
         }
 
         MutableArray errors = ReportExceptionTranslator.translateExceptions(
                 exceptions);
 
+        NSDictionary<String, Object> _extraInfo = 
+                ReportGenerationTracker.getInstance().lastErrorInfoForJobId(
+                        job.id().intValue());
+        
+        if (_extraInfo != null)
+        {
+            MutableDictionary extraInfo = new MutableDictionary(_extraInfo);
+            extraInfo.setObjectForKey("extraInfo", "entryKind");
+            errors.insertObjectAtIndex(extraInfo, 0);
+        }
+        
         report.setGeneratedTime(new NSTimestamp());
         report.setErrors(errors);
         report.setIsComplete(true);
@@ -340,25 +358,36 @@ public class ReportGenerationQueueProcessor extends Thread
         {
             currentlyRunningThread.interrupt();
         }
-
-        // Delete the GeneratedReport (and accompanying file) if it was already
-        // created by this point.
-
-        Integer reportId = ReportGenerationTracker.getInstance()
-                .reportIdForJobId(idInt);
-
-        if (reportId != null)
+        else
         {
-            GeneratedReport report = GeneratedReport.forId(context, idInt);
+            ReportGenerationTracker.getInstance().removeReportIdForJobId(
+                    id.intValue());
 
-            if (report != null)
-            {
-                context.deleteObject(report);
-                context.saveChanges();
-            }
+/*            EnqueuedReportGenerationJob job = EnqueuedReportGenerationJob.forId(
+                    context, id.intValue());
 
-            ReportGenerationTracker.getInstance().removeReportIdForJobId(idInt);
+            context.deleteObject(job);
+            context.saveChanges();*/
         }
+
+//        // Delete the GeneratedReport (and accompanying file) if it was already
+//        // created by this point.
+//
+//        Integer reportId = ReportGenerationTracker.getInstance()
+//                .reportIdForJobId(idInt);
+//
+//        if (reportId != null)
+//        {
+//            GeneratedReport report = GeneratedReport.forId(context, reportId);
+//
+//            if (report != null)
+//            {
+//                context.deleteObject(report);
+////                context.saveChanges();
+//            }
+//
+//            ReportGenerationTracker.getInstance().removeReportIdForJobId(idInt);
+//        }
     }
 
 
@@ -462,11 +491,12 @@ public class ReportGenerationQueueProcessor extends Thread
         public void run()
         {
             log.debug("Beginning report generation thread");
-            EOEditingContext context = Application.newPeerEditingContext();
+            threadContext = Application.newPeerEditingContext();
 
             EnqueuedReportGenerationJob job = EnqueuedReportGenerationJob
-                    .forId(context, jobId);
-            GeneratedReport report = GeneratedReport.forId(context, reportId);
+                    .forId(threadContext, jobId);
+            GeneratedReport report = GeneratedReport.forId(threadContext,
+                    reportId);
 
             String reportPath = report.generatedReportFile();
 
@@ -508,25 +538,35 @@ public class ReportGenerationQueueProcessor extends Thread
                 generationErrors.add(0, e);
             }
 
-            org.mozilla.javascript.Context.exit();
-            Application.releasePeerEditingContext(context);
-            log.debug("Generation thread: finishing");
+            cleanup();
         }
 
 
         // ----------------------------------------------------------
         public void interrupt()
         {
-            if (runTask != null)
+            if (!wasCanceled && runTask != null)
             {
                 runTask.cancel();
                 wasCanceled = true;
 
                 log.info("Reporter job with id " + jobId
                         + " canceled during generation stage");
+
+                ReportGenerationTracker.getInstance().removeReportIdForJobId(
+                        jobId);
             }
 
             super.interrupt();
+        }
+
+
+        // ----------------------------------------------------------
+        private void cleanup()
+        {
+            org.mozilla.javascript.Context.exit();
+            Application.releasePeerEditingContext(threadContext);
+            log.debug("Generation thread: finishing");
         }
 
 
@@ -550,6 +590,7 @@ public class ReportGenerationQueueProcessor extends Thread
         private int jobId;
         private int reportId;
         private IRunTask runTask;
+        private EOEditingContext threadContext;
         private List<Exception> generationErrors = null;
     }
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSetProvider.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ |  $Id: OdaResultSetProvider.java,v 1.5 2009/06/11 15:35:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import net.sf.webcat.oda.commons.IWebCATResultSetProvider;
  * queries that it has specified.
  *
  * @author Tony Allevato
- * @version $Id: OdaResultSetProvider.java,v 1.4 2008/04/15 04:09:22 aallowat Exp $
+ * @version $Id: OdaResultSetProvider.java,v 1.5 2009/06/11 15:35:22 aallowat Exp $
  */
 public class OdaResultSetProvider implements IWebCATResultSetProvider
 {
@@ -76,7 +76,7 @@ public class OdaResultSetProvider implements IWebCATResultSetProvider
         Integer dataSetId = Integer.parseInt(id);
         ReportQuery query = queryMap.objectForKey(dataSetId);
 
-        return new OdaResultSet(jobId, query);
+        return new OdaResultSet(dataSetId, jobId, query);
     }
 
 

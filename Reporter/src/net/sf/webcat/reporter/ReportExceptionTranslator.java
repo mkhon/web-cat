@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportExceptionTranslator.java,v 1.4 2009/06/04 16:30:35 aallowat Exp $
+ |  $Id: ReportExceptionTranslator.java,v 1.5 2009/06/11 15:35:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import er.extensions.eof.ERXConstant;
  * "message" keys.
  *
  * @author Tony Allevato
- * @version $Id: ReportExceptionTranslator.java,v 1.4 2009/06/04 16:30:35 aallowat Exp $
+ * @version $Id: ReportExceptionTranslator.java,v 1.5 2009/06/11 15:35:22 aallowat Exp $
  */
 public class ReportExceptionTranslator
 {
@@ -66,6 +66,8 @@ public class ReportExceptionTranslator
     public static MutableDictionary translateException(Exception e)
     {
         MutableDictionary errorInfo = new MutableDictionary();
+
+        errorInfo.setObjectForKey("exception", "entryKind");
 
         if (e instanceof BirtException)
         {

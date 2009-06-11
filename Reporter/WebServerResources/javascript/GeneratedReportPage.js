@@ -1,3 +1,4 @@
+/*
 dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
 {
     // ----------------------------------------------------------
@@ -135,3 +136,4 @@ dojo.declare("webcat.reporter.GeneratedReportWatcher", null,
         this._loadPage();
     }
 });
+*/

@@ -22,12 +22,12 @@
     </wo>
     <wo name="DeleteReports">
         <script type="dojo/connect" event="onClick" args="evt">
-            webcat.confirm("Confirm Delete",
-                "Are you sure you want to delete the selected reports? " +
-                "This operation cannot be undone.",
-                {
-                    onYes: function() { deleteSelectedReports(); }
-                });
+            webcat.confirm({
+                title: "Confirm Delete",
+                message: "Are you sure you want to delete the selected " +
+                    " reports? This operation cannot be undone.",
+                onYes: function() { deleteSelectedReports(); }
+            });
         </script>
     </wo>
     <wo name="DeleteReportsAction"/>

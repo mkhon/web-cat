@@ -29,7 +29,7 @@ KeyPath : WCComboBox {
     value = currentKeyPath;
 }
 
-KeyPathChangeUpdater : WCRemoteFunction {
+KeyPathChangeUpdater : WCActionFunction {
     jsId = "~idFor.updateRowAfterKeyPath + '_' + index";
     remote.refreshPanes = "~idFor.castTypeContainer + '_' + index";
 }
@@ -46,7 +46,7 @@ CastType : WCFilteringSelect {
     displayString = displayStringForCastType;
 }
 
-CastTypeUpdater : WCRemoteFunction {
+CastTypeUpdater : WCActionFunction {
     jsId = "~idFor.updateRowAfterCastType + '_' + index";
     remote.refreshPanes = "~idFor.comparisonContainer + '_' + index";
 }
@@ -61,7 +61,7 @@ Comparison : WCFilteringSelect {
     selection = currentComparison;
 }
 
-ComparisonUpdater : WCRemoteFunction {
+ComparisonUpdater : WCActionFunction {
     jsId = "~idFor.updateRowAfterComparison + '_' + index";
     remote.refreshPanes = "~idFor.comparandTypeContainer + '_' + index";
 }
@@ -78,7 +78,7 @@ ComparandType : WCFilteringSelect {
     selection = currentComparandType;
 }
 
-ComparandTypeUpdater : WCRemoteFunction {
+ComparandTypeUpdater : WCActionFunction {
     jsId = "~idFor.updateRowAfterComparandType + '_' + index";
     remote.refreshPanes = "~idFor.valueContainer + '_' + index";
 }
