@@ -14,7 +14,7 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  * TODO real description
  *  
  * @author Tony Allevato
- * @version $Id: ModelOrQueryWrapper.java,v 1.2 2009/06/09 17:43:11 aallowat Exp $
+ * @version $Id: ModelOrQueryWrapper.java,v 1.3 2009/06/16 14:58:57 aallowat Exp $
  */
 public class ModelOrQueryWrapper implements NSKeyValueCoding
 {
@@ -161,11 +161,12 @@ public class ModelOrQueryWrapper implements NSKeyValueCoding
     {
         if (savedQuery != null)
         {
-            return savedQuery.description();
+            return "Use the previously saved query named <b>" +
+                savedQuery.description() + "</b>";
         }
         else if (queryAssistant != null)
         {
-            return queryAssistant.description();
+            return queryAssistant.description().replace("|", "");
         }
         else
         {
