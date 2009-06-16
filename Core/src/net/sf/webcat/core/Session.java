@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.21 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: Session.java,v 1.22 2009/06/16 14:15:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.21 2009/04/27 17:10:53 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.22 2009/06/16 14:15:28 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -553,6 +553,7 @@ public class Session
     public void commitSessionChanges()
     {
         log.debug( "commitLocalChanges()" );
+        temporaryTheme = null;
         defaultEditingContext().saveChanges();
         defaultEditingContext().revert();
         defaultEditingContext().refaultAllObjects();
@@ -566,6 +567,7 @@ public class Session
      */
     public void cancelSessionChanges()
     {
+        temporaryTheme = null;
         defaultEditingContext().revert();
         defaultEditingContext().refaultAllObjects();
     }
@@ -662,9 +664,20 @@ public class Session
      */
     public Theme theme()
     {
+        if (temporaryTheme != null)
+        {
+            return temporaryTheme;
+        }
         return (user() == null || user().theme() == null)
             ? Theme.defaultTheme()
             :  user().theme();
+    }
+
+
+    // ----------------------------------------------------------
+    public void setTemporaryTheme(Theme theme)
+    {
+        temporaryTheme = theme;
     }
 
 
@@ -705,6 +718,7 @@ public class Session
     private NSMutableDictionary   transientState;
     private WOEC.PeerManagerPool  childManagerPool;
     private boolean               doNotUseLoginSession = false;
+    private Theme                 temporaryTheme;
 
     private static final Integer zero = new Integer( 0 );
     private static final Integer one  = new Integer( 1 );

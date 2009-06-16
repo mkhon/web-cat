@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.12 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.13 2009/06/16 14:15:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
+import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXQ;
 import er.extensions.foundation.ERXArrayUtilities;
@@ -34,7 +35,7 @@ import org.apache.log4j.Logger;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: MyProfilePage.java,v 1.12 2009/04/27 17:10:53 stedwar2 Exp $
+*  @version $Id: MyProfilePage.java,v 1.13 2009/06/16 14:15:28 stedwar2 Exp $
 */
 public class MyProfilePage
     extends WCComponent
@@ -315,11 +316,13 @@ public class MyProfilePage
     // ----------------------------------------------------------
     public WOComponent previewTheme()
     {
-        log.debug("user ec = " + user().editingContext()
-            + ", theme ec = "
-            + ((user().theme() == null)
-                ? "null"
-                : user().theme().editingContext().toString()));
+        log.debug("previewTheme(): user theme = " + user().theme());
+        log.debug("session theme = " + wcSession().theme());
+        wcSession().setTemporaryTheme(
+            user().theme() == null
+                ? Theme.defaultTheme()
+                : user().theme());
+        log.debug("after preview, session theme = " + wcSession().theme());
         return null;
     }
 
