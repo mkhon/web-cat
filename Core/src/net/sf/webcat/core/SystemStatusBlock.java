@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SystemStatusBlock.java,v 1.3 2008/09/17 00:24:40 stedwar2 Exp $
+ |  $Id: SystemStatusBlock.java,v 1.4 2009/06/16 14:16:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  *  including plug-in-based contributions from all subsystems.
  *
  *  @author  Stephen Edwards
- *  @version $Id: SystemStatusBlock.java,v 1.3 2008/09/17 00:24:40 stedwar2 Exp $
+ *  @version $Id: SystemStatusBlock.java,v 1.4 2009/06/16 14:16:17 stedwar2 Exp $
  */
 public class SystemStatusBlock
     extends WOComponent
@@ -54,6 +54,7 @@ public class SystemStatusBlock
 
     public int     index;
     public boolean includeSeparator = false;
+    public boolean startOpen = false;
 
 
     //~ Methods ...............................................................
