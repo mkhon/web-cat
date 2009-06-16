@@ -17,6 +17,7 @@ Properties: WORepetition {
 PropForm: WOForm {
     action = setNewProperty;
 	multipleSubmit = true;
+	style = "padding-bottom: 1em;";
 }
 
 Name: WOString {

@@ -1,13 +1,3 @@
-BackForm: WOForm {
-    action = back;
-	multipleSubmit = true;
-}
-
-Back: WOSubmitButton {
-    action = back;
-    value  = " < Back ";
-}
-
 B1: WOGenericContainer {
 	elementName = "B";
 	omitTags = loggerIsNotDebug;

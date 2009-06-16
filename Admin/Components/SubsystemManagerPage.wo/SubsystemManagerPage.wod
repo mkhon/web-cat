@@ -25,8 +25,7 @@ Description: WOString {
 	escapeHTML = false;
 }
 
-DisableAutoUpdates: WOSubmitButton {
-    value = "Disable";
+DisableAutoUpdates: WCButton {
     action = toggleAutoUpdates;
 }
 
@@ -63,8 +62,7 @@ Edit: WOActiveImage {
 	action    = edit;
 }
 
-EnableAutoUpdates: WOSubmitButton {
-    value = "Enable";
+EnableAutoUpdates: WCButton {
     action = toggleAutoUpdates;
 }
 
@@ -159,7 +157,7 @@ OutOfDate: WOConditional {
     condition = subsystem.descriptor.updateIsAvailable;
 }
 
-Page : net.sf.webcat.core.PageWithNavigation {
+Page : net.sf.webcat.core.WCPageWithNavigation {
     title = "Manage Subsystems";
 }
 
@@ -168,8 +166,7 @@ ProviderURL: WOTextField {
     size  = 70;
 }
 
-ScanNow: WOSubmitButton {
-    value = "Scan Now";
+ScanNow: WCButton {
     action = scanNow;
 }
 

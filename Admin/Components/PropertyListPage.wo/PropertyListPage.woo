@@ -8,7 +8,7 @@
             localKeys = (); 
             numberOfObjectsPerBatch = 0; 
             selectsFirstObjectAfterFetch = YES; 
-//            sortOrdering = ({class = EOSortOrdering; key = getKey; selectorName = "compareCaseInsensitiveAscending:"; }); 
+            sortOrdering = ({class = EOSortOrdering; key = key; selectorName = "compareCaseInsensitiveAscending:"; }); 
         };
     }; 
 }

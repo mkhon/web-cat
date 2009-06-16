@@ -23,11 +23,12 @@ GracefulShutdown: WOSubmitButton {
 }
 
 Page : net.sf.webcat.core.WCPageWithNavigation {
-	title     = "System Status";
+	title     = "Web-CAT Status";
 }
 
 SystemStatus: SystemStatusBlock {
     includeSeparator = true;
+    startOpen        = true;
 }
 
 ThrowException: net.sf.webcat.ui.WCButton {

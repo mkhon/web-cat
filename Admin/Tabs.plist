@@ -3,33 +3,41 @@
     accessLevel = 75;
     priority    = 1000;
     children = {
-      Status = {
-        pageName    = net.sf.webcat.admin.AdminStatusPage;
+      Home = {
         accessLevel = 75;
-        priority    = 1;
-        wantsStart  = YES;
-        id          = AdminHome;
+        priority   = 1;
+        wantsStart = YES;
+        children   = {
+          Status = {
+            pageName   = net.sf.webcat.admin.AdminStatusPage;
+            accessLevel = 75;
+            priority   = 100;
+            wantsStart = YES;
+          };
+          "My Profile" = {
+            pageName = net.sf.webcat.core.MyProfilePage;
+            accessLevel = 40;
+            priority = 1001;
+            id       = Profile;
+          };
+          Feedback = {
+            pageName = net.sf.webcat.core.FeedbackPage;
+            accessLevel = 40;
+            priority = 1003;
+            id       = Feedback;
+          };
+        };
       };
       Subsystems = {
         pageName    = net.sf.webcat.admin.SubsystemManagerPage;
         accessLevel = 90;
         priority    = 2;
       };
-      System = {
-        pageName    = net.sf.webcat.admin.SettingsPage;
-        accessLevel = 90;
-        priority    = 3;
-      };
       "Edit Database" = {
         pageName    = net.sf.webcat.admin.EntryEditPage;
         accessLevel = 90;
         priority    = 4;
       };
-//      "Message Test" = {
-//        pageName    = net.sf.webcat.admin.tests.NoticeTestPage;
-//        accessLevel = 90;
-//        priority    = 5;
-//      };
       "License" = {
         pageName    = net.sf.webcat.admin.AdminLicensePage;
         accessLevel = 90;

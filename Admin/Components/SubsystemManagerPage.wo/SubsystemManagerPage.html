@@ -1,5 +1,7 @@
-<webobject name="Page"><webobject name="Form2">
-<div class="shadow"><table><tbody><tr><th>Installed Subsystems
+<wo name="Page">
+<wo:net.sf.webcat.core.WCPageModule title="Installed Subsystems">
+<webobject name="Form2">
+<table><tbody><tr><th>Installed Subsystems
 <webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
 <webobject name="IsTerse"><webobject name="VerboseDescriptions"/></webobject>
 </th>
@@ -19,10 +21,11 @@ is available</b></webobject><webobject name="HasHistory">, <webobject name="Hist
   <webobject name="WillNotUpdate"/>
 </webobject></webobject></td>
 <td><webobject name="CanUpdate"><webobject name="DownloadNow"/></webobject><webobject name="HasOptions"><webobject name="Edit"/></webobject></td>
-</webobject></webobject></tbody></table></div>
-<div class="spacer">&nbsp;</div>
+</webobject></webobject></tbody></table>
+</webobject></wo:net.sf.webcat.core.WCPageModule>
 
-<h2>Available for Web-based Installation</h2>
+<wo:net.sf.webcat.core.WCPageModule title="Available for Web-based Installation" open="false">
+<wo:WOForm multipleSubmit="true">
 <webobject name="NewSubsystemsAvailable">
 <div class="shadow"><table><tbody><tr><th>Available for Installation
 <webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
@@ -46,10 +49,12 @@ is available</b></webobject><webobject name="HasHistory">, <webobject name="Hist
 <p>After scanning known providers, no new subsystems were detected.</p>
 </webobject>
 <p>Add provider URL:
-<webobject name="ProviderURL"/><webobject name="ScanNow"/>
+<webobject name="ProviderURL"/><wo name="ScanNow">Scan Now</wo>
 </p>
+</wo:WOForm></wo:net.sf.webcat.core.WCPageModule>
 
-<h2>Automatic Updates</h2>
+<wo:net.sf.webcat.core.WCPageModule title="Automatic Updates" open="false">
+<wo:WOForm multipleSubmit="true">
 <webobject name="CannotUpdate"><p>
 Automatic updates <b class="warn">are disabled</b> on this installation.
 Automatic updates are only available on servlet-based deployments of this
@@ -59,9 +64,9 @@ the application is not executing.
 <webobject name="CanUpdate"><p>
 Automatic updates:
 <webobject name="AutoUpdateEnabled"><b class="check">Enabled</b>
-<webobject name="DisableAutoUpdates"/></webobject>
+<wo name="DisableAutoUpdates">Disable</wo></webobject>
 <webobject name="AutoUpdateNotEnabled"><b class="warn">Disabled</b>
-<webobject name="EnableAutoUpdates"/></webobject>
+<wo name="EnableAutoUpdates">Enable</wo></webobject>
 </p><p>
 This application is capable of downloading and installing new updates to
 subsystems that are currently installed.  When enabled, Web-CAT will check
@@ -71,4 +76,4 @@ download</span> updates on demand using the download icons in the table.
 All downloaded updates will <span class="hl">be applied when the application
 restarts.</span>
 </p>
-</webobject></webobject></webobject>
+</webobject></wo:WOForm></wo:net.sf.webcat.core.WCPageModule></wo>

@@ -10,4 +10,32 @@ to edit the settings for the <b>Core subsystem</b> and provide a value for
 the <b>Web-CAT Shutdown/Restart External Command</b> setting.
 </p></webobject>
 </wo:net.sf.webcat.core.WCPageModule>
+
+<wo:net.sf.webcat.core.WCPageModule title="Log4J Configuration" open="false">
+<wo:net.sf.webcat.admin.Log4JConfigurationPage/>
+</wo:net.sf.webcat.core.WCPageModule>
+
+<wo:if condition="$application.isDevelopmentMode">
+<wo:net.sf.webcat.core.WCPageModule title="Test Pages" open="false">
+<ul>
+<li><wo:link pageName="net.sf.webcat.core.TypographyDemoPage">Typography
+    demo page</wo:link></li>
+<li><wo:link pageName="net.sf.webcat.core.tests.CoreNavigatorTestPage">Core
+    navigator test page</wo:link></li>
+<li><wo:link pageName="net.sf.webcat.grader.NavTestPage">Grader
+    navigator test page</wo:link></li>
+<li><wo:link pageName="net.sf.webcat.admin.tests.NoticeTestPage">Notice/message
+    test page</wo:link></li>
+</ul>
+</wo:net.sf.webcat.core.WCPageModule>
+
+<wo:net.sf.webcat.core.WCPageModule title="Unit Test Controls" open="false">
+<wo:net.sf.webcat.admin.UnitTestPage/>
+</wo:net.sf.webcat.core.WCPageModule>
+</wo:if>
+
+<wo:net.sf.webcat.core.WCPageModule title="System Properties" open="false">
+<wo:net.sf.webcat.admin.PropertyListPage/>
+</wo:net.sf.webcat.core.WCPageModule>
+
 </webobject>

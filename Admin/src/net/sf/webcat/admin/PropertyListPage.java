@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PropertyListPage.java,v 1.5 2008/04/02 00:56:33 stedwar2 Exp $
+ |  $Id: PropertyListPage.java,v 1.6 2009/06/16 14:11:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * A property listing page.
  *
  *  @author edwards
- *  @version $Id: PropertyListPage.java,v 1.5 2008/04/02 00:56:33 stedwar2 Exp $
+ *  @version $Id: PropertyListPage.java,v 1.6 2009/06/16 14:11:37 stedwar2 Exp $
  */
 public class PropertyListPage
     extends WCComponent
@@ -113,12 +113,18 @@ public class PropertyListPage
     /**
      * Setup this page before rendering.
      */
+    @SuppressWarnings("unchecked")
     public void awake()
     {
         super.awake();
-        propertyDisplayGroup.setObjectArray( new NSMutableArray(
-            ( (Session)session() ).properties().inheritedEntrySet().toArray()
-        ));
+        NSMutableArray<Object> entries = new NSMutableArray<Object>(
+            ((Session)session()).properties().inheritedEntrySet().toArray());
+        for (int i = 0; i < entries.count(); i++)
+        {
+            entries.set(i, new Entry(
+                (java.util.Map.Entry<String, String>)entries.get(i)));
+        }
+        propertyDisplayGroup.setObjectArray(entries);
     }
 
 
@@ -156,6 +162,78 @@ public class PropertyListPage
                 + "\" set to \"" + newPropertyValue + "\"." );
         }
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public static class Entry
+        implements java.util.Map.Entry<String, String>,
+            NSKeyValueCoding
+    {
+        // ----------------------------------------------------------
+        public Entry(java.util.Map.Entry<String, String> inner)
+        {
+            this.inner = inner;
+        }
+
+
+        // ----------------------------------------------------------
+        public String getKey()
+        {
+            return inner.getKey();
+        }
+
+
+        // ----------------------------------------------------------
+        public String getValue()
+        {
+            return inner.getValue();
+        }
+
+
+        // ----------------------------------------------------------
+        public String setValue(String value)
+        {
+            return inner.setValue(value);
+        }
+
+
+        // ----------------------------------------------------------
+        public void takeValueForKey(Object value, String key)
+        {
+            if (key.equals("value"))
+            {
+                setValue(value.toString());
+            }
+            else
+            {
+                NSKeyValueCoding.DefaultImplementation
+                    .handleTakeValueForUnboundKey(this, value, key);
+            }
+        }
+
+
+        // ----------------------------------------------------------
+        public Object valueForKey(String key)
+        {
+            if (key.equals("key"))
+            {
+                return getKey();
+            }
+            else if (key.equals("value"))
+            {
+                return getValue();
+            }
+            else
+            {
+                return NSKeyValueCoding.DefaultImplementation
+                    .handleQueryWithUnboundKey(this, key);
+            }
+        }
+
+
+        //~ Instance/static variables .........................................
+        private java.util.Map.Entry<String, String> inner;
     }
 
 

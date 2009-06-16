@@ -1,5 +1,3 @@
-<webobject name="Page">
-<webobject name="BackForm"><webobject name="Back"/></webobject>
 <webobject name="Form1">
 <table style="border:none">
   <tr>
@@ -11,10 +9,10 @@
     <td>
       <table style="border:none">
         <tr><td>
-          <webobject name="Conditional2"><webobject name="SubmitButton2"/></webobject>
+          <webobject name="Conditional2"><wo name="SubmitButton2">Run All</wo></webobject>
         </td></tr>
         <tr><td><webobject name="Browser1"/></td></tr>
-        <tr><td align="right"><webobject name="Conditional3"><webobject name="SubmitButton1"/></webobject></td></tr>
+        <tr><td align="right"><webobject name="Conditional3"><wo name="SubmitButton1">Run Selected</wo></webobject></td></tr>
       </table>
     </td>
     <td>
@@ -24,7 +22,7 @@
         <tr><td><webobject name="CheckBox2"/>Log Tests</td></tr>
         <tr><td><webobject name="CheckBox4"/>EOAdaptorDebugEnabled</td></tr>
         <tr><td><webobject name="CheckBox5"/>Hide Package Names</td></tr>
-        <tr><td align="right"><webobject name="SubmitButton3"/></td></tr>
+        <tr><td><wo name="SubmitButton3">Save</wo></td></tr>
       </table>
     </td>
   </tr>
@@ -32,5 +30,3 @@
 <webobject name="Conditional1"><h3>Result</h3>
 <webobject name="UTTestResultDisplay1"/>
 </webobject></webobject>
-<webobject name="BackForm"><webobject name="Back"/></webobject>
-</webobject>
