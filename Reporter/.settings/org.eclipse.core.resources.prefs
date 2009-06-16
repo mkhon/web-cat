@@ -1,18 +1,18 @@
-#Wed May 27 10:32:54 EDT 2009
+#Tue Jun 16 10:18:55 EDT 2009
 eclipse.preferences.version=1
-encoding//Components/AdvancedQueryAssistant.wo/AdvancedQueryAssistant.wod=MacRoman
-encoding//Components/AdvancedQueryValueComponent.wo/AdvancedQueryValueComponent.wod=MacRoman
+encoding//Components/AdvancedQueryAssistant.wo/AdvancedQueryAssistant.wod=UTF-8
+encoding//Components/AdvancedQueryValueComponent.wo/AdvancedQueryValueComponent.wod=UTF-8
 encoding//Components/CourseAndAssignmentResultOutcomesAssistant.wo/CourseAndAssignmentResultOutcomesAssistant.wod=MacRoman
-encoding//Components/CourseAndAssignmentSubmissionsAssistant.wo/CourseAndAssignmentSubmissionsAssistant.wod=MacRoman
-encoding//Components/DebuggingPage.wo/DebuggingPage.wod=MacRoman
-encoding//Components/DescribeReportInputsPage.wo/DescribeReportInputsPage.wod=MacRoman
-encoding//Components/GeneratedReportPage.wo/GeneratedReportPage.wod=MacRoman
-encoding//Components/PickReportToViewPage.wo/PickReportToViewPage.wod=MacRoman
-encoding//Components/PickTemplateToGeneratePage.wo/PickTemplateToGeneratePage.wod=MacRoman
+encoding//Components/CourseAndAssignmentSubmissionsAssistant.wo/CourseAndAssignmentSubmissionsAssistant.wod=UTF-8
+encoding//Components/DebuggingPage.wo/DebuggingPage.wod=UTF-8
+encoding//Components/DescribeReportInputsPage.wo/DescribeReportInputsPage.wod=UTF-8
+encoding//Components/GeneratedReportPage.wo/GeneratedReportPage.wod=UTF-8
+encoding//Components/PickReportToViewPage.wo/PickReportToViewPage.wod=UTF-8
+encoding//Components/PickTemplateToGeneratePage.wo/PickTemplateToGeneratePage.wod=UTF-8
 encoding//Components/ReportContentsBlock.wo/ReportContentsBlock.wod=MacRoman
-encoding//Components/ReportErrorsBlock.wo/ReportErrorsBlock.wod=MacRoman
-encoding//Components/ReportParameterValueComponent.wo/ReportParameterValueComponent.wod=MacRoman
+encoding//Components/ReportErrorsBlock.wo/ReportErrorsBlock.wod=UTF-8
+encoding//Components/ReportParameterValueComponent.wo/ReportParameterValueComponent.wod=UTF-8
 encoding//Components/ReporterLongResponse.wo/ReporterLongResponse.wod=MacRoman
-encoding//Components/ScheduleReportPage.wo/ScheduleReportPage.wod=MacRoman
-encoding//Components/TemplateLibraryPage.wo/TemplateLibraryPage.wod=MacRoman
-encoding//Components/WCProgressBar.wo/WCProgressBar.wod=MacRoman
+encoding//Components/ScheduleReportPage.wo/ScheduleReportPage.wod=UTF-8
+encoding//Components/TemplateLibraryPage.wo/TemplateLibraryPage.wod=UTF-8
+encoding//Components/WCProgressBar.wo/WCProgressBar.wod=UTF-8

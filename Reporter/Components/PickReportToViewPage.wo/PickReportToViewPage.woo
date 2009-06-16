@@ -1,6 +1,6 @@
 {
     "WebObjects Release" = "WebObjects 5.1"; 
-    encoding = MacRoman; 
+    encoding = "UTF-8"; 
     variables = {
         enqueuedReportsDisplayGroup = {
             class = WODisplayGroup; 

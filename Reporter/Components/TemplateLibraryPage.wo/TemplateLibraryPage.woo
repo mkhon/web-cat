@@ -1,6 +1,6 @@
 {
     "WebObjects Release" = "WebObjects 5.2"; 
-    encoding = MacRoman; 
+    encoding = "UTF-8"; 
     variables = {
         personalTemplateGroup = {
             class = WODisplayGroup; 
