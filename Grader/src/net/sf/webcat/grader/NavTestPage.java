@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NavTestPage.java,v 1.1 2009/04/27 17:15:05 stedwar2 Exp $
+ |  $Id: NavTestPage.java,v 1.2 2009/06/16 14:18:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,10 +32,10 @@ import net.sf.webcat.core.WCComponent;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: NavTestPage.java,v 1.1 2009/04/27 17:15:05 stedwar2 Exp $
+*  @version $Id: NavTestPage.java,v 1.2 2009/06/16 14:18:17 stedwar2 Exp $
 */
 public class NavTestPage
-    extends GraderComponent
+    extends GraderAssignmentComponent
 {
     //~ Constructors ..........................................................
 

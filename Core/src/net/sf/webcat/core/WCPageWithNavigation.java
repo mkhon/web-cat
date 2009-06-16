@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.1 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.2 2009/06/16 14:16:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,13 +22,8 @@
 package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
-import net.sf.webcat.core.*;
 import net.sf.webcat.ui.WCBasePage;
 
 // -------------------------------------------------------------------------
@@ -39,7 +34,7 @@ import net.sf.webcat.ui.WCBasePage;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: WCPageWithNavigation.java,v 1.1 2009/04/27 17:10:53 stedwar2 Exp $
+ * @version $Id: WCPageWithNavigation.java,v 1.2 2009/06/16 14:16:49 stedwar2 Exp $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -136,19 +131,15 @@ public class WCPageWithNavigation
         }
         if ( title == null )
         {
-            title = myTab.label();
+            if (secondLevelSelection == null)
+            {
+                title = myTab.label();
+            }
+            else
+            {
+                title = secondLevelSelection.label();
+            }
         }
-    }
-
-
-    // ----------------------------------------------------------
-    public void appendToResponse( WOResponse arg0, WOContext arg1 )
-    {
-        if ( sideStepTitle != null )
-        {
-            title = sideStepTitle;
-        }
-        super.appendToResponse( arg0, arg1 );
     }
 
 
@@ -447,12 +438,11 @@ public class WCPageWithNavigation
         Session session = (Session)session();
         if ( session.user() == null || session.user().restrictToStudentView() )
         {
-            NSArray secondaries = session.tabs.selectedChild()
+            NSArray<TabDescriptor> secondaries = session.tabs.selectedChild()
                 .children();
             for ( int i = 0; i < secondaries.count(); i++ )
             {
-                TabDescriptor secondary =
-                    (TabDescriptor)secondaries.objectAtIndex( i );
+                TabDescriptor secondary = secondaries.objectAtIndex( i );
                 if ( secondary.accessLevel() == 0 )
                 {
                     result = true;

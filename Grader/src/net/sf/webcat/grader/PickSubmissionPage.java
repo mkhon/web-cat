@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.7 2009/06/16 14:18:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @version $Id: PickSubmissionPage.java,v 1.6 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: PickSubmissionPage.java,v 1.7 2009/06/16 14:18:17 stedwar2 Exp $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -88,11 +88,11 @@ public class PickSubmissionPage
         submissions = EOUtilities.objectsMatchingValues(
                 localContext(),
                 Submission.ENTITY_NAME,
-                new NSDictionary(
+                new NSDictionary<String, Object>(
                         new Object[] {  user,
                                         prefs().assignmentOffering()
                                      },
-                        new Object[] { Submission.USER_KEY,
+                        new String[] { Submission.USER_KEY,
                                        Submission.ASSIGNMENT_OFFERING_KEY }
                 )
             );
@@ -222,6 +222,14 @@ public class PickSubmissionPage
     public boolean nextEnabled()
     {
         return previousSubmissions  &&  super.nextEnabled();
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent selectSubmission()
+    {
+        selectedIndex = index;
+        return next();
     }
 
 
