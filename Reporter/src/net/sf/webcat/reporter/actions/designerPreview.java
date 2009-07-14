@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.11 2009/02/01 22:39:36 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.12 2009/07/14 14:40:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  * response end-of-data marker is true.
  *
  * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.11 2009/02/01 22:39:36 aallowat Exp $
+ * @version $Id: designerPreview.java,v 1.12 2009/07/14 14:40:05 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -476,6 +476,10 @@ public class designerPreview
         try
         {
             result = accessor.get(ognlContext, object);
+        }
+        catch (NullPointerException e)
+        {
+            result = null;
         }
         catch (NSKeyValueCoding.UnknownKeyException e)
         {
