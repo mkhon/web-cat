@@ -21,7 +21,7 @@ AssignmentCheckbox: WCCheckBox {
 
 AssignmentInfo: net.sf.webcat.core.PopUpInfo {
     title   = "Assignments";
-    message = "The assignments listed here are those that belong to <b>all</b> of the courses chosen to the left.";
+    message = "The assignments listed here are those that belong to <b>any</b> of the courses chosen to the left.";
 }
 
 SubmissionForGradingInfo: net.sf.webcat.core.PopUpInfo {

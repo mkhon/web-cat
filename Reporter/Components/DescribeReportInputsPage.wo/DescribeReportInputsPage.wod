@@ -1,8 +1,7 @@
 Page: net.sf.webcat.core.WCPageWithNavigation {
 }
 
-ChangeReportTemplate: WCButton {
-    label = "Change Template...";
+ChangeReportTemplate: WCLink {
     action = changeReportTemplate;
 }
 
@@ -11,8 +10,7 @@ ChooseQueryAssistant: WCLink {
     remote.refreshPanes = idForQueryAssistantContainer;
 }
 
-RevertEditing: WCButton {
-    label = "Change Method...";
+RevertEditing: WCLink {
     action = revertEditingForDataSet;
     remote.refreshPanes = idForQueryAssistantContainer;
 }

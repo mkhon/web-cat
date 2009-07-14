@@ -18,7 +18,7 @@ import com.webobjects.foundation.NSMutableSet;
 /**
  * 
  * @author Tony Allevato
- * @version $Id: DescribeReportInputsPage.java,v 1.2 2009/06/02 19:59:12 aallowat Exp $
+ * @version $Id: DescribeReportInputsPage.java,v 1.3 2009/07/14 14:52:49 aallowat Exp $
  */
 public class DescribeReportInputsPage extends ReporterComponent
 {
@@ -32,12 +32,6 @@ public class DescribeReportInputsPage extends ReporterComponent
     
     
     //~ KVC attributes (must be public) .......................................
-
-    public NSArray<String> stylesheetsToImport;
-    public String stylesheetToImport;
-    
-    public NSArray<String> javascriptsToImport;
-    public String javascriptToImport;
 
     public NSArray<ReportDataSet> dataSets;
     public ReportDataSet dataSet;
@@ -69,21 +63,6 @@ public class DescribeReportInputsPage extends ReporterComponent
             }
         }
         
-        NSArray<QueryAssistantDescriptor> allAssistants =
-            QueryAssistantManager.getInstance().allAssistants();
-        
-        NSMutableSet<String> stylesheets = new NSMutableSet<String>();
-        NSMutableSet<String> javascripts = new NSMutableSet<String>();
-        
-        for (QueryAssistantDescriptor qad : allAssistants)
-        {
-            stylesheets.addObjectsFromArray(qad.stylesheets());
-            javascripts.addObjectsFromArray(qad.javascripts());
-        }
-
-        stylesheetsToImport = stylesheets.allObjects();
-        javascriptsToImport = javascripts.allObjects();
-
         parameterValues = new NSMutableDictionary<String, Object>();
 
         super.appendToResponse(response, context);

@@ -49,7 +49,5 @@
         modelName = "net.sf.webcat.reporter.queryassistants.AdvancedQueryModel";
         editorComponentName = "net.sf.webcat.reporter.queryassistants.AdvancedQueryAssistant";
         description = "Construct an advanced query| to filter objects that satisfy a set of criteria.";
-        stylesheets = ( "queryassistants/advanced.css" );
-        javascripts = ( "queryassistants/advanced.js" );
     };
 }

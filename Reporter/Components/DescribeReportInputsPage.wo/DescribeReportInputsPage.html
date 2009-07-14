@@ -1,16 +1,25 @@
 <wo name="Page">
-<wo:loop list="$stylesheetsToImport" item="$stylesheetToImport">
-<wo:ImportResource type="stylesheet" filename="$stylesheetToImport"/>
-</wo:loop>
-<wo:loop list="$javascriptsToImport" item="$javascriptToImport">
-<wo:ImportResource type="script" filename="$javascriptToImport"/>
-</wo:loop>
+<style>
+.changeSelectionBox
+{
+    padding: 8px;
+    font-size: 100%;
+    line-height: 120%;
+    border: 1px solid #AAA;
+    background-color: white;
+    width: 12em;
+}
+</style>
 
 <wo:WCForm multipleSubmit="$true">
 
 <wo:WCPageModule title="Identification and Rendering">
 <div class="floatLeft">Generating report template <span class="hl"><wo:str value="$localReportTemplate.name"/> (v<wo:str value="$localReportTemplate.version" />)</span></div>
-<div class="floatRight"><wo name="ChangeReportTemplate" /></div>
+<div class="floatRight">
+    <div class="changeSelectionBox">
+        To choose a different template, <wo name="ChangeReportTemplate">click here.</wo>
+    </div>
+</div>
 <div class="clear">&nbsp;</div>
 <p>
 You can enter a title for the generated report here, which will be used to identify the
@@ -23,23 +32,30 @@ will be used.<br/>
 <!-- data sets -->
 <wo:loop list="$localReportTemplate.dataSets" item="$dataSet" index="$dataSetIndex">
 <wo:WCPageModule title="$titleForDataSetPageModule">
-<wo:if condition="$dataSet.description">
-<p><b>Find:</b> <wo:str value="$dataSet.description" /></p>
-</wo:if>
 <wo:WCContentPane id="$idForQueryAssistantContainer">
 <wo:if condition="$selectedModelOrQueryForDataSet.isEditing">
-    <div class="floatLeft">
+    <div class="floatLeft" style="width: 70%">
+        <p>
+		<wo:if condition="$dataSet.description">
+		<b>Find:</b> <wo:str value="$dataSet.description" /><br/>
+		</wo:if>
         <b>Method:</b>
-        <wo:str value="$selectedModelOrQueryForDataSet.displayableSummary" />
+        <wo:str value="$selectedModelOrQueryForDataSet.displayableSummary" escapeHTML="false" />
+        </p>
     </div>
     <div class="floatRight">
-        <wo name="RevertEditing" />
+        <div class="changeSelectionBox">
+            To choose a different query method, <wo name="RevertEditing">click here.</wo>
+        </div>
     </div>
     <div class="clear">&nbsp;</div>
     <wo:if condition="$selectedModelOrQueryForDataSet.queryAssistant">
         <wo name="QueryAssistantComponent" />
     </wo:if>
 </wo:if><wo:else>
+	<wo:if condition="$dataSet.description">
+	<p><b>Find:</b> <wo:str value="$dataSet.description" /></p>
+	</wo:if>
 	<p>
 	To assist in the construction of a query for this data set,
 	please choose how you would like to select the objects for the query:

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueryAssistantDescriptor.java,v 1.5 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: QueryAssistantDescriptor.java,v 1.6 2009/07/14 14:52:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Query assistant support class.
  *
  * @author aallowat
- * @version $Id: QueryAssistantDescriptor.java,v 1.5 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: QueryAssistantDescriptor.java,v 1.6 2009/07/14 14:52:49 aallowat Exp $
  */
 public class QueryAssistantDescriptor
     implements NSKeyValueCoding
@@ -91,20 +91,6 @@ public class QueryAssistantDescriptor
     }
 
 
-    // ----------------------------------------------------------
-    public NSArray<String> stylesheets()
-    {
-        return (NSArray<String>) info.objectForKey("stylesheets");
-    }
-
-    
-    // ----------------------------------------------------------
-    public NSArray<String> javascripts()
-    {
-        return (NSArray<String>) info.objectForKey("javascripts");
-    }
-
-    
     // ----------------------------------------------------------
     public AbstractQueryAssistantModel createModel()
     {
