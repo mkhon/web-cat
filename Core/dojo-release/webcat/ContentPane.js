@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentPane.js,v 1.4 2009/05/27 14:24:08 aallowat Exp $
+ |  $Id: ContentPane.js,v 1.5 2009/07/14 14:38:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -37,7 +37,7 @@ dojo.require("dijit.layout.ContentPane");
  * when it is initialized.
  *
  * @author Tony Allevato
- * @version $Id: ContentPane.js,v 1.4 2009/05/27 14:24:08 aallowat Exp $
+ * @version $Id: ContentPane.js,v 1.5 2009/07/14 14:38:21 aallowat Exp $
  */
 dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
 {
@@ -108,10 +108,25 @@ dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
 // BEGIN WEBCAT CHANGES
                 onEnd: function() {
                     // Run scripts that aren't of type "dojo/..." before the
-                    // widgets are parsed.
+                    // widgets are parsed. Also, use a synchronous xhrGet
+                    // request to pull in any script tags that have src
+                    // attributes and execute those scripts, and (TODO) get any
+                    // link tags with type="text/css".
 
                     dojo.query("script", this.node).forEach(function(n) {
-                        if (!/dojo\//.test(n.type))
+                        if (n.src)
+                        {
+                            dojo.xhrGet({
+                                url: n.src,
+                                sync: true,
+                                handleAs: 'javascript',
+                                load: function(response, ioArgs) {
+                                    dojo.eval(response);
+                                    return response;
+                                }
+                            });
+                        }
+                        else if (!/dojo\//.test(n.type))
                         {
                             dojo.eval(dojox.data.dom.textContent(n));
                         }
