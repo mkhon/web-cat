@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.22 2009/06/02 19:56:23 aallowat Exp $
+ |  $Id: Submission.java,v 1.23 2009/07/14 14:38:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *  Represents a single student assignment submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: Submission.java,v 1.22 2009/06/02 19:56:23 aallowat Exp $
+ *  @version $Id: Submission.java,v 1.23 2009/07/14 14:38:48 aallowat Exp $
  */
 public class Submission
     extends _Submission
@@ -685,9 +685,9 @@ public class Submission
         NSArray<Submission> subs = allSubmissions();
 
         if (subs != null && subs.count() >= 1 &&
-                number >= 0 && number < subs.count())
+                number >= 1 && number <= subs.count())
         {
-            return subs.objectAtIndex(number);
+            return subs.objectAtIndex(number - 1);
         }
         else
         {
@@ -936,6 +936,48 @@ public class Submission
         {
             return false;
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the next earliest submission to this one in the submission chain
+     * that has any data (LOC, coverage, or correctness score).
+     *
+     * @return the previous submission with any data, or null if there were no
+     *     submissions before this one that had any data
+     */
+    public Submission previousSubmissionWithAnyData()
+    {
+        Submission prevSub = previousSubmission();
+        
+        while (prevSub != null && !prevSub.hasAnyData())
+        {
+            prevSub = prevSub.previousSubmission();
+        }
+        
+        return prevSub;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the first submission following this one in the submission chain
+     * that has any data (LOC, coverage, or correctness score).
+     *
+     * @return the next submission with any data, or null if there were no
+     *     submissions after this one that had any data
+     */
+    public Submission nextSubmissionWithAnyData()
+    {
+        Submission nextSub = nextSubmission();
+        
+        while (nextSub != null && !nextSub.hasAnyData())
+        {
+            nextSub = nextSub.nextSubmission();
+        }
+        
+        return nextSub;
     }
 
 
