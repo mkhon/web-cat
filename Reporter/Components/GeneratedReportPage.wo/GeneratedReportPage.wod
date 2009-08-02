@@ -96,3 +96,7 @@ SaveAllCSV: WOHyperlink {
 SaveOneCSV: WOHyperlink {
     action = saveOneCSV;
 }
+
+ReportIsReady: WOConditional {
+    condition = "~isReportComplete && !generatedReportErrors";
+}

@@ -1,5 +1,5 @@
 <wo:loop list="$errors" item="$error">
-    <div class="<wo:str value="$errorCssClass"/>">
+    <wo:WOGenericContainer elementName="div" class="$errorCssClass">
         <b><wo:str value="$errorSeverity"/>:</b>
         <wo:loop list="$error.chain" item="$chainEntry">
             <wo:if condition="$isChainEntryFirst">
@@ -15,5 +15,5 @@
                 </span>
             </wo:else>
         </wo:loop>
-    </div>
+    </wo:WOGenericContainer>
 </wo:loop>

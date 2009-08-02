@@ -37,7 +37,7 @@
     <div id="errorNotification" class="errorBox" style="display: none">
     Your report caused errors that prevented it from being completely generated.
     <wo name="ClickToSeeErrors">Click here</wo> to see them.
-    </div>	
+    </div>
 
 	<div dojoType="dijit.Toolbar">
 		<wo name="GoToFirstPage">
@@ -83,7 +83,7 @@
 	        <wo:WCDiv dojoType="dijit.TooltipDialog" style="display: none">
 	           <wo:WCContentPane id="saveDialogContainer">
 	               <wo:WCForm>
-	               <wo:if condition="~isReportComplete && !generatedReportErrors">
+	               <wo name="ReportIsReady">
 	                   <fieldset>
                        Save this report as:
                        <ul>
@@ -101,7 +101,7 @@
                            </wo:loop>
                        </ul>
                        </fieldset>
-	               </wo:if><wo:else>
+	               </wo><wo:else>
 	                   These options are only available when the report has
 	                   been completed.
 	               </wo:else>
@@ -112,7 +112,7 @@
 	</div>
 
     <wo name="CurrentReportPageContainer">
-        <wo:if condition="~currentPageNumber gt 0"> 
+        <wo:if condition="~currentPageNumber gt 0">
             <wo name="CurrentReportPageContent"/>
         </wo:if>
     </wo>
