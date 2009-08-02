@@ -6,7 +6,7 @@
             rhs = {
                 class = com.webobjects.directtoweb.Assignment;
                 keyPath = backgroundColorForTable;
-                value = "#ffffff";
+                value = "transparent";
             };
         },
         {

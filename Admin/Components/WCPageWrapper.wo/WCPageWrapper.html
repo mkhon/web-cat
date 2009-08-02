@@ -1,3 +1,10 @@
-<webobject name="PlainPage"><webobject name="Header"/>
-<center><webobject name="Body"/></center>
-</webobject>
+<wo:if condition="$alreadyWrapped">
+<wo:content _unroll="YES"/>
+</wo:if><wo:else>
+<wo:WCPageWithNavigation>
+<wo:net.sf.webcat.core.WCPageModule title="$session.tabs.selectedDescendant.label">
+<wo:net.sf.webcat.admin.WCMenuHeader/>
+<div class="dtw"><wo:content _unroll="YES"/></div>
+</wo:net.sf.webcat.core.WCPageModule>
+</wo:WCPageWithNavigation>
+</wo:else>

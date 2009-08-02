@@ -41,9 +41,9 @@ Page: net.sf.webcat.core.PageWithNavigation {
 	title = "View System Properties";
 }
 
-SetProperty: WOSubmitButton {
+SetProperty: WCButton {
     action = setNewProperty;
-    value  = " Set Property ";
+    label  = "Set Property";
 }
 
 TR: net.sf.webcat.core.TableRow {

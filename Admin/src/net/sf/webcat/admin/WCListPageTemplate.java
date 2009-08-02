@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCListPageTemplate.java,v 1.5 2008/10/29 14:16:31 aallowat Exp $
+ |  $Id: WCListPageTemplate.java,v 1.6 2009/08/02 15:01:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * The template for D2W list pages in Web-CAT.
  *
  * @author edwards
- * @version $Id: WCListPageTemplate.java,v 1.5 2008/10/29 14:16:31 aallowat Exp $
+ * @version $Id: WCListPageTemplate.java,v 1.6 2009/08/02 15:01:40 stedwar2 Exp $
  */
 public class WCListPageTemplate
     extends er.directtoweb.pages.ERD2WListPage
@@ -109,6 +109,23 @@ public class WCListPageTemplate
                 log.debug("Found sort Orderings in rules " + sortOrderings);
         }
         return sortOrderings;
+    }
+
+
+    // ----------------------------------------------------------
+    public String cssClassForRow()
+    {
+        String result = "o";
+        _rowFlip = !_rowFlip;
+        if (alternateRowColor() && _rowFlip)
+        {
+            result = "e";
+        }
+        if (isSelecting() && selectedObjects().containsObject(object()))
+        {
+            result += " selected";
+        }
+        return result;
     }
 
 

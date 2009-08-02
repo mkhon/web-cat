@@ -1,4 +1,4 @@
-<webobject name="PageWrapper"><center>
+<webobject name="PageWrapper">
       <webobject name="IsToMany">
          <webobject name="EditingForm">
             <webobject name="InspectTable">
@@ -29,13 +29,22 @@
             </webobject>
          </webobject>
       </webobject>
+      <table style="border:none"><tr><td>
       <webobject name="ButtonForm">
       <webobject name="ReturnLink"/>
-      <webobject name="QueryLink"/>
+      <wo:not condition="$displayQuery"><webobject name="QueryLink"/></wo:not>
       <webobject name="IsEntityWritable"><webobject name="NewLink"/></webobject>
-      </webobject>
-      <hr/>
-      <webobject name="DisplayQuery"><webobject name="QueryComponent"/></webobject>
-      <webobject name="DisplayList"><webobject name="ListComponent"/></webobject>
-      <webobject name="DisplayNew"><webobject name="InspectComponent"/></webobject>
-</center></webobject>
+      </webobject></td></tr></table>
+      <webobject name="DisplayQuery">
+      <wo:net.sf.webcat.core.WCPageModule title="Search for More">
+      <wo name="QueryComponent"/>
+      </wo:net.sf.webcat.core.WCPageModule></webobject>
+      <webobject name="DisplayList">
+      <wo:net.sf.webcat.core.WCPageModule title="Select a Target">
+      <wo name="ListComponent"/>
+      </wo:net.sf.webcat.core.WCPageModule></webobject>
+      <webobject name="DisplayNew">
+      <wo:net.sf.webcat.core.WCPageModule title="Create a New Target">
+      <wo name="InspectComponent"/>
+      </wo:net.sf.webcat.core.WCPageModule></webobject>
+</webobject>

@@ -7,9 +7,9 @@ CannotRestart: WOConditional {
     negate    = true;
 }
 
-DieNow: WOSubmitButton {
+DieNow: WCButton {
     action = dieNow;
-    value = " Die! Die! Die! ";
+    label  = "Die! Die! Die!";
 }
 
 Form: WOForm {
@@ -17,9 +17,9 @@ Form: WOForm {
     enctype="multipart/form-data";
 }
 
-GracefulShutdown: WOSubmitButton {
+GracefulShutdown: WCButton {
     action = gracefulShutdown;
-    value = " Graceful Shutdown ";
+    label  = "Graceful Shutdown";
 }
 
 Page : net.sf.webcat.core.WCPageWithNavigation {
@@ -31,6 +31,6 @@ SystemStatus: SystemStatusBlock {
     startOpen        = true;
 }
 
-ThrowException: net.sf.webcat.ui.WCButton {
+ThrowException: WCButton {
     action = throwException;   // VALID
 }

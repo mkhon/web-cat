@@ -45,7 +45,7 @@ RegularQueryHyperlink: WOHyperlink {
 }
 
 RowContainer: WOGenericContainer {
-	bgcolor = backgroundColorForRow;
+	class = cssClassForRow;
 	elementName = "tr";
 }
 
@@ -53,10 +53,11 @@ SearchButtonImage: WOActiveImage {
 	action = queryAction;
 	alt = "Find objects matching the query";
 	border = "0";
-	filename = "ButtonSmallSearch.gif";
-	framework = "JavaDirectToWeb";
-	height = "18";
+	filename = "icons/magnifier.png";
+	framework = "Core";
+	height = "16";
 	title = "Find objects matching the query";
-	width = "19";
+	width = "16";
+	class = "icon";
 }
 

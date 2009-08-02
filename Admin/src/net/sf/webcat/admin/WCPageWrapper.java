@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCPageWrapper.java,v 1.3 2008/04/02 00:56:34 stedwar2 Exp $
+ |  $Id: WCPageWrapper.java,v 1.4 2009/08/02 15:01:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * The page wrapper for direct-to-web pages.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCPageWrapper.java,v 1.3 2008/04/02 00:56:34 stedwar2 Exp $
+ *  @version $Id: WCPageWrapper.java,v 1.4 2009/08/02 15:01:40 stedwar2 Exp $
  */
 public class WCPageWrapper
     extends WOComponent
@@ -56,6 +56,8 @@ public class WCPageWrapper
     public String  stylesheet;
     public String  externalJavascript;
     public String  inlineHeaderContents;
+    public boolean alreadyWrapped = false;
+    public String  title;
 
 
     //~ Methods ...............................................................
@@ -68,8 +70,28 @@ public class WCPageWrapper
     {
         log.debug( "appendToResponse()" );
         // TODO Auto-generated method stub
+        if (parent() != null && parent().parent() != null)
+        {
+            alreadyWrapped = true;
+            title = "Target(s)";
+        }
+        else
+        {
+            title = ((Session)session()).tabs.selectedDescendant().label();
+        }
         super.appendToResponse( arg0, arg1 );
-        log.debug( "container = " + arg1.page().getClass().getName() );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "container = " + arg1.page().getClass().getName() );
+            WOComponent c = this.parent();
+            String result = this.getClass().getName();
+            while (c != null)
+            {
+                result += ", " + c.getClass().getName();
+                c = c.parent();
+            }
+            log.debug("ancestors: " + result);
+        }
     }
 
 

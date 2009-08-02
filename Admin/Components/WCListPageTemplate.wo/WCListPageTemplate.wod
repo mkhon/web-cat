@@ -153,7 +153,6 @@ ListNotEmpty: WOConditional {
 
 ListTable: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = d2wContext.backgroundColorForTable;
 	border = d2wContext.border;
 	cellpadding = 3;
 	cellspacing = 0;
@@ -208,10 +207,9 @@ ReturnButton: WOImage {
 }
 
 RowContainer: WOGenericContainer {
-	align = "center";
-	bgcolor = backgroundColorForRow;
+	style = "text-align: center; vertical-align: middle;";
+	class = cssClassForRow;
 	elementName = "tr";
-	valign = "middle";
 }
 
 SelectEO: WOHyperlink {

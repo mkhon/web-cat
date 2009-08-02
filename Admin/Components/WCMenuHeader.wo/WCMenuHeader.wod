@@ -1,4 +1,4 @@
-EntitiesForm: WOForm {
+EntitiesForm: WCForm {
     multipleSubmit = true;
     enctype="multipart/form-data";
 }
@@ -9,23 +9,23 @@ EntitiesPopup: WOPopUpButton {
 	selection = manipulatedEntityName;
 }
 
-FindButton: WOSubmitButton {
+FindButton: WCButton {
 	action = findEntityAction;
-	value  = " Find ";
+	label  = "Find";
 }
 
 HasValidSession: WOConditional {
 	condition = context.hasSession;
 }
 
-QueryAllLink: WOSubmitButton {
+QueryAllLink: WCButton {
     action = queryAllAction;
-    value  = " Query All ";
+    label  = "Query All";
 }
 
-NewButton: WOSubmitButton {
+NewButton: WCButton {
 	action = newObjectAction;
-	value  = " New ";
+	label  = "New";
 }
 
 NoValidSession: WOConditional {

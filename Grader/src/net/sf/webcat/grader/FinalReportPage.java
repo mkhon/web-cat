@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.15 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: FinalReportPage.java,v 1.16 2009/08/02 15:00:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.15 2008/10/29 14:15:21 aallowat Exp $
+ * @version $Id: FinalReportPage.java,v 1.16 2009/08/02 15:00:18 stedwar2 Exp $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -79,7 +79,6 @@ public class FinalReportPage
     public int refreshTimeout = 15;
     /** The report object */
     public ResultFile report;
-    public ResultFile selectedReport = null;
     /** Array of all the downloadable report files */
     public NSArray reportArray;
 
@@ -135,18 +134,13 @@ public class FinalReportPage
      */
     public WOComponent fileDeliveryAction()
     {
-        if (selectedReport == null)
-        {
-            error("Please select a file to download first.");
-            return null;
-        }
         DeliverFile download =
-            (DeliverFile)pageWithName( DeliverFile.class.getName() );
+            (DeliverFile)pageWithName(DeliverFile.class.getName());
         download.setFileName(
-            new File( submission.resultDirName(),
-                      selectedReport.fileName() ) );
-        download.setContentType( selectedReport.mimeType() );
-        download.setStartDownload( true );
+            new File(submission.resultDirName(),
+                     report.fileName()));
+        download.setContentType(report.mimeType());
+        download.setStartDownload(true);
         return download;
     }
 
@@ -503,6 +497,22 @@ public class FinalReportPage
             }
         }
         return showAutoGradedComments;
+    }
+
+
+    // ----------------------------------------------------------
+    public String reportFileName()
+    {
+        String name = report.fileName();
+        if (name != null)
+        {
+            int pos = name.lastIndexOf('/');
+            if (pos >= 0)
+            {
+                name = name.substring(pos + 1);
+            }
+        }
+        return name;
     }
 
 

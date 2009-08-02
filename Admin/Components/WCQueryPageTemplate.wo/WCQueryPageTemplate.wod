@@ -46,11 +46,10 @@ QuerySubmitButton: WOActiveImage {
 
 QueryTable: WOGenericContainer {
 	_unroll = YES;
-	bgcolor = d2wContext.backgroundColorForTable;
 	border = d2wContext.border;
 	cellpadding = 3;
 	cellspacing = 0;
-	elementName = "Table";
+	elementName = "table";
 }
 
 QueryTableHeaderRow: WOGenericContainer {
@@ -78,6 +77,6 @@ ResourceRepetition: WORepetition {
 }
 
 RowContainer: WOGenericContainer {
-	bgcolor = backgroundColorForRow;
+	class = cssClassForRow;
 	elementName = "tr";
 }

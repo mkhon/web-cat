@@ -2,11 +2,7 @@ Body: WOComponentContent {
 	_unroll = YES;
 }
 
-PlainPage: net.sf.webcat.core.PageWithNavigation {
-	title 				 = "Edit Database";
-    stylesheet           = stylesheet;
-    externalJavascript   = externalJavascript;
-    inlineHeaderContents = inlineHeaderContents;
+PlainPage: WCPageWithNavigation {
 }
 
 Header: net.sf.webcat.admin.WCMenuHeader {

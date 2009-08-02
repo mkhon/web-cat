@@ -149,7 +149,7 @@ ReturnLink: WOHyperlink {
 }
 
 RowContainer: WOGenericContainer {
-	bgcolor = backgroundColorForRow;
+	class = cssClassForRow;
 	elementName = "tr";
 }
 
