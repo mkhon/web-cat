@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.2 2009/06/16 14:16:49 stedwar2 Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.3 2009/08/02 14:55:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,7 @@ import net.sf.webcat.ui.WCBasePage;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: WCPageWithNavigation.java,v 1.2 2009/06/16 14:16:49 stedwar2 Exp $
+ * @version $Id: WCPageWithNavigation.java,v 1.3 2009/08/02 14:55:56 stedwar2 Exp $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -61,6 +61,7 @@ public class WCPageWithNavigation
     public WCComponent   thisPage;
     public String        sideStepTitle;
     public boolean       hideSteps = false;
+    public String        permalink;
 
     // Repetition variables
     public TabDescriptor primaryTabItem;

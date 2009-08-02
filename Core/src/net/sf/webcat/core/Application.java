@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.41 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: Application.java,v 1.42 2009/08/02 14:55:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @version $Id: Application.java,v 1.41 2009/04/27 17:10:53 stedwar2 Exp $
+ * @version $Id: Application.java,v 1.42 2009/08/02 14:55:56 stedwar2 Exp $
  */
 public class Application
 	extends er.extensions.appserver.ERXApplication
@@ -755,7 +755,7 @@ public class Application
         }
         if ( requestLog.isDebugEnabled() )
         {
-            requestLog.debug( "dispatchRequest():\n\tmethod = "
+            requestLog.debug( "dispatchRequest(): method = "
                 + aRequest.method() );
             requestLog.debug( "\tqueryString = " + aRequest.queryString() );
             requestLog.debug( "\trequestHandlerKey = "

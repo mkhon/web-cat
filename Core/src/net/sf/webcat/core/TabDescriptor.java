@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: TabDescriptor.java,v 1.5 2009/04/27 17:10:53 stedwar2 Exp $
+ |  $Id: TabDescriptor.java,v 1.6 2009/08/02 14:55:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  what level it is at in hierarchical navigation.
  *
  *  @author Stephen Edwards
- *  @version $Id: TabDescriptor.java,v 1.5 2009/04/27 17:10:53 stedwar2 Exp $
+ *  @version $Id: TabDescriptor.java,v 1.6 2009/08/02 14:55:56 stedwar2 Exp $
  */
 public class TabDescriptor
 {
@@ -916,6 +916,11 @@ public class TabDescriptor
                 settings.objectForKey( "wantsStart" ), false );
             NSDictionary children =
                 (NSDictionary)settings.objectForKey( "children" );
+            String overridingLabel = (String)settings.objectForKey("label");
+            if (overridingLabel != null)
+            {
+                label = overridingLabel;
+            }
             tabs.addObject( new TabDescriptor(
                 pageName,
                 label,
