@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTable.java,v 1.4 2009/06/10 17:51:37 aallowat Exp $
+ |  $Id: WCTable.java,v 1.5 2009/08/03 18:57:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -104,7 +104,7 @@ import er.extensions.foundation.ERXStringUtilities;
  *     selected at a time (defaults to false)     
  * 
  * @author Tony Allevato
- * @version $Id: WCTable.java,v 1.4 2009/06/10 17:51:37 aallowat Exp $
+ * @version $Id: WCTable.java,v 1.5 2009/08/03 18:57:36 aallowat Exp $
  */
 public class WCTable extends WOComponent
 {
@@ -265,7 +265,8 @@ public class WCTable extends WOComponent
         String sortingKeyPath = (String) columnInRepetition.objectForKey(
                 "sortingKeyPath");
         
-        return (sortingKeyPath != null || !keyPath.startsWith("~"));
+        return (sortingKeyPath != null ||
+                (keyPath != null && !keyPath.startsWith("~")));
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ActionURLCell.java,v 1.2 2009/06/09 17:25:12 aallowat Exp $
+ |  $Id: ActionURLCell.java,v 1.3 2009/08/03 18:57:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,8 @@ import com.webobjects.foundation.NSDictionary;
 
 //------------------------------------------------------------------------
 /**
- * A cell that contains a simple string value.
+ * A cell containing a formatted string value that can be clicked on to perform
+ * an action.
  *
  * <p><b>Cell Properties</b></p>
  * <ul>
@@ -48,7 +49,7 @@ import com.webobjects.foundation.NSDictionary;
  * </ul>
  * 
  * @author Tony Allevato
- * @version $Id: ActionURLCell.java,v 1.2 2009/06/09 17:25:12 aallowat Exp $
+ * @version $Id: ActionURLCell.java,v 1.3 2009/08/03 18:57:36 aallowat Exp $
  */
 public class ActionURLCell extends WCTableCell
 {
