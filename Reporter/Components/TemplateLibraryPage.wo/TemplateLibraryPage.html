@@ -7,7 +7,7 @@
     Displays the table of published report templates if any exist.
 -->
 <wo:if condition="$publishedTemplateGroup.displayedObjects.count">
-    <div class="shadow"><table><tbody>
+    <div class="shadow"><table><thead>
     <tr>
         <th>Published Report Templates
             <wo:if condition="$terse"><wo name="VerboseDescriptions"/></wo:if>
@@ -16,7 +16,7 @@
         <th class="sm">Upload Date</th>
         <th>Will Update?</th>
         <th>Action</th>
-    </tr>
+    </tr></thead><tbody>
     <wo:loop list="$publishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
         <wo:tr index="$index">
             <td>
@@ -51,7 +51,7 @@
 <wo:if condition="$user.hasAdminPrivileges">
     <wo:WCPageModule title="Unpublished Report Templates (for Individual Use)">
     <wo:if condition="$unpublishedTemplateGroup.displayedObjects.count">
-        <div class="shadow"><table><tbody>
+        <div class="shadow"><table><thead>
         <tr>
             <th>Unpublished Report Templates
                 <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
@@ -60,7 +60,7 @@
             <th class="sm">Upload Date</th>
             <th>Will Update?</th>
             <th>Action</th>
-        </tr>
+        </tr></thead><tbody>
         <wo:loop list="$unpublishedTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
             <wo:tr index="$index">
                 <td>
@@ -96,7 +96,7 @@
 <wo:else>
     <wo:WCPageModule title="Personal Report Templates (for Your Individual Use)">
     <wo:if condition="$personalTemplateGroup.displayedObjects.count">
-        <div class="shadow"><table><tbody>
+        <div class="shadow"><table><thead>
         <tr>
             <th>Your Personal Report Templates
                 <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
@@ -105,7 +105,7 @@
             <th class="sm">Upload Date</th>
             <th>Will Update?</th>
             <th>Action</th>
-        </tr>
+        </tr></thead><tbody>
         <wo:loop list="$personalTemplateGroup.displayedObjects" item="$reportTemplate" index="$index">
             <wo:tr index="$index">
                 <td>
