@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.9 2009/05/29 15:05:55 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.10 2009/09/06 02:41:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -30,8 +30,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.9 $ $Date: 2009/05/29 15:05:55 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.10 $ $Date: 2009/09/06 02:41:18 $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -197,7 +197,15 @@ public class EditSubmissionProfilePage
     // ----------------------------------------------------------
     public WOComponent next()
     {
-        saveTimeFields();
+        applyLocalChanges();
+        return super.next();
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent cancel()
+    {
+        cancelLocalChanges();
         return super.next();
     }
 

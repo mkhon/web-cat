@@ -1,13 +1,3 @@
-Back: WOSubmitButton {
-    action = back;
-    value  = " < Back ";
-}
-
-BackForm: WOForm {
-    action = back;
-	multipleSubmit = true;
-}
-
 Properties: WORepetition {
 	item  = property;
 	list  = propertyDisplayGroup.displayedObjects;
@@ -35,10 +25,6 @@ Value: WOString {
 
 ValueField: WOTextField {
 	value = newPropertyValue;
-}
-
-Page: net.sf.webcat.core.PageWithNavigation {
-	title = "View System Properties";
 }
 
 SetProperty: WCButton {

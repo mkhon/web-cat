@@ -33,15 +33,9 @@ QueryForm: WOForm {
 	action = queryAction;
 }
 
-QuerySubmitButton: WOActiveImage {
+QuerySubmitButton: WCButton {
 	action = queryAction;
-	alt = "Find objects matching the query";
-	title = "Find objects matching the query";
-	border = "0";
-	filename = "QueryDBMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	width = "88";
+	label  = "Query DB";
 }
 
 QueryTable: WOGenericContainer {

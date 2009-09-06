@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: FooPage.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ |  $Id: FooPage.java,v 1.3 2009/09/06 02:39:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,10 +22,6 @@
 package net.sf.webcat.admin;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
-import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -33,7 +29,8 @@ import org.apache.log4j.Logger;
  * A property listing page.
  *
  *  @author edwards
- *  @version $Id: FooPage.java,v 1.2 2008/04/02 00:56:34 stedwar2 Exp $
+ *  @author Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.3 $, $Date: 2009/09/06 02:39:31 $
  */
 public class FooPage
     extends WOComponent
@@ -53,9 +50,6 @@ public class FooPage
 
 
     // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see com.webobjects.appserver.WOComponent#appendToResponse(com.webobjects.appserver.WOResponse, com.webobjects.appserver.WOContext)
-     */
     public void appendToResponse( WOResponse arg0, WOContext arg1 )
     {
         log.debug( "appendToResponse()" );
@@ -64,5 +58,5 @@ public class FooPage
     }
 
     //~ Instance/static variables .............................................
-    static Logger log = Logger.getLogger( PropertyListPage.class );
+    static Logger log = Logger.getLogger( FooPage.class );
 }

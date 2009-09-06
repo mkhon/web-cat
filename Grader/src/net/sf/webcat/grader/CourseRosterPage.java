@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: CourseRosterPage.java,v 1.13 2009/09/06 02:41:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -37,7 +37,8 @@ import org.apache.log4j.Logger;
  * allows new users to be added.
  *
  * @author Stephen Edwards
- * @version $Id: CourseRosterPage.java,v 1.12 2008/10/29 14:15:21 aallowat Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.13 $, $Date: 2009/09/06 02:41:18 $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -96,10 +97,10 @@ public class CourseRosterPage
                 "authenticationDomain.propertyName" );
             firstLoad = false;
         }
-        if (manuallyAdding)
-        {
+//        if (manuallyAdding)
+//        {
             notStudentDisplayGroup.fetch();
-        }
+//        }
         super.appendToResponse( response, context );
         oldBatchSize1  = studentDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex1 = studentDisplayGroup.currentBatchIndex();
@@ -162,20 +163,19 @@ public class CourseRosterPage
 
 
     // ----------------------------------------------------------
-    public WOComponent next()
+    public WOComponent save()
     {
-        log.debug( "defaultAction()" );
-        if (  filePath != null
-           && !filePath.equals( "" )
-           && data != null
-           && data.length() > 0 )
-        {
-            return upload();
-        }
-        else
-        {
-            return super.next();
-        }
+        apply();
+        return super.next();
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent cancel()
+    {
+        clearMessages();
+        cancelLocalChanges();
+        return super.next();
     }
 
 
@@ -186,7 +186,7 @@ public class CourseRosterPage
      */
     public WOComponent removeStudent()
     {
-        courseOffering().removeFromStudentsRelationship( student );
+        courseOffering().removeFromStudentsRelationship(student);
         applyLocalChanges();
         return null;
     }
@@ -201,6 +201,7 @@ public class CourseRosterPage
     {
         courseOffering().addToStudentsRelationship( student );
         applyLocalChanges();
+        manuallyAdding = true;
         return null;
     }
 

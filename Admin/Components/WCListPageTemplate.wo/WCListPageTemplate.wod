@@ -25,14 +25,6 @@ AttributeSorter: net.sf.webcat.core.WCSortOrder {
 	key = d2wContext.propertyKey;
 }
 
-BackLink2: WOHyperlink {
-	action = backAction;
-}
-
-BackLink: WOHyperlink {
-	action = backAction;
-}
-
 ColumnLabelRepetition: WORepetition {
 	_unroll = YES;
 	item = d2wContext.propertyKey;
@@ -186,24 +178,9 @@ PropertyName: WOString {
 	value = d2wContext.displayNameForProperty;
 }
 
-ReturnButton2: WOImage {
-	alt = "Return to the previous page";
-	title = "Return to the previous page";
-	border = "0";
-	filename = "ReturnMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	width = "88";
-}
-
-ReturnButton: WOImage {
-	alt = "Return to the previous page";
-	title = "Return to the previous page";
-	border = "0";
-	filename = "ReturnMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	width = "88";
+ReturnButton: WCButton {
+    label  = "Return";
+    action = backAction;
 }
 
 RowContainer: WOGenericContainer {

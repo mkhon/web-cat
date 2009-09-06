@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.3 2009/08/02 14:55:56 stedwar2 Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.4 2009/09/06 02:40:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,7 +34,8 @@ import net.sf.webcat.ui.WCBasePage;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @version $Id: WCPageWithNavigation.java,v 1.3 2009/08/02 14:55:56 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2009/09/06 02:40:42 $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -435,28 +436,28 @@ public class WCPageWithNavigation
     // ----------------------------------------------------------
     public boolean hasVisibleSecondaryTabs()
     {
-        boolean result = false;
+        int count = 0;
         Session session = (Session)session();
         if ( session.user() == null || session.user().restrictToStudentView() )
         {
-            NSArray<TabDescriptor> secondaries = session.tabs.selectedChild()
-                .children();
-            for ( int i = 0; i < secondaries.count(); i++ )
+            NSArray<TabDescriptor> secondaries = primaryTabItem.children();
+            for (TabDescriptor secondary : secondaries)
             {
-                TabDescriptor secondary = secondaries.objectAtIndex( i );
-                if ( secondary.accessLevel() == 0 )
+                if (secondary.accessLevel() == 0)
                 {
-                    result = true;
-                    break;
+                    count++;
+                    if (count > 1)
+                    {
+                        break;
+                    }
                 }
             }
         }
         else
         {
-            result = session.tabs.selectedChild().children()
-                .count() > 0;
+            count = primaryTabItem.children().count();
         }
-        return result;
+        return count > 1;
     }
 
 

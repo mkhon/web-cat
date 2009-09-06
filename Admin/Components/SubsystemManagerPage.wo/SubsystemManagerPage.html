@@ -1,14 +1,14 @@
 <wo name="Page">
 <wo:net.sf.webcat.core.WCPageModule title="Installed Subsystems">
 <webobject name="Form2">
-<table><tbody><tr><th>Installed Subsystems
+<table><thead><tr><th>Installed Subsystems
 <webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
 <webobject name="IsTerse"><webobject name="VerboseDescriptions"/></webobject>
 </th>
   <th>Build Date</th><th>Will Update?</th><th>Action</th></tr>
-<webobject name="SubsystemRepetition">
+</thead><tbody><webobject name="SubsystemRepetition">
 <webobject name="TR">
-<td><b><webobject name="Name"/> <webobject name="Version"/></b>
+<td><b><wo:if condition="$subsystemInfoUrl"><webobject name="Name"/></wo:if><wo:else><wo:str value="$subsystem.name"/></wo:else> <webobject name="Version"/></b>
 <webobject name="UpToDate">(up to date</webobject><webobject name="OutOfDate">(<b class="warn">v.<webobject name="NewVersion"/>
 is available</b></webobject><webobject name="HasHistory">, <webobject name="History">history</webobject></webobject>)
 <webobject name="IsVerbose"><br/><b>Description:</b> <webobject name="Description"/></webobject></td>
@@ -27,14 +27,14 @@ is available</b></webobject><webobject name="HasHistory">, <webobject name="Hist
 <wo:net.sf.webcat.core.WCPageModule title="Available for Web-based Installation" open="false">
 <wo:WOForm multipleSubmit="true">
 <webobject name="NewSubsystemsAvailable">
-<div class="shadow"><table><tbody><tr><th>Available for Installation
+<table><thead><tr><th>Available for Installation
 <webobject name="IsVerbose"><webobject name="TerseDescriptions"/></webobject>
 <webobject name="IsTerse"><webobject name="VerboseDescriptions"/></webobject>
 </th>
-  <th>Build Date</th><th>Download?</th></tr>
+  <th>Build Date</th><th>Download?</th></tr></thead><tbody>
 <webobject name="NewSubsystemRepetition">
 <webobject name="TR">
-<td><b><webobject name="NewName"/> <webobject name="NewNewVersion"/></b>
+<td><b><wo:if condition="$featureInfoUrl"><webobject name="NewName"/></wo:if><wo:else><wo:str value="$feature.name"/></wo:else> <webobject name="NewNewVersion"/></b>
 <webobject name="NewHasHistory">(<webobject name="NewHistory">history</webobject>)</webobject>
 <webobject name="IsVerbose"><br/><b>Provider:</b> <webobject name="NewProvider"/>
 <br/><b>URL:</b> <webobject name="NewProviderURL"/>
@@ -43,8 +43,7 @@ is available</b></webobject><webobject name="HasHistory">, <webobject name="Hist
 <td><webobject name="CanUpdate"><webobject name="DownloadNewNow"/></webobject>
 <webobject name="CannotUpdate">install manually</webobject>
 </td>
-</webobject></webobject></tbody></table></div>
-<div class="spacer">&nbsp;</div>
+</webobject></webobject></tbody></table>
 </webobject><webobject name="NoNewSubsystemsAvailable">
 <p>After scanning known providers, no new subsystems were detected.</p>
 </webobject>

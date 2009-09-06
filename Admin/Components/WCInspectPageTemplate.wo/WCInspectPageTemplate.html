@@ -1,20 +1,17 @@
 <webobject name="PageWrapper">
    <webobject name="EditingForm">
       <webobject name="ErrorPanel">
-         <table border="2" cellpadding="2" bgcolor="#FF0000">
-            <tr>
-               <td> <font color="#FFFFFF"><b>
-                  <webobject name="ErrorMessage"/></b></font></td>
-            </tr>
-         </table>
-         <br/>
+         <ul class="NoticePanel error">
+            <li class="error"><webobject name="ErrorMessage"/></li>
+         </ul>
       </webobject>
       <webobject name="InspectTable">
-         <webobject name="BannerConditional">
+         <webobject name="BannerConditional"><thead>
             <webobject name="InspectTableHeaderRow">
                <th colspan="2"><webobject name="EntityName"/></th>
             </webobject>
-         </webobject>
+         </thead></webobject>
+         <tbody>
          <webobject name="AttributeRepetition">
             <webobject name="RowContainer">
                <td align="right"><strong><webobject name="AttributeName"/>:</strong></td>
@@ -23,25 +20,25 @@
          </webobject>
          <webobject name="RowContainer">
             <td align="center" colspan="2">
-               <table style="border:none">
+               <table class="layout" style="margin:0;">
                   <tr>
                      <webobject name="IsEntityWritable">
                         <td align="right">
-                           <webobject name="DeleteLink"><webobject name="DeleteButton"/></webobject>
+                           <wo name="DeleteButton"/>
                         </td>
                      </webobject>
                      <td align="center">
                         <webobject name="IsEditingConditional">
-                           <webobject name="CancelLink"><webobject name="CancelButton"/></webobject>
+                           <wo name="CancelButton"/>
                         </webobject>
                         <webobject name="IsNotEditingConditional">
-                           <webobject name="ShowCancel"><webobject name="ReturnLink"><webobject name="ReturnButton"/></webobject></webobject>
+                           <webobject name="ShowCancel"><wo name="ReturnButton"/></webobject>
                         </webobject>
                      </td>
                      <td align="left">
                         <webobject name="IsEntityWritable2">
                            <webobject name="IsNotEditingConditional2">
-                              <webobject name="EditLink"><webobject name="EditImage"/></webobject>
+                              <wo name="EditButton"/>
                            </webobject>
                         </webobject>
                         <webobject name="IsEditingConditional2">
@@ -52,6 +49,7 @@
                </table>
             </td>
          </webobject>
+         </tbody>
       </webobject>
    </webobject>
 </webobject>

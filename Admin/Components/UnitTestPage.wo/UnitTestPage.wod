@@ -56,10 +56,6 @@ SubmitButton3: WCButton {
 	action = saveSettings;
 }
 
-Page: net.sf.webcat.core.PageWithNavigation {
-	title = "Unit Test Control Panel";
-}
-
 UTTestResultDisplay1: WOUTTestResultDisplay {
 	runner = runner;
 }

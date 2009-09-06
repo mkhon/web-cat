@@ -22,46 +22,20 @@ BannerConditional: WOConditional {
 	condition = showBanner;
 }
 
-CancelButton: WOImage {
-	alt = "Revert your changes";
-	border = "0";
-	filename = "CancelMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	title = "Revert your changes";
-	width = "88";
-}
-
-CancelLink: WOHyperlink {
+CancelButton: WCButton {
 	action = cancelAction;
+	label  = "Cancel";
+	class  = "neg";
 }
 
-DeleteButton: WOImage {
-	alt = "Delete this object";
-	border = "0";
-	filename = "DeleteMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	title = "Delete this object";
-	width = "88";
-}
-
-DeleteLink: WOHyperlink {
+DeleteButton: WCButton {
+    label = "Delete";
 	action = deleteAction;
 }
 
-EditImage: WOImage {
-	alt = "Edit this object";
-	border = "0";
-	filename = "EditMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	title = "Edit this object";
-	width = "88";
-}
-
-EditLink: WOHyperlink {
+EditButton: WCButton {
 	action = editAction;
+	label  = "Edit";
 }
 
 EditingForm: WOForm {
@@ -134,17 +108,8 @@ PageWrapper: WOSwitchComponent {
     externalJavascript   = "Grader.framework/WebServerResources/jscalendar/calendar.js,Grader.framework/WebServerResources/jscalendar/lang/calendar-en.js,Grader.framework/WebServerResources/jscalendar/calendar-setup.js";
 }
 
-ReturnButton: WOImage {
-	alt = "Return to the previous page";
-	border = "0";
-	filename = "ReturnMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	title = "Return to the previous page";
-	width = "88";
-}
-
-ReturnLink: WOHyperlink {
+ReturnButton: WCButton {
+    label = "Return";
 	action = nextPage;
 }
 
@@ -157,14 +122,9 @@ ShowCancel: WOConditional {
 	condition = showCancel;
 }
 
-SubmitChanges: WOImageButton {
+SubmitChanges: WCButton {
 	action = submitAction;
-	alt = "Save your changes";
-	border = "0";
-	filename = "SaveMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	title = "Save your changes";
-	width = "88";
+	label  = "Save";
+	class  = "pos";
 }
 

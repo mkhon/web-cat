@@ -1,4 +1,4 @@
-Form1: WOForm {
+Form1: WCForm {
 	multipleSubmit = true;
 	_unroll = true;
 }
@@ -8,14 +8,10 @@ Message: WOString {
 	value      = message;
 }
 
-NoButton: WOImageButton {
+NoButton: WCButton {
 	action = cancelAction;
-	alt = "No";
-	title = "No";
-	filename = "NoMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	width = "88";
+	label  = "No";
+	class  = "neg";
 }
 
 PageWrapper: WOSwitchComponent {
@@ -24,12 +20,8 @@ PageWrapper: WOSwitchComponent {
 	_unroll          = true;
 }
 
-YesButton: WOImageButton {
+YesButton: WCButton {
 	action = confirmAction;
-	alt = "Yes";
-	title = "Yes";
-	filename = "YesMetalBtn.gif";
-	framework = "JavaDirectToWeb";
-	height = "31";
-	width = "88";
+	label  = "Yes";
+	class  = "pos";
 }

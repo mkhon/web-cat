@@ -186,7 +186,3 @@ SubmitButtonFilter2: WOSubmitButton {
        action = updateConversionPattern;
        value = "Update";
 }
-
-Page: net.sf.webcat.core.PageWithNavigation {
-	title = "Manage Log4J Configuration";
-}
