@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.5 2009/08/07 15:18:07 stedwar2 Exp $
+ |  $Id: WCBasePage.java,v 1.6 2009/09/21 01:01:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -75,7 +75,7 @@ import org.apache.log4j.Logger;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/08/07 15:18:07 $
+ * @version $Revision: 1.6 $, $Date: 2009/09/21 01:01:45 $
  */
 public class WCBasePage
     extends WOComponent
@@ -101,6 +101,7 @@ public class WCBasePage
     public String extraRequires;
     public String extraCssFiles;
     public String pageScriptName;
+    public String  inlineHeaderContents;
     public boolean includePageWrapping = true;
 
     /** Used to refer to a single item in a repetition on the page. */
