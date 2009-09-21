@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.10 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.11 2009/09/21 01:09:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $ $Date: 2009/09/06 02:41:18 $
+ * @version $Revision: 1.11 $ $Date: 2009/09/21 01:09:36 $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -278,7 +278,7 @@ public class EditSubmissionProfilePage
             clearMessage( "tooLarge" );
         }
         // This will automatically restrict to the max value anyway
-        submissionProfile.setMaxFileUploadSize(value);
+        submissionProfile.setMaxFileUploadSizeRaw(value);
     }
 
 

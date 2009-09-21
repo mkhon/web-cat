@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditReusableScriptParametersPage.java,v 1.5 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: EditReusableScriptParametersPage.java,v 1.6 2009/09/21 01:09:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,7 +35,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditReusableScriptParametersPage.java,v 1.5 2008/10/29 14:15:21 aallowat Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2009/09/21 01:09:36 $
  */
 public class EditReusableScriptParametersPage
     extends GraderComponent
@@ -103,6 +104,7 @@ public class EditReusableScriptParametersPage
             log.debug( "new shared option values =\n"
                        + step.config().configSettings() );
         }
+        applyLocalChanges();
         return super.next();
     }
 
@@ -119,6 +121,18 @@ public class EditReusableScriptParametersPage
     public WOComponent defaultAction()
     {
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public String title()
+    {
+        String plugin = "Plug-in";
+        if (step != null && step.script() != null)
+        {
+            plugin = step.script().displayableName();
+        }
+        return "Edit Reusable Options for " + plugin;
     }
 
 
