@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.6 2009/09/21 01:01:45 stedwar2 Exp $
+ |  $Id: WCBasePage.java,v 1.7 2009/10/01 20:34:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -74,8 +74,8 @@ import org.apache.log4j.Logger;
  * </table>
  *
  * @author Tony Allevato
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2009/09/21 01:01:45 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.7 $, $Date: 2009/10/01 20:34:05 $
  */
 public class WCBasePage
     extends WOComponent
@@ -412,6 +412,25 @@ public class WCBasePage
         {
             return Theme.defaultTheme();
         }
+    }
+
+
+    // ----------------------------------------------------------
+    public String dojoBaseUrl()
+    {
+        // The resource manager doesn't let us get the path to a directory, so
+        // we search for a known file (in this case, dojo/dojo.js inside
+        // Core.framework), and then remove the dojo/dojo.js part from the end
+        // of the path.
+
+        String basePath = "Core.framework/WebServerResources/";
+        String subPath = "dojo/dojo.js";
+
+        String url = WCResourceManager.resourceURLFor(basePath + subPath,
+                context().request());
+
+        url = url.substring(0, url.length() - subPath.length());
+        return url;
     }
 
 
