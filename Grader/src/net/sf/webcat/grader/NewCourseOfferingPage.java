@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.6 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.7 2009/10/02 01:56:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -33,7 +33,7 @@ import net.sf.webcat.core.*;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2009/09/06 02:41:18 $
+ * @version $Revision: 1.7 $, $Date: 2009/10/02 01:56:52 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -42,7 +42,7 @@ public class NewCourseOfferingPage
 
     // ----------------------------------------------------------
     /**
-     * Creates a new TBDPage object.
+     * Creates a new object.
      *
      * @param context The context to use
      */

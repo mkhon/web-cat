@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderPrefsManager.java,v 1.4 2009/05/29 15:05:55 stedwar2 Exp $
+ |  $Id: GraderPrefsManager.java,v 1.5 2009/10/02 01:56:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.*;
  *  {@link GraderPrefs} object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderPrefsManager.java,v 1.4 2009/05/29 15:05:55 stedwar2 Exp $
+ *  @version $Id: GraderPrefsManager.java,v 1.5 2009/10/02 01:56:52 stedwar2 Exp $
  */
 public class GraderPrefsManager
     extends CachingEOManager
@@ -136,6 +136,10 @@ public class GraderPrefsManager
     {
         addObjectToBothSidesOfRelationshipWithKey(
             value, GraderPrefs.ASSIGNMENT_OFFERING_KEY);
+        if (value != null)
+        {
+            setAssignmentRelationship(value.assignment());
+        }
     }
 
 

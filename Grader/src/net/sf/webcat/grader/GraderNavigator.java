@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.4 2009/05/29 19:24:52 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.5 2009/10/02 01:56:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -78,7 +78,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $ $Date: 2009/05/29 19:24:52 $
+ * @version $Revision: 1.5 $ $Date: 2009/10/02 01:56:52 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -302,6 +302,7 @@ public class GraderNavigator
                     (Assignment)assignArray.objectAtIndex(0);
                 graderParent.prefs().setAssignmentRelationship(
                     targetAssignment);
+                graderParent.prefs().setAssignmentOfferingRelationship(null);
                 CourseOffering co =
                     selectionsParent.coreSelections().courseOffering();
                 Course course = selectionsParent.coreSelections().course();
