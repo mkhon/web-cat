@@ -97,6 +97,6 @@ SaveOneCSV: WOHyperlink {
     action = saveOneCSV;
 }
 
-ReportIsReady: WOConditional {
+ReportIsReady: ERXWOConditional {
     condition = "~isReportComplete && !generatedReportErrors";
 }
