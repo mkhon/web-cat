@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.6 2009/05/29 19:17:00 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.7 2009/10/02 01:53:47 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.6 $ $Date: 2009/05/29 19:17:00 $
+ * @version $Revision: 1.7 $ $Date: 2009/10/02 01:53:47 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -369,6 +369,8 @@ public class CoreNavigator
      */
     public WOActionResults okPressed()
     {
+        selectionsParent.flushNavigatorDerivedData();
+
         // Save semester choice
         if (selectedSemester != null)
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.11 2009/05/29 19:17:00 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.12 2009/10/02 01:53:47 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.*;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.11 $ $Date: 2009/05/29 19:17:00 $
+ * @version $Revision: 1.12 $ $Date: 2009/10/02 01:53:47 $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -222,6 +222,13 @@ public class WCCourseComponent
     public boolean allowsAllSemesters()
     {
         return true;
+    }
+
+
+    // ----------------------------------------------------------
+    public void flushNavigatorDerivedData()
+    {
+        // Nothing to do
     }
 
 
