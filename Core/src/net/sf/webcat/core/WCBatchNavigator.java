@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBatchNavigator.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: WCBatchNavigator.java,v 1.11 2009/10/02 01:53:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  the one in WOExtensions.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCBatchNavigator.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
+ *  @version $Id: WCBatchNavigator.java,v 1.11 2009/10/02 01:53:06 stedwar2 Exp $
  */
 public class WCBatchNavigator
     extends WOComponent
@@ -57,6 +57,7 @@ public class WCBatchNavigator
     //~ KVC Properties ........................................................
 
     public AuthenticationDomain authDomain;
+    public boolean open;
 
 
     //~ Methods ...............................................................
@@ -82,6 +83,13 @@ public class WCBatchNavigator
             }
         }
         super.appendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean synchronizesVariablesWithBindings()
+    {
+        return false;
     }
 
 
@@ -169,13 +177,6 @@ public class WCBatchNavigator
 
 
     // ----------------------------------------------------------
-    public boolean isStateless()
-    {
-        return true;
-    }
-
-
-    // ----------------------------------------------------------
     /**
      * Access the bound display group's current batch position.
      *
@@ -198,6 +199,14 @@ public class WCBatchNavigator
     {
         return ( (WODisplayGroup)valueForBinding( "displayGroup" ) ).
             numberOfObjectsPerBatch();
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent filter()
+    {
+        open = true;
+        return go();
     }
 
 
@@ -307,33 +316,13 @@ public class WCBatchNavigator
             dg.qualifyDataSource();
         }
         selectedAuthDomain = null;
+        open = false;
         return null;
     }
 
 
     // ----------------------------------------------------------
-    public String divId()
-    {
-        if ( divId == null )
-        {
-            divId = "s" + context().elementID();
-        }
-        return divId;
-    }
-
-
-    // ----------------------------------------------------------
-    public void reset()
-    {
-        divId = null;
-        authDomain = null;
-        selectedAuthDomain = null;
-        super.reset();
-    }
-
-
-    // ----------------------------------------------------------
-    public NSArray authDomains()
+    public NSArray<AuthenticationDomain> authDomains()
     {
         return AuthenticationDomain.authDomains();
     }
@@ -359,11 +348,10 @@ public class WCBatchNavigator
                     "authenticationDomain.propertyName" );
                 if ( prop != null )
                 {
-                    NSArray domains = AuthenticationDomain.authDomains();
-                    for ( int i = 0; i < domains.count(); i++ )
+                    NSArray<AuthenticationDomain> domains =
+                        AuthenticationDomain.authDomains();
+                    for (AuthenticationDomain ad : domains)
                     {
-                        AuthenticationDomain ad =
-                            (AuthenticationDomain)domains.objectAtIndex( i );
                         if ( prop.equals( ad.propertyName() ) )
                         {
                             selectedAuthDomain = ad;
@@ -396,7 +384,6 @@ public class WCBatchNavigator
 
     //~ Instance/static variables .............................................
 
-    private String divId;
     private AuthenticationDomain selectedAuthDomain;
     static Logger log = Logger.getLogger( WCBatchNavigator.class );
 }
