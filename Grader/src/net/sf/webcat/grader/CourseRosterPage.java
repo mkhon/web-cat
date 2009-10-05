@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.13 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.14 2009/10/05 15:57:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2009/09/06 02:41:18 $
+ * @version $Revision: 1.14 $, $Date: 2009/10/05 15:57:15 $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -201,6 +201,14 @@ public class CourseRosterPage
     {
         courseOffering().addToStudentsRelationship( student );
         applyLocalChanges();
+        manuallyAdding = true;
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public String forceManuallyAdding()
+    {
         manuallyAdding = true;
         return null;
     }
