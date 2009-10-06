@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.7 2009/10/01 20:34:05 aallowat Exp $
+ |  $Id: WCBasePage.java,v 1.8 2009/10/06 17:11:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -75,7 +75,7 @@ import org.apache.log4j.Logger;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2009/10/01 20:34:05 $
+ * @version $Revision: 1.8 $, $Date: 2009/10/06 17:11:31 $
  */
 public class WCBasePage
     extends WOComponent
@@ -435,7 +435,7 @@ public class WCBasePage
 
 
     // ----------------------------------------------------------
-    public String stylesheetUrl(String partialUrl)
+    public String resourceUrl(String partialUrl)
     {
         return WCResourceManager.resourceURLFor(
             partialUrl, context().request());
