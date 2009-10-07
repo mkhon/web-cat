@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTimeTextBox.java,v 1.4 2009/09/06 02:40:27 stedwar2 Exp $
+ |  $Id: WCTimeTextBox.java,v 1.5 2009/10/07 17:46:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2009/09/06 02:40:27 $
+ * @version $Revision: 1.5 $, $Date: 2009/10/07 17:46:26 $
  */
 public class WCTimeTextBox extends DojoFormElement
 {
@@ -212,10 +212,10 @@ public class WCTimeTextBox extends DojoFormElement
     			case 'A': datePattern.append("EE"); break;
 
     			// Abbreviated month name
-    			case 'b': datePattern.append("NNN"); break;
+    			case 'b': datePattern.append("MMM"); break;
 
     			// Full month name
-    			case 'B': datePattern.append("MMM"); break;
+    			case 'B': datePattern.append("MMMM"); break;
 
     			// Day of the month as a decimal number, leading 0
     			case 'd': datePattern.append("dd"); break;
