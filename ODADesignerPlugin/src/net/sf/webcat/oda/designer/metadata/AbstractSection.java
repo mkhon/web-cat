@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AbstractSection.java,v 1.6 2008/12/12 02:12:58 aallowat Exp $
+ |  $Id: AbstractSection.java,v 1.7 2009/10/11 19:35:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * report designer form pages.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: AbstractSection.java,v 1.6 2008/12/12 02:12:58 aallowat Exp $
+ * @version $Id: AbstractSection.java,v 1.7 2009/10/11 19:35:08 aallowat Exp $
  */
 public abstract class AbstractSection extends SectionPart
 {
@@ -336,8 +336,8 @@ public abstract class AbstractSection extends SectionPart
     protected void addMessage(Object key, String messageText, Object data,
             int type, Control control)
     {
-        getManagedForm().getMessageManager().addMessage(key, messageText, data,
-                type, control);
+//        getManagedForm().getMessageManager().addMessage(key, messageText, data,
+//                type, control);
     }
 
 

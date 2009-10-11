@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingPage.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ |  $Id: ColumnMappingPage.java,v 1.6 2009/10/11 19:35:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -46,13 +46,16 @@ import org.eclipse.datatools.connectivity.oda.design.ui.wizards.DataSetWizardPag
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -69,6 +72,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -78,7 +82,7 @@ import org.eclipse.swt.widgets.TableItem;
  * the entity and column mappings for the data set.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ColumnMappingPage.java,v 1.5 2008/10/02 17:10:26 aallowat Exp $
+ * @version $Id: ColumnMappingPage.java,v 1.6 2009/10/11 19:35:08 aallowat Exp $
  */
 public class ColumnMappingPage extends DataSetWizardPage
 {
@@ -191,28 +195,74 @@ public class ColumnMappingPage extends DataSetWizardPage
         gd.heightHint = 150;
         columnMappingTable.getControl().setLayoutData(gd);
 
-        TableColumn column;
+        TableViewerColumn column;
 
-        column = new TableColumn(columnMappingTable.getViewer().getTable(),
-                SWT.LEFT);
-        column.setText(COLUMN_NAME);
-        column.setWidth(200);
+        final Table table = columnMappingTable.getViewer().getTable();
+        columnMappingTable.getViewer().setUseHashlookup(true);
 
-        column = new TableColumn(columnMappingTable.getViewer().getTable(),
+        column = new TableViewerColumn(columnMappingTable.getViewer(),
                 SWT.LEFT);
-        column.setText(EXPRESSION_NAME);
-        column.setWidth(200);
+        column.getColumn().setText("#");
+        column.getColumn().setWidth(32);
+        column.setLabelProvider(new ColumnLabelProvider() {
+            public void update(ViewerCell cell)
+            {
+                if (cell.getElement() != newColumn)
+                {
+                    TableItem item = (TableItem) cell.getItem();
+                    cell.setText(Integer.toString(table.indexOf(item) + 1));
+                }
+            }
+        });
 
-        column = new TableColumn(columnMappingTable.getViewer().getTable(),
+        column = new TableViewerColumn(columnMappingTable.getViewer(),
                 SWT.LEFT);
-        column.setText(TYPE_NAME);
-        column.setWidth(120);
+        column.getColumn().setText(COLUMN_NAME);
+        column.getColumn().setWidth(194);
+        column.setLabelProvider(new ColumnLabelProvider() {
+            public void update(ViewerCell cell)
+            {
+                if (cell.getElement() != newColumn)
+                {
+                    ColumnMappingElement cme =
+                        (ColumnMappingElement) cell.getElement();
+                    cell.setText(cme.getColumnName());
+                }
+                else
+                {
+                    cell.setText(Messages.DATASET_NEW_COLUMN_PROMPT);
+                }
+            }
+        });
+
+        column = new TableViewerColumn(columnMappingTable.getViewer(),
+                SWT.LEFT);
+        column.getColumn().setText(EXPRESSION_NAME);
+        column.getColumn().setWidth(194);
+        column.setLabelProvider(new ColumnLabelProvider() {
+            public void update(ViewerCell cell)
+            {
+                ColumnMappingElement cme =
+                    (ColumnMappingElement) cell.getElement();
+                cell.setText(cme.getExpression());
+            }
+        });
+
+        column = new TableViewerColumn(columnMappingTable.getViewer(),
+                SWT.LEFT);
+        column.getColumn().setText(TYPE_NAME);
+        column.getColumn().setWidth(100);
+        column.setLabelProvider(new ColumnLabelProvider() {
+            public void update(ViewerCell cell)
+            {
+                ColumnMappingElement cme =
+                    (ColumnMappingElement) cell.getElement();
+                cell.setText(cme.getType());
+            }
+        });
 
         columnMappingTable.getViewer().setContentProvider(
                 new ColumnMappingTableContentProvider());
-
-        columnMappingTable.getViewer().setLabelProvider(
-                new ColumnMappingTableLabelProvider());
 
         columnMappingTable.getViewer().setInput(columnMappingList);
         refreshColumnMappingViewer();
@@ -303,7 +353,7 @@ public class ColumnMappingPage extends DataSetWizardPage
                     {
                         if (e.keyCode == SWT.DEL)
                         {
-                            removeSelectedItem();
+                            removeSelectedItems();
                             enablePageControls();
                         }
                     }
@@ -315,7 +365,7 @@ public class ColumnMappingPage extends DataSetWizardPage
                     @Override
                     public void widgetSelected(SelectionEvent e)
                     {
-                        removeSelectedItem();
+                        removeSelectedItems();
                         enablePageControls();
                     }
                 });
@@ -326,7 +376,8 @@ public class ColumnMappingPage extends DataSetWizardPage
                     @Override
                     public void widgetSelected(SelectionEvent e)
                     {
-                        moveUpSelectedItem();
+                        moveUpSelectedItems();
+                        enablePageControls();
                     }
                 });
 
@@ -335,7 +386,18 @@ public class ColumnMappingPage extends DataSetWizardPage
                 {
                     public void widgetSelected(SelectionEvent e)
                     {
-                        moveDownSelectedItem();
+                        moveDownSelectedItems();
+                        enablePageControls();
+                    }
+                });
+
+        columnMappingTable.getDuplicateButton().addSelectionListener(
+                new SelectionAdapter()
+                {
+                    public void widgetSelected(SelectionEvent e)
+                    {
+                        duplicateSelectedItems();
+                        enablePageControls();
                     }
                 });
     }
@@ -344,22 +406,24 @@ public class ColumnMappingPage extends DataSetWizardPage
     // ----------------------------------------------------------
     private void setupEditors()
     {
-        CellEditor[] editors = new CellEditor[3];
+        CellEditor[] editors = new CellEditor[4];
 
-        editors[0] = new TextCellEditor(columnMappingTable.getViewer()
+        editors[0] = null;
+
+        editors[1] = new TextCellEditor(columnMappingTable.getViewer()
                 .getTable(), SWT.NONE);
 
         ognlCellEditor = new OgnlExpressionCellEditor(columnMappingTable
                 .getViewer().getTable(), SWT.NONE);
         ognlCellEditor.setRootClassName(entityTypeField.getText());
-        editors[1] = ognlCellEditor;
+        editors[2] = ognlCellEditor;
 
-        editors[2] = new ComboBoxCellEditor(columnMappingTable.getViewer()
+        editors[3] = new ComboBoxCellEditor(columnMappingTable.getViewer()
                 .getTable(), dataTypeDisplayNames, SWT.READ_ONLY);
 
         columnMappingTable.getViewer().setCellEditors(editors);
         columnMappingTable.getViewer().setColumnProperties(
-                new String[] { COLUMN_NAME, EXPRESSION_NAME, TYPE_NAME });
+                new String[] { null, COLUMN_NAME, EXPRESSION_NAME, TYPE_NAME });
 
         columnMappingTable.getViewer().setCellModifier(
                 new ColumnMappingTableCellModifier());
@@ -385,70 +449,103 @@ public class ColumnMappingPage extends DataSetWizardPage
 
 
     // ----------------------------------------------------------
-    private void removeSelectedItem()
+    private void removeSelectedItems()
     {
-        int index = columnMappingTable.getViewer().getTable()
-                .getSelectionIndex();
-        int count = columnMappingTable.getViewer().getTable().getItemCount();
+        int[] indices =
+            columnMappingTable.getViewer().getTable().getSelectionIndices();
+        int selCount = indices.length;
 
-        if (index > -1 && index < count)
+        int delta = 0;
+
+        for (int i = 0; i < selCount; i++)
         {
-            TableItem item = columnMappingTable.getViewer().getTable().getItem(
-                    index);
-            Object element = item.getData();
-            String elementName = "";
+            Object element = columnMappingList.get(indices[i] - delta);
+            ColumnMappingElement entry = (ColumnMappingElement) element;
 
-            if (element instanceof ColumnMappingElement && element != newColumn)
-            {
-                ColumnMappingElement entry = (ColumnMappingElement) element;
-                elementName = entry.getColumnName();
+            columnMap.remove(entry.getColumnName());
+            columnMappingList.remove(indices[i] - delta);
 
-                columnMappingTable.getViewer().getTable().select(index);
-
-                columnMap.remove(elementName);
-                columnMappingList.remove(index);
-
-                updateRelationInformation();
-            }
+            delta++;
         }
 
+        updateRelationInformation();
         refreshColumnMappingViewer();
     }
 
 
     // ----------------------------------------------------------
-    private void moveUpSelectedItem()
+    private void duplicateSelectedItems()
     {
-        int index = columnMappingTable.getViewer().getTable()
-                .getSelectionIndex();
-        int count = columnMappingTable.getViewer().getTable().getItemCount();
+        int[] indices =
+            columnMappingTable.getViewer().getTable().getSelectionIndices();
+        int selCount = indices.length;
 
-        if (index > 0 && index < count)
+        for (int i = 0; i < selCount; i++)
         {
-            ColumnMappingElement element = columnMappingList.get(index);
-            columnMappingList.set(index, columnMappingList.get(index - 1));
-            columnMappingList.set(index - 1, element);
-            refreshColumnMappingViewer();
+            Object element = columnMappingList.get(indices[i]);
+            ColumnMappingElement entry = (ColumnMappingElement) element;
+            String name = entry.getColumnName();
 
+            int suffix = 2;
+            while (columnMap.containsKey(name + "_" + suffix))
+            {
+                suffix++;
+            }
+
+            ColumnMappingElement newEntry = new ColumnMappingElement();
+            newEntry.setColumnName(name + "_" + suffix);
+            newEntry.setExpression(entry.getExpression());
+            newEntry.setType(entry.getType());
+
+            columnMap.put(name + "_" + suffix, newEntry);
+            columnMappingList.add(newEntry);
+        }
+
+        updateRelationInformation();
+        refreshColumnMappingViewer();
+
+        // Show the last duplicated entry.
+        columnMappingTable.getViewer().reveal(newColumn);
+    }
+
+
+    // ----------------------------------------------------------
+    private void moveUpSelectedItems()
+    {
+        int[] indices =
+            columnMappingTable.getViewer().getTable().getSelectionIndices();
+        int selCount = indices.length;
+
+        if (selCount > 0)
+        {
+            int selFirst = indices[0];
+
+            ColumnMappingElement element =
+                columnMappingList.remove(selFirst - 1);
+            columnMappingList.add(selFirst + selCount - 1, element);
+
+            refreshColumnMappingViewer();
             updateRelationInformation();
         }
     }
 
 
     // ----------------------------------------------------------
-    private void moveDownSelectedItem()
+    private void moveDownSelectedItems()
     {
-        int index = columnMappingTable.getViewer().getTable()
-                .getSelectionIndex();
-        int count = columnMappingTable.getViewer().getTable().getItemCount();
+        int[] indices =
+            columnMappingTable.getViewer().getTable().getSelectionIndices();
+        int selCount = indices.length;
 
-        if (index > -1 && index < count - 2)
+        if (selCount > 0)
         {
-            ColumnMappingElement element = columnMappingList.get(index);
-            columnMappingList.set(index, columnMappingList.get(index + 1));
-            columnMappingList.set(index + 1, element);
-            refreshColumnMappingViewer();
+            int selFirst = indices[0];
 
+            ColumnMappingElement element =
+                columnMappingList.remove(selFirst + selCount);
+            columnMappingList.add(selFirst, element);
+
+            refreshColumnMappingViewer();
             updateRelationInformation();
         }
     }
@@ -467,16 +564,34 @@ public class ColumnMappingPage extends DataSetWizardPage
         columnMappingExist = (columnMappingList != null && columnMappingList
                 .size() > 0);
 
-        int selectionIndex = columnMappingTable.getViewer().getTable()
-                .getSelectionIndex();
+        int[] selIndices =
+            columnMappingTable.getViewer().getTable().getSelectionIndices();
+        int selCount = selIndices.length;
         int count = columnMappingTable.getViewer().getTable().getItemCount();
 
-        columnMappingTable.getDownButton().setEnabled(
-                selectionIndex < count - 2);
-        columnMappingTable.getUpButton().setEnabled(selectionIndex > 0);
+        int selFirst, selLast;
+        boolean selContiguous;
 
+        if (selCount > 0)
+        {
+            selFirst = selIndices[0];
+            selLast = selIndices[selCount - 1];
+            selContiguous = (selLast - selFirst == selCount - 1);
+        }
+        else
+        {
+            selFirst = selLast = -1;
+            selContiguous = false;
+        }
+
+        columnMappingTable.getDownButton().setEnabled(
+                selContiguous && selLast < count - 2);
+        columnMappingTable.getUpButton().setEnabled(
+                selContiguous && selFirst > 0 && selLast < count - 1);
+        columnMappingTable.getDuplicateButton().setEnabled(
+                selFirst > -1 && selLast < count - 1);
         columnMappingTable.getRemoveButton().setEnabled(
-                selectionIndex != -1 && selectionIndex != count - 1);
+                selFirst > -1 && selLast < count - 1);
 
         setPageComplete(columnMappingExist && entityTypeExist);
     }
@@ -544,9 +659,10 @@ public class ColumnMappingPage extends DataSetWizardPage
                 c3 = cme.getType() == null ? "" : cme.getType();
             }
 
-            ti.setText(0, c1);
-            ti.setText(1, c2);
-            ti.setText(2, c3);
+            ti.setText(0, Integer.toString(i + 1));
+            ti.setText(1, c1);
+            ti.setText(2, c2);
+            ti.setText(3, c3);
         }
 
         newColumn = null;
@@ -793,8 +909,8 @@ public class ColumnMappingPage extends DataSetWizardPage
         {
             if (inputElement instanceof ArrayList)
             {
-                ArrayList<ColumnMappingElement> inputList = new ArrayList<ColumnMappingElement>(
-                        10);
+                ArrayList<ColumnMappingElement> inputList =
+                    new ArrayList<ColumnMappingElement>(10);
 
                 inputList.addAll(columnMappingList);
 
@@ -818,76 +934,6 @@ public class ColumnMappingPage extends DataSetWizardPage
 
         // ----------------------------------------------------------
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-        {
-            // Do nothing.
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    private class ColumnMappingTableLabelProvider implements
-            ITableLabelProvider
-    {
-        // ----------------------------------------------------------
-        public Image getColumnImage(Object element, int columnIndex)
-        {
-            return null;
-        }
-
-
-        // ----------------------------------------------------------
-        public String getColumnText(Object element, int columnIndex)
-        {
-            String value = "";
-            ColumnMappingElement cme = (ColumnMappingElement) element;
-
-            if (element != newColumn)
-            {
-                if (columnIndex == 0)
-                {
-                    value = cme.getColumnName();
-                }
-                else if (columnIndex == 1)
-                {
-                    value = cme.getExpression();
-                }
-                else
-                {
-                    value = cme.getType();
-                }
-            }
-            else if (columnIndex == 0)
-            {
-                value = Messages.DATASET_NEW_COLUMN_PROMPT;
-            }
-
-            return value;
-        }
-
-
-        // ----------------------------------------------------------
-        public void addListener(ILabelProviderListener listener)
-        {
-            // Do nothing.
-        }
-
-
-        // ----------------------------------------------------------
-        public void dispose()
-        {
-            // Do nothing.
-        }
-
-
-        // ----------------------------------------------------------
-        public boolean isLabelProperty(Object element, String property)
-        {
-            return false;
-        }
-
-
-        // ----------------------------------------------------------
-        public void removeListener(ILabelProviderListener listener)
         {
             // Do nothing.
         }

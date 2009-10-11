@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Messages.java,v 1.4 2008/04/13 22:04:53 aallowat Exp $
+ |  $Id: Messages.java,v 1.5 2009/10/11 19:35:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ import org.eclipse.osgi.util.NLS;
  * designer plug-in.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: Messages.java,v 1.4 2008/04/13 22:04:53 aallowat Exp $
+ * @version $Id: Messages.java,v 1.5 2009/10/11 19:35:08 aallowat Exp $
  */
 public class Messages extends NLS
 {
@@ -87,6 +87,7 @@ public class Messages extends NLS
     public static String DATASET_COLUMN_MOVE_UP;
     public static String DATASET_COLUMN_MOVE_DOWN;
     public static String DATASET_COLUMN_REMOVE;
+    public static String DATASET_COLUMN_DUPLICATE;
     public static String DATASET_UPDATE_ASSIST_INFO;
     public static String DATASET_COLUMN_NAME_IN_USE;
     public static String DATASET_EXPRESSION_INVALID;

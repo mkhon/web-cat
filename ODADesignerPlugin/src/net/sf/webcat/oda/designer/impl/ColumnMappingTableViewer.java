@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ColumnMappingTableViewer.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ |  $Id: ColumnMappingTableViewer.java,v 1.3 2009/10/11 19:35:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * accessory buttons that permit moving and removing columns.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: ColumnMappingTableViewer.java,v 1.2 2008/04/13 22:04:52 aallowat Exp $
+ * @version $Id: ColumnMappingTableViewer.java,v 1.3 2009/10/11 19:35:08 aallowat Exp $
  */
 public class ColumnMappingTableViewer
 {
@@ -66,7 +66,8 @@ public class ColumnMappingTableViewer
         container.setLayout(layout);
 
         // Table viewer
-        viewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+        viewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION |
+                SWT.MULTI);
         viewer.getTable().setHeaderVisible(true);
         viewer.getTable().setLinesVisible(true);
 
@@ -91,6 +92,10 @@ public class ColumnMappingTableViewer
         // Remove button
         removeButton = new Button(buttonContainer, SWT.PUSH);
         removeButton.setText(Messages.DATASET_COLUMN_REMOVE);
+
+        // Duplicate button
+        duplicateButton = new Button(buttonContainer, SWT.PUSH);
+        duplicateButton.setText(Messages.DATASET_COLUMN_DUPLICATE);
     }
 
 
@@ -160,6 +165,18 @@ public class ColumnMappingTableViewer
 
     // ----------------------------------------------------------
     /**
+     * Gets the button that, when clicked, removes the selected column.
+     *
+     * @return the button that, when clicked, removes the selected column
+     */
+    public Button getDuplicateButton()
+    {
+        return duplicateButton;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Refreshes the table viewer from the specified data set description.
      *
      * @param info
@@ -173,7 +190,8 @@ public class ColumnMappingTableViewer
     public List<ColumnMappingElement> refresh(DataSetDescription info,
             Map<String, ColumnMappingElement> columnMapping)
     {
-        ArrayList<ColumnMappingElement> columnsList = new ArrayList<ColumnMappingElement>();
+        ArrayList<ColumnMappingElement> columnsList =
+            new ArrayList<ColumnMappingElement>();
 
         if (info == null)
             return columnsList;
@@ -209,4 +227,5 @@ public class ColumnMappingTableViewer
     private Button removeButton;
     private Button upButton;
     private Button downButton;
+    private Button duplicateButton;
 }
