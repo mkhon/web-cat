@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.5 2009/10/02 01:56:52 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.6 2009/10/15 20:24:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -73,12 +73,16 @@ import er.extensions.foundation.ERXArrayUtilities;
  * <dt>showUnpublishedAssignments</dt>
  * <dd>A boolean value indicating whether the assignment drop-down should
  * include assignments that are unpublished. This option is only available if
- * the user has TA privileges or higher. Defaults to false.</dd>
+ * the user has TA privileges or higher. Defaults to true.</dd>
+ * <dt>hideClosedAssignmentsFromStudents</dt>
+ * <dd>A boolean value indicating whether the student should be allowed to
+ * choose a closed assignment and be given the option to toggle the visibility
+ * of closed assignments in the navigator. Defaults to false.</dd>
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.5 $ $Date: 2009/10/02 01:56:52 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.6 $ $Date: 2009/10/15 20:24:17 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -102,6 +106,7 @@ public class GraderNavigator
     public NSMutableArray<INavigatorObject> assignments;
     public INavigatorObject assignmentInRepetition;
     public INavigatorObject selectedAssignment;
+    public boolean hideClosedAssignmentsFromStudents = false;
 
 
     //~ Methods ...............................................................
@@ -197,7 +202,12 @@ public class GraderNavigator
         // property so we have to do it here, in memory.
 
         NSTimestamp now = new NSTimestamp();
-        if (!showClosedAssignments())
+        boolean hideClosed =
+            (hideClosedAssignmentsFromStudents &&
+                    !userIsStaffForSelectedCourse()) ||
+                    !showClosedAssignments();
+
+        if (hideClosed)
         {
             assnOffs = ERXQ.filtered(assnOffs,
                     ERXQ.greaterThan("lateDeadline", now));
@@ -251,7 +261,7 @@ public class GraderNavigator
             assignments.addObject(thisAssignment);
         }
 
-        if (assignments.count() == 0 && user().hasTAPrivileges()) // FIXME
+        if (assignments.count() == 0 && userIsStaffForSelectedCourse())
         {
         	// If none were found ...
         	if (!showUnpublishedAssignments())
@@ -360,6 +370,29 @@ public class GraderNavigator
     public boolean showClosedAssignments()
     {
         return graderParent.prefs().showClosedAssignments();
+    }
+    
+    
+    // ----------------------------------------------------------
+    public boolean userIsStaffForSelectedCourse()
+    {
+        if (user().hasAdminPrivileges())
+        {
+            return true;
+        }
+
+        NSArray<CourseOffering> offerings = (NSArray<CourseOffering>)
+            selectedCourseOffering.representedObjects();
+
+        for (CourseOffering co : offerings)
+        {
+            if (!co.isGrader(user()) && !co.isInstructor(user()))
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
 

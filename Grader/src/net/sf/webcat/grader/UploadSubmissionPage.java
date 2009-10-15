@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.11 2009/05/29 19:24:52 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.12 2009/10/15 20:24:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.11 2009/05/29 19:24:52 stedwar2 Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.12 2009/10/15 20:24:17 aallowat Exp $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -128,6 +128,50 @@ public class UploadSubmissionPage
         cachedUploadedFile     = submissionInProcess().uploadedFile();
         cachedUploadedFileName = submissionInProcess().uploadedFileName();
         cachedUploadedFileList = submissionInProcess().uploadedFileList();
+    }
+    
+    
+    // ----------------------------------------------------------
+    public String permalink()
+    {
+        if (prefs().assignmentOffering() != null)
+        {
+            return prefs().assignmentOffering().permalink();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * This method determines whether any embedded navigator will
+     * automatically pop up to force a selection and page reload.
+     * @return True if the navigator should start out by opening automatically.
+     */
+    public boolean forceNavigatorSelection()
+    {
+        boolean result = super.forceNavigatorSelection();
+        
+        if (!result)
+        {
+            // If the assignment is closed and the user is not allowed to
+            // submit to it (i.e., not a grader or instructor), then force the
+            // assignment offering selection to be null and pop open the
+            // navigator.
+
+            AssignmentOffering assnOff = prefs().assignmentOffering();
+
+            if (!user().hasAdminPrivileges() && !assnOff.userCanSubmit(user()))
+            {
+                prefs().setAssignmentOfferingRelationship(null);
+                result = true;
+            }
+        }
+        
+        return result;
     }
 
 

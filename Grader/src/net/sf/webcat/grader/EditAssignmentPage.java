@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.17 2009/10/02 01:56:52 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.18 2009/10/15 20:24:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.17 $, $Date: 2009/10/02 01:56:52 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.18 $, $Date: 2009/10/15 20:24:17 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -635,7 +635,17 @@ public class EditAssignmentPage
      */
     public boolean upcomingOfferingIsLate()
     {
-        return upcomingOffering.dueDate().before(currentTime);
+        NSTimestamp dueDate = upcomingOffering.dueDate();
+        
+        if (dueDate != null)
+        {
+            return dueDate.before(currentTime);
+        }
+        else
+        {
+            // FIXME is this the best answer?
+            return true;
+        }
     }
 
 

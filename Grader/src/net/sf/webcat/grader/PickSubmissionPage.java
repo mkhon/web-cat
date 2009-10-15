@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.7 2009/06/16 14:18:17 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.8 2009/10/15 20:24:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @version $Id: PickSubmissionPage.java,v 1.7 2009/06/16 14:18:17 stedwar2 Exp $
+ * @version $Id: PickSubmissionPage.java,v 1.8 2009/10/15 20:24:16 aallowat Exp $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -85,55 +85,58 @@ public class PickSubmissionPage
         {
             user = prefs().submission().user();
         }
-        submissions = EOUtilities.objectsMatchingValues(
-                localContext(),
-                Submission.ENTITY_NAME,
-                new NSDictionary<String, Object>(
-                        new Object[] {  user,
-                                        prefs().assignmentOffering()
-                                     },
-                        new String[] { Submission.USER_KEY,
-                                       Submission.ASSIGNMENT_OFFERING_KEY }
-                )
-            );
-        submissionDisplayGroup.setObjectArray( submissions ); // was fetch()
-        previousSubmissions = ( submissions.count() != 0 );
-        if ( !previousSubmissions )
+        if (prefs().assignmentOffering() != null)
         {
-            error(
-                "You have not completed any submissions for this assignment." );
-        }
-        if ( prefs().submission() != null )
-        {
-            log.debug( "Currently has a submission chosen" );
-            if ( submissions.indexOfIdenticalObject( prefs().submission() )
-                 == NSArray.NotFound )
-            {
-                log.debug( "Invalid submission being cleared" );
-                prefs().setSubmissionRelationship( null );
-            }
-            else
-            {
-                selectedIndex = submissionDisplayGroup.displayedObjects().
-                    indexOfIdenticalObject( prefs().submission() );
-                log.debug( "Attempting to select submission = "
-                           + selectedIndex );
-            }
-        }
-        if ( prefs().submission() == null &&
-             submissionDisplayGroup.displayedObjects().count() > 0 )
-        {
-            selectedIndex = 0;
-            prefs().setSubmissionRelationship(
-                    (Submission)submissionDisplayGroup.displayedObjects().
-                        objectAtIndex( selectedIndex )
+            submissions = EOUtilities.objectsMatchingValues(
+                    localContext(),
+                    Submission.ENTITY_NAME,
+                    new NSDictionary<String, Object>(
+                            new Object[] {  user,
+                                            prefs().assignmentOffering()
+                                         },
+                            new String[] { Submission.USER_KEY,
+                                           Submission.ASSIGNMENT_OFFERING_KEY }
+                    )
                 );
-            log.debug( "No selection; selecting index "
-                       + selectedIndex
-                       + ", sub #"
-                       + prefs().submission().submitNumber() );
+            submissionDisplayGroup.setObjectArray( submissions ); // was fetch()
+            previousSubmissions = ( submissions.count() != 0 );
+            if ( !previousSubmissions )
+            {
+                error(
+                    "You have not completed any submissions for this assignment." );
+            }
+            if ( prefs().submission() != null )
+            {
+                log.debug( "Currently has a submission chosen" );
+                if ( submissions.indexOfIdenticalObject( prefs().submission() )
+                     == NSArray.NotFound )
+                {
+                    log.debug( "Invalid submission being cleared" );
+                    prefs().setSubmissionRelationship( null );
+                }
+                else
+                {
+                    selectedIndex = submissionDisplayGroup.displayedObjects().
+                        indexOfIdenticalObject( prefs().submission() );
+                    log.debug( "Attempting to select submission = "
+                               + selectedIndex );
+                }
+            }
+            if ( prefs().submission() == null &&
+                 submissionDisplayGroup.displayedObjects().count() > 0 )
+            {
+                selectedIndex = 0;
+                prefs().setSubmissionRelationship(
+                        (Submission)submissionDisplayGroup.displayedObjects().
+                            objectAtIndex( selectedIndex )
+                    );
+                log.debug( "No selection; selecting index "
+                           + selectedIndex
+                           + ", sub #"
+                           + prefs().submission().submitNumber() );
+            }
+            log.debug( "calling super.appendToResponse()" );
         }
-        log.debug( "calling super.appendToResponse()" );
         super.appendToResponse( response, context );
         oldBatchSize  = submissionDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex = submissionDisplayGroup.currentBatchIndex();
