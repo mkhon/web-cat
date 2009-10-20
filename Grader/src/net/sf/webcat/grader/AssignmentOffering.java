@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.21 2009/10/02 01:56:52 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.22 2009/10/20 15:51:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,8 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @version $Id: AssignmentOffering.java,v 1.21 2009/10/02 01:56:52 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.22 $, $Date: 2009/10/20 15:51:24 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -236,11 +237,26 @@ public class AssignmentOffering
     public String titleString()
     {
         CourseOffering course = courseOffering();
+        return (course == null)
+            ? titleString(null)
+            : titleString(course.semester());
+    }
+
+
+    // ----------------------------------------------------------
+    public String titleString(Semester semester)
+    {
+        CourseOffering course = courseOffering();
         Assignment assignment = assignment();
         String result = "";
         if ( course != null )
         {
-            result += course.compactName() + " ";
+            result += course.compactName();
+            if (course.semester() != semester)
+            {
+                result += "[" + course.semester() + "]";
+            }
+            result += " ";
         }
         if ( assignment != null )
         {

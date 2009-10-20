@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.11 2009/10/02 01:56:52 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.12 2009/10/20 15:51:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,8 @@ import org.apache.log4j.Logger;
  *  Generates the grader subsystem's rows in the system status block.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderHomeStatus.java,v 1.11 2009/10/02 01:56:52 stedwar2 Exp $
+ *  @author Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.12 $, $Date: 2009/10/20 15:51:24 $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -75,6 +76,7 @@ public class GraderHomeStatus
     public void appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "starting appendToResponse()" );
+
         enqueuedJobGroup.queryBindings().setObjectForKey(
                 user(),
                 "user"

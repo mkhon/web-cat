@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.9 2008/04/06 21:35:14 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.10 2009/10/20 15:51:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author Stephen Edwards
- * @version $Id: GradeStudentSubmissionPage.java,v 1.9 2008/04/06 21:35:14 stedwar2 Exp $
+ * @version $Id: GradeStudentSubmissionPage.java,v 1.10 2009/10/20 15:51:23 stedwar2 Exp $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -113,8 +113,8 @@ public class GradeStudentSubmissionPage
             comments = null;
         }
         if (     result.status() == Status.TO_DO
-             && (    result.taScoreRaw() != null
-                  || result.comments() != null ) )
+             && ( result.taScoreRaw() != null
+                  || comments != null ) )
         {
             result.setStatus( Status.UNFINISHED );
         }
