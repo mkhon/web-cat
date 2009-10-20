@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.12 2009/10/15 20:24:17 aallowat Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.13 2009/10/20 15:15:34 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @version $Id: UploadSubmissionPage.java,v 1.12 2009/10/15 20:24:17 aallowat Exp $
+ * @version $Id: UploadSubmissionPage.java,v 1.13 2009/10/20 15:15:34 aallowat Exp $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -72,7 +72,7 @@ public class UploadSubmissionPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void appendToResponse( WOResponse response, WOContext context )
+    protected void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "primeUser = " + wcSession().primeUser()
                    + ", localUser = " + user() );
@@ -122,7 +122,7 @@ public class UploadSubmissionPage
                    .submissionProfile().deadTimeDelta() );
         log.debug( "time = " + deadline );
 
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
         oldBatchSize  = submissionDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex = submissionDisplayGroup.currentBatchIndex();
         cachedUploadedFile     = submissionInProcess().uploadedFile();
@@ -131,20 +131,6 @@ public class UploadSubmissionPage
     }
     
     
-    // ----------------------------------------------------------
-    public String permalink()
-    {
-        if (prefs().assignmentOffering() != null)
-        {
-            return prefs().assignmentOffering().permalink();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
     // ----------------------------------------------------------
     /**
      * This method determines whether any embedded navigator will
@@ -363,6 +349,27 @@ public class UploadSubmissionPage
 //                + context().request().headerForKey("user-agent")
 //                );
         }
+    }
+    
+    
+    // ----------------------------------------------------------
+    public String permalink()
+    {
+        if (prefs().assignmentOffering() != null)
+        {
+            return prefs().assignmentOffering().permalink();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    
+    // ----------------------------------------------------------
+    public void setPermalink(String value)
+    {
+        // Do nothing.
     }
 
 

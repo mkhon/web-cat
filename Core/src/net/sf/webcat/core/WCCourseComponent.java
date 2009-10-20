@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.12 2009/10/02 01:53:47 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.13 2009/10/20 15:15:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.apache.log4j.*;
  * a notion of a currently-selected course offering and/or course.
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.12 $ $Date: 2009/10/02 01:53:47 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.13 $ $Date: 2009/10/20 15:15:35 $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -70,6 +70,29 @@ public class WCCourseComponent
         {
             log.debug("awake(): end " + getClass().getName());
         }
+    }
+
+
+    // ----------------------------------------------------------
+    public void appendToResponse(WOResponse response, WOContext context)
+    {
+        // TODO make this method final and adjust all the other pages
+
+        boolean force = forceNavigatorSelection();
+
+        if (!force)
+        {
+            _appendToResponse(response, context);
+        }
+
+        super.appendToResponse(response, context);
+    }
+    
+    
+    // ----------------------------------------------------------
+    protected void _appendToResponse(WOResponse response, WOContext context)
+    {
+        // Overridden by subclasses.
     }
 
 

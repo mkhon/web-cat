@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.4 2009/09/06 02:40:42 stedwar2 Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.5 2009/10/20 15:15:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,8 +34,8 @@ import net.sf.webcat.ui.WCBasePage;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2009/09/06 02:40:42 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.5 $, $Date: 2009/10/20 15:15:35 $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -488,7 +488,7 @@ public class WCPageWithNavigation
             : thisPage.pageWithName(name);
     }
 
-
+    
     //~ Instance/static variables .............................................
 
     private TabDescriptor myTab;
