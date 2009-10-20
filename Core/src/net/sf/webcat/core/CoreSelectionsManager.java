@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreSelectionsManager.java,v 1.7 2009/05/03 17:16:55 stedwar2 Exp $
+ |  $Id: CoreSelectionsManager.java,v 1.8 2009/10/20 15:45:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,7 +31,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.7 $ $Date: 2009/05/03 17:16:55 $
+ *  @version $Revision: 1.8 $ $Date: 2009/10/20 15:45:21 $
  */
 public class CoreSelectionsManager
     extends CachingEOManager
@@ -70,7 +70,7 @@ public class CoreSelectionsManager
      */
     public Course course()
     {
-        return (Course)valueForKey(CoreSelections.COURSE_KEY);
+        return (Course)handleQueryWithUnboundKey(CoreSelections.COURSE_KEY);
     }
 
 
@@ -106,7 +106,8 @@ public class CoreSelectionsManager
      */
     public CourseOffering courseOffering()
     {
-        return (CourseOffering)valueForKey(CoreSelections.COURSE_OFFERING_KEY);
+        return (CourseOffering)handleQueryWithUnboundKey(
+            CoreSelections.COURSE_OFFERING_KEY);
     }
 
 
@@ -140,9 +141,10 @@ public class CoreSelectionsManager
     {
         if (semester == null)
         {
-            User user = (User)valueForKey(CoreSelections.USER_KEY);
+            User user =
+                (User)handleQueryWithUnboundKey(CoreSelections.USER_KEY);
             Object semesterPref =
-                user.preferences().valueForKey( SEMESTER_KEY );
+                user.preferences().valueForKey(SEMESTER_KEY);
             if (semesterPref != null)
             {
                 semester = Semester.forId(user.editingContext(),

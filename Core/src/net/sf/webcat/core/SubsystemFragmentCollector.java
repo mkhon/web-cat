@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemFragmentCollector.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: SubsystemFragmentCollector.java,v 1.4 2009/10/20 15:45:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.core;
 
 import com.webobjects.appserver.*;
-import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -32,7 +31,8 @@ import org.apache.log4j.Logger;
  *  in pages/components defined elsewhere in the application (like in Core).
  *
  *  @author  Stephen Edwards
- *  @version $Id: SubsystemFragmentCollector.java,v 1.3 2008/10/29 14:15:51 aallowat Exp $
+ *  @author Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.4 $, $Date: 2009/10/20 15:45:21 $
  */
 public class SubsystemFragmentCollector
     extends WOComponent
@@ -72,9 +72,12 @@ public class SubsystemFragmentCollector
             ( (Application)Application.application() ).subsystemManager().
                 collectSubsystemFragments( fragmentKey, htmlBuffer, wodBuffer );
             htmlTemplate = htmlBuffer.toString();
-            log.debug( "htmlTemplate =\n" + htmlTemplate );
             bindingDefinitions = wodBuffer.toString();
-            log.debug( "bindingDefinitions =\n" + bindingDefinitions );
+            if (log.isDebugEnabled())
+            {
+                log.debug( "htmlTemplate =\n" + htmlTemplate );
+                log.debug( "bindingDefinitions =\n" + bindingDefinitions );
+            }
         }
         return templateWithHTMLString( null, null,
                 htmlTemplate, bindingDefinitions, null,
@@ -86,7 +89,10 @@ public class SubsystemFragmentCollector
     // ----------------------------------------------------------
     public Object valueForKey( String key )
     {
-        log.debug( "valueForKey(" + key + ")" );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "valueForKey(" + key + ")" );
+        }
         if ( key.equals( FRAGMENT_KEY_KEY ) )
         {
             return fragmentKey;
@@ -101,7 +107,10 @@ public class SubsystemFragmentCollector
     // ----------------------------------------------------------
     public void takeValueForKey( Object value, String key )
     {
-        log.debug( "takeValueForKey(" + value + ", " + key + ")" );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "takeValueForKey(" + value + ", " + key + ")" );
+        }
         if ( key.equals( FRAGMENT_KEY_KEY ) )
         {
             fragmentKey = (String)value;
