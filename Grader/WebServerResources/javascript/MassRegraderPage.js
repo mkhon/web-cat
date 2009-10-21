@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MassRegraderPage.js,v 1.1 2009/10/21 19:28:14 aallowat Exp $
+ |  $Id: MassRegraderPage.js,v 1.2 2009/10/21 20:06:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ dojo.declare("webcat.grader.MassRegraderWatcher", null,
             this._refresh();
 		    this._interval = setInterval(dojo.hitch(this, function() {
                 this._refresh();
-		    }), 1000);
+		    }), 5000);
 		}
     },
 
