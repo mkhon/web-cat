@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: global.js,v 1.3 2009/06/11 15:31:31 aallowat Exp $
+ |  $Id: global.js,v 1.4 2009/10/21 19:26:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ webcat.refreshContentPanes = function(/* String|Array */ ids)
 
 	if (dojo.isString(ids))
 	{
-		idArray = [ ids ];
+        idArray = [ ids ];
 	}
 	else if (dojo.isArray(ids))
 	{
@@ -43,7 +43,8 @@ webcat.refreshContentPanes = function(/* String|Array */ ids)
 	}
 
 	dojo.forEach(idArray, function(id) {
-		dijit.byId(id).refresh();
+	    var widget = dijit.byId(id);
+		if (widget) widget.refresh();
 	});
 };
 
