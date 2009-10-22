@@ -114,6 +114,9 @@ sub execute
 	push @args, @filenames;
 
 	my $output = capture($^X, @args);
+    $output =~ s/^\s+//;
+    $output =~ s/\s+$//;
+
 	my $xml = new XML::Smart($output);
 	my @files = @{$xml->{results}{files}{file}};
 	my $f;
