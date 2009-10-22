@@ -2,12 +2,15 @@
 
   <property name="external.resource.includes"
     value="lib/auto/XML/Parser/**
+           lib/CLOC/**
            lib/Config/**
            lib/Data/Dump.pm
            lib/File/Which.pm
            lib/File/HomeDir.pm
            lib/File/HomeDir/**
            lib/HTML/SimpleParse.pm
+  	       lib/IPC/**
+  	       lib/IPC/System/**
            lib/Object/**
            lib/XML/**
            lib/Proc/**
