@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.19 2009/02/20 02:30:13 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.20 2009/10/23 16:48:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.19 2009/02/20 02:30:13 aallowat Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.20 2009/10/23 16:48:08 aallowat Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -99,7 +99,7 @@ public class GraderQueueProcessor
                     new EOAndQualifier( regradingJobQualifiers ),
                     new NSArray( new Object[]{
                             new EOSortOrdering(
-                                    EnqueuedJob.SUBMIT_TIME_KEY,
+                                    EnqueuedJob.QUEUE_TIME_KEY,
                                     EOSortOrdering.CompareAscending
                                 )
                         } )
