@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.12 2009/06/11 15:35:22 aallowat Exp $
+ |  $Id: GeneratedReportPage.java,v 1.13 2009/10/26 19:21:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.12 2009/06/11 15:35:22 aallowat Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.13 2009/10/26 19:21:23 aallowat Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -83,7 +83,7 @@ public class GeneratedReportPage
     public String resultSet;
     public int resultSetIndex;
 
-    
+
     //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
@@ -137,7 +137,7 @@ public class GeneratedReportPage
         }
     }
 
-    
+
     // ----------------------------------------------------------
     public String mainBlockTitle()
     {
@@ -150,7 +150,7 @@ public class GeneratedReportPage
                 EnqueuedReportGenerationJob job =
                     EnqueuedReportGenerationJob.forId(localContext(),
                         reportGenerationJobId.intValue());
-                
+
                 if (job != null)
                 {
                     return prefix + ": " + job.description();
@@ -171,7 +171,7 @@ public class GeneratedReportPage
     {
         currentPageNumber = pageNum;
     }
-    
+
 
     // ----------------------------------------------------------
     public int highestPageSoFar()
@@ -188,12 +188,12 @@ public class GeneratedReportPage
         }
     }
 
-    
+
     // ----------------------------------------------------------
     public synchronized JSONObject pollReportStatus()
     {
         JSONObject result = new JSONObject();
-        
+
         try
         {
             if (wasCanceled)
@@ -250,7 +250,7 @@ public class GeneratedReportPage
                 boolean hasErrors = (errors != null && errors.count() > 0);
 
                 result.put("hasErrors", hasErrors);
-                
+
                 if (reportGenerationJobId == null)
                 {
                     result.put("progress", 100);
@@ -288,12 +288,12 @@ public class GeneratedReportPage
                 ReportGenerationTracker.getInstance();
             int progress = (int) (tracker.fractionOfWorkDoneForJobId(
                     reportGenerationJobId.intValue()) * 100 + 0.5);
-            
+
             return "" + progress + "%";
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public NSArray<?> resultSetsToExtract()
     {
@@ -324,7 +324,7 @@ public class GeneratedReportPage
 
             resultSetsToExtract = resultSets;
         }
-        
+
         return resultSetsToExtract;
     }
 
@@ -341,8 +341,8 @@ public class GeneratedReportPage
             wasCanceled = true;
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public NSDictionary<String, Object> generatedReportExtraErrorInfo()
     {
@@ -366,7 +366,7 @@ public class GeneratedReportPage
         }
     }
 
-    
+
     // ----------------------------------------------------------
     public NSArray<MutableDictionary> generatedReportErrors()
     {
@@ -377,22 +377,27 @@ public class GeneratedReportPage
         else
         {
             MutableArray _errors = generatedReport.errors();
-            
+
             if (_errors != null)
             {
+                if (_errors.count() == 0)
+                {
+                    return null;
+                }
+
                 MutableArray errors = new MutableArray(generatedReport.errors());
-                
+
                 if (errors.count() > 0)
                 {
                     NSDictionary<String, Object> dict =
                         (NSDictionary<String, Object>) errors.objectAtIndex(0);
-        
+
                     if ("extraInfo".equals(dict.objectForKey("entryKind")))
                     {
                         errors.removeObjectAtIndex(0);
                     }
                 }
-                
+
                 return errors;
             }
             else
@@ -424,7 +429,7 @@ public class GeneratedReportPage
                 DeliverFile.class.getName());
 
         Throwable error = saver.deliverTo(file);
-        
+
         if (error != null)
         {
             ReportDownloadErrorPage page =
@@ -439,48 +444,48 @@ public class GeneratedReportPage
             return file;
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults savePDF()
     {
         PDFReportSaver saver = new PDFReportSaver(generatedReport);
         return saveWithSaver(saver);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults saveExcel()
     {
         ExcelReportSaver saver = new ExcelReportSaver(generatedReport);
         return saveWithSaver(saver);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults saveZippedHTML()
     {
         HTMLReportSaver saver = new HTMLReportSaver(generatedReport);
         return saveWithSaver(saver);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults saveZippedCSV()
     {
         CSVReportSaver saver = new CSVReportSaver(generatedReport, null);
         return saveWithSaver(saver);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults saveOneCSV()
     {
         CSVReportSaver saver = new CSVReportSaver(generatedReport, resultSet);
         return saveWithSaver(saver);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public int queuedJobCount()
     {
