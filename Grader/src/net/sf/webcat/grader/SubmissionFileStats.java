@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.10 2008/10/24 20:46:47 aallowat Exp $
+ |  $Id: SubmissionFileStats.java,v 1.11 2009/10/27 15:42:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
 import java.util.*;
+import java.util.regex.Pattern;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 import org.jdom.*;
@@ -38,7 +39,7 @@ import org.jdom.output.XMLOutputter;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author Stephen H. Edwards
- *  @version $Id: SubmissionFileStats.java,v 1.10 2008/10/24 20:46:47 aallowat Exp $
+ *  @version $Id: SubmissionFileStats.java,v 1.11 2009/10/27 15:42:56 aallowat Exp $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -350,6 +351,25 @@ public class SubmissionFileStats
     {
         staffDeductionsIsValid = false;
         super.setDeductionsRaw(value);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A convenience method that returns true if this file has been tagged with
+     * the specified tag.
+     *
+     * @param tag the tag to search for
+     * @return true if the file has been tagged with the specified tag
+     */
+    public boolean hasTag(String tag)
+    {
+        // As noted in GraderQueueProcessor, we always search for the tag with
+        // surrounding spaces so that tags that are infixes of other tags do
+        // not return false positives. The tags() attribute is guaranteed to
+        // have leading and trailing spaces as well so that this always works.
+
+        return tags().contains(" " + tag + " ");
     }
 
 

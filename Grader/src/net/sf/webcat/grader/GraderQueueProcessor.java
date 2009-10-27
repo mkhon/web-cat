@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.20 2009/10/23 16:48:08 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.21 2009/10/27 15:42:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.20 2009/10/23 16:48:08 aallowat Exp $
+ * @version $Id: GraderQueueProcessor.java,v 1.21 2009/10/27 15:42:56 aallowat Exp $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -840,6 +840,35 @@ public class GraderQueueProcessor
                 properties.getProperty( attributeBase + "sourceFileName" ) );
             stats.setMarkupFileNameRaw(
                 properties.getProperty( attributeBase + "markupFileName" ) );
+
+            // The tags are zero or more space-delimited strings that describe
+            // what this file's role is (such as if it is a test case). Note
+            // that we pad the tag string with a space on each end if necessary
+            // so that tags can always be searched for in the database using a
+            // LIKE qualifier such as "% tag %". This way tags that are infixes
+            // of other tags will not be erroneously detected.
+
+            String tags = properties.getProperty( attributeBase + "tags" );
+            if (tags != null)
+            {
+                if (tags.length() == 0)
+                {
+                    tags = null;
+                }
+                else
+                {
+                    if (!tags.startsWith(" "))
+                    {
+                        tags = " " + tags;
+                    }
+                    if (!tags.endsWith(" "))
+                    {
+                        tags = tags + " ";
+                    }
+                }
+            }
+            stats.setTags(tags);
+
             String attr = properties.getProperty( attributeBase + "loc" );
             if ( attr != null )
             {
@@ -975,7 +1004,7 @@ public class GraderQueueProcessor
 
         // 2009-02-04 (AJA): create result blobs
         extractResultOutcomes( job, submissionResult, properties );
-        
+
         editingContext.saveChanges();
         boolean wasRegraded = job.regrading();
         submissionResult.addToSubmissionsRelationship( job.submission() );
@@ -1035,7 +1064,7 @@ public class GraderQueueProcessor
     /**
      * Create result outcome objects from properties in the grading properties
      * file.
-     * 
+     *
      * @param job
      * @param submissionResult
      * @param properties
@@ -1114,7 +1143,7 @@ public class GraderQueueProcessor
         {
             contents = (NSDictionary<String, Object>) value;
         }
-        
+
         ResultOutcome outcome = new ResultOutcome();
         outcome.setIndex(index);
         outcome.setTag(tag);
