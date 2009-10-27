@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.8 2009/05/29 15:05:55 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.9 2009/10/27 15:56:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.8 2009/05/29 15:05:55 stedwar2 Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.9 2009/10/27 15:56:13 aallowat Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -232,6 +232,19 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TGRADERPREFS add "
             + "CASSIGNID INTEGER" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds support for tagging files during grading.
+     * @throws SQLException on error
+     */
+    public void updateIncrement10() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSUBMISSIONFILESTATS add "
+            + "CTAGS TEXT" );
     }
 
 
