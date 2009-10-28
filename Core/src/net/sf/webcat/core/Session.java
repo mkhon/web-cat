@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.22 2009/06/16 14:15:28 stedwar2 Exp $
+ |  $Id: Session.java,v 1.23 2009/10/28 18:11:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Level;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.22 2009/06/16 14:15:28 stedwar2 Exp $
+ * @version $Id: Session.java,v 1.23 2009/10/28 18:11:36 aallowat Exp $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -76,6 +76,9 @@ public class Session
     private final void initSession()
     {
         log.debug( "creating " + sessionID() );
+
+        setStoresIDsInCookies(true);
+        setStoresIDsInURLs(false);
         defaultEditingContext().setUndoManager( null );
 //        defaultEditingContext().setSharedEditingContext( null );
 
