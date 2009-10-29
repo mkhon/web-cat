@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.19 2009/10/20 15:51:24 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.20 2009/10/29 14:35:34 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.19 $, $Date: 2009/10/20 15:51:24 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.20 $, $Date: 2009/10/29 14:35:34 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -71,14 +71,37 @@ public class EditAssignmentPage
     public boolean isSuspended; // TODO: fix this!
     public AssignmentOffering offeringToDelete;
 
+    public NSArray<ScriptFile> gradingPluginsToAdd;
+    public ScriptFile gradingPluginToAdd;
+    public ScriptFile selectedGradingPluginToAdd;
+
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    public String displayStringForGradingPluginToAdd()
+    {
+        String name = gradingPluginToAdd.name();
+
+        if (!gradingPluginToAdd.isPublished())
+        {
+            name += " (private)";
+        }
+
+        return name;
+    }
+
 
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context )
     {
         log.debug("starting appendToResponse()");
         currentTime = new NSTimestamp();
+
+        // Get all the available grading plugins.
+        gradingPluginsToAdd = ScriptFile.objectsForAvailableToUser(
+                localContext(), user());
+
         if (selectedOffering == null)
         {
             selectedOffering = prefs().assignmentOffering();
@@ -412,14 +435,18 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     public WOComponent addStep()
     {
-        PickStepPage result = null;
-        if (saveAndCanProceed())
+        if (selectedGradingPluginToAdd != null)
         {
-            result = (PickStepPage)pageWithName(PickStepPage.class.getName());
-            result.nextPage = this;
-            result.targetAssignment = assignment;
+            if (saveAndCanProceed())
+            {
+                assignment.addNewStep(selectedGradingPluginToAdd);
+                applyLocalChanges();
+
+                scriptDisplayGroup.fetch();
+            }
         }
-        return result;
+
+        return null;
     }
 
 
@@ -443,6 +470,9 @@ public class EditAssignmentPage
         }
         localContext().deleteObject(thisStep);
         localContext().saveChanges();
+
+        scriptDisplayGroup.fetch();
+
         return null;
     }
 
@@ -483,6 +513,8 @@ public class EditAssignmentPage
             int newOrder = switchWith.order();
             thisStep.setOrder( newOrder );
             switchWith.setOrder( oldOrder );
+
+            scriptDisplayGroup.fetch();
         }
         return null;
     }
@@ -504,6 +536,8 @@ public class EditAssignmentPage
             int newOrder = switchWith.order();
             thisStep.setOrder( newOrder );
             switchWith.setOrder( oldOrder );
+
+            scriptDisplayGroup.fetch();
         }
         return null;
     }
