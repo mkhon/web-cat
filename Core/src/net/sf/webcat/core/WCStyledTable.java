@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCStyledTable.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
+ |  $Id: WCStyledTable.java,v 1.2 2009/10/30 20:51:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,14 @@
 
 package net.sf.webcat.core;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
+import org.json.JSONArray;
+import net.sf.webcat.ui.util.ComponentIDGenerator;
 import com.webobjects.appserver.*;
+import er.extensions.foundation.ERXStringUtilities;
 
 // -------------------------------------------------------------------------
 /**
@@ -29,7 +36,7 @@ import com.webobjects.appserver.*;
  * the standard Web-CAT way.
  *
  * @author Stephen Edwards
- * @version $Id: WCStyledTable.java,v 1.1 2009/05/25 16:51:20 aallowat Exp $
+ * @version $Id: WCStyledTable.java,v 1.2 2009/10/30 20:51:53 aallowat Exp $
  */
 
 public class WCStyledTable
@@ -47,4 +54,107 @@ extends WOComponent
     {
         super( context );
     }
+
+
+    //~ KVC attributes (must be public) .......................................
+
+    public String id;
+    public String itemsWereDraggedHandler;
+    public ComponentIDGenerator idFor;
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public void appendToResponse(WOResponse response, WOContext context)
+    {
+        idFor = new ComponentIDGenerator(this);
+
+        if (id == null)
+        {
+            id = ERXStringUtilities.safeIdentifierName(context.elementID());
+        }
+
+        super.appendToResponse(response, context);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * The internal JavaScript identifier of the JSON bridge that will be used
+     * to communicate with the server to handle user interaction events and
+     * model data requests.
+     *
+     * @return the internal JavaScript identifier of the JSON bridge
+     */
+    public String JSONBridgeName()
+    {
+        return "__JSONBridge_" + id;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * The internal JavaScript identifier that will refer to the actual
+     * component inside an AjaxProxy.
+     *
+     * @return the internal JavaScript identifier of the component inside the
+     *     AjaxProxy
+     */
+    public String componentProxyName()
+    {
+        return "styledTable";
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * The full JavaScript reference to the proxy object.
+     *
+     * @return the full JavaScript reference to the component proxy object
+     */
+    public String fullProxyReference()
+    {
+        return JSONBridgeName() + "." + componentProxyName();
+    }
+
+
+    // ----------------------------------------------------------
+    public void _itemsWereDragged(
+            JSONArray _dragIndices,
+            JSONArray _dropIndices)
+    {
+        try
+        {
+            Method method = parent().getClass().getMethod(
+                    itemsWereDraggedHandler,
+                    int[].class, int[].class);
+
+            int[] dragIndices = new int[_dragIndices.length()];
+            for (int i = 0; i < _dragIndices.length(); i++)
+            {
+                dragIndices[i] = _dragIndices.getInt(i);
+            }
+
+            int[] dropIndices = new int[_dropIndices.length()];
+            for (int i = 0; i < _dropIndices.length(); i++)
+            {
+                dropIndices[i] = _dropIndices.getInt(i);
+            }
+
+            method.invoke(parent(), dragIndices, dropIndices);
+        }
+        catch (InvocationTargetException e)
+        {
+            log.warn(e.getCause());
+        }
+        catch (Exception e)
+        {
+            log.warn(e);
+        }
+    }
+
+
+    static Logger log = Logger.getLogger(WCStyledTable.class);
 }
