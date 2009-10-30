@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.21 2009/10/30 14:30:45 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.22 2009/10/30 20:53:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,7 +26,10 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
@@ -36,7 +39,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.21 $, $Date: 2009/10/30 14:30:45 $
+ * @version $Revision: 1.22 $, $Date: 2009/10/30 20:53:13 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -566,6 +569,42 @@ public class EditAssignmentPage
             scriptDisplayGroup.fetch();
         }
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public void gradingStepsWereDragged(int[] dragIndices, int[] dropIndices)
+    {
+        NSMutableArray<Step> steps =
+            scriptDisplayGroup.displayedObjects().mutableClone();
+        NSMutableArray<Step> stepsRemoved = new NSMutableArray<Step>();
+        TreeMap<Integer, Step> finalStepPositions =
+            new TreeMap<Integer, Step>();
+
+        for (int i = 0; i < dragIndices.length; i++)
+        {
+            Step step = steps.objectAtIndex(dragIndices[i]);
+            finalStepPositions.put(dropIndices[i], step);
+            stepsRemoved.addObject(step);
+        }
+
+        steps.removeObjectsInArray(stepsRemoved);
+
+        for (Map.Entry<Integer, Step> movement : finalStepPositions.entrySet())
+        {
+            int dropIndex = movement.getKey();
+            Step step = movement.getValue();
+
+            steps.insertObjectAtIndex(step, dropIndex);
+        }
+
+        int order = 1;
+        for (Step step : steps)
+        {
+            step.setOrder(order++);
+        }
+
+        scriptDisplayGroup.fetch();
     }
 
 
