@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.13 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.14 2009/10/31 13:45:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2009/09/06 02:41:18 $
+ * @version $Revision: 1.14 $, $Date: 2009/10/31 13:45:45 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -216,7 +216,7 @@ public class StudentsForAssignmentPage
     // ----------------------------------------------------------
     public WOComponent editSubmissionScore()
     {
-        WOComponent destination = null;
+        WCComponent destination = null;
         if ( !hasMessages() )
         {
             if ( aSubmission == null )
@@ -229,10 +229,19 @@ public class StudentsForAssignmentPage
                 log.error( "student = " + aSubmission.user().userName() );
             }
             prefs().setSubmissionRelationship( aSubmission );
-            destination = super.next();
-//            destination = (WCComponent)pageWithName(
-//                            GradeStudentSubmissionPage.class.getName() );
-//            destination.nextPage = this;
+//          destination = (WCComponent)pageWithName(
+//          GradeStudentSubmissionPage.class.getName() );
+            destination = (WCComponent)super.next();
+            if (destination instanceof GradeStudentSubmissionPage)
+            {
+                GradeStudentSubmissionPage page =
+                    (GradeStudentSubmissionPage)destination;
+                page.availableSubmissions =
+                    submissionDisplayGroup.displayedObjects().immutableClone();
+                page.thisSubmissionIndex =
+                    page.availableSubmissions.indexOf(aSubmission);
+            }
+            destination.nextPage = this;
         }
         return destination;
     }
