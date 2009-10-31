@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.16 2009/08/02 15:00:18 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.17 2009/10/31 13:43:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
@@ -40,7 +39,8 @@ import org.apache.log4j.Logger;
  * Otherwise, the final grading report is presented.
  *
  * @author Stephen Edwards
- * @version $Id: FinalReportPage.java,v 1.16 2009/08/02 15:00:18 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.17 $, $Date: 2009/10/31 13:43:35 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
