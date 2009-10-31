@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.21 2009/10/27 15:42:56 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.22 2009/10/31 13:44:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,8 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @version $Id: GraderQueueProcessor.java,v 1.21 2009/10/27 15:42:56 aallowat Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.22 $, $Date: 2009/10/31 13:44:03 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1253,10 +1254,10 @@ public class GraderQueueProcessor
         job.setPaused( true );
         faultOccurredInStep = true;
 
-        Vector attachments = null;
+        Vector<String> attachments = null;
         if ( attachmentsDir != null  &&  attachmentsDir.exists() )
         {
-            attachments = new Vector();
+            attachments = new Vector<String>();
             File[] fileList = attachmentsDir.listFiles();
             for ( int i = 0; i < fileList.length; i++ )
             {
