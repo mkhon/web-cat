@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoRemoteHelper.java,v 1.3 2009/10/30 20:52:45 aallowat Exp $
+ |  $Id: DojoRemoteHelper.java,v 1.4 2009/10/31 22:53:42 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,12 +35,45 @@ import er.extensions.components._private.ERXWOForm;
 
 //------------------------------------------------------------------------
 /**
+ * <p>
  * This class maintains the "remote.*" associations for an action element, and
  * also handles the generation of callback scripts that involve values of
  * multiple associations.
+ * </p>
+ * <h2>Bindings</h2>
+ * <dl>
+ * <dt>responseType</dt>
+ * <dd>The expected response type of the action being invoked remotely. In most
+ * cases this can be omitted.</dd>
+ *
+ * <dt>refreshPanes</dt>
+ * <dd>One or more WCContentPane identifiers that will be refreshed when the
+ * action returns successfully. This can be specified as a string containing
+ * a single identifier ("paneId"), a string containing an array of identifiers
+ * in JSON notation ("[ 'paneId1', 'paneId2' ]"; note the single quotes around
+ * the identifiers in this case), or bound to something that implements
+ * java.util.List.</dd>
+ *
+ * <dt>block</dt>
+ * <dd>Specifies whether a blocking overlay should be placed somewhere on the
+ * page while the action is being executed. This can be set to the boolean
+ * "true", in which case overlays will be placed over each of the content
+ * panes specified by the refreshPanes binding, or it can be one or more
+ * explicit identifiers of DOM elements on the page that will be blocked.</dd>
+ *
+ * <dt>form</dt>
+ * <dd>The DOM identifier of the form to serialize with this request. By
+ * default, this will be the form that contains the element in question.</dd>
+ *
+ * <dt>synchronous</dt>
+ * <dd>If true, the action will be invoked synchronously instead of
+ * asynchronously. Use with caution, as this will block the browser until the
+ * server responds.</dd>
+ *
+ * </dl>
  *
  * @author Tony Allevato
- * @version $Id: DojoRemoteHelper.java,v 1.3 2009/10/30 20:52:45 aallowat Exp $
+ * @version $Id: DojoRemoteHelper.java,v 1.4 2009/10/31 22:53:42 aallowat Exp $
  */
 public class DojoRemoteHelper
 {
@@ -216,7 +249,11 @@ public class DojoRemoteHelper
         {
             Object blockIds = _block.valueInComponent(component);
 
-            if (blockIds instanceof List)
+            if (blockIds instanceof Boolean && (Boolean) blockIds)
+            {
+                block = "true";
+            }
+            else if (blockIds instanceof List)
             {
                 block = DojoUtils.doubleToSingleQuotes(
                         new JSONArray((List<?>) blockIds).toString());
@@ -363,7 +400,11 @@ public class DojoRemoteHelper
         {
             Object blockIds = _block.valueInComponent(component);
 
-            if (blockIds instanceof List)
+            if (blockIds instanceof Boolean && (Boolean) blockIds)
+            {
+                block = "true";
+            }
+            else if (blockIds instanceof List)
             {
                 block = DojoUtils.doubleToSingleQuotes(
                         new JSONArray((List<?>) blockIds).toString());
