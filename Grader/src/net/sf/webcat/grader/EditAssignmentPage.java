@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.22 2009/10/30 20:53:13 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.23 2009/11/05 20:27:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.22 $, $Date: 2009/10/30 20:53:13 $
+ * @version $Revision: 1.23 $, $Date: 2009/11/05 20:27:35 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -573,7 +573,10 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public void gradingStepsWereDragged(int[] dragIndices, int[] dropIndices)
+    public void gradingStepsWereDropped(
+            String sourceId, int[] dragIndices,
+            String targetId, int[] dropIndices,
+            boolean isCopy)
     {
         NSMutableArray<Step> steps =
             scriptDisplayGroup.displayedObjects().mutableClone();
