@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TableRow.java,v 1.4 2009/10/30 20:51:39 aallowat Exp $
+ |  $Id: TableRow.java,v 1.5 2009/11/05 20:25:09 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * row.
  *
  * @author Stephen Edwards
- * @version $Id: TableRow.java,v 1.4 2009/10/30 20:51:39 aallowat Exp $
+ * @version $Id: TableRow.java,v 1.5 2009/11/05 20:25:09 aallowat Exp $
  */
 public class TableRow
     extends WOComponent
@@ -107,6 +107,20 @@ public class TableRow
     public String dragHandle()
     {
         return (String) valueForBinding("dragHandle");
+    }
+
+
+    // ----------------------------------------------------------
+    public String dndType()
+    {
+        return (String) valueForBinding("dndType");
+    }
+
+
+    // ----------------------------------------------------------
+    public String dndData()
+    {
+        return (String) valueForBinding("dndData");
     }
 
 
