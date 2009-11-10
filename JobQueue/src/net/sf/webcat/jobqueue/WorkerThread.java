@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.2 2009/11/10 21:06:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,12 @@
 
 package net.sf.webcat.jobqueue;
 
+import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.foundation.NSArray;
+import er.extensions.eof.ERXQ;
+import er.extensions.eof.ERXS;
 import net.sf.webcat.core.Application;
 
 //-------------------------------------------------------------------------
@@ -34,7 +39,7 @@ import net.sf.webcat.core.Application;
  *     works on.
  *
  * @author Stephen Edwards
- * @version $Id: WorkerThread.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: WorkerThread.java,v 1.2 2009/11/10 21:06:20 aallowat Exp $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -100,24 +105,88 @@ public abstract class WorkerThread<Job extends JobBase>
     /**
      * The actual thread of execution, which cannot be overridden.
      */
+    @SuppressWarnings("unchecked")
     public final void run()
     {
-        // ...
-        //repeat forever
-            // lock the ec
-            // while there are cancelled jobs
-                // attempt kill each one in turn
-                // protect against optimistic locking failures
+        try
+        {
+            while (true)
+            {
+                ec.lock();
 
-            // get first available job
-            // if none are available, wait ...
+                killCancelledJobs();
+                waitForAvailableJob();
 
-            // process job
+                long jobStartTime = System.currentTimeMillis();
+                processJob();
+                long jobDuration = System.currentTimeMillis() - jobStartTime;
 
-            // compile wait statistics
-            // remove job
-            // update wait statistics
-            // unlock the ec
+                // Compile the wait statistics.
+
+                long jobsCountedWithWaits =
+                    queueDescriptor().jobsCountedWithWaits() + 1;
+                long totalWait =
+                    queueDescriptor().totalWaitForJobs() + jobDuration;
+
+                currentJob.delete();
+
+                try
+                {
+                    ec.saveChanges();
+                    currentJob = null;
+
+                    // Update the wait statistics.
+
+                    boolean statsUpdated = false;
+
+                    while (!statsUpdated)
+                    {
+                        try
+                        {
+                            queueDescriptor().setJobsCountedWithWaits(
+                                    jobsCountedWithWaits);
+                            queueDescriptor().setMostRecentJobWait(jobDuration);
+                            queueDescriptor().setTotalWaitForJobs(totalWait);
+
+                            queueDescriptor().saveChanges();
+                            statsUpdated = true;
+                        }
+                        catch (Exception e)
+                        {
+                            statsUpdated = false;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Number jobId = currentJob.id();
+
+                    // Refresh the editing context.
+
+                    Application.releasePeerEditingContext(ec);
+                    ec = null;
+                    localContext();
+
+                    // Get a local instance of the job with the same id.
+
+                    NSArray<Job> results =
+                        EOUtilities.objectsMatchingKeyAndValue(
+                            ec, queueDescriptor().jobEntityName(),
+                            "id", jobId.intValue());
+
+                    if (results != null && results.count() > 0)
+                    {
+                        currentJob = results.objectAtIndex(0);
+                    }
+                }
+
+                ec.unlock();
+            }
+        }
+        catch (Exception e)
+        {
+            // FIXME what should we do here when an exception breaks the loop?
+        }
     }
 
 
@@ -171,6 +240,175 @@ public abstract class WorkerThread<Job extends JobBase>
     protected void sendJobSuspensionNotification()
     {
         // TODO: implement
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Waits for a candidate job to become available and tries to take
+     * ownership of it. This method will not return until it successfully does
+     * this, at which point the currentJob field will be set to that job.
+     */
+    protected void waitForAvailableJob()
+    {
+        boolean didGetJob = false;
+
+        if (currentJob != null)
+        {
+            return;
+        }
+
+        do
+        {
+            // Get a candidate job for this thread to try to take ownership of.
+            // A candidate will have a null worker relationship, meaning
+            // nobody else successfully owns it yet.
+
+            Job candidate = fetchNextCandidateJob();
+
+            if (candidate == null)
+            {
+                // If there aren't any jobs currently available, sleep for a
+                // second and then check again.
+
+                try
+                {
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e)
+                {
+                    // Do nothing.
+                }
+            }
+            else
+            {
+                // Try to take ownership of the job by setting the worker
+                // relationship to our worker descriptor and then saving the
+                // changes. If this succeeds, we own the job. If there is an
+                // optimistic locking failure, then another thread got it
+                // first, so we go back to the top of the loop and try to get
+                // another job.
+
+                WorkerDescriptor wd = (WorkerDescriptor)
+                    descriptor().localInstanceIn(ec);
+                candidate.setWorkerRelationship(wd);
+
+                try
+                {
+                    ec.saveChanges();
+
+                    didGetJob = true;
+
+                    try
+                    {
+                        // descriptor().setCurrentJob(candidate);
+                        descriptor().saveChanges();
+                        currentJob = candidate;
+                    }
+                    catch (Exception e)
+                    {
+                        candidate.setWorkerRelationship(null);
+                        ec.saveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ec.revert();
+                    didGetJob = false;
+                }
+            }
+        }
+        while (!didGetJob);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Fetch the next job that this thread will try to take ownership of.
+     *
+     * @return a job that doesn't currently have any worker threads owning it
+     */
+    @SuppressWarnings("unchecked")
+    protected Job fetchNextCandidateJob()
+    {
+        String entityName = queueDescriptor().jobEntityName();
+        EOFetchSpecification fetchSpec = new EOFetchSpecification(
+                entityName,
+                ERXQ.isNull(JobBase.WORKER_KEY),
+                ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
+        fetchSpec.setFetchLimit(1);
+
+        NSArray<Job> jobs = ec.objectsWithFetchSpecification(fetchSpec);
+
+        if (jobs.count() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return jobs.objectAtIndex(0);
+        }
+    }
+
+
+    //~ Private methods .......................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Fetches cancelled jobs from the queue and deletes them.
+     */
+    private void killCancelledJobs()
+    {
+        Job cancelledJob = fetchNextCancelledJob();
+
+        while (cancelledJob != null)
+        {
+            cancelledJob.delete();
+
+            // If there is an optimistic locking failure when we try to save
+            // our changes, that's ok because another thread already cancelled
+            // the job. Continue blissfully on by getting the next job.
+
+            try
+            {
+                ec.saveChanges();
+            }
+            catch (Exception e)
+            {
+                ec.revert();
+            }
+
+            cancelledJob = fetchNextCancelledJob();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieves cancelled jobs of the type handled by this worker thread.
+     *
+     * @return an array of cancelled jobs
+     */
+    @SuppressWarnings("unchecked")
+    private Job fetchNextCancelledJob()
+    {
+        String entityName = queueDescriptor().jobEntityName();
+        EOFetchSpecification fetchSpec = new EOFetchSpecification(
+                entityName,
+                ERXQ.isTrue(JobBase.IS_CANCELLED_KEY),
+                ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
+        fetchSpec.setFetchLimit(1);
+
+        NSArray<Job> jobs = ec.objectsWithFetchSpecification(fetchSpec);
+
+        if (jobs.count() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return jobs.objectAtIndex(0);
+        }
     }
 
 
