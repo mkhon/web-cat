@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.7 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: IndependentEOManager.java,v 1.8 2009/11/10 21:06:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * resolve them automatically.
  *
  * @author stedwar2
- * @version $Id: IndependentEOManager.java,v 1.7 2008/10/29 14:15:51 aallowat Exp $
+ * @version $Id: IndependentEOManager.java,v 1.8 2009/11/10 21:06:47 aallowat Exp $
  */
 public class IndependentEOManager
     implements EOManager
@@ -105,6 +105,20 @@ public class IndependentEOManager
         {
             return er.extensions.eof.ERXConstant.ZeroInteger;
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets a local instance of the managed object in the specified editing
+     * context.
+     *
+     * @param ec the editing context
+     * @return a local instance of the object
+     */
+    public EOEnterpriseObject localInstanceIn(EOEditingContext ec)
+    {
+        return EOUtilities.localInstanceOfObject(ec, mirror);
     }
 
 
