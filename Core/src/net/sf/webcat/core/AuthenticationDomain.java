@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.11 2009/03/31 13:38:05 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.12 2009/11/10 21:14:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author Stephen Edwards
- * @version $Id: AuthenticationDomain.java,v 1.11 2009/03/31 13:38:05 stedwar2 Exp $
+ * @version $Id: AuthenticationDomain.java,v 1.12 2009/11/10 21:14:27 stedwar2 Exp $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -70,18 +70,6 @@ public class AuthenticationDomain
     public String userPresentableDescription()
     {
         return name();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this authenticator, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this authenticator's property name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 

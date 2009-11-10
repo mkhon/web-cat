@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.14 2009/09/06 02:40:42 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.15 2009/11/10 21:14:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.14 $, $Date: 2009/09/06 02:40:42 $
+ * @version $Revision: 1.15 $, $Date: 2009/11/10 21:14:27 $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -164,18 +164,6 @@ public class CourseOffering
     public String userPresentableDescription()
     {
         return compactName();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this course offering, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this course offering's short name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.2 2009/08/07 15:18:07 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.3 2009/11/10 21:14:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -32,7 +32,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author
  *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2009/08/07 15:18:07 $
+ *  @version $Revision: 1.3 $, $Date: 2009/11/10 21:14:27 $
  */
 public class Theme
     extends _Theme
@@ -105,18 +105,6 @@ public class Theme
     public String userPresentableDescription()
     {
         return name();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this theme, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this theme's name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 

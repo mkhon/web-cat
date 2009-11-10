@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Department.java,v 1.4 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: Department.java,v 1.5 2009/11/10 21:14:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import sun.security.krb5.internal.*;
  * Represents one department within an institution.
  *
  * @author Stephen Edwards
- * @version $Id: Department.java,v 1.4 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: Department.java,v 1.5 2009/11/10 21:14:27 stedwar2 Exp $
  */
 public class Department
     extends _Department
@@ -60,17 +60,5 @@ public class Department
     public String userPresentableDescription()
     {
         return abbreviation() + " (" + institution() + ")";
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this department, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this user's name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Semester.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: Semester.java,v 1.11 2009/11/10 21:14:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  * Represents a single school semester.
  *
  * @author Stephen Edwards
- * @version $Id: Semester.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
+ * @version $Id: Semester.java,v 1.11 2009/11/10 21:14:27 stedwar2 Exp $
  */
 public class Semester
     extends _Semester
@@ -181,18 +181,6 @@ public class Semester
     public String userPresentableDescription()
     {
         return name();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this semester, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this semester's name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 

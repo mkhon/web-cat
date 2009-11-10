@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.20 2009/05/29 19:17:00 stedwar2 Exp $
+ |  $Id: User.java,v 1.21 2009/11/10 21:14:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -49,7 +49,7 @@ import org.apache.log4j.*;
  * </ul>
  *
  * @author Stephen Edwards
- * @version $Id: User.java,v 1.20 2009/05/29 19:17:00 stedwar2 Exp $
+ * @version $Id: User.java,v 1.21 2009/11/10 21:14:27 stedwar2 Exp $
  */
 public class User
     extends _User
@@ -217,18 +217,6 @@ public class User
     public String userPresentableDescription()
     {
         return name();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this user, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this user's name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 
