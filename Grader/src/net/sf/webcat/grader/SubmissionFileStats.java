@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.11 2009/10/27 15:42:56 aallowat Exp $
+ |  $Id: SubmissionFileStats.java,v 1.12 2009/11/11 19:26:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.jdom.output.XMLOutputter;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author Stephen H. Edwards
- *  @version $Id: SubmissionFileStats.java,v 1.11 2009/10/27 15:42:56 aallowat Exp $
+ *  @version $Id: SubmissionFileStats.java,v 1.12 2009/11/11 19:26:35 aallowat Exp $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -369,7 +369,14 @@ public class SubmissionFileStats
         // not return false positives. The tags() attribute is guaranteed to
         // have leading and trailing spaces as well so that this always works.
 
-        return tags().contains(" " + tag + " ");
+        if (tags() == null)
+        {
+            return false;
+        }
+        else
+        {
+            return tags().contains(" " + tag + " ");
+        }
     }
 
 
