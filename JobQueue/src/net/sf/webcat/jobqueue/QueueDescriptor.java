@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.2 2009/11/13 15:30:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.core.Application;
  * database.
  *
  * @author
- * @version $Id: QueueDescriptor.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: QueueDescriptor.java,v 1.2 2009/11/13 15:30:43 stedwar2 Exp $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -95,4 +95,9 @@ public class QueueDescriptor
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
+    public String toString()
+    {
+        return userPresentableDescription();
+    }
 }

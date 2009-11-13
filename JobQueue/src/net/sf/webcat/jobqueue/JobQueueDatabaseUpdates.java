@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueueDatabaseUpdates.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: JobQueueDatabaseUpdates.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: JobQueueDatabaseUpdates.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: JobQueueDatabaseUpdates.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
  */
 public class JobQueueDatabaseUpdates
     extends UpdateSet
@@ -64,6 +64,22 @@ public class JobQueueDatabaseUpdates
         createHostDescriptorTable();
         createQueueDescriptorTable();
         createWorkerDescriptorTable();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Revise structure of the worker descriptor table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement1() throws SQLException
+    {
+        database().executeSQL(
+            "ALTER TABLE TWorkerDescriptor DROP isAllocated" );
+        database().executeSQL(
+            "ALTER TABLE TWorkerDescriptor DROP idOnHost" );
+        database().executeSQL(
+        "ALTER TABLE TWorkerDescriptor ADD currentJobId INTEGER" );
     }
 
 

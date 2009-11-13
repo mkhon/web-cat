@@ -61,22 +61,22 @@ public abstract class _WorkerDescriptor
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param isAllocated
-     * @param isRunning
+     * @param currentJobId
+     * @param isAlive
      * @return The newly created object
      */
     public static WorkerDescriptor create(
         EOEditingContext editingContext,
-        boolean isAllocated,
-        boolean isRunning
+        long currentJobId,
+        boolean isAlive
         )
     {
         WorkerDescriptor eoObject = (WorkerDescriptor)
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _WorkerDescriptor.ENTITY_NAME);
-        eoObject.setIsAllocated(isAllocated);
-        eoObject.setIsRunning(isRunning);
+        eoObject.setCurrentJobId(currentJobId);
+        eoObject.setIsAlive(isAlive);
         return eoObject;
     }
 
@@ -141,9 +141,8 @@ public abstract class _WorkerDescriptor
     //~ Constants (for key names) .............................................
 
     // Attributes ---
-    public static final String ID_ON_HOST_KEY = "idOnHost";
-    public static final String IS_ALLOCATED_KEY = "isAllocated";
-    public static final String IS_RUNNING_KEY = "isRunning";
+    public static final String CURRENT_JOB_ID_KEY = "currentJobId";
+    public static final String IS_ALIVE_KEY = "isAlive";
     // To-one relationships ---
     public static final String HOST_KEY = "host";
     public static final String QUEUE_KEY = "queue";
@@ -200,141 +199,77 @@ public abstract class _WorkerDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>idOnHost</code> value.
+     * Retrieve this object's <code>currentJobId</code> value.
      * @return the value of the attribute
      */
-    public int idOnHost()
+    public long currentJobId()
     {
-        Integer result =
-            (Integer)storedValueForKey( "idOnHost" );
+        Long result =
+            (Long)storedValueForKey( "currentJobId" );
         return ( result == null )
-            ? 0
-            : result.intValue();
+            ? 0L
+            : result.longValue();
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>idOnHost</code>
+     * Change the value of this object's <code>currentJobId</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIdOnHost( int value )
+    public void setCurrentJobId( long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setIdOnHost("
-                + value + "): was " + idOnHost() );
+            log.debug( "setCurrentJobId("
+                + value + "): was " + currentJobId() );
         }
-        Integer actual =
-            er.extensions.eof.ERXConstant.integerForInt( value );
-            setIdOnHostRaw( actual );
+        Long actual =
+            new Long( value );
+            setCurrentJobIdRaw( actual );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>idOnHost</code> value.
+     * Retrieve this object's <code>currentJobId</code> value.
      * @return the value of the attribute
      */
-    public Integer idOnHostRaw()
+    public Long currentJobIdRaw()
     {
-        return (Integer)storedValueForKey( "idOnHost" );
+        return (Long)storedValueForKey( "currentJobId" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>idOnHost</code>
+     * Change the value of this object's <code>currentJobId</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIdOnHostRaw( Integer value )
+    public void setCurrentJobIdRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setIdOnHostRaw("
-                + value + "): was " + idOnHostRaw() );
+            log.debug( "setCurrentJobIdRaw("
+                + value + "): was " + currentJobIdRaw() );
         }
-        takeStoredValueForKey( value, "idOnHost" );
+        takeStoredValueForKey( value, "currentJobId" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>isAllocated</code> value.
+     * Retrieve this object's <code>isAlive</code> value.
      * @return the value of the attribute
      */
-    public boolean isAllocated()
+    public boolean isAlive()
     {
         Integer result =
-            (Integer)storedValueForKey( "isAllocated" );
-        return ( result == null )
-            ? false
-            : ( result.intValue() > 0 );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>isAllocated</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setIsAllocated( boolean value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setIsAllocated("
-                + value + "): was " + isAllocated() );
-        }
-        Integer actual =
-            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
-            setIsAllocatedRaw( actual );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>isAllocated</code> value.
-     * @return the value of the attribute
-     */
-    public Integer isAllocatedRaw()
-    {
-        return (Integer)storedValueForKey( "isAllocated" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>isAllocated</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setIsAllocatedRaw( Integer value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setIsAllocatedRaw("
-                + value + "): was " + isAllocatedRaw() );
-        }
-        takeStoredValueForKey( value, "isAllocated" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>isRunning</code> value.
-     * @return the value of the attribute
-     */
-    public boolean isRunning()
-    {
-        Integer result =
-            (Integer)storedValueForKey( "isRunning" );
+            (Integer)storedValueForKey( "isAlive" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -343,50 +278,50 @@ public abstract class _WorkerDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>isRunning</code>
+     * Change the value of this object's <code>isAlive</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIsRunning( boolean value )
+    public void setIsAlive( boolean value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setIsRunning("
-                + value + "): was " + isRunning() );
+            log.debug( "setIsAlive("
+                + value + "): was " + isAlive() );
         }
         Integer actual =
             er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
-            setIsRunningRaw( actual );
+            setIsAliveRaw( actual );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>isRunning</code> value.
+     * Retrieve this object's <code>isAlive</code> value.
      * @return the value of the attribute
      */
-    public Integer isRunningRaw()
+    public Integer isAliveRaw()
     {
-        return (Integer)storedValueForKey( "isRunning" );
+        return (Integer)storedValueForKey( "isAlive" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>isRunning</code>
+     * Change the value of this object's <code>isAlive</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIsRunningRaw( Integer value )
+    public void setIsAliveRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setIsRunningRaw("
-                + value + "): was " + isRunningRaw() );
+            log.debug( "setIsAliveRaw("
+                + value + "): was " + isAliveRaw() );
         }
-        takeStoredValueForKey( value, "isRunning" );
+        takeStoredValueForKey( value, "isAlive" );
     }
 
 
@@ -509,6 +444,22 @@ public abstract class _WorkerDescriptor
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "queue" );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Produce a string representation of this object.  This implementation
+     * calls UserPresentableDescription(), which uses WebObjects' internal
+     * mechanism to print out the visible fields of this object.  Normally,
+     * subclasses would override userPresentableDescription() to change
+     * the way the object is printed.
+     *
+     * @return A string representation of the object's value
+     */
+    public String toString()
+    {
+        return userPresentableDescription();
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.2 2009/02/21 22:32:14 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * corresponding queues using the central database as the mediator.
  *
  * @author Stephen Edwards
- * @version $Id: JobQueue.java,v 1.2 2009/02/21 22:32:14 stedwar2 Exp $
+ * @version $Id: JobQueue.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
  */
 public class JobQueue
     extends Subsystem
@@ -60,25 +60,38 @@ public class JobQueue
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see net.sf.webcat.core.Subsystem#init()
-     */
     public void init()
     {
         super.init();
+
+        if (initialized)
+        {
+            log.error(
+                "JobQueue subsystem has already been initialized!",
+                new Throwable("called here"));
+            return;
+        }
 
         try
         {
             java.net.InetAddress localMachine =
                 java.net.InetAddress.getLocalHost();
-            log.debug("local name = " + localMachine.getHostName());
-            log.debug("canonical  = " + localMachine.getCanonicalHostName());
-            log.debug("local addr = " + localMachine.getHostAddress());
+            canonicalHostName = localMachine.getCanonicalHostName();
         }
         catch (java.net.UnknownHostException e)
         {
             log.error("Error looking up local host info: " + e);
         }
+        log.info("canonical host name = " + canonicalHostName);
+
+        // Register this host's descriptor
+        EOEditingContext ec = Application.newPeerEditingContext();
+        host = HostDescriptor.registerHost(ec, canonicalHostName);
+        // Don't destroy the EO, since we want to keep the descriptor
+        // around as long as is needed.
+
+        log.info("host descriptor = " + host);
+
         initialized = true;
     }
 
@@ -95,20 +108,23 @@ public class JobQueue
      * @param initializationBindings a set of additional bindings (that will
      *        be added to the searchBindings) to set the initial field values
      *        when creating the descriptor, if one does not already exist.
+     * @param updateBindings a set of additional bindings to set if an
+     *        existing descriptor is found and is available.
      * @return The registered descriptor
      */
     @SuppressWarnings("unchecked")
-	public static EOEnterpriseObject registerDescriptor(
+	public static EOEnterpriseObject registerFirstAvailableDescriptor(
         EOEditingContext        context,
         String                  descriptorEntityName,
         NSDictionary<String, ?> searchBindings,
-        NSDictionary<String, ?> initializationBindings)
+        NSDictionary<String, ?> initializationBindings,
+        NSDictionary<String, ?> updateBindings)
     {
         ensureInitialized();
         if (log.isDebugEnabled())
         {
-            log.debug("registerDescriptor(" + descriptorEntityName + ", "
-                + searchBindings + ")");
+            log.debug("registerFirstAvailableDescriptor("
+                + descriptorEntityName + ", " + searchBindings + ")");
         }
         EOEnterpriseObject result = null;
         try
@@ -166,6 +182,147 @@ public class JobQueue
             				  ? "one descriptor found"
             				  : "multiple descriptors found");
             	}
+                while (descriptors.count() > 1)
+                {
+                    result = (EOEnterpriseObject)descriptors.objectAtIndex(0);
+                    for (int i = 1; i < descriptors.count(); i++)
+                    {
+                        EOEnterpriseObject eo = (EOEnterpriseObject)
+                            descriptors.objectAtIndex(i);
+                        if (result == null)
+                        {
+                            result = eo;
+                        }
+                        else
+                        {
+                            Integer i1 = (Integer)EOUtilities
+                                .primaryKeyForObject(
+                                    context, result).objectForKey( "id" );
+                            Integer i2 = (Integer)EOUtilities
+                                .primaryKeyForObject(
+                                    context, eo).objectForKey( "id" );
+                            if (i1.intValue() > i2.intValue())
+                            {
+                                result = eo;
+                            }
+                        }
+                    }
+                    try
+                    {
+                        result.takeValuesFromDictionary(updateBindings);
+                        log.debug("attempting to update descriptor: "
+                            + result);
+                        context.saveChanges();
+                    }
+                    catch (EOGeneralAdaptorException e)
+                    {
+                        log.debug("delete attempt stumbled");
+                        // Assume delete failed because the object is already
+                        // gone.
+                        context.revert();
+                        context.refaultAllObjects();
+                        result = null;
+                    }
+                    descriptors = EOUtilities.objectsMatchingValues(
+                        context, descriptorEntityName, searchBindings);
+                }
+            }
+        }
+        finally
+        {
+            context.unlock();
+        }
+        if (log.isDebugEnabled())
+        {
+            log.debug("registerDescriptor: result = " + result);
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Registers a descriptor in the database, if it has not already been
+     * registered.
+     * @param context The editing context to use.
+     * @param descriptorEntityName The entity name for the descriptor
+     *        you want to register.
+     * @param searchBindings a set of bindings that uniquely identify
+     *        the descriptor you are trying to register.
+     * @param initializationBindings a set of additional bindings (that will
+     *        be added to the searchBindings) to set the initial field values
+     *        when creating the descriptor, if one does not already exist.
+     * @return The registered descriptor
+     */
+    @SuppressWarnings("unchecked")
+    public static EOEnterpriseObject registerDescriptor(
+        EOEditingContext        context,
+        String                  descriptorEntityName,
+        NSDictionary<String, ?> searchBindings,
+        NSDictionary<String, ?> initializationBindings)
+    {
+        ensureInitialized();
+        if (log.isDebugEnabled())
+        {
+            log.debug("registerDescriptor(" + descriptorEntityName + ", "
+                + searchBindings + ")");
+        }
+        EOEnterpriseObject result = null;
+        try
+        {
+            context.lock();
+            NSArray descriptors = EOUtilities.objectsMatchingValues(
+                context, descriptorEntityName, searchBindings);
+            if (descriptors == null || descriptors.count() == 0)
+            {
+                try
+                {
+                    EOEnterpriseObject descriptor =
+                        EOUtilities.createAndInsertInstance(
+                            context, descriptorEntityName);
+                    descriptor.reapplyChangesFromDictionary(
+                            (NSDictionary<String, Object>)searchBindings);
+                    log.debug("descriptor not found: creating a new one");
+                    if (initializationBindings != null)
+                    {
+                        descriptor.reapplyChangesFromDictionary(
+                            (NSDictionary<String, Object>)
+                            initializationBindings);
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug(
+                                "initialization = " + initializationBindings);
+                        }
+                    }
+                    context.saveChanges();
+                }
+                catch (EOGeneralAdaptorException e)
+                {
+                    // Ignore it--most likely an optimistic locking failure
+                    // on the id.
+                }
+            }
+            descriptors = EOUtilities.objectsMatchingValues(
+                context, descriptorEntityName, searchBindings);
+            if (descriptors == null || descriptors.count() == 0)
+            {
+                log.error("failure registering "
+                    + descriptorEntityName + searchBindings);
+                Application.emailExceptionToAdmins(
+                    null,
+                    null,
+                    "failure registering "
+                    + descriptorEntityName
+                    + searchBindings);
+            }
+            else
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug(descriptors.count() == 1
+                              ? "one descriptor found"
+                              : "multiple descriptors found");
+                }
                 while (descriptors.count() > 1)
                 {
                     try
@@ -226,6 +383,16 @@ public class JobQueue
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Get a local copy of the host descriptor for the current host
+     */
+    public static HostDescriptor host(EOEditingContext context)
+    {
+        return host.localInstance(context);
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -243,7 +410,9 @@ public class JobQueue
 
     //~ Instance/static variables .............................................
 
-    private static boolean initialized = false;
+    private static boolean        initialized = false;
+    private static HostDescriptor host;
+    private static String         canonicalHostName = "unknown";
 
     static Logger log = Logger.getLogger(JobQueue.class);
 }

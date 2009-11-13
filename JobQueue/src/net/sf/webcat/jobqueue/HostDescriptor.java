@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.2 2009/02/21 22:32:31 stedwar2 Exp $
+ |  $Id: HostDescriptor.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -31,7 +31,7 @@ import com.webobjects.foundation.*;
  * servers operating on a single shared database.
  *
  * @author
- * @version $Id: HostDescriptor.java,v 1.2 2009/02/21 22:32:31 stedwar2 Exp $
+ * @version $Id: HostDescriptor.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -85,4 +85,9 @@ public class HostDescriptor
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
+    public String toString()
+    {
+        return userPresentableDescription();
+    }
 }

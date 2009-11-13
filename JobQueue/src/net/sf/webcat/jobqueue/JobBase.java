@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import com.webobjects.foundation.*;
  * method, which will generate the inherited field definitions for you.
  *
  * @author
- * @version $Id: JobBase.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @version $Id: JobBase.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
  */
 public abstract class JobBase
     extends _JobBase
@@ -92,6 +92,13 @@ public abstract class JobBase
             }
         }
         return worker() == worker;
+    }
+
+
+    // ----------------------------------------------------------
+    public String toString()
+    {
+        return userPresentableDescription();
     }
 
 
