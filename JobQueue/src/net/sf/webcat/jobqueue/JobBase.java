@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.3 2009/11/13 15:37:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -38,7 +38,7 @@ import com.webobjects.foundation.*;
  * method, which will generate the inherited field definitions for you.
  *
  * @author
- * @version $Id: JobBase.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
+ * @version $Id: JobBase.java,v 1.3 2009/11/13 15:37:17 aallowat Exp $
  */
 public abstract class JobBase
     extends _JobBase
@@ -79,19 +79,42 @@ public abstract class JobBase
         {
             return false;
         }
+
         if (worker() == null)
         {
             try
             {
                 setWorkerRelationship(worker);
                 editingContext().saveChanges();
+
+                workerThread = (WorkerThread) Thread.currentThread();
             }
             catch (EOGeneralAdaptorException e)
             {
                 // assume optimistic locking failure
+                editingContext().revert();
             }
         }
+
         return worker() == worker;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Monitor the cancellation state of the job so that we can notify the
+     * worker thread that the user wants to cancel this job.
+     */
+    @Override
+    public void didUpdate()
+    {
+        super.didUpdate();
+
+        if (!alreadyCancelled && isCancelled() && workerThread != null)
+        {
+            alreadyCancelled = true;
+            workerThread.cancelJob();
+        }
     }
 
 
@@ -104,4 +127,8 @@ public abstract class JobBase
 
     //~ Protected Methods .....................................................
 
+    //~ Static/instance variables .............................................
+
+    private transient boolean alreadyCancelled = false;
+    private transient WorkerThread workerThread = null;
 }
