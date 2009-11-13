@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.2 2009/11/13 15:30:43 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.3 2009/11/13 17:12:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.core.Application;
  * database.
  *
  * @author
- * @version $Id: QueueDescriptor.java,v 1.2 2009/11/13 15:30:43 stedwar2 Exp $
+ * @version $Id: QueueDescriptor.java,v 1.3 2009/11/13 17:12:05 stedwar2 Exp $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -57,13 +57,13 @@ public class QueueDescriptor
     // ----------------------------------------------------------
     /**
      * Registers a queue in the database, if it has not already been
-     * registered.
+     * registered, and returns the associated descriptor.
      * @param context The editing context to use.
      * @param jobEntityName The name of the {@link JobBase} subclass used
      *        to hold the queue's contents in the database.
      * @return The registered descriptor.
      */
-    public static QueueDescriptor registerQueue(
+    public static QueueDescriptor descriptorFor(
         EOEditingContext context, String jobEntityName)
     {
         return (QueueDescriptor)JobQueue.registerDescriptor(
@@ -80,6 +80,25 @@ public class QueueDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Retrieve a managed descriptor for a given job queue, registering
+     * the queue if necessary.
+     * @param jobEntityName The name of the {@link JobBase} subclass used
+     *        to hold the queue's contents in the database.
+     * @return The managed descriptor.
+     */
+    public static ManagedQueueDescriptor managedDescriptorFor(
+        String jobEntityName)
+    {
+        EOEditingContext ec = Application.newPeerEditingContext();
+        ManagedQueueDescriptor result = new ManagedQueueDescriptor(
+            descriptorFor(ec, jobEntityName));
+        Application.releasePeerEditingContext(ec);
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Registers a queue in the database, if it has not already been
      * registered.
      * @param jobEntityName The name of the {@link JobBase} subclass used
@@ -88,7 +107,7 @@ public class QueueDescriptor
     public static void registerQueue(String jobEntityName)
     {
         EOEditingContext ec = Application.newPeerEditingContext();
-        registerQueue(ec, jobEntityName);
+        descriptorFor(ec, jobEntityName);
         Application.releasePeerEditingContext(ec);
     }
 

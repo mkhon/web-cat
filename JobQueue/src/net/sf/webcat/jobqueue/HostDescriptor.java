@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
+ |  $Id: HostDescriptor.java,v 1.4 2009/11/13 17:12:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -31,7 +31,7 @@ import com.webobjects.foundation.*;
  * servers operating on a single shared database.
  *
  * @author
- * @version $Id: HostDescriptor.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
+ * @version $Id: HostDescriptor.java,v 1.4 2009/11/13 17:12:04 stedwar2 Exp $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -50,13 +50,96 @@ public class HostDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Get a local instance of the current host's host descriptor in
+     * the given editing context.
+     * @return The descriptor.
+     */
+    public static HostDescriptor currentHost(EOEditingContext context)
+    {
+        ensureCurrentHostIsRegistered();
+        return (HostDescriptor)currentHost.localInstanceIn(context);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create a new managed descriptor for the current host, registering
+     * it if necessary.
+     * @return The managed descriptor.
+     */
+    public static ManagedHostDescriptor newHostDescriptor()
+    {
+        EOEditingContext ec = Application.newPeerEditingContext();
+        ManagedHostDescriptor result = new ManagedHostDescriptor(
+            registerHost(ec, canonicalHostName()));
+        Application.releasePeerEditingContext(ec);
+        return result;
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    public String toString()
+    {
+        return userPresentableDescription();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get the current host's canonical name.
+     * @return The canonical name for the current host.
+     */
+    public static String canonicalHostName()
+    {
+        if (canonicalHostName == null)
+        {
+            try
+            {
+                java.net.InetAddress localMachine =
+                    java.net.InetAddress.getLocalHost();
+                canonicalHostName = localMachine.getCanonicalHostName();
+            }
+            catch (java.net.UnknownHostException e)
+            {
+                log.error("Error looking up local host info: " + e);
+                canonicalHostName = "unknown";
+            }
+            log.info("canonical host name = " + canonicalHostName);
+        }
+        return canonicalHostName;
+    }
+
+
+    //~ Private Methods .......................................................
+
+    // ----------------------------------------------------------
+    /**
      * Registers a host in the database, if it has not already been
      * registered.
      * @param context The editing context to use.
      * @param hostName The name of the host.
      * @return The registered descriptor.
      */
-    public static HostDescriptor registerHost(
+    /* protected */ static void ensureCurrentHostIsRegistered()
+    {
+        if (currentHost == null)
+        {
+            currentHost = newHostDescriptor();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Registers a host in the database, if it has not already been
+     * registered.
+     * @param context The editing context to use.
+     * @param hostName The name of the host.
+     * @return The registered descriptor.
+     */
+    private static HostDescriptor registerHost(
         EOEditingContext context, String hostName)
     {
         return (HostDescriptor)JobQueue.registerDescriptor(
@@ -69,25 +152,9 @@ public class HostDescriptor
     }
 
 
-    // ----------------------------------------------------------
-    /**
-     * Registers a host in the database, if it has not already been
-     * registered.
-     * @param hostName The name of the host.
-     */
-    public static void registerHost(String hostName)
-    {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        registerHost(ec, hostName);
-        Application.releasePeerEditingContext(ec);
-    }
+    //~ Instance/static variables .............................................
 
-
-    //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    public String toString()
-    {
-        return userPresentableDescription();
-    }
+    private static String canonicalHostName;
+    private static ManagedHostDescriptor currentHost;
+    private static boolean currentHostIsRegistered = false;
 }

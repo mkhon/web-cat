@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.4 2009/11/13 17:12:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * corresponding queues using the central database as the mediator.
  *
  * @author Stephen Edwards
- * @version $Id: JobQueue.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
+ * @version $Id: JobQueue.java,v 1.4 2009/11/13 17:12:05 stedwar2 Exp $
  */
 public class JobQueue
     extends Subsystem
@@ -64,34 +64,9 @@ public class JobQueue
     {
         super.init();
 
-        if (initialized)
-        {
-            log.error(
-                "JobQueue subsystem has already been initialized!",
-                new Throwable("called here"));
-            return;
-        }
-
-        try
-        {
-            java.net.InetAddress localMachine =
-                java.net.InetAddress.getLocalHost();
-            canonicalHostName = localMachine.getCanonicalHostName();
-        }
-        catch (java.net.UnknownHostException e)
-        {
-            log.error("Error looking up local host info: " + e);
-        }
-        log.info("canonical host name = " + canonicalHostName);
-
-        // Register this host's descriptor
-        EOEditingContext ec = Application.newPeerEditingContext();
-        host = HostDescriptor.registerHost(ec, canonicalHostName);
-        // Don't destroy the EO, since we want to keep the descriptor
-        // around as long as is needed.
-
-        log.info("host descriptor = " + host);
-
+        HostDescriptor.ensureCurrentHostIsRegistered();
+        log.info(
+            "canonical host name = " + HostDescriptor.canonicalHostName());
         initialized = true;
     }
 
@@ -383,16 +358,6 @@ public class JobQueue
     }
 
 
-    // ----------------------------------------------------------
-    /**
-     * Get a local copy of the host descriptor for the current host
-     */
-    public static HostDescriptor host(EOEditingContext context)
-    {
-        return host.localInstance(context);
-    }
-
-
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -410,9 +375,7 @@ public class JobQueue
 
     //~ Instance/static variables .............................................
 
-    private static boolean        initialized = false;
-    private static HostDescriptor host;
-    private static String         canonicalHostName = "unknown";
+    private static boolean initialized = false;
 
     static Logger log = Logger.getLogger(JobQueue.class);
 }
