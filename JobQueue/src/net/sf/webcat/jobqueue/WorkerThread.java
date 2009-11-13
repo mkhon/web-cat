@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.2 2009/11/10 21:06:20 aallowat Exp $
+ |  $Id: WorkerThread.java,v 1.3 2009/11/13 15:37:45 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import net.sf.webcat.core.Application;
  *     works on.
  *
  * @author Stephen Edwards
- * @version $Id: WorkerThread.java,v 1.2 2009/11/10 21:06:20 aallowat Exp $
+ * @version $Id: WorkerThread.java,v 1.3 2009/11/13 15:37:45 aallowat Exp $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -186,6 +186,7 @@ public abstract class WorkerThread<Job extends JobBase>
         catch (Exception e)
         {
             // FIXME what should we do here when an exception breaks the loop?
+            ec.unlock();
         }
     }
 
@@ -203,6 +204,53 @@ public abstract class WorkerThread<Job extends JobBase>
      * invoked.
      */
     protected abstract void processJob();
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called to handle a cancellation request for the job owned by this
+     * thread. The default behavior simply sets the isCancelled flag of the
+     * thread to true so that it can be polled in the processJob method, but
+     * subclasses may override this to provide their own cleanup logic if
+     * necessary.
+     *
+     * Subclasses that override this method should always call the super method
+     * first.
+     */
+    protected void cancelJob()
+    {
+        synchronized (this)
+        {
+            isCancelled = true;
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets a value indicating whether the thread should cancel what it is
+     * doing at the earliest opportunity, due to a cancellation request from
+     * the user.
+     *
+     * @return true if the thread should cancel itself at the earliest
+     *     opportunity, otherwise false
+     */
+    protected synchronized boolean isCancelling()
+    {
+        if (currentJob.isCancelled())
+        {
+            if (!isCancelled)
+            {
+                cancelJob();
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 
     // ----------------------------------------------------------
@@ -289,9 +337,12 @@ public abstract class WorkerThread<Job extends JobBase>
                 // first, so we go back to the top of the loop and try to get
                 // another job.
 
-                WorkerDescriptor wd = (WorkerDescriptor)
+                WorkerDescriptor worker = (WorkerDescriptor)
                     descriptor().localInstanceIn(ec);
-                candidate.setWorkerRelationship(wd);
+
+                didGetJob = candidate.volunteerToRun(worker);
+
+                /*candidate.setWorkerRelationship(wd);
 
                 try
                 {
@@ -315,7 +366,7 @@ public abstract class WorkerThread<Job extends JobBase>
                 {
                     ec.revert();
                     didGetJob = false;
-                }
+                }*/
             }
         }
         while (!didGetJob);
@@ -334,7 +385,10 @@ public abstract class WorkerThread<Job extends JobBase>
         String entityName = queueDescriptor().jobEntityName();
         EOFetchSpecification fetchSpec = new EOFetchSpecification(
                 entityName,
-                ERXQ.isNull(JobBase.WORKER_KEY),
+                ERXQ.and(
+                        ERXQ.isNull(JobBase.WORKER_KEY),
+                        ERXQ.isFalse(JobBase.IS_CANCELLED_KEY),
+                        ERXQ.isFalse(JobBase.IS_PAUSED_KEY)),
                 ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
         fetchSpec.setFetchLimit(1);
 
@@ -419,4 +473,5 @@ public abstract class WorkerThread<Job extends JobBase>
     private ManagedHostDescriptor   hostDescriptor;
     private ManagedWorkerDescriptor descriptor;
     private EOEditingContext        ec;
+    private boolean                 isCancelled;
 }
