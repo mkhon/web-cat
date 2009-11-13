@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ManagedWorkerDescriptor.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
+ |  $Id: ManagedWorkerDescriptor.java,v 1.4 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,8 @@ import net.sf.webcat.core.IndependentEOManager;
  * A subclass of IndependentEOManager that holds one {@link WorkerDescriptor}.
  *
  * @author stedwar2
- * @version $Id: ManagedWorkerDescriptor.java,v 1.3 2009/11/13 15:30:44 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2009/11/13 19:17:42 $
  */
 public  class ManagedWorkerDescriptor
     extends IndependentEOManager

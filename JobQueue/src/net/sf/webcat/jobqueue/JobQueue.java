@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.4 2009/11/13 17:12:05 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.5 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -40,7 +40,8 @@ import org.apache.log4j.Logger;
  * corresponding queues using the central database as the mediator.
  *
  * @author Stephen Edwards
- * @version $Id: JobQueue.java,v 1.4 2009/11/13 17:12:05 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2009/11/13 19:17:42 $
  */
 public class JobQueue
     extends Subsystem

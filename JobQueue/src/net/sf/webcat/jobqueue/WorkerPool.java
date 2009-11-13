@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WorkerPool.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ |  $Id: WorkerPool.java,v 1.2 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -30,7 +30,8 @@ package net.sf.webcat.jobqueue;
  * @param <Worker> The kind of worker that this pool manages.
  *
  * @author Stephen Edwards
- * @version $Id: WorkerPool.java,v 1.1 2008/10/27 01:53:16 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2009/11/13 19:17:42 $
  */
 public class WorkerPool<Job extends JobBase, Worker extends WorkerThread<Job>>
 {

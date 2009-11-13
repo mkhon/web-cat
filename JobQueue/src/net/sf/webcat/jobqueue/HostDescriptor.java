@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.4 2009/11/13 17:12:04 stedwar2 Exp $
+ |  $Id: HostDescriptor.java,v 1.5 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -30,8 +30,9 @@ import com.webobjects.foundation.*;
  * Represents and identifies a Web-CAT host within the cluster of
  * servers operating on a single shared database.
  *
- * @author
- * @version $Id: HostDescriptor.java,v 1.4 2009/11/13 17:12:04 stedwar2 Exp $
+ * @author Stephen Edwards
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2009/11/13 19:17:42 $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -78,13 +79,6 @@ public class HostDescriptor
 
 
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    public String toString()
-    {
-        return userPresentableDescription();
-    }
-
 
     // ----------------------------------------------------------
     /**

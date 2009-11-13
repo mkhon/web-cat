@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: JobQueueDatabaseUpdates.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
+ |  $Id: JobQueueDatabaseUpdates.java,v 1.3 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,8 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: JobQueueDatabaseUpdates.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2009/11/13 19:17:42 $
  */
 public class JobQueueDatabaseUpdates
     extends UpdateSet

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ManagedJobBase.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
+ |  $Id: ManagedJobBase.java,v 1.3 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,8 @@ import net.sf.webcat.core.IndependentEOManager;
  * A subclass of IndependentEOManager that holds one {@link JobBase}.
  *
  * @author stedwar2
- * @version $Id: ManagedJobBase.java,v 1.2 2008/10/29 14:13:49 aallowat Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2009/11/13 19:17:42 $
  */
 public abstract class ManagedJobBase
     extends IndependentEOManager

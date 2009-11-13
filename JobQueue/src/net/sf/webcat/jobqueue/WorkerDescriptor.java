@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WorkerDescriptor.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
+ |  $Id: WorkerDescriptor.java,v 1.3 2009/11/13 19:17:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,6 +21,9 @@
 
 package net.sf.webcat.jobqueue;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import net.sf.webcat.core.Application;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
@@ -35,8 +38,9 @@ import er.extensions.foundation.ERXValueUtilities;
  * against a database-backed job queue should have a corresponding
  * WorkerDescriptor.
  *
- * @author
- * @version $Id: WorkerDescriptor.java,v 1.2 2009/11/13 15:30:44 stedwar2 Exp $
+ * @author Stephen Edwards
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2009/11/13 19:17:42 $
  */
 public class WorkerDescriptor
     extends _WorkerDescriptor
@@ -55,6 +59,23 @@ public class WorkerDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Look up the thread associated with a given descriptor on the current
+     * host.  This method requires that the given descriptor be associated
+     * with the current host, not a different host.
+     * @param descriptor The descriptor to use.
+     * @return The worker thread that corresponds to the given descriptor.
+     */
+    public static WorkerThread threadFor(WorkerDescriptor descriptor)
+    {
+        assert descriptor.host().canonicalHostName().equals(
+            HostDescriptor.canonicalHostName())
+            : "Only threads on the current host can be retrieved";
+        return threads.get(descriptor.id());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Registers a worker thread in the database, if it has not already been
      * registered.
      * @param context The editing context to use.
@@ -62,12 +83,14 @@ public class WorkerDescriptor
      * @param queue The queue on which this thread operates.
      * @return The registered descriptor.
      */
-    public static WorkerDescriptor registerWorker(
+    /* package */ static WorkerDescriptor registerWorker(
         EOEditingContext context,
-        HostDescriptor host,
-        QueueDescriptor queue)
+        HostDescriptor   host,
+        QueueDescriptor  queue,
+        WorkerThread     thread)
     {
-        return (WorkerDescriptor)JobQueue.registerFirstAvailableDescriptor(
+        WorkerDescriptor result = (WorkerDescriptor)
+            JobQueue.registerFirstAvailableDescriptor(
                 context,
                 ENTITY_NAME,
                 new NSDictionary<String, Object>(
@@ -77,6 +100,8 @@ public class WorkerDescriptor
                 null,
                 new NSDictionary<String, Object>(
                     ERXConstant.OneInteger, IS_ALIVE_KEY));
+        threads.put(result.id(), thread);
+        return result;
     }
 
 
@@ -97,8 +122,21 @@ public class WorkerDescriptor
 
 
     // ----------------------------------------------------------
-    public String toString()
+    /**
+     * Look up the thread associated with this descriptor.  This method
+     * can only be called if this descriptor is associated
+     * with the current host, not a different host.
+     * @return The worker thread that corresponds to this descriptor.
+     */
+    public WorkerThread thread()
     {
-        return userPresentableDescription();
+        return threadFor(this);
     }
+
+
+    //~ Instance/static variables .............................................
+
+    private static Map<Number, WorkerThread> threads =
+        Collections.synchronizedMap(new HashMap<Number, WorkerThread>());
+
 }
