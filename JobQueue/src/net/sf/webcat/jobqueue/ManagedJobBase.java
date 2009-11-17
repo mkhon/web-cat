@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedJobBase.java,v 1.3 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: ManagedJobBase.java,v 1.4 2009/11/17 19:03:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -31,11 +31,15 @@ import net.sf.webcat.core.IndependentEOManager;
 
 // -------------------------------------------------------------------------
 /**
- * A subclass of IndependentEOManager that holds one {@link JobBase}.
+ * A subclass of IndependentEOManager that holds one {@link JobBase}. This
+ * class also provides progress management for a job; by placing these methods
+ * on ManagedJobBase instead of {@link JobBase}, progress updates can be
+ * persisted to the database immediately and independently of other objects in
+ * various editing contexts.
  *
  * @author stedwar2
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2009/11/13 19:17:42 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2009/11/17 19:03:58 $
  */
 public abstract class ManagedJobBase
     extends IndependentEOManager
@@ -111,13 +115,13 @@ public abstract class ManagedJobBase
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>isPaused</code> value.
+     * Retrieve this object's <code>isReady</code> value.
      * @return the value of the attribute
      */
-    public boolean isPaused()
+    public boolean isReady()
     {
         Number result =
-            (Number)valueForKey(JobBase.IS_PAUSED_KEY);
+            (Number)valueForKey(JobBase.IS_READY_KEY);
         return (result == null)
             ? false
             : (result.intValue() > 0);
@@ -126,16 +130,16 @@ public abstract class ManagedJobBase
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>isPaused</code>
+     * Change the value of this object's <code>isReady</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIsPaused( boolean value )
+    public void setIsReady( boolean value )
     {
         takeValueForKey(
             ERXConstant.integerForInt(value ? 1 : 0),
-            JobBase.IS_PAUSED_KEY);
+            JobBase.IS_READY_KEY);
     }
 
 
@@ -166,6 +170,58 @@ public abstract class ManagedJobBase
         takeValueForKey(
             ERXConstant.integerForInt(value),
             JobBase.PRIORITY_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>progress</code> value.
+     * @return the value of the attribute
+     */
+    public double progress()
+    {
+        Number result =
+            (Number)valueForKey(JobBase.PROGRESS_KEY);
+        return (result == null)
+            ? 0
+            : result.doubleValue();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>progress</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setProgress(double value)
+    {
+        takeValueForKey(Double.valueOf(value), JobBase.PROGRESS_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>progressMessage</code> value.
+     * @return the value of the attribute
+     */
+    public String progressMessage()
+    {
+        return (String)valueForKey(JobBase.PROGRESS_MESSAGE_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>progressMessage</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setProgressMessage(String value)
+    {
+        takeValueForKey(value, JobBase.PROGRESS_MESSAGE_KEY);
     }
 
 
@@ -245,7 +301,112 @@ public abstract class ManagedJobBase
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Begins a task or subtask for progress monitoring.
+     *
+     * @param taskName a description of the task that will be stored in the
+     *     <code>progressMessage</code> attribute of the job
+     * @param work the amount of work to be done for this task
+     */
+    public void beginTask(String taskName, int work)
+    {
+        if (progress == null)
+        {
+            progress = new HierarchicalProgressTracker();
+        }
+
+        progress.beginTask(taskName, work);
+        setProgressMessage(progress.descriptionOfCurrentTask());
+
+        saveProgress();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Begins a task or subtask for progress monitoring.
+     *
+     * @param taskName a description of the task that will be stored in the
+     *     <code>progressMessage</code> attribute of the job
+     * @param weights an array of integer weights that determine how each of
+     *     the subtasks of this task will be weighted in the progress
+     *     calculation
+     */
+    public void beginTask(String taskName, int[] weights)
+    {
+        if (progress == null)
+        {
+            progress = new HierarchicalProgressTracker();
+        }
+
+        progress.beginTask(taskName, weights);
+        setProgressMessage(progress.descriptionOfCurrentTask());
+
+        saveProgress();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Notifies the job that <code>delta</code> units of work have been
+     * performed in the current task. Calls can be made rapidly to this method;
+     * it is self-throttling so that the database is only updated every few
+     * seconds to prevent performance deficiencies.
+     *
+     * @param delta the number of units of work completed
+     */
+    public void worked(int delta)
+    {
+        progress.worked(delta);
+        saveProgress();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Notifies the current task that its work is completed. Future calls to
+     * {@link #worked(int)} will apply to the parent task.
+     *
+     * It is required to call this method explicitly when a task's work is
+     * completed. If a task requires 5 units of work and a sequence of call
+     * that amount to <code>worked(5)</code> are made, this does <b>not</b>
+     * cause that task to be completed.
+     */
+    public void completeCurrentTask()
+    {
+        progress.completeCurrentTask();
+        setProgressMessage(progress.descriptionOfCurrentTask());
+
+        saveProgress();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Updates the percentage of job progress completed in the job EO, and
+     * saves it to the database if enough time has passed since the last save.
+     */
+    private void saveProgress()
+    {
+        setProgress(progress.percentDone());
+
+        long currentTime = System.currentTimeMillis();
+        if (currentTime >= timeOfLastProgressSave + PROGRESS_SAVE_DELAY)
+        {
+            saveChanges();
+
+            timeOfLastProgressSave = System.currentTimeMillis();
+        }
+    }
+
+
     //~ Instance/static variables .............................................
+
+    private HierarchicalProgressTracker progress;
+    private long timeOfLastProgressSave;
+
+    private static final long PROGRESS_SAVE_DELAY = 3000;
 
     static Logger log = Logger.getLogger( JobBase.class );
 }
