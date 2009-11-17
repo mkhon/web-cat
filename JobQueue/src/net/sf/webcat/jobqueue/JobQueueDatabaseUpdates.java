@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueueDatabaseUpdates.java,v 1.3 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: JobQueueDatabaseUpdates.java,v 1.4 2009/11/17 19:02:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -34,8 +34,8 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2009/11/13 19:17:42 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2009/11/17 19:02:08 $
  */
 public class JobQueueDatabaseUpdates
     extends UpdateSet
@@ -86,6 +86,20 @@ public class JobQueueDatabaseUpdates
 
     // ----------------------------------------------------------
     /**
+     * Revise structure of the worker descriptor table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement2() throws SQLException
+    {
+        database().executeSQL(
+            "ALTER TABLE TWorkerDescriptor DROP isRunning" );
+        database().executeSQL(
+            "ALTER TABLE TWorkerDescriptor ADD isAlive BIT NOT NULL" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Create the common columns inherited by all job tables, if needed.
      * This method is intended to be used in other database updaters that
      * own tables containing subclasses of {@link JobBase}.  With
@@ -109,8 +123,10 @@ public class JobQueueDatabaseUpdates
                 + "(enqueueTime DATETIME NOT NULL, "
                 + "OID INTEGER NOT NULL, "
                 + "isCancelled BIT NOT NULL, "
-                + "isPaused BIT NOT NULL, "
+                + "isReady BIT NOT NULL, "
                 + "priority INTEGER NOT NULL, "
+                + "progress DOUBLE, "
+                + "progressMessage MEDIUMTEXT, "
                 + "scheduledTime DATETIME, "
                 + "userId INTEGER, "
                 + "workerId INTEGER )");
