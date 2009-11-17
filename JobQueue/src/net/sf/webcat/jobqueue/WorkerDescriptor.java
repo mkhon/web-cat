@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerDescriptor.java,v 1.3 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: WorkerDescriptor.java,v 1.4 2009/11/17 18:10:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -40,7 +40,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2009/11/13 19:17:42 $
+ * @version $Revision: 1.4 $, $Date: 2009/11/17 18:10:36 $
  */
 public class WorkerDescriptor
     extends _WorkerDescriptor
@@ -60,16 +60,13 @@ public class WorkerDescriptor
     // ----------------------------------------------------------
     /**
      * Look up the thread associated with a given descriptor on the current
-     * host.  This method requires that the given descriptor be associated
-     * with the current host, not a different host.
+     * host.
      * @param descriptor The descriptor to use.
-     * @return The worker thread that corresponds to the given descriptor.
+     * @return The worker thread that corresponds to the given descriptor,
+     * or null if there is not one on the current host.
      */
     public static WorkerThread threadFor(WorkerDescriptor descriptor)
     {
-        assert descriptor.host().canonicalHostName().equals(
-            HostDescriptor.canonicalHostName())
-            : "Only threads on the current host can be retrieved";
         return threads.get(descriptor.id());
     }
 

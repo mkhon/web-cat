@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.5 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: HostDescriptor.java,v 1.6 2009/11/17 18:10:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -32,7 +32,7 @@ import com.webobjects.foundation.*;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/11/13 19:17:42 $
+ * @version $Revision: 1.6 $, $Date: 2009/11/17 18:10:36 $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -68,13 +68,11 @@ public class HostDescriptor
      * it if necessary.
      * @return The managed descriptor.
      */
-    public static ManagedHostDescriptor newHostDescriptor()
+    public static ManagedHostDescriptor newHostDescriptor(
+        EOEditingContext context)
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        ManagedHostDescriptor result = new ManagedHostDescriptor(
-            registerHost(ec, canonicalHostName()));
-        Application.releasePeerEditingContext(ec);
-        return result;
+        return new ManagedHostDescriptor(
+            registerHost(context, canonicalHostName()));
     }
 
 
@@ -120,7 +118,8 @@ public class HostDescriptor
     {
         if (currentHost == null)
         {
-            currentHost = newHostDescriptor();
+            currentHost =
+                newHostDescriptor(Application.newPeerEditingContext());
         }
     }
 
@@ -150,5 +149,4 @@ public class HostDescriptor
 
     private static String canonicalHostName;
     private static ManagedHostDescriptor currentHost;
-    private static boolean currentHostIsRegistered = false;
 }

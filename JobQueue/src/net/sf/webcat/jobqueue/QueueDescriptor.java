@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.4 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.5 2009/11/17 18:10:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -21,9 +21,13 @@
 
 package net.sf.webcat.jobqueue;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.log4j.Logger;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXDefaultEditingContextDelegate;
 import net.sf.webcat.core.Application;
 
 // -------------------------------------------------------------------------
@@ -38,7 +42,7 @@ import net.sf.webcat.core.Application;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2009/11/13 19:17:42 $
+ * @version $Revision: 1.5 $, $Date: 2009/11/17 18:10:36 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -67,7 +71,7 @@ public class QueueDescriptor
     public static QueueDescriptor descriptorFor(
         EOEditingContext context, String jobEntityName)
     {
-        return (QueueDescriptor)JobQueue.registerDescriptor(
+        QueueDescriptor result = (QueueDescriptor)JobQueue.registerDescriptor(
             context,
             QueueDescriptor.ENTITY_NAME,
             new NSDictionary<String, String>(
@@ -76,6 +80,18 @@ public class QueueDescriptor
             new NSDictionary<String, Long>(
                 new Long(0),
                 QueueDescriptor.NEWEST_ENTRY_ID_KEY));
+        if (context != queueContext())
+        {
+            result.localInstance(queueContext());
+        }
+        synchronized (dispensers)
+        {
+            if (dispensers.get(result.id()) == null)
+            {
+                dispensers.put(result.id(), new TokenDispenser());
+            }
+        }
+        return result;
     }
 
 
@@ -88,13 +104,10 @@ public class QueueDescriptor
      * @return The managed descriptor.
      */
     public static ManagedQueueDescriptor managedDescriptorFor(
-        String jobEntityName)
+        EOEditingContext context, String jobEntityName)
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        ManagedQueueDescriptor result = new ManagedQueueDescriptor(
-            descriptorFor(ec, jobEntityName));
-        Application.releasePeerEditingContext(ec);
-        return result;
+        return new ManagedQueueDescriptor(
+            descriptorFor(context, jobEntityName));
     }
 
 
@@ -107,11 +120,96 @@ public class QueueDescriptor
      */
     public static void registerQueue(String jobEntityName)
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        descriptorFor(ec, jobEntityName);
-        Application.releasePeerEditingContext(ec);
+        EOEditingContext ec = queueContext();
+        ec.lock();
+        try
+        {
+            descriptorFor(ec, jobEntityName);
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /* package */ static void waitForNextJob(QueueDescriptor descriptor)
+    {
+        Number id = descriptor.id();
+        assert id != null;
+        if (descriptor.editingContext() != queueContext())
+        {
+            descriptor.localInstance(queueContext());
+        }
+        TokenDispenser dispenser = null;
+        synchronized (dispensers)
+        {
+            dispenser = dispensers.get(id);
+            if (dispenser == null)
+            {
+                dispenser = new TokenDispenser();
+                dispensers.put(id, dispenser);
+            }
+        }
+        dispenser.getJobToken();
+    }
+
+
+    // ----------------------------------------------------------
+    /* package */ static void newJobIsReadyOn(QueueDescriptor descriptor)
+    {
+        Number id = descriptor.id();
+        assert id != null;
+        if (descriptor.editingContext() != queueContext())
+        {
+            descriptor.localInstance(queueContext());
+        }
+        TokenDispenser dispenser = null;
+        synchronized (dispensers)
+        {
+            dispenser = dispensers.get(id);
+            if (dispenser == null)
+            {
+                dispenser = new TokenDispenser();
+                dispensers.put(id, dispenser);
+            }
+        }
+        dispenser.depositToken();
+    }
+
+
+    // ----------------------------------------------------------
+    private static EOEditingContext queueContext()
+    {
+        if (_ec == null)
+        {
+            _ec = Application.newPeerEditingContext();
+            _ec.setDelegate(new QueueDelegate());
+        }
+        return _ec;
+    }
+
+
+    // ----------------------------------------------------------
+    private static class QueueDelegate
+        extends ERXDefaultEditingContextDelegate
+    {
+        // ----------------------------------------------------------
+        public QueueDelegate()
+        {
+            // TBD
+        }
+
+    }
+
+
+    //~ Instance/static variables .............................................
+
+    private static EOEditingContext _ec;
+    private static Map<Number, TokenDispenser> dispensers =
+        new HashMap<Number, TokenDispenser>();
+    static Logger log = Logger.getLogger(QueueDescriptor.class);
 }
