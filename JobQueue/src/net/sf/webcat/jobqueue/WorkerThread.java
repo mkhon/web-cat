@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.6 2009/11/17 19:03:38 aallowat Exp $
+ |  $Id: WorkerThread.java,v 1.7 2009/11/17 20:30:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -40,7 +40,7 @@ import net.sf.webcat.core.Application;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2009/11/17 19:03:38 $
+ * @version $Revision: 1.7 $, $Date: 2009/11/17 20:30:47 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -134,6 +134,7 @@ public abstract class WorkerThread<Job extends JobBase>
                 long totalWait =
                     queueDescriptor().totalWaitForJobs() + jobDuration;
 
+                boolean wasCancelled = currentJob.isCancelled();
                 currentJob.delete();
 
                 try
@@ -145,7 +146,7 @@ public abstract class WorkerThread<Job extends JobBase>
 
                     boolean statsUpdated = false;
 
-                    while (!statsUpdated)
+                    while (!wasCancelled && !statsUpdated)
                     {
                         try
                         {
@@ -344,32 +345,6 @@ public abstract class WorkerThread<Job extends JobBase>
                 {
                     currentJob = candidate;
                 }
-
-                /*candidate.setWorkerRelationship(wd);
-
-                try
-                {
-                    ec.saveChanges();
-
-                    didGetJob = true;
-
-                    try
-                    {
-                        // descriptor().setCurrentJob(candidate);
-                        descriptor().saveChanges();
-                        currentJob = candidate;
-                    }
-                    catch (Exception e)
-                    {
-                        candidate.setWorkerRelationship(null);
-                        ec.saveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    ec.revert();
-                    didGetJob = false;
-                }*/
             }
         }
         while (!didGetJob);
@@ -452,7 +427,9 @@ public abstract class WorkerThread<Job extends JobBase>
         String entityName = queueDescriptor().jobEntityName();
         EOFetchSpecification fetchSpec = new EOFetchSpecification(
                 entityName,
-                ERXQ.isTrue(JobBase.IS_CANCELLED_KEY),
+                ERXQ.and(
+                        ERXQ.isNull(JobBase.WORKER_KEY),
+                        ERXQ.isTrue(JobBase.IS_CANCELLED_KEY)),
                 ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
         fetchSpec.setFetchLimit(1);
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedJobBase.java,v 1.4 2009/11/17 19:03:58 aallowat Exp $
+ |  $Id: ManagedJobBase.java,v 1.5 2009/11/17 20:30:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -39,7 +39,7 @@ import net.sf.webcat.core.IndependentEOManager;
  *
  * @author stedwar2
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2009/11/17 19:03:58 $
+ * @version $Revision: 1.5 $, $Date: 2009/11/17 20:30:47 $
  */
 public abstract class ManagedJobBase
     extends IndependentEOManager
@@ -392,7 +392,8 @@ public abstract class ManagedJobBase
         setProgress(progress.percentDone());
 
         long currentTime = System.currentTimeMillis();
-        if (currentTime >= timeOfLastProgressSave + PROGRESS_SAVE_DELAY)
+        if (!isCancelled() &&
+                currentTime >= timeOfLastProgressSave + PROGRESS_SAVE_DELAY)
         {
             saveChanges();
 
