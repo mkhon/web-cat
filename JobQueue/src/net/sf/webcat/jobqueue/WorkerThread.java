@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.4 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.5 2009/11/17 18:21:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -40,7 +40,7 @@ import net.sf.webcat.core.Application;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2009/11/13 19:17:42 $
+ * @version $Revision: 1.5 $, $Date: 2009/11/17 18:21:19 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -322,17 +322,9 @@ public abstract class WorkerThread<Job extends JobBase>
 
             if (candidate == null)
             {
-                // If there aren't any jobs currently available, sleep for a
-                // second and then check again.
-
-                try
-                {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e)
-                {
-                    // Do nothing.
-                }
+                // If there aren't any jobs currently available, wait
+                // until something arrives in the queue
+                QueueDescriptor.waitForNextJob(queueDescriptor().id());
             }
             else
             {

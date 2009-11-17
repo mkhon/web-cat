@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.5 2009/11/17 18:10:36 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.6 2009/11/17 18:21:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import net.sf.webcat.core.Application;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/11/17 18:10:36 $
+ * @version $Revision: 1.6 $, $Date: 2009/11/17 18:21:19 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -138,20 +138,27 @@ public class QueueDescriptor
     // ----------------------------------------------------------
     /* package */ static void waitForNextJob(QueueDescriptor descriptor)
     {
-        Number id = descriptor.id();
-        assert id != null;
+        assert descriptor.editingContext() != null;
         if (descriptor.editingContext() != queueContext())
         {
             descriptor.localInstance(queueContext());
         }
+        waitForNextJob(descriptor.id());
+    }
+
+
+    // ----------------------------------------------------------
+    /* package */ static void waitForNextJob(Number descriptorId)
+    {
+        assert descriptorId != null;
         TokenDispenser dispenser = null;
         synchronized (dispensers)
         {
-            dispenser = dispensers.get(id);
+            dispenser = dispensers.get(descriptorId);
             if (dispenser == null)
             {
                 dispenser = new TokenDispenser();
-                dispensers.put(id, dispenser);
+                dispensers.put(descriptorId, dispenser);
             }
         }
         dispenser.getJobToken();
