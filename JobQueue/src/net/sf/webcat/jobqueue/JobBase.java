@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.4 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.5 2009/11/17 19:03:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -21,9 +21,11 @@
 
 package net.sf.webcat.jobqueue;
 
+import net.sf.webcat.core.Application;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXEOAccessUtilities;
 
 // -------------------------------------------------------------------------
 /**
@@ -38,8 +40,8 @@ import com.webobjects.foundation.*;
  * method, which will generate the inherited field definitions for you.
  *
  * @author
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2009/11/13 19:17:42 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.5 $, $Date: 2009/11/17 19:03:38 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -76,7 +78,7 @@ public abstract class JobBase
      */
     public boolean volunteerToRun(WorkerDescriptor worker)
     {
-        if (isCancelled() || !isPaused())
+        if (isCancelled() || !isReady())
         {
             return false;
         }
@@ -103,6 +105,69 @@ public abstract class JobBase
 
     // ----------------------------------------------------------
     /**
+     * Overridden to indicate that the job queue needs to be notified that a
+     * job that wasn't ready has now become ready when the changes are made to
+     * the editing context.
+     */
+    @Override
+    public void setIsReady(boolean value)
+    {
+        if (!isReady() && value)
+        {
+            queueNeedsNotified = true;
+        }
+
+        super.setIsReady(value);
+    }
+
+
+    // ----------------------------------------------------------
+    private void notifyQueueOfReadyJob()
+    {
+        queueNeedsNotified = false;
+
+        EOEditingContext ec = Application.newPeerEditingContext();
+        QueueDescriptor queue = QueueDescriptor.descriptorFor(
+                ec, entityName());
+
+        boolean saved = false;
+        while (!saved)
+        {
+            try
+            {
+                queue.setJobCount(queue.jobCount() + 1);
+                ec.saveChanges();
+                saved = true;
+            }
+            catch (EOGeneralAdaptorException e)
+            {
+                if (ERXEOAccessUtilities.isOptimisticLockingFailure(e))
+                {
+                    queue = (QueueDescriptor)
+                        ERXEOAccessUtilities.refetchFailedObject(ec, e);
+                }
+            }
+        }
+
+        Application.releasePeerEditingContext(ec);
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void didInsert()
+    {
+        super.didInsert();
+
+        if (queueNeedsNotified)
+        {
+            notifyQueueOfReadyJob();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Monitor the cancellation state of the job so that we can notify the
      * worker thread that the user wants to cancel this job.
      */
@@ -115,6 +180,12 @@ public abstract class JobBase
         {
             alreadyCancelled = true;
             workerThread.cancelJob();
+            workerThread = null;
+        }
+
+        if (queueNeedsNotified)
+        {
+            notifyQueueOfReadyJob();
         }
     }
 
@@ -131,5 +202,6 @@ public abstract class JobBase
     //~ Static/instance variables .............................................
 
     private transient boolean alreadyCancelled = false;
+    private transient boolean queueNeedsNotified = false;
     private transient WorkerThread workerThread = null;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.5 2009/11/17 18:21:19 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.6 2009/11/17 19:03:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -39,8 +39,8 @@ import net.sf.webcat.core.Application;
  *     works on.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/11/17 18:21:19 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2009/11/17 19:03:38 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -340,6 +340,11 @@ public abstract class WorkerThread<Job extends JobBase>
 
                 didGetJob = candidate.volunteerToRun(worker);
 
+                if (didGetJob)
+                {
+                    currentJob = candidate;
+                }
+
                 /*candidate.setWorkerRelationship(wd);
 
                 try
@@ -386,7 +391,7 @@ public abstract class WorkerThread<Job extends JobBase>
                 ERXQ.and(
                         ERXQ.isNull(JobBase.WORKER_KEY),
                         ERXQ.isFalse(JobBase.IS_CANCELLED_KEY),
-                        ERXQ.isFalse(JobBase.IS_PAUSED_KEY)),
+                        ERXQ.isTrue(JobBase.IS_READY_KEY)),
                 ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
         fetchSpec.setFetchLimit(1);
 

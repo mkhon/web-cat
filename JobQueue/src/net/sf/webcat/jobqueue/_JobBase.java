@@ -59,8 +59,10 @@ public abstract class _JobBase
     // Attributes ---
     public static final String ENQUEUE_TIME_KEY = "enqueueTime";
     public static final String IS_CANCELLED_KEY = "isCancelled";
-    public static final String IS_PAUSED_KEY = "isPaused";
+    public static final String IS_READY_KEY = "isReady";
     public static final String PRIORITY_KEY = "priority";
+    public static final String PROGRESS_KEY = "progress";
+    public static final String PROGRESS_MESSAGE_KEY = "progressMessage";
     public static final String SCHEDULED_TIME_KEY = "scheduledTime";
     // To-one relationships ---
     public static final String USER_KEY = "user";
@@ -211,13 +213,13 @@ public abstract class _JobBase
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>isPaused</code> value.
+     * Retrieve this object's <code>isReady</code> value.
      * @return the value of the attribute
      */
-    public boolean isPaused()
+    public boolean isReady()
     {
         Integer result =
-            (Integer)storedValueForKey( "isPaused" );
+            (Integer)storedValueForKey( "isReady" );
         return ( result == null )
             ? false
             : ( result.intValue() > 0 );
@@ -226,50 +228,50 @@ public abstract class _JobBase
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>isPaused</code>
+     * Change the value of this object's <code>isReady</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIsPaused( boolean value )
+    public void setIsReady( boolean value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setIsPaused("
-                + value + "): was " + isPaused() );
+            log.debug( "setIsReady("
+                + value + "): was " + isReady() );
         }
         Integer actual =
             er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
-            setIsPausedRaw( actual );
+            setIsReadyRaw( actual );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>isPaused</code> value.
+     * Retrieve this object's <code>isReady</code> value.
      * @return the value of the attribute
      */
-    public Integer isPausedRaw()
+    public Integer isReadyRaw()
     {
-        return (Integer)storedValueForKey( "isPaused" );
+        return (Integer)storedValueForKey( "isReady" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>isPaused</code>
+     * Change the value of this object's <code>isReady</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setIsPausedRaw( Integer value )
+    public void setIsReadyRaw( Integer value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setIsPausedRaw("
-                + value + "): was " + isPausedRaw() );
+            log.debug( "setIsReadyRaw("
+                + value + "): was " + isReadyRaw() );
         }
-        takeStoredValueForKey( value, "isPaused" );
+        takeStoredValueForKey( value, "isReady" );
     }
 
 
@@ -334,6 +336,64 @@ public abstract class _JobBase
                 + value + "): was " + priorityRaw() );
         }
         takeStoredValueForKey( value, "priority" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>progress</code> value.
+     * @return the value of the attribute
+     */
+    public Double progress()
+    {
+        return (Double)storedValueForKey( "progress" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>progress</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setProgress( Double value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setProgress("
+                + value + "): was " + progress() );
+        }
+        takeStoredValueForKey( value, "progress" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>progressMessage</code> value.
+     * @return the value of the attribute
+     */
+    public String progressMessage()
+    {
+        return (String)storedValueForKey( "progressMessage" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>progressMessage</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setProgressMessage( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setProgressMessage("
+                + value + "): was " + progressMessage() );
+        }
+        takeStoredValueForKey( value, "progressMessage" );
     }
 
 
