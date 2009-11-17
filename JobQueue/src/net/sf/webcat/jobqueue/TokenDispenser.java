@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TokenDispenser.java,v 1.2 2009/11/17 19:33:10 stedwar2 Exp $
+ |  $Id: TokenDispenser.java,v 1.3 2009/11/17 20:30:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
  * subsystem.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2009/11/17 19:33:10 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2009/11/17 20:30:59 $
  */
 public class TokenDispenser
 {
@@ -70,7 +70,9 @@ public class TokenDispenser
                 log.error("client was interrupted while waiting for a token.");
             }
         }
-        log.debug("releasing token to worker thread from " + this);
+        tokens--;
+        log.debug("releasing token to worker thread from " + this +
+                " (" + tokens + " tokens remain)");
     }
 
 
@@ -113,7 +115,8 @@ public class TokenDispenser
         long amount = count - totalTokenCount;
         log.debug("depositing " + amount + " tokens in " + this);
         depositTokens(amount);
-        log.debug("new total = " + totalTokenCount + " in " + this);
+        log.debug("new total = " + totalTokenCount + " in " + this +
+                " (" + tokens + " tokens remain)");
     }
 
 
