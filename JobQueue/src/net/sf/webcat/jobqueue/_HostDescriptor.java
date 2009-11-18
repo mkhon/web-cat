@@ -401,6 +401,22 @@ public abstract class _HostDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Retrieve objects using a fetch specification.
+     *
+     * @param context The editing context to use
+     * @param fspec The fetch specification to use
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<HostDescriptor> objectsWithFetchSpecification(
+        EOEditingContext context,
+        EOFetchSpecification fspec)
+    {
+        return context.objectsWithFetchSpecification(fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Produce a string representation of this object.  This implementation
      * calls UserPresentableDescription(), which uses WebObjects' internal
      * mechanism to print out the visible fields of this object.  Normally,

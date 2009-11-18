@@ -860,6 +860,22 @@ public abstract class _QueueDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Retrieve objects using a fetch specification.
+     *
+     * @param context The editing context to use
+     * @param fspec The fetch specification to use
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<QueueDescriptor> objectsWithFetchSpecification(
+        EOEditingContext context,
+        EOFetchSpecification fspec)
+    {
+        return context.objectsWithFetchSpecification(fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve object according to the <code>JobEntityName</code>
      * fetch specification.
      *
@@ -867,7 +883,6 @@ public abstract class _QueueDescriptor
      * @param jobEntityNameBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<QueueDescriptor> objectsForJobEntityName(
             EOEditingContext context,
             String jobEntityNameBinding
@@ -886,7 +901,7 @@ public abstract class _QueueDescriptor
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray result = context.objectsWithFetchSpecification( spec );
+        NSArray<QueueDescriptor> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForJobEntityName(ec"

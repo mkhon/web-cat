@@ -450,6 +450,22 @@ public abstract class _WorkerDescriptor
 
     // ----------------------------------------------------------
     /**
+     * Retrieve objects using a fetch specification.
+     *
+     * @param context The editing context to use
+     * @param fspec The fetch specification to use
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<WorkerDescriptor> objectsWithFetchSpecification(
+        EOEditingContext context,
+        EOFetchSpecification fspec)
+    {
+        return context.objectsWithFetchSpecification(fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve object according to the <code>Host</code>
      * fetch specification.
      *
@@ -457,7 +473,6 @@ public abstract class _WorkerDescriptor
      * @param hostBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<WorkerDescriptor> objectsForHost(
             EOEditingContext context,
             net.sf.webcat.jobqueue.HostDescriptor hostBinding
@@ -476,7 +491,7 @@ public abstract class _WorkerDescriptor
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray result = context.objectsWithFetchSpecification( spec );
+        NSArray<WorkerDescriptor> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForHost(ec"
