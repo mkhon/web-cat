@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SurveyReminderWorker.java,v 1.1 2008/10/27 01:54:03 stedwar2 Exp $
+ |  $Id: SurveyReminderWorker.java,v 1.2 2009/11/18 19:24:46 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,9 @@
 
 package net.sf.webcat.opinions;
 
+import net.sf.webcat.jobqueue.HostDescriptor;
 import net.sf.webcat.jobqueue.JobBase;
+import net.sf.webcat.jobqueue.QueueDescriptor;
 import net.sf.webcat.jobqueue.WorkerDescriptor;
 import net.sf.webcat.jobqueue.WorkerThread;
 
@@ -30,7 +32,7 @@ import net.sf.webcat.jobqueue.WorkerThread;
  * A {@link WorkerThread} subclass for processing survey reminders.
  *
  * @author Stephen Edwards
- * @version $Id: SurveyReminderWorker.java,v 1.1 2008/10/27 01:54:03 stedwar2 Exp $
+ * @version $Id: SurveyReminderWorker.java,v 1.2 2009/11/18 19:24:46 aallowat Exp $
  */
 public class SurveyReminderWorker
     extends WorkerThread<SurveyReminderJob>
@@ -42,9 +44,9 @@ public class SurveyReminderWorker
      * Creates a new object.
      * @param descriptor the descriptor for this worker thread
      */
-    public SurveyReminderWorker(WorkerDescriptor descriptor)
+    public SurveyReminderWorker()
     {
-        super(descriptor);
+        super(SurveyReminderJob.ENTITY_NAME);
         assert SurveyReminderJob.ENTITY_NAME.equals(
             queueDescriptor().jobEntityName());
     }
