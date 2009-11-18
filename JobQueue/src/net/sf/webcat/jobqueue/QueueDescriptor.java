@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.7 2009/11/17 19:33:10 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.8 2009/11/18 20:30:01 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,8 +41,8 @@ import net.sf.webcat.core.Application;
  * database.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2009/11/17 19:33:10 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.8 $, $Date: 2009/11/18 20:30:01 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -205,7 +205,11 @@ public class QueueDescriptor
 
 
     // ----------------------------------------------------------
-    private static class QueueDelegate
+    /**
+     * This class needs to be public as an implementation side-effect so that
+     * WebObjects' NSSelector can access the delegate methods.
+     */
+    public static class QueueDelegate
         extends ERXDefaultEditingContextDelegate
     {
         // ----------------------------------------------------------
