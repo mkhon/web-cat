@@ -344,7 +344,42 @@ public abstract class _JobBase
      * Retrieve this object's <code>progress</code> value.
      * @return the value of the attribute
      */
-    public Double progress()
+    public double progress()
+    {
+        Double result =
+            (Double)storedValueForKey( "progress" );
+        return ( result == null )
+            ? 0.0
+            : result.doubleValue();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>progress</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setProgress( double value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setProgress("
+                + value + "): was " + progress() );
+        }
+        Double actual =
+            new Double( value );
+            setProgressRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>progress</code> value.
+     * @return the value of the attribute
+     */
+    public Double progressRaw()
     {
         return (Double)storedValueForKey( "progress" );
     }
@@ -357,12 +392,12 @@ public abstract class _JobBase
      *
      * @param value The new value for this property
      */
-    public void setProgress( Double value )
+    public void setProgressRaw( Double value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setProgress("
-                + value + "): was " + progress() );
+            log.debug( "setProgressRaw("
+                + value + "): was " + progressRaw() );
         }
         takeStoredValueForKey( value, "progress" );
     }
