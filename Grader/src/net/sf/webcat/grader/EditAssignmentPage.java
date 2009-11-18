@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.23 2009/11/05 20:27:35 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.24 2009/11/18 00:38:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,8 +38,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.23 $, $Date: 2009/11/05 20:27:35 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.24 $, $Date: 2009/11/18 00:38:09 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -224,7 +224,7 @@ public class EditAssignmentPage
      */
     protected boolean saveAndCanProceed(boolean requireProfile)
     {
-        if (thisOffering != null)
+/*        if (thisOffering != null)
         {
             boolean offeringIsSuspended =
                 thisOffering.gradingSuspended();
@@ -241,12 +241,12 @@ public class EditAssignmentPage
                     log.debug( "resuming grading on this assignment" );
                     thisOffering.setGradingSuspended( false );
                     // Have to save this change first!
-                    if (!applyLocalChanges()) return false;
+//                    if (!applyLocalChanges()) return false;
                     releaseSuspendedSubs();
                 }
             }
         }
-        if (requireProfile
+*/      if (requireProfile
             && assignment.submissionProfile() == null)
         {
             error(
@@ -649,12 +649,14 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     public void takeValuesFromRequest(WORequest arg0, WOContext arg1)
     {
+        log.debug("takeValuesFromRequest()");
         long timeStart = System.currentTimeMillis();
 
         super.takeValuesFromRequest(arg0, arg1);
 
         if (assignment != null)
         {
+            log.debug("looking for similar submission profile by name");
             String name = assignment.name();
             if ( assignment.submissionProfile() == null
                  && name != null )
@@ -719,7 +721,7 @@ public class EditAssignmentPage
     public WOComponent delete()
     {
         ConfirmPage confirmPage = null;
-        if (saveAndCanProceed())
+        if (applyLocalChanges())
         {
             confirmPage =
                 (ConfirmPage)pageWithName(ConfirmPage.class.getName());
