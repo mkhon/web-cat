@@ -1,7 +1,12 @@
 {
     attributes = (
-        {columnName = enqueueTime; name = enqueueTime; prototypeName = dateTime; }, 
-        {name = id; prototypeName = id; }, 
+        {
+            allowsNull = N; 
+            columnName = enqueueTime; 
+            name = enqueueTime; 
+            prototypeName = dateTime; 
+        }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
         {
             allowsNull = N; 
             columnName = isCancelled; 
@@ -28,7 +33,18 @@
                 valueClassName = Integer; 
             }; 
         }, 
-        {columnName = progress; name = progress; prototypeName = double; }, 
+        {
+            columnName = progress; 
+            name = progress; 
+            prototypeName = double; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = doubleValue; 
+                scalarDefault = "0.0"; 
+                type = double; 
+                valueClassName = Double; 
+            }; 
+        }, 
         {
             columnName = progressMessage; 
             name = progressMessage; 
@@ -60,6 +76,7 @@
         user, 
         worker
     ); 
+    externalName = TJobBase; 
     isAbstractEntity = Y; 
     name = JobBase; 
     primaryKeyAttributes = (id); 
