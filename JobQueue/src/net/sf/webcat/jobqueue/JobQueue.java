@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.6 2009/11/18 00:24:23 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.7 2009/11/18 19:24:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -43,8 +43,8 @@ import org.apache.log4j.Logger;
  * corresponding queues using the central database as the mediator.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2009/11/18 00:24:23 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.7 $, $Date: 2009/11/18 19:24:10 $
  */
 public class JobQueue
     extends Subsystem
@@ -137,7 +137,7 @@ public class JobQueue
      * @return The registered descriptor
      */
     @SuppressWarnings("unchecked")
-	public static EOEnterpriseObject registerFirstAvailableDescriptor(
+    public static EOEnterpriseObject registerFirstAvailableDescriptor(
         EOEditingContext        context,
         String                  descriptorEntityName,
         NSDictionary<String, ?> searchBindings,
@@ -164,12 +164,12 @@ public class JobQueue
                         EOUtilities.createAndInsertInstance(
                             context, descriptorEntityName);
                     descriptor.reapplyChangesFromDictionary(
-                    		(NSDictionary<String, Object>)searchBindings);
+                            (NSDictionary<String, Object>)searchBindings);
                     log.debug("descriptor not found: creating a new one");
                     if (initializationBindings != null)
                     {
                         descriptor.reapplyChangesFromDictionary(
-                        	(NSDictionary<String, Object>)
+                            (NSDictionary<String, Object>)
                             initializationBindings);
                         if (log.isDebugEnabled())
                         {
@@ -200,12 +200,13 @@ public class JobQueue
             }
             else
             {
-            	if (log.isDebugEnabled())
-            	{
-            		log.debug(descriptors.count() == 1
-            				  ? "one descriptor found"
-            				  : "multiple descriptors found");
-            	}
+                if (log.isDebugEnabled())
+                {
+                    log.debug(descriptors.count() == 1
+                              ? "one descriptor found"
+                              : "multiple descriptors found");
+                }
+                result = (EOEnterpriseObject)descriptors.objectAtIndex(0);
                 while (descriptors.count() > 1)
                 {
                     result = (EOEnterpriseObject)descriptors.objectAtIndex(0);
