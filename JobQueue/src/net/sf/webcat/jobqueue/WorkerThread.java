@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.7 2009/11/17 20:30:47 aallowat Exp $
+ |  $Id: WorkerThread.java,v 1.8 2009/11/18 20:30:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -21,6 +21,8 @@
 
 package net.sf.webcat.jobqueue;
 
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOFetchSpecification;
@@ -40,7 +42,7 @@ import net.sf.webcat.core.Application;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2009/11/17 20:30:47 $
+ * @version $Revision: 1.8 $, $Date: 2009/11/18 20:30:13 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -114,6 +116,8 @@ public abstract class WorkerThread<Job extends JobBase>
     @SuppressWarnings("unchecked")
     public final void run()
     {
+        logDebug("started");
+
         try
         {
             while (true)
@@ -325,7 +329,9 @@ public abstract class WorkerThread<Job extends JobBase>
             {
                 // If there aren't any jobs currently available, wait
                 // until something arrives in the queue
+                logDebug("waiting for queue to wake me");
                 QueueDescriptor.waitForNextJob(queueDescriptor().id());
+                logDebug("woken by the queue");
             }
             else
             {
@@ -339,10 +345,12 @@ public abstract class WorkerThread<Job extends JobBase>
                 WorkerDescriptor worker = (WorkerDescriptor)
                     descriptor().localInstanceIn(ec);
 
+                logDebug("volunteering to run job " + candidate.id());
                 didGetJob = candidate.volunteerToRun(worker);
 
                 if (didGetJob)
                 {
+                    logDebug("successfully acquired job " + candidate.id());
                     currentJob = candidate;
                 }
             }
@@ -446,6 +454,14 @@ public abstract class WorkerThread<Job extends JobBase>
     }
 
 
+    // ----------------------------------------------------------
+    private void logDebug(Object obj)
+    {
+        log.debug(queueDescriptor().jobEntityName()
+                + " worker thread " + getId() + ": " + obj);
+    }
+
+
     //~ Instance/static variables .............................................
 
     private Job                     currentJob;
@@ -454,4 +470,6 @@ public abstract class WorkerThread<Job extends JobBase>
     private ManagedWorkerDescriptor descriptor;
     private EOEditingContext        ec;
     private boolean                 isCancelled;
+
+    private static final Logger log = Logger.getLogger(WorkerThread.class);
 }

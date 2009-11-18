@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.5 2009/11/17 19:03:38 aallowat Exp $
+ |  $Id: JobBase.java,v 1.6 2009/11/18 20:30:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2009/11/17 19:03:38 $
+ * @version $Revision: 1.6 $, $Date: 2009/11/18 20:30:13 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -114,6 +114,9 @@ public abstract class JobBase
     {
         if (!isReady() && value)
         {
+            log.debug("isReady for job " + id() + " transitioning to true; "
+                    + "setting flag to notify queue on next save");
+
             queueNeedsNotified = true;
         }
 
@@ -124,18 +127,24 @@ public abstract class JobBase
     // ----------------------------------------------------------
     private void notifyQueueOfReadyJob()
     {
+        log.debug(entityName() + " queue descriptor increasing job count to "
+                + "trigger job dispatch");
+
         queueNeedsNotified = false;
 
         EOEditingContext ec = Application.newPeerEditingContext();
         QueueDescriptor queue = QueueDescriptor.descriptorFor(
                 ec, entityName());
 
+        long oldJobCount = 0;
+
         boolean saved = false;
         while (!saved)
         {
             try
             {
-                queue.setJobCount(queue.jobCount() + 1);
+                oldJobCount = queue.jobCount();
+                queue.setJobCount(oldJobCount + 1);
                 ec.saveChanges();
                 saved = true;
             }
@@ -148,6 +157,9 @@ public abstract class JobBase
                 }
             }
         }
+
+        log.debug(entityName() + " queue job count was " + oldJobCount + "; "
+                + "now " + queue.jobCount());
 
         Application.releasePeerEditingContext(ec);
     }
