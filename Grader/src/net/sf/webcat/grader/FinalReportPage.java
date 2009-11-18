@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.17 2009/10/31 13:43:35 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.18 2009/11/18 01:42:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.17 $, $Date: 2009/10/31 13:43:35 $
+ * @version $Revision: 1.18 $, $Date: 2009/11/18 01:42:49 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -519,7 +519,7 @@ public class FinalReportPage
     // ----------------------------------------------------------
     static private class JobData
     {
-        public NSArray jobs;
+        public NSArray<EnqueuedJob> jobs;
         public int queueSize;
         public int queuePosition;
         long mostRecentWait;
@@ -560,10 +560,8 @@ public class FinalReportPage
                                     )
                             } )
                     );
-            jobData.jobs =
-                localContext().objectsWithFetchSpecification(
-                    fetchSpec
-                );
+            jobData.jobs = EnqueuedJob.objectsWithFetchSpecification(
+                localContext(), fetchSpec);
             jobData.queueSize = jobData.jobs.count();
             if ( oldQueuePos < 0
                  || oldQueuePos >= jobData.queueSize )

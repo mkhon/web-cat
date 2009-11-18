@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.16 2009/05/03 17:09:26 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.17 2009/11/18 01:42:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.16 2009/05/03 17:09:26 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.17 2009/11/18 01:42:49 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -539,11 +539,12 @@ public class Grader
             }
             try
             {
-                assignments = ec.objectsWithFetchSpecification(
-                                new EOFetchSpecification(
-                                    AssignmentOffering.ENTITY_NAME,
-                                    new EOAndQualifier( qualifiers ),
-                                    null ) );
+                assignments = AssignmentOffering.objectsWithFetchSpecification(
+                    ec,
+                    new EOFetchSpecification(
+                        AssignmentOffering.ENTITY_NAME,
+                        new EOAndQualifier( qualifiers ),
+                        null ) );
                 // Remove any that the user doesn't have staff access to.
                 // Can't put this in an EOOrQualifier, since the generated
                 // SQL will be broken.

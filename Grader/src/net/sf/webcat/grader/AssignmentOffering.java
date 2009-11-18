@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.23 2009/11/18 00:34:57 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.24 2009/11/18 01:42:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.23 $, $Date: 2009/11/18 00:34:57 $
+ * @version $Revision: 1.24 $, $Date: 2009/11/18 01:42:49 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -590,7 +590,8 @@ public class AssignmentOffering
         // Only need to return 1, since we're just trying to find out if
         // there are any at all
         spec.setFetchLimit(1);
-        NSArray result = editingContext().objectsWithFetchSpecification( spec );
+        NSArray<Submission> result =
+            Submission.objectsWithFetchSpecification(editingContext(),  spec);
         if (log.isDebugEnabled())
         {
             log.debug("hasStudentSubmissions(): fetch = " + result);
@@ -810,7 +811,8 @@ public class AssignmentOffering
                 );
             spec.setSortOrderings( orderings );
         }
-        NSArray results = context.objectsWithFetchSpecification( spec );
+        NSArray<AssignmentOffering> results =
+            objectsWithFetchSpecification(context, spec);
         valueObj = formValueForKey( formValues, "courses" );
         if ( valueObj != null )
         {

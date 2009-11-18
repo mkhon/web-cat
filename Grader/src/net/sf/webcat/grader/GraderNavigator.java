@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.6 2009/10/15 20:24:17 aallowat Exp $
+ |  $Id: GraderNavigator.java,v 1.7 2009/11/18 01:42:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -81,8 +81,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.6 $ $Date: 2009/10/15 20:24:17 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.7 $ $Date: 2009/11/18 01:42:49 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -163,7 +163,6 @@ public class GraderNavigator
      *
      * @return the result is ignored
      */
-    @SuppressWarnings("unchecked")
     public WOActionResults updateAssignments()
     {
     	log.debug("updateAssignments()");
@@ -191,8 +190,8 @@ public class GraderNavigator
                         unpublishedQual),
                 null);
 
-        NSArray<AssignmentOffering> assnOffs =
-            localContext().objectsWithFetchSpecification(fspec);
+        NSArray<AssignmentOffering> assnOffs = AssignmentOffering
+            .objectsWithFetchSpecification(localContext(), fspec);
         if (log.isDebugEnabled())
         {
         	log.debug("scanning assignment offerings: " + assnOffs);
@@ -371,8 +370,8 @@ public class GraderNavigator
     {
         return graderParent.prefs().showClosedAssignments();
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public boolean userIsStaffForSelectedCourse()
     {
@@ -391,7 +390,7 @@ public class GraderNavigator
                 return false;
             }
         }
-        
+
         return true;
     }
 

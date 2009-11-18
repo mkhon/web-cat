@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MassRegraderPage.java,v 1.6 2009/11/02 19:16:00 aallowat Exp $
+ |  $Id: MassRegraderPage.java,v 1.7 2009/11/18 01:42:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -46,7 +46,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  * plug-in).
  *
  * @author Tony Allevato
- * @version $Id: MassRegraderPage.java,v 1.6 2009/11/02 19:16:00 aallowat Exp $
+ * @version $Id: MassRegraderPage.java,v 1.7 2009/11/18 01:42:49 stedwar2 Exp $
  */
 public class MassRegraderPage extends GraderAssignmentComponent
 {
@@ -148,8 +148,8 @@ public class MassRegraderPage extends GraderAssignmentComponent
                 EOFetchSpecification fspec = new EOFetchSpecification(
                         Submission.ENTITY_NAME, q, sortOrderings);
 
-                submissions =
-                    localContext().objectsWithFetchSpecification(fspec);
+                submissions = Submission
+                    .objectsWithFetchSpecification(localContext(), fspec);
             }
             catch (Exception e)
             {
@@ -359,7 +359,7 @@ public class MassRegraderPage extends GraderAssignmentComponent
                 null);
         fspec.setFetchLimit(10);
 
-        return localContext().objectsWithFetchSpecification(fspec);
+        return EnqueuedJob.objectsWithFetchSpecification(localContext(), fspec);
     }
 
 

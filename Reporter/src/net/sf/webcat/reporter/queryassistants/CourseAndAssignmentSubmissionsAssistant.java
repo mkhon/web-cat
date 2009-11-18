@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.10 2009/11/18 01:44:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -55,7 +55,7 @@ import net.sf.webcat.ui.util.ComponentIDGenerator;
  * a specified set of course offerings.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.10 2009/11/18 01:44:22 stedwar2 Exp $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends ReporterComponent
@@ -108,16 +108,16 @@ public class CourseAndAssignmentSubmissionsAssistant
                 return null;
             }
         }
-        
-        
+
+
         // ----------------------------------------------------------
         @Override
         protected boolean itemHasChildren(Object parentItem)
         {
             return !(parentItem instanceof CourseOffering);
         }
-        
-        
+
+
         // ----------------------------------------------------------
         @Override
         protected String idForItem(Object item)
@@ -133,8 +133,8 @@ public class CourseAndAssignmentSubmissionsAssistant
                 return null;
             }
         }
-	    
-        
+
+
         // ----------------------------------------------------------
         @Override
         protected String labelForItem(Object item)
@@ -155,7 +155,7 @@ public class CourseAndAssignmentSubmissionsAssistant
                 return "";
             }
         }
-        
+
 
         // ----------------------------------------------------------
         private NSArray<Semester> allSemesters()
@@ -167,9 +167,10 @@ public class CourseAndAssignmentSubmissionsAssistant
 
             EOFetchSpecification fspec = new EOFetchSpecification(
                     Semester.ENTITY_NAME, null, orderings);
-            return localContext().objectsWithFetchSpecification(fspec);
+            return Semester
+                .objectsWithFetchSpecification(localContext(), fspec);
         }
-        
+
 
         // ----------------------------------------------------------
         private NSArray<CourseOffering> courseOfferingsForSemester(
@@ -216,9 +217,10 @@ public class CourseAndAssignmentSubmissionsAssistant
                     sortOrderings);
         fetchSpec.setUsesDistinct(true);
 
-        return localContext().objectsWithFetchSpecification(fetchSpec);
+        return Assignment.objectsWithFetchSpecification(
+            localContext(), fetchSpec);
     }
-    
+
 
     // ----------------------------------------------------------
     public void pruneAssignmentsFromUnselectedCourses()
@@ -252,8 +254,8 @@ public class CourseAndAssignmentSubmissionsAssistant
     {
         return model.containsAssignment(assignmentInRepetition);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public void setAssignmentInRepetitionChecked(boolean value)
     {

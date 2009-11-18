@@ -31,8 +31,8 @@ public class DebuggingPage extends ReporterComponent
     {
         super(context);
     }
-    
-    
+
+
     public String entity = "Submission";
     public String qualifier;
     public String expression;
@@ -40,12 +40,12 @@ public class DebuggingPage extends ReporterComponent
     public NSMutableArray results;
     public NSDictionary result;
     public int index;
-    
+
     public Node astItem;
     public ASTDelegate astDelegate = new ASTDelegate();
     public Node astRoot = null;
-    
-    
+
+
     @Override
     public void appendToResponse(WOResponse response, WOContext context)
     {
@@ -71,15 +71,15 @@ public class DebuggingPage extends ReporterComponent
 
         super.appendToResponse(response, context);
     }
-    
-    
+
+
     public WOActionResults executeExpression()
     {
         // Fetch some objects
         if (expression != null && expression.length() > 0)
         {
             EOQualifier q = null;
-            
+
             if (qualifier != null && qualifier.length() > 0)
             {
                 q = EOQualifier.qualifierWithQualifierFormat(qualifier, null);
@@ -87,7 +87,8 @@ public class DebuggingPage extends ReporterComponent
 
             EOFetchSpecification fetch = new EOFetchSpecification(entity, q, null);
             fetch.setFetchLimit(100);
-            NSArray<Submission> submissions = localContext().objectsWithFetchSpecification(fetch);
+            NSArray<Submission> submissions = Submission
+                .objectsWithFetchSpecification(localContext(), fetch);
 
             OgnlContext context = ReportUtilityEnvironment.newOgnlContext();
             ExpressionAccessor accessor = null;
@@ -114,8 +115,8 @@ public class DebuggingPage extends ReporterComponent
                 {
                     context.setRoot(sub);
                     context.setCurrentObject(sub);
-                    
-                    String value = Ognl.getValue(accessor, context, sub).toString(); 
+
+                    String value = Ognl.getValue(accessor, context, sub).toString();
                     result.setObjectForKey(value, "value");
                 }
                 catch (Exception e)
@@ -123,14 +124,14 @@ public class DebuggingPage extends ReporterComponent
                     result.setObjectForKey("<span style='color: red'>" + e.toString() + "</span>",
                             "value");
                 }
-                
+
                 results.addObject(result);
             }
         }
 
-        return null;  
+        return null;
     }
-    
+
 
     public static class ASTDelegate implements AjaxTreeModel.Delegate
     {
@@ -142,12 +143,12 @@ public class DebuggingPage extends ReporterComponent
             }
 
             NSMutableArray<Node> nodes = new NSMutableArray<Node>();
-            
+
             for (int i = 0; i < ((Node) node).jjtGetNumChildren(); i++)
             {
                 nodes.addObject(((Node) node).jjtGetChild(i));
             }
-            
+
             return nodes;
         }
 
@@ -157,7 +158,7 @@ public class DebuggingPage extends ReporterComponent
             {
                 return true;
             }
-            
+
             return ((Node) node).jjtGetNumChildren() == 0;
         }
 

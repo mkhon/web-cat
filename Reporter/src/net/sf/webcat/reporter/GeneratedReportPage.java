@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.13 2009/10/26 19:21:23 aallowat Exp $
+ |  $Id: GeneratedReportPage.java,v 1.14 2009/11/18 01:44:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.13 2009/10/26 19:21:23 aallowat Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.14 2009/11/18 01:44:22 stedwar2 Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -555,7 +555,7 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     static private class JobData
     {
-        public NSArray jobs;
+        public NSArray<EnqueuedReportGenerationJob> jobs;
         public int queueSize;
         public int queuePosition;
         long mostRecentWait;
@@ -580,8 +580,8 @@ public class GeneratedReportPage
                         )
                     } )
                 );
-            jobData.jobs =
-                localContext().objectsWithFetchSpecification(fetchSpec);
+            jobData.jobs = EnqueuedReportGenerationJob
+                .objectsWithFetchSpecification(localContext(), fetchSpec);
             jobData.queueSize = jobData.jobs.count();
             if ( oldQueuePos < 0
                  || oldQueuePos >= jobData.queueSize )
