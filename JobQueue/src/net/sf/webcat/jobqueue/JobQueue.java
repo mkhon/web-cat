@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.5 2009/11/13 19:17:42 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.6 2009/11/18 00:24:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -25,8 +25,11 @@ import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
+import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
+import er.extensions.eof.ERXEC;
+import er.extensions.eof.ERXQ;
 import net.sf.webcat.core.*;
 import net.sf.webcat.dbupdate.*;
 import org.apache.log4j.Logger;
@@ -41,7 +44,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/11/13 19:17:42 $
+ * @version $Revision: 1.6 $, $Date: 2009/11/18 00:24:23 $
  */
 public class JobQueue
     extends Subsystem
@@ -65,10 +68,55 @@ public class JobQueue
     {
         super.init();
 
+        initialized = true;
         HostDescriptor.ensureCurrentHostIsRegistered();
         log.info(
             "canonical host name = " + HostDescriptor.canonicalHostName());
-        initialized = true;
+
+        EOEditingContext ec = Application.newPeerEditingContext();
+        ec.lock();
+        try
+        {
+            HostDescriptor thisHost = HostDescriptor.currentHost(ec);
+
+            // mark all workers for this host as not alive
+            NSArray<WorkerDescriptor> oldWorkers =
+                WorkerDescriptor.objectsForHost(ec, thisHost);
+
+            for (WorkerDescriptor worker : oldWorkers)
+            {
+                if (worker.currentJobId() > 0L)
+                {
+                    worker.setCurrentJobIdRaw(null);
+                }
+                if (worker.isAlive())
+                {
+                    worker.setIsAlive(false);
+                }
+
+                // mark all jobs assigned to workers on this host as unassigned
+                EOFetchSpecification fs = new EOFetchSpecification(
+                    worker.queue().jobEntityName(),
+                    ERXQ.is(JobBase.WORKER_KEY, worker),
+                    null);
+                NSArray<?> jobs = ec.objectsWithFetchSpecification(fs);
+                for (Object jobObject : jobs)
+                {
+                    JobBase job = (JobBase)jobObject;
+                    job.setWorkerRelationship(null);
+                }
+            }
+
+            ec.saveChanges();
+        }
+        catch (Exception e)
+        {
+            log.error("Unexpected exception initializing subsystem", e);
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 
