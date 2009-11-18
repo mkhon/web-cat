@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.8 2009/11/10 21:06:47 aallowat Exp $
+ |  $Id: IndependentEOManager.java,v 1.9 2009/11/18 15:32:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * resolve them automatically.
  *
  * @author stedwar2
- * @version $Id: IndependentEOManager.java,v 1.8 2009/11/10 21:06:47 aallowat Exp $
+ * @version $Id: IndependentEOManager.java,v 1.9 2009/11/18 15:32:15 aallowat Exp $
  */
 public class IndependentEOManager
     implements EOManager
@@ -73,6 +73,7 @@ public class IndependentEOManager
         EOEditingContext context, EOEnterpriseObject eo, ECManager manager)
     {
         ecm = manager;
+        setClientContext(context);
 
         // Now create a mirror in a new EC
         ecm.lock();
