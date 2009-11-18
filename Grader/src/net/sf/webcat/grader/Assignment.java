@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.11 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.12 2009/11/18 00:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.foundation.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import er.extensions.foundation.ERXArrayUtilities;
 import java.io.File;
@@ -36,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.11 $, $Date: 2009/09/06 02:41:18 $
+ * @version $Revision: 1.12 $, $Date: 2009/11/18 00:34:57 $
  */
 public class Assignment
     extends _Assignment
@@ -98,18 +97,6 @@ public class Assignment
                 .course().deptNumber() + ")";
         }
         return result;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this assignment, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this user's name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 
@@ -240,13 +227,11 @@ public class Assignment
     public NSTimestamp commonOfferingsDueDate()
     {
         NSTimestamp common = null;
-        NSArray offerings = offerings();
+        NSArray<AssignmentOffering> offerings = offerings();
         if ( offerings.count() > 1 )
         {
-            for ( int i = 0; i < offerings.count(); i++ )
+            for (AssignmentOffering ao : offerings)
             {
-                AssignmentOffering ao =
-                    (AssignmentOffering)offerings.objectAtIndex( i );
                 if ( common == null )
                 {
                     common = ao.dueDate();
@@ -267,11 +252,12 @@ public class Assignment
     public AssignmentOffering offeringForUser( User user )
     {
         AssignmentOffering offering = null;
-        NSDictionary userBinding = new NSDictionary( user, "user" );
+        NSDictionary<String, Object> userBinding =
+            new NSDictionary<String, Object>( user, "user" );
 
         // First, check to see if the user is a student in any of the
         // course offerings associated with the available assignment offerings
-        NSArray results = ERXArrayUtilities
+        NSArray<?> results = ERXArrayUtilities
             .filteredArrayWithEntityFetchSpecification( offerings(),
                 AssignmentOffering.ENTITY_NAME,
                 AssignmentOffering.STUDENT_FSPEC,
@@ -388,6 +374,7 @@ public class Assignment
 
         // ----------------------------------------------------------
         @Override
+        @SuppressWarnings("unchecked")
         public void addQualifierKeysToSet( NSMutableSet qualifierKeys )
         {
             qualifierKeys.add("subdirName");
@@ -396,6 +383,7 @@ public class Assignment
 
         // ----------------------------------------------------------
         @Override
+        @SuppressWarnings("unchecked")
         public EOQualifier qualifierWithBindings(
             NSDictionary bindings, boolean requiresAll )
         {
@@ -478,21 +466,18 @@ public class Assignment
     // ----------------------------------------------------------
     private void renameSubdirs( String oldSubdir, String newSubdir )
     {
-        NSArray domains = AuthenticationDomain.authDomains();
-        for ( int i = 0; i < domains.count(); i++ )
+        NSArray<AuthenticationDomain> domains =
+            AuthenticationDomain.authDomains();
+        for (AuthenticationDomain domain : domains)
         {
-            AuthenticationDomain domain =
-                (AuthenticationDomain)domains.objectAtIndex( i );
-            NSArray offerings = offerings();
+            NSArray<AssignmentOffering> offerings = offerings();
             StringBuffer dir = domain.submissionBaseDirBuffer();
             int baseDirLen = dir.length();
             String msgs = null;
-            for ( int j = 0; j < offerings.count(); j++ )
+            for (AssignmentOffering offering : offerings)
             {
                 // clear out old suffix
                 dir.delete( baseDirLen, dir.length() );
-                AssignmentOffering offering =
-                    (AssignmentOffering)offerings.objectAtIndex( j );
                 offering.courseOffering().addSubdirTo( dir );
                 dir.append('/');
                 dir.append( oldSubdir );

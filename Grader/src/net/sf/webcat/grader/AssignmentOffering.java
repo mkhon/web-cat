@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.22 2009/10/20 15:51:24 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.23 2009/11/18 00:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,7 +21,6 @@
 
 package net.sf.webcat.grader;
 
-import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
@@ -43,7 +42,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.22 $, $Date: 2009/10/20 15:51:24 $
+ * @version $Revision: 1.23 $, $Date: 2009/11/18 00:34:57 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -117,18 +116,6 @@ public class AssignmentOffering
             result = super.toString();
         }
         return result;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this assignment offering, which
-     * is the same as {@link #userPresentableDescription()}.
-     * @return this user's name
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 

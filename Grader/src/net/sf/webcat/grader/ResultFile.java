@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ResultFile.java,v 1.3 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: ResultFile.java,v 1.4 2009/11/18 00:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,16 +21,14 @@
 
 package net.sf.webcat.grader;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
-
 // -------------------------------------------------------------------------
 /**
  * An EO representing a generated feedback file that is presented to
  * the user as part of grading results (often for download).
  *
  * @author stedwar2
- * @version $Id: ResultFile.java,v 1.3 2008/04/02 01:55:19 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2009/11/18 00:34:57 $
  */
 public class ResultFile
     extends _ResultFile

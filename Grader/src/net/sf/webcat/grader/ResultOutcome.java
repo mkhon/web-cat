@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ResultOutcome.java,v 1.1 2009/02/20 02:30:13 aallowat Exp $
+ |  $Id: ResultOutcome.java,v 1.2 2009/11/18 00:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008 Virginia Tech
+ |  Copyright (C) 2008-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,15 +21,12 @@
 
 package net.sf.webcat.grader;
 
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
-
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
- * @author
- * @version $Id: ResultOutcome.java,v 1.1 2009/02/20 02:30:13 aallowat Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2009/11/18 00:34:57 $
  */
 public class ResultOutcome
     extends _ResultOutcome

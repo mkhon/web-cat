@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EnqueuedJob.java,v 1.2 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: EnqueuedJob.java,v 1.3 2009/11/18 00:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,16 +21,14 @@
 
 package net.sf.webcat.grader;
 
-import com.webobjects.foundation.*;
-import com.webobjects.eocontrol.*;
-
 // -------------------------------------------------------------------------
 /**
  * This class represents the database record of a student file submission
  * enqueued for compilation/processing but not yet handled.
  *
  * @author Stephen Edwards
- * @version $Id: EnqueuedJob.java,v 1.2 2008/04/02 01:55:19 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2009/11/18 00:34:57 $
  */
 public class EnqueuedJob
     extends _EnqueuedJob
@@ -81,7 +79,7 @@ public class EnqueuedJob
 
 
     // ----------------------------------------------------------
-    public String toString()
+    public String userPresentableDescription()
     {
         Submission sub = submission();
         if ( sub != null )
@@ -94,33 +92,4 @@ public class EnqueuedJob
             return "job with <null> submission";
         }
     }
-
-
-// If you add instance variables to store property values you
-// should add empty implementions of the Serialization methods
-// to avoid unnecessary overhead (the properties will be
-// serialized for you in the superclass).
-
-//    // ----------------------------------------------------------
-//    /**
-//     * Serialize this object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param out the stream to write to
-//     */
-//    private void writeObject( java.io.ObjectOutputStream out )
-//        throws java.io.IOException
-//    {
-//    }
-//
-//
-//    // ----------------------------------------------------------
-//    /**
-//     * Read in a serialized object (an empty implementation, since the
-//     * superclass handles this responsibility).
-//     * @param in the stream to read from
-//     */
-//    private void readObject( java.io.ObjectInputStream in )
-//        throws java.io.IOException, java.lang.ClassNotFoundException
-//    {
-//    }
 }

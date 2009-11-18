@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.11 2009/05/29 15:05:55 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.12 2009/11/18 00:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.11 $ $Date: 2009/05/29 15:05:55 $
+ * @version $Revision: 1.12 $ $Date: 2009/11/18 00:34:57 $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -74,18 +74,6 @@ public class SubmissionProfile
             result += " (" + author.userName() + ")";
         }
         return result;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Get a human-readable representation of this profile, which is
-     * the same as {@link #userPresentableDescription()}.
-     * @return this profile's name and owner
-     */
-    public String toString()
-    {
-        return userPresentableDescription();
     }
 
 
