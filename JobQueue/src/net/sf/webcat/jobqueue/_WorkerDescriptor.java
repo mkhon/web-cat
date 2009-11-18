@@ -148,6 +148,7 @@ public abstract class _WorkerDescriptor
     public static final String QUEUE_KEY = "queue";
     // To-many relationships ---
     // Fetch specifications ---
+    public static final String HOST_FSPEC = "Host";
     public static final String ENTITY_NAME = "WorkerDescriptor";
 
 
@@ -444,6 +445,45 @@ public abstract class _WorkerDescriptor
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "queue" );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve object according to the <code>Host</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param hostBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<WorkerDescriptor> objectsForHost(
+            EOEditingContext context,
+            net.sf.webcat.jobqueue.HostDescriptor hostBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "Host", "WorkerDescriptor" );
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if ( hostBinding != null )
+        {
+            bindings.setObjectForKey( hostBinding,
+                                      "host" );
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray result = context.objectsWithFetchSpecification( spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "objectsForHost(ec"
+                + ", " + hostBinding
+                + "): " + result );
+        }
+        return result;
     }
 
 

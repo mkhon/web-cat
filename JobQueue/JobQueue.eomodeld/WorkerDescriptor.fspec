@@ -1,0 +1,13 @@
+{
+    Host = {
+        class = EOFetchSpecification; 
+        entityName = WorkerDescriptor; 
+        prefetchingRelationshipKeyPaths = (queue); 
+        qualifier = {
+            class = EOKeyValueQualifier; 
+            key = host; 
+            selectorName = "isEqualTo:"; 
+            value = {"_key" = host; class = EOQualifierVariable; }; 
+        }; 
+    }; 
+}
