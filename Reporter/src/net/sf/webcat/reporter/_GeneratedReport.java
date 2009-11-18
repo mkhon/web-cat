@@ -862,6 +862,22 @@ public abstract class _GeneratedReport
 
     // ----------------------------------------------------------
     /**
+     * Retrieve objects using a fetch specification.
+     *
+     * @param context The editing context to use
+     * @param fspec The fetch specification to use
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<GeneratedReport> objectsWithFetchSpecification(
+        EOEditingContext context,
+        EOFetchSpecification fspec)
+    {
+        return context.objectsWithFetchSpecification(fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve object according to the <code>User</code>
      * fetch specification.
      *
@@ -869,7 +885,6 @@ public abstract class _GeneratedReport
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<GeneratedReport> objectsForUser(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
@@ -888,7 +903,7 @@ public abstract class _GeneratedReport
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray result = context.objectsWithFetchSpecification( spec );
+        NSArray<GeneratedReport> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForUser(ec"
@@ -908,7 +923,6 @@ public abstract class _GeneratedReport
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<GeneratedReport> objectsForUserCompleteReports(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
@@ -927,7 +941,7 @@ public abstract class _GeneratedReport
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray result = context.objectsWithFetchSpecification( spec );
+        NSArray<GeneratedReport> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForUserCompleteReports(ec"
@@ -947,7 +961,6 @@ public abstract class _GeneratedReport
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<GeneratedReport> objectsForUserIncompleteReports(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
@@ -966,7 +979,7 @@ public abstract class _GeneratedReport
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray result = context.objectsWithFetchSpecification( spec );
+        NSArray<GeneratedReport> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "objectsForUserIncompleteReports(ec"
@@ -974,6 +987,22 @@ public abstract class _GeneratedReport
                 + "): " + result );
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Produce a string representation of this object.  This implementation
+     * calls UserPresentableDescription(), which uses WebObjects' internal
+     * mechanism to print out the visible fields of this object.  Normally,
+     * subclasses would override userPresentableDescription() to change
+     * the way the object is printed.
+     *
+     * @return A string representation of the object's value
+     */
+    public String toString()
+    {
+        return userPresentableDescription();
     }
 
 
