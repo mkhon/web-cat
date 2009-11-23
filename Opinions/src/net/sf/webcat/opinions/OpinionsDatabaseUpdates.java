@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsDatabaseUpdates.java,v 1.1 2008/10/27 01:54:03 stedwar2 Exp $
+ |  $Id: OpinionsDatabaseUpdates.java,v 1.2 2009/11/23 00:46:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package net.sf.webcat.opinions;
 
-import net.sf.webcat.dbupdate.Database;
 import net.sf.webcat.dbupdate.UpdateSet;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
@@ -33,7 +32,8 @@ import org.apache.log4j.Logger;
  * output for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: OpinionsDatabaseUpdates.java,v 1.1 2008/10/27 01:54:03 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2009/11/23 00:46:43 $
  */
 public class OpinionsDatabaseUpdates
     extends UpdateSet

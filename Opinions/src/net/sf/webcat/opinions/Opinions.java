@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Opinions.java,v 1.1 2008/10/27 01:54:03 stedwar2 Exp $
+ |  $Id: Opinions.java,v 1.2 2009/11/23 00:46:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,15 +21,7 @@
 
 package net.sf.webcat.opinions;
 
-import com.webobjects.eoaccess.EOGeneralAdaptorException;
-import com.webobjects.eoaccess.EOUtilities;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
-
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
-import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.jobqueue.QueueDescriptor;
 
@@ -40,7 +32,8 @@ import net.sf.webcat.jobqueue.QueueDescriptor;
  * frustrating a given assignment is.
  *
  * @author Stephen Edwards
- * @version $Id: Opinions.java,v 1.1 2008/10/27 01:54:03 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2009/11/23 00:46:43 $
  */
 public class Opinions
     extends Subsystem
