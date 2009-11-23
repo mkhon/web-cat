@@ -16,9 +16,9 @@ import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSMutableSet;
 
 /**
- * 
+ *
  * @author Tony Allevato
- * @version $Id: DescribeReportInputsPage.java,v 1.3 2009/07/14 14:52:49 aallowat Exp $
+ * @version $Id: DescribeReportInputsPage.java,v 1.4 2009/11/23 00:42:32 stedwar2 Exp $
  */
 public class DescribeReportInputsPage extends ReporterComponent
 {
@@ -29,8 +29,8 @@ public class DescribeReportInputsPage extends ReporterComponent
     {
         super(context);
     }
-    
-    
+
+
     //~ KVC attributes (must be public) .......................................
 
     public NSArray<ReportDataSet> dataSets;
@@ -62,13 +62,13 @@ public class DescribeReportInputsPage extends ReporterComponent
                         dataSets.objectAtIndex(i));
             }
         }
-        
+
         parameterValues = new NSMutableDictionary<String, Object>();
 
         super.appendToResponse(response, context);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public NSArray<QueryAssistantDescriptor> queryAssistantsForDataSet()
     {
@@ -77,14 +77,14 @@ public class DescribeReportInputsPage extends ReporterComponent
         return QueryAssistantManager.getInstance().assistantsForEntity(
                 entityName);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public ModelOrQueryWrapper selectedModelOrQueryForDataSet()
     {
         return modelWrappers[dataSetIndex];
     }
-    
+
 
     // ----------------------------------------------------------
     public NSArray<ReportQuery> savedQueriesApplicableToDataSet()
@@ -92,29 +92,29 @@ public class DescribeReportInputsPage extends ReporterComponent
         return ReportQuery.objectsForUserAndEntitySavedQueries(localContext(),
                 user(), dataSet.wcEntityName());
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public ReportQuery selectedSavedQueryForDataSet()
     {
         return modelWrappers[dataSetIndex].savedQuery();
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public void setSelectedSavedQueryForDataSet(ReportQuery query)
     {
         modelWrappers[dataSetIndex].switchToSavedQuery(query);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults useSavedQuery()
     {
         return null;
     }
 
-    
+
     // ----------------------------------------------------------
     public String titleForDataSetPageModule()
     {
@@ -162,22 +162,22 @@ public class DescribeReportInputsPage extends ReporterComponent
     {
         return "queryAssistantPicker_" + dataSetIndex;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public String idForQueryAssistantContainer()
     {
         return "queryAssistantContainer_" + dataSetIndex;
     }
-    
+
 
     // ----------------------------------------------------------
     public String idForSavedQueryPickerForDataSet()
     {
         return "savedQueryPicker_" + dataSetIndex;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults chooseQueryAssistantForDataSet()
     {
@@ -185,7 +185,7 @@ public class DescribeReportInputsPage extends ReporterComponent
         return null;
     }
 
-    
+
     // ----------------------------------------------------------
     public WOActionResults revertEditingForDataSet()
     {
@@ -207,16 +207,16 @@ public class DescribeReportInputsPage extends ReporterComponent
         parameterValues.setObjectForKey(value, parameter.objectForKey("name"));
     }
 
-    
+
     // ----------------------------------------------------------
     public WOActionResults changeReportTemplate()
     {
         clearLocalReportState();
 
-        return pageWithName(PickTemplateToGeneratePage.class.getName());
+        return pageWithName(PickTemplateToGeneratePage.class);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public WOActionResults generateReport()
     {
@@ -229,16 +229,16 @@ public class DescribeReportInputsPage extends ReporterComponent
         setLocalReportDescription(desc);
 
         commitReportGeneration(modelWrappers);
-        return pageWithName(GeneratedReportPage.class.getName());
+        return pageWithName(GeneratedReportPage.class);
     }
-    
+
 
     // ----------------------------------------------------------
     public String defaultDescription()
     {
         return localReportTemplate().name();
     }
-    
+
 
     //~ Static/instance variables .............................................
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportDownloadErrorPage.java,v 1.2 2009/06/02 20:13:16 aallowat Exp $
+ |  $Id: ReportDownloadErrorPage.java,v 1.3 2009/11/23 00:42:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,27 +28,27 @@ import com.webobjects.appserver.WOContext;
 
 //------------------------------------------------------------------------
 /**
- * Displays any errors that may have occurred when saving a report. 
+ * Displays any errors that may have occurred when saving a report.
  *
  * @author Tony Allevato
- * @version $Id: ReportDownloadErrorPage.java,v 1.2 2009/06/02 20:13:16 aallowat Exp $
+ * @version $Id: ReportDownloadErrorPage.java,v 1.3 2009/11/23 00:42:32 stedwar2 Exp $
  */
 public class ReportDownloadErrorPage extends ReporterComponent
 {
     //~ Constructors ..........................................................
-    
+
     // ----------------------------------------------------------
     public ReportDownloadErrorPage(WOContext context)
     {
         super(context);
     }
-    
+
 
     //~ KVC attributes (must be public) .......................................
 
     public Throwable throwable;
     public GeneratedReport generatedReport;
-    
+
 
     //~ Methods ...............................................................
 
@@ -57,8 +57,8 @@ public class ReportDownloadErrorPage extends ReporterComponent
     {
         return "Error Downloading Report: " + generatedReport.description();
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public String throwableStackTrace()
     {
@@ -72,8 +72,7 @@ public class ReportDownloadErrorPage extends ReporterComponent
     public WOActionResults goBack()
     {
         setLocalGeneratedReport(generatedReport);
-        GeneratedReportPage page = (GeneratedReportPage) pageWithName(
-                GeneratedReportPage.class.getName());
+        GeneratedReportPage page = pageWithName(GeneratedReportPage.class);
         return page;
     }
 }

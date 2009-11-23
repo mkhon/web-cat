@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickTemplateToGeneratePage.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: PickTemplateToGeneratePage.java,v 1.10 2009/11/23 00:42:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXS;
  * This page allows the user to select the template to use for a new report.
  *
  * @author Tony Allevato
- * @version $Id: PickTemplateToGeneratePage.java,v 1.9 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: PickTemplateToGeneratePage.java,v 1.10 2009/11/23 00:42:32 stedwar2 Exp $
  */
 public class PickTemplateToGeneratePage
     extends ReporterComponent
@@ -92,7 +92,7 @@ public class PickTemplateToGeneratePage
             (ReportTemplate) reportTemplatesDisplayGroup.selectedObject();
 
         setLocalReportTemplate(template);
-        
-        return pageWithName(DescribeReportInputsPage.class.getName());
+
+        return pageWithName(DescribeReportInputsPage.class);
     }
 }

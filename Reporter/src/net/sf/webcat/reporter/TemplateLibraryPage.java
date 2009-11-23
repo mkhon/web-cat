@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TemplateLibraryPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
+ |  $Id: TemplateLibraryPage.java,v 1.10 2009/11/23 00:42:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * templates or manage existing ones.
  *
  * @author Tony Allevato
- * @version $Id: TemplateLibraryPage.java,v 1.9 2008/10/29 14:14:59 aallowat Exp $
+ * @version $Id: TemplateLibraryPage.java,v 1.10 2009/11/23 00:42:32 stedwar2 Exp $
  */
 public class TemplateLibraryPage
     extends WCComponent
@@ -152,8 +152,7 @@ public class TemplateLibraryPage
         String deliveredName = reportTemplate.name() + "_"
             + reportTemplate.version() + ReportTemplate.TEMPLATE_EXTENSION;
 
-        DeliverFile myNextPage = (DeliverFile)pageWithName(
-                DeliverFile.class.getName() );
+        DeliverFile myNextPage = pageWithName(DeliverFile.class);
         myNextPage.setFileName( actualFile );
         myNextPage.setDeliveredName( deliveredName );
         myNextPage.setContentType( WCFile.mimeType( actualFile ) );

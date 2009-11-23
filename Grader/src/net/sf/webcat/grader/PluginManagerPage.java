@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginManagerPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: PluginManagerPage.java,v 1.9 2009/11/23 00:41:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: PluginManagerPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
+ *  @version $Id: PluginManagerPage.java,v 1.9 2009/11/23 00:41:54 stedwar2 Exp $
  */
 public class PluginManagerPage
 extends WCComponent
@@ -226,8 +226,8 @@ extends WCComponent
      */
     public WOComponent edit()
     {
-        EditPluginGlobalsPage newPage = (EditPluginGlobalsPage)
-            pageWithName( EditPluginGlobalsPage.class.getName() );
+        EditPluginGlobalsPage newPage =
+            pageWithName(EditPluginGlobalsPage.class);
         newPage.nextPage = this;
         newPage.plugin = plugin;
         return newPage;
@@ -243,8 +243,7 @@ extends WCComponent
      */
     public WOComponent editFiles()
     {
-        EditScriptFilesPage newPage = (EditScriptFilesPage)
-            pageWithName( EditScriptFilesPage.class.getName() );
+        EditScriptFilesPage newPage = pageWithName(EditScriptFilesPage.class);
         newPage.nextPage = this;
         newPage.scriptFile = plugin;
         newPage.hideNextAndBack( true );

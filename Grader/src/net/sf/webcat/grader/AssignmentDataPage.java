@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentDataPage.java,v 1.2 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: AssignmentDataPage.java,v 1.3 2009/11/23 00:41:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * data.
  *
  *  @author edwards
- *  @version $Id: AssignmentDataPage.java,v 1.2 2008/04/02 01:55:19 stedwar2 Exp $
+ *  @version $Id: AssignmentDataPage.java,v 1.3 2009/11/23 00:41:54 stedwar2 Exp $
  */
 public class AssignmentDataPage
     extends WCComponent
@@ -81,8 +81,7 @@ public class AssignmentDataPage
     // ----------------------------------------------------------
     public WOComponent downloadFile()
     {
-        DeliverFile csvFile =
-            (DeliverFile)pageWithName( DeliverFile.class.getName() );
+        DeliverFile csvFile = pageWithName(DeliverFile.class);
         csvFile.setFileData( new NSData( (byte[])longResponse().result() ) );
         csvFile.setFileName( new File( "assignment-data.csv" ) );
         csvFile.setContentType( "application/octet-stream" );

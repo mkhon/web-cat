@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickReportToViewPage.java,v 1.10 2009/06/09 17:43:10 aallowat Exp $
+ |  $Id: PickReportToViewPage.java,v 1.11 2009/11/23 00:42:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import net.sf.webcat.core.MutableDictionary;
  * This page allows the user to select among already-generated reports.
  *
  * @author Tony Allevato
- * @version $Id: PickReportToViewPage.java,v 1.10 2009/06/09 17:43:10 aallowat Exp $
+ * @version $Id: PickReportToViewPage.java,v 1.11 2009/11/23 00:42:32 stedwar2 Exp $
  */
 public class PickReportToViewPage
     extends ReporterComponent
@@ -64,7 +64,7 @@ public class PickReportToViewPage
     public void appendToResponse(WOResponse response, WOContext context)
     {
         NSMutableDictionary bindings;
-        
+
         bindings = generatedReportsDisplayGroup.queryBindings();
         bindings.setObjectForKey(user(), "user");
         generatedReportsDisplayGroup.fetch();
@@ -86,7 +86,7 @@ public class PickReportToViewPage
         if (report != null)
         {
             setLocalGeneratedReport(report);
-            return pageWithName(GeneratedReportPage.class.getName());
+            return pageWithName(GeneratedReportPage.class);
         }
         else
         {
@@ -113,7 +113,7 @@ public class PickReportToViewPage
         return null;
     }
 
-    
+
     // ----------------------------------------------------------
     public WOComponent viewReportProgress()
     {
