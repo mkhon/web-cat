@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.11 2009/10/31 13:45:20 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.12 2009/11/23 16:28:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.11 $, $Date: 2009/10/31 13:45:20 $
+ * @version $Revision: 1.12 $, $Date: 2009/11/23 16:28:03 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -53,6 +53,7 @@ public class GradeStudentSubmissionPage
     //~ KVC Attributes (must be public) .......................................
 
     public SubmissionResult    result;
+    public Submission          submission;
     public WODisplayGroup      statsDisplayGroup;
     // For iterating over display group
     public SubmissionFileStats stats;
@@ -82,15 +83,19 @@ public class GradeStudentSubmissionPage
     {
         if (result == null)
         {
-            if ( prefs().submission() == null )
+            if (submission == null)
             {
-                throw new RuntimeException( "null submission selected" );
+                if ( prefs().submission() == null )
+                {
+                    throw new RuntimeException( "null submission selected" );
+                }
+                submission = prefs().submission();
             }
-            if ( prefs().submission().result() == null )
+            if ( submission.result() == null )
             {
                 throw new RuntimeException( "null submission result" );
             }
-            result = prefs().submission().result();
+            result = submission.result();
         }
         if (log.isDebugEnabled())
         {
@@ -198,6 +203,7 @@ public class GradeStudentSubmissionPage
                 .objectAtIndex(thisSubmissionIndex);
             prefs().setSubmissionRelationship(target);
             prefs().setSubmissionFileStatsRelationship(null);
+            submission = target;
             result = null;
         }
         return null;
@@ -263,8 +269,7 @@ public class GradeStudentSubmissionPage
 //    public WOComponent downloadSubmission()
 //    {
 //        saveGrading();
-//        DeliverFile filePage =
-//            (DeliverFile)pageWithName( DeliverFile.class.getName() );
+//        DeliverFile filePage = pageWithName(DeliverFile.class);
 //        filePage.setFileName( new java.io.File(
 //            prefs().submission().resultDirName(),
 //            "../" + prefs().submission().fileName() ) );
@@ -279,8 +284,7 @@ public class GradeStudentSubmissionPage
     {
         log.debug( "fileStatsDetails()" );
         prefs().setSubmissionFileStatsRelationship( stats );
-        WCComponent statsPage =
-            (WCComponent)pageWithName( EditFileCommentsPage.class.getName() );
+        WCComponent statsPage = pageWithName(EditFileCommentsPage.class);
         statsPage.nextPage = this;
         return statsPage;
     }
@@ -290,8 +294,7 @@ public class GradeStudentSubmissionPage
 //    public WOComponent previewStudentFeedback()
 //    {
 //        saveGrading();
-//        FinalReportPage reportPage =
-//            (FinalReportPage)pageWithName( FinalReportPage.class.getName() );
+//        FinalReportPage reportPage = pageWithName(FinalReportPage.class);
 //        reportPage.nextPage = this;
 //        reportPage.showReturnToGrading = true;
 //        return reportPage;
@@ -303,9 +306,12 @@ public class GradeStudentSubmissionPage
     {
         saveGrading();
         PickSubmissionPage submissionPage =
-            (PickSubmissionPage)pageWithName( PickSubmissionPage.class.getName() );
+            pageWithName(PickSubmissionPage.class);
+        prefs().setSubmissionRelationship(submission);
         submissionPage.nextPage = this;
         submissionPage.sideStepTitle = "Pick submission to grade";
+        submission = null;
+        result = null;
         return submissionPage;
     }
 
@@ -384,8 +390,7 @@ public class GradeStudentSubmissionPage
         saveGrading();
         if ( !hasMessages() )
         {
-            confirmPage =
-                (ConfirmPage)pageWithName( ConfirmPage.class.getName() );
+            confirmPage = pageWithName(ConfirmPage.class);
             confirmPage.nextPage       = this;
             confirmPage.message        =
                 "This action will <b>regrade this submission</b> "
@@ -440,8 +445,8 @@ public class GradeStudentSubmissionPage
     // ----------------------------------------------------------
     public WOComponent fullPrintableReport()
     {
-        FullPrintableReport report = (FullPrintableReport)
-            pageWithName( FullPrintableReport.class.getName() );
+        FullPrintableReport report =
+            pageWithName(FullPrintableReport.class);
         report.result = result;
         report.nextPage = this;
         return report;

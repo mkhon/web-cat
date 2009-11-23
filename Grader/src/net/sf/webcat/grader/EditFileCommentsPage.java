@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.10 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.11 2009/11/23 16:28:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,8 @@ import org.jdom.output.XMLOutputter;
  * of the source code.
  *
  * @author Stephen Edwards, Hussein Vastani
- * @version $Id: EditFileCommentsPage.java,v 1.10 2008/04/02 01:55:20 stedwar2 Exp $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.11 $, $Date: 2009/11/23 16:28:03 $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -94,6 +95,7 @@ public class EditFileCommentsPage
         {
             updateTAScore( storeComments() );
             prefs().submissionFileStats().setStatus( Status.CHECK );
+            applyLocalChanges();
         }
         catch ( Exception e )
         {
@@ -115,6 +117,7 @@ public class EditFileCommentsPage
         {
             updateTAScore( storeComments() );
             prefs().submissionFileStats().setStatus( Status.UNFINISHED );
+            applyLocalChanges();
         }
         catch ( Exception e )
         {
@@ -136,6 +139,7 @@ public class EditFileCommentsPage
         {
             updateTAScore( storeComments() );
             prefs().submissionFileStats().setStatus( Status.UNFINISHED );
+            applyLocalChanges();
         }
         catch ( Exception e )
         {

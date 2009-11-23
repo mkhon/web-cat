@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultInfo.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: SubmissionResultInfo.java,v 1.4 2009/11/23 16:28:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.*;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: SubmissionResultInfo.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: SubmissionResultInfo.java,v 1.4 2009/11/23 16:28:02 stedwar2 Exp $
  */
 public class SubmissionResultInfo
     extends GraderComponent
@@ -90,9 +90,9 @@ public class SubmissionResultInfo
         {
             ( (GradeStudentSubmissionPage)parent ).saveGrading();
         }
-        WCComponent reportPage =
-            (WCComponent)pageWithName( EditPartnersPage.class.getName() );
+        EditPartnersPage reportPage = pageWithName(EditPartnersPage.class);
         reportPage.nextPage = (WCComponent)context().page();
+        reportPage.result = submission.result();
         return reportPage;
     }
 }

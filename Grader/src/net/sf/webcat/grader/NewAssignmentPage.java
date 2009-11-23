@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.2 2009/10/05 15:56:52 stedwar2 Exp $
+ |  $Id: NewAssignmentPage.java,v 1.3 2009/11/23 16:28:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2009/10/05 15:56:52 $
+ * @version $Revision: 1.3 $, $Date: 2009/11/23 16:28:03 $
  */
 public class NewAssignmentPage
     extends GraderAssignmentComponent
@@ -134,6 +134,14 @@ public class NewAssignmentPage
             }
         }
         super.appendToResponse(response, context);
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean forceNavigatorSelection()
+    {
+        return super.forceNavigatorSelection() ||
+            coreSelections().semester() == null;
     }
 
 
