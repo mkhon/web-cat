@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.9 2008/11/21 16:42:21 stedwar2 Exp $
+ |  $Id: OptionEditPanel.java,v 1.10 2009/11/23 00:39:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.9 2008/11/21 16:42:21 stedwar2 Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.10 2009/11/23 00:39:24 stedwar2 Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -371,8 +371,7 @@ public class OptionEditPanel
     public WOComponent downloadFile()
         throws java.io.IOException
     {
-        DeliverFile downloadPage = (DeliverFile)pageWithName(
-            DeliverFile.class.getName() );
+        DeliverFile downloadPage = pageWithName(DeliverFile.class);
         // Remember that the attribute value has "Institution/user/..."
         // as a prefix, and base has the same thing as a suffix
         File file = new File( base,  "../../" + value().toString() );
