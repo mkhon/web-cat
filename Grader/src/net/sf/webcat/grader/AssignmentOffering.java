@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.24 2009/11/18 01:42:49 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.25 2009/11/24 02:43:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.24 $, $Date: 2009/11/18 01:42:49 $
+ * @version $Revision: 1.25 $, $Date: 2009/11/24 02:43:32 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -113,7 +113,7 @@ public class AssignmentOffering
         }
         if (result.equals(""))
         {
-            result = super.toString();
+            result = super.userPresentableDescription();
         }
         return result;
     }
@@ -485,9 +485,13 @@ public class AssignmentOffering
             throw new ValidationException("You may not delete an assignment "
                 + "offering that has already received student submissions.");
         }
-        StringBuffer buf = new StringBuffer("/");
-        addSubdirTo(buf);
-        subdirToDelete = buf.toString();
+        if (assignment() != null && !assignment()
+            .conflictingSubdirNameExists(assignment().subdirName()))
+        {
+            StringBuffer buf = new StringBuffer("/");
+            addSubdirTo(buf);
+            subdirToDelete = buf.toString();
+        }
         super.mightDelete();
     }
 
@@ -514,22 +518,27 @@ public class AssignmentOffering
         EOObjectStore parent = context.parentObjectStore();
         if (parent == null || !(parent instanceof EOEditingContext))
         {
+            log.debug("didDelete() on " + this);
             if (subdirToDelete != null)
             {
-                NSArray domains = AuthenticationDomain.authDomains();
-                for ( int i = 0; i < domains.count(); i++ )
+                log.debug("deleting subdir suffix " + subdirToDelete);
+                for (AuthenticationDomain domain :
+                    AuthenticationDomain.authDomains())
                 {
-                    AuthenticationDomain domain =
-                        (AuthenticationDomain)domains.objectAtIndex( i );
                     StringBuffer dir = domain.submissionBaseDirBuffer();
                     dir.append(subdirToDelete);
                     File assignmentDir = new File(dir.toString());
                     if (assignmentDir.exists())
                     {
+                        log.debug("deleting " + assignmentDir);
                         net.sf.webcat.archives.FileUtilities.deleteDirectory(
                             assignmentDir);
                     }
                 }
+            }
+            else
+            {
+                log.debug("not deleting any subdirs");
             }
         }
     }
