@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedJobBase.java,v 1.5 2009/11/17 20:30:47 aallowat Exp $
+ |  $Id: ManagedJobBase.java,v 1.6 2009/12/02 18:13:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -39,7 +39,7 @@ import net.sf.webcat.core.IndependentEOManager;
  *
  * @author stedwar2
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2009/11/17 20:30:47 $
+ * @version $Revision: 1.6 $, $Date: 2009/12/02 18:13:31 $
  */
 public abstract class ManagedJobBase
     extends IndependentEOManager
@@ -90,11 +90,7 @@ public abstract class ManagedJobBase
      */
     public boolean isCancelled()
     {
-        Number result =
-            (Number)valueForKey(JobBase.IS_CANCELLED_KEY);
-        return (result == null)
-            ? false
-            : (result.intValue() > 0);
+        return (Boolean)valueForKey(JobBase.IS_CANCELLED_KEY);
     }
 
 
@@ -107,9 +103,7 @@ public abstract class ManagedJobBase
      */
     public void setIsCancelled( boolean value )
     {
-        takeValueForKey(
-            ERXConstant.integerForInt(value ? 1 : 0),
-            JobBase.IS_CANCELLED_KEY);
+        takeValueForKey(value, JobBase.IS_CANCELLED_KEY);
     }
 
 
@@ -120,11 +114,7 @@ public abstract class ManagedJobBase
      */
     public boolean isReady()
     {
-        Number result =
-            (Number)valueForKey(JobBase.IS_READY_KEY);
-        return (result == null)
-            ? false
-            : (result.intValue() > 0);
+        return (Boolean)valueForKey(JobBase.IS_READY_KEY);
     }
 
 
@@ -137,9 +127,7 @@ public abstract class ManagedJobBase
      */
     public void setIsReady( boolean value )
     {
-        takeValueForKey(
-            ERXConstant.integerForInt(value ? 1 : 0),
-            JobBase.IS_READY_KEY);
+        takeValueForKey(value, JobBase.IS_READY_KEY);
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.6 2009/11/18 20:30:13 aallowat Exp $
+ |  $Id: JobBase.java,v 1.7 2009/12/02 18:13:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2009/11/18 20:30:13 $
+ * @version $Revision: 1.7 $, $Date: 2009/12/02 18:13:31 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -59,6 +59,19 @@ public abstract class JobBase
 
 
     //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * A convenience method to get the job's current progress as an integer
+     * percentage.
+     *
+     * @return the percentage of job progress completed
+     */
+    public int progressPercentage()
+    {
+        return (int) (progress() * 100 + 0.5);
+    }
+
 
     // ----------------------------------------------------------
     /**

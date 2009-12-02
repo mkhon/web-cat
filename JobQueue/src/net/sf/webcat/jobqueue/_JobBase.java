@@ -56,17 +56,20 @@ public abstract class _JobBase
 
     //~ Constants (for key names) .............................................
 
+    // Relationship to base slice ---
+    private static final String BASE_PREFIX = "jobBase";
+    private static final String BASE_PREFIX_DOT = BASE_PREFIX + ".";
     // Attributes ---
-    public static final String ENQUEUE_TIME_KEY = "enqueueTime";
-    public static final String IS_CANCELLED_KEY = "isCancelled";
-    public static final String IS_READY_KEY = "isReady";
-    public static final String PRIORITY_KEY = "priority";
-    public static final String PROGRESS_KEY = "progress";
-    public static final String PROGRESS_MESSAGE_KEY = "progressMessage";
-    public static final String SCHEDULED_TIME_KEY = "scheduledTime";
+    public static final String ENQUEUE_TIME_KEY = BASE_PREFIX_DOT + "enqueueTime";
+    public static final String IS_CANCELLED_KEY = BASE_PREFIX_DOT + "isCancelled";
+    public static final String IS_READY_KEY = BASE_PREFIX_DOT + "isReady";
+    public static final String PRIORITY_KEY = BASE_PREFIX_DOT + "priority";
+    public static final String PROGRESS_KEY = BASE_PREFIX_DOT + "progress";
+    public static final String PROGRESS_MESSAGE_KEY = BASE_PREFIX_DOT + "progressMessage";
+    public static final String SCHEDULED_TIME_KEY = BASE_PREFIX_DOT + "scheduledTime";
     // To-one relationships ---
-    public static final String USER_KEY = "user";
-    public static final String WORKER_KEY = "worker";
+    public static final String USER_KEY = BASE_PREFIX_DOT + "user";
+    public static final String WORKER_KEY = BASE_PREFIX_DOT + "worker";
     // To-many relationships ---
     // Fetch specifications ---
     public static final String NEXT_JOB_FSPEC = "nextJob";
@@ -596,6 +599,49 @@ public abstract class _JobBase
     public String toString()
     {
         return userPresentableDescription();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Hack to workaround the need to include the base relationship when
+     * fetching objects vs. getting/setting their values via KVC.
+     *
+     * @param key the key to access
+     * @return the value of the key
+     */
+    public Object valueForKey(String key)
+    {
+        if (key.equals(BASE_PREFIX))
+        {
+            return this;
+        }
+
+        if (key.startsWith(BASE_PREFIX_DOT))
+        {
+            key = key.substring(BASE_PREFIX_DOT.length());
+        }
+
+        return super.valueForKey(key);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Hack to workaround the need to include the base relationship when
+     * fetching objects vs. getting/setting their values via KVC.
+     *
+     * @param value the new value of the key
+     * @param key the key to access
+     */
+    public void takeValueForKey(Object value, String key)
+    {
+        if (key.startsWith(BASE_PREFIX_DOT))
+        {
+            key = key.substring(BASE_PREFIX_DOT.length());
+        }
+
+        super.takeValueForKey(value, key);
     }
 
 

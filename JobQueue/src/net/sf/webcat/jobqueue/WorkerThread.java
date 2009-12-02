@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.8 2009/11/18 20:30:13 aallowat Exp $
+ |  $Id: WorkerThread.java,v 1.9 2009/12/02 18:13:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.jobqueue;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
+import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOFetchSpecification;
@@ -42,7 +43,7 @@ import net.sf.webcat.core.Application;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2009/11/18 20:30:13 $
+ * @version $Revision: 1.9 $, $Date: 2009/12/02 18:13:31 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -122,82 +123,108 @@ public abstract class WorkerThread<Job extends JobBase>
         {
             while (true)
             {
-                ec.lock();
+                localContext().lock();
 
                 killCancelledJobs();
                 waitForAvailableJob();
 
                 long jobStartTime = System.currentTimeMillis();
-                processJob();
-                long jobDuration = System.currentTimeMillis() - jobStartTime;
 
-                // Compile the wait statistics.
-
-                long jobsCountedWithWaits =
-                    queueDescriptor().jobsCountedWithWaits() + 1;
-                long totalWait =
-                    queueDescriptor().totalWaitForJobs() + jobDuration;
-
-                boolean wasCancelled = currentJob.isCancelled();
-                currentJob.delete();
+                boolean jobFailed = false;
 
                 try
                 {
-                    ec.saveChanges();
-                    currentJob = null;
-
-                    // Update the wait statistics.
-
-                    boolean statsUpdated = false;
-
-                    while (!wasCancelled && !statsUpdated)
-                    {
-                        try
-                        {
-                            queueDescriptor().setJobsCountedWithWaits(
-                                    jobsCountedWithWaits);
-                            queueDescriptor().setMostRecentJobWait(jobDuration);
-                            queueDescriptor().setTotalWaitForJobs(totalWait);
-
-                            queueDescriptor().saveChanges();
-                            statsUpdated = true;
-                        }
-                        catch (Exception e)
-                        {
-                            statsUpdated = false;
-                        }
-                    }
+                    processJob();
                 }
                 catch (Exception e)
                 {
-                    Number jobId = currentJob.id();
+                    log.error("Process job threw exception", e);
+                    jobFailed = true;
 
-                    // Refresh the editing context.
+                    currentJob.setIsReady(false);
+                    currentJob = null;
+                    localContext().saveChanges(); // TODO check for optimistic locking failures?
 
-                    Application.releasePeerEditingContext(ec);
-                    ec = null;
-                    localContext();
+                    sendJobSuspensionNotification(e);
+                }
 
-                    // Get a local instance of the job with the same id.
+                if (!jobFailed)
+                {
+                    long jobDuration =
+                        System.currentTimeMillis() - jobStartTime;
 
-                    NSArray<Job> results =
-                        EOUtilities.objectsMatchingKeyAndValue(
-                            ec, queueDescriptor().jobEntityName(),
-                            "id", jobId.intValue());
+                    // Compile the wait statistics.
 
-                    if (results != null && results.count() > 0)
+                    long jobsCountedWithWaits =
+                        queueDescriptor().jobsCountedWithWaits() + 1;
+                    long totalWait =
+                        queueDescriptor().totalWaitForJobs() + jobDuration;
+
+                    boolean wasCancelled = currentJob.isCancelled();
+                    currentJob.delete();
+
+                    try
                     {
-                        currentJob = results.objectAtIndex(0);
+                        localContext().saveChanges();
+                        currentJob = null;
+
+                        // Update the wait statistics.
+
+                        boolean statsUpdated = false;
+
+                        while (!wasCancelled && !statsUpdated)
+                        {
+                            try
+                            {
+                                queueDescriptor().setJobsCountedWithWaits(
+                                        jobsCountedWithWaits);
+                                queueDescriptor().setMostRecentJobWait(jobDuration);
+                                queueDescriptor().setTotalWaitForJobs(totalWait);
+
+                                queueDescriptor().saveChanges();
+                                statsUpdated = true;
+                            }
+                            catch (Exception e)
+                            {
+                                statsUpdated = false;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Number jobId = currentJob.id();
+
+                        // Refresh the editing context.
+
+                        recycleAndRelockLocalContext();
+
+                        // Get a local instance of the job with the same id.
+
+                        NSArray<Job> results =
+                            EOUtilities.objectsMatchingKeyAndValue(
+                                localContext(),
+                                queueDescriptor().jobEntityName(),
+                                "id", jobId.intValue());
+
+                        if (results != null && results.count() > 0)
+                        {
+                            currentJob = results.objectAtIndex(0);
+                        }
+                        else
+                        {
+                            currentJob = null;
+                        }
                     }
                 }
 
-                ec.unlock();
+                localContext().unlock();
             }
         }
         catch (Exception e)
         {
             // FIXME what should we do here when an exception breaks the loop?
-            ec.unlock();
+            log.error("Exception killed worker thread:", e);
+            localContext().unlock();
         }
     }
 
@@ -292,13 +319,32 @@ public abstract class WorkerThread<Job extends JobBase>
 
     // ----------------------------------------------------------
     /**
+     * Unlocks the thread's local editing context, recycles it, and then
+     * relocks it.
+     */
+    protected void recycleAndRelockLocalContext()
+    {
+        ec.unlock();
+        Application.releasePeerEditingContext(ec);
+        ec = null;
+
+        EOEditingContext lc = localContext();
+        lc.lock();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Notify the administrator and any other relevant personnel that the
      * current job has been suspended.  The job's "isPaused" flag has
      * already been set before this is called.
+     *
+     * @param e the exception thrown by {@link #processJob()}
      */
-    protected void sendJobSuspensionNotification()
+    protected void sendJobSuspensionNotification(Exception e)
     {
         // TODO: implement
+        log.error("processJob() threw the following exception:", e);
     }
 
 
@@ -343,7 +389,7 @@ public abstract class WorkerThread<Job extends JobBase>
                 // another job.
 
                 WorkerDescriptor worker = (WorkerDescriptor)
-                    descriptor().localInstanceIn(ec);
+                    descriptor().localInstanceIn(localContext());
 
                 logDebug("volunteering to run job " + candidate.id());
                 didGetJob = candidate.volunteerToRun(worker);
@@ -368,7 +414,10 @@ public abstract class WorkerThread<Job extends JobBase>
     @SuppressWarnings("unchecked")
     protected Job fetchNextCandidateJob()
     {
+        EOEditingContext context = localContext();
+
         String entityName = queueDescriptor().jobEntityName();
+
         EOFetchSpecification fetchSpec = new EOFetchSpecification(
                 entityName,
                 ERXQ.and(
@@ -378,7 +427,7 @@ public abstract class WorkerThread<Job extends JobBase>
                 ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
         fetchSpec.setFetchLimit(1);
 
-        NSArray<Job> jobs = ec.objectsWithFetchSpecification(fetchSpec);
+        NSArray<Job> jobs = context.objectsWithFetchSpecification(fetchSpec);
 
         if (jobs.count() == 0)
         {
@@ -411,11 +460,11 @@ public abstract class WorkerThread<Job extends JobBase>
 
             try
             {
-                ec.saveChanges();
+                localContext().saveChanges();
             }
             catch (Exception e)
             {
-                ec.revert();
+                localContext().revert();
             }
 
             cancelledJob = fetchNextCancelledJob();
@@ -441,7 +490,8 @@ public abstract class WorkerThread<Job extends JobBase>
                 ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
         fetchSpec.setFetchLimit(1);
 
-        NSArray<Job> jobs = ec.objectsWithFetchSpecification(fetchSpec);
+        NSArray<Job> jobs =
+            localContext().objectsWithFetchSpecification(fetchSpec);
 
         if (jobs.count() == 0)
         {
