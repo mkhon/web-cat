@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.9 2009/11/18 15:32:15 aallowat Exp $
+ |  $Id: IndependentEOManager.java,v 1.10 2009/12/02 18:01:33 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * resolve them automatically.
  *
  * @author stedwar2
- * @version $Id: IndependentEOManager.java,v 1.9 2009/11/18 15:32:15 aallowat Exp $
+ * @version $Id: IndependentEOManager.java,v 1.10 2009/12/02 18:01:33 aallowat Exp $
  */
 public class IndependentEOManager
     implements EOManager
@@ -223,9 +223,12 @@ public class IndependentEOManager
         try
         {
             ecm.lock();
+
             // grab the changes, in case there is trouble saving them
-            NSDictionary changes =
-                mirror.changesFromSnapshot(mirror.snapshot());
+            NSDictionary snapshot =
+                mirror.editingContext().committedSnapshotForObject(mirror);
+            NSDictionary changes = mirror.changesFromSnapshot(snapshot);
+
             boolean changesSaved = false;
             // Try ten times
             for (int i = 0; !changesSaved && i< 10; i++)
