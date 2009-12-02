@@ -1,48 +1,30 @@
 {
-    EOModelVersion = "2.1"; 
-    adaptorName = JDBC; 
+    EOModelVersion = "2.1";
+    adaptorName = JDBC;
     connectionDictionary = {
-        URL = ""; 
-        driver = "com.mysql.jdbc.Driver"; 
-        password = ""; 
-        plugin = MySQL; 
-        username = ""; 
-    }; 
+        URL = "";
+        driver = "com.mysql.jdbc.Driver";
+        password = "";
+        plugin = MySQL;
+        username = "";
+    };
     entities = (
-        {className = "net.sf.webcat.jobqueue.HostDescriptor"; name = HostDescriptor; }, 
-        {className = "net.sf.webcat.jobqueue.JobBase"; name = JobBase; }, 
+        {className = "net.sf.webcat.jobqueue.HostDescriptor"; name = HostDescriptor; },
+        {className = "net.sf.webcat.jobqueue.JobBase"; name = JobBase; },
         {
-            className = "net.sf.webcat.jobqueue.QueueDescriptor"; 
-            name = QueueDescriptor; 
-        }, 
+            className = "net.sf.webcat.jobqueue.QueueDescriptor";
+            name = QueueDescriptor;
+        },
         {
-            className = "net.sf.webcat.jobqueue.WorkerDescriptor"; 
-            name = WorkerDescriptor; 
+            className = "net.sf.webcat.jobqueue.WorkerDescriptor";
+            name = WorkerDescriptor;
         }
-    ); 
+    );
     internalInfo = {
         "_schemaSynchronizationOptions" = {
-            EOSchemaSynchronizationForeignKeyConstraintsKey = YES; 
-            EOSchemaSynchronizationPrimaryKeyConstraintsKey = YES; 
-            EOSchemaSynchronizationPrimaryKeySupportKey = YES; 
-        }; 
-    }; 
-    userInfo = {
-        "_EntityModeler" = {
-            activeDatabaseConfigName = Default; 
-            databaseConfigs = {
-                Default = {
-                    adaptorName = JDBC; 
-                    connectionDictionary = {
-                        URL = ""; 
-                        driver = "com.mysql.jdbc.Driver"; 
-                        password = ""; 
-                        plugin = MySQL; 
-                        username = ""; 
-                    }; 
-                    prototypeEntityName = EOJDBCPrototypes; 
-                }; 
-            }; 
-        }; 
-    }; 
+            EOSchemaSynchronizationForeignKeyConstraintsKey = YES;
+            EOSchemaSynchronizationPrimaryKeyConstraintsKey = YES;
+            EOSchemaSynchronizationPrimaryKeySupportKey = YES;
+        };
+    };
 }

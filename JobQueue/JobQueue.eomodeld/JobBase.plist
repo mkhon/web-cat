@@ -6,16 +6,14 @@
             name = enqueueTime; 
             prototypeName = dateTime; 
         }, 
-        {allowsNull = N; name = id; prototypeName = id; }, 
+        {allowsNull = N; name = id; prototypeName = id; valueType = i; }, 
         {
-            allowsNull = N; 
             columnName = isCancelled; 
             name = isCancelled; 
             prototypeName = boolean; 
             userInfo = {isScalar = true; scalarDefault = false; type = boolean; }; 
         }, 
         {
-            allowsNull = N; 
             columnName = isReady; 
             name = isReady; 
             prototypeName = boolean; 
@@ -54,16 +52,7 @@
         {columnName = userId; name = userId; prototypeName = foreignId; }, 
         {columnName = workerId; name = workerId; prototypeName = foreignId; }
     ); 
-    attributesUsedForLocking = (
-        id, 
-        isCancelled, 
-        isReady, 
-        priority, 
-        progress, 
-        progressMessage, 
-        userId, 
-        workerId
-    ); 
+    attributesUsedForLocking = (id, isCancelled, isReady, priority, progressMessage, userId, workerId); 
     className = "net.sf.webcat.jobqueue.JobBase"; 
     classProperties = (
         enqueueTime, 
