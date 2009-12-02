@@ -1,21 +1,8 @@
-Date: WOTextField {
-	size      = 20;
-    formatter = session.timeFormatter;
-	value     = objectPropertyValue;
-	id        = controlId;
-	readonly  = 1;
-}
-
-DateSelector: WOImage {
-	filename  = "icons/cal.gif";
-	framework = "Grader";
-	width     = 16;
-	height    = 16;
-	alt       = "Select date";
-	title     = "Select date";
-	id        = "~\"select\" + controlId";
-}
-
-Button: WOString {
-    value = "~\"select\" + controlId";
+Date: WCDateTimePicker {
+     value      = objectPropertyValue;
+     dateformat = session.user.dateFormat;
+     timeformat = session.user.timeFormat;
+     dateWidth  = "8em";
+     timeWidth  = "6em";
+     timeZone   = timeZone;
 }

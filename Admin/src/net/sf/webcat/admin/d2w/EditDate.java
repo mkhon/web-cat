@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditDate.java,v 1.6 2009/04/03 19:59:52 stedwar2 Exp $
+ |  $Id: EditDate.java,v 1.7 2009/12/02 18:42:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.admin.d2w;
 
+import java.util.TimeZone;
 import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
@@ -33,7 +34,7 @@ import com.webobjects.foundation.*;
  * and also uses Web-CAT's preferred date picker widget.
  *
  *  @author edwards
- *  @version $Id: EditDate.java,v 1.6 2009/04/03 19:59:52 stedwar2 Exp $
+ *  @version $Id: EditDate.java,v 1.7 2009/12/02 18:42:10 aallowat Exp $
  */
 public class EditDate
     extends er.directtoweb.components.ERDCustomEditComponent
@@ -51,25 +52,11 @@ public class EditDate
         super( context );
     }
 
+
     // ----------------------------------------------------------
-    public String controlId()
+    public TimeZone timeZone()
     {
-        if (id == null)
-        {
-            id = "date" + context().elementID();
-        }
-        return id;
+        return TimeZone.getTimeZone(
+                (String) session().valueForKeyPath("user.timeZoneName"));
     }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public void reset()
-    {
-        id = null;
-    }
-
-
-    // ----------------------------------------------------------
-    private String id = null;
 }
