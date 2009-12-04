@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.8 2008/10/29 14:16:31 aallowat Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.9 2009/12/04 18:57:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.8 2008/10/29 14:16:31 aallowat Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.9 2009/12/04 18:57:12 stedwar2 Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -226,8 +226,8 @@ public class SubsystemManagerPage
      */
     public WOComponent edit()
     {
-        ConfigureSubsystemPage page = (ConfigureSubsystemPage)
-            pageWithName( ConfigureSubsystemPage.class.getName() );
+        ConfigureSubsystemPage page =
+            pageWithName(ConfigureSubsystemPage.class);
         page.subsystem = subsystem;
         page.nextPage = this;
         return page;

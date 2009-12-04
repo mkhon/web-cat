@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PropertyListPage.java,v 1.6 2009/06/16 14:11:37 stedwar2 Exp $
+ |  $Id: PropertyListPage.java,v 1.7 2009/12/04 18:57:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * A property listing page.
  *
  *  @author edwards
- *  @version $Id: PropertyListPage.java,v 1.6 2009/06/16 14:11:37 stedwar2 Exp $
+ *  @version $Id: PropertyListPage.java,v 1.7 2009/12/04 18:57:12 stedwar2 Exp $
  */
 public class PropertyListPage
     extends WCComponent
@@ -132,7 +132,7 @@ public class PropertyListPage
     public WOComponent back()
     {
         clearMessages();
-        return pageWithName( SettingsPage.class.getName() );
+        return pageWithName(SettingsPage.class);
     }
 
 
