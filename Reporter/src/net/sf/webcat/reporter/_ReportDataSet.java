@@ -58,7 +58,7 @@ public abstract class _ReportDataSet
     // ----------------------------------------------------------
     /**
      * A static factory method for creating a new
-     * _ReportDataSet object given required
+     * ReportDataSet object given required
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
@@ -110,11 +110,11 @@ public abstract class _ReportDataSet
         ReportDataSet obj = null;
         if (id > 0)
         {
-            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
-                ENTITY_NAME, "id", new Integer( id ) );
-            if ( results != null && results.count() > 0 )
+            NSArray<ReportDataSet> results =
+                objectsMatchingValues(ec, "id", new Integer(id));
+            if (results != null && results.count() > 0)
             {
-                obj = (ReportDataSet)results.objectAtIndex( 0 );
+                obj = results.objectAtIndex(0);
             }
         }
         return obj;
@@ -173,7 +173,8 @@ public abstract class _ReportDataSet
      * last committed version.
      * @return a dictionary of the changes that have not yet been committed
      */
-    public NSDictionary changedProperties()
+    @SuppressWarnings("unchecked")
+    public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
             editingContext().committedSnapshotForObject(this) );
@@ -669,7 +670,6 @@ public abstract class _ReportDataSet
      *
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<ReportDataSet> allObjects(
         EOEditingContext context)
     {
@@ -686,7 +686,6 @@ public abstract class _ReportDataSet
      *
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<ReportDataSet> objectsMatchingQualifier(
         EOEditingContext context,
         EOQualifier qualifier)
@@ -705,7 +704,6 @@ public abstract class _ReportDataSet
      *
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<ReportDataSet> objectsMatchingQualifier(
         EOEditingContext context,
         EOQualifier qualifier,
@@ -713,7 +711,7 @@ public abstract class _ReportDataSet
     {
         EOFetchSpecification fspec = new EOFetchSpecification(
             ENTITY_NAME, qualifier, sortOrderings);
-
+        fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
 
@@ -728,7 +726,6 @@ public abstract class _ReportDataSet
      *
      * @return an NSArray of the entities retrieved
      */
-    @SuppressWarnings("unchecked")
     public static NSArray<ReportDataSet> objectsMatchingValues(
         EOEditingContext context,
         Object... keysAndValues)
@@ -793,7 +790,6 @@ public abstract class _ReportDataSet
      * @throws EOUtilities.MoreThanOneException
      *     if there is more than one matching object
      */
-    @SuppressWarnings("unchecked")
     public static ReportDataSet objectMatchingValues(
         EOEditingContext context,
         Object... keysAndValues) throws EOObjectNotAvailableException,
@@ -839,14 +835,13 @@ public abstract class _ReportDataSet
      * @throws EOUtilities.MoreThanOneException
      *     if there is more than one matching object
      */
-    @SuppressWarnings("unchecked")
     public static ReportDataSet objectMatchingValues(
         EOEditingContext context,
         NSDictionary<String, Object> keysAndValues)
         throws EOObjectNotAvailableException,
                EOUtilities.MoreThanOneException
     {
-        return (ReportDataSet) EOUtilities.objectMatchingValues(
+        return (ReportDataSet)EOUtilities.objectMatchingValues(
             context, ENTITY_NAME, keysAndValues);
     }
 
