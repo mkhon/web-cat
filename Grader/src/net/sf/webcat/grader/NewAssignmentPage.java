@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.5 2009/12/04 19:05:12 stedwar2 Exp $
+ |  $Id: NewAssignmentPage.java,v 1.6 2009/12/07 20:00:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -46,7 +46,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/12/04 19:05:12 $
+ * @version $Revision: 1.6 $, $Date: 2009/12/07 20:00:58 $
  */
 public class NewAssignmentPage
     extends GraderAssignmentComponent
@@ -164,12 +164,13 @@ public class NewAssignmentPage
     // ----------------------------------------------------------
     public WOComponent reoffer()
     {
-        AssignmentOffering newOffering = new AssignmentOffering();
+        AssignmentOffering newOffering = AssignmentOffering.create(
+            localContext(),
+            assignmentToReoffer,
+            toCourseOffering);
         localContext().insertObject(newOffering);
-        newOffering.setAssignmentRelationship(assignmentToReoffer);
         prefs().setAssignmentOfferingRelationship(newOffering);
         prefs().setAssignmentRelationship(assignmentToReoffer);
-        newOffering.setCourseOfferingRelationship(toCourseOffering);
         configureNewAssignmentOffering(newOffering, null);
         applyLocalChanges();
         return super.next();
@@ -231,8 +232,7 @@ public class NewAssignmentPage
         }
 
         log.debug("creating new assignment");
-        Assignment newAssignment = new Assignment();
-        localContext().insertObject(newAssignment);
+        Assignment newAssignment = Assignment.create(localContext(), false);
         newAssignment.setShortDescription(title);
         newAssignment.setAuthorRelationship(user());
         // Make sure the name is set first, so that date guessing works
@@ -247,8 +247,19 @@ public class NewAssignmentPage
                 1);
         if (similar.count() > 0)
         {
+            AssignmentOffering model = similar.objectAtIndex(0);
             newAssignment.setSubmissionProfile(
-                similar.objectAtIndex(0).assignment().submissionProfile());
+                model.assignment().submissionProfile());
+            newAssignment.setTrackOpinions(
+                model.assignment().trackOpinions());
+            for (Step oldStep : model.assignment().steps())
+            {
+                Step newStep = Step.create(localContext(), false);
+                newStep.setAssignmentRelationship(newAssignment);
+                newStep.setOrder(oldStep.order());
+                newStep.setTimeout(oldStep.timeout());
+                newStep.setConfigRelationship(oldStep.config());
+            }
         }
 
 
@@ -258,15 +269,15 @@ public class NewAssignmentPage
         for (CourseOffering offering: offerings)
         {
             log.debug("creating new assignment offering for " + offering);
-            AssignmentOffering newOffering = new AssignmentOffering();
+            AssignmentOffering newOffering = AssignmentOffering.create(
+                localContext(),
+                newAssignment,
+                offering);
             if (firstOffering == null)
             {
                 firstOffering = newOffering;
             }
-            localContext().insertObject(newOffering);
-            newOffering.setAssignmentRelationship(newAssignment);
             prefs().setAssignmentOfferingRelationship(newOffering);
-            newOffering.setCourseOfferingRelationship(offering);
             configureNewAssignmentOffering(newOffering, common);
         }
 
