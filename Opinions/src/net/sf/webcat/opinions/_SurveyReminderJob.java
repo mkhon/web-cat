@@ -57,13 +57,14 @@ public abstract class _SurveyReminderJob
     // ----------------------------------------------------------
     /**
      * A static factory method for creating a new
-     * _SurveyReminderJob object given required
+     * SurveyReminderJob object given required
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
      * @param enqueueTime
      * @param isCancelled
      * @param isPaused
+     * @param isReady
      * @param priority
      * @return The newly created object
      */
@@ -72,6 +73,7 @@ public abstract class _SurveyReminderJob
         NSTimestamp enqueueTime,
         boolean isCancelled,
         boolean isPaused,
+        boolean isReady,
         int priority
         )
     {
@@ -82,6 +84,7 @@ public abstract class _SurveyReminderJob
         eoObject.setEnqueueTime(enqueueTime);
         eoObject.setIsCancelled(isCancelled);
         eoObject.setIsPaused(isPaused);
+        eoObject.setIsReady(isReady);
         eoObject.setPriority(priority);
         return eoObject;
     }
@@ -118,11 +121,11 @@ public abstract class _SurveyReminderJob
         SurveyReminderJob obj = null;
         if (id > 0)
         {
-            NSArray results = EOUtilities.objectsMatchingKeyAndValue( ec,
-                ENTITY_NAME, "id", new Integer( id ) );
-            if ( results != null && results.count() > 0 )
+            NSArray<SurveyReminderJob> results =
+                objectsMatchingValues(ec, "id", new Integer(id));
+            if (results != null && results.count() > 0)
             {
-                obj = (SurveyReminderJob)results.objectAtIndex( 0 );
+                obj = results.objectAtIndex(0);
             }
         }
         return obj;
@@ -148,15 +151,9 @@ public abstract class _SurveyReminderJob
 
     // Attributes ---
     public static final String DUE_TIME_KEY = "dueTime";
-    public static final String ENQUEUE_TIME_KEY = "enqueueTime";
-    public static final String IS_CANCELLED_KEY = "isCancelled";
     public static final String IS_PAUSED_KEY = "isPaused";
-    public static final String PRIORITY_KEY = "priority";
-    public static final String SCHEDULED_TIME_KEY = "scheduledTime";
     // To-one relationships ---
     public static final String ASSIGNMENT_OFFERING_KEY = "assignmentOffering";
-    public static final String USER_KEY = "user";
-    public static final String WORKER_KEY = "worker";
     // To-many relationships ---
     // Fetch specifications ---
     public static final String ENTITY_NAME = "SurveyReminderJob";
@@ -176,37 +173,6 @@ public abstract class _SurveyReminderJob
             editingContext, this);
     }
 
-
-    // ----------------------------------------------------------
-    /**
-     * Get a list of changes between this object's current state and the
-     * last committed version.
-     * @return a dictionary of the changes that have not yet been committed
-     */
-    public NSDictionary changedProperties()
-    {
-        return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>id</code> value.
-     * @return the value of the attribute
-     */
-    public Number id()
-    {
-        try
-        {
-            return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
-        }
-        catch (Exception e)
-        {
-            return er.extensions.eof.ERXConstant.ZeroInteger;
-        }
-    }
 
     // ----------------------------------------------------------
     /**
@@ -234,99 +200,6 @@ public abstract class _SurveyReminderJob
                 + value + "): was " + dueTime() );
         }
         takeStoredValueForKey( value, "dueTime" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>enqueueTime</code> value.
-     * @return the value of the attribute
-     */
-    public NSTimestamp enqueueTime()
-    {
-        return (NSTimestamp)storedValueForKey( "enqueueTime" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>enqueueTime</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setEnqueueTime( NSTimestamp value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setEnqueueTime("
-                + value + "): was " + enqueueTime() );
-        }
-        takeStoredValueForKey( value, "enqueueTime" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>isCancelled</code> value.
-     * @return the value of the attribute
-     */
-    public boolean isCancelled()
-    {
-        Integer result =
-            (Integer)storedValueForKey( "isCancelled" );
-        return ( result == null )
-            ? false
-            : ( result.intValue() > 0 );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>isCancelled</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setIsCancelled( boolean value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setIsCancelled("
-                + value + "): was " + isCancelled() );
-        }
-        Integer actual =
-            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
-            setIsCancelledRaw( actual );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>isCancelled</code> value.
-     * @return the value of the attribute
-     */
-    public Integer isCancelledRaw()
-    {
-        return (Integer)storedValueForKey( "isCancelled" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>isCancelled</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setIsCancelledRaw( Integer value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setIsCancelledRaw("
-                + value + "): was " + isCancelledRaw() );
-        }
-        takeStoredValueForKey( value, "isCancelled" );
     }
 
 
@@ -396,99 +269,6 @@ public abstract class _SurveyReminderJob
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>priority</code> value.
-     * @return the value of the attribute
-     */
-    public int priority()
-    {
-        Integer result =
-            (Integer)storedValueForKey( "priority" );
-        return ( result == null )
-            ? 0
-            : result.intValue();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>priority</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setPriority( int value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setPriority("
-                + value + "): was " + priority() );
-        }
-        Integer actual =
-            er.extensions.eof.ERXConstant.integerForInt( value );
-            setPriorityRaw( actual );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>priority</code> value.
-     * @return the value of the attribute
-     */
-    public Integer priorityRaw()
-    {
-        return (Integer)storedValueForKey( "priority" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>priority</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setPriorityRaw( Integer value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setPriorityRaw("
-                + value + "): was " + priorityRaw() );
-        }
-        takeStoredValueForKey( value, "priority" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>scheduledTime</code> value.
-     * @return the value of the attribute
-     */
-    public NSTimestamp scheduledTime()
-    {
-        return (NSTimestamp)storedValueForKey( "scheduledTime" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>scheduledTime</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setScheduledTime( NSTimestamp value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setScheduledTime("
-                + value + "): was " + scheduledTime() );
-        }
-        takeStoredValueForKey( value, "scheduledTime" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Retrieve the entity pointed to by the <code>assignmentOffering</code>
      * relationship.
      * @return the entity in the relationship
@@ -550,123 +330,219 @@ public abstract class _SurveyReminderJob
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entity pointed to by the <code>user</code>
-     * relationship.
-     * @return the entity in the relationship
-     */
-    public net.sf.webcat.core.User user()
-    {
-        return (net.sf.webcat.core.User)storedValueForKey( "user" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>user</code>
-     * relationship (DO NOT USE--instead, use
-     * <code>setUserRelationship()</code>.
-     * This method is provided for WebObjects use.
+     * Retrieve objects using a fetch specification.
      *
-     * @param value The new entity to relate to
-     */
-    public void setUser( net.sf.webcat.core.User value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setUser("
-                + value + "): was " + user() );
-        }
-        takeStoredValueForKey( value, "user" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>user</code>
-     * relationship.  This method is a type-safe version of
-     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     * @param context The editing context to use
+     * @param fspec The fetch specification to use
      *
-     * @param value The new entity to relate to
+     * @return an NSArray of the entities retrieved
      */
-    public void setUserRelationship(
-        net.sf.webcat.core.User value )
+    @SuppressWarnings("unchecked")
+    public static NSArray<SurveyReminderJob> objectsWithFetchSpecification(
+        EOEditingContext context,
+        EOFetchSpecification fspec)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setUserRelationship("
-                + value + "): was " + user() );
-        }
-        if ( value == null )
-        {
-            net.sf.webcat.core.User object = user();
-            if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "user" );
-        }
-        else
-        {
-            addObjectToBothSidesOfRelationshipWithKey( value, "user" );
-        }
+        return context.objectsWithFetchSpecification(fspec);
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entity pointed to by the <code>worker</code>
-     * relationship.
-     * @return the entity in the relationship
-     */
-    public net.sf.webcat.jobqueue.WorkerDescriptor worker()
-    {
-        return (net.sf.webcat.jobqueue.WorkerDescriptor)storedValueForKey( "worker" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>worker</code>
-     * relationship (DO NOT USE--instead, use
-     * <code>setWorkerRelationship()</code>.
-     * This method is provided for WebObjects use.
+     * Retrieve all objects of this type.
      *
-     * @param value The new entity to relate to
+     * @param context The editing context to use
+     *
+     * @return an NSArray of the entities retrieved
      */
-    public void setWorker( net.sf.webcat.jobqueue.WorkerDescriptor value )
+    public static NSArray<SurveyReminderJob> allObjects(
+        EOEditingContext context)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setWorker("
-                + value + "): was " + worker() );
-        }
-        takeStoredValueForKey( value, "worker" );
+        return objectsMatchingQualifier(context, null, null);
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>worker</code>
-     * relationship.  This method is a type-safe version of
-     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     * Retrieve objects using a qualifier.
      *
-     * @param value The new entity to relate to
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     *
+     * @return an NSArray of the entities retrieved
      */
-    public void setWorkerRelationship(
-        net.sf.webcat.jobqueue.WorkerDescriptor value )
+    public static NSArray<SurveyReminderJob> objectsMatchingQualifier(
+        EOEditingContext context,
+        EOQualifier qualifier)
     {
-        if (log.isDebugEnabled())
+        return objectsMatchingQualifier(context, qualifier, null);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects using a qualifier and sort orderings.
+     *
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     * @param sortOrderings The sort orderings to use
+     *
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<SurveyReminderJob> objectsMatchingQualifier(
+        EOEditingContext context,
+        EOQualifier qualifier,
+        NSArray<EOSortOrdering> sortOrderings)
+    {
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME, qualifier, sortOrderings);
+        fspec.setUsesDistinct(true);
+        return objectsWithFetchSpecification(context, fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<SurveyReminderJob> objectsMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues)
+    {
+        if (keysAndValues.length % 2 != 0)
         {
-            log.debug( "setWorkerRelationship("
-                + value + "): was " + worker() );
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
         }
-        if ( value == null )
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
         {
-            net.sf.webcat.jobqueue.WorkerDescriptor object = worker();
-            if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "worker" );
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
         }
-        else
+
+        return objectsMatchingValues(context, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects using a dictionary of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return an NSArray of the entities retrieved
+     */
+    @SuppressWarnings("unchecked")
+    public static NSArray<SurveyReminderJob> objectsMatchingValues(
+        EOEditingContext context,
+        NSDictionary<String, Object> keysAndValues)
+    {
+        return EOUtilities.objectsMatchingValues(context, ENTITY_NAME,
+            keysAndValues);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return the single entity that was retrieved
+     *
+     * @throws EOObjectNotAvailableException
+     *     if there is no matching object
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static SurveyReminderJob objectMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues) throws EOObjectNotAvailableException,
+                                        EOUtilities.MoreThanOneException
+    {
+        if (keysAndValues.length % 2 != 0)
         {
-            addObjectToBothSidesOfRelationshipWithKey( value, "worker" );
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
         }
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
+        {
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
+        }
+
+        return objectMatchingValues(context, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve an object using a dictionary of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return the single entity that was retrieved
+     *
+     * @throws EOObjectNotAvailableException
+     *     if there is no matching object
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static SurveyReminderJob objectMatchingValues(
+        EOEditingContext context,
+        NSDictionary<String, Object> keysAndValues)
+        throws EOObjectNotAvailableException,
+               EOUtilities.MoreThanOneException
+    {
+        return (SurveyReminderJob)EOUtilities.objectMatchingValues(
+            context, ENTITY_NAME, keysAndValues);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Produce a string representation of this object.  This implementation
+     * calls UserPresentableDescription(), which uses WebObjects' internal
+     * mechanism to print out the visible fields of this object.  Normally,
+     * subclasses would override userPresentableDescription() to change
+     * the way the object is printed.
+     *
+     * @return A string representation of the object's value
+     */
+    public String toString()
+    {
+        return userPresentableDescription();
     }
 
 

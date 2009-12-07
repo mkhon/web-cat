@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsDatabaseUpdates.java,v 1.2 2009/11/23 00:46:43 stedwar2 Exp $
+ |  $Id: OpinionsDatabaseUpdates.java,v 1.3 2009/12/07 20:04:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2009/11/23 00:46:43 $
+ * @version $Revision: 1.3 $, $Date: 2009/12/07 20:04:04 $
  */
 public class OpinionsDatabaseUpdates
     extends UpdateSet
@@ -79,16 +79,9 @@ public class OpinionsDatabaseUpdates
             log.info( "creating table TSurveyReminderJob" );
             database().executeSQL(
                 "CREATE TABLE TSurveyReminderJob "
-                + "(assignmentOfferingId INTEGER , "
+                + "(assignmentId INTEGER , "
                 + "dueTime DATETIME , "
-                + "enqueueTime DATETIME NOT NULL, "
-                + "OID INTEGER NOT NULL, "
-                + "isCancelled BIT NOT NULL, "
-                + "isPaused BIT NOT NULL, "
-                + "priority INTEGER NOT NULL, "
-                + "scheduledTime DATETIME , "
-                + "userId INTEGER , "
-                + "workerId INTEGER )");
+                + "OID INTEGER NOT NULL )");
             database().executeSQL(
                 "ALTER TABLE TSurveyReminderJob ADD PRIMARY KEY (OID)" );
         }

@@ -1,0 +1,46 @@
+{
+    Assignment = {
+        class = EOFetchSpecification; 
+        entityName = SurveyResponse; 
+        prefetchingRelationshipKeyPaths = (); 
+        qualifier = {
+            class = EOKeyValueQualifier; 
+            key = assignment; 
+            selectorName = "isEqualTo:"; 
+            value = {"_key" = assignment; class = EOQualifierVariable; }; 
+        }; 
+    }; 
+    AssignmentAndUser = {
+        class = EOFetchSpecification; 
+        entityName = SurveyResponse; 
+        prefetchingRelationshipKeyPaths = (); 
+        qualifier = {
+            class = EOAndQualifier; 
+            qualifiers = (
+                {
+                    class = EOKeyValueQualifier; 
+                    key = assignment; 
+                    selectorName = "isEqualTo:"; 
+                    value = {"_key" = assignment; class = EOQualifierVariable; }; 
+                }, 
+                {
+                    class = EOKeyValueQualifier; 
+                    key = user; 
+                    selectorName = "isEqualTo:"; 
+                    value = {"_key" = user; class = EOQualifierVariable; }; 
+                }
+            ); 
+        }; 
+    }; 
+    User = {
+        class = EOFetchSpecification; 
+        entityName = SurveyResponse; 
+        prefetchingRelationshipKeyPaths = (); 
+        qualifier = {
+            class = EOKeyValueQualifier; 
+            key = user; 
+            selectorName = "isEqualTo:"; 
+            value = {"_key" = user; class = EOQualifierVariable; }; 
+        }; 
+    }; 
+}

@@ -1,56 +1,19 @@
-
 {
-    EOModelVersion = 2.1;
-    adaptorName = JDBC;
-    connectionDictionary =
-    {
-        username = "";
-        driver = com.mysql.jdbc.Driver;
-        URL = "";
-        password = "";
-        plugin = MySQL;
-    };
-    entities =
-    (
-
-       {
-           className = SurveyReminderJob;
-           name = SurveyReminderJob;
-           parent = JobBase;
-       },
-
-       {
-           className = SurveyResponse;
-           name = SurveyResponse;
-       }
-    );
-    internalInfo =
-    {
-        _deletedEntityNamesInObjectStore =
-        (
-
-        );
-    };
-    userInfo =
-    {
-        _EntityModeler =
+    EOModelVersion = "2.1"; 
+    adaptorName = JDBC; 
+    connectionDictionary = {
+        URL = ""; 
+        driver = "com.mysql.jdbc.Driver"; 
+        password = ""; 
+        plugin = MySQL; 
+        username = ""; 
+    }; 
+    entities = (
         {
-            activeDatabaseConfigName = Default;
-            databaseConfigs =
-            {
-                Default =
-                {
-                    adaptorName = JDBC;
-                    connectionDictionary =
-                    {
-                        username = "";
-                        driver = com.mysql.jdbc.Driver;
-                        URL = "";
-                        password = "";
-                        plugin = MySQL;
-                    };
-                };
-            };
-        };
-    };
+            className = "net.sf.webcat.opinions.SurveyReminderJob"; 
+            name = SurveyReminderJob; 
+            parent = JobBase; 
+        }, 
+        {className = "net.sf.webcat.opinions.SurveyResponse"; name = SurveyResponse; }
+    ); 
 }
