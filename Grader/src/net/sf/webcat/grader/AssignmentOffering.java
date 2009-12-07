@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.25 2009/11/24 02:43:32 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.26 2009/12/07 20:00:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.25 $, $Date: 2009/11/24 02:43:32 $
+ * @version $Revision: 1.26 $, $Date: 2009/12/07 20:00:13 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -56,6 +56,32 @@ public class AssignmentOffering
     public AssignmentOffering()
     {
         super();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A static factory method for creating a new
+     * AssignmentOffering object given required
+     * attributes and relationships.
+     * @param editingContext The context in which the new object will be
+     * inserted
+     * @param assignment The assignment to be offered
+     * @param courseOffering The course offering for this assignment offering
+     * @return The newly created object
+     */
+    public static AssignmentOffering create(
+        EOEditingContext editingContext,
+        Assignment assignment,
+        CourseOffering courseOffering)
+    {
+        AssignmentOffering result = create(editingContext,
+            false,
+            false,
+            false);
+        result.setAssignmentRelationship(assignment);
+        result.setCourseOfferingRelationship(courseOffering);
+        return result;
     }
 
 
