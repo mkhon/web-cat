@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.9 2009/10/27 15:56:13 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.10 2009/12/07 20:03:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,6 @@ package net.sf.webcat.grader;
 
 import net.sf.webcat.dbupdate.UpdateSet;
 import java.sql.SQLException;
-import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -33,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.9 2009/10/27 15:56:13 aallowat Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.10 2009/12/07 20:03:01 stedwar2 Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -245,6 +244,22 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TSUBMISSIONFILESTATS add "
             + "CTAGS TEXT" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds fields for closing assignments and tracking opinions.
+     * @throws SQLException on error
+     */
+    public void updateIncrement11() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TASSIGNMENTOFFERING add "
+            + "closedOnDate DATETIME" );
+        database().executeSQL(
+            "alter table TASSIGNMENT add "
+            + "trackOpinions BIT NOT NULL" );
     }
 
 

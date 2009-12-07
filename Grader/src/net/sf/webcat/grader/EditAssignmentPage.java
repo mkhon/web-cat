@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.24 2009/11/18 00:38:09 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.25 2009/12/07 20:03:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,7 +26,6 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -39,7 +38,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.24 $, $Date: 2009/11/18 00:38:09 $
+ * @version $Revision: 1.25 $, $Date: 2009/12/07 20:03:01 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -71,7 +70,6 @@ public class EditAssignmentPage
     public AssignmentOffering selectedOffering;
     public WODisplayGroup     offeringGroup;
 
-    public boolean isSuspended; // TODO: fix this!
     public AssignmentOffering offeringToDelete;
 
     public NSArray<ScriptFile> gradingPluginsToAdd;
@@ -130,8 +128,10 @@ public class EditAssignmentPage
             }
             else
             {
-                offeringGroup.queryMatch().put(
-                    "courseOffering.semester", selectedSemester);
+                @SuppressWarnings("unchecked")
+                NSDictionary<Object, Object> params =
+                    offeringGroup.queryMatch();
+                params.put("courseOffering.semester", selectedSemester);
             }
             offeringGroup.qualifyDisplayGroup();
         }
@@ -139,7 +139,6 @@ public class EditAssignmentPage
         // TODO: Fix NPEs on this page when no selectedOffering
         if (selectedOffering != null)
         {
-            isSuspended = selectedOffering.gradingSuspended();
             submissionProfileDisplayGroup.setObjectArray(
                 SubmissionProfile.profilesForCourseIncludingMine(
                     localContext(),
@@ -428,7 +427,7 @@ public class EditAssignmentPage
     public WOComponent regradeSubsActionOk()
     {
         if (!applyLocalChanges()) return null;
-        thisOffering.regradeMostRecentSubsForAll(localContext());
+        offeringForAction.regradeMostRecentSubsForAll(localContext());
         applyLocalChanges();
         return null;
     }
@@ -456,8 +455,36 @@ public class EditAssignmentPage
             confirmPage.actionReceiver = this;
             confirmPage.actionOk       = "regradeSubsActionOk";
             confirmPage.setTitle("Confirm Regrade of All Submissions");
+            offeringForAction = thisOffering;
         }
         return confirmPage;
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent suspendGrading()
+    {
+        if (saveAndCanProceed())
+        {
+            thisOffering.setGradingSuspended(true);
+            applyLocalChanges();
+        }
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent resumeGrading()
+    {
+        if (saveAndCanProceed())
+        {
+            thisOffering.setGradingSuspended(false);
+            if (applyLocalChanges())
+            {
+                releaseSuspendedSubs();
+            }
+        }
+        return null;
     }
 
 
@@ -578,6 +605,7 @@ public class EditAssignmentPage
             String targetId, int[] dropIndices,
             boolean isCopy)
     {
+        @SuppressWarnings("unchecked")
         NSMutableArray<Step> steps =
             scriptDisplayGroup.displayedObjects().mutableClone();
         NSMutableArray<Step> stepsRemoved = new NSMutableArray<Step>();
@@ -693,6 +721,7 @@ public class EditAssignmentPage
     public WOComponent deleteActionOk()
     {
         prefs().setAssignmentOfferingRelationship(null);
+        @SuppressWarnings("unchecked")
         NSArray<AssignmentOffering> offerings =
             offeringGroup.displayedObjects();
         for (AssignmentOffering ao : offerings)
@@ -797,6 +826,7 @@ public class EditAssignmentPage
     private int            suspendedSubmissionCount = 0;
     private NSMutableArray<AssignmentOffering> upcomingOfferings;
     private NSTimestamp    currentTime;
+    private AssignmentOffering offeringForAction;
 
     static Logger log = Logger.getLogger( EditAssignmentPage.class );
 }
