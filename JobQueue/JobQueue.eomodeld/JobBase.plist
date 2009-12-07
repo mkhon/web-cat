@@ -52,7 +52,7 @@
         {columnName = userId; name = userId; prototypeName = foreignId; }, 
         {columnName = workerId; name = workerId; prototypeName = foreignId; }
     ); 
-    attributesUsedForLocking = (id, isCancelled, isReady, priority, progressMessage, userId, workerId); 
+    attributesUsedForLocking = (isCancelled, isReady, priority, progressMessage, userId, workerId); 
     className = "net.sf.webcat.jobqueue.JobBase"; 
     classProperties = (
         enqueueTime, 

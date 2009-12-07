@@ -1,168 +1,125 @@
-
 {
-    attributes = 
-    (
-       
-       {
-           columnName = defaultJobWait;
-           name = defaultJobWait;
-           prototypeName = long;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarConversionMethodName = longValue;
-               scalarDefault = 0L;
-               type = long;
-               valueClassName = Long;
-           };
-       }, 
-       
-       {
-           allowsNull = N;
-           name = id;
-           prototypeName = id;
-       }, 
-       
-       {
-           columnName = jobCount;
-           name = jobCount;
-           prototypeName = long;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarConversionMethodName = longValue;
-               scalarDefault = 0L;
-               type = long;
-               valueClassName = Long;
-           };
-       }, 
-       
-       {
-           allowsNull = N;
-           columnName = jobEntityName;
-           name = jobEntityName;
-           prototypeName = tinyText;
-       }, 
-       
-       {
-           columnName = jobsCountedWithWaits;
-           name = jobsCountedWithWaits;
-           prototypeName = long;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarConversionMethodName = longValue;
-               scalarDefault = 0L;
-               type = long;
-               valueClassName = Long;
-           };
-       }, 
-       
-       {
-           columnName = mostRecentJobWait;
-           name = mostRecentJobWait;
-           prototypeName = long;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarConversionMethodName = longValue;
-               scalarDefault = 0L;
-               type = long;
-               valueClassName = Long;
-           };
-       }, 
-       
-       {
-           allowsNull = N;
-           columnName = newestEntryId;
-           name = newestEntryId;
-           prototypeName = long;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarConversionMethodName = longValue;
-               scalarDefault = 0L;
-               type = long;
-               valueClassName = Long;
-           };
-       }, 
-       
-       {
-           allowsNull = Y;
-           columnName = requiresExclusiveHostAccess;
-           name = requiresExclusiveHostAccess;
-           prototypeName = boolean;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarDefault = false;
-               type = boolean;
-           };
-       }, 
-       
-       {
-           columnName = totalWaitForJobs;
-           name = totalWaitForJobs;
-           prototypeName = long;
-           userInfo = 
-           {
-               isScalar = true;
-               scalarConversionMethodName = longValue;
-               scalarDefault = 0L;
-               type = long;
-               valueClassName = Long;
-           };
-       }
-    );
-    attributesUsedForLocking = 
-    (
-       defaultJobWait, 
-       id, 
-       jobCount, 
-       jobEntityName, 
-       jobsCountedWithWaits, 
-       mostRecentJobWait, 
-       newestEntryId, 
-       requiresExclusiveHostAccess, 
-       totalWaitForJobs
-    );
-    className = net.sf.webcat.jobqueue.QueueDescriptor;
-    classProperties = 
-    (
-       defaultJobWait, 
-       jobCount, 
-       jobEntityName, 
-       jobsCountedWithWaits, 
-       mostRecentJobWait, 
-       newestEntryId, 
-       requiresExclusiveHostAccess, 
-       totalWaitForJobs, 
-       workers
-    );
-    externalName = TQueueDescriptor;
-    internalInfo = 
-    {};
-    name = QueueDescriptor;
-    primaryKeyAttributes = 
-    (
-       id
-    );
-    relationships = 
-    (
-       
-       {
-           destination = WorkerDescriptor;
-           isToMany = Y;
-           joinSemantic = EOInnerJoin;
-           joins = 
-           (
-              
-              {
-                  destinationAttribute = queueId;
-                  sourceAttribute = id;
-              }
-           );
-           name = workers;
-       }
-    );
+    attributes = (
+        {
+            columnName = defaultJobWait; 
+            name = defaultJobWait; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {
+            columnName = jobCount; 
+            name = jobCount; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = jobEntityName; 
+            name = jobEntityName; 
+            prototypeName = tinyText; 
+        }, 
+        {
+            columnName = jobsCountedWithWaits; 
+            name = jobsCountedWithWaits; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {
+            columnName = mostRecentJobWait; 
+            name = mostRecentJobWait; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = newestEntryId; 
+            name = newestEntryId; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {
+            allowsNull = Y; 
+            columnName = requiresExclusiveHostAccess; 
+            name = requiresExclusiveHostAccess; 
+            prototypeName = boolean; 
+            userInfo = {isScalar = true; scalarDefault = false; type = boolean; }; 
+        }, 
+        {
+            columnName = totalWaitForJobs; 
+            name = totalWaitForJobs; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }
+    ); 
+    attributesUsedForLocking = (
+        defaultJobWait, 
+        jobCount, 
+        jobEntityName, 
+        jobsCountedWithWaits, 
+        mostRecentJobWait, 
+        newestEntryId, 
+        requiresExclusiveHostAccess, 
+        totalWaitForJobs
+    ); 
+    className = "net.sf.webcat.jobqueue.QueueDescriptor"; 
+    classProperties = (
+        defaultJobWait, 
+        jobCount, 
+        jobEntityName, 
+        jobsCountedWithWaits, 
+        mostRecentJobWait, 
+        newestEntryId, 
+        requiresExclusiveHostAccess, 
+        totalWaitForJobs, 
+        workers
+    ); 
+    externalName = TQueueDescriptor; 
+    name = QueueDescriptor; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = WorkerDescriptor; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = queueId; sourceAttribute = id; }); 
+            name = workers; 
+        }
+    ); 
 }
