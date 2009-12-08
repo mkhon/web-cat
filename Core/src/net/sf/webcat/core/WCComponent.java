@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.17 2009/11/23 00:39:24 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.18 2009/12/08 03:28:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -57,7 +57,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.17 2009/11/23 00:39:24 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.18 2009/12/08 03:28:04 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -79,6 +79,8 @@ public class WCComponent
     //~ KVC Attributes (must be public) .......................................
 
     public WCComponent   nextPage;
+    public boolean       cancelsForward;
+    public boolean       nextPerformsSave;
 
     public static final String ALL_TASKS = "all";
 
@@ -268,9 +270,15 @@ public class WCComponent
             // we move to the default second-level tab.
             parent = parent.parent();
         }
-        changeWorkflow();
-        WOComponent result = pageWithName( parent.selectDefault().pageName() );
-        return result;
+        if (cancelsForward)
+        {
+            return internalNext();
+        }
+        else
+        {
+            changeWorkflow();
+            return pageWithName( parent.selectDefault().pageName() );
+        }
     }
 
 
@@ -369,29 +377,7 @@ public class WCComponent
      */
     public WOComponent next()
     {
-        if ( hasMessages() )
-        {
-            return null;
-        }
-        else if ( nextPage != null )
-        {
-            if (breakWorkflow)
-            {
-                breakWorkflow = false;
-            }
-            else if (nextPage.peerContextManager == null
-                     && peerContextManager != null)
-            {
-                nextPage.peerContextManager = peerContextManager;
-                nextPage.alreadyGrabbed = true;
-            }
-            return nextPage;
-        }
-        else
-        {
-            return pageWithName(
-                currentTab().nextSibling().select().pageName() );
-        }
+        return internalNext();
     }
 
 
@@ -794,6 +780,44 @@ public class WCComponent
 
 
     //~ Private Methods .......................................................
+
+    // ----------------------------------------------------------
+    public WOComponent internalNext()
+    {
+        if ( hasMessages() )
+        {
+            return null;
+        }
+
+        if (nextPerformsSave)
+        {
+            if (!applyLocalChanges())
+            {
+                return null;
+            }
+        }
+
+        if ( nextPage != null )
+        {
+            if (breakWorkflow)
+            {
+                breakWorkflow = false;
+            }
+            else if (nextPage.peerContextManager == null
+                     && peerContextManager != null)
+            {
+                nextPage.peerContextManager = peerContextManager;
+                nextPage.alreadyGrabbed = true;
+            }
+            return nextPage;
+        }
+        else
+        {
+            return pageWithName(
+                currentTab().nextSibling().select().pageName() );
+        }
+    }
+
 
     // ----------------------------------------------------------
     private WCComponent outermostWCComponent()
