@@ -27,6 +27,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -142,16 +143,34 @@ public abstract class _QueueDescriptor
 
     // Attributes ---
     public static final String DEFAULT_JOB_WAIT_KEY = "defaultJobWait";
+    public static final ERXKey<Long> defaultJobWait =
+        new ERXKey<Long>(DEFAULT_JOB_WAIT_KEY);
     public static final String JOB_COUNT_KEY = "jobCount";
+    public static final ERXKey<Long> jobCount =
+        new ERXKey<Long>(JOB_COUNT_KEY);
     public static final String JOB_ENTITY_NAME_KEY = "jobEntityName";
+    public static final ERXKey<String> jobEntityName =
+        new ERXKey<String>(JOB_ENTITY_NAME_KEY);
     public static final String JOBS_COUNTED_WITH_WAITS_KEY = "jobsCountedWithWaits";
+    public static final ERXKey<Long> jobsCountedWithWaits =
+        new ERXKey<Long>(JOBS_COUNTED_WITH_WAITS_KEY);
     public static final String MOST_RECENT_JOB_WAIT_KEY = "mostRecentJobWait";
+    public static final ERXKey<Long> mostRecentJobWait =
+        new ERXKey<Long>(MOST_RECENT_JOB_WAIT_KEY);
     public static final String NEWEST_ENTRY_ID_KEY = "newestEntryId";
+    public static final ERXKey<Long> newestEntryId =
+        new ERXKey<Long>(NEWEST_ENTRY_ID_KEY);
     public static final String REQUIRES_EXCLUSIVE_HOST_ACCESS_KEY = "requiresExclusiveHostAccess";
+    public static final ERXKey<Integer> requiresExclusiveHostAccess =
+        new ERXKey<Integer>(REQUIRES_EXCLUSIVE_HOST_ACCESS_KEY);
     public static final String TOTAL_WAIT_FOR_JOBS_KEY = "totalWaitForJobs";
+    public static final ERXKey<Long> totalWaitForJobs =
+        new ERXKey<Long>(TOTAL_WAIT_FOR_JOBS_KEY);
     // To-one relationships ---
     // To-many relationships ---
     public static final String WORKERS_KEY = "workers";
+    public static final ERXKey<net.sf.webcat.jobqueue.WorkerDescriptor> workers =
+        new ERXKey<net.sf.webcat.jobqueue.WorkerDescriptor>(WORKERS_KEY);
     // Fetch specifications ---
     public static final String JOB_ENTITY_NAME_FSPEC = "jobEntityName";
     public static final String ENTITY_NAME = "QueueDescriptor";

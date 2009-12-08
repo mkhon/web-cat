@@ -27,6 +27,7 @@ package net.sf.webcat.reporter;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -143,25 +144,61 @@ public abstract class _ReportTemplate
 
     // Attributes ---
     public static final String CHANGE_HISTORY_KEY = "changeHistory";
+    public static final ERXKey<String> changeHistory =
+        new ERXKey<String>(CHANGE_HISTORY_KEY);
     public static final String CHECKSUM_KEY = "checksum";
+    public static final ERXKey<String> checksum =
+        new ERXKey<String>(CHECKSUM_KEY);
     public static final String DESCRIPTION_KEY = "description";
+    public static final ERXKey<String> description =
+        new ERXKey<String>(DESCRIPTION_KEY);
     public static final String DESIGN_ELEMENTS_RAW_KEY = "designElementsRaw";
+    public static final ERXKey<String> designElementsRaw =
+        new ERXKey<String>(DESIGN_ELEMENTS_RAW_KEY);
     public static final String IS_PUBLISHED_KEY = "isPublished";
+    public static final ERXKey<Integer> isPublished =
+        new ERXKey<Integer>(IS_PUBLISHED_KEY);
     public static final String LANGUAGE_KEY = "language";
+    public static final ERXKey<String> language =
+        new ERXKey<String>(LANGUAGE_KEY);
     public static final String NAME_KEY = "name";
+    public static final ERXKey<String> name =
+        new ERXKey<String>(NAME_KEY);
     public static final String PARAMETERS_KEY = "parameters";
+    public static final ERXKey<NSData> parameters =
+        new ERXKey<NSData>(PARAMETERS_KEY);
     public static final String PREFERRED_RENDERER_KEY = "preferredRenderer";
+    public static final ERXKey<String> preferredRenderer =
+        new ERXKey<String>(PREFERRED_RENDERER_KEY);
     public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
+    public static final ERXKey<Integer> updateMutableFields =
+        new ERXKey<Integer>(UPDATE_MUTABLE_FIELDS_KEY);
     public static final String UPLOADED_TIME_KEY = "uploadedTime";
+    public static final ERXKey<NSTimestamp> uploadedTime =
+        new ERXKey<NSTimestamp>(UPLOADED_TIME_KEY);
     public static final String VERSION_KEY = "version";
+    public static final ERXKey<String> version =
+        new ERXKey<String>(VERSION_KEY);
     // To-one relationships ---
     public static final String BRANCHED_FROM_TEMPLATE_KEY = "branchedFromTemplate";
+    public static final ERXKey<net.sf.webcat.reporter.ReportTemplate> branchedFromTemplate =
+        new ERXKey<net.sf.webcat.reporter.ReportTemplate>(BRANCHED_FROM_TEMPLATE_KEY);
     public static final String PREDECESSOR_TEMPLATE_KEY = "predecessorTemplate";
+    public static final ERXKey<net.sf.webcat.reporter.ReportTemplate> predecessorTemplate =
+        new ERXKey<net.sf.webcat.reporter.ReportTemplate>(PREDECESSOR_TEMPLATE_KEY);
     public static final String ROOT_TEMPLATE_KEY = "rootTemplate";
+    public static final ERXKey<net.sf.webcat.reporter.ReportTemplate> rootTemplate =
+        new ERXKey<net.sf.webcat.reporter.ReportTemplate>(ROOT_TEMPLATE_KEY);
     public static final String USER_KEY = "user";
+    public static final ERXKey<net.sf.webcat.core.User> user =
+        new ERXKey<net.sf.webcat.core.User>(USER_KEY);
     // To-many relationships ---
     public static final String BRANCHED_TEMPLATES_KEY = "branchedTemplates";
+    public static final ERXKey<net.sf.webcat.reporter.ReportTemplate> branchedTemplates =
+        new ERXKey<net.sf.webcat.reporter.ReportTemplate>(BRANCHED_TEMPLATES_KEY);
     public static final String DATA_SETS_KEY = "dataSets";
+    public static final ERXKey<net.sf.webcat.reporter.ReportDataSet> dataSets =
+        new ERXKey<net.sf.webcat.reporter.ReportDataSet>(DATA_SETS_KEY);
     // Fetch specifications ---
     public static final String ALL_TEMPLATES_FSPEC = "allTemplates";
     public static final String PUBLISHED_REPORTS_FSPEC = "publishedReports";

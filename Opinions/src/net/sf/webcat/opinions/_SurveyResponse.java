@@ -27,6 +27,7 @@ package net.sf.webcat.opinions;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -136,20 +137,48 @@ public abstract class _SurveyResponse
 
     // Attributes ---
     public static final String IS_STAFF_KEY = "isStaff";
+    public static final ERXKey<Integer> isStaff =
+        new ERXKey<Integer>(IS_STAFF_KEY);
     public static final String Q1_KEY = "q1";
+    public static final ERXKey<Integer> q1 =
+        new ERXKey<Integer>(Q1_KEY);
     public static final String Q2_KEY = "q2";
+    public static final ERXKey<Integer> q2 =
+        new ERXKey<Integer>(Q2_KEY);
     public static final String Q3_KEY = "q3";
+    public static final ERXKey<Integer> q3 =
+        new ERXKey<Integer>(Q3_KEY);
     public static final String Q4_KEY = "q4";
+    public static final ERXKey<Integer> q4 =
+        new ERXKey<Integer>(Q4_KEY);
     public static final String Q5_KEY = "q5";
+    public static final ERXKey<Integer> q5 =
+        new ERXKey<Integer>(Q5_KEY);
     public static final String Q6_KEY = "q6";
+    public static final ERXKey<Integer> q6 =
+        new ERXKey<Integer>(Q6_KEY);
     public static final String SUBMIT_TIME_KEY = "submitTime";
+    public static final ERXKey<NSTimestamp> submitTime =
+        new ERXKey<NSTimestamp>(SUBMIT_TIME_KEY);
     public static final String TEXT1_KEY = "text1";
+    public static final ERXKey<String> text1 =
+        new ERXKey<String>(TEXT1_KEY);
     public static final String TEXT2_KEY = "text2";
+    public static final ERXKey<String> text2 =
+        new ERXKey<String>(TEXT2_KEY);
     public static final String TEXT3_KEY = "text3";
+    public static final ERXKey<String> text3 =
+        new ERXKey<String>(TEXT3_KEY);
     public static final String TEXT4_KEY = "text4";
+    public static final ERXKey<String> text4 =
+        new ERXKey<String>(TEXT4_KEY);
     // To-one relationships ---
     public static final String ASSIGNMENT_KEY = "assignment";
+    public static final ERXKey<net.sf.webcat.grader.Assignment> assignment =
+        new ERXKey<net.sf.webcat.grader.Assignment>(ASSIGNMENT_KEY);
     public static final String USER_KEY = "user";
+    public static final ERXKey<net.sf.webcat.core.User> user =
+        new ERXKey<net.sf.webcat.core.User>(USER_KEY);
     // To-many relationships ---
     // Fetch specifications ---
     public static final String ASSIGNMENT_FSPEC = "Assignment";

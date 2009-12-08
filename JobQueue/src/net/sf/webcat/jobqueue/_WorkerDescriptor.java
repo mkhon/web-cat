@@ -27,6 +27,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -142,10 +143,18 @@ public abstract class _WorkerDescriptor
 
     // Attributes ---
     public static final String CURRENT_JOB_ID_KEY = "currentJobId";
+    public static final ERXKey<Long> currentJobId =
+        new ERXKey<Long>(CURRENT_JOB_ID_KEY);
     public static final String IS_ALIVE_KEY = "isAlive";
+    public static final ERXKey<Integer> isAlive =
+        new ERXKey<Integer>(IS_ALIVE_KEY);
     // To-one relationships ---
     public static final String HOST_KEY = "host";
+    public static final ERXKey<net.sf.webcat.jobqueue.HostDescriptor> host =
+        new ERXKey<net.sf.webcat.jobqueue.HostDescriptor>(HOST_KEY);
     public static final String QUEUE_KEY = "queue";
+    public static final ERXKey<net.sf.webcat.jobqueue.QueueDescriptor> queue =
+        new ERXKey<net.sf.webcat.jobqueue.QueueDescriptor>(QUEUE_KEY);
     // To-many relationships ---
     // Fetch specifications ---
     public static final String HOST_FSPEC = "Host";

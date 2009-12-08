@@ -27,6 +27,7 @@ package net.sf.webcat.reporter;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -136,12 +137,22 @@ public abstract class _EnqueuedReportGenerationJob
 
     // Attributes ---
     public static final String DESCRIPTION_KEY = "description";
+    public static final ERXKey<String> description =
+        new ERXKey<String>(DESCRIPTION_KEY);
     public static final String QUEUE_TIME_KEY = "queueTime";
+    public static final ERXKey<NSTimestamp> queueTime =
+        new ERXKey<NSTimestamp>(QUEUE_TIME_KEY);
     // To-one relationships ---
     public static final String REPORT_TEMPLATE_KEY = "reportTemplate";
+    public static final ERXKey<net.sf.webcat.reporter.ReportTemplate> reportTemplate =
+        new ERXKey<net.sf.webcat.reporter.ReportTemplate>(REPORT_TEMPLATE_KEY);
     public static final String USER_KEY = "user";
+    public static final ERXKey<net.sf.webcat.core.User> user =
+        new ERXKey<net.sf.webcat.core.User>(USER_KEY);
     // To-many relationships ---
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
+    public static final ERXKey<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries =
+        new ERXKey<net.sf.webcat.reporter.ReportDataSetQuery>(DATA_SET_QUERIES_KEY);
     // Fetch specifications ---
     public static final String USER_FSPEC = "user";
     public static final String ENTITY_NAME = "EnqueuedReportGenerationJob";

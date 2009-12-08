@@ -27,6 +27,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -139,9 +140,13 @@ public abstract class _HostDescriptor
 
     // Attributes ---
     public static final String HOST_NAME_KEY = "hostName";
+    public static final ERXKey<String> hostName =
+        new ERXKey<String>(HOST_NAME_KEY);
     // To-one relationships ---
     // To-many relationships ---
     public static final String WORKERS_KEY = "workers";
+    public static final ERXKey<net.sf.webcat.jobqueue.WorkerDescriptor> workers =
+        new ERXKey<net.sf.webcat.jobqueue.WorkerDescriptor>(WORKERS_KEY);
     // Fetch specifications ---
     public static final String ENTITY_NAME = "HostDescriptor";
 

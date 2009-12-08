@@ -27,6 +27,7 @@ package net.sf.webcat.opinions;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -151,9 +152,15 @@ public abstract class _SurveyReminderJob
 
     // Attributes ---
     public static final String DUE_TIME_KEY = "dueTime";
+    public static final ERXKey<NSTimestamp> dueTime =
+        new ERXKey<NSTimestamp>(DUE_TIME_KEY);
     public static final String IS_PAUSED_KEY = "isPaused";
+    public static final ERXKey<Integer> isPaused =
+        new ERXKey<Integer>(IS_PAUSED_KEY);
     // To-one relationships ---
     public static final String ASSIGNMENT_OFFERING_KEY = "assignmentOffering";
+    public static final ERXKey<net.sf.webcat.grader.AssignmentOffering> assignmentOffering =
+        new ERXKey<net.sf.webcat.grader.AssignmentOffering>(ASSIGNMENT_OFFERING_KEY);
     // To-many relationships ---
     // Fetch specifications ---
     public static final String ENTITY_NAME = "SurveyReminderJob";

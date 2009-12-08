@@ -27,6 +27,7 @@ package net.sf.webcat.reporter;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -137,9 +138,17 @@ public abstract class _ReportDataSetQuery
     // Attributes ---
     // To-one relationships ---
     public static final String DATA_SET_KEY = "dataSet";
+    public static final ERXKey<net.sf.webcat.reporter.ReportDataSet> dataSet =
+        new ERXKey<net.sf.webcat.reporter.ReportDataSet>(DATA_SET_KEY);
     public static final String ENQUEUED_REPORT_JOB_KEY = "enqueuedReportJob";
+    public static final ERXKey<net.sf.webcat.reporter.EnqueuedReportGenerationJob> enqueuedReportJob =
+        new ERXKey<net.sf.webcat.reporter.EnqueuedReportGenerationJob>(ENQUEUED_REPORT_JOB_KEY);
     public static final String GENERATED_REPORT_KEY = "generatedReport";
+    public static final ERXKey<net.sf.webcat.reporter.GeneratedReport> generatedReport =
+        new ERXKey<net.sf.webcat.reporter.GeneratedReport>(GENERATED_REPORT_KEY);
     public static final String REPORT_QUERY_KEY = "reportQuery";
+    public static final ERXKey<net.sf.webcat.reporter.ReportQuery> reportQuery =
+        new ERXKey<net.sf.webcat.reporter.ReportQuery>(REPORT_QUERY_KEY);
     // To-many relationships ---
     // Fetch specifications ---
     public static final String ENTITY_NAME = "ReportDataSetQuery";

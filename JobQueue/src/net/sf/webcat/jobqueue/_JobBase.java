@@ -27,6 +27,7 @@ package net.sf.webcat.jobqueue;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXKey;
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
@@ -61,15 +62,33 @@ public abstract class _JobBase
     private static final String BASE_PREFIX_DOT = BASE_PREFIX + ".";
     // Attributes ---
     public static final String ENQUEUE_TIME_KEY = BASE_PREFIX_DOT + "enqueueTime";
+    public static final ERXKey<NSTimestamp> enqueueTime =
+        new ERXKey<NSTimestamp>(ENQUEUE_TIME_KEY);
     public static final String IS_CANCELLED_KEY = BASE_PREFIX_DOT + "isCancelled";
+    public static final ERXKey<Integer> isCancelled =
+        new ERXKey<Integer>(IS_CANCELLED_KEY);
     public static final String IS_READY_KEY = BASE_PREFIX_DOT + "isReady";
+    public static final ERXKey<Integer> isReady =
+        new ERXKey<Integer>(IS_READY_KEY);
     public static final String PRIORITY_KEY = BASE_PREFIX_DOT + "priority";
+    public static final ERXKey<Integer> priority =
+        new ERXKey<Integer>(PRIORITY_KEY);
     public static final String PROGRESS_KEY = BASE_PREFIX_DOT + "progress";
+    public static final ERXKey<Double> progress =
+        new ERXKey<Double>(PROGRESS_KEY);
     public static final String PROGRESS_MESSAGE_KEY = BASE_PREFIX_DOT + "progressMessage";
+    public static final ERXKey<String> progressMessage =
+        new ERXKey<String>(PROGRESS_MESSAGE_KEY);
     public static final String SCHEDULED_TIME_KEY = BASE_PREFIX_DOT + "scheduledTime";
+    public static final ERXKey<NSTimestamp> scheduledTime =
+        new ERXKey<NSTimestamp>(SCHEDULED_TIME_KEY);
     // To-one relationships ---
     public static final String USER_KEY = BASE_PREFIX_DOT + "user";
+    public static final ERXKey<net.sf.webcat.core.User> user =
+        new ERXKey<net.sf.webcat.core.User>(USER_KEY);
     public static final String WORKER_KEY = BASE_PREFIX_DOT + "worker";
+    public static final ERXKey<net.sf.webcat.jobqueue.WorkerDescriptor> worker =
+        new ERXKey<net.sf.webcat.jobqueue.WorkerDescriptor>(WORKER_KEY);
     // To-many relationships ---
     // Fetch specifications ---
     public static final String NEXT_JOB_FSPEC = "nextJob";
