@@ -1,9 +1,7 @@
-<webobject name="Page">
-<wo:WCPageModule title="Assignments for Which You Can Provide Feedback">
+<wo:WCPageWithNavigation title="Provide Your Opinions on Assignments">
+<wo:WCPageModule title="Assignments Waiting for Feedback">
 <wo:if condition="$assignmentDisplayGroup.displayedObjects.count">
 <p>You can provide your opinions on the following assignments:</p>
-
-Objects = <wo:str value="$assignmentDisplayGroup.displayedObjects"/>
 
 <table><thead>
     <tr><th>Assignment</th><th>Submissions</th><th>Most Recent</th><th class="sm">Score Distribution</th></tr>
@@ -13,7 +11,7 @@ Objects = <wo:str value="$assignmentDisplayGroup.displayedObjects"/>
         <td><wo:link action="$surveyForAssignment"><wo:str value="$assignment.titleString"/></wo:link></td>
         <td><wo:str value="$highestSubmission.submitNumber"/></td>
         <td class="nowrap"><wo:str value="$mostRecentSubmission.submitTime" formatter="$session.timeFormatter"/></td>
-        <td><wo:MiniBarGraph graphSummary="$offeringWithDistribution.graphSummary"/></td>
+        <td><wo:if condition="$offeringWithDistribution"><wo:MiniBarGraph graphSummary="$offeringWithDistribution.graphSummary"/></wo:if></td>
     </wo:tr>
     </wo:loop>
 </tbody></table>
@@ -23,4 +21,4 @@ Objects = <wo:str value="$assignmentDisplayGroup.displayedObjects"/>
 opinions.</p>
 </wo:else>
 </wo:WCPageModule>
-</webobject>
+</wo:WCPageWithNavigation>

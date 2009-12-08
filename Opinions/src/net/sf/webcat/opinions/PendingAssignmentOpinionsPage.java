@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PendingAssignmentOpinionsPage.java,v 1.1 2009/12/07 20:04:04 stedwar2 Exp $
+ |  $Id: PendingAssignmentOpinionsPage.java,v 1.2 2009/12/08 03:29:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -27,6 +27,7 @@ import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import er.extensions.eof.ERXQ;
+import er.extensions.eof.ERXS;
 import net.sf.webcat.core.*;
 import net.sf.webcat.grader.Assignment;
 import net.sf.webcat.grader.AssignmentOffering;
@@ -42,7 +43,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2009/12/07 20:04:04 $
+ * @version $Revision: 1.2 $, $Date: 2009/12/08 03:29:43 $
  */
 public class PendingAssignmentOpinionsPage
     extends WCComponent
@@ -130,7 +131,7 @@ public class PendingAssignmentOpinionsPage
                     new NSMutableArray<Assignment>(userResponses.size());
                 for (int i = 0; i < userResponses.size(); i++)
                 {
-                    alreadyResponded.set(i, userResponses.get(i).assignment());
+                    alreadyResponded.add(i, userResponses.get(i).assignment());
                 }
 
                 // Now, remove all assignments in the alreadyResponded array
@@ -154,25 +155,70 @@ public class PendingAssignmentOpinionsPage
     // ----------------------------------------------------------
     public Submission highestSubmission()
     {
-        // TODO: fix me
-        return null;
+        if (highest == null
+            || highest.assignmentOffering().assignment() != assignment)
+        {
+            EOFetchSpecification fspec = new EOFetchSpecification(
+                Submission.ENTITY_NAME,
+                ERXQ.and(
+                    ERXQ.equals(Submission.USER_KEY, user()),
+                    ERXQ.equals(Submission.ASSIGNMENT_OFFERING_KEY + "."
+                        + AssignmentOffering.ASSIGNMENT_KEY, assignment)
+                    ),
+                ERXS.descs(Submission.SUBMIT_NUMBER_KEY));
+            fspec.setUsesDistinct(true);
+            fspec.setFetchLimit(1);
+            NSArray<Submission> result = Submission
+                .objectsWithFetchSpecification(localContext(), fspec);
+            if (result != null && result.count() > 0)
+            {
+                highest = result.objectAtIndex(0);
+            }
+        }
+        return highest;
     }
 
 
     // ----------------------------------------------------------
     public Submission mostRecentSubmission()
     {
-        // TODO: fix me
-        return null;
+        if (mostRecent == null
+            || mostRecent.assignmentOffering().assignment() != assignment)
+        {
+            EOFetchSpecification fspec = new EOFetchSpecification(
+                Submission.ENTITY_NAME,
+                ERXQ.and(
+                    ERXQ.equals(Submission.USER_KEY, user()),
+                    ERXQ.equals(Submission.ASSIGNMENT_OFFERING_KEY + "."
+                        + AssignmentOffering.ASSIGNMENT_KEY, assignment)
+                    ),
+                ERXS.descs(Submission.SUBMIT_TIME_KEY));
+            fspec.setUsesDistinct(true);
+            fspec.setFetchLimit(1);
+            NSArray<Submission> result = Submission
+                .objectsWithFetchSpecification(localContext(), fspec);
+            if (result != null && result.count() > 0)
+            {
+                mostRecent = result.objectAtIndex(0);
+            }
+        }
+        return mostRecent;
     }
 
 
     // ----------------------------------------------------------
     public AssignmentOffering offeringWithDistribution()
     {
-//        if (withDistribution == null || withDistribution.assignment() != assignment)
-        // TODO: fix me
-        return null;
+        if (withDistribution == null
+            || withDistribution.assignment() != assignment)
+        {
+            Submission s = mostRecentSubmission();
+            if (s != null)
+            {
+                withDistribution = s.assignmentOffering();
+            }
+        }
+        return withDistribution;
     }
 
 
@@ -182,6 +228,8 @@ public class PendingAssignmentOpinionsPage
         OpinionsSurveyPage page = pageWithName(OpinionsSurveyPage.class);
         page.nextPage = this;
         page.assignment = assignment;
+        pendingOpinions = null;
+        // page.submission = mostRecentSubmission();
         return page;
     }
 

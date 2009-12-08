@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsSurveyPage.java,v 1.1 2009/12/07 20:04:04 stedwar2 Exp $
+ |  $Id: OpinionsSurveyPage.java,v 1.2 2009/12/08 03:29:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -22,8 +22,10 @@
 package net.sf.webcat.opinions;
 
 import com.webobjects.appserver.*;
+import com.webobjects.foundation.NSTimestamp;
 import net.sf.webcat.core.*;
 import net.sf.webcat.grader.Assignment;
+import net.sf.webcat.grader.Submission;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -33,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2009/12/07 20:04:04 $
+ * @version $Revision: 1.2 $, $Date: 2009/12/08 03:29:44 $
  */
 public class OpinionsSurveyPage
     extends WCComponent
@@ -55,10 +57,32 @@ public class OpinionsSurveyPage
     //~ KVC Attributes (must be public) .......................................
 
     public Assignment assignment;
+    public SurveyResponse response;
 
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
+    public void appendToResponse(WOResponse pageResponse, WOContext context)
+    {
+        if (response == null)
+        {
+            response = SurveyResponse.create(localContext());
+            response.setAssignmentRelationship(assignment);
+            response.setUserRelationship(user());
+        }
+        super.appendToResponse(pageResponse, context);
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent next()
+    {
+        response.setSubmitTime(new NSTimestamp());
+        // Since we're in a SaveCancelPage, the call to super.next()
+        // will save all changes.
+        return super.next();
+    }
 
 
     //~ Instance/static variables .............................................
