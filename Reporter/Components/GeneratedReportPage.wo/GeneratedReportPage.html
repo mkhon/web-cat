@@ -3,88 +3,87 @@
 
 <wo name="MainBlock">
     <wo:not condition="$isReportComplete">
-	<div id="progressArea" style="text-align: center">
-	    <div style="text-align: left">
-	        <div id="progressMessage">
-	            <wo:if condition="$generatedReport">
-	                <p>Your report is currently being generated. As pages of the
-	                report become available, you can view them below.</p>
-	            </wo:if><wo:else>
-	                <p>Your report is currently in position
-	                <wo:str value="$queuePosition"/> in the queue.</p>
-	            </wo:else>
-	        </div>
+    <div id="progressArea" style="text-align: center">
+        <div style="text-align: left">
+            <div id="progressMessage">
+                <wo:if condition="$generatedReport">
+                    <p>Your report is currently being generated. As pages of the
+                    report become available, you can view them below.</p>
+                </wo:if><wo:else>
+                    <p>Your report is currently in the queue.</p>
+                </wo:else>
+            </div>
             <p>While you are waiting for your report to finish, you may
             navigate to other parts of Web-CAT and return here at any time
             to check the progress of the report.</p>
-	    </div>
-	    <div>
-	        <div style="width: 80%; float: left">
-	           <wo name="ProgressBar"/>
-	        </div>
-	        <div style="float: right">
-		        <!-- wo name="Cancel" -->
-		            <!-- span>Cancel</span -->
-		            <!-- script type="dojo/method" event="onClick" args="evt" -->
-		            <!--     reportWatcher.cancel(); -->
-		            <!-- /script -->
-		        <!-- /wo -->
-		    </div>
-		    <div style="clear: both"></div>
-	    </div>
-	</div>
-	</wo:not>
+        </div>
+        <div>
+            <div style="width: 80%; float: left">
+               <wo name="ProgressBar"/>
+            </div>
+            <div style="float: right">
+                <!-- wo name="Cancel" -->
+                    <!-- span>Cancel</span -->
+                    <!-- script type="dojo/method" event="onClick" args="evt" -->
+                    <!--     reportWatcher.cancel(); -->
+                    <!-- /script -->
+                <!-- /wo -->
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+    </wo:not>
     <div id="errorNotification" class="errorBox" style="display: none">
     Your report caused errors that prevented it from being completely generated.
     <wo name="ClickToSeeErrors">Click here</wo> to see them.
     </div>
 
-	<div dojoType="dijit.Toolbar">
-		<wo name="GoToFirstPage">
-		    <script type="dojo/method" event="onClick" args="evt">
-		        reportWatcher.goToFirstPage();
-		    </script>
-		</wo>
-		<wo name="GoToPreviousPage">
+    <div dojoType="dijit.Toolbar">
+        <wo name="GoToFirstPage">
+            <script type="dojo/method" event="onClick" args="evt">
+                reportWatcher.goToFirstPage();
+            </script>
+        </wo>
+        <wo name="GoToPreviousPage">
             <script type="dojo/method" event="onClick" args="evt">
                 reportWatcher.goToPreviousPage();
             </script>
-		</wo>
-		<wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
+        </wo>
+        <wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
         <span id="pageIndicator">
-    		<wo:not condition="$highestPageSoFar">
-		        No pages available yet
-			</wo:not><wo:else>
-	            Page
-	            <span id="currentPageNumber"><wo:str value="$currentPageNumber"/></span>
-	            (of
-	            <span id="highestPageNumber"><wo:str value="$highestPageSoFar"/></span>
-	            <wo:if condition="$isReportComplete">
+            <wo:not condition="$highestPageSoFar">
+                No pages available yet
+            </wo:not><wo:else>
+                Page
+                <span id="currentPageNumber"><wo:str value="$currentPageNumber"/></span>
+                (of
+                <span id="highestPageNumber"><wo:str value="$highestPageSoFar"/></span>
+                <wo:if condition="$isReportComplete">
                     total)
-	            </wo:if><wo:else>
+                </wo:if><wo:else>
                     available so far)
-	            </wo:else>
-			</wo:else>
-		</span>
-		<wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
-		<wo name="GoToNextPage">
+                </wo:else>
+            </wo:else>
+        </span>
+        <wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
+        <wo name="GoToNextPage">
             <script type="dojo/method" event="onClick" args="evt">
                 reportWatcher.goToNextPage();
             </script>
-		</wo>
-		<wo name="GoToLastPage">
+        </wo>
+        <wo name="GoToLastPage">
             <script type="dojo/method" event="onClick" args="evt">
                 reportWatcher.goToLastPage();
             </script>
-		</wo>
+        </wo>
         <wo:WCSpan dojoType="dijit.ToolbarSeparator"/>
         <wo:WCSpan dojoType="dijit.form.DropDownButton">
-	        <span>Save this report</span>
-	        <wo:WCDiv dojoType="dijit.TooltipDialog" style="display: none">
-	           <wo:WCContentPane id="saveDialogContainer">
-	               <wo:WCForm>
-	               <wo name="ReportIsReady">
-	                   <fieldset>
+            <span>Save this report</span>
+            <wo:WCDiv dojoType="dijit.TooltipDialog" style="display: none">
+               <wo:WCContentPane id="saveDialogContainer">
+                   <wo:WCForm>
+                   <wo name="ReportIsReady">
+                       <fieldset>
                        Save this report as:
                        <ul>
                            <li><wo name="SavePDF">PDF</wo></li>
@@ -101,15 +100,15 @@
                            </wo:loop>
                        </ul>
                        </fieldset>
-	               </wo><wo:else>
-	                   These options are only available when the report has
-	                   been completed.
-	               </wo:else>
-	               </wo:WCForm>
-	           </wo:WCContentPane>
+                   </wo><wo:else>
+                       These options are only available when the report has
+                       been completed.
+                   </wo:else>
+                   </wo:WCForm>
+               </wo:WCContentPane>
             </wo:WCDiv>
         </wo:WCSpan>
-	</div>
+    </div>
 
     <wo name="CurrentReportPageContainer">
         <wo:if condition="~currentPageNumber gt 0">
@@ -123,7 +122,7 @@
         <wo:if condition="$isReportComplete">
             reportWatcher.initializeFromCompleteReport(<wo:str value="$highestPageSoFar"/>, <wo:if condition="$generatedReportErrors.count">true</wo:if><wo:else>false</wo:else>);
         </wo:if><wo:else>
-	        reportWatcher.start();
+            reportWatcher.start();
         </wo:else>
         });
     </script>
