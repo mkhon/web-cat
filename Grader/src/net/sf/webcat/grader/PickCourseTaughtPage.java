@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseTaughtPage.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: PickCourseTaughtPage.java,v 1.10 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  *  courses taught or TA'ed for.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseTaughtPage.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
+ *  @version $Id: PickCourseTaughtPage.java,v 1.10 2009/12/09 05:01:35 aallowat Exp $
  */
 public class PickCourseTaughtPage
     extends GraderComponent
@@ -85,7 +85,7 @@ public class PickCourseTaughtPage
         if ( semesters == null )
         {
             semesters =
-                Semester.objectsForFetchAll( localContext() );
+                Semester.allObjectsOrderedByStartDate( localContext() );
             Object semesterPref = user.preferences()
                 .valueForKey( PickCourseEnrolledPage.SEMESTER_PREF_KEY );
             if (semesterPref == null && semesters.count() > 0)

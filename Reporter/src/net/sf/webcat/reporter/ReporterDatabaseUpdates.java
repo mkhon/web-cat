@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterDatabaseUpdates.java,v 1.9 2009/06/02 20:13:16 aallowat Exp $
+ |  $Id: ReporterDatabaseUpdates.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package net.sf.webcat.reporter;
 
 import java.sql.SQLException;
 import net.sf.webcat.dbupdate.UpdateSet;
+import net.sf.webcat.jobqueue.JobQueueDatabaseUpdates;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -32,7 +33,7 @@ import org.apache.log4j.Logger;
  * output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: ReporterDatabaseUpdates.java,v 1.9 2009/06/02 20:13:16 aallowat Exp $
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
  */
 public class ReporterDatabaseUpdates
     extends UpdateSet
@@ -73,7 +74,7 @@ public class ReporterDatabaseUpdates
     // ----------------------------------------------------------
     /**
      * Add support for input parameters to report templates.
-     *  
+     *
      * @throws SQLException on error
      */
     public void updateIncrement1() throws SQLException
@@ -83,18 +84,36 @@ public class ReporterDatabaseUpdates
         database().executeSQL("ALTER TABLE TREPORTTEMPLATE ADD COLUMN "
                 + "CUPDATEMUTABLEFIELDS BIT NOT NULL");
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Drops the no-longer-used EnqueuedReportRenderJob table from the
      * database.
-     *  
+     *
      * @throws SQLException on error
      */
     public void updateIncrement2() throws SQLException
     {
         database().executeSQL("DROP TABLE TENQUEUEDREPORTRENDERJOB");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Creates the new ReportGenerationJob table (based on the JobQueue
+     * subsystem) and fixes various other relationships to use the new table.
+     *
+     * @throws SQLException on error
+     */
+    public void updateIncrement3() throws SQLException
+    {
+        createReportGenerationJobTable();
+
+        database().executeSQL("ALTER TABLE TREPORTDATASETQUERY DROP "
+                + "CENQUEUEDREPORTJOBID");
+
+        database().executeSQL("DROP TABLE TENQUEUEDREPORTGENERATIONJOB");
     }
 
 
@@ -275,6 +294,26 @@ public class ReporterDatabaseUpdates
                 + "CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
             database().executeSQL(
                 "ALTER TABLE TGENERATEDREPORT ADD PRIMARY KEY (OID)" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create the TReportGenerationJob table, if needed.
+     * @throws SQLException on error
+     */
+    private void createReportGenerationJobTable() throws SQLException
+    {
+        if ( !database().hasTable( "TReportGenerationJob" ) )
+        {
+            log.info( "creating table TReportGenerationJob" );
+
+            database().executeSQL("CREATE TABLE TReportGenerationJob ("
+                + "OID INTEGER NOT NULL , "
+                + "generatedReportId INTEGER )");
+            database().executeSQL(
+                "ALTER TABLE TReportGenerationJob ADD PRIMARY KEY (OID)" );
         }
     }
 

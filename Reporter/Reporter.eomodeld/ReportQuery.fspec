@@ -1,5 +1,5 @@
 {
-    userAndEntitySavedQueries = {
+    savedQueriesForUserAndEntity = {
         class = EOFetchSpecification; 
         entityName = ReportQuery; 
         fetchLimit = 0; 

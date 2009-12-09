@@ -18,7 +18,7 @@ import com.webobjects.foundation.NSMutableSet;
 /**
  *
  * @author Tony Allevato
- * @version $Id: DescribeReportInputsPage.java,v 1.4 2009/11/23 00:42:32 stedwar2 Exp $
+ * @version $Id: DescribeReportInputsPage.java,v 1.5 2009/12/09 05:03:40 aallowat Exp $
  */
 public class DescribeReportInputsPage extends ReporterComponent
 {
@@ -89,7 +89,7 @@ public class DescribeReportInputsPage extends ReporterComponent
     // ----------------------------------------------------------
     public NSArray<ReportQuery> savedQueriesApplicableToDataSet()
     {
-        return ReportQuery.objectsForUserAndEntitySavedQueries(localContext(),
+        return ReportQuery.savedQueriesForUserAndEntity(localContext(),
                 user(), dataSet.wcEntityName());
     }
 

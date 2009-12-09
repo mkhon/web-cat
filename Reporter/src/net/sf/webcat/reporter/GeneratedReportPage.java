@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.15 2009/11/23 00:42:32 stedwar2 Exp $
+ |  $Id: GeneratedReportPage.java,v 1.16 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.15 2009/11/23 00:42:32 stedwar2 Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.16 2009/12/09 05:03:40 aallowat Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -76,7 +76,7 @@ public class GeneratedReportPage
     /** The associated refresh interval for this page */
     public int refreshTimeout = 15;
     public GeneratedReport generatedReport;
-    public Number reportGenerationJobId;
+//    public Number reportGenerationJobId;
     public boolean wasCanceled = false;
     public int currentPageNumber = 0;
     public NSArray<String> resultSetsToExtract;
@@ -89,24 +89,17 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        EnqueuedReportGenerationJob genJob = localReportGenerationJob();
-
-        if (genJob != null)
-        {
-            reportGenerationJobId = genJob.id();
-        }
-        else
-        {
-            reportGenerationJobId = null;
-        }
-
         // Get the generated report the first time we load the page, if it
         // exists. If it doesn't, then we'll continue trying to update it in
         // the long response delegate.
 
         generatedReport = localGeneratedReport();
 
-        if (generatedReport != null)
+        if (generatedReport.reportGenerationJob() != null)
+        {
+            currentPageNumber = 0;
+        }
+        else
         {
             // If the report has already been generated, start with page 1
             // instead of 0 (which is a placeholder that indicates nothing is
@@ -121,17 +114,12 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public boolean isReportComplete()
     {
-        if (generatedReport == null)
+        if (generatedReport.isComplete())
         {
-            return false;
+            return true;
         }
         else
         {
-            if (generatedReport.isComplete())
-            {
-                return true;
-            }
-
             Properties props = generatedReport.renderingProperties();
             return Boolean.valueOf(props.getProperty("isComplete", "false"));
         }
@@ -142,27 +130,7 @@ public class GeneratedReportPage
     public String mainBlockTitle()
     {
         String prefix = "Your Report";
-
-        if (generatedReport == null)
-        {
-            if (reportGenerationJobId != null)
-            {
-                EnqueuedReportGenerationJob job =
-                    EnqueuedReportGenerationJob.forId(localContext(),
-                        reportGenerationJobId.intValue());
-
-                if (job != null)
-                {
-                    return prefix + ": " + job.description();
-                }
-            }
-
-            return prefix;
-        }
-        else
-        {
-            return prefix + ": " + generatedReport.description();
-        }
+        return prefix + ": " + generatedReport.description();
     }
 
 
@@ -176,16 +144,9 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public int highestPageSoFar()
     {
-        if (generatedReport == null)
-        {
-            return 0;
-        }
-        else
-        {
-            Properties props = generatedReport.renderingProperties();
-            return Integer.valueOf(props.getProperty(
-                    "highestRenderedPageNumber", "0"));
-        }
+        Properties props = generatedReport.renderingProperties();
+        return Integer.valueOf(props.getProperty(
+                "highestRenderedPageNumber", "0"));
     }
 
 
@@ -200,70 +161,49 @@ public class GeneratedReportPage
             {
                 result.put("isCanceled", true);
             }
-            else if (generatedReport == null && reportGenerationJobId != null)
+
+            Properties props = generatedReport.renderingProperties();
+
+            int highestPage = Integer.valueOf(props.getProperty(
+                    "highestRenderedPageNumber", "0"));
+
+            if (currentPageNumber == 0 && highestPage > 0)
             {
-                Integer reportId =
-                    ReportGenerationTracker.getInstance().reportIdForJobId(
-                        reportGenerationJobId.intValue());
-
-                if(reportId != null)
-                {
-                    // The GeneratedReport was created while we have been
-                    // observing the progress, so store it for future
-                    // updates.
-
-                    generatedReport = GeneratedReport.forId(
-                            localContext(), reportId);
-
-                    // The new state will be picked up in the
-                    // (generatedReport != null) block below.
-                }
-                else
-                {
-                    result.put("isStarted", false);
-                    result.put("queuePosition", queuePosition());
-                }
+                // Kick off the first page once it's ready.
+                currentPageNumber = 1;
             }
 
-            if (generatedReport != null)
+            ReportGenerationJob job = generatedReport.reportGenerationJob();
+
+            if (job != null && job.worker() == null)
             {
-                Properties props = generatedReport.renderingProperties();
-
-                int highestPage = Integer.valueOf(props.getProperty(
-                        "highestRenderedPageNumber", "0"));
-
-                if (currentPageNumber == 0 && highestPage > 0)
-                {
-                    // Kick off the first page once it's ready.
-                    currentPageNumber = 1;
-                }
-
+                result.put("isStarted", false);
+                result.put("queuePosition", 1); // FIXME get actual queue position
+            }
+            else
+            {
                 result.put("isStarted", true);
-                result.put("highestRenderedPageNumber", highestPage);
+            }
 
-                result.put("isComplete",
-                        generatedReport.isComplete() ||
-                        Boolean.valueOf(props.getProperty(
-                                "isComplete", "false")));
+            result.put("highestRenderedPageNumber", highestPage);
 
-                MutableArray errors = generatedReport.errors();
-                boolean hasErrors = (errors != null && errors.count() > 0);
+            result.put("isComplete",
+                    generatedReport.isComplete() ||
+                    Boolean.valueOf(props.getProperty(
+                            "isComplete", "false")));
 
-                result.put("hasErrors", hasErrors);
+            MutableArray errors = generatedReport.errors();
+            boolean hasErrors = (errors != null && errors.count() > 0);
 
-                if (reportGenerationJobId == null)
-                {
-                    result.put("progress", 100);
-                }
-                else
-                {
-                    ReportGenerationTracker tracker =
-                        ReportGenerationTracker.getInstance();
+            result.put("hasErrors", hasErrors);
 
-                    int progress = (int) (tracker.fractionOfWorkDoneForJobId(
-                            reportGenerationJobId.intValue()) * 100 + 0.5);
-                    result.put("progress", progress);
-                }
+            if (job == null)
+            {
+                result.put("progress", 100);
+            }
+            else
+            {
+                result.put("progress", (int) (job.progress() * 100 + 0.5));
             }
         }
         catch (JSONException e)
@@ -278,17 +218,14 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public String initialProgress()
     {
-        if (reportGenerationJobId == null)
+        ReportGenerationJob job = generatedReport.reportGenerationJob();
+        if (job == null)
         {
             return "0%";
         }
         else
         {
-            ReportGenerationTracker tracker =
-                ReportGenerationTracker.getInstance();
-            int progress = (int) (tracker.fractionOfWorkDoneForJobId(
-                    reportGenerationJobId.intValue()) * 100 + 0.5);
-
+            int progress = (int) (job.progress() * 100 + 0.5);
             return "" + progress + "%";
         }
     }
@@ -332,14 +269,9 @@ public class GeneratedReportPage
     // ----------------------------------------------------------
     public void cancelReport()
     {
-        if (reportGenerationJobId != null)
-        {
-            Reporter.getInstance().reportGenerationQueueProcessor()
-                .cancelJobWithId(localContext(), reportGenerationJobId);
-
-            reportGenerationJobId = null;
-            wasCanceled = true;
-        }
+        // FIXME does this work?
+        ReportGenerationJob job = generatedReport.reportGenerationJob();
+        job.setIsCancelled(true);
     }
 
 
@@ -433,7 +365,8 @@ public class GeneratedReportPage
         if (error != null)
         {
             ReportDownloadErrorPage page =
-                pageWithName(ReportDownloadErrorPage.class);
+                (ReportDownloadErrorPage) pageWithName(
+                    ReportDownloadErrorPage.class.getName());
             page.throwable = error;
             page.generatedReport = generatedReport;
             return page;
@@ -485,137 +418,7 @@ public class GeneratedReportPage
     }
 
 
-    // ----------------------------------------------------------
-    public int queuedJobCount()
-    {
-        ensureJobDataIsInitialized();
-        return jobData.queueSize;
-    }
-
-
-    // ----------------------------------------------------------
-    public int queuePosition()
-    {
-        ensureJobDataIsInitialized();
-        return jobData.queuePosition + 1;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns the estimated time needed to complete processing this job.
-     * @return the most recent job wait
-     */
-    public NSTimestamp estimatedWait()
-    {
-        ensureJobDataIsInitialized();
-        return new NSTimestamp( jobData.estimatedWait );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns the time taken to process the most recent job.
-     * @return the most recent job wait
-     */
-    public NSTimestamp mostRecentJobWait()
-    {
-        ensureJobDataIsInitialized();
-        return new NSTimestamp( jobData.mostRecentWait );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns the date format string for the corresponding time value
-     * @return the time format for the estimated job wait
-     */
-    public String estimatedWaitFormat()
-    {
-        ensureJobDataIsInitialized();
-        return FinalReportPage.formatForSmallTime( jobData.estimatedWait );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns the date format string for the corresponding time value
-     * @return the time format for the most recent job wait
-     */
-    public String mostRecentJobWaitFormat()
-    {
-        ensureJobDataIsInitialized();
-        return FinalReportPage.formatForSmallTime( jobData.mostRecentWait );
-    }
-
-
-    //~ Private Methods .......................................................
-
-    // ----------------------------------------------------------
-    static private class JobData
-    {
-        public NSArray<EnqueuedReportGenerationJob> jobs;
-        public int queueSize;
-        public int queuePosition;
-        long mostRecentWait;
-        long estimatedWait;
-    }
-
-
-    // ----------------------------------------------------------
-    private void ensureJobDataIsInitialized()
-    {
-        if ( jobData == null )
-        {
-            jobData = new JobData();
-            EOFetchSpecification fetchSpec =
-                new EOFetchSpecification(
-                    EnqueuedReportGenerationJob.ENTITY_NAME,
-                    null,
-                    new NSArray( new Object[]{
-                        new EOSortOrdering(
-                            EnqueuedReportGenerationJob.QUEUE_TIME_KEY,
-                            EOSortOrdering.CompareAscending
-                        )
-                    } )
-                );
-            jobData.jobs = EnqueuedReportGenerationJob
-                .objectsWithFetchSpecification(localContext(), fetchSpec);
-            jobData.queueSize = jobData.jobs.count();
-            if ( oldQueuePos < 0
-                 || oldQueuePos >= jobData.queueSize )
-            {
-                oldQueuePos = jobData.queueSize - 1;
-            }
-            jobData.queuePosition = jobData.queueSize;
-            for ( int i = oldQueuePos; i >= 0; i-- )
-            {
-                if ( jobData.jobs.objectAtIndex( i )
-                     == localReportGenerationJob() )
-                {
-                    jobData.queuePosition = i;
-                    break;
-                }
-            }
-            oldQueuePos = jobData.queuePosition;
-            if ( jobData.queuePosition == jobData.queueSize )
-            {
-                log.error("cannot find job in queue for:"
-                        + localReportGenerationJob());
-            }
-
-            // Reporter reporter = Reporter.getInstance();
-            jobData.mostRecentWait = 0; // reporter.mostRecentJobWait();
-            jobData.estimatedWait = 0;
-            // reporter.estimatedJobTime() * ( jobData.queuePosition + 1 );
-        }
-    }
-
-
     //~ Instance/static variables .............................................
-
-    private JobData jobData;
-    private int     oldQueuePos = -1;
 
     static Logger log = Logger.getLogger( GeneratedReportPage.class );
 }

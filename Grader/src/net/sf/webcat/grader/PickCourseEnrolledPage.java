@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickCourseEnrolledPage.java,v 1.10 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: PickCourseEnrolledPage.java,v 1.11 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  This page presents a list of courses for a student to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickCourseEnrolledPage.java,v 1.10 2008/10/29 14:15:21 aallowat Exp $
+ *  @version $Id: PickCourseEnrolledPage.java,v 1.11 2009/12/09 05:01:35 aallowat Exp $
  */
 public class PickCourseEnrolledPage
     extends GraderComponent
@@ -93,7 +93,7 @@ public class PickCourseEnrolledPage
         if ( semesters == null )
         {
             semesters =
-                Semester.objectsForFetchAll( localContext() );
+                Semester.allObjectsOrderedByStartDate( localContext() );
             Object semesterPref =
                 user.preferences().valueForKey( SEMESTER_PREF_KEY );
             if (semesterPref == null && semesters.count() > 0)

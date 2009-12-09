@@ -2,11 +2,6 @@
     attributes = (
         {name = id; prototypeName = id; }, 
         {
-            columnName = CENQUEUEDREPORTJOBID; 
-            name = enqueuedReportJobId; 
-            prototypeName = foreignId; 
-        }, 
-        {
             columnName = CGENERATEDREPORTID; 
             name = generatedReportId; 
             prototypeName = foreignId; 
@@ -18,21 +13,14 @@
             prototypeName = foreignId; 
         }
     ); 
-    attributesUsedForLocking = (enqueuedReportJobId, generatedReportId, dataSetId, reportQueryId); 
+    attributesUsedForLocking = (generatedReportId, dataSetId, reportQueryId); 
     className = "net.sf.webcat.reporter.ReportDataSetQuery"; 
-    classProperties = (enqueuedReportJob, generatedReport, dataSet, reportQuery); 
+    classProperties = (generatedReport, dataSet, reportQuery); 
     externalName = TREPORTDATASETQUERY; 
     fetchSpecificationDictionary = {}; 
     name = ReportDataSetQuery; 
     primaryKeyAttributes = (id); 
     relationships = (
-        {
-            destination = EnqueuedReportGenerationJob; 
-            isToMany = N; 
-            joinSemantic = EOInnerJoin; 
-            joins = ({destinationAttribute = id; sourceAttribute = enqueuedReportJobId; }); 
-            name = enqueuedReportJob; 
-        }, 
         {
             destination = GeneratedReport; 
             isToMany = N; 

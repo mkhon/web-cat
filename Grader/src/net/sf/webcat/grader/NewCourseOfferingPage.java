@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.7 2009/10/02 01:56:52 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.8 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,8 +32,8 @@ import net.sf.webcat.core.*;
  * Allows the user to create a new course offering.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2009/10/02 01:56:52 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.8 $, $Date: 2009/12/09 05:01:35 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -79,7 +79,7 @@ public class NewCourseOfferingPage
         if ( semesters == null )
         {
             semesters =
-                Semester.objectsForFetchAll(localContext());
+                Semester.allObjectsOrderedByStartDate(localContext());
         }
         if (institutions == null)
         {

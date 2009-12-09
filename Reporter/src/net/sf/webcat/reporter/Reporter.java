@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.17 2009/06/11 15:35:22 aallowat Exp $
+ |  $Id: Reporter.java,v 1.18 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,6 +28,9 @@ import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.grader.EnqueuedJob;
 import net.sf.webcat.grader.Grader;
+import net.sf.webcat.jobqueue.HostDescriptor;
+import net.sf.webcat.jobqueue.QueueDescriptor;
+import net.sf.webcat.reporter.messaging.ReportCompleteMessage;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.IDataExtractionTask;
@@ -45,6 +48,7 @@ import com.webobjects.eocontrol.EOKeyValueQualifier;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
+import com.webobjects.foundation.NSTimestamp;
 import er.extensions.eof.ERXConstant;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXQ;
@@ -54,7 +58,7 @@ import er.extensions.eof.ERXQ;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.17 2009/06/11 15:35:22 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.18 2009/12/09 05:03:40 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -83,45 +87,23 @@ public class Reporter
     {
         super.init();
 
-        // Create the queue and the queueprocessor
-        reportGenerationQueue          = new ReportGenerationQueue();
-        reportGenerationQueueProcessor = new ReportGenerationQueueProcessor( reportGenerationQueue );
+        // Register the reporter subsystem's messages.
+
+        ReportCompleteMessage.register();
+
+        // Register the report generation job queue and create worker threads.
+
+        QueueDescriptor.registerQueue(ReportGenerationJob.ENTITY_NAME);
+        new ReportGenerationWorkerThread().start();
+
+        // Create the global report design session used to gather information
+        // about uploaded report templates.
 
         log.info("Creating global report design session");
 
         IDesignEngine designEngine =
             BIRTRuntime.getInstance().getDesignEngine();
         designSession = designEngine.newSessionHandle(null);
-
-        // Kick off the processor thread
-        reportGenerationQueueProcessor.start();
-
-        if ( Application.configurationProperties().booleanForKey(
-                "reporter.resumeSuspendedJobs" ) )
-        {
-            // Resume any enqueued jobs (if reporter is coming back up
-            // after an application restart)
-            EOEditingContext ec = Application.newPeerEditingContext();
-            try
-            {
-                ec.lock();
-                NSArray jobList = EOUtilities.objectsForEntityNamed(
-                                ec, EnqueuedReportGenerationJob.ENTITY_NAME );
-
-                for ( int i = 0; i < jobList.count(); i++ )
-                {
-                    // Only need to trigger the queue processor once,
-                    // and it will slurp up all the jobs that are ready.
-                    reportGenerationQueue.enqueue( null );
-                    break;
-                }
-            }
-            finally
-            {
-                ec.unlock();
-                Application.releasePeerEditingContext( ec );
-            }
-        }
     }
 
 
@@ -174,12 +156,12 @@ public class Reporter
 
 
     // ----------------------------------------------------------
-    public IRunTask setupRunTaskForJob(EnqueuedReportGenerationJob job)
+    public IRunTask setupRunTaskForJob(ReportGenerationJob job)
     {
         IReportEngine reportEngine =
             BIRTRuntime.getInstance().getReportEngine();
 
-        ReportTemplate template = job.reportTemplate();
+        ReportTemplate template = job.generatedReport().reportTemplate();
 
         IReportRunnable runnable = openReportTemplate(template.filePath());
         IRunTask task = reportEngine.createRunTask(runnable);
@@ -194,7 +176,10 @@ public class Reporter
             appContext = new Hashtable(appContext);
         }
 
-        OdaResultSetProvider resultProvider = new OdaResultSetProvider(job);
+        ManagedReportGenerationJob managedJob =
+            new ManagedReportGenerationJob(job);
+        OdaResultSetProvider resultProvider =
+            new OdaResultSetProvider(managedJob);
 
         appContext.put("net.sf.webcat.oda.resultSetProvider", resultProvider);
 
@@ -223,20 +208,6 @@ public class Reporter
             BIRTRuntime.getInstance().getReportEngine();
 
         return reportEngine.createDataExtractionTask(document);
-    }
-
-
-    // ----------------------------------------------------------
-    public ReportGenerationQueue reportGenerationQueue()
-    {
-        return reportGenerationQueue;
-    }
-
-
-    // ----------------------------------------------------------
-    public ReportGenerationQueueProcessor reportGenerationQueueProcessor()
-    {
-        return reportGenerationQueueProcessor;
     }
 
 
@@ -288,21 +259,14 @@ public class Reporter
 
     //~ Instance/static variables .............................................
 
+    private SessionHandle designSession;
+    private int           jobCountAtLastThrottleCheck;
+
     /**
      * This is the sole instance of the reporter subsystem, initialized by the
      * constructor.
      */
     private static Reporter instance;
 
-    /** this is the main single report queue */
-    private static ReportGenerationQueue reportGenerationQueue;
-
-    /** this is the queue processor for processing report jobs */
-    private static ReportGenerationQueueProcessor reportGenerationQueueProcessor;
-
-    private SessionHandle designSession;
-
-    private int jobCountAtLastThrottleCheck;
-
-    static Logger log = Logger.getLogger( Reporter.class );
+    private static Logger log = Logger.getLogger( Reporter.class );
 }

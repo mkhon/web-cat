@@ -19,5 +19,6 @@
 	<classpathentry exported="true" kind="con" path="WOFramework/JavaJDBCAdaptor"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/JavaWebObjects"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="WOFramework/JobQueue"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

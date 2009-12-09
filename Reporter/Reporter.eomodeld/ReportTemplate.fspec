@@ -1,53 +1,35 @@
 {
-    allTemplates = {
+    allTemplatesOrderedByName = {
         class = EOFetchSpecification; 
         entityName = ReportTemplate; 
         fetchLimit = 0; 
         isDeep = YES; 
-        sortOrderings = (
-            {
-                class = EOSortOrdering; 
-                key = name; 
-                selectorName = "compareAscending:"; 
-            }
-        ); 
+        sortOrderings = ({class = EOSortOrdering; key = name; selectorName = "compareAscending:"; }); 
     }; 
-    uploadedByUser = {
-        class = EOFetchSpecification;
-        entityName = ReportTemplate;
-        fetchLimit = 0;
-        isDeep = YES;
+    publishedTemplates = {
+        class = EOFetchSpecification; 
+        entityName = ReportTemplate; 
+        fetchLimit = 0; 
+        isDeep = YES; 
         qualifier = {
-            class = EOKeyValueQualifier;
-            key = user;
-            selectorName = "isEqualTo:";
-            value = {_key = user; class = EOQualifierVariable; };
-        };
-        sortOrderings = (
-            {
-                class = EOSortOrdering; 
-                key = name; 
-                selectorName = "compareAscending:"; 
-            }
-        ); 
-    };
-    publishedReports = {
-        class = EOFetchSpecification;
-        entityName = ReportTemplate;
-        fetchLimit = 0;
-        isDeep = YES;
+            class = EOKeyValueQualifier; 
+            key = isPublished; 
+            selectorName = "isEqualTo:"; 
+            value = {class = NSNumber; value = 1; }; 
+        }; 
+        sortOrderings = ({class = EOSortOrdering; key = name; selectorName = "compareAscending:"; }); 
+    }; 
+    templatesForUser = {
+        class = EOFetchSpecification; 
+        entityName = ReportTemplate; 
+        fetchLimit = 0; 
+        isDeep = YES; 
         qualifier = {
-            class = EOKeyValueQualifier;
-            key = isPublished;
-            selectorName = "isEqualTo:";
-            value = {class = NSNumber; value = 1; };
-        };
-        sortOrderings = (
-            {
-                class = EOSortOrdering; 
-                key = name; 
-                selectorName = "compareAscending:"; 
-            }
-        ); 
-    };
+            class = EOKeyValueQualifier; 
+            key = user; 
+            selectorName = "isEqualTo:"; 
+            value = {"_key" = user; class = EOQualifierVariable; }; 
+        }; 
+        sortOrderings = ({class = EOSortOrdering; key = name; selectorName = "compareAscending:"; }); 
+    }; 
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.13 2009/11/24 02:43:32 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.14 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,8 +34,8 @@ import org.apache.log4j.Logger;
  * An assignment that can be given in one or more classes.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2009/11/24 02:43:32 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.14 $, $Date: 2009/12/09 05:01:35 $
  */
 public class Assignment
     extends _Assignment
@@ -274,7 +274,7 @@ public class Assignment
         NSArray<?> results = ERXArrayUtilities
             .filteredArrayWithEntityFetchSpecification( offerings(),
                 AssignmentOffering.ENTITY_NAME,
-                AssignmentOffering.STUDENT_FSPEC,
+                AssignmentOffering.OFFERINGS_WITH_USER_AS_STUDENT_FSPEC,
                 userBinding );
         if ( results == null || results.count() == 0 )
         {
@@ -282,7 +282,7 @@ public class Assignment
             results = ERXArrayUtilities
                 .filteredArrayWithEntityFetchSpecification( offerings(),
                     AssignmentOffering.ENTITY_NAME,
-                    AssignmentOffering.STAFF_FSPEC,
+                    AssignmentOffering.OFFERINGS_WITH_USER_AS_STAFF_FSPEC,
                     userBinding );
         }
         if ( results != null && results.count() > 0 )
@@ -309,7 +309,7 @@ public class Assignment
         for (AssignmentOffering offering : offerings())
         {
             ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(results,
-                objectsForNeighborAssignments(
+                neighborAssignments(
                     context, offering.courseOffering()));
         }
         results.remove(this);
@@ -360,7 +360,7 @@ public class Assignment
             {
                 lcNames = new HashSet<String>();
                 NSArray<AssignmentOffering> assignments =
-                    AssignmentOffering.objectsForCourseOffering(
+                    AssignmentOffering.offeringsForCourseOffering(
                         courseOffering.editingContext(), courseOffering );
                 for (AssignmentOffering ao : assignments)
                 {

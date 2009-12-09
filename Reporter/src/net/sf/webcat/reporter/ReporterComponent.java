@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterComponent.java,v 1.11 2009/06/02 19:59:12 aallowat Exp $
+ |  $Id: ReporterComponent.java,v 1.12 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,6 +26,7 @@ import net.sf.webcat.reporter.queryassistants.ModelOrQueryWrapper;
 import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
@@ -37,7 +38,7 @@ import com.webobjects.foundation.NSTimestamp;
  * A base class for pages and subcomponents in the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReporterComponent.java,v 1.11 2009/06/02 19:59:12 aallowat Exp $
+ * @version $Id: ReporterComponent.java,v 1.12 2009/12/09 05:03:40 aallowat Exp $
  */
 public class ReporterComponent
     extends WCComponent
@@ -61,7 +62,6 @@ public class ReporterComponent
     public void clearLocalReportState()
     {
         transientState().removeObjectForKey(KEY_REPORT_DESCRIPTION);
-        transientState().removeObjectForKey(KEY_REPORT_GENERATION_JOB);
         transientState().removeObjectForKey(KEY_REPORT_TEMPLATE);
         transientState().removeObjectForKey(KEY_GENERATED_REPORT);
     }
@@ -78,21 +78,6 @@ public class ReporterComponent
     public void setLocalReportDescription(String value)
     {
         transientState().setObjectForKey(value, KEY_REPORT_DESCRIPTION);
-    }
-
-
-    // ----------------------------------------------------------
-    public EnqueuedReportGenerationJob localReportGenerationJob()
-    {
-        return (EnqueuedReportGenerationJob)transientState().objectForKey(
-            KEY_REPORT_GENERATION_JOB);
-    }
-
-
-    // ----------------------------------------------------------
-    public void setLocalReportGenerationJob(EnqueuedReportGenerationJob value)
-    {
-        transientState().setObjectForKey(value, KEY_REPORT_GENERATION_JOB);
     }
 
 
@@ -136,35 +121,42 @@ public class ReporterComponent
 
         ReportTemplate reportTemplate = localReportTemplate();
 
-        // Queue it up for the reporter
-        NSTimestamp queueTime = new NSTimestamp();
+        // Create the generated report object and the job object.
 
-        EnqueuedReportGenerationJob job = new EnqueuedReportGenerationJob();
-        ec.insertObject(job);
+        GeneratedReport report = GeneratedReport.create(ec, false, false);
+        report.setDescription(localReportDescription());
+        report.setReportTemplateRelationship(reportTemplate);
+        report.setUserRelationship(user());
 
-        job.setDescription(localReportDescription());
-        job.setReportTemplateRelationship(reportTemplate);
-        job.setQueueTime(queueTime);
+        ReportGenerationJob job = ReportGenerationJob.create(ec);
+        job.setGeneratedReportRelationship(report);
         job.setUserRelationship(user());
 
-        ec.saveChanges();
+        applyLocalChanges();
 
         // Create ReportDataSetQuery objects to map all of the data sets in
         // the transient state to the queries that were created for them.
+
         for (ModelOrQueryWrapper modelWrapper : modelWrappers)
         {
             ReportDataSet dataSet = modelWrapper.dataSet();
             ReportQuery query = modelWrapper.commitAndGetQuery(ec, user());
 
             ReportDataSetQuery dataSetQuery =
-                job.createDataSetQueriesRelationship();
+                report.createDataSetQueriesRelationship();
+
             dataSetQuery.setDataSetRelationship(dataSet);
             dataSetQuery.setReportQueryRelationship(query);
+
             applyLocalChanges();
         }
 
-        setLocalReportGenerationJob(job);
-        Reporter.getInstance().reportGenerationQueue().enqueue(null);
+        setLocalGeneratedReport(report);
+
+        // Set the job to be ready so that the queue will start processing it.
+
+        job.setIsReady(true);
+        applyLocalChanges();
 
         return errorMessage;
     }
@@ -175,8 +167,6 @@ public class ReporterComponent
     // Internal constants for key names
     private static final String KEY_REPORT_DESCRIPTION =
         "net.sf.webcat.reporter.reportDescription";
-    private static final String KEY_REPORT_GENERATION_JOB =
-        "net.sf.webcat.reporter.enqueuedJob";
     private static final String KEY_REPORT_TEMPLATE =
         "net.sf.webcat.reporter.reportTemplate";
     private static final String KEY_GENERATED_REPORT =

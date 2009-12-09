@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.9 2009/11/18 00:34:57 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.10 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2009/11/18 00:34:57 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.10 $, $Date: 2009/12/09 05:01:35 $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -90,7 +90,7 @@ public class PickSubmissionPage
         if (prefs().assignmentOffering() != null)
         {
             submissions =
-                Submission.objectsForAllForAssignmentOfferingAndUserInReverse(
+                Submission.submissionsForAssignmentOfferingAndUserDescending(
                     localContext(), prefs().assignmentOffering(), user);
             submissionDisplayGroup.setObjectArray(submissions);
             previousSubmissions = (submissions.count() > 0);
@@ -100,7 +100,7 @@ public class PickSubmissionPage
             && coreSelections().semester() != null)
         {
             submissions =
-                Submission.objectsForAllForAssignmentAndUserInReverse(
+                Submission.submissionsForAssignmentAndUserDescending(
                     localContext(),
                     prefs().assignment(),
                     coreSelections().semester(),

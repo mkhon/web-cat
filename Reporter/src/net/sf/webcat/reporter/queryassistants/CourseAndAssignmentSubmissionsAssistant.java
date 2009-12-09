@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.10 2009/11/18 01:44:22 stedwar2 Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.11 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -55,7 +55,7 @@ import net.sf.webcat.ui.util.ComponentIDGenerator;
  * a specified set of course offerings.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.10 2009/11/18 01:44:22 stedwar2 Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.11 2009/12/09 05:03:40 aallowat Exp $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends ReporterComponent
@@ -75,20 +75,20 @@ public class CourseAndAssignmentSubmissionsAssistant
 
     //~ KVC Attributes (must be public) .......................................
 
-	public ReportDataSet                       dataSet;
-	public CourseAndAssignmentSubmissionsModel model;
-	public Assignment                          assignment;
-	public int                                 index;
-	public CourseTreeModel                     courseModel;
-	public Course                              courseInRepetition;
-	public Assignment                          assignmentInRepetition;
-	public ComponentIDGenerator                idFor;
+    public ReportDataSet                       dataSet;
+    public CourseAndAssignmentSubmissionsModel model;
+    public Assignment                          assignment;
+    public int                                 index;
+    public CourseTreeModel                     courseModel;
+    public Course                              courseInRepetition;
+    public Assignment                          assignmentInRepetition;
+    public ComponentIDGenerator                idFor;
 
 
-	//~ Public Nested Classes .................................................
+    //~ Public Nested Classes .................................................
 
-	public class CourseTreeModel extends AbstractTreeModel
-	{
+    public class CourseTreeModel extends AbstractTreeModel
+    {
         //~ Public Methods ....................................................
 
         // ----------------------------------------------------------
@@ -177,7 +177,7 @@ public class CourseAndAssignmentSubmissionsAssistant
                 Semester semester)
         {
             NSArray<CourseOffering> offerings =
-                CourseOffering.objectsForForSemester(localContext(), semester);
+                CourseOffering.offeringsForSemester(localContext(), semester);
 
             return ERXS.sorted(offerings,
                     ERXS.ascInsensitive(
@@ -188,7 +188,7 @@ public class CourseAndAssignmentSubmissionsAssistant
                             CourseOffering.COURSE_NUMBER_KEY),
                     ERXS.asc(CourseOffering.CRN_KEY));
         }
-	}
+    }
 
 
     //~ Public Methods ........................................................
@@ -197,9 +197,9 @@ public class CourseAndAssignmentSubmissionsAssistant
     public void appendToResponse(WOResponse response, WOContext context)
     {
         idFor = new ComponentIDGenerator(this);
-    	courseModel = new CourseTreeModel();
+        courseModel = new CourseTreeModel();
 
-    	super.appendToResponse(response, context);
+        super.appendToResponse(response, context);
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.25 2009/11/18 15:36:57 aallowat Exp $
+ |  $Id: Submission.java,v 1.26 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *
  *  @author Stephen Edwards
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.25 $, $Date: 2009/11/18 15:36:57 $
+ *  @version $Revision: 1.26 $, $Date: 2009/12/09 05:01:35 $
  */
 public class Submission
     extends _Submission
@@ -553,7 +553,7 @@ public class Submission
         {
             if (user() != null && assignmentOffering() != null)
             {
-                allSubmissionsCache = objectsForAllForAssignmentOfferingAndUser(
+                allSubmissionsCache = submissionsForAssignmentOfferingAndUser(
                         editingContext(), assignmentOffering(), user());
             }
         }

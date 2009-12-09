@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoursesAndAssignments.java,v 1.5 2008/10/29 14:12:19 aallowat Exp $
+ |  $Id: CoursesAndAssignments.java,v 1.6 2009/12/09 05:01:45 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import net.sf.webcat.grader.AssignmentOffering;
  * XML Response page for webapi/coursesAndAssignments requests.
  *
  * @author Stephen Edwards
- * @version $Id: CoursesAndAssignments.java,v 1.5 2008/10/29 14:12:19 aallowat Exp $
+ * @version $Id: CoursesAndAssignments.java,v 1.6 2009/12/09 05:01:45 aallowat Exp $
  */
 public class CoursesAndAssignments
     extends XmlResponsePage
@@ -74,7 +74,8 @@ public class CoursesAndAssignments
     public void appendToResponse(WOResponse response, WOContext context)
     {
         // Look up the semesters
-        semesters = Semester.objectsForFetchAll(session().sessionContext());
+        semesters = Semester.allObjectsOrderedByStartDate(
+                session().sessionContext());
 
         // Calculate the courses this user can work with
         courseOfferings =
@@ -95,7 +96,7 @@ public class CoursesAndAssignments
      */
     public NSArray<AssignmentOffering> assignmentOfferings()
     {
-        return AssignmentOffering.objectsForCourseOffering(
+        return AssignmentOffering.offeringsForCourseOffering(
             session().sessionContext(), aCourseOffering);
     }
 }

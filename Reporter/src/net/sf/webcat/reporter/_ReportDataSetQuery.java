@@ -140,9 +140,6 @@ public abstract class _ReportDataSetQuery
     public static final String DATA_SET_KEY = "dataSet";
     public static final ERXKey<net.sf.webcat.reporter.ReportDataSet> dataSet =
         new ERXKey<net.sf.webcat.reporter.ReportDataSet>(DATA_SET_KEY);
-    public static final String ENQUEUED_REPORT_JOB_KEY = "enqueuedReportJob";
-    public static final ERXKey<net.sf.webcat.reporter.EnqueuedReportGenerationJob> enqueuedReportJob =
-        new ERXKey<net.sf.webcat.reporter.EnqueuedReportGenerationJob>(ENQUEUED_REPORT_JOB_KEY);
     public static final String GENERATED_REPORT_KEY = "generatedReport";
     public static final ERXKey<net.sf.webcat.reporter.GeneratedReport> generatedReport =
         new ERXKey<net.sf.webcat.reporter.GeneratedReport>(GENERATED_REPORT_KEY);
@@ -258,67 +255,6 @@ public abstract class _ReportDataSetQuery
         else
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "dataSet" );
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve the entity pointed to by the <code>enqueuedReportJob</code>
-     * relationship.
-     * @return the entity in the relationship
-     */
-    public net.sf.webcat.reporter.EnqueuedReportGenerationJob enqueuedReportJob()
-    {
-        return (net.sf.webcat.reporter.EnqueuedReportGenerationJob)storedValueForKey( "enqueuedReportJob" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>enqueuedReportJob</code>
-     * relationship (DO NOT USE--instead, use
-     * <code>setEnqueuedReportJobRelationship()</code>.
-     * This method is provided for WebObjects use.
-     *
-     * @param value The new entity to relate to
-     */
-    public void setEnqueuedReportJob( net.sf.webcat.reporter.EnqueuedReportGenerationJob value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setEnqueuedReportJob("
-                + value + "): was " + enqueuedReportJob() );
-        }
-        takeStoredValueForKey( value, "enqueuedReportJob" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set the entity pointed to by the <code>enqueuedReportJob</code>
-     * relationship.  This method is a type-safe version of
-     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
-     *
-     * @param value The new entity to relate to
-     */
-    public void setEnqueuedReportJobRelationship(
-        net.sf.webcat.reporter.EnqueuedReportGenerationJob value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setEnqueuedReportJobRelationship("
-                + value + "): was " + enqueuedReportJob() );
-        }
-        if ( value == null )
-        {
-            net.sf.webcat.reporter.EnqueuedReportGenerationJob object = enqueuedReportJob();
-            if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "enqueuedReportJob" );
-        }
-        else
-        {
-            addObjectToBothSidesOfRelationshipWithKey( value, "enqueuedReportJob" );
         }
     }
 
@@ -578,23 +514,20 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
-     * Retrieve a single object using a list of keys and values to match.
+     * Retrieve the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
      *
      * @param context The editing context to use
+     * @param sortOrderings the sort orderings
      * @param keysAndValues a list of keys and values to match, alternating
      *     "key", "value", "key", "value"...
      *
-     * @return the single entity that was retrieved
-     *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
-     * @throws EOUtilities.MoreThanOneException
-     *     if there is more than one matching object
+     * @return the first entity that was retrieved, or null if there was none
      */
-    public static ReportDataSetQuery objectMatchingValues(
+    public static ReportDataSetQuery firstObjectMatchingValues(
         EOEditingContext context,
-        Object... keysAndValues) throws EOObjectNotAvailableException,
-                                        EOUtilities.MoreThanOneException
+        NSArray<EOSortOrdering> sortOrderings,
+        Object... keysAndValues)
     {
         if (keysAndValues.length % 2 != 0)
         {
@@ -618,7 +551,87 @@ public abstract class _ReportDataSetQuery
             valueDictionary.setObjectForKey(value, key);
         }
 
-        return objectMatchingValues(context, valueDictionary);
+        return firstObjectMatchingValues(
+            context, sortOrderings, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieves the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
+     *
+     * @param context The editing context to use
+     * @param sortOrderings the sort orderings
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return the first entity that was retrieved, or null if there was none
+     */
+    public static ReportDataSetQuery firstObjectMatchingValues(
+        EOEditingContext context,
+        NSArray<EOSortOrdering> sortOrderings,
+        NSDictionary<String, Object> keysAndValues)
+    {
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME,
+            EOQualifier.qualifierToMatchAllValues(keysAndValues),
+            sortOrderings);
+        fspec.setFetchLimit(1);
+
+        NSArray<ReportDataSetQuery> result =
+            objectsWithFetchSpecification( context, fspec );
+
+        if ( result.count() == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            return result.objectAtIndex(0);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return the single entity that was retrieved, or null if there was none
+     *
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static ReportDataSetQuery uniqueObjectMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues) throws EOUtilities.MoreThanOneException
+    {
+        if (keysAndValues.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
+        }
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
+        {
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
+        }
+
+        return uniqueObjectMatchingValues(context, valueDictionary);
     }
 
 
@@ -629,21 +642,25 @@ public abstract class _ReportDataSetQuery
      * @param context The editing context to use
      * @param keysAndValues a dictionary of keys and values to match
      *
-     * @return the single entity that was retrieved
+     * @return the single entity that was retrieved, or null if there was none
      *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
      * @throws EOUtilities.MoreThanOneException
      *     if there is more than one matching object
      */
-    public static ReportDataSetQuery objectMatchingValues(
+    public static ReportDataSetQuery uniqueObjectMatchingValues(
         EOEditingContext context,
         NSDictionary<String, Object> keysAndValues)
-        throws EOObjectNotAvailableException,
-               EOUtilities.MoreThanOneException
+        throws EOUtilities.MoreThanOneException
     {
-        return (ReportDataSetQuery)EOUtilities.objectMatchingValues(
-            context, ENTITY_NAME, keysAndValues);
+        try
+        {
+            return (ReportDataSetQuery)EOUtilities.objectMatchingValues(
+                context, ENTITY_NAME, keysAndValues);
+        }
+        catch (EOObjectNotAvailableException e)
+        {
+            return null;
+        }
     }
 
 

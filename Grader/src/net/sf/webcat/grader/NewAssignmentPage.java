@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.6 2009/12/07 20:00:58 stedwar2 Exp $
+ |  $Id: NewAssignmentPage.java,v 1.7 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -45,8 +45,8 @@ import er.extensions.foundation.ERXValueUtilities;
  * Allows the user to create a new assignment + offering.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2009/12/07 20:00:58 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.7 $, $Date: 2009/12/09 05:01:35 $
  */
 public class NewAssignmentPage
     extends GraderAssignmentComponent
@@ -439,7 +439,7 @@ public class NewAssignmentPage
         Course course = coreSelections().courseOffering().course();
         Semester semester = coreSelections().courseOffering().semester();
         NSArray<CourseOffering> offerings =
-            CourseOffering.objectsForForSemesterAndCourse(
+            CourseOffering.offeringsForSemesterAndCourse(
                 localContext(), course, semester);
         return offerings != null && offerings.count() > 1;
     }
@@ -451,7 +451,7 @@ public class NewAssignmentPage
         if ( semesters == null )
         {
             semesters =
-                Semester.objectsForFetchAll( localContext() );
+                Semester.allObjectsOrderedByStartDate( localContext() );
             toSemester = coreSelections().semester();
 
             updateReofferPane();
@@ -518,7 +518,7 @@ public class NewAssignmentPage
             assignmentToReoffer = null;
             assignments =
                 ERXArrayUtilities.filteredArrayWithQualifierEvaluation(
-                    Assignment.objectsForReuseInCourse(
+                    Assignment.assignmentsForReuseInCourse(
                         localContext(),
                         toCourseOffering.course(),
                         toCourseOffering),

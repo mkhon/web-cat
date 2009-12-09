@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.13 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: ReportTemplate.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -52,7 +52,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.13 2009/05/27 14:31:52 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -182,9 +182,9 @@ public class ReportTemplate extends _ReportTemplate
     {
         // Older reports will have a null parameter set, so to ensure clean
         // code elsewhere we just return an empty array for these.
-        
+
         MutableArray params = super.parameters();
-        
+
         if (params == null)
         {
             return new MutableArray();
@@ -341,7 +341,7 @@ public class ReportTemplate extends _ReportTemplate
                 ec.saveChanges();
                 return null;
             }
-            
+
             msg = template.deeplyVisitTemplate(ec, reportHandle);
             if (msg != null)
             {
@@ -436,10 +436,10 @@ public class ReportTemplate extends _ReportTemplate
      * Gets the array of all report templates that are accessible by the
      * specified user. This is the union of that user's own uploaded templates
      * and all of the published templates.
-     * 
+     *
      * @param ec the editing context to load the templates into
      * @param user the user
-     * 
+     *
      * @return the array of report templates accessible by the user
      */
     public static NSArray<ReportTemplate> templatesAccessibleByUser(
@@ -449,22 +449,19 @@ public class ReportTemplate extends _ReportTemplate
 
         if (user.hasAdminPrivileges())
         {
-            return objectsForAllTemplates(ec);
+            return allTemplatesOrderedByName(ec);
         }
 
-        NSArray<ReportTemplate> userTemplates =
-            objectsForUploadedByUser(ec, user);
-        
-        NSArray<ReportTemplate> publishedTemplates =
-            objectsForPublishedReports(ec);
-        
+        NSArray<ReportTemplate> userTemplates = templatesForUser(ec, user);
+        NSArray<ReportTemplate> publishedTemplates = publishedTemplates(ec);
+
         NSMutableArray<ReportTemplate> allTemplates =
             new NSMutableArray<ReportTemplate>();
-        
+
         allTemplates.addObjectsFromArray(userTemplates);
         ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(allTemplates,
                 publishedTemplates);
-        
+
         ERXArrayUtilities.sortArrayWithKey(allTemplates, "name");
 
         return allTemplates;
@@ -529,13 +526,13 @@ public class ReportTemplate extends _ReportTemplate
     {
         ReportParameterVisitor visitor = new ReportParameterVisitor();
         visitor.apply(reportHandle);
-        
+
         setParameters(new MutableArray(visitor.parameterGroups()));
 
         return null;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     /**
      * Collects information about the report template by performing a deep

@@ -6,14 +6,14 @@ subsystem.Reporter=net.sf.webcat.reporter.Reporter
 Reporter.version.major=1
 Reporter.version.minor=1
 Reporter.version.revision=1
-Reporter.requires=BIRTRuntime, Core, Grader
+Reporter.requires=BIRTRuntime, Core, Grader, JobQueue
 
 Reporter.copyright=(c) 2007-2009 Virginia Tech Department of Computer Science
 Reporter.provider=Virginia Tech Computer Science
 Reporter.provider.url=http\://web-cat.cs.vt.edu/updates
 Reporter.info.url=http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem
 Reporter.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem/ChangeHistory
+    http\://web-cat.cs.vt.edu/WCWiki/ReporterSubsystem/ChangeHistory
 Reporter.license=GNU Affero General Public License v.3
 Reporter.license.url=http\://www.gnu.org/licenses/agpl.html
 

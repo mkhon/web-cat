@@ -169,10 +169,13 @@ public abstract class _GeneratedReport
     public static final String DATA_SET_QUERIES_KEY = "dataSetQueries";
     public static final ERXKey<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries =
         new ERXKey<net.sf.webcat.reporter.ReportDataSetQuery>(DATA_SET_QUERIES_KEY);
+    public static final String REPORT_GENERATION_JOBS_KEY = "reportGenerationJobs";
+    public static final ERXKey<net.sf.webcat.reporter.ReportGenerationJob> reportGenerationJobs =
+        new ERXKey<net.sf.webcat.reporter.ReportGenerationJob>(REPORT_GENERATION_JOBS_KEY);
     // Fetch specifications ---
+    public static final String COMPLETED_REPORTS_FOR_USER_FSPEC = "completedReportsForUser";
+    public static final String INCOMPLETE_REPORTS_FOR_USER_FSPEC = "incompleteReportsForUser";
     public static final String USER_FSPEC = "user";
-    public static final String USER_COMPLETE_REPORTS_FSPEC = "userCompleteReports";
-    public static final String USER_INCOMPLETE_REPORTS_FSPEC = "userIncompleteReports";
     public static final String ENTITY_NAME = "GeneratedReport";
 
 
@@ -880,6 +883,184 @@ public abstract class _GeneratedReport
 
     // ----------------------------------------------------------
     /**
+     * Retrieve the entities pointed to by the <code>reportGenerationJobs</code>
+     * relationship.
+     * @return an NSArray of the entities in the relationship
+     */
+    @SuppressWarnings("unchecked")
+    public NSArray<net.sf.webcat.reporter.ReportGenerationJob> reportGenerationJobs()
+    {
+        return (NSArray)storedValueForKey( "reportGenerationJobs" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Replace the list of entities pointed to by the
+     * <code>reportGenerationJobs</code> relationship.
+     *
+     * @param value The new set of entities to relate to
+     */
+    public void setReportGenerationJobs( NSMutableArray<net.sf.webcat.reporter.ReportGenerationJob>  value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setReportGenerationJobs("
+                + value + "): was " + reportGenerationJobs() );
+        }
+        takeStoredValueForKey( value, "reportGenerationJobs" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>reportGenerationJobs</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>addToReportGenerationJobsRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToReportGenerationJobs( net.sf.webcat.reporter.ReportGenerationJob value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToReportGenerationJobs("
+                + value + "): was " + reportGenerationJobs() );
+        }
+        NSMutableArray<net.sf.webcat.reporter.ReportGenerationJob> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportGenerationJob>)reportGenerationJobs();
+        willChange();
+        array.addObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>reportGenerationJobs</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>removeFromReportGenerationJobsRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromReportGenerationJobs( net.sf.webcat.reporter.ReportGenerationJob value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromReportGenerationJobs("
+                + value + "): was " + reportGenerationJobs() );
+        }
+        NSMutableArray<net.sf.webcat.reporter.ReportGenerationJob> array =
+            (NSMutableArray<net.sf.webcat.reporter.ReportGenerationJob>)reportGenerationJobs();
+        willChange();
+        array.removeObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>reportGenerationJobs</code>
+     * relationship.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToReportGenerationJobsRelationship( net.sf.webcat.reporter.ReportGenerationJob value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToReportGenerationJobsRelationship("
+                + value + "): was " + reportGenerationJobs() );
+        }
+        addObjectToBothSidesOfRelationshipWithKey(
+            value, "reportGenerationJobs" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>reportGenerationJobs</code>
+     * relationship.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromReportGenerationJobsRelationship( net.sf.webcat.reporter.ReportGenerationJob value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromReportGenerationJobsRelationship("
+                + value + "): was " + reportGenerationJobs() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "reportGenerationJobs" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create a brand new object that is a member of the
+     * <code>reportGenerationJobs</code> relationship.
+     *
+     * @return The new entity
+     */
+    public net.sf.webcat.reporter.ReportGenerationJob createReportGenerationJobsRelationship()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createReportGenerationJobsRelationship()" );
+        }
+        EOClassDescription eoClassDesc = EOClassDescription
+            .classDescriptionForEntityName( "ReportGenerationJob" );
+        EOEnterpriseObject eoObject = eoClassDesc
+            .createInstanceWithEditingContext( editingContext(), null );
+        editingContext().insertObject( eoObject );
+        addObjectToBothSidesOfRelationshipWithKey(
+            eoObject, "reportGenerationJobs" );
+        return (net.sf.webcat.reporter.ReportGenerationJob)eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove and then delete a specific entity that is a member of the
+     * <code>reportGenerationJobs</code> relationship.
+     *
+     * @param value The entity to remove from the relationship and then delete
+     */
+    public void deleteReportGenerationJobsRelationship( net.sf.webcat.reporter.ReportGenerationJob value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteReportGenerationJobsRelationship("
+                + value + "): was " + reportGenerationJobs() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "reportGenerationJobs" );
+        editingContext().deleteObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove (and then delete, if owned) all entities that are members of the
+     * <code>reportGenerationJobs</code> relationship.
+     */
+    public void deleteAllReportGenerationJobsRelationships()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllReportGenerationJobsRelationships(): was "
+                + reportGenerationJobs() );
+        }
+        Enumeration<?> objects = reportGenerationJobs().objectEnumerator();
+        while ( objects.hasMoreElements() )
+            deleteReportGenerationJobsRelationship(
+                (net.sf.webcat.reporter.ReportGenerationJob)objects.nextElement() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve objects using a fetch specification.
      *
      * @param context The editing context to use
@@ -1011,23 +1192,20 @@ public abstract class _GeneratedReport
 
     // ----------------------------------------------------------
     /**
-     * Retrieve a single object using a list of keys and values to match.
+     * Retrieve the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
      *
      * @param context The editing context to use
+     * @param sortOrderings the sort orderings
      * @param keysAndValues a list of keys and values to match, alternating
      *     "key", "value", "key", "value"...
      *
-     * @return the single entity that was retrieved
-     *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
-     * @throws EOUtilities.MoreThanOneException
-     *     if there is more than one matching object
+     * @return the first entity that was retrieved, or null if there was none
      */
-    public static GeneratedReport objectMatchingValues(
+    public static GeneratedReport firstObjectMatchingValues(
         EOEditingContext context,
-        Object... keysAndValues) throws EOObjectNotAvailableException,
-                                        EOUtilities.MoreThanOneException
+        NSArray<EOSortOrdering> sortOrderings,
+        Object... keysAndValues)
     {
         if (keysAndValues.length % 2 != 0)
         {
@@ -1051,7 +1229,87 @@ public abstract class _GeneratedReport
             valueDictionary.setObjectForKey(value, key);
         }
 
-        return objectMatchingValues(context, valueDictionary);
+        return firstObjectMatchingValues(
+            context, sortOrderings, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieves the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
+     *
+     * @param context The editing context to use
+     * @param sortOrderings the sort orderings
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return the first entity that was retrieved, or null if there was none
+     */
+    public static GeneratedReport firstObjectMatchingValues(
+        EOEditingContext context,
+        NSArray<EOSortOrdering> sortOrderings,
+        NSDictionary<String, Object> keysAndValues)
+    {
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME,
+            EOQualifier.qualifierToMatchAllValues(keysAndValues),
+            sortOrderings);
+        fspec.setFetchLimit(1);
+
+        NSArray<GeneratedReport> result =
+            objectsWithFetchSpecification( context, fspec );
+
+        if ( result.count() == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            return result.objectAtIndex(0);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return the single entity that was retrieved, or null if there was none
+     *
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static GeneratedReport uniqueObjectMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues) throws EOUtilities.MoreThanOneException
+    {
+        if (keysAndValues.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
+        }
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
+        {
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
+        }
+
+        return uniqueObjectMatchingValues(context, valueDictionary);
     }
 
 
@@ -1062,34 +1320,116 @@ public abstract class _GeneratedReport
      * @param context The editing context to use
      * @param keysAndValues a dictionary of keys and values to match
      *
-     * @return the single entity that was retrieved
+     * @return the single entity that was retrieved, or null if there was none
      *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
      * @throws EOUtilities.MoreThanOneException
      *     if there is more than one matching object
      */
-    public static GeneratedReport objectMatchingValues(
+    public static GeneratedReport uniqueObjectMatchingValues(
         EOEditingContext context,
         NSDictionary<String, Object> keysAndValues)
-        throws EOObjectNotAvailableException,
-               EOUtilities.MoreThanOneException
+        throws EOUtilities.MoreThanOneException
     {
-        return (GeneratedReport)EOUtilities.objectMatchingValues(
-            context, ENTITY_NAME, keysAndValues);
+        try
+        {
+            return (GeneratedReport)EOUtilities.objectMatchingValues(
+                context, ENTITY_NAME, keysAndValues);
+        }
+        catch (EOObjectNotAvailableException e)
+        {
+            return null;
+        }
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>User</code>
+     * Retrieve objects according to the <code>completedReportsForUser</code>
      * fetch specification.
      *
      * @param context The editing context to use
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<GeneratedReport> objectsForUser(
+    public static NSArray<GeneratedReport> completedReportsForUser(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "completedReportsForUser", "GeneratedReport" );
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if ( userBinding != null )
+        {
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray<GeneratedReport> result =
+            objectsWithFetchSpecification( context, spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "completedReportsForUser(ec"
+                + ", " + userBinding
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects according to the <code>incompleteReportsForUser</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<GeneratedReport> incompleteReportsForUser(
+            EOEditingContext context,
+            net.sf.webcat.core.User userBinding
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "incompleteReportsForUser", "GeneratedReport" );
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if ( userBinding != null )
+        {
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+
+        NSArray<GeneratedReport> result =
+            objectsWithFetchSpecification( context, spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "incompleteReportsForUser(ec"
+                + ", " + userBinding
+                + "): " + result );
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects according to the <code>user</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<GeneratedReport> user(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
         )
@@ -1107,86 +1447,11 @@ public abstract class _GeneratedReport
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<GeneratedReport> result = objectsWithFetchSpecification( context, spec );
+        NSArray<GeneratedReport> result =
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForUser(ec"
-                + ", " + userBinding
-                + "): " + result );
-        }
-        return result;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve object according to the <code>UserCompleteReports</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @param userBinding fetch spec parameter
-     * @return an NSArray of the entities retrieved
-     */
-    public static NSArray<GeneratedReport> objectsForUserCompleteReports(
-            EOEditingContext context,
-            net.sf.webcat.core.User userBinding
-        )
-    {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "userCompleteReports", "GeneratedReport" );
-
-        NSMutableDictionary<String, Object> bindings =
-            new NSMutableDictionary<String, Object>();
-
-        if ( userBinding != null )
-        {
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
-        }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
-
-        NSArray<GeneratedReport> result = objectsWithFetchSpecification( context, spec );
-        if (log.isDebugEnabled())
-        {
-            log.debug( "objectsForUserCompleteReports(ec"
-                + ", " + userBinding
-                + "): " + result );
-        }
-        return result;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve object according to the <code>UserIncompleteReports</code>
-     * fetch specification.
-     *
-     * @param context The editing context to use
-     * @param userBinding fetch spec parameter
-     * @return an NSArray of the entities retrieved
-     */
-    public static NSArray<GeneratedReport> objectsForUserIncompleteReports(
-            EOEditingContext context,
-            net.sf.webcat.core.User userBinding
-        )
-    {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "userIncompleteReports", "GeneratedReport" );
-
-        NSMutableDictionary<String, Object> bindings =
-            new NSMutableDictionary<String, Object>();
-
-        if ( userBinding != null )
-        {
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
-        }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
-
-        NSArray<GeneratedReport> result = objectsWithFetchSpecification( context, spec );
-        if (log.isDebugEnabled())
-        {
-            log.debug( "objectsForUserIncompleteReports(ec"
+            log.debug( "user(ec"
                 + ", " + userBinding
                 + "): " + result );
         }

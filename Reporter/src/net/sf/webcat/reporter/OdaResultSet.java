@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.13 2009/06/11 15:35:22 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,7 +51,7 @@ import ognl.webobjects.WOOgnl;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.13 2009/06/11 15:35:22 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -65,16 +65,17 @@ public class OdaResultSet
      * @param dataSetId
      *      The ID of the ReportDataSet for which this result set is being
      *      generated
-     * @param jobId
-     *      The ID of the EnqueuedReportGenerationJob that is generated the
-     *      report that will contain this data
+     * @param job
+     *      The ManagedReportGenerationJob that is generating the report that
+     *      will contain this data
      * @param query
      *      The query defining this result set
      */
-    public OdaResultSet(int dataSetId, Number jobId, ReportQuery query)
+    public OdaResultSet(int dataSetId, ManagedReportGenerationJob job,
+            ReportQuery query)
     {
         this.dataSetId = dataSetId;
-        this.jobId = jobId.intValue();
+        this.job = job;
         this.query = query;
 
         currentRow = 0;
@@ -91,7 +92,8 @@ public class OdaResultSet
     {
         Application.releaseReadOnlyEditingContext(editingContext);
 
-        ReportGenerationTracker.getInstance().completeDataSetForJobId(jobId);
+//        ReportGenerationTracker.getInstance().completeDataSetForJobId(jobId);
+        job.completeCurrentTask();
     }
 
 
@@ -121,8 +123,9 @@ public class OdaResultSet
             new ERXFetchSpecificationBatchIterator(fetch, editingContext);
         iterator.setBatchSize(currentBatchSize);
 
-        ReportGenerationTracker.getInstance().startNextDataSetForJobId(jobId,
-                iterator.count());
+//        ReportGenerationTracker.getInstance().startNextDataSetForJobId(jobId,
+//                iterator.count());
+        job.beginTask(null, iterator.count());
     }
 
 
@@ -158,31 +161,36 @@ public class OdaResultSet
         OgnlContext ctx = ReportUtilityEnvironment.newOgnlContext();
         return ctx;
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public boolean moveToNextRow()
     {
         throttleIfNecessary();
         boolean hasNext = true;
         rawCurrentRow++;
-        
+
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastProgressUpdateTime >=
             TIME_BETWEEN_PROGRESS_UPDATES)
         {
-            ReportGenerationTracker tracker =
-                ReportGenerationTracker.getInstance();
+//            ReportGenerationTracker tracker =
+//                ReportGenerationTracker.getInstance();
 
             // Check to see if the report has been canceled. If it has, we just
             // return no more rows here.
-            if (!tracker.doesJobExistWithId(jobId))
+            if (job.isCancelled())
             {
                 return false;
             }
+/*            if (!tracker.doesJobExistWithId(jobId))
+            {
+                return false;
+            }*/
 
-            tracker.doWorkForJobId(jobId,
-                    rawCurrentRow - rowCountAtLastProgressUpdate);
+            job.worked(rawCurrentRow - rowCountAtLastProgressUpdate);
+//            tracker.doWorkForJobId(jobId,
+//                    rawCurrentRow - rowCountAtLastProgressUpdate);
 
             lastProgressUpdateTime = currentTime;
             rowCountAtLastProgressUpdate = rawCurrentRow;
@@ -207,9 +215,9 @@ public class OdaResultSet
             // readable representation of itself, DEBUG level logging on this
             // class should only be enabled when absolutely necessary.
 
-            //String msg = "Row " + rawCurrentRow + ": "
-            //    + currentObject.toString();
-            //log.debug(msg);
+            String msg = "Row " + rawCurrentRow + ": "
+                + currentObject.toString();
+            log.debug(msg);
         }
 
         return hasNext;
@@ -344,7 +352,7 @@ public class OdaResultSet
         // Compute the new batch size.
         long workTime = (long) (BATCH_TIME_SLICE * BATCH_LOAD_FACTOR);
         currentBatchSize = (int) (workTime / currentMovingAverage);
-        
+
         if (currentBatchSize < BATCH_SIZE_MIN)
         {
             currentBatchSize = BATCH_SIZE_MIN;
@@ -355,7 +363,7 @@ public class OdaResultSet
         }
 
         iterator.setBatchSize(currentBatchSize);
-        
+
         try
         {
             long sleepTime =
@@ -367,8 +375,8 @@ public class OdaResultSet
             // Do nothing.
         }
     }
-    
-    
+
+
     // ----------------------------------------------------------
     private boolean getNextBatch()
     {
@@ -442,9 +450,9 @@ public class OdaResultSet
         }
         catch (NullPointerException e)
         {
-            // If anything property along the key path evaluated to null, we
-            // don't want to bail out; we'll just set the column value to null
-            // and keep going.
+            // If any property along the key path evaluated to null, we don't
+            // want to bail out; we'll just set the column value to null and
+            // keep going.
 
             result = null;
         }
@@ -458,11 +466,12 @@ public class OdaResultSet
                     "recognized by the source object (which is of type \"%s\")",
                     e.key(), e.object().getClass().getName());
 
-            ReportGenerationTracker rgt = ReportGenerationTracker.getInstance();
-            ReportDataSet dataSet = ReportDataSet.forId(editingContext, dataSetId);
-            rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column, null,
-                    expressions[column], msg);
-            
+            // FIXME fix this
+//            ReportGenerationTracker rgt = ReportGenerationTracker.getInstance();
+//            ReportDataSet dataSet = ReportDataSet.forId(editingContext, dataSetId);
+//            rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column, null,
+//                    expressions[column], msg);
+
             // Rethrow the original exception.
 
             throw new WebCATDataException(e);
@@ -481,18 +490,25 @@ public class OdaResultSet
                 // user. This gets us better feedback than the standard BIRT
                 // error message, which is something like "cannot get value
                 // from column: N" with no other information.
-    
-                ReportGenerationTracker rgt =
-                    ReportGenerationTracker.getInstance();
 
-                ReportDataSet dataSet = ReportDataSet.forId(
-                        editingContext, dataSetId);
-                
-                rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column,
-                        null, expressions[column], e.getMessage());
-    
+                // FIXME fix this
+//                ReportGenerationTracker rgt =
+//                    ReportGenerationTracker.getInstance();
+
+//                ReportDataSet dataSet = ReportDataSet.forId(
+//                        editingContext, dataSetId);
+
+//                rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column,
+//                        null, expressions[column], e.getMessage());
+
                 throw new WebCATDataException(e);
             }
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("   Column " + column + " = " + result + ": "
+                    + expressions[column]);
         }
 
         if (result == null)
@@ -532,7 +548,7 @@ public class OdaResultSet
         {
             // Conversion may have failed if we have a string that is a
             // floating point value and we want to convert to an integer.
-            
+
             try
             {
                 return (T) Integer.valueOf(
@@ -562,18 +578,18 @@ public class OdaResultSet
             destinationType = "Float";
         else if (destType == NSTimestamp.class)
             destinationType = "Timestamp";
-        
+
         throw new IllegalArgumentException("The result (\"" +
                 result.toString() + "\") of the expression [ " +
                 expressions[column] + " ] could not be converted to type " +
                 destinationType);
     }
-    
-    
+
+
     //~ Instance/static variables .............................................
 
     private int dataSetId;
-    private int jobId;
+    private ManagedReportGenerationJob job;
     private ReportQuery query;
     private ReadOnlyEditingContext editingContext;
     private EOQualifier fetchQualifier;
@@ -610,7 +626,7 @@ public class OdaResultSet
     private static final int BATCH_SIZE_MIN = 25;
     private static final int BATCH_SIZE_MAX = 250;
 
-    private static final int MOVING_AVERAGE_WINDOW_SIZE = 10; 
-    
+    private static final int MOVING_AVERAGE_WINDOW_SIZE = 10;
+
     private static final Logger log = Logger.getLogger(OdaResultSet.class);
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionProfile.java,v 1.12 2009/11/18 00:34:57 stedwar2 Exp $
+ |  $Id: SubmissionProfile.java,v 1.13 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
  * Contains all the submission options for an assignment.
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.12 $ $Date: 2009/11/18 00:34:57 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.13 $ $Date: 2009/12/09 05:01:35 $
  */
 public class SubmissionProfile
     extends _SubmissionProfile
@@ -157,11 +157,11 @@ public class SubmissionProfile
     // ----------------------------------------------------------
     public static long defaultMaxFileUploadSize()
     {
-    	long result = net.sf.webcat.core.Application
+        long result = net.sf.webcat.core.Application
             .configurationProperties()
             .longForKeyWithDefault("grader.defaultMaxFileUploadSize", 204800L);
-    	long max = maxMaxFileUploadSize();
-    	return result <= max ? result : max;
+        long max = maxMaxFileUploadSize();
+        return result <= max ? result : max;
     }
 
 
@@ -175,11 +175,11 @@ public class SubmissionProfile
     // ----------------------------------------------------------
     public void setMaxFileUploadSize( int value )
     {
-    	if (value <= 0 )
-    	{
-    		setMaxFileUploadSizeRaw(null);
-    	}
-    	else if ( value < maxMaxFileUploadSize() )
+        if (value <= 0 )
+        {
+            setMaxFileUploadSizeRaw(null);
+        }
+        else if ( value < maxMaxFileUploadSize() )
         {
             super.setMaxFileUploadSize(value);
         }
@@ -263,10 +263,10 @@ public class SubmissionProfile
         )
     {
         NSMutableArray results =
-            objectsForCourse( context, course ).mutableClone();
+            profilesForCourse( context, course ).mutableClone();
         ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             results,
-            objectsForUser( context, user ) );
+            profilesForUser( context, user ) );
         if ( mine != null && !results.containsObject( mine ) )
         {
             results.addObject( mine );

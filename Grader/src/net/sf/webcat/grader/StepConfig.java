@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.6 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: StepConfig.java,v 1.7 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.*;
  * Custom settings for a single grading {@link Step}.
  *
  * @author stedwar2
- * @version $Id: StepConfig.java,v 1.6 2008/10/29 14:15:21 aallowat Exp $
+ * @version $Id: StepConfig.java,v 1.7 2009/12/09 05:01:35 aallowat Exp $
  */
 public class StepConfig
     extends _StepConfig
@@ -125,11 +125,11 @@ public class StepConfig
     {
         // Have to use two separate queries here, since the join required
         // in the second query will overly restrict the results of the first!
-        NSMutableArray results = objectsForUser( context, userBinding )
+        NSMutableArray results = stepConfigsForUser( context, userBinding )
             .mutableClone();
         ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             results,
-            objectsForCourseAndScript(
+            stepConfigsForCourseAndScript(
                 context, courseBinding, scriptFileBinding )
             );
         if ( mine != null && !results.containsObject( mine ) )

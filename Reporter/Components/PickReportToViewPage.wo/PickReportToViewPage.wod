@@ -13,20 +13,20 @@ EnqueuedJobTable: WCTable {
 
 JobTitleFilter: WCTableFilter {
     name = "Report Title";
-    keyPath = "description";
+    keyPath = "generatedReport.description";
     type = "string";
 }
 
 JobTitleColumn: WCTableColumn {
     name = "Report Title";
     componentName = "ActionURLCell";
-    keyPath = "description";
+    keyPath = "generatedReport.description";
     properties.action = "viewReportProgress";
 }
 
 JobQueueTimeColumn: WCTableColumn {
     name = "Requested at";
-    keyPath = "queueTime";
+    keyPath = "enqueueTime";
     properties.formatter = session.timeFormatter;
 }
 
@@ -54,6 +54,7 @@ TitleColumn: WCTableColumn {
     componentName = "ActionURLCell";
     keyPath = "description";
     properties.action = "viewReport";
+    properties.weight = 1;
 }
 
 TemplateVersionColumn: WCTableColumn {

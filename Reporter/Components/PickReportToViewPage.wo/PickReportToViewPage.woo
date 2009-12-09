@@ -9,15 +9,9 @@
                 editingContext = localContext; 
                 fetchSpecification = {
                     class = EOFetchSpecification; 
-                    entityName = EnqueuedReportGenerationJob; 
-                    fetchLimit = 0; 
+                    entityName = ReportGenerationJob; 
                     isDeep = YES; 
-                    qualifier = {
-                        class = EOKeyValueQualifier; 
-                        key = user; 
-                        selectorName = "isEqualTo:"; 
-                        value = {"_key" = user; class = EOQualifierVariable; }; 
-                    }; 
+                    prefetchingRelationshipKeyPaths = (); 
                 }; 
             }; 
             fetchesOnLoad = NO; 
@@ -25,7 +19,11 @@
             numberOfObjectsPerBatch = 15; 
             selectsFirstObjectAfterFetch = YES; 
             sortOrdering = (
-                {class = EOSortOrdering; key = queueTime; selectorName = "compareAscending:"; }
+                {
+                    class = EOSortOrdering; 
+                    key = enqueueTime; 
+                    selectorName = "compareAscending:"; 
+                }
             ); 
         }; 
         generatedReportsDisplayGroup = {

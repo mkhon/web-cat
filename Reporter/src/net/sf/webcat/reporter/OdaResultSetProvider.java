@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSetProvider.java,v 1.5 2009/06/11 15:35:22 aallowat Exp $
+ |  $Id: OdaResultSetProvider.java,v 1.6 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import net.sf.webcat.oda.commons.IWebCATResultSetProvider;
  * queries that it has specified.
  *
  * @author Tony Allevato
- * @version $Id: OdaResultSetProvider.java,v 1.5 2009/06/11 15:35:22 aallowat Exp $
+ * @version $Id: OdaResultSetProvider.java,v 1.6 2009/12/09 05:03:40 aallowat Exp $
  */
 public class OdaResultSetProvider implements IWebCATResultSetProvider
 {
@@ -47,11 +47,15 @@ public class OdaResultSetProvider implements IWebCATResultSetProvider
      * @param report
      *            the generated report that this data will go into
      */
-    public OdaResultSetProvider(EnqueuedReportGenerationJob job)
+    public OdaResultSetProvider(ManagedReportGenerationJob job)
     {
-        jobId = job.id();
+        this.job = job;
 
-        dataSetQueries = job.dataSetQueries();
+        int dataSetRefs = countDataSetReferences(
+                job.generatedReport().reportTemplate());
+        job.beginTask("Generating report", dataSetRefs);
+
+        dataSetQueries = job.generatedReport().dataSetQueries();
         queryMap = new NSMutableDictionary<Integer, ReportQuery>();
 
         // Construct the mapping from data set IDs to queries that define the
@@ -76,13 +80,36 @@ public class OdaResultSetProvider implements IWebCATResultSetProvider
         Integer dataSetId = Integer.parseInt(id);
         ReportQuery query = queryMap.objectForKey(dataSetId);
 
-        return new OdaResultSet(dataSetId, jobId, query);
+        return new OdaResultSet(dataSetId, job, query);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Counts the total number of data set references contained inside the
+     * specified report template. This is used to compute progress information
+     * about the report generation task.
+     *
+     * @param template the ReportTemplate being executed
+     * @return the total number of data set references in the template
+     */
+    private int countDataSetReferences(ReportTemplate template)
+    {
+        NSArray<ReportDataSet> dataSets = template.dataSets();
+        int dataSetRefs = 0;
+
+        for (ReportDataSet dataSet : dataSets)
+        {
+            dataSetRefs += dataSet.referenceCount();
+        }
+
+        return dataSetRefs;
     }
 
 
     //~ Instance/static variables .............................................
 
-    private Number jobId;
+    private ManagedReportGenerationJob job;
     private NSArray<ReportDataSetQuery> dataSetQueries;
     private NSMutableDictionary<Integer, ReportQuery> queryMap;
 }

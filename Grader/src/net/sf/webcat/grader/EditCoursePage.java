@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.11 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: EditCoursePage.java,v 1.12 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
  * (is "to be defined").
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.11 $, $Date: 2009/09/06 02:41:18 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.12 $, $Date: 2009/12/09 05:01:35 $
  */
 public class EditCoursePage
     extends GraderCourseEditComponent
@@ -73,7 +73,7 @@ public class EditCoursePage
         if ( semesters == null )
         {
             semesters =
-                Semester.objectsForFetchAll(localContext());
+                Semester.allObjectsOrderedByStartDate(localContext());
         }
         instructorDisplayGroup.setMasterObject(courseOffering());
         TADisplayGroup.setMasterObject(courseOffering());
@@ -215,14 +215,14 @@ public class EditCoursePage
     public WOComponent computeSubmissionDateRange()
     {
         log.debug("computeSubmissionDateRange()");
-        NSArray<Submission> subs = Submission.objectsForEarliestForCourseOffering(
+        Submission earliestSub = Submission.earliestSubmissionForCourseOffering(
             localContext(), courseOffering());
-        if (subs.count() > 0)
+        if (earliestSub != null)
         {
-            earliest = subs.objectAtIndex(0).submitTime();
-            subs = Submission.objectsForLatestForCourseOffering(
-                localContext(), courseOffering());
-            latest = subs.objectAtIndex(0).submitTime();
+            earliest = earliestSub.submitTime();
+            Submission latestSub = Submission.latestSubmissionForCourseOffering(
+                    localContext(), courseOffering());
+            latest = latestSub.submitTime();
         }
         earliestAndLatestComputed = true;
         return null;

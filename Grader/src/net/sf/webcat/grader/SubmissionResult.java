@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.13 2009/04/22 21:09:21 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.14 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.13 2009/04/22 21:09:21 aallowat Exp $
+ *  @version $Id: SubmissionResult.java,v 1.14 2009/12/09 05:01:35 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -478,7 +478,7 @@ public class SubmissionResult
         EOEditingContext ec = editingContext();
         if ( log.isDebugEnabled() )
         {
-            NSArray subs = objectsForUser(
+            NSArray subs = resultsForAssignmentAndUser(
                 ec, submission().assignmentOffering(), submission().user() );
             for ( int i = 0; i < subs.count(); i++ )
             {
@@ -489,7 +489,7 @@ public class SubmissionResult
             }
         }
         SubmissionResult newest = null;
-        NSArray subs = objectsForMostRecentByDate(
+        NSArray subs = mostRecentResultsForAssignmentAndUser(
             ec, submission().assignmentOffering(), submission().user() );
         if ( subs.count() > 0 )
         {
@@ -502,7 +502,7 @@ public class SubmissionResult
                     + " #" + newest.submission().submitNumber() );
             }
         }
-        subs = objectsForMostRecentSubmission(
+        subs = mostRecentResultsForAssignmentAndUser(
             ec, submission().assignmentOffering(), submission().user() );
         for ( int i = 1; i < subs.count(); i++ )
         {

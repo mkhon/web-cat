@@ -13,10 +13,8 @@ CriteriaContainer : WCContentPane {
     id = idFor.criteriaContainer;
 }
 
-RowBusyIndicator : WOImage {
-    filename = "images/busy.gif";
+RowBusyIndicator : WCSpinner {
     id = "~idFor.busy + '_' + index";
-    style = "vertical-align: middle; visibility: hidden";
 }
 
 KeyPath : WCComboBox {

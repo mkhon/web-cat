@@ -53,18 +53,18 @@ dojo.declare("webcat.reporter.ContentAssistDataStore",
             this.entityAttributeArrays[entity.name] = { };
 
             this.entityAttributeArrays[entity.name] = entity.attributes;
-            
+
             dojo.forEach(entity.attributes, dojo.hitch(this, function(attribute)
             {
                 this.entities[entity.name][attribute.name] = attribute;
             }));
         }));
-        
+
         return response;
     },
-    
-    getValue: function( /* item */ item, 
-                        /* attribute-name-string */ attribute, 
+
+    getValue: function( /* item */ item,
+                        /* attribute-name-string */ attribute,
                         /* value? */ defaultValue)
     {
         // The label, which gets displayed in the ComboBox's dropdown list,
@@ -76,10 +76,10 @@ dojo.declare("webcat.reporter.ContentAssistDataStore",
             var parts = item.split('.');
             return parts[parts.length - 1];
         }
-        
+
         // Otherwise, just return the item.  (This implicitly means the "name"
         // attribute.)
-        
+
         return item;
     },
 
@@ -108,8 +108,8 @@ dojo.declare("webcat.reporter.ContentAssistDataStore",
     {
     },
 
-    _fetchItems: function( /* Object */ keywordArgs, 
-                           /* Function */ findCallback, 
+    _fetchItems: function( /* Object */ keywordArgs,
+                           /* Function */ findCallback,
                            /* Function */ errorCallback)
     {
         var entityType = keywordArgs.query.rootType;
@@ -127,7 +127,7 @@ dojo.declare("webcat.reporter.ContentAssistDataStore",
             if (attributes)
             {
                 var attribute = attributes[key];
-                
+
                 if (attribute)
                 {
                     entityType = attribute.type;
@@ -136,7 +136,7 @@ dojo.declare("webcat.reporter.ContentAssistDataStore",
 
             if (!entityType)
                 break;
-                
+
             keyPathSoFar += key + '.';
         }
 
@@ -149,12 +149,12 @@ dojo.declare("webcat.reporter.ContentAssistDataStore",
             // TODO just assume "${0}*" for now
             var regex = new RegExp(
                 matchString.substr(0, matchString.length - 1) + ".*");
-            
+
             var attributes = this.entityAttributeArrays[entityType];
             attributes = dojo.filter(attributes, function(attribute) {
                 return regex.test(attribute.name);
             });
-            
+
             items = dojo.map(attributes,
                 function(attribute) { return keyPathSoFar + attribute.name; });
         }
@@ -207,8 +207,8 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
         this.idPrefix = idPrefix;
         this.entityType = entityType;
     },
-    
-    
+
+
     // ----------------------------------------------------------
     _initContentAssistInfo: function(url)
     {
@@ -248,15 +248,15 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
     // ----------------------------------------------------------
     startBusyForRow: function(index)
     {
-        this._dojoById('busy_' + index).style.visibility = 'visible';
+        this._dijitById('busy_' + index).start();
     },
 
 
     // ----------------------------------------------------------
-	stopBusyForRow: function(index)
-	{
-	    this._dojoById('busy_' + index).style.visibility = 'hidden';
-	},
+    stopBusyForRow: function(index)
+    {
+        this._dijitById('busy_' + index).stop();
+    },
 
 
     // ----------------------------------------------------------
@@ -272,28 +272,28 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
 
 
     // ----------------------------------------------------------
-	enqueueRowUpdate: function(widget, newValue, index)
-	{
-	   console.log(newValue);
+    enqueueRowUpdate: function(widget, newValue, index)
+    {
+       console.log(newValue);
         this.startBusyForRow(index);
 
         if (this._updateRowTimeoutIds[index])
         {
-	       clearTimeout(this._updateRowTimeoutIds[index]);
-	    }
+           clearTimeout(this._updateRowTimeoutIds[index]);
+        }
 
-	    this._updateRowTimeoutIds[index] = setTimeout(
-	        dojo.hitch(this, function() {
-	           this.proxy.immediatelySetKeyPathAtIndex(
-	               dojo.hitch(this, function() {
-		               var fn = this._completeId("updateRowAfterKeyPath_" + index); 
-		               eval(fn + "(dijit.byId('" + this._completeId("keyPath_" + index) + "'));");
-		               delete this._updateRowTimeoutIds[index];
-	               }),
-	               newValue, index);
-	        }),
-	        500);
-	},
+        this._updateRowTimeoutIds[index] = setTimeout(
+            dojo.hitch(this, function() {
+               this.proxy.immediatelySetKeyPathAtIndex(
+                   dojo.hitch(this, function() {
+                       var fn = this._completeId("updateRowAfterKeyPath_" + index);
+                       eval(fn + "(dijit.byId('" + this._completeId("keyPath_" + index) + "'));");
+                       delete this._updateRowTimeoutIds[index];
+                   }),
+                   newValue, index);
+            }),
+            500);
+    },
 
 
     // ----------------------------------------------------------
@@ -303,7 +303,7 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
 
         this.proxy.immediatelySetCastTypeAtIndex(
             dojo.hitch(this, function() {
-                var fn = this._completeId("updateRowAfterCastType_" + index); 
+                var fn = this._completeId("updateRowAfterCastType_" + index);
                 eval(fn + "(dijit.byId('" + this._completeId("castType_" + index) + "'));");
             }),
             widget.getValue(), index);
@@ -320,7 +320,7 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
 
         this.proxy.immediatelySetComparisonAtIndex(
             dojo.hitch(this, function() {
-                var fn = this._completeId("updateRowAfterComparison_" + index); 
+                var fn = this._completeId("updateRowAfterComparison_" + index);
                 eval(fn + "(dijit.byId('" + this._completeId("comparison_" + index) + "'));");
             }),
             widget.getValue(), castType, index);
@@ -334,7 +334,7 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
 
         this.proxy.immediatelySetComparandTypeAtIndex(
             dojo.hitch(this, function() {
-                var fn = this._completeId("updateRowAfterComparandType_" + index); 
+                var fn = this._completeId("updateRowAfterComparandType_" + index);
                 eval(fn + "(dijit.byId('" + this._completeId("comparandType_" + index) + "'));");
             }),
             widget.getValue(), index);

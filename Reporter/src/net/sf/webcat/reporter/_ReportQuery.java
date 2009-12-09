@@ -161,7 +161,7 @@ public abstract class _ReportQuery
     public static final ERXKey<net.sf.webcat.reporter.ReportDataSetQuery> dataSetQueries =
         new ERXKey<net.sf.webcat.reporter.ReportDataSetQuery>(DATA_SET_QUERIES_KEY);
     // Fetch specifications ---
-    public static final String USER_AND_ENTITY_SAVED_QUERIES_FSPEC = "userAndEntitySavedQueries";
+    public static final String SAVED_QUERIES_FOR_USER_AND_ENTITY_FSPEC = "savedQueriesForUserAndEntity";
     public static final String ENTITY_NAME = "ReportQuery";
 
 
@@ -875,23 +875,20 @@ public abstract class _ReportQuery
 
     // ----------------------------------------------------------
     /**
-     * Retrieve a single object using a list of keys and values to match.
+     * Retrieve the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
      *
      * @param context The editing context to use
+     * @param sortOrderings the sort orderings
      * @param keysAndValues a list of keys and values to match, alternating
      *     "key", "value", "key", "value"...
      *
-     * @return the single entity that was retrieved
-     *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
-     * @throws EOUtilities.MoreThanOneException
-     *     if there is more than one matching object
+     * @return the first entity that was retrieved, or null if there was none
      */
-    public static ReportQuery objectMatchingValues(
+    public static ReportQuery firstObjectMatchingValues(
         EOEditingContext context,
-        Object... keysAndValues) throws EOObjectNotAvailableException,
-                                        EOUtilities.MoreThanOneException
+        NSArray<EOSortOrdering> sortOrderings,
+        Object... keysAndValues)
     {
         if (keysAndValues.length % 2 != 0)
         {
@@ -915,7 +912,87 @@ public abstract class _ReportQuery
             valueDictionary.setObjectForKey(value, key);
         }
 
-        return objectMatchingValues(context, valueDictionary);
+        return firstObjectMatchingValues(
+            context, sortOrderings, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieves the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
+     *
+     * @param context The editing context to use
+     * @param sortOrderings the sort orderings
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return the first entity that was retrieved, or null if there was none
+     */
+    public static ReportQuery firstObjectMatchingValues(
+        EOEditingContext context,
+        NSArray<EOSortOrdering> sortOrderings,
+        NSDictionary<String, Object> keysAndValues)
+    {
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME,
+            EOQualifier.qualifierToMatchAllValues(keysAndValues),
+            sortOrderings);
+        fspec.setFetchLimit(1);
+
+        NSArray<ReportQuery> result =
+            objectsWithFetchSpecification( context, fspec );
+
+        if ( result.count() == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            return result.objectAtIndex(0);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return the single entity that was retrieved, or null if there was none
+     *
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static ReportQuery uniqueObjectMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues) throws EOUtilities.MoreThanOneException
+    {
+        if (keysAndValues.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
+        }
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
+        {
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
+        }
+
+        return uniqueObjectMatchingValues(context, valueDictionary);
     }
 
 
@@ -926,27 +1003,31 @@ public abstract class _ReportQuery
      * @param context The editing context to use
      * @param keysAndValues a dictionary of keys and values to match
      *
-     * @return the single entity that was retrieved
+     * @return the single entity that was retrieved, or null if there was none
      *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
      * @throws EOUtilities.MoreThanOneException
      *     if there is more than one matching object
      */
-    public static ReportQuery objectMatchingValues(
+    public static ReportQuery uniqueObjectMatchingValues(
         EOEditingContext context,
         NSDictionary<String, Object> keysAndValues)
-        throws EOObjectNotAvailableException,
-               EOUtilities.MoreThanOneException
+        throws EOUtilities.MoreThanOneException
     {
-        return (ReportQuery)EOUtilities.objectMatchingValues(
-            context, ENTITY_NAME, keysAndValues);
+        try
+        {
+            return (ReportQuery)EOUtilities.objectMatchingValues(
+                context, ENTITY_NAME, keysAndValues);
+        }
+        catch (EOObjectNotAvailableException e)
+        {
+            return null;
+        }
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>UserAndEntitySavedQueries</code>
+     * Retrieve objects according to the <code>savedQueriesForUserAndEntity</code>
      * fetch specification.
      *
      * @param context The editing context to use
@@ -954,14 +1035,14 @@ public abstract class _ReportQuery
      * @param wcEntityNameBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<ReportQuery> objectsForUserAndEntitySavedQueries(
+    public static NSArray<ReportQuery> savedQueriesForUserAndEntity(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding,
             String wcEntityNameBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "userAndEntitySavedQueries", "ReportQuery" );
+            .fetchSpecificationNamed( "savedQueriesForUserAndEntity", "ReportQuery" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
@@ -978,10 +1059,11 @@ public abstract class _ReportQuery
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<ReportQuery> result = objectsWithFetchSpecification( context, spec );
+        NSArray<ReportQuery> result =
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForUserAndEntitySavedQueries(ec"
+            log.debug( "savedQueriesForUserAndEntity(ec"
                 + ", " + userBinding
                 + ", " + wcEntityNameBinding
                 + "): " + result );

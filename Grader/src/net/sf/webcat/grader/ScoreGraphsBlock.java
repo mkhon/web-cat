@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreGraphsBlock.java,v 1.1 2009/08/02 15:00:18 stedwar2 Exp $
+ |  $Id: ScoreGraphsBlock.java,v 1.2 2009/12/09 05:01:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: ScoreGraphsBlock.java,v 1.1 2009/08/02 15:00:18 stedwar2 Exp $
+ *  @version $Id: ScoreGraphsBlock.java,v 1.2 2009/12/09 05:01:35 aallowat Exp $
  */
 public class ScoreGraphsBlock
     extends GraderComponent
@@ -92,7 +92,7 @@ public class ScoreGraphsBlock
         if ( correctnessToolsDataset == null )
         {
             correctnessToolsDataset = new SubmissionResultDataset(
-                SubmissionResult.objectsForUser(
+                SubmissionResult.resultsForAssignmentAndUser(
                     localContext(),
                     submission.assignmentOffering(),
                     result.submission().user() ),

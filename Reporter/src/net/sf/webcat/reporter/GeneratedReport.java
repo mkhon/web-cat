@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReport.java,v 1.9 2009/06/02 19:59:12 aallowat Exp $
+ |  $Id: GeneratedReport.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,6 +33,7 @@ import net.sf.webcat.core.MutableArray;
 import net.sf.webcat.core.User;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOObjectStore;
+import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
 
 // -------------------------------------------------------------------------
@@ -41,7 +42,7 @@ import com.webobjects.foundation.NSData;
  * report template.
  *
  * @author Tony Allevato
- * @version $Id: GeneratedReport.java,v 1.9 2009/06/02 19:59:12 aallowat Exp $
+ * @version $Id: GeneratedReport.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
@@ -59,6 +60,22 @@ public class GeneratedReport
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    public ReportGenerationJob reportGenerationJob()
+    {
+        NSArray<ReportGenerationJob> jobs = reportGenerationJobs();
+
+        if (jobs.count() > 0)
+        {
+            return jobs.objectAtIndex(0);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 
     // ----------------------------------------------------------
     private static String generatedReportDirForUser(User user)
@@ -298,8 +315,8 @@ public class GeneratedReport
     {
         return generatedReportFilePathForUser(user(), id());
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public IReportDocument openReportDocument()
     {
@@ -372,6 +389,6 @@ public class GeneratedReport
     private String reportDocToDelete;
 
     private String renderedDirToDelete;
-    
+
     private static final Logger log = Logger.getLogger(GeneratedReport.class);
 }

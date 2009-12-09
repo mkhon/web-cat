@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EnqueuedReportGenerationJob.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
+ |  $Id: ReportGenerationJob.java,v 1.1 2009/12/09 05:03:40 aallowat Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2009 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,28 +21,27 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
-import net.sf.webcat.core.Application;
+import com.webobjects.foundation.*;
 
 // -------------------------------------------------------------------------
 /**
- * Represents the generation phase of a report in Web-CAT. The rendering phase
- * is handled by the {@link EnqueuedReportRenderJob} entity.
+ * TODO: place a real description here.
  *
- * @author Tony Allevato
- * @version $Id: EnqueuedReportGenerationJob.java,v 1.3 2009/05/27 14:31:52 aallowat Exp $
+ * @author
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.1 $ $Date: 2009/12/09 05:03:40 $
  */
-public class EnqueuedReportGenerationJob
-    extends _EnqueuedReportGenerationJob
+public class ReportGenerationJob
+    extends _ReportGenerationJob
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
     /**
-     * Creates a new EnqueuedReportGenerationJob object.
+     * Creates a new ReportGenerationJob object.
      */
-    public EnqueuedReportGenerationJob()
+    public ReportGenerationJob()
     {
         super();
     }
@@ -52,16 +51,17 @@ public class EnqueuedReportGenerationJob
 
     // ----------------------------------------------------------
     /**
-     * Gets the percentage of progress made on this job while it is being
-     * generated.
-     * 
-     * @return the progress percentage, an integer between 0 and 100
+     * A convenience method to create and insert a new ReportGenerationJob with
+     * default values; the current time as the enqueueTime, not cancelled, and
+     * not ready to run. To run the job, the client will need to call
+     * {@link #setIsReady(boolean)} on the job and save those changes to the
+     * editing context.
+     *
+     * @param editingContext the editing context
+     * @return a new ReportGenerationJob
      */
-    public int progressPercentage()
+    public static ReportGenerationJob create(EOEditingContext editingContext)
     {
-        float workDone = ReportGenerationTracker.getInstance().
-            fractionOfWorkDoneForJobId(id().intValue());
-
-        return (int)Math.floor(workDone * 100 + 0.5);
+        return create(editingContext, new NSTimestamp(), false, false);
     }
 }
