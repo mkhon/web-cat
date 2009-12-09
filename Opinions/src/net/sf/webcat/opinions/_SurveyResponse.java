@@ -173,16 +173,16 @@ public abstract class _SurveyResponse
     public static final ERXKey<String> text4 =
         new ERXKey<String>(TEXT4_KEY);
     // To-one relationships ---
-    public static final String ASSIGNMENT_KEY = "assignment";
-    public static final ERXKey<net.sf.webcat.grader.Assignment> assignment =
-        new ERXKey<net.sf.webcat.grader.Assignment>(ASSIGNMENT_KEY);
+    public static final String ASSIGNMENT_OFFERING_KEY = "assignmentOffering";
+    public static final ERXKey<net.sf.webcat.grader.AssignmentOffering> assignmentOffering =
+        new ERXKey<net.sf.webcat.grader.AssignmentOffering>(ASSIGNMENT_OFFERING_KEY);
     public static final String USER_KEY = "user";
     public static final ERXKey<net.sf.webcat.core.User> user =
         new ERXKey<net.sf.webcat.core.User>(USER_KEY);
     // To-many relationships ---
     // Fetch specifications ---
-    public static final String ASSIGNMENT_FSPEC = "Assignment";
-    public static final String ASSIGNMENT_AND_USER_FSPEC = "AssignmentAndUser";
+    public static final String ASSIGNMENT_OFFERING_FSPEC = "AssignmentOffering";
+    public static final String ASSIGNMENT_OFFERING_AND_USER_FSPEC = "AssignmentOfferingAndUser";
     public static final String USER_FSPEC = "User";
     public static final String ENTITY_NAME = "SurveyResponse";
 
@@ -619,61 +619,61 @@ public abstract class _SurveyResponse
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entity pointed to by the <code>assignment</code>
+     * Retrieve the entity pointed to by the <code>assignmentOffering</code>
      * relationship.
      * @return the entity in the relationship
      */
-    public net.sf.webcat.grader.Assignment assignment()
+    public net.sf.webcat.grader.AssignmentOffering assignmentOffering()
     {
-        return (net.sf.webcat.grader.Assignment)storedValueForKey( "assignment" );
+        return (net.sf.webcat.grader.AssignmentOffering)storedValueForKey( "assignmentOffering" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>assignment</code>
+     * Set the entity pointed to by the <code>assignmentOffering</code>
      * relationship (DO NOT USE--instead, use
-     * <code>setAssignmentRelationship()</code>.
+     * <code>setAssignmentOfferingRelationship()</code>.
      * This method is provided for WebObjects use.
      *
      * @param value The new entity to relate to
      */
-    public void setAssignment( net.sf.webcat.grader.Assignment value )
+    public void setAssignmentOffering( net.sf.webcat.grader.AssignmentOffering value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setAssignment("
-                + value + "): was " + assignment() );
+            log.debug( "setAssignmentOffering("
+                + value + "): was " + assignmentOffering() );
         }
-        takeStoredValueForKey( value, "assignment" );
+        takeStoredValueForKey( value, "assignmentOffering" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>assignment</code>
+     * Set the entity pointed to by the <code>assignmentOffering</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
      * @param value The new entity to relate to
      */
-    public void setAssignmentRelationship(
-        net.sf.webcat.grader.Assignment value )
+    public void setAssignmentOfferingRelationship(
+        net.sf.webcat.grader.AssignmentOffering value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setAssignmentRelationship("
-                + value + "): was " + assignment() );
+            log.debug( "setAssignmentOfferingRelationship("
+                + value + "): was " + assignmentOffering() );
         }
         if ( value == null )
         {
-            net.sf.webcat.grader.Assignment object = assignment();
+            net.sf.webcat.grader.AssignmentOffering object = assignmentOffering();
             if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "assignment" );
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "assignmentOffering" );
         }
         else
         {
-            addObjectToBothSidesOfRelationshipWithKey( value, "assignment" );
+            addObjectToBothSidesOfRelationshipWithKey( value, "assignmentOffering" );
         }
     }
 
@@ -943,36 +943,36 @@ public abstract class _SurveyResponse
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>Assignment</code>
+     * Retrieve object according to the <code>AssignmentOffering</code>
      * fetch specification.
      *
      * @param context The editing context to use
-     * @param assignmentBinding fetch spec parameter
+     * @param assignmentOfferingBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<SurveyResponse> objectsForAssignment(
+    public static NSArray<SurveyResponse> objectsForAssignmentOffering(
             EOEditingContext context,
-            net.sf.webcat.grader.Assignment assignmentBinding
+            net.sf.webcat.grader.AssignmentOffering assignmentOfferingBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "Assignment", "SurveyResponse" );
+            .fetchSpecificationNamed( "AssignmentOffering", "SurveyResponse" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( assignmentBinding != null )
+        if ( assignmentOfferingBinding != null )
         {
-            bindings.setObjectForKey( assignmentBinding,
-                                      "assignment" );
+            bindings.setObjectForKey( assignmentOfferingBinding,
+                                      "assignmentOffering" );
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
         NSArray<SurveyResponse> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForAssignment(ec"
-                + ", " + assignmentBinding
+            log.debug( "objectsForAssignmentOffering(ec"
+                + ", " + assignmentOfferingBinding
                 + "): " + result );
         }
         return result;
@@ -981,30 +981,30 @@ public abstract class _SurveyResponse
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>AssignmentAndUser</code>
+     * Retrieve object according to the <code>AssignmentOfferingAndUser</code>
      * fetch specification.
      *
      * @param context The editing context to use
-     * @param assignmentBinding fetch spec parameter
+     * @param assignmentOfferingBinding fetch spec parameter
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<SurveyResponse> objectsForAssignmentAndUser(
+    public static NSArray<SurveyResponse> objectsForAssignmentOfferingAndUser(
             EOEditingContext context,
-            net.sf.webcat.grader.Assignment assignmentBinding,
+            net.sf.webcat.grader.AssignmentOffering assignmentOfferingBinding,
             net.sf.webcat.core.User userBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "AssignmentAndUser", "SurveyResponse" );
+            .fetchSpecificationNamed( "AssignmentOfferingAndUser", "SurveyResponse" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( assignmentBinding != null )
+        if ( assignmentOfferingBinding != null )
         {
-            bindings.setObjectForKey( assignmentBinding,
-                                      "assignment" );
+            bindings.setObjectForKey( assignmentOfferingBinding,
+                                      "assignmentOffering" );
         }
         if ( userBinding != null )
         {
@@ -1016,8 +1016,8 @@ public abstract class _SurveyResponse
         NSArray<SurveyResponse> result = objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForAssignmentAndUser(ec"
-                + ", " + assignmentBinding
+            log.debug( "objectsForAssignmentOfferingAndUser(ec"
+                + ", " + assignmentOfferingBinding
                 + ", " + userBinding
                 + "): " + result );
         }

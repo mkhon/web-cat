@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsSurveyPage.java,v 1.2 2009/12/08 03:29:44 stedwar2 Exp $
+ |  $Id: OpinionsSurveyPage.java,v 1.3 2009/12/09 03:15:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -24,8 +24,7 @@ package net.sf.webcat.opinions;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSTimestamp;
 import net.sf.webcat.core.*;
-import net.sf.webcat.grader.Assignment;
-import net.sf.webcat.grader.Submission;
+import net.sf.webcat.grader.AssignmentOffering;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -35,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2009/12/08 03:29:44 $
+ * @version $Revision: 1.3 $, $Date: 2009/12/09 03:15:16 $
  */
 public class OpinionsSurveyPage
     extends WCComponent
@@ -56,7 +55,7 @@ public class OpinionsSurveyPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public Assignment assignment;
+    public AssignmentOffering assignmentOffering;
     public SurveyResponse response;
 
 
@@ -68,7 +67,7 @@ public class OpinionsSurveyPage
         if (response == null)
         {
             response = SurveyResponse.create(localContext());
-            response.setAssignmentRelationship(assignment);
+            response.setAssignmentOfferingRelationship(assignmentOffering);
             response.setUserRelationship(user());
         }
         super.appendToResponse(pageResponse, context);

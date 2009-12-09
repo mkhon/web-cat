@@ -1,8 +1,8 @@
 <wo:SaveCancelPage title="Programming Assignment Engagement Survey">
-<wo:WCPageModule title="~'Survey for ' + assignment.titleString">
+<wo:WCPageModule title="~'Survey for ' + assignmentOffering.assignment.titleString">
 
-<wo:if condition="$assignment.url">
-<p>Original assignment: <wo:link href="$assignment.url"><wo:str value="$assignment.titleString"/></wo:link></p>
+<wo:if condition="$assignmentOffering.assignment.url">
+<p>Original assignment: <wo:link href="$assignmentOffering.assignment.url"><wo:str value="$assignmentOffering.assignment.titleString"/></wo:link></p>
 </wo:if>
 
 <p>Thank you for providing feedback about this assignment.  Your individual

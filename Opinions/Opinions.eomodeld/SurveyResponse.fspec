@@ -1,46 +1,46 @@
 {
-    Assignment = {
-        class = EOFetchSpecification; 
-        entityName = SurveyResponse; 
-        prefetchingRelationshipKeyPaths = (); 
+    AssignmentOffering = {
+        class = EOFetchSpecification;
+        entityName = SurveyResponse;
+        prefetchingRelationshipKeyPaths = ();
         qualifier = {
-            class = EOKeyValueQualifier; 
-            key = assignment; 
-            selectorName = "isEqualTo:"; 
-            value = {"_key" = assignment; class = EOQualifierVariable; }; 
-        }; 
-    }; 
-    AssignmentAndUser = {
-        class = EOFetchSpecification; 
-        entityName = SurveyResponse; 
-        prefetchingRelationshipKeyPaths = (); 
+            class = EOKeyValueQualifier;
+            key = assignmentOffering;
+            selectorName = "isEqualTo:";
+            value = {"_key" = assignmentOffering; class = EOQualifierVariable; };
+        };
+    };
+    AssignmentOfferingAndUser = {
+        class = EOFetchSpecification;
+        entityName = SurveyResponse;
+        prefetchingRelationshipKeyPaths = ();
         qualifier = {
-            class = EOAndQualifier; 
+            class = EOAndQualifier;
             qualifiers = (
                 {
-                    class = EOKeyValueQualifier; 
-                    key = assignment; 
-                    selectorName = "isEqualTo:"; 
-                    value = {"_key" = assignment; class = EOQualifierVariable; }; 
-                }, 
+                    class = EOKeyValueQualifier;
+                    key = assignmentOffering;
+                    selectorName = "isEqualTo:";
+                    value = {"_key" = assignmentOffering; class = EOQualifierVariable; };
+                },
                 {
-                    class = EOKeyValueQualifier; 
-                    key = user; 
-                    selectorName = "isEqualTo:"; 
-                    value = {"_key" = user; class = EOQualifierVariable; }; 
+                    class = EOKeyValueQualifier;
+                    key = user;
+                    selectorName = "isEqualTo:";
+                    value = {"_key" = user; class = EOQualifierVariable; };
                 }
-            ); 
-        }; 
-    }; 
+            );
+        };
+    };
     User = {
-        class = EOFetchSpecification; 
-        entityName = SurveyResponse; 
-        prefetchingRelationshipKeyPaths = (); 
+        class = EOFetchSpecification;
+        entityName = SurveyResponse;
+        prefetchingRelationshipKeyPaths = ();
         qualifier = {
-            class = EOKeyValueQualifier; 
-            key = user; 
-            selectorName = "isEqualTo:"; 
-            value = {"_key" = user; class = EOQualifierVariable; }; 
-        }; 
-    }; 
+            class = EOKeyValueQualifier;
+            key = user;
+            selectorName = "isEqualTo:";
+            value = {"_key" = user; class = EOQualifierVariable; };
+        };
+    };
 }

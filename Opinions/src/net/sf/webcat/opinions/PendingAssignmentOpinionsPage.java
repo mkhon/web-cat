@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PendingAssignmentOpinionsPage.java,v 1.2 2009/12/08 03:29:43 stedwar2 Exp $
+ |  $Id: PendingAssignmentOpinionsPage.java,v 1.3 2009/12/09 03:15:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -43,7 +43,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2009/12/08 03:29:43 $
+ * @version $Revision: 1.3 $, $Date: 2009/12/09 03:15:16 $
  */
 public class PendingAssignmentOpinionsPage
     extends WCComponent
@@ -64,8 +64,8 @@ public class PendingAssignmentOpinionsPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public Assignment assignment;
-    public ERXDisplayGroup<Assignment> assignmentDisplayGroup;
+    public AssignmentOffering assignmentOffering;
+    public ERXDisplayGroup<Assignment> assignmentOfferingDisplayGroup;
     public int index;
 
 
@@ -77,37 +77,64 @@ public class PendingAssignmentOpinionsPage
         log.debug("starting appendToResponse()");
         if (pendingOpinions == null)
         {
-            EOFetchSpecification fspec = new EOFetchSpecification(
-                Assignment.ENTITY_NAME,
-                ERXQ.and(
-                    ERXQ.equals(
-                        Assignment.TRACK_OPINIONS_KEY,
-                        true),
-                    ERXQ.equals(
-                        Assignment.OFFERINGS_KEY + "."
-                        + AssignmentOffering.SUBMISSIONS_KEY + "."
-                        + Submission.USER_KEY,
-                        user())
-                    ),
-                    null);
-            fspec.setUsesDistinct(true);
-            Application.enableSQLLogging();
+            if (log.isDebugEnabled())
+            {
+                Application.enableSQLLogging();
+            }
 
             // First, get all assignments that this user has submitted to
             // that accept opinion surveys
-            pendingOpinions = Assignment.objectsWithFetchSpecification(
-                localContext(), fspec);
+            pendingOpinions = AssignmentOffering.objectsMatchingQualifier(
+                localContext(),
+                AssignmentOffering.assignment
+                    .dot(Assignment.trackOpinions).isTrue().and(
+                    AssignmentOffering.submissions.dot(Submission.user)
+                        .is(user()))).mutableClone();
             if (log.isDebugEnabled())
             {
-                log.debug("assignments with tracking: "
-                    + Assignment.objectsMatchingQualifier(localContext(),
-                        ERXQ.equals(Assignment.TRACK_OPINIONS_KEY, true)));
-                log.debug("assignments with user submissions: "
-                    + Assignment.objectsMatchingQualifier(localContext(),
-                        ERXQ.equals(Assignment.OFFERINGS_KEY + "."
-                            + AssignmentOffering.SUBMISSIONS_KEY + "."
-                            + Submission.USER_KEY, user())));
                 log.debug("assignments pending feedback: " + pendingOpinions);
+            }
+
+            if (user().teaching().count() > 0)
+            {
+                // Remove all assignments for which this user is the instructor
+                NSArray<AssignmentOffering> instructorFor =
+                    AssignmentOffering.objectsMatchingQualifier(
+                        localContext(),
+                        ERXQ.and(
+                            AssignmentOffering.assignment
+                                .dot(Assignment.trackOpinions).isTrue(),
+                            AssignmentOffering.courseOffering
+                                .dot(CourseOffering.instructors).is(user()),
+                            AssignmentOffering.submissions
+                                .dot(Submission.user).is(user())
+                        ));
+                pendingOpinions.removeObjectsInArray(instructorFor);
+                if (log.isDebugEnabled())
+                {
+                    log.debug("user is instructor for: " + instructorFor);
+                }
+            }
+
+            if (user().graderFor().count() > 0)
+            {
+                // Remove all assignments for which this user is the grader
+                NSArray<AssignmentOffering> graderFor =
+                    AssignmentOffering.objectsMatchingQualifier(
+                        localContext(),
+                        ERXQ.and(
+                            AssignmentOffering.assignment
+                                .dot(Assignment.trackOpinions).isTrue(),
+                            AssignmentOffering.courseOffering
+                                .dot(CourseOffering.graders).is(user()),
+                            AssignmentOffering.submissions
+                                .dot(Submission.user).is(user())
+                        ));
+                pendingOpinions.removeObjectsInArray(graderFor);
+                if (log.isDebugEnabled())
+                {
+                    log.debug("user is grader for: " + graderFor);
+                }
             }
 
             // We need to filter out those that the user has already
@@ -127,25 +154,24 @@ public class PendingAssignmentOpinionsPage
             {
                 // If there are any, convert the responses into an
                 // array of the corresponding assignments
-                NSMutableArray<Assignment> alreadyResponded =
-                    new NSMutableArray<Assignment>(userResponses.size());
+                NSMutableArray<AssignmentOffering> alreadyResponded =
+                    new NSMutableArray<AssignmentOffering>(
+                        userResponses.size());
                 for (int i = 0; i < userResponses.size(); i++)
                 {
-                    alreadyResponded.add(i, userResponses.get(i).assignment());
+                    alreadyResponded.add(
+                        i, userResponses.get(i).assignmentOffering());
                 }
 
                 // Now, remove all assignments in the alreadyResponded array
                 // from those in the pendingOpinions array
-                NSMutableArray<Assignment> needingResponses =
-                    pendingOpinions.mutableClone();
-                needingResponses.removeObjectsInArray(alreadyResponded);
-                pendingOpinions = needingResponses;
+                pendingOpinions.removeObjectsInArray(alreadyResponded);
             }
             if (log.isDebugEnabled())
             {
                 log.debug("final list: " + pendingOpinions);
             }
-            assignmentDisplayGroup.setObjectArray(pendingOpinions);
+            assignmentOfferingDisplayGroup.setObjectArray(pendingOpinions);
             Application.disableSQLLogging();
         }
         super.appendToResponse(response, context);
@@ -156,14 +182,13 @@ public class PendingAssignmentOpinionsPage
     public Submission highestSubmission()
     {
         if (highest == null
-            || highest.assignmentOffering().assignment() != assignment)
+            || highest.assignmentOffering() != assignmentOffering)
         {
             EOFetchSpecification fspec = new EOFetchSpecification(
                 Submission.ENTITY_NAME,
                 ERXQ.and(
-                    ERXQ.equals(Submission.USER_KEY, user()),
-                    ERXQ.equals(Submission.ASSIGNMENT_OFFERING_KEY + "."
-                        + AssignmentOffering.ASSIGNMENT_KEY, assignment)
+                    Submission.user.is(user()),
+                    Submission.assignmentOffering.is(assignmentOffering)
                     ),
                 ERXS.descs(Submission.SUBMIT_NUMBER_KEY));
             fspec.setUsesDistinct(true);
@@ -180,65 +205,28 @@ public class PendingAssignmentOpinionsPage
 
 
     // ----------------------------------------------------------
-    public Submission mostRecentSubmission()
-    {
-        if (mostRecent == null
-            || mostRecent.assignmentOffering().assignment() != assignment)
-        {
-            EOFetchSpecification fspec = new EOFetchSpecification(
-                Submission.ENTITY_NAME,
-                ERXQ.and(
-                    ERXQ.equals(Submission.USER_KEY, user()),
-                    ERXQ.equals(Submission.ASSIGNMENT_OFFERING_KEY + "."
-                        + AssignmentOffering.ASSIGNMENT_KEY, assignment)
-                    ),
-                ERXS.descs(Submission.SUBMIT_TIME_KEY));
-            fspec.setUsesDistinct(true);
-            fspec.setFetchLimit(1);
-            NSArray<Submission> result = Submission
-                .objectsWithFetchSpecification(localContext(), fspec);
-            if (result != null && result.count() > 0)
-            {
-                mostRecent = result.objectAtIndex(0);
-            }
-        }
-        return mostRecent;
-    }
-
-
-    // ----------------------------------------------------------
-    public AssignmentOffering offeringWithDistribution()
-    {
-        if (withDistribution == null
-            || withDistribution.assignment() != assignment)
-        {
-            Submission s = mostRecentSubmission();
-            if (s != null)
-            {
-                withDistribution = s.assignmentOffering();
-            }
-        }
-        return withDistribution;
-    }
-
-
-    // ----------------------------------------------------------
     public WOComponent surveyForAssignment()
     {
         OpinionsSurveyPage page = pageWithName(OpinionsSurveyPage.class);
         page.nextPage = this;
-        page.assignment = assignment;
+        page.assignmentOffering = assignmentOffering;
         pendingOpinions = null;
         // page.submission = mostRecentSubmission();
         return page;
     }
 
 
+    // ----------------------------------------------------------
+    public String permalink()
+    {
+        return Application.configurationProperties().getProperty( "base.url" )
+            + "?page=opinions";
+    }
+
+
     //~ Instance/static variables .............................................
 
-    private NSArray<Assignment> pendingOpinions;
+    private NSMutableArray<AssignmentOffering> pendingOpinions;
     private Submission highest;
-    private Submission mostRecent;
-    private AssignmentOffering withDistribution;
     static Logger log = Logger.getLogger(PendingAssignmentOpinionsPage.class);
 }

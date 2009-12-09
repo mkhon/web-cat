@@ -1,17 +1,17 @@
-<wo:WCPageWithNavigation title="Provide Your Opinions on Assignments">
+<wo:WCPageWithNavigation title="Provide Your Opinions on Assignments" permalink="$permalink">
 <wo:WCPageModule title="Assignments Waiting for Feedback">
-<wo:if condition="$assignmentDisplayGroup.displayedObjects.count">
+<wo:if condition="$assignmentOfferingDisplayGroup.displayedObjects.count">
 <p>You can provide your opinions on the following assignments:</p>
 
 <table><thead>
     <tr><th>Assignment</th><th>Submissions</th><th>Most Recent</th><th class="sm">Score Distribution</th></tr>
 </thead><tbody>
-    <wo:loop list="$assignmentDisplayGroup.displayedObjects" item="$assignment" index="$index">
+    <wo:loop list="$assignmentOfferingDisplayGroup.displayedObjects" item="$assignmentOffering" index="$index">
     <wo:tr index="$index">
-        <td><wo:link action="$surveyForAssignment"><wo:str value="$assignment.titleString"/></wo:link></td>
+        <td><wo:link action="$surveyForAssignment"><wo:str value="$assignmentOffering.titleString"/></wo:link></td>
         <td><wo:str value="$highestSubmission.submitNumber"/></td>
-        <td class="nowrap"><wo:str value="$mostRecentSubmission.submitTime" formatter="$session.timeFormatter"/></td>
-        <td><wo:if condition="$offeringWithDistribution"><wo:MiniBarGraph graphSummary="$offeringWithDistribution.graphSummary"/></wo:if></td>
+        <td class="nowrap"><wo:str value="$highestSubmission.submitTime" formatter="$session.timeFormatter"/></td>
+        <td><wo:MiniBarGraph graphSummary="$assignmentOffering.graphSummary"/></td>
     </wo:tr>
     </wo:loop>
 </tbody></table>

@@ -2,14 +2,14 @@
     "WebObjects Release" = "WebObjects 5.0"; 
     encoding = NSUTF8StringEncoding; 
     variables = {
-        assignmentDisplayGroup = {
+        assignmentOfferingDisplayGroup = {
             class = ERXDisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
                 editingContext = localContext; 
                 fetchSpecification = {
                     class = EOFetchSpecification; 
-                    entityName = Assignment; 
+                    entityName = AssignmentOffering; 
                     fetchLimit = 0; 
                     isDeep = YES; 
                 }; 
@@ -21,8 +21,8 @@
             sortOrdering = (
                 {
                     class = EOSortOrdering; 
-                    key = "name"; 
-                    selectorName = "compareCaseInsensitiveAscending:"; 
+                    key = "dueDate"; 
+                    selectorName = "compareDescending:"; 
                 }
             ); 
         }; 
