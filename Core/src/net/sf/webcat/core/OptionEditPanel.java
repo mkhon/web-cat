@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.10 2009/11/23 00:39:24 stedwar2 Exp $
+ |  $Id: OptionEditPanel.java,v 1.11 2009/12/09 04:57:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.10 2009/11/23 00:39:24 stedwar2 Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.11 2009/12/09 04:57:05 aallowat Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -98,6 +98,20 @@ public class OptionEditPanel
             log.debug("option values hash id = " + optionValues.hashCode());
         }
         super.appendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    public String initialStyle()
+    {
+        String style = "margin-top: 0;";
+
+        if (terse)
+        {
+            style += " display: none";
+        }
+
+        return style;
     }
 
 
