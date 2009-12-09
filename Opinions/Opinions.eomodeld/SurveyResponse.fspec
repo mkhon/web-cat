@@ -1,5 +1,5 @@
 {
-    AssignmentOffering = {
+    responsesForAssignmentOffering = {
         class = EOFetchSpecification;
         entityName = SurveyResponse;
         prefetchingRelationshipKeyPaths = ();
@@ -10,7 +10,7 @@
             value = {"_key" = assignmentOffering; class = EOQualifierVariable; };
         };
     };
-    AssignmentOfferingAndUser = {
+    responsesForAssignmentOfferingAndUser = {
         class = EOFetchSpecification;
         entityName = SurveyResponse;
         prefetchingRelationshipKeyPaths = ();
@@ -32,7 +32,7 @@
             );
         };
     };
-    User = {
+    responsesForUser = {
         class = EOFetchSpecification;
         entityName = SurveyResponse;
         prefetchingRelationshipKeyPaths = ();

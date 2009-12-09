@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PendingAssignmentOpinionsPage.java,v 1.3 2009/12/09 03:15:16 stedwar2 Exp $
+ |  $Id: PendingAssignmentOpinionsPage.java,v 1.4 2009/12/09 04:51:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -42,8 +42,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * (c) the student has not yet filled out a survey for, will be shown.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2009/12/09 03:15:16 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2009/12/09 04:51:13 $
  */
 public class PendingAssignmentOpinionsPage
     extends WCComponent
@@ -145,7 +145,7 @@ public class PendingAssignmentOpinionsPage
 
             // First, get all responses this user has completed.
             NSArray<SurveyResponse> userResponses =
-                SurveyResponse.objectsForUser(localContext(), user());
+                SurveyResponse.responsesForUser(localContext(), user());
             if (log.isDebugEnabled())
             {
                 log.debug("responses from user: " + userResponses);

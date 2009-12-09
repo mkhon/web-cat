@@ -1,15 +1,15 @@
 
 {
-    jobEntityName = 
+    descriptorsForJobEntityName =
     {
         class = EOFetchSpecification;
         entityName = QueueDescriptor;
-        qualifier = 
+        qualifier =
         {
             class = EOKeyValueQualifier;
             key = jobEntityName;
             selectorName = isEqualTo:;
-            value = 
+            value =
             {
                 _key = jobEntityName;
                 class = EOQualifierVariable;

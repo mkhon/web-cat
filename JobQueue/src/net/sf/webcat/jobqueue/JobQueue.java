@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.7 2009/11/18 19:24:10 aallowat Exp $
+ |  $Id: JobQueue.java,v 1.8 2009/12/09 04:50:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2009/11/18 19:24:10 $
+ * @version $Revision: 1.8 $, $Date: 2009/12/09 04:50:10 $
  */
 public class JobQueue
     extends Subsystem
@@ -81,7 +81,7 @@ public class JobQueue
 
             // mark all workers for this host as not alive
             NSArray<WorkerDescriptor> oldWorkers =
-                WorkerDescriptor.objectsForHost(ec, thisHost);
+                WorkerDescriptor.descriptorsForHost(ec, thisHost);
 
             for (WorkerDescriptor worker : oldWorkers)
             {

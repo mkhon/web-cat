@@ -181,9 +181,9 @@ public abstract class _SurveyResponse
         new ERXKey<net.sf.webcat.core.User>(USER_KEY);
     // To-many relationships ---
     // Fetch specifications ---
-    public static final String ASSIGNMENT_OFFERING_FSPEC = "AssignmentOffering";
-    public static final String ASSIGNMENT_OFFERING_AND_USER_FSPEC = "AssignmentOfferingAndUser";
-    public static final String USER_FSPEC = "User";
+    public static final String RESPONSES_FOR_ASSIGNMENT_OFFERING_FSPEC = "responsesForAssignmentOffering";
+    public static final String RESPONSES_FOR_ASSIGNMENT_OFFERING_AND_USER_FSPEC = "responsesForAssignmentOfferingAndUser";
+    public static final String RESPONSES_FOR_USER_FSPEC = "responsesForUser";
     public static final String ENTITY_NAME = "SurveyResponse";
 
 
@@ -872,23 +872,20 @@ public abstract class _SurveyResponse
 
     // ----------------------------------------------------------
     /**
-     * Retrieve a single object using a list of keys and values to match.
+     * Retrieve the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
      *
      * @param context The editing context to use
+     * @param sortOrderings the sort orderings
      * @param keysAndValues a list of keys and values to match, alternating
      *     "key", "value", "key", "value"...
      *
-     * @return the single entity that was retrieved
-     *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
-     * @throws EOUtilities.MoreThanOneException
-     *     if there is more than one matching object
+     * @return the first entity that was retrieved, or null if there was none
      */
-    public static SurveyResponse objectMatchingValues(
+    public static SurveyResponse firstObjectMatchingValues(
         EOEditingContext context,
-        Object... keysAndValues) throws EOObjectNotAvailableException,
-                                        EOUtilities.MoreThanOneException
+        NSArray<EOSortOrdering> sortOrderings,
+        Object... keysAndValues)
     {
         if (keysAndValues.length % 2 != 0)
         {
@@ -912,7 +909,87 @@ public abstract class _SurveyResponse
             valueDictionary.setObjectForKey(value, key);
         }
 
-        return objectMatchingValues(context, valueDictionary);
+        return firstObjectMatchingValues(
+            context, sortOrderings, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieves the first object that matches a set of keys and values, when
+     * sorted with the specified sort orderings.
+     *
+     * @param context The editing context to use
+     * @param sortOrderings the sort orderings
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return the first entity that was retrieved, or null if there was none
+     */
+    public static SurveyResponse firstObjectMatchingValues(
+        EOEditingContext context,
+        NSArray<EOSortOrdering> sortOrderings,
+        NSDictionary<String, Object> keysAndValues)
+    {
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME,
+            EOQualifier.qualifierToMatchAllValues(keysAndValues),
+            sortOrderings);
+        fspec.setFetchLimit(1);
+
+        NSArray<SurveyResponse> result =
+            objectsWithFetchSpecification( context, fspec );
+
+        if ( result.count() == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            return result.objectAtIndex(0);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return the single entity that was retrieved, or null if there was none
+     *
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static SurveyResponse uniqueObjectMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues) throws EOUtilities.MoreThanOneException
+    {
+        if (keysAndValues.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
+        }
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
+        {
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
+        }
+
+        return uniqueObjectMatchingValues(context, valueDictionary);
     }
 
 
@@ -923,40 +1000,44 @@ public abstract class _SurveyResponse
      * @param context The editing context to use
      * @param keysAndValues a dictionary of keys and values to match
      *
-     * @return the single entity that was retrieved
+     * @return the single entity that was retrieved, or null if there was none
      *
-     * @throws EOObjectNotAvailableException
-     *     if there is no matching object
      * @throws EOUtilities.MoreThanOneException
      *     if there is more than one matching object
      */
-    public static SurveyResponse objectMatchingValues(
+    public static SurveyResponse uniqueObjectMatchingValues(
         EOEditingContext context,
         NSDictionary<String, Object> keysAndValues)
-        throws EOObjectNotAvailableException,
-               EOUtilities.MoreThanOneException
+        throws EOUtilities.MoreThanOneException
     {
-        return (SurveyResponse)EOUtilities.objectMatchingValues(
-            context, ENTITY_NAME, keysAndValues);
+        try
+        {
+            return (SurveyResponse)EOUtilities.objectMatchingValues(
+                context, ENTITY_NAME, keysAndValues);
+        }
+        catch (EOObjectNotAvailableException e)
+        {
+            return null;
+        }
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>AssignmentOffering</code>
+     * Retrieve objects according to the <code>responsesForAssignmentOffering</code>
      * fetch specification.
      *
      * @param context The editing context to use
      * @param assignmentOfferingBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<SurveyResponse> objectsForAssignmentOffering(
+    public static NSArray<SurveyResponse> responsesForAssignmentOffering(
             EOEditingContext context,
             net.sf.webcat.grader.AssignmentOffering assignmentOfferingBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "AssignmentOffering", "SurveyResponse" );
+            .fetchSpecificationNamed( "responsesForAssignmentOffering", "SurveyResponse" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
@@ -968,10 +1049,11 @@ public abstract class _SurveyResponse
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<SurveyResponse> result = objectsWithFetchSpecification( context, spec );
+        NSArray<SurveyResponse> result =
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForAssignmentOffering(ec"
+            log.debug( "responsesForAssignmentOffering(ec"
                 + ", " + assignmentOfferingBinding
                 + "): " + result );
         }
@@ -981,7 +1063,7 @@ public abstract class _SurveyResponse
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>AssignmentOfferingAndUser</code>
+     * Retrieve objects according to the <code>responsesForAssignmentOfferingAndUser</code>
      * fetch specification.
      *
      * @param context The editing context to use
@@ -989,14 +1071,14 @@ public abstract class _SurveyResponse
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<SurveyResponse> objectsForAssignmentOfferingAndUser(
+    public static NSArray<SurveyResponse> responsesForAssignmentOfferingAndUser(
             EOEditingContext context,
             net.sf.webcat.grader.AssignmentOffering assignmentOfferingBinding,
             net.sf.webcat.core.User userBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "AssignmentOfferingAndUser", "SurveyResponse" );
+            .fetchSpecificationNamed( "responsesForAssignmentOfferingAndUser", "SurveyResponse" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
@@ -1013,10 +1095,11 @@ public abstract class _SurveyResponse
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<SurveyResponse> result = objectsWithFetchSpecification( context, spec );
+        NSArray<SurveyResponse> result =
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForAssignmentOfferingAndUser(ec"
+            log.debug( "responsesForAssignmentOfferingAndUser(ec"
                 + ", " + assignmentOfferingBinding
                 + ", " + userBinding
                 + "): " + result );
@@ -1027,20 +1110,20 @@ public abstract class _SurveyResponse
 
     // ----------------------------------------------------------
     /**
-     * Retrieve object according to the <code>User</code>
+     * Retrieve objects according to the <code>responsesForUser</code>
      * fetch specification.
      *
      * @param context The editing context to use
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<SurveyResponse> objectsForUser(
+    public static NSArray<SurveyResponse> responsesForUser(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "User", "SurveyResponse" );
+            .fetchSpecificationNamed( "responsesForUser", "SurveyResponse" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
@@ -1052,10 +1135,11 @@ public abstract class _SurveyResponse
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<SurveyResponse> result = objectsWithFetchSpecification( context, spec );
+        NSArray<SurveyResponse> result =
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "objectsForUser(ec"
+            log.debug( "responsesForUser(ec"
                 + ", " + userBinding
                 + "): " + result );
         }

@@ -1,5 +1,5 @@
 {
-    Host = {
+    descriptorsForHost = {
         class = EOFetchSpecification; 
         entityName = WorkerDescriptor; 
         prefetchingRelationshipKeyPaths = (queue); 
