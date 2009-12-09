@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Blocker.js,v 1.2 2009/10/31 22:52:31 aallowat Exp $
+ |  $Id: Blocker.js,v 1.3 2009/12/09 05:00:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -132,7 +132,8 @@ dojo.declare("webcat.Blocker", null,
         }
 
         dojo.style(ov, { opacity: 0, display: "block" });
-        dojo.anim(ov, { opacity: this.opacity }, this.duration);
+        dojo.anim(ov, { opacity: this.opacity }, this.duration,
+                null, null, 250);
     },
 
 
