@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.3 2009/11/10 21:14:27 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -31,8 +31,8 @@ import er.extensions.foundation.ERXValueUtilities;
  * Represents a theme (stored in the Core framework).
  *
  * @author
- *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2009/11/10 21:14:27 $
+ *  @author Last changed by $Author: aallowat $
+ *  @version $Revision: 1.4 $, $Date: 2009/12/09 04:58:36 $
  */
 public class Theme
     extends _Theme
@@ -60,11 +60,8 @@ public class Theme
     public static Theme themeFromName(String dirName)
     {
         ensureThemesLoaded();
-        NSArray<Theme> result = objectsForDirName(
+        return themeForDirName(
             EOSharedEditingContext.defaultSharedEditingContext(), dirName);
-        return (result != null && result.count() > 0)
-            ? result.objectAtIndex(0)
-            : null;
     }
 
 
@@ -304,14 +301,12 @@ public class Theme
                     File plist = new File(subdir, "theme.plist");
                     if (plist.exists())
                     {
-                        NSArray<Theme> existing =
-                            objectsForDirName(ec, subdir.getName());
-                        Theme themeToUpdate = null;
-                        if (existing != null && existing.count() > 0)
+                        Theme themeToUpdate =
+                            themeForDirName(ec, subdir.getName());
+                        if (themeToUpdate != null)
                         {
                             // Theme already exists, so check to see if
                             // it needs to be updated
-                            themeToUpdate = existing.objectAtIndex(0);
                             NSTimestamp modTime = new NSTimestamp(
                                 plist.lastModified());
                             if (themeToUpdate.lastUpdate() != null
@@ -348,7 +343,7 @@ public class Theme
         }
 
         log.debug( "refreshing shared theme objects" );
-        themes = objectsForFetchAll(
+        themes = allObjectsOrderedByName(
             EOSharedEditingContext.defaultSharedEditingContext());
         if (log.isDebugEnabled())
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Language.java,v 1.3 2008/04/02 00:50:27 stedwar2 Exp $
+ |  $Id: Language.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.*;
  * Represents a supported programming language in this Web-CAT installation.
  *
  * @author Stephen Edwards
- * @version $Id: Language.java,v 1.3 2008/04/02 00:50:27 stedwar2 Exp $
+ * @version $Id: Language.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  */
 public class Language
     extends _Language
@@ -74,7 +74,7 @@ public class Language
     public static void refreshLanguages()
     {
         log.debug( "refreshing shared language objects" );
-        languages = objectsForFetchAll(
+        languages = allObjects(
             EOSharedEditingContext.defaultSharedEditingContext() );
     }
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.12 2009/11/10 21:14:27 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.13 2009/12/09 04:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author Stephen Edwards
- * @version $Id: AuthenticationDomain.java,v 1.12 2009/11/10 21:14:27 stedwar2 Exp $
+ * @version $Id: AuthenticationDomain.java,v 1.13 2009/12/09 04:58:36 aallowat Exp $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -519,7 +519,7 @@ public class AuthenticationDomain
         }
 
         log.debug( "refreshing shared authentication domain objects" );
-        authDomains = objectsForFetchAll(
+        authDomains = allObjectsOrderedByDisplayableName(
             EOSharedEditingContext.defaultSharedEditingContext() );
 
         // TODO: can't do this yet, since the domain's authenticator class

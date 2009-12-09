@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.7 2009/10/02 01:53:47 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.8 2009/12/09 04:58:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -68,8 +68,8 @@ import er.extensions.eof.ERXQ;
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.7 $ $Date: 2009/10/02 01:53:47 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.8 $ $Date: 2009/12/09 04:58:56 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -204,7 +204,8 @@ public class CoreNavigator
                     localContext()));
         }
 
-        NSArray<Semester> sems = Semester.objectsForFetchAll(localContext());
+        NSArray<Semester> sems = Semester.allObjectsOrderedByStartDate(
+                localContext());
 
         for (Semester sem : sems)
         {

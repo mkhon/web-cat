@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LoginSession.java,v 1.3 2008/04/02 00:50:26 stedwar2 Exp $
+ |  $Id: LoginSession.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Keeps track of which user is logged in where.
  *
  * @author Stephen Edwards
- * @version $Id: LoginSession.java,v 1.3 2008/04/02 00:50:26 stedwar2 Exp $
+ * @version $Id: LoginSession.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  */
 public class LoginSession
     extends _LoginSession
@@ -74,12 +74,8 @@ public class LoginSession
         {
             log.debug( "searching for login session for " + user.userName() );
             // ec.lock();
-            NSArray items = EOUtilities.objectsMatchingKeyAndValue(
-                    ec,
-                    ENTITY_NAME,
-                    USER_KEY,
-                    user
-                );
+            NSArray<LoginSession> items = objectsMatchingValues(
+                    ec, USER_KEY, user);
             // ec.unlock();
 
             if ( items != null )
@@ -94,7 +90,7 @@ public class LoginSession
                 }
                 if ( items.count() > 0 )
                 {
-                    result = (LoginSession)items.objectAtIndex( 0 );
+                    result = items.objectAtIndex( 0 );
                 }
             }
         }

@@ -14,6 +14,11 @@
             priority   = 100;
             wantsStart = YES;
           };
+          "Messaging" = {
+            pageName    = net.sf.webcat.core.SystemMessagingConfigPage;
+            accessLevel = 75;
+            priority    = 200;
+          };
           "My Profile" = {
             pageName = net.sf.webcat.core.MyProfilePage;
             accessLevel = 40;

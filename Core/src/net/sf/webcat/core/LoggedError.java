@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: LoggedError.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: LoggedError.java,v 1.6 2009/12/09 04:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,7 +30,7 @@ import com.webobjects.eocontrol.*;
  * the error, and the number of times this specific error has occurred.
  *
  * @author
- * @version $Id: LoggedError.java,v 1.5 2008/10/29 14:15:51 aallowat Exp $
+ * @version $Id: LoggedError.java,v 1.6 2009/12/09 04:58:36 aallowat Exp $
  */
 public class LoggedError
     extends _LoggedError
@@ -77,7 +77,7 @@ public class LoggedError
             : new StackTraceElement( "unknown", "unknown", "unknown", 0 );
 
         LoggedError result = null;
-        NSArray results = objectsForExceptionLocation(
+        NSArray results = errorsWithExceptionLocation(
             context,
             top.getClassName(),
             top.getLineNumber(),

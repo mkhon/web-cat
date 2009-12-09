@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PasswordChangeRequest.java,v 1.3 2008/04/02 01:33:34 stedwar2 Exp $
+ |  $Id: PasswordChangeRequest.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  * TODO: place a real description here.
  *
  * @author
- * @version $Id: PasswordChangeRequest.java,v 1.3 2008/04/02 01:33:34 stedwar2 Exp $
+ * @version $Id: PasswordChangeRequest.java,v 1.4 2009/12/09 04:58:36 aallowat Exp $
  */
 public class PasswordChangeRequest
     extends _PasswordChangeRequest
@@ -84,7 +84,7 @@ public class PasswordChangeRequest
         EOEditingContext ec, String code )
     {
         PasswordChangeRequest request = null;
-        NSArray results = objectsForCode( ec, code );
+        NSArray results = requestsForCode( ec, code );
         if ( results.count() > 0 )
         {
             request = (PasswordChangeRequest)results.objectAtIndex( 0 );
@@ -111,7 +111,7 @@ public class PasswordChangeRequest
     public static boolean clearPendingUserRequests(
         EOEditingContext ec, User user )
     {
-        NSArray results = objectsForUser( ec, user );
+        NSArray results = requestsForUser( ec, user );
         boolean result = results.count() > 0;
         for ( int i = 0; i < results.count(); i++ )
         {
