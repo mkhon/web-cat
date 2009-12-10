@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDialog.java,v 1.1 2009/12/09 04:55:11 aallowat Exp $
+ |  $Id: WCDialog.java,v 1.2 2009/12/10 16:44:00 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,10 +45,14 @@ import com.webobjects.appserver.WOResponse;
  * <dt>okAction</dt>
  * <dd>The name of the action (specified as a string) that will be executed on
  * the component that contains the dialog when the OK button is pressed.</dd>
+ *
+ * <dt>refreshPanesOnOk</dt>
+ * <dd>The id(s) of the content panes that should be refreshed when the dialog
+ * is closed via the OK button.</dd>
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: WCDialog.java,v 1.1 2009/12/09 04:55:11 aallowat Exp $
+ * @version $Id: WCDialog.java,v 1.2 2009/12/10 16:44:00 aallowat Exp $
  */
 public class WCDialog extends WOComponent
 {
@@ -99,6 +103,18 @@ public class WCDialog extends WOComponent
     public String id()
     {
         return (String) valueForBinding("id");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the value of the <code>refreshPanesOnOk</code> binding.
+     *
+     * @return the value of the <code>refreshPanesOnOk</code> binding
+     */
+    public String refreshPanesOnOk()
+    {
+        return (String) valueForBinding("refreshPanesOnOk");
     }
 
 
