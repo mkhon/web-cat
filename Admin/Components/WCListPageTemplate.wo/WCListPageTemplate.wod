@@ -55,6 +55,7 @@ DeleteImage: WOImage {
 	framework = "Core";
 	height = "17";
 	width = "14";
+    class = "icon";
 }
 
 EditEO: WOHyperlink {
@@ -69,6 +70,7 @@ EditImage: WOImage {
 	framework = "Core";
 	height = "17";
 	width = "18";
+    class = "icon";
 }
 
 EntityName: WOString {
