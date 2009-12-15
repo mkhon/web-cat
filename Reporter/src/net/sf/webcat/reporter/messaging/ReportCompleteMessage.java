@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportCompleteMessage.java,v 1.1 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: ReportCompleteMessage.java,v 1.2 2009/12/15 20:18:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -28,10 +28,11 @@ import net.sf.webcat.reporter.GeneratedReport;
 
 //-------------------------------------------------------------------------
 /**
- * TODO add description
+ * A message that is sent to the user who requested that a report be generated,
+ * once the report is complete.
  *
  * @author Tony Allevato
- * @version $Id: ReportCompleteMessage.java,v 1.1 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: ReportCompleteMessage.java,v 1.2 2009/12/15 20:18:05 aallowat Exp $
  */
 public class ReportCompleteMessage extends Message
 {
@@ -52,6 +53,9 @@ public class ReportCompleteMessage extends Message
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
+    /**
+     * Called by the subsystem init() to register the message.
+     */
     public static void register()
     {
         Message.registerMessage(
@@ -94,6 +98,8 @@ public class ReportCompleteMessage extends Message
     @Override
     public NSArray<User> users()
     {
+        // Returns an array containing the one user who generated this report.
+
         return new NSArray<User>(report.user());
     }
 
