@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.11 2009/12/09 04:57:05 aallowat Exp $
+ |  $Id: OptionEditPanel.java,v 1.12 2009/12/15 19:49:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.*;
 import er.extensions.eof.ERXConstant;
+import net.sf.webcat.ui.util.ComponentIDGenerator;
 import org.apache.log4j.*;
 
 //-------------------------------------------------------------------------
@@ -36,7 +37,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.11 2009/12/09 04:57:05 aallowat Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.12 2009/12/15 19:49:49 aallowat Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -67,12 +68,16 @@ public class OptionEditPanel
     public String                    browsePageName;
     public java.io.File              base;
 
+    public ComponentIDGenerator      idFor;
+
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
     public void appendToResponse( WOResponse response, WOContext context )
     {
+        idFor = new ComponentIDGenerator(this);
+
         // if ( type == 0 )
         {
             String typeName = (String)option.objectForKey( "type" );
@@ -189,6 +194,13 @@ public class OptionEditPanel
     public boolean isAntBoolean()
     {
         return type == ANT_BOOLEAN_TYPE;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean isPassword()
+    {
+        return type == PASSWORD_TYPE;
     }
 
 
@@ -470,6 +482,7 @@ public class OptionEditPanel
     private static final int SHORT_TEXT_TYPE   = 9;
     private static final int LONG_TEXT_TYPE    = 10;
     private static final int ANT_BOOLEAN_TYPE  = 11;
+    private static final int PASSWORD_TYPE     = 12;
     private static final String[] types = new String[] {
         "unknown",
         "boolean",
@@ -482,7 +495,8 @@ public class OptionEditPanel
         "fileOrDir",
         "shortText",
         "longText",
-        "antBoolean"
+        "antBoolean",
+        "password"
     };
     static Logger log = Logger.getLogger( OptionEditPanel.class );
 }
