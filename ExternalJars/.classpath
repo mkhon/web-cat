@@ -16,6 +16,7 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/edldap1_6_1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/bcprov-jdk15-129.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/twitter4j-2.0.10.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

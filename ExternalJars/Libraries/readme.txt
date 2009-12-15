@@ -15,6 +15,7 @@ jfreechart-1.0.1.jar
 mail.jar
 mysql-connector-java-3.1.13-bin.jar
 tar.jar
+twitter4j-2.0.10.jar
 utils.jar
 xerces.jar
 xml-apis.jar
