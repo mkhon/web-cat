@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ProtocolSettings.java,v 1.1 2009/12/09 04:58:36 aallowat Exp $
+ |  $Id: ProtocolSettings.java,v 1.2 2009/12/15 19:48:06 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -21,8 +21,7 @@
 
 package net.sf.webcat.core;
 
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
+import com.webobjects.eocontrol.EOEditingContext;
 
 // -------------------------------------------------------------------------
 /**
@@ -30,7 +29,7 @@ import com.webobjects.foundation.*;
  *
  * @author
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2009/12/09 04:58:36 $
+ * @version $Revision: 1.2 $ $Date: 2009/12/15 19:48:06 $
  */
 public class ProtocolSettings
     extends _ProtocolSettings
@@ -64,5 +63,51 @@ public class ProtocolSettings
     public static ProtocolSettings systemSettings(EOEditingContext ec)
     {
         return ProtocolSettings.forId(ec, 1);
+    }
+
+
+    // ----------------------------------------------------------
+    public Object settingForKey(String key)
+    {
+        Object value = settings().objectForKey(key);
+
+        if (value == null && parent() != null)
+        {
+            value = parent().settingForKey(key);
+        }
+
+        return value;
+    }
+
+
+    // ----------------------------------------------------------
+    public String stringSettingForKey(String key, String defaultValue)
+    {
+        String value = (String) settingForKey(key);
+        return value == null ? defaultValue : value;
+    }
+
+
+    // ----------------------------------------------------------
+    public Boolean booleanSettingForKey(String key, boolean defaultValue)
+    {
+        Boolean value = (Boolean) settingForKey(key);
+        return value == null ? defaultValue : value;
+    }
+
+
+    // ----------------------------------------------------------
+    public int intSettingForKey(String key, int defaultValue)
+    {
+        Number value = (Number) settingForKey(key);
+        return value == null ? defaultValue : value.intValue();
+    }
+
+
+    // ----------------------------------------------------------
+    public double doubleSettingForKey(String key, double defaultValue)
+    {
+        Number value = (Number) settingForKey(key);
+        return value == null ? defaultValue : value.doubleValue();
     }
 }
