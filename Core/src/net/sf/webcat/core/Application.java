@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.45 2009/12/09 04:58:36 aallowat Exp $
+ |  $Id: Application.java,v 1.46 2009/12/15 19:52:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -37,8 +37,10 @@ import java.util.regex.*;
 import javax.activation.*;
 import javax.mail.internet.*;
 import net.sf.webcat.archives.*;
+import net.sf.webcat.core.messaging.ApplicationStartupMessage;
 import net.sf.webcat.core.messaging.EmailProtocol;
 import net.sf.webcat.core.messaging.Message;
+import net.sf.webcat.core.messaging.SMSProtocol;
 import net.sf.webcat.core.messaging.TwitterProtocol;
 import net.sf.webcat.dbupdate.*;
 import ognl.helperfunction.WOHelperFunctionHTMLTemplateParser;
@@ -55,7 +57,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.45 $, $Date: 2009/12/09 04:58:36 $
+ * @version $Revision: 1.46 $, $Date: 2009/12/15 19:52:30 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -213,10 +215,11 @@ public class Application
      */
     public void notifyAdminsOfStartup()
     {
+        new ApplicationStartupMessage().send();
+
         sendAdminEmail( null, null, true, "Web-CAT starting up",
             "Web-CAT is starting up at " + startTime,
             null );
-
     }
 
 
@@ -2282,10 +2285,15 @@ public class Application
      */
     private void initializeMessagingSystem()
     {
+        // Register Core messages.
+
+        ApplicationStartupMessage.register();
+
         // Register messaging protocols.
 
         Message.registerProtocol(new EmailProtocol());
         Message.registerProtocol(new TwitterProtocol());
+        Message.registerProtocol(new SMSProtocol());
 
         // Initialize the system-wide broadcast settings object if it does not
         // already exist (this should only occur when the application is
