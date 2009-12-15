@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.13 2009/12/09 04:58:36 aallowat Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.14 2009/12/15 19:49:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.13 2009/12/09 04:58:36 aallowat Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.14 2009/12/15 19:49:03 aallowat Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -227,6 +227,18 @@ public class CoreDatabaseUpdates
     {
         createSentMessageTable();
         createUserSentMessageTable();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds the isBroadcast field to the SentMessage table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement13() throws SQLException
+    {
+        database().executeSQL(
+                "ALTER TABLE SentMessage ADD isBroadcast BIT NOT NULL");
     }
 
 

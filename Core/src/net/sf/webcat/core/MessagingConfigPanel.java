@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MessagingConfigPanel.java,v 1.1 2009/12/09 04:58:36 aallowat Exp $
+ |  $Id: MessagingConfigPanel.java,v 1.2 2009/12/15 19:49:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -26,6 +26,8 @@ import java.util.Map;
 import net.sf.webcat.core.messaging.Message;
 import net.sf.webcat.core.messaging.MessageDescriptor;
 import net.sf.webcat.core.messaging.Protocol;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
+import net.sf.webcat.ui.validation.ValidatingAction;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
@@ -40,7 +42,7 @@ import com.webobjects.foundation.NSDictionary;
  * user or for the system broadcast messages.
  *
  * @author Tony Allevato
- * @version $Id: MessagingConfigPanel.java,v 1.1 2009/12/09 04:58:36 aallowat Exp $
+ * @version $Id: MessagingConfigPanel.java,v 1.2 2009/12/15 19:49:03 aallowat Exp $
  */
 public class MessagingConfigPanel extends WCComponent
 {
@@ -59,6 +61,7 @@ public class MessagingConfigPanel extends WCComponent
 
     public NSArray<MessageDescriptor> messageDescriptors;
     public MessageDescriptor messageDescriptor;
+    public int indexOfMessage;
 
     public NSArray<Protocol> protocols;
     public Protocol protocol;
@@ -206,9 +209,18 @@ public class MessagingConfigPanel extends WCComponent
             for (int pIndex = 0; pIndex < protocols.count(); pIndex++)
             {
                 EOCustomObject object = objectMatrix[mIndex][pIndex];
-                boolean newValue = selectionMatrix[mIndex][pIndex];
+                Boolean _newValue = selectionMatrix[mIndex][pIndex];
                 boolean defaultValue = protocols.objectAtIndex(pIndex)
                     .isEnabledByDefault();
+                boolean newValue;
+                if (_newValue == null)
+                {
+                    newValue = defaultValue;
+                }
+                else
+                {
+                    newValue = _newValue;
+                }
 
                 if (object != null)
                 {
