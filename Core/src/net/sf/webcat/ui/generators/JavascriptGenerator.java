@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.1 2009/12/15 19:45:38 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.2 2009/12/15 20:12:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.sf.webcat.core.Application;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +42,7 @@ import com.webobjects.appserver.WOResponse;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.1 2009/12/15 19:45:38 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.2 2009/12/15 20:12:19 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -949,8 +950,7 @@ public class JavascriptGenerator implements WOActionResults
      */
     private boolean isDevelopmentMode()
     {
-        // FIXME
-        return false;
+        return Application.isDevelopmentModeSafe();
     }
 
 
