@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.9 2009/12/11 02:40:55 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.10 2009/12/15 20:16:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -28,14 +28,15 @@ import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import net.sf.webcat.core.*;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 
 //-------------------------------------------------------------------------
 /**
  * Allows the user to create a new course offering.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2009/12/11 02:40:55 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.10 $, $Date: 2009/12/15 20:16:16 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -320,22 +321,28 @@ public class NewCourseOfferingPage
             semester = newSemester;
             semesters = Semester.allObjectsOrderedByStartDate(localContext());
         }
-        return null;
+
+        JavascriptGenerator page = new JavascriptGenerator();
+        page.refresh("courseblock", "error-panel");
+        return page;
     }
 
 
     // ----------------------------------------------------------
     public WOActionResults createCourse()
     {
+        JavascriptGenerator page = new JavascriptGenerator();
+        page.refresh("courseblock", "error-panel");
+
         if (newCourseNumber == 0)
         {
             error("Please provide a course number.");
-            return null;
+            return page;
         }
         if (newCourseName == null || newCourseName.equals(""))
         {
             error("Please provide a course name.");
-            return null;
+            return page;
         }
 
         // Check for duplicate number
@@ -346,7 +353,7 @@ public class NewCourseOfferingPage
         {
             error("Course " + department.abbreviation() + " " + newCourseNumber
                 + " already exists.");
-            return null;
+            return page;
         }
 
         Course newCourse =
@@ -358,7 +365,8 @@ public class NewCourseOfferingPage
             coreSelections().setCourseOfferingRelationship(null);
             courseDisplayGroup.fetch();
         }
-        return null;
+
+        return page;
     }
 
 
