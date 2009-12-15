@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoRemoteHelper.java,v 1.4 2009/10/31 22:53:42 aallowat Exp $
+ |  $Id: DojoRemoteHelper.java,v 1.5 2009/12/15 19:45:06 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -73,7 +73,7 @@ import er.extensions.components._private.ERXWOForm;
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: DojoRemoteHelper.java,v 1.4 2009/10/31 22:53:42 aallowat Exp $
+ * @version $Id: DojoRemoteHelper.java,v 1.5 2009/12/15 19:45:06 aallowat Exp $
  */
 public class DojoRemoteHelper
 {
@@ -156,6 +156,10 @@ public class DojoRemoteHelper
         {
             responseType =
                 _responseType.valueInComponent(component).toString();
+        }
+        else
+        {
+            responseType = "javascript";
         }
 
         if (responseType != null)
@@ -310,6 +314,10 @@ public class DojoRemoteHelper
         {
             responseType =
                 _responseType.valueInComponent(component).toString();
+        }
+        else
+        {
+            responseType = "javascript";
         }
 
         if (responseType != null)
