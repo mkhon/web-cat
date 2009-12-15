@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: global.js,v 1.8 2009/12/15 19:49:58 aallowat Exp $
+ |  $Id: global.js,v 1.9 2009/12/15 20:12:32 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -168,7 +168,7 @@ webcat.invokeRemoteAction = function(/* _Widget */ widget,
         blockIds = refreshIds;
     }
 
-    blockIds = webcat._promoteSingletonIfNeeded(blockIds);
+    blockIds = webcat._parseIds(blockIds);
 
     var blockFunction = function()
     {
