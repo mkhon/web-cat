@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.26 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.27 2010/01/13 14:24:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,8 +38,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.26 $, $Date: 2009/12/09 05:01:35 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.27 $, $Date: 2010/01/13 14:24:11 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -80,6 +80,7 @@ public class EditAssignmentPage
 
     //~ Methods ...............................................................
 
+    // ----------------------------------------------------------
     public void awake()
     {
         long timeStart = System.currentTimeMillis();
@@ -89,6 +90,7 @@ public class EditAssignmentPage
     }
 
 
+    // ----------------------------------------------------------
     public void sleep()
     {
         long timeStart = System.currentTimeMillis();
