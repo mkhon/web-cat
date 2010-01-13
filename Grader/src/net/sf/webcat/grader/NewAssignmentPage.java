@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.7 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: NewAssignmentPage.java,v 1.8 2010/01/13 16:34:33 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -46,10 +46,10 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2009/12/09 05:01:35 $
+ * @version $Revision: 1.8 $, $Date: 2010/01/13 16:34:33 $
  */
 public class NewAssignmentPage
-    extends GraderAssignmentComponent
+    extends GraderCourseComponent
 {
     //~ Constructors ..........................................................
 
