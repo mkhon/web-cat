@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.15 2009/11/10 21:14:27 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.16 2010/01/13 14:06:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.15 $, $Date: 2009/11/10 21:14:27 $
+ * @version $Revision: 1.16 $, $Date: 2010/01/13 14:06:34 $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -458,7 +458,8 @@ public class CourseOffering
         // This code is basically the same as that in
         // _AssignmentOffering.objectsForCourseOffering()
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "courseOffering", "AssignmentOffering" );
+            .fetchSpecificationNamed(
+                "offeringsForCourseOffering", "AssignmentOffering");
         NSMutableDictionary bindings = new NSMutableDictionary();
         bindings.setObjectForKey( this, "courseOffering" );
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
