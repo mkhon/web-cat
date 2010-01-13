@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.46 2009/12/15 19:52:30 aallowat Exp $
+ |  $Id: Application.java,v 1.47 2010/01/13 16:29:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -57,7 +57,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.46 $, $Date: 2009/12/15 19:52:30 $
+ * @version $Revision: 1.47 $, $Date: 2010/01/13 16:29:53 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -1208,7 +1208,24 @@ public class Application
             }
             else
             {
-                javax.mail.Transport.send( message );
+                // AJA 2010.01.12: Fix (?) for the JAF/Mail issue that prevented mail
+                // from being sent from a servlet when running under Java 1.6:
+                // http://blog.hpxn.net/2009/12/02/tomcat-java-6-and-javamail-cant-load-dch/
+                ClassLoader originalClassLoader =
+                    Thread.currentThread().getContextClassLoader();
+
+                try
+                {
+                    Thread.currentThread().setContextClassLoader(
+                            Application.class.getClassLoader());
+
+                    javax.mail.Transport.send( message );
+                }
+                finally
+                {
+                    Thread.currentThread().setContextClassLoader(
+                            originalClassLoader);
+                }
             }
         }
         catch ( Exception e )
