@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.8 2009/11/10 21:14:27 stedwar2 Exp $
+ |  $Id: Course.java,v 1.9 2010/01/13 14:05:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import com.webobjects.eocontrol.*;
  * semesters (represented by separate course offerings).
  *
  * @author Stephen Edwards
- * @version $Id: Course.java,v 1.8 2009/11/10 21:14:27 stedwar2 Exp $
+ * @version $Id: Course.java,v 1.9 2010/01/13 14:05:39 stedwar2 Exp $
  */
 public class Course
     extends _Course
@@ -65,7 +65,14 @@ public class Course
      */
     public String deptNumber()
     {
-        return department().abbreviation() + " " + number();
+        if (department() != null)
+        {
+            return department().abbreviation() + " " + number();
+        }
+        else
+        {
+            return department() + " " + number();
+        }
     }
 
 
