@@ -28,7 +28,6 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXKey;
-import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -71,22 +70,22 @@ public abstract class _SurveyReminderJob
      */
     public static SurveyReminderJob create(
         EOEditingContext editingContext,
-        NSTimestamp enqueueTime,
-        boolean isCancelled,
-        boolean isPaused,
-        boolean isReady,
-        int priority
+        NSTimestamp enqueueTimeValue,
+        boolean isCancelledValue,
+        boolean isPausedValue,
+        boolean isReadyValue,
+        int priorityValue
         )
     {
         SurveyReminderJob eoObject = (SurveyReminderJob)
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _SurveyReminderJob.ENTITY_NAME);
-        eoObject.setEnqueueTime(enqueueTime);
-        eoObject.setIsCancelled(isCancelled);
-        eoObject.setIsPaused(isPaused);
-        eoObject.setIsReady(isReady);
-        eoObject.setPriority(priority);
+        eoObject.setEnqueueTime(enqueueTimeValue);
+        eoObject.setIsCancelled(isCancelledValue);
+        eoObject.setIsPaused(isPausedValue);
+        eoObject.setIsReady(isReadyValue);
+        eoObject.setPriority(priorityValue);
         return eoObject;
     }
 
@@ -404,6 +403,58 @@ public abstract class _SurveyReminderJob
             ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the first object that matches a qualifier, when
+     * sorted with the specified sort orderings.
+     *
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     * @param sortOrderings the sort orderings
+     *
+     * @return the first entity that was retrieved, or null if there was none
+     */
+    public static SurveyReminderJob firstObjectMatchingQualifier(
+        EOEditingContext context,
+        EOQualifier qualifier,
+        NSArray<EOSortOrdering> sortOrderings)
+    {
+        NSArray<SurveyReminderJob> results =
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
+        return (results.size() > 0)
+            ? results.get(0)
+            : null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     *
+     * @return the single entity that was retrieved
+     *
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static SurveyReminderJob uniqueObjectMatchingQualifier(
+        EOEditingContext context,
+        EOQualifier qualifier) throws EOUtilities.MoreThanOneException
+    {
+        NSArray<SurveyReminderJob> results =
+            objectsMatchingQualifier(context, qualifier);
+        if (results.size() > 1)
+        {
+            throw new EOUtilities.MoreThanOneException(null);
+        }
+        return (results.size() > 0)
+            ? results.get(0)
+            : null;
     }
 
 

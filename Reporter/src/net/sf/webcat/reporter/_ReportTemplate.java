@@ -28,7 +28,6 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXKey;
-import java.util.Enumeration;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -69,16 +68,16 @@ public abstract class _ReportTemplate
      */
     public static ReportTemplate create(
         EOEditingContext editingContext,
-        boolean isPublished,
-        boolean updateMutableFields
+        boolean isPublishedValue,
+        boolean updateMutableFieldsValue
         )
     {
         ReportTemplate eoObject = (ReportTemplate)
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _ReportTemplate.ENTITY_NAME);
-        eoObject.setIsPublished(isPublished);
-        eoObject.setUpdateMutableFields(updateMutableFields);
+        eoObject.setIsPublished(isPublishedValue);
+        eoObject.setUpdateMutableFields(updateMutableFieldsValue);
         return eoObject;
     }
 
@@ -1226,10 +1225,10 @@ public abstract class _ReportTemplate
             log.debug( "deleteAllBranchedTemplatesRelationships(): was "
                 + branchedTemplates() );
         }
-        Enumeration<?> objects = branchedTemplates().objectEnumerator();
-        while ( objects.hasMoreElements() )
-            deleteBranchedTemplatesRelationship(
-                (net.sf.webcat.reporter.ReportTemplate)objects.nextElement() );
+        for (net.sf.webcat.reporter.ReportTemplate object : branchedTemplates())
+        {
+            deleteBranchedTemplatesRelationship(object);
+        }
     }
 
 
@@ -1404,10 +1403,10 @@ public abstract class _ReportTemplate
             log.debug( "deleteAllDataSetsRelationships(): was "
                 + dataSets() );
         }
-        Enumeration<?> objects = dataSets().objectEnumerator();
-        while ( objects.hasMoreElements() )
-            deleteDataSetsRelationship(
-                (net.sf.webcat.reporter.ReportDataSet)objects.nextElement() );
+        for (net.sf.webcat.reporter.ReportDataSet object : dataSets())
+        {
+            deleteDataSetsRelationship(object);
+        }
     }
 
 
@@ -1480,6 +1479,58 @@ public abstract class _ReportTemplate
             ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the first object that matches a qualifier, when
+     * sorted with the specified sort orderings.
+     *
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     * @param sortOrderings the sort orderings
+     *
+     * @return the first entity that was retrieved, or null if there was none
+     */
+    public static ReportTemplate firstObjectMatchingQualifier(
+        EOEditingContext context,
+        EOQualifier qualifier,
+        NSArray<EOSortOrdering> sortOrderings)
+    {
+        NSArray<ReportTemplate> results =
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
+        return (results.size() > 0)
+            ? results.get(0)
+            : null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve a single object using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     *
+     * @return the single entity that was retrieved
+     *
+     * @throws EOUtilities.MoreThanOneException
+     *     if there is more than one matching object
+     */
+    public static ReportTemplate uniqueObjectMatchingQualifier(
+        EOEditingContext context,
+        EOQualifier qualifier) throws EOUtilities.MoreThanOneException
+    {
+        NSArray<ReportTemplate> results =
+            objectsMatchingQualifier(context, qualifier);
+        if (results.size() > 1)
+        {
+            throw new EOUtilities.MoreThanOneException(null);
+        }
+        return (results.size() > 0)
+            ? results.get(0)
+            : null;
     }
 
 
