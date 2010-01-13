@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.18 2009/12/08 03:28:04 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.19 2010/01/13 14:08:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -57,7 +57,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @version $Id: WCComponent.java,v 1.18 2009/12/08 03:28:04 stedwar2 Exp $
+ * @version $Id: WCComponent.java,v 1.19 2010/01/13 14:08:26 stedwar2 Exp $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -272,7 +272,7 @@ public class WCComponent
         }
         if (cancelsForward)
         {
-            return internalNext();
+            return internalNext(false);
         }
         else
         {
@@ -377,7 +377,7 @@ public class WCComponent
      */
     public WOComponent next()
     {
-        return internalNext();
+        return internalNext(true);
     }
 
 
@@ -782,14 +782,14 @@ public class WCComponent
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-    public WOComponent internalNext()
+    public WOComponent internalNext(boolean save)
     {
         if ( hasMessages() )
         {
             return null;
         }
 
-        if (nextPerformsSave)
+        if (save && nextPerformsSave)
         {
             if (!applyLocalChanges())
             {
