@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.9 2009/11/18 00:34:57 stedwar2 Exp $
+ |  $Id: Step.java,v 1.10 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
  * processing sequence for handling a given assignment.
  *
  * @author stedwar2
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2009/11/18 00:34:57 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.10 $, $Date: 2010/01/15 17:12:21 $
  */
 public class Step
     extends _Step
@@ -59,7 +59,7 @@ public class Step
      */
     public String userPresentableDescription()
     {
-        return "(" + order() + "): " + script();
+        return "(" + order() + "): " + gradingPlugin();
     }
 
 
@@ -125,8 +125,22 @@ public class Step
     public int effectiveEndToEndTimeout()
     {
         int timeoutOneRun = effectiveTimeoutForOneRun();
-        return timeoutOneRun * script().timeoutMultiplier()
-            + script().timeoutInternalPadding();
+        return timeoutOneRun * gradingPlugin().timeoutMultiplier()
+            + gradingPlugin().timeoutInternalPadding();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Deprecated; may be removed in the future once all bindings in WOD files
+     * have been renamed. Use {@link #gradingPlugin()} instead.
+     *
+     * @return the grading plugin associated with this step
+     */
+    @Deprecated
+    public GradingPlugin script()
+    {
+        return gradingPlugin();
     }
 
 
@@ -205,13 +219,13 @@ public class Step
         {
             try
             {
-                script().execute( args, cwd );
+                gradingPlugin().execute( args, cwd );
             }
             catch ( IOException e )
             {
                 // Error creating process, so record it
                 log.error( "Exception executing "
-                           + script().mainFilePath(),
+                           + gradingPlugin().mainFilePath(),
                            e );
                 exception = e;
             }

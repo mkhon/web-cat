@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.27 2010/01/13 14:24:11 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.28 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,8 +38,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.27 $, $Date: 2010/01/13 14:24:11 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.28 $, $Date: 2010/01/15 17:12:21 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -73,9 +73,9 @@ public class EditAssignmentPage
 
     public AssignmentOffering offeringToDelete;
 
-    public NSArray<ScriptFile> gradingPluginsToAdd;
-    public ScriptFile gradingPluginToAdd;
-    public ScriptFile selectedGradingPluginToAdd;
+    public NSArray<GradingPlugin> gradingPluginsToAdd;
+    public GradingPlugin gradingPluginToAdd;
+    public GradingPlugin selectedGradingPluginToAdd;
 
 
     //~ Methods ...............................................................
@@ -109,7 +109,7 @@ public class EditAssignmentPage
         currentTime = new NSTimestamp();
 
         // Get all the available grading plugins.
-        gradingPluginsToAdd = ScriptFile.pluginsAvailableToUser(
+        gradingPluginsToAdd = GradingPlugin.pluginsAvailableToUser(
                 localContext(), user());
 
         if (selectedOffering == null)
@@ -550,7 +550,7 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     public boolean stepAllowsTimeout()
     {
-        return thisStep.script().timeoutMultiplier() != 0;
+        return thisStep.gradingPlugin().timeoutMultiplier() != 0;
     }
 
 

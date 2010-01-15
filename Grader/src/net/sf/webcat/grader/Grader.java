@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.17 2009/11/18 01:42:49 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.18 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.17 2009/11/18 01:42:49 stedwar2 Exp $
+*  @version $Id: Grader.java,v 1.18 2010/01/15 17:12:21 aallowat Exp $
 */
 public class Grader
    extends Subsystem
@@ -84,7 +84,7 @@ public class Grader
         super.init();
 
         // Install or update any plug-ins that need it
-        ScriptFile.autoUpdateAndInstall();
+        GradingPlugin.autoUpdateAndInstall();
 
         // Create the queue and the queueprocessor
         graderQueue          = new GraderQueue();

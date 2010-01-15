@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OldEditScriptPage.java,v 1.5 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: OldEditScriptPage.java,v 1.6 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: OldEditScriptPage.java,v 1.5 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: OldEditScriptPage.java,v 1.6 2010/01/15 17:12:21 aallowat Exp $
  */
 public class OldEditScriptPage
     extends GraderComponent
@@ -74,7 +74,7 @@ public class OldEditScriptPage
     {
         NSMutableArray files = new NSMutableArray();
         Step selectedStep = prefs().step();
-        ScriptFile script = selectedStep.script();
+        GradingPlugin script = selectedStep.gradingPlugin();
         log.debug( "attempting to build file list for display" );
         hasExistingFiles = false;
         if ( script != null )
@@ -151,7 +151,7 @@ public class OldEditScriptPage
         }
         log.debug( "uploaded name = " +
                    ( ( uploadedName == null ) ? "<null>" : uploadedName ) );
-        ScriptFile script = prefs().step().script();
+        GradingPlugin script = prefs().step().gradingPlugin();
         log.debug( "uploaded data is "
                    + ( ( uploadedData == null) ? "<null>" : "not <null>" ) );
         if ( uploadedData != null )
@@ -213,7 +213,7 @@ public class OldEditScriptPage
             script.setMainFileName( uploadedName );
             script.setLastModified( new NSTimestamp() );
 
-            String subdirName = ScriptFile.convertToSubdirName( uploadedName );
+            String subdirName = GradingPlugin.convertToSubdirName( uploadedName );
             File check1 = new File( script.mainFilePath() );
             File check2 = new File( script.dirName(), subdirName );
 
@@ -323,12 +323,12 @@ public class OldEditScriptPage
 
 
     // ----------------------------------------------------------
-    public ScriptFile createNewScript()
+    public GradingPlugin createNewScript()
     {
-        ScriptFile newScript = new ScriptFile();
+        GradingPlugin newScript = new GradingPlugin();
         localContext().insertObject( newScript );
         Step selectedStep = prefs().step();
-        selectedStep.setScriptRelationship( newScript );
+        selectedStep.setGradingPluginRelationship( newScript );
         newScript.setAuthorRelationship( user() );
         return newScript;
     }

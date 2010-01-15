@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginDescriptor.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: PluginDescriptor.java,v 1.4 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import net.sf.webcat.FeatureDescriptor;
  *  can be obtained on the web.
  *
  *  @author  stedwar2
- *  @version $Id: PluginDescriptor.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: PluginDescriptor.java,v 1.4 2010/01/15 17:12:21 aallowat Exp $
  */
 public class PluginDescriptor
     extends FeatureDescriptor
@@ -42,11 +42,11 @@ public class PluginDescriptor
     // ----------------------------------------------------------
     /**
      * Creates a new plug-in descriptor.  This constructor is protected,
-     * since clients should use the {@link ScriptFile#descriptor()}
+     * since clients should use the {@link GradingPlugin#descriptor()}
      * method instead.
      * @param plugin the plug-in this descriptor is for
      */
-    protected PluginDescriptor( ScriptFile plugin )
+    protected PluginDescriptor( GradingPlugin plugin )
     {
         this.plugin = plugin;
         this.name = plugin.name();
@@ -139,7 +139,7 @@ public class PluginDescriptor
 
     //~ Instance/static variables .............................................
 
-    protected ScriptFile plugin;
+    protected GradingPlugin plugin;
 
     static Logger log = Logger.getLogger( PluginDescriptor.class );
 }

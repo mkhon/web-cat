@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.7 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: StepConfig.java,v 1.8 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import net.sf.webcat.core.*;
  * Custom settings for a single grading {@link Step}.
  *
  * @author stedwar2
- * @version $Id: StepConfig.java,v 1.7 2009/12/09 05:01:35 aallowat Exp $
+ * @version $Id: StepConfig.java,v 1.8 2010/01/15 17:12:21 aallowat Exp $
  */
 public class StepConfig
     extends _StepConfig
@@ -118,7 +118,7 @@ public class StepConfig
     public static NSArray configsForUserAndCourseScriptIncludingMine(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding,
-            net.sf.webcat.grader.ScriptFile scriptFileBinding,
+            net.sf.webcat.grader.GradingPlugin scriptFileBinding,
             net.sf.webcat.core.Course courseBinding,
             StepConfig mine
         )

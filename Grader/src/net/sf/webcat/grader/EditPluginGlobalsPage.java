@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPluginGlobalsPage.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: EditPluginGlobalsPage.java,v 1.5 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  *  rendering the page.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditPluginGlobalsPage.java,v 1.4 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: EditPluginGlobalsPage.java,v 1.5 2010/01/15 17:12:21 aallowat Exp $
  */
 public class EditPluginGlobalsPage
     extends GraderComponent
@@ -54,7 +54,7 @@ public class EditPluginGlobalsPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public ScriptFile   plugin;
+    public GradingPlugin   plugin;
     public java.io.File baseDir;
 
 
@@ -66,7 +66,7 @@ public class EditPluginGlobalsPage
         log.debug( "appendToResponse()" );
         if ( baseDir == null )
         {
-            baseDir = new java.io.File ( ScriptFile.userScriptDirName(
+            baseDir = new java.io.File ( GradingPlugin.userScriptDirName(
                 user(), true ).toString() );
         }
         if ( log.isDebugEnabled() )

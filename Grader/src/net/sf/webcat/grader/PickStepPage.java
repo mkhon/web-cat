@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickStepPage.java,v 1.8 2009/10/20 15:51:24 stedwar2 Exp $
+ |  $Id: PickStepPage.java,v 1.9 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: PickStepPage.java,v 1.8 2009/10/20 15:51:24 stedwar2 Exp $
+ * @version $Id: PickStepPage.java,v 1.9 2010/01/15 17:12:21 aallowat Exp $
  */
 public class PickStepPage
     extends GraderComponent
@@ -59,7 +59,7 @@ public class PickStepPage
 
     public WODisplayGroup scriptGroup;
     public WODisplayGroup publishedScriptGroup;
-    public ScriptFile     script;
+    public GradingPlugin  script;
     public WODisplayGroup assignmentGroup;
     public Assignment     assignment;
     public int            selectedAssignmentIndex = -1;
@@ -292,7 +292,7 @@ public class PickStepPage
                 error( "Please select a file to upload." );
                 return null;
             }
-            ScriptFile newScript = ScriptFile.createNewScriptFile(
+            GradingPlugin newScript = GradingPlugin.createNewGradingPlugin(
                 localContext(),
                 user(),
                 uploadedName,
@@ -323,7 +323,7 @@ public class PickStepPage
 //            publishedScriptIndex -= assignmentGroup.displayedObjects().count();
             log.debug(" selected published  = " + publishedScriptIndex );
             targetAssignment.addNewStep(
-                (ScriptFile)publishedScriptGroup.displayedObjects()
+                (GradingPlugin)publishedScriptGroup.displayedObjects()
                     .objectAtIndex( publishedScriptIndex ) );
             applyLocalChanges();
         }
@@ -334,7 +334,7 @@ public class PickStepPage
                 publishedScriptGroup.displayedObjects().count();
             log.debug(" selected script     = " + selectedScriptIndex );
             targetAssignment.addNewStep(
-                (ScriptFile)scriptGroup.displayedObjects()
+                (GradingPlugin)scriptGroup.displayedObjects()
                     .objectAtIndex( selectedScriptIndex ) );
             applyLocalChanges();
         }

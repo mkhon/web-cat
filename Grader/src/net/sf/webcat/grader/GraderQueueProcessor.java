@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.23 2009/11/18 01:42:49 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.24 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
  * job.
  *
  * @author Amit Kulkarni
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.23 $, $Date: 2009/11/18 01:42:49 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.24 $, $Date: 2010/01/15 17:12:21 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -576,11 +576,11 @@ public class GraderQueueProcessor
         faultOccurredInStep = false;
         timeoutOccurredInStep = false;
         log.debug( "step " + step.order() + ": "
-                   + step.script().mainFilePath() );
+                   + step.gradingPlugin().mainFilePath() );
 
         try
         {
-            step.script().reinitializeConfigAttributesIfNecessary();
+            step.gradingPlugin().reinitializeConfigAttributesIfNecessary();
             log.debug( "creating properties file" );
             // Re-write the properties file
             properties.addPropertiesFromDictionaryIfNotDefined(
@@ -588,9 +588,9 @@ public class GraderQueueProcessor
                     .subsystemManager().pluginProperties()
                 );
             properties.addPropertiesFromDictionaryIfNotDefined(
-                step.script().globalConfigSettings() );
+                step.gradingPlugin().globalConfigSettings() );
             properties.addPropertiesFromDictionaryIfNotDefined(
-                step.script().defaultConfigSettings() );
+                step.gradingPlugin().defaultConfigSettings() );
             if ( step.config() != null )
             {
                 properties.addPropertiesFromDictionary(
@@ -605,9 +605,9 @@ public class GraderQueueProcessor
             properties.setProperty( "resultDir",
                                     job.submission().resultDirName() );
             properties.setProperty( "scriptHome",
-                                    step.script().dirName() );
+                                    step.gradingPlugin().dirName() );
             properties.setProperty( "scriptData",
-                            ScriptFile.scriptDataRoot() );
+                            GradingPlugin.scriptDataRoot() );
             properties.setProperty( "timeout",
                                     Integer.toString(
                                         step.effectiveEndToEndTimeout() ) );

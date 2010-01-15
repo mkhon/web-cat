@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.14 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: Assignment.java,v 1.15 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.14 $, $Date: 2009/12/09 05:01:35 $
+ * @version $Revision: 1.15 $, $Date: 2010/01/15 17:12:21 $
  */
 public class Assignment
     extends _Assignment
@@ -180,12 +180,12 @@ public class Assignment
 
 
     // ----------------------------------------------------------
-    public Step addNewStep( ScriptFile script )
+    public Step addNewStep( GradingPlugin script )
     {
         int position = steps().count() + 1;
         Step step = createStepsRelationship();
         step.setOrder( position );
-        step.setScriptRelationship( script );
+        step.setGradingPluginRelationship( script );
         return step;
     }
 
@@ -193,7 +193,7 @@ public class Assignment
     // ----------------------------------------------------------
     public Step copyStep( Step step, boolean keepOrdering )
     {
-        Step newStep = addNewStep( step.script() );
+        Step newStep = addNewStep( step.gradingPlugin() );
         newStep.setTimeout( step.timeout() );
         newStep.setConfigRelationship( step.config() );
         MutableDictionary dict = step.configSettings();

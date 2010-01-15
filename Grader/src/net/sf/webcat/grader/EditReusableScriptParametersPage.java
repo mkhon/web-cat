@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditReusableScriptParametersPage.java,v 1.6 2009/09/21 01:09:36 stedwar2 Exp $
+ |  $Id: EditReusableScriptParametersPage.java,v 1.7 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2009/09/21 01:09:36 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.7 $, $Date: 2010/01/15 17:12:21 $
  */
 public class EditReusableScriptParametersPage
     extends GraderComponent
@@ -73,7 +73,7 @@ public class EditReusableScriptParametersPage
         step = prefs().step();
         if ( baseDir == null )
         {
-            baseDir = new java.io.File ( ScriptFile.userScriptDirName(
+            baseDir = new java.io.File ( GradingPlugin.userScriptDirName(
                 user(), true ).toString() );
         }
         if ( step.config() == null )
@@ -128,9 +128,9 @@ public class EditReusableScriptParametersPage
     public String title()
     {
         String plugin = "Plug-in";
-        if (step != null && step.script() != null)
+        if (step != null && step.gradingPlugin() != null)
         {
-            plugin = step.script().displayableName();
+            plugin = step.gradingPlugin().displayableName();
         }
         return "Edit Reusable Options for " + plugin;
     }

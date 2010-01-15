@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.14 2009/10/31 13:46:12 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.15 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.14 $, $Date: 2009/10/31 13:46:12 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.15 $, $Date: 2010/01/15 17:12:21 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -115,17 +115,20 @@ public class UploadSubmissionPage
             startSubmission(currentSubNo, user());
         }
 
-        log.debug( "due = "
-                   + prefs().assignmentOffering().dueDate().getTime() );
-        log.debug( "grace = " +
-                   prefs().assignmentOffering().assignment()
-                       .submissionProfile().deadTimeDelta() );
+        if (prefs().assignmentOffering().dueDate() != null)
+        {
+            log.debug( "due = "
+                       + prefs().assignmentOffering().dueDate().getTime() );
+            log.debug( "grace = " +
+                       prefs().assignmentOffering().assignment()
+                           .submissionProfile().deadTimeDelta() );
 
-        NSTimestamp deadline = new NSTimestamp(
-                prefs().assignmentOffering().dueDate().getTime()
-                + prefs().assignmentOffering().assignment()
-                   .submissionProfile().deadTimeDelta() );
-        log.debug( "time = " + deadline );
+            NSTimestamp deadline = new NSTimestamp(
+                    prefs().assignmentOffering().dueDate().getTime()
+                    + prefs().assignmentOffering().assignment()
+                       .submissionProfile().deadTimeDelta() );
+            log.debug( "time = " + deadline );
+        }
 
         super._appendToResponse( response, context );
         oldBatchSize  = submissionDisplayGroup.numberOfObjectsPerBatch();

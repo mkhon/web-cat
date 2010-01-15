@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.9 2008/04/02 01:55:19 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.10 2010/01/15 17:12:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditScriptFilesPage.java,v 1.9 2008/04/02 01:55:19 stedwar2 Exp $
+ * @version $Id: EditScriptFilesPage.java,v 1.10 2010/01/15 17:12:21 aallowat Exp $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -59,7 +59,7 @@ public class EditScriptFilesPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public ScriptFile scriptFile;
+    public GradingPlugin gradingPlugin;
     public File       base;
     public boolean    isEditable;
     public boolean    allowSelectDir;
@@ -87,13 +87,13 @@ public class EditScriptFilesPage
         folderName = null;
         if ( base == null )
         {
-            if ( scriptFile.hasSubdir() )
+            if ( gradingPlugin.hasSubdir() )
             {
-                base = new File( scriptFile.dirName() );
+                base = new File( gradingPlugin.dirName() );
             }
             else
             {
-                base = new File( scriptFile.mainFilePath() );
+                base = new File( gradingPlugin.mainFilePath() );
             }
         }
         if ( folderList == null )
@@ -134,7 +134,7 @@ public class EditScriptFilesPage
         if ( title == null )
         {
             title = isEditable ? "Edit Your " : "Browse Your ";
-            if ( scriptFile == null )
+            if ( gradingPlugin == null )
             {
                 title += "Configuration ";
             }
@@ -234,9 +234,9 @@ public class EditScriptFilesPage
                 error( e.getMessage() );
             }
         }
-        if ( scriptFile != null )
+        if ( gradingPlugin != null )
         {
-            scriptFile.initializeConfigAttributes();
+            gradingPlugin.initializeConfigAttributes();
             applyLocalChanges();
         }
         return null;
@@ -262,9 +262,9 @@ public class EditScriptFilesPage
             {
                 error( e.getMessage() );
             }
-            if ( scriptFile != null )
+            if ( gradingPlugin != null )
             {
-                scriptFile.initializeConfigAttributes();
+                gradingPlugin.initializeConfigAttributes();
                 applyLocalChanges();
             }
             folderList = null;
@@ -303,10 +303,10 @@ public class EditScriptFilesPage
     // ----------------------------------------------------------
     public void saveFile( String fileName )
     {
-        if ( scriptFile != null )
+        if ( gradingPlugin != null )
         {
-            scriptFile.initializeConfigAttributes();
-            scriptFile.setLastModified( new NSTimestamp() );
+            gradingPlugin.initializeConfigAttributes();
+            gradingPlugin.setLastModified( new NSTimestamp() );
             applyLocalChanges();
         }
     }
