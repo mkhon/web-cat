@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TemplateLibraryPage.java,v 1.10 2009/11/23 00:42:32 stedwar2 Exp $
+ |  $Id: TemplateLibraryPage.java,v 1.11 2010/01/15 17:06:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,6 @@ import net.sf.webcat.core.DeliverFile;
 import net.sf.webcat.core.User;
 import net.sf.webcat.core.WCComponent;
 import net.sf.webcat.core.WCFile;
-import net.sf.webcat.grader.PluginManagerPage;
-import net.sf.webcat.grader.ScriptFile;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -43,7 +41,7 @@ import org.apache.log4j.Logger;
  * templates or manage existing ones.
  *
  * @author Tony Allevato
- * @version $Id: TemplateLibraryPage.java,v 1.10 2009/11/23 00:42:32 stedwar2 Exp $
+ * @version $Id: TemplateLibraryPage.java,v 1.11 2010/01/15 17:06:19 aallowat Exp $
  */
 public class TemplateLibraryPage
     extends WCComponent
