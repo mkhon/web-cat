@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.9 2010/01/15 17:08:48 aallowat Exp $
+ |  $Id: CoreNavigator.java,v 1.10 2010/01/15 19:16:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.9 $ $Date: 2010/01/15 17:08:48 $
+ * @version $Revision: 1.10 $ $Date: 2010/01/15 19:16:55 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -248,7 +248,7 @@ public class CoreNavigator
 
         if (selectedRole != null)
         {
-            isStaffRole = "staff".equals(selectedRole.label());
+            isStaffRole = selectedRole.accessLevel() >= User.GTA_PRIVILEGES;
         }
 
         // First, get all the course offerings we're interested in based on
