@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.10 2010/01/15 19:16:55 aallowat Exp $
+ |  $Id: CoreNavigator.java,v 1.11 2010/01/15 19:36:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.10 $ $Date: 2010/01/15 19:16:55 $
+ * @version $Revision: 1.11 $ $Date: 2010/01/15 19:36:56 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -178,6 +178,13 @@ public class CoreNavigator
                 }
             }
         }
+
+        TabDescriptor selectedRole = ((Session)session()).tabs.selectedChild();
+        if (selectedRole != null)
+        {
+            selectedRoleAccessLevel = selectedRole.accessLevel();
+        }
+
         log.debug("selected semester = " + selectedSemester);
         log.debug("selected course = " + selectedCourseOffering);
         log.debug("parent = " + parent().getClass().getName());
@@ -248,7 +255,7 @@ public class CoreNavigator
 
         if (selectedRole != null)
         {
-            isStaffRole = selectedRole.accessLevel() >= User.GTA_PRIVILEGES;
+            isStaffRole = selectedRoleAccessLevel >= User.GTA_PRIVILEGES;
         }
 
         // First, get all the course offerings we're interested in based on
@@ -486,5 +493,6 @@ public class CoreNavigator
 
     protected WCCourseComponent selectionsParent = null;
     private Course wantOfferingsForCourse;
+    private int selectedRoleAccessLevel = 0;
     static Logger log = Logger.getLogger(CoreNavigator.class);
 }
