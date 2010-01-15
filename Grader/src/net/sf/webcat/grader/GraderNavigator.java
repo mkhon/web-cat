@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.7 2009/11/18 01:42:49 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.8 2010/01/15 17:09:43 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -81,8 +81,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.7 $ $Date: 2009/11/18 01:42:49 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.8 $ $Date: 2010/01/15 17:09:43 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -165,7 +165,7 @@ public class GraderNavigator
      */
     public WOActionResults updateAssignments()
     {
-    	log.debug("updateAssignments()");
+        log.debug("updateAssignments()");
         assignments = new NSMutableArray<INavigatorObject>();
 
         if (selectedCourseOffering == null)
@@ -194,7 +194,7 @@ public class GraderNavigator
             .objectsWithFetchSpecification(localContext(), fspec);
         if (log.isDebugEnabled())
         {
-        	log.debug("scanning assignment offerings: " + assnOffs);
+            log.debug("scanning assignment offerings: " + assnOffs);
         }
 
         // Filter out closed assignments (lateDeadline is not a database
@@ -212,9 +212,9 @@ public class GraderNavigator
                     ERXQ.greaterThan("lateDeadline", now));
         }
         Map<Assignment, Assignment> closedAssigns =
-        	new HashMap<Assignment, Assignment>();
+            new HashMap<Assignment, Assignment>();
         Map<Assignment, Assignment> unpublishedAssigns =
-        	new HashMap<Assignment, Assignment>();
+            new HashMap<Assignment, Assignment>();
         for (AssignmentOffering ao : assnOffs)
         {
             if (!ao.publish())
@@ -222,7 +222,7 @@ public class GraderNavigator
                 Assignment a = ao.assignment();
                 unpublishedAssigns.put(a, a);
             }
-            if (now.after(ao.lateDeadline()))
+            if (ao.lateDeadline() != null && now.after(ao.lateDeadline()))
             {
                 Assignment a = ao.assignment();
                 closedAssigns.put(a, a);
@@ -262,19 +262,19 @@ public class GraderNavigator
 
         if (assignments.count() == 0 && userIsStaffForSelectedCourse())
         {
-        	// If none were found ...
-        	if (!showUnpublishedAssignments())
-        	{
-        		// First, try enabling unpublished assignments
-        		setShowUnpublishedAssignments(true);
-        		return updateAssignments();
-        	}
-        	else if (!showClosedAssignments())
-        	{
-        		// Then try enabling closed assignments
-        		setShowClosedAssignments(true);
-        		return updateAssignments();
-        	}
+            // If none were found ...
+            if (!showUnpublishedAssignments())
+            {
+                // First, try enabling unpublished assignments
+                setShowUnpublishedAssignments(true);
+                return updateAssignments();
+            }
+            else if (!showClosedAssignments())
+            {
+                // Then try enabling closed assignments
+                setShowClosedAssignments(true);
+                return updateAssignments();
+            }
         }
 
         if (assignments.count() > 0 && selectedAssignment == null)
@@ -299,11 +299,11 @@ public class GraderNavigator
      */
     public WOActionResults okPressed()
     {
-    	log.debug("okPressed()");
-    	WOActionResults result = super.okPressed();
+        log.debug("okPressed()");
+        WOActionResults result = super.okPressed();
 
-    	if (selectedAssignment != null)
-    	{
+        if (selectedAssignment != null)
+        {
             NSArray<?> assignArray = selectedAssignment.representedObjects();
             if (assignArray.count() > 0)
             {
@@ -331,13 +331,13 @@ public class GraderNavigator
             {
                 graderParent.prefs().setAssignmentRelationship(null);
             }
-    	}
-    	else
-    	{
-    	    graderParent.prefs().setAssignmentRelationship(null);
-    	}
+        }
+        else
+        {
+            graderParent.prefs().setAssignmentRelationship(null);
+        }
 
-    	return result;
+        return result;
     }
 
 

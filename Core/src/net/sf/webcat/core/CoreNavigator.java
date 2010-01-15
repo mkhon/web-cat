@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.8 2009/12/09 04:58:56 aallowat Exp $
+ |  $Id: CoreNavigator.java,v 1.9 2010/01/15 17:08:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.8 $ $Date: 2009/12/09 04:58:56 $
+ * @version $Revision: 1.9 $ $Date: 2010/01/15 17:08:48 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -243,6 +243,14 @@ public class CoreNavigator
 
         NSArray<CourseOffering> offerings;
 
+        TabDescriptor selectedRole = ((Session)session()).tabs.selectedChild();
+        boolean isStaffRole = false;
+
+        if (selectedRole != null)
+        {
+            isStaffRole = "staff".equals(selectedRole.label());
+        }
+
         // First, get all the course offerings we're interested in based on
         // the user's access level and selections in the UI. This may include
         // more offerings that we really need.
@@ -252,7 +260,7 @@ public class CoreNavigator
             offerings = EOUtilities.objectsForEntityNamed(
                 localContext(), CourseOffering.ENTITY_NAME);
         }
-        else if (user().hasTAPrivileges() && includeWhatImTeaching())
+        else if (!isStaffRole)
         {
             NSMutableArray<CourseOffering> temp =
                 new NSMutableArray<CourseOffering>();
@@ -264,7 +272,7 @@ public class CoreNavigator
         }
         else
         {
-            offerings = user().enrolledIn();
+            offerings = user().staffFor();
         }
 
         // Next, filter the course offerings to include only those that occur
