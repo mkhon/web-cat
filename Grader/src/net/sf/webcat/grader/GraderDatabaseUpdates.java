@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.10 2009/12/07 20:03:01 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.11 2010/01/20 17:00:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.10 2009/12/07 20:03:01 stedwar2 Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.11 2010/01/20 17:00:18 aallowat Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -260,6 +260,23 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TASSIGNMENT add "
             + "trackOpinions BIT NOT NULL" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds fields for keeping track of the accumulated values for result
+     * outcomes in a submission result.
+     * @throws SQLException on error
+     */
+    public void updateIncrement12() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSUBMISSIONRESULT add "
+            + "CUPDATEMUTABLEFIELDS BIT NOT NULL" );
+        database().executeSQL(
+            "alter table TSUBMISSIONRESULT add "
+            + "accumulatedSavedProperties BLOB" );
     }
 
 
