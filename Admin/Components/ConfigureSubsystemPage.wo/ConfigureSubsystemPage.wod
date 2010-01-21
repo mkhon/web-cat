@@ -4,14 +4,3 @@ OptionEditor: net.sf.webcat.core.OptionSetEditor {
     categories        = subsystem.parameterDescriptions.optionCategories;
     verboseOptionsKey = "ConfigureSubsystemPageNoVerboseOptions";
 }
-
-
-Page: net.sf.webcat.core.WizardPage {
-    sideStepTitle = "Configure Subsystem Settings";
-    applyEnabled  = true;
-}
-
-
-SubsystemName: WOString {
-    value = subsystem.name;
-}
