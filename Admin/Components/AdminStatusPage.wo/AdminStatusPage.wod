@@ -33,4 +33,5 @@ SystemStatus: SystemStatusBlock {
 
 ThrowException: WCButton {
     action = throwException;   // VALID
+    label = "Force Exception";
 }
