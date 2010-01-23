@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.1 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: GradingPlugin.java,v 1.2 2010/01/23 02:36:42 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *
  *  @author Stephen Edwards
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.1 $, $Date: 2010/01/15 17:12:21 $
+ *  @version $Revision: 1.2 $, $Date: 2010/01/23 02:36:42 $
  */
 public class GradingPlugin
     extends _GradingPlugin
