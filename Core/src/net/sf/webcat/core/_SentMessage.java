@@ -27,6 +27,7 @@ package net.sf.webcat.core;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 
@@ -139,6 +140,9 @@ public abstract class _SentMessage
     //~ Constants (for key names) .............................................
 
     // Attributes ---
+    public static final String IS_BROADCAST_KEY = "isBroadcast";
+    public static final ERXKey<Integer> isBroadcast =
+        new ERXKey<Integer>(IS_BROADCAST_KEY);
     public static final String LINKS_KEY = "links";
     public static final ERXKey<NSData> links =
         new ERXKey<NSData>(LINKS_KEY);
@@ -163,6 +167,7 @@ public abstract class _SentMessage
     public static final ERXKey<net.sf.webcat.core.User> users =
         new ERXKey<net.sf.webcat.core.User>(USERS_KEY);
     // Fetch specifications ---
+    public static final String BROADCAST_MESSAGES_FSPEC = "broadcastMessages";
     public static final String ENTITY_NAME = "SentMessage";
 
 
@@ -212,6 +217,70 @@ public abstract class _SentMessage
             return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isBroadcast</code> value.
+     * @return the value of the attribute
+     */
+    public boolean isBroadcast()
+    {
+        Integer result =
+            (Integer)storedValueForKey( "isBroadcast" );
+        return ( result == null )
+            ? false
+            : ( result.intValue() > 0 );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isBroadcast</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsBroadcast( boolean value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsBroadcast("
+                + value + "): was " + isBroadcast() );
+        }
+        Integer actual =
+            er.extensions.eof.ERXConstant.integerForInt( value ? 1 : 0 );
+            setIsBroadcastRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>isBroadcast</code> value.
+     * @return the value of the attribute
+     */
+    public Integer isBroadcastRaw()
+    {
+        return (Integer)storedValueForKey( "isBroadcast" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>isBroadcast</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setIsBroadcastRaw( Integer value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setIsBroadcastRaw("
+                + value + "): was " + isBroadcastRaw() );
+        }
+        takeStoredValueForKey( value, "isBroadcast" );
+    }
+
 
     //-- Local mutable cache --
     private net.sf.webcat.core.MutableDictionary linksCache;
@@ -1072,6 +1141,123 @@ public abstract class _SentMessage
         {
             return null;
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the count of all objects of this type.
+     *
+     * @param context The editing context to use
+     *
+     * @return the count of all objects
+     */
+    public static int countOfAllObjects(EOEditingContext context)
+    {
+        return countOfObjectsMatchingQualifier(context, null);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the count of objects that match a qualifier.
+     *
+     * @param context The editing context to use
+     * @param qualifier The qualifier to use
+     *
+     * @return the count of objects matching the qualifier
+     */
+    public static int countOfObjectsMatchingQualifier(
+        EOEditingContext context, EOQualifier qualifier)
+    {
+        return ERXEOControlUtilities.objectCountWithQualifier(
+                context, ENTITY_NAME, qualifier);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the count of objects using a list of keys and values to match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a list of keys and values to match, alternating
+     *     "key", "value", "key", "value"...
+     *
+     * @return the count of objects that match the specified values
+     */
+    public static int countOfObjectsMatchingValues(
+        EOEditingContext context,
+        Object... keysAndValues)
+    {
+        if (keysAndValues.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("There should a value " +
+                "corresponding to every key that was passed.");
+        }
+
+        NSMutableDictionary<String, Object> valueDictionary =
+            new NSMutableDictionary<String, Object>();
+
+        for (int i = 0; i < keysAndValues.length; i += 2)
+        {
+            Object key = keysAndValues[i];
+            Object value = keysAndValues[i + 1];
+
+            if (!(key instanceof String))
+            {
+                throw new IllegalArgumentException("Keys should be strings.");
+            }
+
+            valueDictionary.setObjectForKey(value, key);
+        }
+
+        return countOfObjectsMatchingValues(context, valueDictionary);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the count of objects using a dictionary of keys and values to
+     * match.
+     *
+     * @param context The editing context to use
+     * @param keysAndValues a dictionary of keys and values to match
+     *
+     * @return the count of objects that matched the specified values
+     */
+    @SuppressWarnings("unchecked")
+    public static int countOfObjectsMatchingValues(
+        EOEditingContext context,
+        NSDictionary<String, Object> keysAndValues)
+    {
+        return countOfObjectsMatchingQualifier(context,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues));
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects according to the <code>broadcastMessages</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<SentMessage> broadcastMessages(
+            EOEditingContext context
+        )
+    {
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "broadcastMessages", "SentMessage" );
+
+        NSArray<SentMessage> result =
+            objectsWithFetchSpecification( context, spec );
+        if (log.isDebugEnabled())
+        {
+            log.debug( "broadcastMessages(ec"
+                + "): " + result );
+        }
+        return result;
     }
 
 
