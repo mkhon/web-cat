@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.11 2010/01/15 19:36:56 aallowat Exp $
+ |  $Id: CoreNavigator.java,v 1.12 2010/01/23 02:35:14 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -29,6 +29,7 @@ import net.sf.webcat.core.EntityUtils;
 import net.sf.webcat.core.INavigatorObject;
 import net.sf.webcat.core.Semester;
 import net.sf.webcat.core.WCComponent;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import net.sf.webcat.ui.util.ComponentIDGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOComponent;
@@ -69,7 +70,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.11 $ $Date: 2010/01/15 19:36:56 $
+ * @version $Revision: 1.12 $ $Date: 2010/01/23 02:35:14 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -373,7 +374,9 @@ public class CoreNavigator
             log.debug("courseOfferings = " + courseOfferings);
             log.debug("selected course offering = " + selectedCourseOffering);
         }
-        return null;
+
+        return new JavascriptGenerator().refresh(
+                (String) idFor.valueForKey("coursePane"));
     }
 
 
