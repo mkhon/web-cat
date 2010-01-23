@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.16 2010/01/13 14:06:34 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.17 2010/01/23 03:34:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,12 +22,10 @@
 package net.sf.webcat.core;
 
 import com.webobjects.foundation.*;
-import com.webobjects.foundation.NSValidation.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import java.io.File;
 import org.apache.log4j.Logger;
-
 
 // -------------------------------------------------------------------------
 /**
@@ -36,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.16 $, $Date: 2010/01/13 14:06:34 $
+ * @version $Revision: 1.17 $, $Date: 2010/01/23 03:34:57 $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -268,8 +266,8 @@ public class CourseOffering
                 "Please provide a unique CRN to identify your course "
                 + "offering." );
         }
-        NSArray<?> others = EOUtilities.objectsMatchingKeyAndValue(
-            editingContext(), ENTITY_NAME, CRN_KEY, value );
+        NSArray<CourseOffering> others = objectsMatchingQualifier(
+            editingContext(), crn.is(value.toString()));
         if (others.count() > 1
             || (others.count() == 1
                 && others.objectAtIndex(0) != this))
