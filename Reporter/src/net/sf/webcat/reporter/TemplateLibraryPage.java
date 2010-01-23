@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TemplateLibraryPage.java,v 1.11 2010/01/15 17:06:19 aallowat Exp $
+ |  $Id: TemplateLibraryPage.java,v 1.12 2010/01/23 02:29:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  * templates or manage existing ones.
  *
  * @author Tony Allevato
- * @version $Id: TemplateLibraryPage.java,v 1.11 2010/01/15 17:06:19 aallowat Exp $
+ * @version $Id: TemplateLibraryPage.java,v 1.12 2010/01/23 02:29:03 aallowat Exp $
  */
 public class TemplateLibraryPage
     extends WCComponent

@@ -7,12 +7,12 @@ ChangeReportTemplate: WCLink {
 
 ChooseQueryAssistant: WCLink {
     action = chooseQueryAssistantForDataSet;
-    remote.refreshPanes = idForQueryAssistantContainer;
+    remote = true;
 }
 
 RevertEditing: WCLink {
     action = revertEditingForDataSet;
-    remote.refreshPanes = idForQueryAssistantContainer;
+    remote = true;
 }
 
 SavedQueries: WCFilteringSelect {
@@ -26,7 +26,7 @@ SavedQueries: WCFilteringSelect {
 UseSavedQuery: WCButton {
     label = "Use this query";
     action = useSavedQuery;
-    remote.refreshPanes = idForQueryAssistantContainer;
+    remote = true;
 }
 
 QueryAssistantComponent: WOSwitchComponent {

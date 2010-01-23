@@ -110,10 +110,10 @@ MaximumValue : net.sf.webcat.reporter.queryassistants.AdvancedQueryValueComponen
 
 AddCriterion: WCButton {
     action = addCriterion;
-    remote.refreshPanes = idFor.criteriaContainer;
+    remote = true;
 }
 
 RemoveCriterion: WCButton {
     action = removeCriterion;
-    remote.refreshPanes = idFor.criteriaContainer;
+    remote = true;
 }

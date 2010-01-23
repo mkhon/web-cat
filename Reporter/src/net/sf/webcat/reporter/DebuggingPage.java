@@ -6,6 +6,7 @@ import ognl.OgnlContext;
 import ognl.OgnlException;
 import ognl.enhance.ExpressionAccessor;
 import net.sf.webcat.grader.Submission;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOComponent;
@@ -129,7 +130,7 @@ public class DebuggingPage extends ReporterComponent
             }
         }
 
-        return null;
+        return new JavascriptGenerator().refresh("expressionResults");
     }
 
 

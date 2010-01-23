@@ -4,6 +4,7 @@ import net.sf.webcat.reporter.queryassistants.AbstractQueryAssistantModel;
 import net.sf.webcat.reporter.queryassistants.ModelOrQueryWrapper;
 import net.sf.webcat.reporter.queryassistants.QueryAssistantDescriptor;
 import net.sf.webcat.reporter.queryassistants.QueryAssistantManager;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WORequest;
@@ -18,7 +19,7 @@ import com.webobjects.foundation.NSMutableSet;
 /**
  *
  * @author Tony Allevato
- * @version $Id: DescribeReportInputsPage.java,v 1.5 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: DescribeReportInputsPage.java,v 1.6 2010/01/23 02:29:03 aallowat Exp $
  */
 public class DescribeReportInputsPage extends ReporterComponent
 {
@@ -111,7 +112,8 @@ public class DescribeReportInputsPage extends ReporterComponent
     // ----------------------------------------------------------
     public WOActionResults useSavedQuery()
     {
-        return null;
+        return new JavascriptGenerator()
+            .refresh(idForQueryAssistantContainer());
     }
 
 
@@ -182,7 +184,8 @@ public class DescribeReportInputsPage extends ReporterComponent
     public WOActionResults chooseQueryAssistantForDataSet()
     {
         modelWrappers[dataSetIndex].switchToQueryAssistant(queryAssistant);
-        return null;
+        return new JavascriptGenerator()
+            .refresh(idForQueryAssistantContainer());
     }
 
 
@@ -190,7 +193,8 @@ public class DescribeReportInputsPage extends ReporterComponent
     public WOActionResults revertEditingForDataSet()
     {
         modelWrappers[dataSetIndex].switchToAssistantPicker();
-        return null;
+        return new JavascriptGenerator()
+            .refresh(idForQueryAssistantContainer());
     }
 
 

@@ -20,6 +20,6 @@ ExpressionArea: WCTextArea {
 
 Evaluate: WCButton {
     label = "Evaluate";
-    remote.refreshPanes = "expressionResults";
+    remote = true;
     action = executeExpression;
 }
