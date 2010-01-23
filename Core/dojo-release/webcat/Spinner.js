@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Spinner.js,v 1.1 2009/10/31 22:52:31 aallowat Exp $
+ |  $Id: Spinner.js,v 1.2 2010/01/23 02:32:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -20,6 +20,8 @@
 \*==========================================================================*/
 
 dojo.provide("webcat.Spinner");
+
+dojo.require("dojo.cache");
 dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
 
@@ -42,7 +44,7 @@ dojo.declare("webcat.Spinner",
      */
     size: "small",
 
-    templatePath: dojo.moduleUrl("webcat", "templates/Spinner.html"),
+    templateString: dojo.cache("webcat", "templates/Spinner.html"),
 
 
     //~ Methods ...............................................................
@@ -207,5 +209,5 @@ dojo.declare("webcat.Spinner",
         }
     }
 
-    })
+    });
 })();

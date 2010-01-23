@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptFunction.java,v 1.1 2009/12/15 19:45:39 aallowat Exp $
+ |  $Id: JavascriptFunction.java,v 1.2 2010/01/23 02:32:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -26,7 +26,7 @@ package net.sf.webcat.ui.generators;
  * Represents a Javascript function during server-side JS generation.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptFunction.java,v 1.1 2009/12/15 19:45:39 aallowat Exp $
+ * @version $Id: JavascriptFunction.java,v 1.2 2010/01/23 02:32:41 aallowat Exp $
  */
 public abstract class JavascriptFunction
 {
@@ -38,7 +38,7 @@ public abstract class JavascriptFunction
      */
     public JavascriptFunction()
     {
-        args = "";
+        this("");
     }
 
 

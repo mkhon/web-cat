@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoRemoteHelper.java,v 1.5 2009/12/15 19:45:06 aallowat Exp $
+ |  $Id: DojoRemoteHelper.java,v 1.6 2010/01/23 02:32:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,12 +22,12 @@
 package net.sf.webcat.ui.util;
 
 import java.util.List;
+import net.sf.webcat.ui.WCForm;
 import org.json.JSONArray;
 import org.json.JSONException;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation._NSDictionaryUtilities;
@@ -73,7 +73,7 @@ import er.extensions.components._private.ERXWOForm;
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: DojoRemoteHelper.java,v 1.5 2009/12/15 19:45:06 aallowat Exp $
+ * @version $Id: DojoRemoteHelper.java,v 1.6 2010/01/23 02:32:41 aallowat Exp $
  */
 public class DojoRemoteHelper
 {
@@ -185,7 +185,7 @@ public class DojoRemoteHelper
             if (formId != null)
             {
                 options.putExpression("form",
-                        "dojo.query('form[name=" + formId + "]')[0]");
+                        WCForm.formElementByName(formId));
             }
         }
 
@@ -342,7 +342,7 @@ public class DojoRemoteHelper
             if (formId != null)
             {
                 options.putExpression("form",
-                        "dojo.query('form[name=" + formId + "]')[0]");
+                        WCForm.formElementByName(formId));
             }
         }
 

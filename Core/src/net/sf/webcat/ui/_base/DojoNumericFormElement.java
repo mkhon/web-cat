@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoNumericFormElement.java,v 1.2 2009/12/15 19:46:49 aallowat Exp $
+ |  $Id: DojoNumericFormElement.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import com.webobjects.foundation.NSDictionary;
  * subclass in {@link #supportsIntegralValuesOnly()}.
  *
  * @author Tony Allevato
- * @version $Id: DojoNumericFormElement.java,v 1.2 2009/12/15 19:46:49 aallowat Exp $
+ * @version $Id: DojoNumericFormElement.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
  */
 public abstract class DojoNumericFormElement extends DojoFormElement
 {
@@ -91,14 +91,31 @@ public abstract class DojoNumericFormElement extends DojoFormElement
 
                 // Parse the string into an appropriate numerical type that
                 // will be set to the binding.
+                
+                // FIXME replace this code with code that mimics the use of
+                // formatters from WOTextField.
 
                 if(supportsIntegralValuesOnly())
                 {
-                    value = Integer.valueOf(valueString);
+                    if (valueString == null)
+                    {
+                        value = 0;
+                    }
+                    else
+                    {
+                        value = Integer.valueOf(valueString);
+                    }
                 }
                 else
                 {
-                    value = Double.valueOf(valueString);
+                    if (valueString == null)
+                    {
+                        value = 0.0;
+                    }
+                    else
+                    {
+                        value = Double.valueOf(valueString);
+                    }
                 }
 
                 _value.setValue(value, context.component());

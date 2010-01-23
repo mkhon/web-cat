@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.2 2009/12/15 20:12:19 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -26,11 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.sf.webcat.core.Application;
+import net.sf.webcat.ui.util.DojoOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOResponse;
+import com.webobjects.foundation.NSDictionary;
+import er.extensions.appserver.ERXWOContext;
 
 //-------------------------------------------------------------------------
 /**
@@ -42,7 +45,7 @@ import com.webobjects.appserver.WOResponse;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.2 2009/12/15 20:12:19 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -155,6 +158,76 @@ public class JavascriptGenerator implements WOActionResults
     public JavascriptGenerator addClass(String id, String cssClass)
     {
         return call("dojo.addClass", id, cssClass);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Displays a themed modal alert dialog.
+     *
+     * @param title the title of the dialog
+     * @param message the message inside the dialog
+     */
+    public JavascriptGenerator alert(String title, String message)
+    {
+        return alert(title, message, null, null);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Displays a themed modal alert dialog and executes the specified function
+     * when it is dismissed.
+     *
+     * @param title the title of the dialog
+     * @param message the message inside the dialog
+     * @param onClose the function to execute when the dialog is dismissed
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator alert(String title, String message,
+            JavascriptFunction onClose)
+    {
+        return alert(title, message, null, onClose);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Displays a themed modal alert dialog and executes the specified function
+     * when it is dismissed.
+     *
+     * @param title the title of the dialog
+     * @param message the message inside the dialog
+     * @param okLabel the label to display for the OK button
+     * @param onClose the function to execute when the dialog is dismissed
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator alert(String title, String message,
+            String okLabel, JavascriptFunction onClose)
+    {
+        DojoOptions options = new DojoOptions();
+
+        if (title != null)
+        {
+            options.putValue("title", title);
+        }
+
+        if (message != null)
+        {
+            options.putValue("message", message);
+        }
+
+        if (okLabel != null)
+        {
+            options.putValue("okLabel", okLabel);
+        }
+
+        if (onClose != null)
+        {
+            options.putExpression("onClose", javascriptObjectFor(onClose));
+        }
+
+        return call("webcat.alert", options);
     }
 
 
@@ -577,6 +650,38 @@ public class JavascriptGenerator implements WOActionResults
 
     // ----------------------------------------------------------
     /**
+     * Redirects the browser to the given location.
+     *
+     * @param url the url to load
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator redirectTo(String url)
+    {
+        return assign("window.location.href", url);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Redirects the browser to the location determined by the specified direct
+     * action.
+     *
+     * @param actionName the direct action name
+     * @param queryParams query parameters to pass to the action, or null
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator redirectTo(String actionName,
+            NSDictionary<String, Object> queryParams)
+    {
+        String url = ERXWOContext.currentContext().directActionURLForActionNamed(
+                actionName, queryParams);
+
+        return assign("window.location.href", url);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Refreshes one or more content panes.
      *
      * @param ids the Dijit IDs of the content panes
@@ -826,7 +931,7 @@ public class JavascriptGenerator implements WOActionResults
 
     // ----------------------------------------------------------
     /**
-     * Gets the Javascript representation of the specified object.
+     * Gets the Javascript literal representation of the specified object.
      *
      * @param object the object
      * @return the Javascript representation of the object
@@ -847,6 +952,10 @@ public class JavascriptGenerator implements WOActionResults
             buffer.append(generator.toString());
             buffer.append("}");
             return buffer.toString();
+        }
+        else if (object instanceof DojoOptions)
+        {
+            return object.toString();
         }
         else if (object.getClass().isArray())
         {
