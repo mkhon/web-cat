@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.12 2009/12/15 19:49:49 aallowat Exp $
+ |  $Id: OptionEditPanel.java,v 1.13 2010/01/23 02:36:09 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.*;
 import er.extensions.eof.ERXConstant;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import net.sf.webcat.ui.util.ComponentIDGenerator;
 import org.apache.log4j.*;
 
@@ -37,7 +38,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.12 2009/12/15 19:49:49 aallowat Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.13 2010/01/23 02:36:09 aallowat Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -287,10 +288,12 @@ public class OptionEditPanel
 
 
     // ----------------------------------------------------------
-    public WOComponent clearValue()
+    public JavascriptGenerator clearValue()
     {
         setValue( null );
-        return null;
+
+        return new JavascriptGenerator().refresh(
+                (String) idFor.valueForKey("valueContainer"));
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.28 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.29 2010/01/23 02:36:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import net.sf.webcat.core.*;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -39,7 +40,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.28 $, $Date: 2010/01/15 17:12:21 $
+ * @version $Revision: 1.29 $, $Date: 2010/01/23 02:36:57 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -503,7 +504,7 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public WOComponent addStep()
+    public JavascriptGenerator addStep()
     {
         if (selectedGradingPluginToAdd != null)
         {
@@ -516,12 +517,14 @@ public class EditAssignmentPage
             }
         }
 
-        return null;
+        return new JavascriptGenerator()
+            .refresh("gradingSteps")
+            .block("gradingStepsTable");
     }
 
 
     // ----------------------------------------------------------
-    public WOComponent removeStep()
+    public JavascriptGenerator removeStep()
     {
         int pos = thisStep.order();
         for (int i = pos;
@@ -543,7 +546,9 @@ public class EditAssignmentPage
 
         scriptDisplayGroup.fetch();
 
-        return null;
+        return new JavascriptGenerator()
+            .refresh("gradingSteps")
+            .block("gradingStepsTable");
     }
 
 
@@ -638,11 +643,13 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public WOComponent clearGraph()
+    public JavascriptGenerator clearGraph()
     {
         thisOffering.clearGraphSummary();
         applyLocalChanges();
-        return null;
+
+        return new JavascriptGenerator()
+            .refresh("scoreHistogram" + thisOffering.id());
     }
 
 

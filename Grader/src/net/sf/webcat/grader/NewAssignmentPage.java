@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.8 2010/01/13 16:34:33 aallowat Exp $
+ |  $Id: NewAssignmentPage.java,v 1.9 2010/01/23 02:36:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -25,6 +25,7 @@ import java.util.GregorianCalendar;
 import net.sf.webcat.core.Course;
 import net.sf.webcat.core.CourseOffering;
 import net.sf.webcat.core.Semester;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import net.sf.webcat.ui.util.ComponentIDGenerator;
 import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOActionResults;
@@ -46,7 +47,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2010/01/13 16:34:33 $
+ * @version $Revision: 1.9 $, $Date: 2010/01/23 02:36:57 $
  */
 public class NewAssignmentPage
     extends GraderCourseComponent
@@ -462,7 +463,7 @@ public class NewAssignmentPage
 
 
     // ----------------------------------------------------------
-    public WOActionResults updateReofferPane()
+    public JavascriptGenerator updateReofferPane()
     {
         if (myCourses == null)
         {
@@ -534,7 +535,8 @@ public class NewAssignmentPage
         }
 
         reuseOpen = true;
-        return null;
+        return new JavascriptGenerator()
+            .refresh((String) idFor.valueForKey("reofferPane"));
     }
 
 

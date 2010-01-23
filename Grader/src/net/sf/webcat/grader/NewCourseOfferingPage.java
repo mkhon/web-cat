@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.10 2009/12/15 20:16:16 aallowat Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.11 2010/01/23 02:36:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -36,7 +36,7 @@ import net.sf.webcat.ui.generators.JavascriptGenerator;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.10 $, $Date: 2009/12/15 20:16:16 $
+ * @version $Revision: 1.11 $, $Date: 2010/01/23 02:36:57 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -159,9 +159,9 @@ public class NewCourseOfferingPage
 
 
     // ----------------------------------------------------------
-    public WOActionResults update()
+    public JavascriptGenerator update()
     {
-        return null;
+        return new JavascriptGenerator().refresh("courseblock");
     }
 
 

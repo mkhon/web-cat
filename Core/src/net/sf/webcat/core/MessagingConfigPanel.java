@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MessagingConfigPanel.java,v 1.2 2009/12/15 19:49:03 aallowat Exp $
+ |  $Id: MessagingConfigPanel.java,v 1.3 2010/01/23 02:36:09 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -27,7 +27,6 @@ import net.sf.webcat.core.messaging.Message;
 import net.sf.webcat.core.messaging.MessageDescriptor;
 import net.sf.webcat.core.messaging.Protocol;
 import net.sf.webcat.ui.generators.JavascriptGenerator;
-import net.sf.webcat.ui.validation.ValidatingAction;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
@@ -42,7 +41,7 @@ import com.webobjects.foundation.NSDictionary;
  * user or for the system broadcast messages.
  *
  * @author Tony Allevato
- * @version $Id: MessagingConfigPanel.java,v 1.2 2009/12/15 19:49:03 aallowat Exp $
+ * @version $Id: MessagingConfigPanel.java,v 1.3 2010/01/23 02:36:09 aallowat Exp $
  */
 public class MessagingConfigPanel extends WCComponent
 {
