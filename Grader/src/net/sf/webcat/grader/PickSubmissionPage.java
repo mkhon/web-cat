@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.10 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: PickSubmissionPage.java,v 1.11 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
  * assignment so that one submission can be chosen.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.10 $, $Date: 2009/12/09 05:01:35 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.11 $, $Date: 2010/01/23 03:47:28 $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -77,7 +77,7 @@ public class PickSubmissionPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "entering appendToResponse()" );
         selectedIndex = -1;
@@ -143,7 +143,7 @@ public class PickSubmissionPage
                 + prefs().submission().submitNumber());
         }
         log.debug("calling super.appendToResponse()");
-        super.appendToResponse(response, context);
+        super._appendToResponse(response, context);
         oldBatchSize  = submissionDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex = submissionDisplayGroup.currentBatchIndex();
         log.debug("leaving appendToResponse()");

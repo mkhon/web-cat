@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PickStepPage.java,v 1.9 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: PickStepPage.java,v 1.10 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,12 +23,8 @@ package net.sf.webcat.grader;
 
 import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
-import java.util.*;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
-
 
 // -------------------------------------------------------------------------
 /**
@@ -36,7 +32,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: PickStepPage.java,v 1.9 2010/01/15 17:12:21 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.10 $, $Date: 2010/01/23 03:47:28 $
  */
 public class PickStepPage
     extends GraderComponent
@@ -87,7 +84,7 @@ public class PickStepPage
 
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         if (targetAssignment == null)
         {
@@ -203,7 +200,7 @@ public class PickStepPage
             createNew = true;
         }
 
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

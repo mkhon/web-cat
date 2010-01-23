@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.12 2009/11/23 16:28:03 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.13 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2009/11/23 16:28:03 $
+ * @version $Revision: 1.13 $, $Date: 2010/01/23 03:47:28 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -79,7 +79,7 @@ public class GradeStudentSubmissionPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         if (result == null)
         {
@@ -111,7 +111,7 @@ public class GradeStudentSubmissionPage
         statsDisplayGroup.setObjectArray( result.submissionFileStats() );
         showCoverageData = null;
         priorComments = result.comments();
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 
@@ -355,10 +355,8 @@ public class GradeStudentSubmissionPage
         if ( canSet )
         {
             result.setStatus( Status.CHECK );
-            com.webobjects.foundation.NSArray subs = result.submissions();
-            for ( int i = 0; i < subs.count(); i++ )
+            for (Submission sub : result.submissions())
             {
-                Submission sub = (Submission)subs.objectAtIndex( i );
                 sub.emailNotificationToStudent(
                     "has been updated by the course staff" );
             }
@@ -374,8 +372,8 @@ public class GradeStudentSubmissionPage
     public WOComponent regradeActionOk()
     {
         if (!applyLocalChanges()) return null;
-        Submission submission = prefs().submission();
-        submission.requeueForGrading( localContext() );
+        Submission sub = prefs().submission();
+        sub.requeueForGrading( localContext() );
         prefs().setSubmissionRelationship( null );
         applyLocalChanges();
         Grader.getInstance().graderQueue().enqueue( null );

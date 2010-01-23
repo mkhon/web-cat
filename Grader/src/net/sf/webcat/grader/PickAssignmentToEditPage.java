@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToEditPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: PickAssignmentToEditPage.java,v 1.9 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.foundation.ERXValueUtilities;
@@ -35,7 +34,8 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToEditPage.java,v 1.8 2008/10/29 14:15:21 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.9 $, $Date: 2010/01/23 03:47:28 $
  */
 public class PickAssignmentToEditPage
     extends GraderCourseComponent
@@ -66,7 +66,7 @@ public class PickAssignmentToEditPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "starting appendToResponse()" );
         createNew = false;
@@ -105,7 +105,7 @@ public class PickAssignmentToEditPage
         }
         createNew = selectedIndex == -1 && canCreate();
 
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
         log.debug( "ending appendToResponse()" );
     }
 
@@ -150,7 +150,8 @@ public class PickAssignmentToEditPage
     // ----------------------------------------------------------
     public void cancelLocalChanges()
     {
-        NSDictionary config = wcSession().tabs.selectedDescendant().config();
+        NSDictionary<String, Object> config =
+            wcSession().tabs.selectedDescendant().config();
         if ( config != null
              && config.objectForKey( "resetPrimeUser" ) != null )
         {
@@ -171,7 +172,8 @@ public class PickAssignmentToEditPage
     // ----------------------------------------------------------
     public boolean canCreate()
     {
-        NSDictionary config = wcSession().tabs.selectedDescendant().config();
+        NSDictionary<String, Object> config =
+            wcSession().tabs.selectedDescendant().config();
         return config != null &&
             ERXValueUtilities.booleanValueWithDefault(
                 config.objectForKey( "allowCreate" ), false );

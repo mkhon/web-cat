@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditCoursePage.java,v 1.12 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: EditCoursePage.java,v 1.13 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
  * (is "to be defined").
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.12 $, $Date: 2009/12/09 05:01:35 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.13 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditCoursePage
     extends GraderCourseEditComponent
@@ -68,7 +68,7 @@ public class EditCoursePage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse(WOResponse arg0, WOContext arg1)
+    public void _appendToResponse(WOResponse arg0, WOContext arg1)
     {
         if ( semesters == null )
         {
@@ -77,7 +77,7 @@ public class EditCoursePage
         }
         instructorDisplayGroup.setMasterObject(courseOffering());
         TADisplayGroup.setMasterObject(courseOffering());
-        super.appendToResponse(arg0, arg1);
+        super._appendToResponse(arg0, arg1);
     }
 
 
@@ -268,7 +268,7 @@ public class EditCoursePage
      * @param params A dictionary of form values to decode
      * @return True if successful, false if the parameter is missing
      */
-    public boolean startWith(NSDictionary params)
+    public boolean startWith(NSDictionary<String, Object> params)
     {
         boolean result = false;
         String crn = stringValueForKey(params, CourseOffering.CRN_KEY);

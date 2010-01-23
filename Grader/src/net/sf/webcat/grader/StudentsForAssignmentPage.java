@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.15 2010/01/21 04:40:21 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.16 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.15 $, $Date: 2010/01/21 04:40:21 $
+ * @version $Revision: 1.16 $, $Date: 2010/01/23 03:47:28 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -78,7 +78,7 @@ public class StudentsForAssignmentPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse(WOResponse response, WOContext context)
+    public void _appendToResponse(WOResponse response, WOContext context)
     {
         if (maxSubmission == null)
         {
@@ -223,7 +223,7 @@ public class StudentsForAssignmentPage
             avgScore /= submissions.count();
         }
         submissionDisplayGroup.setObjectArray(submissions);
-        super.appendToResponse(response, context);
+        super._appendToResponse(response, context);
     }
 
 

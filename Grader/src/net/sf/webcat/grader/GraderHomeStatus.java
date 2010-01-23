@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.12 2009/10/20 15:51:24 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.13 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,11 +22,9 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
-import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -35,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.12 $, $Date: 2009/10/20 15:51:24 $
+ *  @version $Revision: 1.13 $, $Date: 2010/01/23 03:47:28 $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -73,7 +71,7 @@ public class GraderHomeStatus
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "starting appendToResponse()" );
 
@@ -151,7 +149,7 @@ public class GraderHomeStatus
         upcomingAssignmentsGroup.setQualifier(
             new EOAndQualifier( qualifiers ) );
         upcomingAssignmentsGroup.fetch();
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

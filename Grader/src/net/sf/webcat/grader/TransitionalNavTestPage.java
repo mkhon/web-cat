@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: TransitionalNavTestPage.java,v 1.1 2009/04/27 17:15:05 stedwar2 Exp $
+ |  $Id: TransitionalNavTestPage.java,v 1.2 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -20,20 +20,19 @@
 \*==========================================================================*/
 
 package net.sf.webcat.grader;
+
 import org.apache.log4j.Logger;
 import com.webobjects.appserver.*;
-import net.sf.webcat.core.Theme;
-import net.sf.webcat.core.WCComponent;
-
 
 //-------------------------------------------------------------------------
 /**
-* Represents a standard Web-CAT page that has not yet been implemented
-* (is "to be defined").
-*
-*  @author Stephen Edwards
-*  @version $Id: TransitionalNavTestPage.java,v 1.1 2009/04/27 17:15:05 stedwar2 Exp $
-*/
+ * Represents a standard Web-CAT page that has not yet been implemented
+ * (is "to be defined").
+ *
+ *  @author Stephen Edwards
+ *  @author  latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/01/23 03:47:28 $
+ */
 public class TransitionalNavTestPage
     extends GraderComponent
 {
@@ -54,10 +53,10 @@ public class TransitionalNavTestPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse(WOResponse response, WOContext context)
+    public void _appendToResponse(WOResponse response, WOContext context)
     {
         log.debug("entering appendToResponse()");
-        super.appendToResponse(response, context);
+        super._appendToResponse(response, context);
         log.debug("leaving appendToResponse()");
     }
 

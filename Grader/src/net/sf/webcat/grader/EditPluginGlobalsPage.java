@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditPluginGlobalsPage.java,v 1.5 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: EditPluginGlobalsPage.java,v 1.6 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,10 +21,7 @@
 
 package net.sf.webcat.grader;
 
-import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
-import net.sf.webcat.core.*;
-import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
 /**
@@ -33,7 +30,8 @@ import org.apache.log4j.Logger;
  *  rendering the page.
  *
  *  @author Stephen Edwards
- *  @version $Id: EditPluginGlobalsPage.java,v 1.5 2010/01/15 17:12:21 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditPluginGlobalsPage
     extends GraderComponent
@@ -61,7 +59,7 @@ public class EditPluginGlobalsPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "appendToResponse()" );
         if ( baseDir == null )
@@ -74,7 +72,7 @@ public class EditPluginGlobalsPage
             log.debug( "plug-in global settings =\n"
                 + plugin.globalConfigSettings() );
         }
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

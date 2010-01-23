@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: CreateAssignmentPage.java,v 1.9 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: CreateAssignmentPage.java,v 1.10 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
@@ -38,7 +37,8 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: CreateAssignmentPage.java,v 1.9 2009/12/09 05:01:35 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.10 $, $Date: 2010/01/23 03:47:28 $
  */
 public class CreateAssignmentPage
     extends GraderComponent
@@ -75,7 +75,7 @@ public class CreateAssignmentPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "starting appendToResponse()" );
         index = -1;
@@ -139,7 +139,7 @@ public class CreateAssignmentPage
                 ) );
             assignmentDisplayGroup.updateDisplayedObjects();
         }
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

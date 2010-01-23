@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.10 2009/09/06 02:41:18 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.11 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,8 +22,6 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
 import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
@@ -36,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2009/09/06 02:41:18 $
+ * @version $Revision: 1.11 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -67,7 +65,7 @@ public class EditStaffPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         sideStepTitle = "Edit Course "
             + ( editInstructors
@@ -100,7 +98,7 @@ public class EditStaffPage
         potentialDisplayGroup.fetch();
         potentialDisplayGroup.setNumberOfObjectsPerBatch( oldBatchSize );
         potentialDisplayGroup.setCurrentBatchIndex( oldBatchIndex );
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
         log.debug( "old size = " + oldBatchSize
                    + " old index = " + oldBatchIndex );
     }

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: StepConfig.java,v 1.8 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: StepConfig.java,v 1.9 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,7 +31,8 @@ import net.sf.webcat.core.*;
  * Custom settings for a single grading {@link Step}.
  *
  * @author stedwar2
- * @version $Id: StepConfig.java,v 1.8 2010/01/15 17:12:21 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.9 $, $Date: 2010/01/23 03:47:28 $
  */
 public class StepConfig
     extends _StepConfig
@@ -60,10 +61,10 @@ public class StepConfig
         String result = super.name();
         if ( result == null )
         {
-            NSArray steps = steps();
-            if ( steps.count() > 0 )
+            NSArray<Step> mySteps = steps();
+            if ( mySteps.count() > 0 )
             {
-                Step step = (Step)steps.objectAtIndex( 0 );
+                Step step = mySteps.objectAtIndex( 0 );
                 result = step.assignment().titleString() + " config";
                 super.setName( result );
             }
@@ -78,24 +79,22 @@ public class StepConfig
      * relationship.
      * @return the entity in the relationship
      */
-    public net.sf.webcat.core.User author()
+    public User author()
     {
-        net.sf.webcat.core.User author = super.author();
-        if ( author == null )
+        User myAuthor = super.author();
+        if ( myAuthor == null )
         {
-            NSArray steps = steps();
-            for ( int i = 0; i < steps.count(); i++ )
+            for (Step step : steps())
             {
-                Step step = (Step)steps.objectAtIndex( i );
-                author = step.assignment().author();
-                if ( author != null )
+                myAuthor = step.assignment().author();
+                if ( myAuthor != null )
                 {
-                    super.setAuthor( author );
+                    super.setAuthor( myAuthor );
                     break;
                 }
             }
         }
-        return author;
+        return myAuthor;
     }
 
 
@@ -115,7 +114,8 @@ public class StepConfig
      * added to the result if it is not already in the results of the fetch.
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray configsForUserAndCourseScriptIncludingMine(
+    public static NSArray<StepConfig>
+        configsForUserAndCourseScriptIncludingMine(
             EOEditingContext context,
             net.sf.webcat.core.User userBinding,
             net.sf.webcat.grader.GradingPlugin scriptFileBinding,
@@ -125,8 +125,8 @@ public class StepConfig
     {
         // Have to use two separate queries here, since the join required
         // in the second query will overly restrict the results of the first!
-        NSMutableArray results = stepConfigsForUser( context, userBinding )
-            .mutableClone();
+        NSMutableArray<StepConfig> results =
+            stepConfigsForUser( context, userBinding ).mutableClone();
         ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
             results,
             stepConfigsForCourseAndScript(

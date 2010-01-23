@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.9 2010/01/21 04:40:21 stedwar2 Exp $
+ |  $Id: DownloadScoresPage.java,v 1.10 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2010/01/21 04:40:21 $
+ * @version $Revision: 1.10 $, $Date: 2010/01/23 03:47:28 $
  */
 public class DownloadScoresPage
     extends GraderAssignmentComponent
@@ -69,7 +69,7 @@ public class DownloadScoresPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse(WOResponse response, WOContext context)
+    public void _appendToResponse(WOResponse response, WOContext context)
     {
         if (assignmentOffering == null)
         {
@@ -102,7 +102,7 @@ public class DownloadScoresPage
             useMoodleFormat     = false;
             useFullFormat       = false;
         }
-        super.appendToResponse(response, context);
+        super._appendToResponse(response, context);
     }
 
 

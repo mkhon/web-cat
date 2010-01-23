@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.29 2010/01/23 02:36:57 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.30 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.29 $, $Date: 2010/01/23 02:36:57 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.30 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -102,7 +102,7 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public void appendToResponse(WOResponse response, WOContext context )
+    public void _appendToResponse(WOResponse response, WOContext context )
     {
         long timeStart = System.currentTimeMillis();
 
@@ -152,7 +152,7 @@ public class EditAssignmentPage
                  );
         }
         log.debug( "starting super.appendToResponse()" );
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
         log.debug( "finishing super.appendToResponse()" );
         log.debug( "finishing appendToResponse()" );
 
@@ -349,9 +349,8 @@ public class EditAssignmentPage
         String name = gradingPluginToAdd.name();
         String version = gradingPluginToAdd.descriptor().currentVersion();
         NSTimestamp lastModified = gradingPluginToAdd.lastModified();
-
-        NSTimestampFormatter formatter = wcSession().timeFormatter();
-        String formattedTime = formatter.format(lastModified);
+        String formattedTime =
+            wcSession().timeFormatter().format(lastModified);
 
         return MessageFormat.format(
                 "<p class=\"pluginListTitle\">{0}</p>" +

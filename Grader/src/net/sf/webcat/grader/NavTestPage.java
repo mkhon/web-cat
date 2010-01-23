@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: NavTestPage.java,v 1.2 2009/06/16 14:18:17 stedwar2 Exp $
+ |  $Id: NavTestPage.java,v 1.3 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -20,11 +20,9 @@
 \*==========================================================================*/
 
 package net.sf.webcat.grader;
-import org.apache.log4j.Logger;
-import com.webobjects.appserver.*;
-import net.sf.webcat.core.Theme;
-import net.sf.webcat.core.WCComponent;
 
+import com.webobjects.appserver.*;
+import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
 /**
@@ -32,7 +30,8 @@ import net.sf.webcat.core.WCComponent;
 * (is "to be defined").
 *
 *  @author Stephen Edwards
-*  @version $Id: NavTestPage.java,v 1.2 2009/06/16 14:18:17 stedwar2 Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/01/23 03:47:28 $
 */
 public class NavTestPage
     extends GraderAssignmentComponent
@@ -41,7 +40,7 @@ public class NavTestPage
 
     // ----------------------------------------------------------
     /**
-     * Creates a new TBDPage object.
+     * Creates a new NavTestPage object.
      *
      * @param context The context to use
      */
@@ -54,10 +53,10 @@ public class NavTestPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse(WOResponse response, WOContext context)
+    public void _appendToResponse(WOResponse response, WOContext context)
     {
         log.debug("entering appendToResponse()");
-        super.appendToResponse(response, context);
+        super._appendToResponse(response, context);
         log.debug("leaving appendToResponse()");
     }
 

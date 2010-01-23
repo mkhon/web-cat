@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultInfo.java,v 1.4 2009/11/23 16:28:02 stedwar2 Exp $
+ |  $Id: SubmissionResultInfo.java,v 1.5 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,7 +31,8 @@ import net.sf.webcat.core.*;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: SubmissionResultInfo.java,v 1.4 2009/11/23 16:28:02 stedwar2 Exp $
+ *  @author  latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.5 $, $Date: 2010/01/23 03:47:28 $
  */
 public class SubmissionResultInfo
     extends GraderComponent
@@ -64,14 +65,14 @@ public class SubmissionResultInfo
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         rowNumber = 0;
         if ( submission != null )
         {
             partnerDisplayGroup.setMasterObject( submission.result() );
         }
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

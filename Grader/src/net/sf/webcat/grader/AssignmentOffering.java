@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.27 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.28 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -41,8 +41,8 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.27 $, $Date: 2009/12/09 05:01:35 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.28 $, $Date: 2010/01/23 03:47:28 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -776,7 +776,7 @@ public class AssignmentOffering
     {
         EOFetchSpecification spec =
             EOFetchSpecification.fetchSpecificationNamed(
-                "submitterEngineBase",
+                OFFERINGS_FOR_SUBMITTER_ENGINE_BASE_FSPEC,
                 ENTITY_NAME );
         // Set up the qualifier
         NSMutableDictionary restrictions = new NSMutableDictionary();

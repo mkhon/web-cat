@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ScoreGraphsBlock.java,v 1.2 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: ScoreGraphsBlock.java,v 1.3 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,7 +23,6 @@ package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
 import er.extensions.foundation.ERXValueUtilities;
-import net.sf.webcat.core.*;
 import net.sf.webcat.grader.graphs.*;
 import org.apache.log4j.Logger;
 
@@ -34,7 +33,8 @@ import org.apache.log4j.Logger;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @version $Id: ScoreGraphsBlock.java,v 1.2 2009/12/09 05:01:35 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/01/23 03:47:28 $
  */
 public class ScoreGraphsBlock
     extends GraderComponent
@@ -64,11 +64,11 @@ public class ScoreGraphsBlock
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         rowNumber = 0;
         result = submission.result();
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

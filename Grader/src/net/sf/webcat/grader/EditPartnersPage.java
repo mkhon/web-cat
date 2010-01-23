@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditPartnersPage.java,v 1.5 2009/11/23 16:28:03 stedwar2 Exp $
+ |  $Id: EditPartnersPage.java,v 1.6 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/11/23 16:28:03 $
+ * @version $Revision: 1.6 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditPartnersPage
     extends GraderComponent
@@ -68,7 +68,7 @@ public class EditPartnersPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "selected submission = "
                    + prefs().submission().submitNumber()
@@ -84,7 +84,7 @@ public class EditPartnersPage
         partnerDisplayGroup.setMasterObject( result );
         studentDisplayGroup.setMasterObject(
             coreSelections().courseOffering() );
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditReusableScriptParametersPage.java,v 1.7 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: EditReusableScriptParametersPage.java,v 1.8 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,12 +21,7 @@
 
 package net.sf.webcat.grader;
 
-import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.zip.ZipFile;
-import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -35,8 +30,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2010/01/15 17:12:21 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.8 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditReusableScriptParametersPage
     extends GraderComponent
@@ -67,7 +62,7 @@ public class EditReusableScriptParametersPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "appendToResponse()" );
         step = prefs().step();
@@ -90,7 +85,7 @@ public class EditReusableScriptParametersPage
             log.debug( "assignment option values =\n" + step.configSettings() );
             log.debug( "shared option values =\n" + step.config().configSettings() );
         }
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

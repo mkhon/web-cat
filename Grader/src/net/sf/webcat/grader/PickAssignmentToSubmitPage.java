@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToSubmitPage.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: PickAssignmentToSubmitPage.java,v 1.10 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,7 +22,6 @@
 package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
@@ -36,7 +35,8 @@ import org.apache.log4j.Logger;
  *  to choose from.
  *
  *  @author  Stephen Edwards
- *  @version $Id: PickAssignmentToSubmitPage.java,v 1.9 2008/10/29 14:15:21 aallowat Exp $
+ *  @author  latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.10 $, $Date: 2010/01/23 03:47:28 $
  */
 public class PickAssignmentToSubmitPage
     extends GraderCourseComponent
@@ -67,12 +67,13 @@ public class PickAssignmentToSubmitPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "starting appendToResponse()" );
         showHaltedMessage = false;
         NSTimestamp currentTime   = new NSTimestamp();
-        NSMutableArray qualifiers = new NSMutableArray();
+        NSMutableArray<EOQualifier> qualifiers =
+            new NSMutableArray<EOQualifier>();
         CourseOffering selectedCourse = coreSelections().courseOffering();
         //
         // assignments for this course
@@ -87,7 +88,8 @@ public class PickAssignmentToSubmitPage
 //        assignmentDisplayGroup.fetch();
 //        log.debug( "results = " + assignmentDisplayGroup.displayedObjects() );
 
-        NSDictionary config = wcSession().tabs.selectedDescendant().config();
+        NSDictionary<String, Object> config =
+            wcSession().tabs.selectedDescendant().config();
         if ( config == null ||
              !ERXValueUtilities.booleanValueWithDefault(
                              config.objectForKey( "all" ), false ) )
@@ -161,7 +163,7 @@ public class PickAssignmentToSubmitPage
                 );
         }
 
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
         log.debug( "ending appendToResponse()" );
     }
 

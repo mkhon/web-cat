@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditStepPage.java,v 1.8 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: EditStepPage.java,v 1.9 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2010/01/15 17:12:21 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.9 $, $Date: 2010/01/23 03:47:28 $
  */
 public class EditStepPage
     extends GraderComponent
@@ -53,17 +53,17 @@ public class EditStepPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public NSArray           stepConfigList;
-    public StepConfig        stepConfig;
-    public Step              step;
-    public int               index;
-    public java.io.File      baseDir;
+    public NSArray<StepConfig> stepConfigList;
+    public StepConfig          stepConfig;
+    public Step                step;
+    public int                 index;
+    public java.io.File        baseDir;
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse( WOResponse response, WOContext context )
     {
         log.debug( "appendToResponse()" );
         step = prefs().step();
@@ -98,7 +98,7 @@ public class EditStepPage
                     + ") =\n" + step.config().configSettings() );
             }
         }
-        super.appendToResponse( response, context );
+        super._appendToResponse( response, context );
     }
 
 

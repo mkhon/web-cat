@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.8 2010/01/23 03:47:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,8 +23,6 @@ package net.sf.webcat.grader;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import net.sf.webcat.archives.ArchiveManager;
 import net.sf.webcat.archives.IArchiveEntry;
 import net.sf.webcat.core.*;
@@ -36,7 +34,8 @@ import org.apache.log4j.Logger;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @version $Id: ConfirmSubmissionPage.java,v 1.7 2008/10/28 19:20:16 aallowat Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.8 $, $Date: 2010/01/23 03:47:28 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -73,7 +72,7 @@ public class ConfirmSubmissionPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void _appendToResponse(WOResponse response, WOContext context)
     {
         log.debug( "The submission number is "
                    + submissionInProcess().submission().submitNumber() );
@@ -124,7 +123,7 @@ public class ConfirmSubmissionPage
             log.debug( "file list has already been initialized" );
         }
         // preProcessSubmission();
-        super.appendToResponse( response, context );
+        super._appendToResponse(response, context);
     }
 
 
