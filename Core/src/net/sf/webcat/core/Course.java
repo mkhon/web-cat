@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.9 2010/01/13 14:05:39 stedwar2 Exp $
+ |  $Id: Course.java,v 1.10 2010/01/23 03:34:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,17 +21,14 @@
 
 package net.sf.webcat.core;
 
-import com.webobjects.foundation.*;
-import com.webobjects.foundation.NSValidation.*;
-import com.webobjects.eocontrol.*;
-
 // -------------------------------------------------------------------------
 /**
  * Represents one course, which may be taught multiple times in different
  * semesters (represented by separate course offerings).
  *
  * @author Stephen Edwards
- * @version $Id: Course.java,v 1.9 2010/01/13 14:05:39 stedwar2 Exp $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.10 $, $Date: 2010/01/23 03:34:30 $
  */
 public class Course
     extends _Course
@@ -51,7 +48,7 @@ public class Course
     //~ Constants (for key names) .............................................
 
     // Derived Attributes ---
-    public static final String iNSTITUTION_KEY  =
+    public static final String INSTITUTION_KEY  =
         DEPARTMENT_KEY + "." + Department.INSTITUTION_KEY;
 
 
