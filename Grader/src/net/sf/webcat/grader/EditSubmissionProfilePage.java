@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.12 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.13 2010/01/24 16:48:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -21,6 +21,8 @@
 
 package net.sf.webcat.grader;
 
+import java.text.DecimalFormat;
+import java.text.Format;
 import com.webobjects.appserver.*;
 import org.apache.log4j.Logger;
 
@@ -31,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $ $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.13 $ $Date: 2010/01/24 16:48:13 $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -307,6 +309,13 @@ public class EditSubmissionProfilePage
     }
 
 
+    // ----------------------------------------------------------
+    public Format doubleFormatter()
+    {
+        return doubleFormatter;
+    }
+
+
     //~ Instance/static variables .............................................
 
     private static final String INLINE_JAVASCRIPT =
@@ -327,5 +336,6 @@ public class EditSubmissionProfilePage
         + "// End -->\n"
         + "</script>";
 
+    private static final Format doubleFormatter = new DecimalFormat("0.######");
     static Logger log = Logger.getLogger( EditSubmissionProfilePage.class );
 }
