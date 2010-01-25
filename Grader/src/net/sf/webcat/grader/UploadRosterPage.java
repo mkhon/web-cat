@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.12 2010/01/25 02:27:29 stedwar2 Exp $
+ |  $Id: UploadRosterPage.java,v 1.13 2010/01/25 19:05:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -29,6 +29,7 @@ import com.webobjects.foundation.*;
 import java.io.*;
 import java.util.regex.Pattern;
 import net.sf.webcat.core.*;
+import net.sf.webcat.ui.generators.JavascriptGenerator;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -36,8 +37,8 @@ import org.apache.log4j.Logger;
  * This class allows a CSV file of new users to be added to a course.
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2010/01/25 02:27:29 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.13 $, $Date: 2010/01/25 19:05:25 $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -134,10 +135,10 @@ public class UploadRosterPage
     {
         log.debug("refresh()");
         refresh(false, true);
-//        JavascriptGenerator page = new JavascriptGenerator();
-//        page.refresh("preview", "error-panel");
-//        return page;
-        return null;
+        JavascriptGenerator page = new JavascriptGenerator();
+        page.refresh("preview", "error-panel");
+        return page;
+//        return null;
     }
 
 
