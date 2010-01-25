@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.15 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.16 2010/01/25 02:45:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.15 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.16 $, $Date: 2010/01/25 02:45:58 $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -170,8 +170,9 @@ public class CourseRosterPage
     public WOComponent cancel()
     {
         clearMessages();
-        cancelLocalChanges();
-        return super.next();
+        return super.cancel();
+//        cancelLocalChanges();
+//        return super.next();
     }
 
 
@@ -183,7 +184,6 @@ public class CourseRosterPage
     public WOComponent removeStudent()
     {
         courseOffering().removeFromStudentsRelationship(student);
-        applyLocalChanges();
         return null;
     }
 
@@ -196,7 +196,6 @@ public class CourseRosterPage
     public WOComponent addStudent()
     {
         courseOffering().addToStudentsRelationship( student );
-        applyLocalChanges();
         manuallyAdding = true;
         return null;
     }
