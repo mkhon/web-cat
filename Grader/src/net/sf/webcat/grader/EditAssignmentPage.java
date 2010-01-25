@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.30 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.31 2010/01/25 19:01:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.30 $, $Date: 2010/01/23 03:47:28 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.31 $, $Date: 2010/01/25 19:01:55 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -518,7 +518,7 @@ public class EditAssignmentPage
 
         return new JavascriptGenerator()
             .refresh("gradingSteps")
-            .block("gradingStepsTable");
+            .unblock("gradingStepsTable");
     }
 
 
@@ -547,7 +547,7 @@ public class EditAssignmentPage
 
         return new JavascriptGenerator()
             .refresh("gradingSteps")
-            .block("gradingStepsTable");
+            .unblock("gradingStepsTable");
     }
 
 
