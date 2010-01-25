@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.11 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.12 2010/01/25 02:46:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.11 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.12 $, $Date: 2010/01/25 02:46:36 $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -82,11 +82,6 @@ public class EditStaffPage
             + " current index = " + potentialDisplayGroup.currentBatchIndex() );
         oldBatchSize  = potentialDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex = potentialDisplayGroup.currentBatchIndex();
-        potentialDisplayGroup.queryBindings().setObjectForKey(
-                        ERXConstant.integerForInt( editInstructors
-                                        ? User.INSTRUCTOR_PRIVILEGES
-                                        : User.STUDENT_PRIVILEGES ),
-                        "accessLevel" );
         if ( firstLoad )
         {
             potentialDisplayGroup.queryMatch().takeValueForKey(
@@ -123,6 +118,10 @@ public class EditStaffPage
     {
         if( editInstructors)
         {
+            if (aUser.accessLevel() < User.INSTRUCTOR_PRIVILEGES)
+            {
+                aUser.setAccessLevel(User.INSTRUCTOR_PRIVILEGES);
+            }
             courseOffering().addToInstructorsRelationship(aUser);
         }
         else
@@ -133,7 +132,6 @@ public class EditStaffPage
             }
             courseOffering().addToGradersRelationship(aUser);
         }
-        applyLocalChanges();
         return null;
     }
 
@@ -149,7 +147,6 @@ public class EditStaffPage
         {
             courseOffering().removeFromGradersRelationship(aUser);
         }
-        applyLocalChanges();
         return null;
     }
 
