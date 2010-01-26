@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.12 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.13 2010/01/26 04:48:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.ui.generators.JavascriptGenerator;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.13 $, $Date: 2010/01/26 04:48:09 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -53,6 +53,7 @@ public class NewCourseOfferingPage
     public NewCourseOfferingPage( WOContext context )
     {
         super( context );
+        nextPerformsSave = true;
     }
 
 
