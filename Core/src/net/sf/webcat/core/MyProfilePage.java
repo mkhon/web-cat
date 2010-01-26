@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.14 2009/08/07 15:18:07 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.15 2010/01/26 16:54:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.apache.log4j.Logger;
  * (is "to be defined").
  *
  *  @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.14 $, $Date: 2009/08/07 15:18:07 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.15 $, $Date: 2010/01/26 16:54:41 $
  */
 public class MyProfilePage
     extends WCComponent
@@ -351,6 +351,8 @@ public class MyProfilePage
     public WOComponent changeTheme()
     {
         user().setTheme(aTheme);
+        aTheme.setAsLastUsedThemeInContext(context());
+
         log.debug("Changing theme, before = " + user().theme());
         log.debug("user ec = " + user().editingContext()
             + ", theme ec = "

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.8 2009/10/06 17:11:31 aallowat Exp $
+ |  $Id: WCBasePage.java,v 1.9 2010/01/26 16:54:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -75,7 +75,7 @@ import org.apache.log4j.Logger;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2009/10/06 17:11:31 $
+ * @version $Revision: 1.9 $, $Date: 2010/01/26 16:54:41 $
  */
 public class WCBasePage
     extends WOComponent
@@ -410,7 +410,10 @@ public class WCBasePage
         }
         else
         {
-            return Theme.defaultTheme();
+            Theme lastUsedTheme = Theme.lastUsedThemeInContext(context());
+
+            return (lastUsedTheme != null) ?
+                    lastUsedTheme : Theme.defaultTheme();
         }
     }
 
