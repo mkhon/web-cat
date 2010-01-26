@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.13 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: DirectAction.java,v 1.14 2010/01/26 17:02:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: DirectAction.java,v 1.13 2008/10/29 14:15:51 aallowat Exp $
+ * @version $Id: DirectAction.java,v 1.14 2010/01/26 17:02:58 aallowat Exp $
  */
 public class DirectAction
     extends ERXDirectAction
@@ -119,6 +119,15 @@ public class DirectAction
                 startPage = pageWithName( session.currentPageName() );
             }
             WOActionResults result = startPage.generateResponse();
+
+            // Update the current theme in the cookie when the user logs in,
+            // so that it is always the most recent theme in situations where
+            // multiple users are using the same browser/client.
+            if (session.user().theme() != null)
+            {
+                session.user().theme().setAsLastUsedThemeInContext(context());
+            }
+
             return result;
         }
         else
