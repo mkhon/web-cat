@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.13 2010/01/25 19:05:25 aallowat Exp $
+ |  $Id: UploadRosterPage.java,v 1.14 2010/01/26 02:54:14 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,8 +37,8 @@ import org.apache.log4j.Logger;
  * This class allows a CSV file of new users to be added to a course.
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.13 $, $Date: 2010/01/25 19:05:25 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.14 $, $Date: 2010/01/26 02:54:14 $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -134,11 +134,11 @@ public class UploadRosterPage
     public WOActionResults refresh()
     {
         log.debug("refresh()");
+        clearAllMessages();
         refresh(false, true);
         JavascriptGenerator page = new JavascriptGenerator();
-        page.refresh("preview", "error-panel");
+        page.refresh("preview", "fileInfo", "error-panel");
         return page;
-//        return null;
     }
 
 
@@ -194,6 +194,7 @@ public class UploadRosterPage
     // ----------------------------------------------------------
     public WOComponent defaultAction()
     {
+        clearAllMessages();
         refresh(false, false);
         return null;
     }
@@ -663,8 +664,8 @@ public class UploadRosterPage
                     boolean isExistingUser = false;
                     try
                     {
-                        user = User.firstObjectMatchingValues(
-                            ec, null,
+                        user = User.uniqueObjectMatchingValues(
+                            ec,
                             User.USER_NAME_KEY, pid,
                             User.AUTHENTICATION_DOMAIN_KEY, domain);
                         log.debug(
