@@ -9,7 +9,7 @@ JobQueue.version.revision=0
 JobQueue.requires=Core, EOJDBCPrototypes, DBUpdateEngine
 
 JobQueue.copyright=\
-	(c) 2008 Virginia Tech Department of Computer Science
+	(c) 2010 Virginia Tech Department of Computer Science
 JobQueue.provider=Virginia Tech Computer Science
 JobQueue.provider.url=http\://web-cat.cs.vt.edu/updates
 JobQueue.info.url=\
