@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.12 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.13 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.jdom.output.XMLOutputter;
  *
  * @author Stephen Edwards, Hussein Vastani
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.13 $, $Date: 2010/01/27 01:01:58 $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -68,7 +68,8 @@ public class EditFileCommentsPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         if (log.isDebugEnabled())
         {
@@ -82,7 +83,14 @@ public class EditFileCommentsPage
             }
         }
         initializeCodeWithComments();
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    protected void afterAppendToResponse(WOResponse response, WOContext context)
+    {
+        super.afterAppendToResponse(response, context);
         codeWithComments = null;
         log.debug( "ending appendToResponse()" );
     }

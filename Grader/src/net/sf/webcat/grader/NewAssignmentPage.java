@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.10 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: NewAssignmentPage.java,v 1.11 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -46,7 +46,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.11 $, $Date: 2010/01/27 01:01:58 $
  */
 public class NewAssignmentPage
     extends GraderCourseComponent
@@ -93,7 +93,8 @@ public class NewAssignmentPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void _appendToResponse(WOResponse response, WOContext context)
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         idFor = new ComponentIDGenerator(this);
         if (coreSelections().course() == null
@@ -134,7 +135,7 @@ public class NewAssignmentPage
                 forAllSections = Boolean.TRUE;
             }
         }
-        super._appendToResponse(response, context);
+        super.beforeAppendToResponse(response, context);
     }
 
 

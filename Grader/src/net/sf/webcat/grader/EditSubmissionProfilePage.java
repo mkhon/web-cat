@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditSubmissionProfilePage.java,v 1.13 2010/01/24 16:48:13 stedwar2 Exp $
+ |  $Id: EditSubmissionProfilePage.java,v 1.14 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $ $Date: 2010/01/24 16:48:13 $
+ * @version $Revision: 1.14 $ $Date: 2010/01/27 01:01:58 $
  */
 public class EditSubmissionProfilePage
     extends GraderComponent
@@ -71,7 +71,8 @@ public class EditSubmissionProfilePage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         log.debug( "starting appendToResponse()" );
         submissionProfile =
@@ -80,7 +81,7 @@ public class EditSubmissionProfilePage
             - submissionProfile.taPoints()
             - submissionProfile.toolPoints();
         initializeTimeFields();
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
     }
 
 

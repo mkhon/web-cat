@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPluginGlobalsPage.java,v 1.6 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: EditPluginGlobalsPage.java,v 1.7 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -31,7 +31,7 @@ import com.webobjects.appserver.*;
  *
  *  @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.7 $, $Date: 2010/01/27 01:01:58 $
  */
 public class EditPluginGlobalsPage
     extends GraderComponent
@@ -59,7 +59,8 @@ public class EditPluginGlobalsPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         log.debug( "appendToResponse()" );
         if ( baseDir == null )
@@ -72,7 +73,7 @@ public class EditPluginGlobalsPage
             log.debug( "plug-in global settings =\n"
                 + plugin.globalConfigSettings() );
         }
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
     }
 
 

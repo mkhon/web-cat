@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.13 2010/01/26 04:48:09 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.14 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.ui.generators.JavascriptGenerator;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2010/01/26 04:48:09 $
+ * @version $Revision: 1.14 $, $Date: 2010/01/27 01:01:58 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -84,7 +84,8 @@ public class NewCourseOfferingPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void _appendToResponse(WOResponse response, WOContext context)
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         log.debug("appendToResponse()");
         if ( semesters == null )
@@ -107,7 +108,7 @@ public class NewCourseOfferingPage
             coreSelections().setCourseRelationship(
                 coreSelections().courseOffering().course());
         }
-        super._appendToResponse(response, context);
+        super.beforeAppendToResponse(response, context);
     }
 
 

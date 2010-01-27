@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.15 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.16 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.15 $, $Date: 2010/01/15 17:12:21 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.16 $, $Date: 2010/01/27 01:01:58 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -78,7 +78,8 @@ public class UploadSubmissionPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    protected void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         log.debug( "primeUser = " + wcSession().primeUser()
                    + ", localUser = " + user() );
@@ -130,7 +131,14 @@ public class UploadSubmissionPage
             log.debug( "time = " + deadline );
         }
 
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    protected void afterAppendToResponse(WOResponse response, WOContext context)
+    {
+        super.afterAppendToResponse(response, context);
         oldBatchSize  = submissionDisplayGroup.numberOfObjectsPerBatch();
         oldBatchIndex = submissionDisplayGroup.currentBatchIndex();
         cachedUploadedFile     = submissionInProcess().uploadedFile();

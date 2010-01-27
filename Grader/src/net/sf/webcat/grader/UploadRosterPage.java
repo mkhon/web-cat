@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.15 2010/01/26 04:48:29 stedwar2 Exp $
+ |  $Id: UploadRosterPage.java,v 1.16 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.15 $, $Date: 2010/01/26 04:48:29 $
+ * @version $Revision: 1.16 $, $Date: 2010/01/27 01:01:58 $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -96,7 +96,8 @@ public class UploadRosterPage
      * @param response The response being built
      * @param context  The context of the request
      */
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         if ( domain == null )
         {
@@ -106,7 +107,7 @@ public class UploadRosterPage
         {
             refresh(true, false);
         }
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
     }
 
 

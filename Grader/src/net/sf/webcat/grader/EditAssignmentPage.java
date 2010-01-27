@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.31 2010/01/25 19:01:55 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.32 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
  *  This class presents an assignment's properties so they can be edited.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.31 $, $Date: 2010/01/25 19:01:55 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.32 $, $Date: 2010/01/27 01:01:58 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -102,9 +102,10 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public void _appendToResponse(WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
-        long timeStart = System.currentTimeMillis();
+        timeStart = System.currentTimeMillis();
 
         log.debug("starting appendToResponse()");
         currentTime = new NSTimestamp();
@@ -152,7 +153,14 @@ public class EditAssignmentPage
                  );
         }
         log.debug( "starting super.appendToResponse()" );
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    protected void afterAppendToResponse(WOResponse response, WOContext context)
+    {
+        super.afterAppendToResponse(response, context);
         log.debug( "finishing super.appendToResponse()" );
         log.debug( "finishing appendToResponse()" );
 
@@ -799,12 +807,29 @@ public class EditAssignmentPage
     }
 
 
+    // ----------------------------------------------------------
+    public Boolean surveysSupported()
+    {
+        if (surveysSupported == null)
+        {
+            surveysSupported = Boolean.valueOf(
+                wcApplication().subsystemManager().subsystem("Opinions")
+                != null);
+        }
+        return surveysSupported.booleanValue();
+    }
+
+
     //~ Instance/static variables .............................................
 
     private int            suspendedSubmissionCount = 0;
     private NSMutableArray<AssignmentOffering> upcomingOfferings;
     private NSTimestamp    currentTime;
     private AssignmentOffering offeringForAction;
+
+    private long timeStart;
+
+    private static Boolean surveysSupported;
 
     static Logger log = Logger.getLogger( EditAssignmentPage.class );
 }

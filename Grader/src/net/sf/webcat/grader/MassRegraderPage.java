@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MassRegraderPage.java,v 1.9 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: MassRegraderPage.java,v 1.10 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -43,7 +43,7 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.10 $, $Date: 2010/01/27 01:01:58 $
  */
 public class MassRegraderPage extends GraderAssignmentComponent
 {
@@ -72,12 +72,12 @@ public class MassRegraderPage extends GraderAssignmentComponent
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    @Override
-    public void _appendToResponse(WOResponse response, WOContext context)
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         updateSubmissionCount();
 
-        super._appendToResponse(response, context);
+        super.beforeAppendToResponse(response, context);
     }
 
 

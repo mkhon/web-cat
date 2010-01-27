@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SelectSubmissionProfile.java,v 1.5 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: SelectSubmissionProfile.java,v 1.6 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.6 $, $Date: 2010/01/27 01:01:58 $
  */
 public class SelectSubmissionProfile
     extends GraderComponent
@@ -66,7 +66,8 @@ public class SelectSubmissionProfile
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         NSMutableArray<EOQualifier> qualifiers =
             new NSMutableArray<EOQualifier>();
@@ -149,7 +150,7 @@ public class SelectSubmissionProfile
             createNew = true;
         }
 
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
     }
 
 

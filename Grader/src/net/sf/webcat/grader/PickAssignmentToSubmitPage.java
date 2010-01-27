@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickAssignmentToSubmitPage.java,v 1.10 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: PickAssignmentToSubmitPage.java,v 1.11 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2010/01/23 03:47:28 $
+ *  @version $Revision: 1.11 $, $Date: 2010/01/27 01:01:58 $
  */
 public class PickAssignmentToSubmitPage
     extends GraderCourseComponent
@@ -67,7 +67,8 @@ public class PickAssignmentToSubmitPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         log.debug( "starting appendToResponse()" );
         showHaltedMessage = false;
@@ -163,8 +164,7 @@ public class PickAssignmentToSubmitPage
                 );
         }
 
-        super._appendToResponse( response, context );
-        log.debug( "ending appendToResponse()" );
+        super.beforeAppendToResponse( response, context );
     }
 
 

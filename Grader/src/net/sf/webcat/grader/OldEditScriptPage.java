@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OldEditScriptPage.java,v 1.7 2010/01/23 03:47:28 stedwar2 Exp $
+ |  $Id: OldEditScriptPage.java,v 1.8 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2010/01/23 03:47:28 $
+ * @version $Revision: 1.8 $, $Date: 2010/01/27 01:01:58 $
  */
 public class OldEditScriptPage
     extends GraderComponent
@@ -70,7 +70,8 @@ public class OldEditScriptPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         NSMutableArray<File> files = new NSMutableArray<File>();
         Step selectedStep = prefs().step();
@@ -133,7 +134,7 @@ public class OldEditScriptPage
                 script.setMainFileName( fileName() );
             }
         }
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
     }
 
 

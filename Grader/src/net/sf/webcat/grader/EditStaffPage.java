@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.12 2010/01/25 02:46:36 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.13 2010/01/27 01:01:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2010/01/25 02:46:36 $
+ * @version $Revision: 1.13 $, $Date: 2010/01/27 01:01:58 $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -65,7 +65,8 @@ public class EditStaffPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void _appendToResponse( WOResponse response, WOContext context )
+    protected void beforeAppendToResponse(
+        WOResponse response, WOContext context)
     {
         sideStepTitle = "Edit Course "
             + ( editInstructors
@@ -93,7 +94,14 @@ public class EditStaffPage
         potentialDisplayGroup.fetch();
         potentialDisplayGroup.setNumberOfObjectsPerBatch( oldBatchSize );
         potentialDisplayGroup.setCurrentBatchIndex( oldBatchIndex );
-        super._appendToResponse( response, context );
+        super.beforeAppendToResponse( response, context );
+    }
+
+
+    // ----------------------------------------------------------
+    protected void afterAppendToResponse(WOResponse response, WOContext context)
+    {
+        super.afterAppendToResponse(response, context);
         log.debug( "old size = " + oldBatchSize
                    + " old index = " + oldBatchIndex );
     }
