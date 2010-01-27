@@ -21,15 +21,20 @@
           };
           "My Profile" = {
             pageName = net.sf.webcat.core.MyProfilePage;
-            accessLevel = 40;
+            accessLevel = 0;
             priority = 1001;
             id       = Profile;
           };
           Feedback = {
             pageName = net.sf.webcat.core.FeedbackPage;
-            accessLevel = 40;
+            accessLevel = 0;
             priority = 1003;
             id       = Feedback;
+          };
+          "Widget Tests" = {
+            pageName    = net.sf.webcat.core.WidgetTestPage;
+            accessLevel = 100;
+            priority    = 99999;
           };
         };
       };
