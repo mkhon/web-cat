@@ -9,7 +9,7 @@ Opinions.version.revision=0
 Opinions.requires=Core, EOJDBCPrototypes, DBUpdateEngine, Grader, JobQueue
 
 Opinions.copyright=\
-    (c) 2008 Virginia Tech Department of Computer Science
+    (c) 2010 Virginia Tech Department of Computer Science
 Opinions.provider=Virginia Tech Computer Science
 Opinions.provider.url=http\://web-cat.cs.vt.edu/updates
 Opinions.info.url=\
@@ -20,6 +20,6 @@ Opinions.license=GNU Affero General Public License v.3
 Opinions.license.url=http\://www.gnu.org/licenses/agpl.html
 
 Opinions.description=\
-    This subsystem Provides feedback forms and data tracking used to \
+    This subsystem provides feedback forms and data tracking used to \
     survey both students and staff about their opinions about assignments \
     that have been completed, including both engagement and frustration.
