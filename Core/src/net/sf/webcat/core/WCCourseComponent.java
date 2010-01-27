@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCourseComponent.java,v 1.14 2010/01/23 03:37:11 stedwar2 Exp $
+ |  $Id: WCCourseComponent.java,v 1.15 2010/01/27 00:43:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.*;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.14 $, $Date: 2010/01/23 03:37:11 $
+ * @version $Revision: 1.15 $, $Date: 2010/01/27 00:43:29 $
  */
 public class WCCourseComponent
     extends WCComponent
@@ -81,15 +81,27 @@ public class WCCourseComponent
 
         if (!force)
         {
-            _appendToResponse(response, context);
+            beforeAppendToResponse(response, context);
         }
 
         super.appendToResponse(response, context);
+
+        if (!force)
+        {
+            afterAppendToResponse(response, context);
+        }
     }
 
 
     // ----------------------------------------------------------
-    protected void _appendToResponse(WOResponse response, WOContext context)
+    protected void beforeAppendToResponse(WOResponse response, WOContext context)
+    {
+        // Overridden by subclasses.
+    }
+
+
+    // ----------------------------------------------------------
+    protected void afterAppendToResponse(WOResponse response, WOContext context)
     {
         // Overridden by subclasses.
     }
