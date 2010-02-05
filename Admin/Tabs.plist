@@ -31,11 +31,6 @@
             priority = 1003;
             id       = Feedback;
           };
-          "Widget Tests" = {
-            pageName    = net.sf.webcat.core.WidgetTestPage;
-            accessLevel = 100;
-            priority    = 99999;
-          };
         };
       };
       Subsystems = {
