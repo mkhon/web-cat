@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.9 2010/01/26 16:54:41 aallowat Exp $
+ |  $Id: WCBasePage.java,v 1.10 2010/02/07 01:31:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -74,8 +74,8 @@ import org.apache.log4j.Logger;
  * </table>
  *
  * @author Tony Allevato
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.9 $, $Date: 2010/01/26 16:54:41 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.10 $, $Date: 2010/02/07 01:31:21 $
  */
 public class WCBasePage
     extends WOComponent
@@ -160,7 +160,7 @@ public class WCBasePage
 
         NSMutableArray<String> array = new NSMutableArray<String>();
 
-        String[] requires = extraRequires.split(";");
+        String[] requires = extraRequires.split("[,;]\\s*");
         for (String require : requires)
         {
             if (require != null && require.length() > 0)
@@ -308,7 +308,7 @@ public class WCBasePage
         String result = null;
         if (extraCssFiles != null)
         {
-            String[] links = extraCssFiles.split(";");
+            String[] links = extraCssFiles.split("[,;]\\s*");
             StringBuffer buf = new StringBuffer(80 * links.length);
             for (String link : links)
             {
@@ -358,7 +358,7 @@ public class WCBasePage
             .valueForKey("customCss");
         if (customCss != null)
         {
-            String[] links = customCss.split(";");
+            String[] links = customCss.split("[,;]\\s*");
             StringBuffer buf = new StringBuffer(80 * links.length);
             for (String link : links)
             {
