@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentPane.js,v 1.7 2010/01/23 02:32:41 aallowat Exp $
+ |  $Id: ContentPane.js,v 1.8 2010/02/10 17:59:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ dojo.require("webcat.Spinner");
  * when it is initialized.
  *
  * @author Tony Allevato
- * @version $Id: ContentPane.js,v 1.7 2010/01/23 02:32:41 aallowat Exp $
+ * @version $Id: ContentPane.js,v 1.8 2010/02/10 17:59:07 aallowat Exp $
  */
 dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
 {
@@ -123,11 +123,7 @@ dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
                             dojo.xhrGet({
                                 url: n.src,
                                 sync: true,
-                                handleAs: 'javascript',
-                                load: function(response, ioArgs) {
-                                    dojo.eval(response);
-                                    return response;
-                                }
+                                handleAs: 'javascript'
                             });
                         }
                         else if (!/dojo\//.test(n.type))
