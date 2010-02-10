@@ -23,7 +23,7 @@ dojo.provide("webcat.reporter.AdvancedQueryAssistant");
 })();
 
 dojo.declare("webcat.reporter.ContentAssistDataStore",
-    "dojo.data.api.Identity",
+    dojo.data.api.Identity,
 {
     url: "",
     entities: { },
@@ -274,7 +274,6 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
     // ----------------------------------------------------------
     enqueueRowUpdate: function(widget, newValue, index)
     {
-       console.log(newValue);
         this.startBusyForRow(index);
 
         if (this._updateRowTimeoutIds[index])
@@ -338,5 +337,5 @@ dojo.declare("webcat.reporter.AdvancedQueryAssistant", null,
                 eval(fn + "(dijit.byId('" + this._completeId("comparandType_" + index) + "'));");
             }),
             widget.getValue(), index);
-    },
+    }
 });

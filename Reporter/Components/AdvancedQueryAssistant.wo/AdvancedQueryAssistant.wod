@@ -27,11 +27,6 @@ KeyPath : WCComboBox {
     value = currentKeyPath;
 }
 
-KeyPathChangeUpdater : WCActionFunction {
-    jsId = "~idFor.updateRowAfterKeyPath + '_' + index";
-    remote.refreshPanes = "~idFor.castTypeContainer + '_' + index";
-}
-
 CastTypeContainer : WCContentSpan {
     id = "~idFor.castTypeContainer + '_' + index";
 }
@@ -44,11 +39,6 @@ CastType : WCFilteringSelect {
     displayString = displayStringForCastType;
 }
 
-CastTypeUpdater : WCActionFunction {
-    jsId = "~idFor.updateRowAfterCastType + '_' + index";
-    remote.refreshPanes = "~idFor.comparisonContainer + '_' + index";
-}
-
 ComparisonContainer : WCContentSpan {
     id = "~idFor.comparisonContainer + '_' + index";
 }
@@ -57,11 +47,6 @@ Comparison : WCFilteringSelect {
     id = "~idFor.comparison + '_' + index";
     list = comparisonsForCurrentKeyPath;
     selection = currentComparison;
-}
-
-ComparisonUpdater : WCActionFunction {
-    jsId = "~idFor.updateRowAfterComparison + '_' + index";
-    remote.refreshPanes = "~idFor.comparandTypeContainer + '_' + index";
 }
 
 ComparandTypeContainer : WCContentSpan {
@@ -74,11 +59,6 @@ ComparandType : WCFilteringSelect {
     item = comparandType;
     displayString = displayStringForComparandType;
     selection = currentComparandType;
-}
-
-ComparandTypeUpdater : WCActionFunction {
-    jsId = "~idFor.updateRowAfterComparandType + '_' + index";
-    remote.refreshPanes = "~idFor.valueContainer + '_' + index";
 }
 
 ValueContainer : WCContentSpan {
