@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCSpinner.java,v 1.1 2009/10/31 22:54:28 aallowat Exp $
+ |  $Id: WCSpinner.java,v 1.2 2010/02/10 17:59:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -48,7 +48,7 @@ import net.sf.webcat.ui._base.DojoElement;
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: WCSpinner.java,v 1.1 2009/10/31 22:54:28 aallowat Exp $
+ * @version $Id: WCSpinner.java,v 1.2 2010/02/10 17:59:55 aallowat Exp $
  */
 public class WCSpinner extends DojoElement
 {
@@ -66,7 +66,7 @@ public class WCSpinner extends DojoElement
             NSDictionary<String, WOAssociation> someAssociations,
             WOElement template)
     {
-        super(name, someAssociations, template);
+        super("span", someAssociations, template);
     }
 
 
