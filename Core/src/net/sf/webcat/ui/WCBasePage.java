@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.10 2010/02/07 01:31:21 stedwar2 Exp $
+ |  $Id: WCBasePage.java,v 1.11 2010/02/10 17:59:28 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -74,8 +74,8 @@ import org.apache.log4j.Logger;
  * </table>
  *
  * @author Tony Allevato
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2010/02/07 01:31:21 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.11 $, $Date: 2010/02/10 17:59:28 $
  */
 public class WCBasePage
     extends WOComponent
@@ -101,6 +101,7 @@ public class WCBasePage
     public String extraRequires;
     public String extraCssFiles;
     public String pageScriptName;
+    public String dojoScriptName;
     public String  inlineHeaderContents;
     public boolean includePageWrapping = true;
 
@@ -115,11 +116,13 @@ public class WCBasePage
     {
         if (Application.isDevelopmentModeSafe())
         {
-            pageScriptName = DEVELOPMENT_SCRIPT_NAME;
+            pageScriptName = DEVELOPMENT_PAGE_SCRIPT_NAME;
+            dojoScriptName = DEVELOPMENT_DOJO_SCRIPT_NAME;
         }
         else
         {
-            pageScriptName = DEPLOYMENT_SCRIPT_NAME;
+            pageScriptName = DEPLOYMENT_PAGE_SCRIPT_NAME;
+            dojoScriptName = DEPLOYMENT_DOJO_SCRIPT_NAME;
         }
 
         log.debug( "nowrap = "
@@ -478,9 +481,13 @@ public class WCBasePage
     private static final String STYLESHEETS_RESOURCE_DIR = "stylesheets";
     private static final String STYLESHEETS_RESOURCE_EXT = "css";
 
-    private static final String DEPLOYMENT_SCRIPT_NAME = "BasePage.js";
-    private static final String DEVELOPMENT_SCRIPT_NAME =
+    private static final String DEPLOYMENT_PAGE_SCRIPT_NAME = "BasePage.js";
+    private static final String DEVELOPMENT_PAGE_SCRIPT_NAME =
         "BasePage.js.uncompressed.js";
+
+    private static final String DEPLOYMENT_DOJO_SCRIPT_NAME = "dojo.xd.js";
+    private static final String DEVELOPMENT_DOJO_SCRIPT_NAME =
+        "dojo.xd.js.uncompressed.js";
 
     static Logger log = Logger.getLogger( WCBasePage.class );
 }
