@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Tree.js,v 1.4 2010/02/10 17:59:08 aallowat Exp $
+ |  $Id: Tree.js,v 1.5 2010/02/10 18:17:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,7 +29,7 @@ dojo.require("dijit.Tree");
  * A Dojo tree model (for dijit.Tree) that obtains its data from a JSONBridge.
  *
  * @author Tony Allevato
- * @version $Id: Tree.js,v 1.4 2010/02/10 17:59:08 aallowat Exp $
+ * @version $Id: Tree.js,v 1.5 2010/02/10 18:17:31 aallowat Exp $
  */
 dojo.declare("webcat.JSONBridgeTreeModel", null,
 {
@@ -505,11 +505,11 @@ webcat.tree = {
         };
 
         node.checkbox = new dijit.form.CheckBox(checkboxArgs, node.leftDecoration);
-        node.checkbox.attr('checked', node.item.checked);
+        node.checkbox.attr('checked', node.item.checked || false);
 
         node.isChecked = function()
         {
-            return this.checkbox.attr('checked');
+            return this.checkbox.attr('checked') || false;
         };
 
         node.setChecked = function(newValue)
