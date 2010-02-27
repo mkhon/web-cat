@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWrapper.java,v 1.4 2009/08/02 15:01:40 stedwar2 Exp $
+ |  $Id: WCPageWrapper.java,v 1.5 2010/02/27 21:20:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * The page wrapper for direct-to-web pages.
  *
  *  @author Stephen Edwards
- *  @version $Id: WCPageWrapper.java,v 1.4 2009/08/02 15:01:40 stedwar2 Exp $
+ *  @version $Id: WCPageWrapper.java,v 1.5 2010/02/27 21:20:52 stedwar2 Exp $
  */
 public class WCPageWrapper
     extends WOComponent
@@ -63,9 +63,6 @@ public class WCPageWrapper
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see com.webobjects.appserver.WOComponent#appendToResponse(com.webobjects.appserver.WOResponse, com.webobjects.appserver.WOContext)
-     */
     public void appendToResponse( WOResponse arg0, WOContext arg1 )
     {
         log.debug( "appendToResponse()" );
@@ -95,7 +92,58 @@ public class WCPageWrapper
     }
 
 
+    // ----------------------------------------------------------
+    @Override
+    public void awake()
+    {
+        if (currentTab != null)
+        {
+            reselectCurrentTab();
+        }
+        super.awake();
+        currentTab();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get the selected tab that corresponds to this component's page.
+     * @return this page's navigation tab
+     */
+    public TabDescriptor currentTab()
+    {
+        if (currentTab == null)
+        {
+            currentTab = ((Session)session()).tabs.selectedDescendant();
+        }
+        return currentTab;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the tab that corresponds to this component's page.
+     * @param current this page's navigation tab
+     */
+    public void setCurrentTab(TabDescriptor current)
+    {
+        currentTab = current;
+    }
+
+
+    // ----------------------------------------------------------
+    public void reselectCurrentTab()
+    {
+        if (currentTab() != null)
+        {
+            currentTab().select();
+        }
+    }
+
+
     //~ Instance/static variables .............................................
+
+    private TabDescriptor currentTab;
 
     static Logger log = Logger.getLogger( WCPageWrapper.class );
 }

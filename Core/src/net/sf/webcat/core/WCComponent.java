@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.20 2010/01/23 03:35:29 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.21 2010/02/27 21:19:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.20 $, $Date: 2010/01/23 03:35:29 $
+ * @version $Revision: 1.21 $, $Date: 2010/02/27 21:19:53 $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -227,6 +227,16 @@ public class WCComponent
     public void setCurrentTab(TabDescriptor current)
     {
         currentTab = current;
+    }
+
+
+    // ----------------------------------------------------------
+    public void reselectCurrentTab()
+    {
+        if (currentTab() != null)
+        {
+            currentTab().select();
+        }
     }
 
 
@@ -615,6 +625,10 @@ public class WCComponent
             log.debug("awake(): " + getClass().getName());
         }
         localContext();
+        if (currentTab != null)
+        {
+            reselectCurrentTab();
+        }
         super.awake();
         // Force currentTab to be initialized
         currentTab();
@@ -699,6 +713,7 @@ public class WCComponent
     @SuppressWarnings("unchecked")
     public final <T> T pageWithName(Class<T> pageClass)
     {
+        reselectCurrentTab();
         return (T)pageWithName(pageClass.getName());
     }
 

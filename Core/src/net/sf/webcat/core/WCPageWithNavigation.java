@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.5 2009/10/20 15:15:35 aallowat Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.6 2010/02/27 21:19:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,8 +34,8 @@ import net.sf.webcat.ui.WCBasePage;
  * keys, which it passes on to its BarePage container.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2009/10/20 15:15:35 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2010/02/27 21:19:53 $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -141,6 +141,11 @@ public class WCPageWithNavigation
             {
                 title = secondLevelSelection.label();
             }
+        }
+        if (log.isDebugEnabled())
+        {
+            log.debug("my tab = " + myTab);
+            log.debug("my role = " + selectedRole);
         }
     }
 
@@ -488,7 +493,7 @@ public class WCPageWithNavigation
             : thisPage.pageWithName(name);
     }
 
-    
+
     //~ Instance/static variables .............................................
 
     private TabDescriptor myTab;
