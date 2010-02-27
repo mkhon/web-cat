@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReportPage.java,v 1.16 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: GeneratedReportPage.java,v 1.17 2010/02/27 21:24:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * This page displayed a generated report.
  *
  * @author  Tony Allevato
- * @version $Id: GeneratedReportPage.java,v 1.16 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: GeneratedReportPage.java,v 1.17 2010/02/27 21:24:19 stedwar2 Exp $
  */
 public class GeneratedReportPage
     extends ReporterComponent
@@ -365,8 +365,7 @@ public class GeneratedReportPage
         if (error != null)
         {
             ReportDownloadErrorPage page =
-                (ReportDownloadErrorPage) pageWithName(
-                    ReportDownloadErrorPage.class.getName());
+                pageWithName(ReportDownloadErrorPage.class);
             page.throwable = error;
             page.generatedReport = generatedReport;
             return page;
