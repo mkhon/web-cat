@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.20 2010/01/27 01:01:58 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.21 2010/02/27 18:51:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.20 $, $Date: 2010/01/27 01:01:58 $
+ * @version $Revision: 1.21 $, $Date: 2010/02/27 18:51:37 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -102,6 +102,25 @@ public class FinalReportPage
         if ( submission == null && prefs() != null )
         {
             submission = prefs().submission();
+            if (submission != null
+                && (submission.user() != user())
+                    || submission.assignmentOffering().assignment()
+                        != prefs().assignment())
+            {
+                submission = null;
+            }
+
+            if (submission == null && prefs().assignment() != null)
+            {
+                submission = Submission.latestSubmissionForAssignmentAndUser(
+                    localContext(),
+                    prefs().assignment(),
+                    user());
+                if (submission != null)
+                {
+                    prefs().setSubmissionRelationship(submission);
+                }
+            }
         }
         if ( submission != null )
         {
