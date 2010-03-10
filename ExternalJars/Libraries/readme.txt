@@ -7,7 +7,7 @@ activation.jar
 bcprov-jdk15-129.jar
 commons-logging-1.1.jar
 eddo-1_3.jar
-edldap1_6_1.jar
+edldap-2.0.jar
 gnujaxp.jar
 jcommon-1.0.0.jar
 jdom.jar
@@ -17,5 +17,6 @@ mysql-connector-java-3.1.13-bin.jar
 tar.jar
 twitter4j-2.0.10.jar
 utils.jar
+vt-ldap-3.1.jar
 xerces.jar
 xml-apis.jar

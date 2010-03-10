@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/eddo-1_3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/edldap-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jdom.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jfreechart-1.0.1.jar"/>
@@ -11,9 +12,9 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/OpenBaseJDBC.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/tar.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/utils.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/vt-ldap-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/xerces.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/xml-apis.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/edldap1_6_1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/bcprov-jdk15-129.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/twitter4j-2.0.10.jar"/>
