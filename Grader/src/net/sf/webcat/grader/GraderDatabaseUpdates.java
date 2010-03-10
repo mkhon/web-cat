@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.11 2010/01/20 17:00:18 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.12 2010/03/10 21:59:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.11 2010/01/20 17:00:18 aallowat Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.12 2010/03/10 21:59:42 stedwar2 Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -277,6 +277,19 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TSUBMISSIONRESULT add "
             + "accumulatedSavedProperties BLOB" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds field for tracking assignment modification times.
+     * @throws SQLException on error
+     */
+    public void updateIncrement13() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TASSIGNMENTOFFERING add "
+            + "lastModified DATETIME" );
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ICalView.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: ICalView.java,v 1.4 2010/03/10 21:59:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,6 @@ package net.sf.webcat.grader.actions;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
-import org.apache.log4j.Logger;
 import net.sf.webcat.grader.*;
 
 //-------------------------------------------------------------------------
@@ -31,7 +30,7 @@ import net.sf.webcat.grader.*;
  * This page generates an ical-compatible list of assignment due dates.
  *
  * @author Stephen Edwards
- * @version $Id: ICalView.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ * @version $Id: ICalView.java,v 1.4 2010/03/10 21:59:42 stedwar2 Exp $
  */
 public class ICalView
     extends BlueJSubmitterDefinitions
@@ -70,9 +69,51 @@ public class ICalView
 
 
     // ----------------------------------------------------------
+    public boolean showAll()
+    {
+        return true;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean preserveDateDifferences()
+    {
+        return true;
+    }
+
+
+    // ----------------------------------------------------------
     public int submitterEngine()
     {
         return 0;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean useCRN()
+    {
+        boolean result = groupByCRN;
+        if (!result)
+        {
+            if (multipleOfferings == null)
+            {
+                multipleOfferings =
+                    new NSMutableDictionary<Assignment, Boolean>();
+                for (AssignmentOffering ao : assignmentsToDisplay)
+                {
+                    if (multipleOfferings.containsKey(ao.assignment()))
+                    {
+                        multipleOfferings.put(ao.assignment(), Boolean.TRUE);
+                    }
+                    else
+                    {
+                        multipleOfferings.put(ao.assignment(), Boolean.FALSE);
+                    }
+                }
+            }
+            result = multipleOfferings.get(anAssignmentOffering.assignment());
+        }
+        return result;
     }
 
 
@@ -120,4 +161,5 @@ public class ICalView
     //~ Instance/static variables .............................................
 
     private static NSTimestampFormatter formatter;
+    private NSMutableDictionary<Assignment, Boolean> multipleOfferings;
 }
