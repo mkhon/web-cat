@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.18 2010/01/15 17:12:21 aallowat Exp $
+ |  $Id: Grader.java,v 1.19 2010/03/10 21:58:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.18 2010/01/15 17:12:21 aallowat Exp $
+*  @version $Id: Grader.java,v 1.19 2010/03/10 21:58:46 stedwar2 Exp $
 */
 public class Grader
    extends Subsystem
@@ -77,7 +77,7 @@ public class Grader
 
     // ----------------------------------------------------------
     /**
-     * Performs all startup actions for this subsystem.
+     * Performs all initialization actions for this subsystem.
      */
     public void init()
     {
@@ -85,7 +85,14 @@ public class Grader
 
         // Install or update any plug-ins that need it
         GradingPlugin.autoUpdateAndInstall();
+    }
 
+    // ----------------------------------------------------------
+    /**
+     * Performs all startup actions for this subsystem.
+     */
+    public void start()
+    {
         // Create the queue and the queueprocessor
         graderQueue          = new GraderQueue();
         graderQueueProcessor = new GraderQueueProcessor( graderQueue );
@@ -251,6 +258,20 @@ public class Grader
             Session   session,
             WOContext context )
     {
+        // Wait until this subsystem has actually started
+        while (!hasStarted())
+        {
+            try
+            {
+                // sleep for 2 seconds
+                Thread.sleep(2000);
+            }
+            catch (InterruptedException e)
+            {
+                // silently repeat the loop
+            }
+        }
+
 //      log.debug( "handleDirectAction(): session = " + session );
 //      log.debug( "handleDirectAction(): context = " + context );
         WOActionResults results = null;
