@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.33 2010/02/27 21:23:06 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.34 2010/03/10 22:00:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.33 $, $Date: 2010/02/27 21:23:06 $
+ * @version $Revision: 1.34 $, $Date: 2010/03/10 22:00:43 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -84,9 +84,9 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     public void awake()
     {
-        long timeStart = System.currentTimeMillis();
+        long timeStartedHere = System.currentTimeMillis();
         super.awake();
-        long timeTaken = System.currentTimeMillis() - timeStart;
+        long timeTaken = System.currentTimeMillis() - timeStartedHere;
         log.debug("Time in awake(): " + timeTaken + " ms");
     }
 
@@ -94,9 +94,9 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     public void sleep()
     {
-        long timeStart = System.currentTimeMillis();
+        long timeStartedHere = System.currentTimeMillis();
         super.sleep();
-        long timeTaken = System.currentTimeMillis() - timeStart;
+        long timeTaken = System.currentTimeMillis() - timeStartedHere;
         log.debug("Time in sleep(): " + timeTaken + " ms");
     }
 
@@ -660,7 +660,7 @@ public class EditAssignmentPage
     public void takeValuesFromRequest(WORequest arg0, WOContext arg1)
     {
         log.debug("takeValuesFromRequest()");
-        long timeStart = System.currentTimeMillis();
+        long timeStartedHere = System.currentTimeMillis();
 
         super.takeValuesFromRequest(arg0, arg1);
 
@@ -686,7 +686,7 @@ public class EditAssignmentPage
             }
         }
 
-        long timeTaken = System.currentTimeMillis() - timeStart;
+        long timeTaken = System.currentTimeMillis() - timeStartedHere;
         log.debug("Time in takeValuesFromRequest(): " + timeTaken + " ms");
     }
 
