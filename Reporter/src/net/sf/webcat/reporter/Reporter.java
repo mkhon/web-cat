@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.18 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: Reporter.java,v 1.19 2010/03/10 22:11:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,7 +28,6 @@ import net.sf.webcat.core.Application;
 import net.sf.webcat.core.Subsystem;
 import net.sf.webcat.grader.EnqueuedJob;
 import net.sf.webcat.grader.Grader;
-import net.sf.webcat.jobqueue.HostDescriptor;
 import net.sf.webcat.jobqueue.QueueDescriptor;
 import net.sf.webcat.reporter.messaging.ReportCompleteMessage;
 import org.apache.log4j.Logger;
@@ -41,15 +40,8 @@ import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunTask;
 import org.eclipse.birt.report.model.api.IDesignEngine;
 import org.eclipse.birt.report.model.api.SessionHandle;
-import com.webobjects.eoaccess.EOUtilities;
-import com.webobjects.eocontrol.EOAndQualifier;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOKeyValueQualifier;
 import com.webobjects.eocontrol.EOQualifier;
-import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
-import com.webobjects.foundation.NSTimestamp;
-import er.extensions.eof.ERXConstant;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXQ;
 
@@ -58,7 +50,7 @@ import er.extensions.eof.ERXQ;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.18 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: Reporter.java,v 1.19 2010/03/10 22:11:03 stedwar2 Exp $
  */
 public class Reporter
     extends Subsystem
@@ -80,9 +72,6 @@ public class Reporter
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    /* (non-Javadoc)
-     * @see net.sf.webcat.core.Subsystem#init()
-     */
     public void init()
     {
         super.init();
@@ -94,6 +83,12 @@ public class Reporter
         // Register the report generation job queue and create worker threads.
 
         QueueDescriptor.registerQueue(ReportGenerationJob.ENTITY_NAME);
+    }
+
+
+    // ----------------------------------------------------------
+    public void startup()
+    {
         new ReportGenerationWorkerThread().start();
 
         // Create the global report design session used to gather information
@@ -166,14 +161,15 @@ public class Reporter
         IReportRunnable runnable = openReportTemplate(template.filePath());
         IRunTask task = reportEngine.createRunTask(runnable);
 
-        Map appContext = task.getAppContext();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> appContext = task.getAppContext();
         if (appContext == null)
         {
-            appContext = new Hashtable();
+            appContext = new Hashtable<String, Object>();
         }
         else
         {
-            appContext = new Hashtable(appContext);
+            appContext = new Hashtable<String, Object>(appContext);
         }
 
         ManagedReportGenerationJob managedJob =
