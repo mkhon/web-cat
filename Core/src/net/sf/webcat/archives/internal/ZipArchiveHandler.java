@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ZipArchiveHandler.java,v 1.5 2009/06/16 14:15:13 stedwar2 Exp $
+ |  $Id: ZipArchiveHandler.java,v 1.6 2010/03/15 16:49:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,9 +29,7 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import net.sf.webcat.archives.*;
-import net.sf.webcat.archives.AbstractArchiveHandler;
-import net.sf.webcat.archives.ArchiveEntry;
-import net.sf.webcat.archives.IArchiveEntry;
+import net.sf.webcat.core.FileUtilities;
 
 //-------------------------------------------------------------------------
 /**

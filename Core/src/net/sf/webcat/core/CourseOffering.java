@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.17 2010/01/23 03:34:57 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.18 2010/03/15 16:48:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
  * semester).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.17 $, $Date: 2010/01/23 03:34:57 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.18 $, $Date: 2010/03/15 16:48:44 $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -433,7 +433,7 @@ public class CourseOffering
                     File courseDir = new File(dir.toString());
                     if (courseDir.exists())
                     {
-                        net.sf.webcat.archives.FileUtilities.deleteDirectory(
+                        net.sf.webcat.core.FileUtilities.deleteDirectory(
                             courseDir);
                     }
                 }

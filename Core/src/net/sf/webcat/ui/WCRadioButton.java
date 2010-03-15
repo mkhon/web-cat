@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCRadioButton.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ |  $Id: WCRadioButton.java,v 1.2 2010/03/15 16:48:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,9 +35,9 @@ import com.webobjects.foundation.NSDictionary;
 //--------------------------------------------------------------------------
 /**
  * A radio button.
- * 
+ *
  * @author Tony Allevato
- * @version $Id: WCRadioButton.java,v 1.1 2009/02/04 18:54:01 aallowat Exp $
+ * @version $Id: WCRadioButton.java,v 1.2 2010/03/15 16:48:47 aallowat Exp $
  */
 public class WCRadioButton extends DojoFormElement
 {
@@ -48,7 +48,7 @@ public class WCRadioButton extends DojoFormElement
             NSDictionary<String, WOAssociation> someAssociations,
             WOElement template)
     {
-        super("div", someAssociations, template);
+        super("span", someAssociations, template);
 
         _checked = _associations.removeObjectForKey("checked");
         _selection = _associations.removeObjectForKey("selection");
@@ -72,7 +72,7 @@ public class WCRadioButton extends DojoFormElement
     {
         return "dijit.form.RadioButton";
     }
-    
+
 
     // ----------------------------------------------------------
     @Override
@@ -85,17 +85,19 @@ public class WCRadioButton extends DojoFormElement
     // ----------------------------------------------------------
     public void takeValuesFromRequest(WORequest request, WOContext context)
     {
+        insertNameMappingIntoContext(context);
+
         WOComponent component = context.component();
-        
+
         if (!isDisabledInContext(context) && context.wasFormSubmitted())
         {
             String name = nameInContext(context);
-            
+
             if (name != null)
             {
                 NSArray<Object> formValues = request.formValuesForKey(
                         nameInContext(context));
-                
+
                 Object value;
                 if (_value == null)
                 {
@@ -105,20 +107,22 @@ public class WCRadioButton extends DojoFormElement
                 {
                     value = _value.valueInComponent(component);
                 }
-                
+
                 boolean selected = isValueInInputValues(value, formValues);
-                
+
                 if (_value != null && _selection != null && selected)
                 {
                     _selection.setValue(value, component);
                 }
-                
+
                 if (_checked != null)
                 {
                     _checked.setValue(selected, component);
                 }
             }
         }
+
+        removeNameMappingFromContext(context);
     }
 
     // ----------------------------------------------------------
@@ -128,14 +132,14 @@ public class WCRadioButton extends DojoFormElement
         super.appendAttributesToResponse(response, context);
 
         WOComponent component = context.component();
-        
+
         if(_value != null)
         {
             Object value = _value.valueInComponent(component);
             if(value != null && _selection != null)
             {
                 Object selection = _selection.valueInComponent(component);
-                
+
                 if(selection != null &&
                         selection.toString().equals(value.toString()))
                 {
@@ -149,7 +153,7 @@ public class WCRadioButton extends DojoFormElement
             _appendTagAttributeAndValueToResponse(response, "value",
                     context.elementID(), false);
         }
-        
+
         if(checkedInContext(context))
         {
             _appendTagAttributeAndValueToResponse(response,
@@ -157,7 +161,7 @@ public class WCRadioButton extends DojoFormElement
         }
     }
 
-        
+
     // ----------------------------------------------------------
     protected boolean checkedInContext(WOContext context)
     {
@@ -167,7 +171,7 @@ public class WCRadioButton extends DojoFormElement
         }
         else
         {
-            return _checked.booleanValueInComponent(context.component());            
+            return _checked.booleanValueInComponent(context.component());
         }
     }
 

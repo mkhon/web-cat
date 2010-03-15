@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.29 2010/03/10 21:59:42 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.30 2010/03/15 16:49:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -41,8 +41,8 @@ import org.apache.log4j.Logger;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.29 $, $Date: 2010/03/10 21:59:42 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.30 $, $Date: 2010/03/15 16:49:48 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -608,7 +608,7 @@ public class AssignmentOffering
                     if (assignmentDir.exists())
                     {
                         log.debug("deleting " + assignmentDir);
-                        net.sf.webcat.archives.FileUtilities.deleteDirectory(
+                        net.sf.webcat.core.FileUtilities.deleteDirectory(
                             assignmentDir);
                     }
                 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentPane.js,v 1.8 2010/02/10 17:59:07 aallowat Exp $
+ |  $Id: ContentPane.js,v 1.9 2010/03/15 16:48:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ dojo.require("webcat.Spinner");
  * when it is initialized.
  *
  * @author Tony Allevato
- * @version $Id: ContentPane.js,v 1.8 2010/02/10 17:59:07 aallowat Exp $
+ * @version $Id: ContentPane.js,v 1.9 2010/03/15 16:48:57 aallowat Exp $
  */
 dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
 {
@@ -84,7 +84,40 @@ dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
             this.inherited(arguments);
         }
     },
+
+
+    // ----------------------------------------------------------
+    /**
+     * Clears the ContentPane's content without resetting its href attribute
+     * (required so that it can refresh properly in the future).
+     */
+    clearContent: function()
+    {
+        this._setContent("", false);
+    },
  // END WEBCAT CHANGES
+
+
+    // ----------------------------------------------------------
+    _onShow: function()
+    {
+        if (!this.alwaysDynamic)
+        {
+            // If alwaysDynamic = false, then the content pane content is
+            // already rendered, but _onShow will still cause an unnecessary
+            // refresh. So, we clear out the href here temporarily to avoid
+            // that.
+
+            var oldHref = this.href;
+            this.href = null;
+            this.inherited(arguments);
+            this.href = oldHref;
+        }
+        else
+        {
+            this.inherited(arguments);
+        }
+    },
 
 
     // ----------------------------------------------------------

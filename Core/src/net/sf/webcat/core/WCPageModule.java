@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageModule.java,v 1.3 2009/05/03 17:15:06 stedwar2 Exp $
+ |  $Id: WCPageModule.java,v 1.4 2010/03/15 16:48:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * and which will be rendered with the <code>.module</code> CSS class.
  *
  * @author Stephen Edwards
- * @version $Id: WCPageModule.java,v 1.3 2009/05/03 17:15:06 stedwar2 Exp $
+ * @version $Id: WCPageModule.java,v 1.4 2010/03/15 16:48:41 aallowat Exp $
  */
 public class WCPageModule
     extends WOComponent
@@ -53,9 +53,16 @@ public class WCPageModule
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public boolean isStateless()
+/*    public boolean isStateless()
     {
         return true;
+    }*/
+
+
+    // ----------------------------------------------------------
+    public boolean synchronizesVariablesWithBindings()
+    {
+        return false;
     }
 
 

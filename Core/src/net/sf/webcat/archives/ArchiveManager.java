@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ArchiveManager.java,v 1.3 2008/04/02 00:50:31 stedwar2 Exp $
+ |  $Id: ArchiveManager.java,v 1.4 2010/03/15 16:49:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import net.sf.webcat.core.FileUtilities;
 
 
 //-------------------------------------------------------------------------

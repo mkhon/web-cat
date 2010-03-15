@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoNumericFormElement.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
+ |  $Id: DojoNumericFormElement.java,v 1.4 2010/03/15 16:48:34 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import com.webobjects.foundation.NSDictionary;
  * subclass in {@link #supportsIntegralValuesOnly()}.
  *
  * @author Tony Allevato
- * @version $Id: DojoNumericFormElement.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
+ * @version $Id: DojoNumericFormElement.java,v 1.4 2010/03/15 16:48:34 aallowat Exp $
  */
 public abstract class DojoNumericFormElement extends DojoFormElement
 {
@@ -78,7 +78,7 @@ public abstract class DojoNumericFormElement extends DojoFormElement
     @Override
     public void takeValuesFromRequest(WORequest request, WOContext context)
     {
-        // Don't set the binding if the form control was disabled on the page.
+        insertNameMappingIntoContext(context);
 
         if(!isDisabledInContext(context) && context.wasFormSubmitted())
         {
@@ -91,7 +91,7 @@ public abstract class DojoNumericFormElement extends DojoFormElement
 
                 // Parse the string into an appropriate numerical type that
                 // will be set to the binding.
-                
+
                 // FIXME replace this code with code that mimics the use of
                 // formatters from WOTextField.
 
@@ -122,6 +122,6 @@ public abstract class DojoNumericFormElement extends DojoFormElement
             }
         }
 
-        super.takeValuesFromRequest(request, context);
+        removeNameMappingFromContext(context);
     }
 }

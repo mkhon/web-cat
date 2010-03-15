@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.14 2009/12/09 05:01:35 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.15 2010/03/15 16:49:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.14 2009/12/09 05:01:35 aallowat Exp $
+ *  @version $Id: SubmissionResult.java,v 1.15 2010/03/15 16:49:49 aallowat Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -603,7 +603,7 @@ public class SubmissionResult
                 File dir = new File(subdirToDelete);
                 if (dir.exists())
                 {
-                    net.sf.webcat.archives.FileUtilities.deleteDirectory(dir);
+                    net.sf.webcat.core.FileUtilities.deleteDirectory(dir);
                 }
             }
         }

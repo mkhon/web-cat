@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.9 2010/01/27 01:01:58 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.10 2010/03/15 16:49:54 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,8 +34,8 @@ import org.apache.log4j.Logger;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2010/01/27 01:01:58 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.10 $, $Date: 2010/03/15 16:49:54 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -136,7 +136,7 @@ public class ConfirmSubmissionPage
      */
     public String fileSize()
     {
-        return Submission.fileSizeAsString( file.length() );
+        return FileUtilities.fileSizeAsString( file.length() );
     }
 
 

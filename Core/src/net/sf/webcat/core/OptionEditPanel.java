@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.13 2010/01/23 02:36:09 aallowat Exp $
+ |  $Id: OptionEditPanel.java,v 1.14 2010/03/15 16:48:43 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.*;
  *  @see OptionSetEditor
  *
  *  @author Stephen Edwards
- *  @version $Id: OptionEditPanel.java,v 1.13 2010/01/23 02:36:09 aallowat Exp $
+ *  @version $Id: OptionEditPanel.java,v 1.14 2010/03/15 16:48:43 aallowat Exp $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -292,8 +292,7 @@ public class OptionEditPanel
     {
         setValue( null );
 
-        return new JavascriptGenerator().refresh(
-                (String) idFor.valueForKey("valueContainer"));
+        return new JavascriptGenerator().refresh(idFor.get("valueContainer"));
     }
 
 
@@ -412,10 +411,10 @@ public class OptionEditPanel
         {
             File zipFile = new File( file.getName() + ".zip" );
             downloadPage.setFileName( zipFile );
-            downloadPage.setContentType( WCFile.mimeType( zipFile ) );
+            downloadPage.setContentType( FileUtilities.mimeType( zipFile ) );
             ByteArrayOutputStream boas = new ByteArrayOutputStream();
             ZipOutputStream       zos  = new ZipOutputStream( boas );
-            WCFile.appendToZip(
+            FileUtilities.appendToZip(
                 file,
                 zos,
                 file.getCanonicalPath().length() );
@@ -426,7 +425,7 @@ public class OptionEditPanel
         else
         {
             downloadPage.setFileName( file );
-            downloadPage.setContentType( WCFile.mimeType( file ) );
+            downloadPage.setContentType( FileUtilities.mimeType( file ) );
         }
         downloadPage.setStartDownload( true );
         return downloadPage;

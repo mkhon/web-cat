@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MassRegraderPage.java,v 1.10 2010/01/27 01:01:58 stedwar2 Exp $
+ |  $Id: MassRegraderPage.java,v 1.11 2010/03/15 16:49:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -42,8 +42,8 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  * plug-in).
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2010/01/27 01:01:58 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.11 $, $Date: 2010/03/15 16:49:53 $
  */
 public class MassRegraderPage extends GraderAssignmentComponent
 {
@@ -82,8 +82,11 @@ public class MassRegraderPage extends GraderAssignmentComponent
 
 
     // ----------------------------------------------------------
-    public WOActionResults massRegrade()
+    public JavascriptGenerator massRegrade()
     {
+        JavascriptGenerator result = new JavascriptGenerator()
+            .append("regraderWatcher.startEnqueueMonitor();");
+
         EOQualifier q;
         qualifierErrors = null;
 
@@ -97,7 +100,7 @@ public class MassRegraderPage extends GraderAssignmentComponent
                 (prefs().assignment() == null &&
                         prefs().assignmentOffering() == null))
         {
-            return null;
+            return result;
         }
 
         ERXSortOrderings sortOrderings =
@@ -166,7 +169,7 @@ public class MassRegraderPage extends GraderAssignmentComponent
             }
         }
 
-        return null;
+        return result;
     }
 
 

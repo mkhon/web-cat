@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCConnectAction.java,v 1.3 2010/01/25 19:00:16 aallowat Exp $
+ |  $Id: WCConnectAction.java,v 1.4 2010/03/15 16:48:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.ui;
 
 import org.apache.log4j.Logger;
+import net.sf.webcat.ui.util.JSHash;
 import net.sf.webcat.ui.util.DojoRemoteHelper;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOAssociation;
@@ -48,13 +49,8 @@ import er.extensions.components.ERXComponentUtilities;
  * action to execute are similar to those offered by DojoFormActionElement and
  * DojoRemoteHelper.
  *
- * TODO should this element subclass WCActionFunction now to simply add script
- * tag wrappers around the generated function call? This would allow the
- * element to support synchronous actions as well as asynchronous ones without
- * too much effort.
- *
  * @author Tony Allevato
- * @version $Id: WCConnectAction.java,v 1.3 2010/01/25 19:00:16 aallowat Exp $
+ * @version $Id: WCConnectAction.java,v 1.4 2010/03/15 16:48:49 aallowat Exp $
  */
 public class WCConnectAction extends WOHTMLDynamicElement
 {
@@ -96,10 +92,12 @@ public class WCConnectAction extends WOHTMLDynamicElement
         super.appendChildrenToResponse(response, context);
 
         String elemName = nameInContext(context);
+        JSHash requestOptions = new JSHash();
+        requestOptions.put("sender", elemName);
 
         response.appendContentString("\n");
-        response.appendContentString(_remoteHelper.partialSubmitCall(
-                "this", elemName, null, context));
+        response.appendContentString(_remoteHelper.remoteSubmitCall(
+                "this", requestOptions, context));
         response.appendContentString("\n");
     }
 

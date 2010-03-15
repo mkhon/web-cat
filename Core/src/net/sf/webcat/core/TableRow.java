@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TableRow.java,v 1.5 2009/11/05 20:25:09 aallowat Exp $
+ |  $Id: TableRow.java,v 1.6 2010/03/15 16:48:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * row.
  *
  * @author Stephen Edwards
- * @version $Id: TableRow.java,v 1.5 2009/11/05 20:25:09 aallowat Exp $
+ * @version $Id: TableRow.java,v 1.6 2010/03/15 16:48:38 aallowat Exp $
  */
 public class TableRow
     extends WOComponent
@@ -104,6 +104,14 @@ public class TableRow
 
 
     // ----------------------------------------------------------
+    public boolean isSelectable()
+    {
+        return ERXComponentUtilities.booleanValueForBinding(
+                this, "isSelectable", false);
+    }
+
+
+    // ----------------------------------------------------------
     public String dragHandle()
     {
         return (String) valueForBinding("dragHandle");
@@ -150,7 +158,7 @@ public class TableRow
 
         String cssClass = cssTag[tag];
 
-        if (dragHandle() != null)
+        if (dragHandle() != null || isSelectable())
         {
             cssClass += " dojoDndItem";
         }

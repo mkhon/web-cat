@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GeneratedReport.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: GeneratedReport.java,v 1.11 2010/03/15 16:50:14 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSData;
  * report template.
  *
  * @author Tony Allevato
- * @version $Id: GeneratedReport.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: GeneratedReport.java,v 1.11 2010/03/15 16:50:14 aallowat Exp $
  */
 public class GeneratedReport
     extends _GeneratedReport
@@ -365,7 +365,7 @@ public class GeneratedReport
                 File dir = new File(renderedDirToDelete);
                 if (dir.exists())
                 {
-                    net.sf.webcat.archives.FileUtilities.deleteDirectory(dir);
+                    net.sf.webcat.core.FileUtilities.deleteDirectory(dir);
                 }
             }
         }

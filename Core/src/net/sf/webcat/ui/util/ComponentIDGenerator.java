@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ComponentIDGenerator.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
+ |  $Id: ComponentIDGenerator.java,v 1.3 2010/03/15 16:49:00 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,9 +41,9 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  *     public void appendToResponse(WOResponse response, WOContext context)
  *     {
  *         idFor = new ComponentIDGenerator(this);
- *         
+ *
  *         // other processing...
- *         
+ *
  *         super.appendToResponse(response, context);
  *     }
  * </pre>
@@ -58,9 +58,9 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  * <p>
  * If the WebObjects element ID of SomeElement was "0.5.3", then the identifier
  * generated above would be "_0_5_3_aUniqueIdentifierString".
- * 
+ *
  * @author Tony Allevato
- * @version $Id: ComponentIDGenerator.java,v 1.2 2009/05/25 16:51:20 aallowat Exp $
+ * @version $Id: ComponentIDGenerator.java,v 1.3 2010/03/15 16:49:00 aallowat Exp $
  */
 public class ComponentIDGenerator implements NSKeyValueCodingAdditions
 {
@@ -76,25 +76,40 @@ public class ComponentIDGenerator implements NSKeyValueCodingAdditions
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void takeValueForKey(Object object, String key)
+    public String get()
     {
-        // Do nothing.
+        return idBase;
     }
 
-    
+
     // ----------------------------------------------------------
-    public Object valueForKey(String key)
+    public String get(String keypath)
     {
-        if (COMPONENT_ID_PREFIX.equals(key))
+        if (COMPONENT_ID_PREFIX.equals(keypath))
         {
             return idBase;
         }
         else
         {
-            return idBase + "_" + key;
+            String suffix = keypath.replace('.', '_');
+            return idBase + "_" + suffix;
         }
     }
-    
+
+
+    // ----------------------------------------------------------
+    public void takeValueForKey(Object object, String key)
+    {
+        // Do nothing.
+    }
+
+
+    // ----------------------------------------------------------
+    public Object valueForKey(String key)
+    {
+        return get(key);
+    }
+
 
     // ----------------------------------------------------------
     public void takeValueForKeyPath(Object object, String keypath)
@@ -106,16 +121,8 @@ public class ComponentIDGenerator implements NSKeyValueCodingAdditions
     // ----------------------------------------------------------
     public Object valueForKeyPath(String keypath)
     {
-        if (COMPONENT_ID_PREFIX.equals(keypath))
-        {
-            return idBase;
-        }
-        else
-        {
-            String suffix = keypath.replace('.', '_');
-            return idBase + "_" + suffix;
-        }
-    } 
+        return get(keypath);
+    }
 
 
     //~ Static/instance variables .............................................

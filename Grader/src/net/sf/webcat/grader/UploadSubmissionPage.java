@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.16 2010/01/27 01:01:58 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.17 2010/03/15 16:49:50 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.16 $, $Date: 2010/01/27 01:01:58 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.17 $, $Date: 2010/03/15 16:49:50 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -324,7 +324,7 @@ public class UploadSubmissionPage
         {
             size = file.length();
         }
-        return Submission.fileSizeAsString( size );
+        return FileUtilities.fileSizeAsString( size );
     }
 
 

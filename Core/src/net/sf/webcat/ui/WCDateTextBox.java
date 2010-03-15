@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDateTextBox.java,v 1.5 2009/10/07 17:46:26 stedwar2 Exp $
+ |  $Id: WCDateTextBox.java,v 1.6 2010/03/15 16:48:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -25,7 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import net.sf.webcat.ui._base.DojoFormElement;
-import net.sf.webcat.ui.util.DojoOptions;
+import net.sf.webcat.ui.util.JSHash;
 import net.sf.webcat.ui.util.DojoUtils;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOContext;
@@ -53,8 +53,8 @@ import com.webobjects.foundation.NSTimestamp;
  * </ul>
  *
  * @author Tony Allevato
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2009/10/07 17:46:26 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2010/03/15 16:48:47 $
  */
 public class WCDateTextBox extends DojoFormElement
 {
@@ -165,11 +165,11 @@ public class WCDateTextBox extends DojoFormElement
 
     // ----------------------------------------------------------
     @Override
-    public DojoOptions additionalConstraints(WOContext context)
+    public JSHash additionalConstraints(WOContext context)
     {
         // Append constraints based on the date format, if one was provided.
 
-        DojoOptions manualConstraints = new DojoOptions();
+        JSHash manualConstraints = new JSHash();
 
         if (_dateformat != null)
         {
@@ -178,7 +178,7 @@ public class WCDateTextBox extends DojoFormElement
 
             if (dateFormat != null)
             {
-                manualConstraints.putValue("datePattern",
+                manualConstraints.put("datePattern",
                         dateFormatToDatePattern(dateFormat));
             }
         }

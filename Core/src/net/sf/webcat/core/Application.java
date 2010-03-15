@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.48 2010/01/21 04:30:12 stedwar2 Exp $
+ |  $Id: Application.java,v 1.49 2010/03/15 16:48:39 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -56,8 +56,8 @@ import org.apache.log4j.Logger;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.48 $, $Date: 2010/01/21 04:30:12 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.49 $, $Date: 2010/03/15 16:48:39 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -225,6 +225,15 @@ public class Application
         sendAdminEmail( null, null, true, "Web-CAT starting up",
             "Web-CAT is starting up at " + startTime,
             null );
+    }
+
+
+    // ----------------------------------------------------------
+    public void installPatches()
+    {
+        super.installPatches();
+
+        WCContext.installIntoApplication(this);
     }
 
 
@@ -2240,7 +2249,7 @@ public class Application
                 {
                     if ( target.isDirectory() )
                     {
-                        net.sf.webcat.archives.FileUtilities
+                        net.sf.webcat.core.FileUtilities
                             .deleteDirectory( target );
                     }
                     else
@@ -2249,7 +2258,7 @@ public class Application
                     }
                 }
                 target.mkdirs();
-                net.sf.webcat.archives.FileUtilities
+                net.sf.webcat.core.FileUtilities
                     .copyDirectoryContents(
                         webServerResources, target );
             }

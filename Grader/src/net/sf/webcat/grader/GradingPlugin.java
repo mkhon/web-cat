@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.2 2010/01/23 02:36:42 aallowat Exp $
+ |  $Id: GradingPlugin.java,v 1.3 2010/03/15 16:49:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  *
  *  @author Stephen Edwards
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.2 $, $Date: 2010/01/23 02:36:42 $
+ *  @version $Revision: 1.3 $, $Date: 2010/03/15 16:49:53 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -541,7 +541,7 @@ public class GradingPlugin
                 String msg = e.getMessage();
                 errors.setObjectForKey( msg, msg );
                 gradingPlugin.setSubdirName( subdirName );
-                net.sf.webcat.archives.FileUtilities
+                net.sf.webcat.core.FileUtilities
                     .deleteDirectory( gradingPlugin.dirName() );
                 pluginPath.delete();
                 log.warn( "error unzipping:", e );
@@ -668,7 +668,7 @@ public class GradingPlugin
                 "directory " + pluginSubdir.getAbsolutePath() + " exists" );
             if ( overwrite )
             {
-                net.sf.webcat.archives.FileUtilities
+                net.sf.webcat.core.FileUtilities
                     .deleteDirectory( pluginSubdir );
             }
             else

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCForm.java,v 1.5 2010/01/23 02:32:41 aallowat Exp $
+ |  $Id: WCForm.java,v 1.6 2010/03/15 16:48:47 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,7 +47,7 @@ import er.extensions.components._private.ERXWOForm;
  * </p>
  *
  * @author Tony Allevato
- * @version $Id: WCForm.java,v 1.5 2010/01/23 02:32:41 aallowat Exp $
+ * @version $Id: WCForm.java,v 1.6 2010/03/15 16:48:47 aallowat Exp $
  */
 public class WCForm extends ERXWOForm
 {
@@ -65,7 +65,7 @@ public class WCForm extends ERXWOForm
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public static String scriptToPerformFakeFullSubmit(WOContext context,
+    public static String scriptToPerformFullSubmit(WOContext context,
             String fieldName)
     {
         String formName = formName(context, null);
@@ -75,8 +75,7 @@ public class WCForm extends ERXWOForm
                     + "contained within a form.");
         }
 
-        return "webcat.fakeFullSubmit('" + formName + "', '"
-            + fieldName + "');";
+        return "webcat.fullSubmit('" + formName + "', '" + fieldName + "');";
     }
 
 
@@ -101,7 +100,7 @@ public class WCForm extends ERXWOForm
     {
         super.appendAttributesToResponse(response, context);
 
-        response._appendTagAttributeAndValue("dojoType", "dijit.form.Form",
+        response._appendTagAttributeAndValue("dojoType", "webcat.Form",
                 false);
         response._appendTagAttributeAndValue("jsId",
                 "form_" + _formName(context), false);

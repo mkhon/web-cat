@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.12 2010/01/23 02:35:14 aallowat Exp $
+ |  $Id: CoreNavigator.java,v 1.13 2010/03/15 16:48:34 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -70,7 +70,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.12 $ $Date: 2010/01/23 02:35:14 $
+ * @version $Revision: 1.13 $ $Date: 2010/03/15 16:48:34 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -201,7 +201,7 @@ public class CoreNavigator
      *
      * @return the result is ignored
      */
-    public WOActionResults updateSemesters()
+    public JavascriptGenerator updateSemesters()
     {
         log.debug("updateSemesters()");
         semesters = new NSMutableArray<INavigatorObject>();
@@ -241,7 +241,7 @@ public class CoreNavigator
      * @return the result is ignored
      */
     @SuppressWarnings("unchecked")
-    public WOActionResults updateCourseOfferings()
+    public JavascriptGenerator updateCourseOfferings()
     {
         log.debug("updateCourseOfferings()");
         courseOfferings = new NSMutableArray<INavigatorObject>();
@@ -375,8 +375,7 @@ public class CoreNavigator
             log.debug("selected course offering = " + selectedCourseOffering);
         }
 
-        return new JavascriptGenerator().refresh(
-                (String) idFor.valueForKey("coursePane"));
+        return new JavascriptGenerator().refresh(idFor.get("coursePane"));
     }
 
 

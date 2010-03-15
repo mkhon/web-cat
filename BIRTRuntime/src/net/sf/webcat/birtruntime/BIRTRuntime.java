@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BIRTRuntime.java,v 1.6 2008/11/11 16:15:44 aallowat Exp $
+ |  $Id: BIRTRuntime.java,v 1.7 2010/03/15 16:50:29 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008 Virginia Tech
  |
@@ -50,7 +50,7 @@ import net.sf.webcat.core.Subsystem;
  *  Initializes the BIRT runtime for use in report generation.
  *
  *  @author  Anthony Allevato
- *  @version $Id: BIRTRuntime.java,v 1.6 2008/11/11 16:15:44 aallowat Exp $
+ *  @version $Id: BIRTRuntime.java,v 1.7 2010/03/15 16:50:29 aallowat Exp $
  */
 public class BIRTRuntime
     extends Subsystem
@@ -158,7 +158,7 @@ public class BIRTRuntime
         File configAreaDir = new File(configArea);
         if(configAreaDir.exists())
         {
-            net.sf.webcat.archives.FileUtilities.deleteDirectory(configAreaDir);
+            net.sf.webcat.core.FileUtilities.deleteDirectory(configAreaDir);
         }
 
         // Copy the initial config area files from the ReportEngine subfolder.
@@ -169,7 +169,7 @@ public class BIRTRuntime
 
         try
         {
-            net.sf.webcat.archives.FileUtilities
+            net.sf.webcat.core.FileUtilities
                 .copyDirectoryContentsIfNecessary(configSrcDir,
                         configAreaDir);
         }

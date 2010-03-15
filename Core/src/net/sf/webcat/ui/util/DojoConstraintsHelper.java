@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoConstraintsHelper.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
+ |  $Id: DojoConstraintsHelper.java,v 1.4 2010/03/15 16:48:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import com.webobjects.foundation._NSDictionaryUtilities;
  * that is appropriate for use as the "constraints" attribute.
  *
  * @author Tony Allevato
- * @version $Id: DojoConstraintsHelper.java,v 1.3 2010/01/23 02:32:41 aallowat Exp $
+ * @version $Id: DojoConstraintsHelper.java,v 1.4 2010/03/15 16:48:58 aallowat Exp $
  */
 public class DojoConstraintsHelper
 {
@@ -80,9 +80,9 @@ public class DojoConstraintsHelper
      * @return a string representing the constraints hash
      */
     public String constraintsFromBindingValues(WOContext context,
-            DojoOptions additionalConstraints)
+            JSHash additionalConstraints)
     {
-        DojoOptions constraints = new DojoOptions();
+        JSHash constraints = new JSHash();
 
         if (_constraintAssociations != null)
         {
@@ -123,14 +123,14 @@ public class DojoConstraintsHelper
                         }
                     }
 
-                    constraints.putValue(constraint, value);
+                    constraints.put(constraint, value);
                 }
             }
         }
 
         if (additionalConstraints != null)
         {
-            constraints.putAll(additionalConstraints);
+            constraints.merge(additionalConstraints);
         }
 
         if (!constraints.isEmpty())

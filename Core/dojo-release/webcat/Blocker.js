@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Blocker.js,v 1.3 2009/12/09 05:00:22 aallowat Exp $
+ |  $Id: Blocker.js,v 1.4 2010/03/15 16:48:54 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -201,9 +201,9 @@ dojo.declare("webcat.Blocker", null,
         if(!blockers[id])
         {
             blockers[id] = new webcat.Blocker(node, args);
+            blockers[id].show();
         }
 
-        blockers[id].show();
         return blockers[id];
     },
 

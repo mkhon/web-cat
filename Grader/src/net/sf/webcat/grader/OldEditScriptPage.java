@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OldEditScriptPage.java,v 1.8 2010/01/27 01:01:58 stedwar2 Exp $
+ |  $Id: OldEditScriptPage.java,v 1.9 2010/03/15 16:49:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -25,7 +25,7 @@ import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
 import java.io.File;
 import java.io.FileOutputStream;
-import net.sf.webcat.archives.FileUtilities;
+import net.sf.webcat.core.FileUtilities;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -34,8 +34,8 @@ import org.apache.log4j.Logger;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2010/01/27 01:01:58 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.9 $, $Date: 2010/03/15 16:49:48 $
  */
 public class OldEditScriptPage
     extends GraderComponent
@@ -361,7 +361,7 @@ public class OldEditScriptPage
     // ----------------------------------------------------------
     public String fileSize()
     {
-        return Submission.fileSizeAsString( file.length() );
+        return FileUtilities.fileSizeAsString( file.length() );
     }
 
 

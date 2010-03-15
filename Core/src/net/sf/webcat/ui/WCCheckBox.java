@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCCheckBox.java,v 1.2 2010/01/23 02:32:41 aallowat Exp $
+ |  $Id: WCCheckBox.java,v 1.3 2010/03/15 16:48:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,10 +34,10 @@ import com.webobjects.foundation.NSDictionary;
 
 //--------------------------------------------------------------------------
 /**
- * A checkbox.
+ * A Dojo-styled checkbox.
  *
  * @author Tony Allevato
- * @version $Id: WCCheckBox.java,v 1.2 2010/01/23 02:32:41 aallowat Exp $
+ * @version $Id: WCCheckBox.java,v 1.3 2010/03/15 16:48:49 aallowat Exp $
  */
 public class WCCheckBox extends DojoFormElement
 {
@@ -48,7 +48,7 @@ public class WCCheckBox extends DojoFormElement
             NSDictionary<String, WOAssociation> someAssociations,
             WOElement template)
     {
-        super("div", someAssociations, template);
+        super("span", someAssociations, template);
 
         _checked = _associations.removeObjectForKey("checked");
         _selection = _associations.removeObjectForKey("selection");
@@ -103,6 +103,8 @@ public class WCCheckBox extends DojoFormElement
     @Override
     public void takeValuesFromRequest(WORequest request, WOContext context)
     {
+        insertNameMappingIntoContext(context);
+
         WOComponent component = context.component();
 
         if(!isDisabledInContext(context) && context.wasFormSubmitted())
@@ -143,6 +145,8 @@ public class WCCheckBox extends DojoFormElement
                 }
             }
         }
+
+        removeNameMappingFromContext(context);
     }
 
 
