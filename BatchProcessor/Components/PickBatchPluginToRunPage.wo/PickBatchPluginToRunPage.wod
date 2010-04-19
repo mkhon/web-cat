@@ -1,0 +1,31 @@
+Page: WCPageWithNavigation {
+    title = "Run a Batch Plug-in";
+}
+
+PluginTable: WCTable {
+    displayGroup = pluginsDisplayGroup;
+    canSort = true;
+}
+
+NameFilter: WCTableFilter {
+    name = "Name";
+    keyPath = "name";
+    type = "string";
+}
+
+NameColumn: WCTableColumn {
+    name = "Batch Plug-in";
+    componentName = "ActionURLCell";
+    keyPath = "name";
+    properties.action = "pluginChosen";
+}
+
+VersionColumn: WCTableColumn {
+    name = "Version";
+    keyPath = "descriptor.currentVersion";
+}
+
+InstalledByColumn: WCTableColumn {
+    name = "Installed By";
+    keyPath = "author.name";
+}

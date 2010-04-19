@@ -1,0 +1,18 @@
+#This file is automatically rewritten by ANT, so all formatting will be trashed.
+#Wed Mar 31 11:30:54 EDT 2010
+BatchProcessor.description=This subsystem provides all of Web-CAT's batch processing services.
+subsystem.BatchProcessor=net.sf.webcat.batchprocessor.BatchProcessor
+BatchProcessor.provider=Virginia Tech Computer Science
+BatchProcessor.version.minor=0
+BatchProcessor.requires=Core, JobQueue
+BatchProcessor.version.major=1
+BatchProcessor.version.revision=0
+BatchProcessor.copyright=(c) 2010 Virginia Tech Department of Computer Science
+BatchProcessor.resumeSuspendedJobs=true
+${framework.name}.version.date=20100331
+BatchProcessor.license=GNU Affero General Public License v.3
+BatchProcessor.provider.url=http\://web-cat.cs.vt.edu/updates
+BatchProcessor.history.url=http\://web-cat.cs.vt.edu/WCWiki/BatchProcessorSubsystem/ChangeHistory
+BatchProcessor.info.url=http\://web-cat.cs.vt.edu/WCWiki/BatchProcessorSubsystem
+BatchProcessor.license.url=http\://www.gnu.org/licenses/agpl.html
+BatchProcessor.depends=env, pluginProperties

@@ -1,0 +1,67 @@
+Page: net.sf.webcat.core.WCPageWithNavigation {
+    title     = "Your Batch Results";
+    extraRequires = "dojox.layout.ContentPane";
+//    permalink = submission.permalink;
+}
+
+Form: WCForm {
+}
+
+BatchResultWatcher: WCDiv {
+    dojoType = "webcat.batchprocessor.BatchResultWatcher";
+}
+
+DownloadStderr: WOHyperlink {
+    action = downloadStderrFile;
+}
+
+//FeedbackSectionContent: net.sf.webcat.batchprocessor.BatchFeedbackSectionComponent {
+//    feedbackSection = feedbackSection;
+//}
+
+FeedbackSectionContent: WOGenericContainer {
+    elementName = "div";
+    dojoType = "dojox.layout.ContentPane";
+    href = feedbackSectionResourceURL;
+    adjustPaths = true;
+    preload = true;
+}
+
+FeedbackSections: WORepetition {
+    list = feedbackSections;
+    item = feedbackSection;
+}
+
+FileBrowser: net.sf.webcat.core.FileBrowser {
+    title                 = "Browse Raw Files: Batch Results";
+    file                  = result.resultDir;
+    initialExpansionDepth = 1;
+}
+
+MainPane: WCContentPane {
+    id = idFor.mainPane;
+}
+
+ProgressBar: WCDiv {
+    dojoType = "dijit.ProgressBar";
+    style = "width: 100%";
+    progress = "~'' + result.batchJob.progressPercentage + '%'";
+}
+
+ProgressMessage: WOString {
+    value = result.batchJob.progressMessage;
+}
+
+RestartJob: WCButton {
+    label = "Restart Job";
+    action = restartJob;
+}
+
+Spinner: WCSpinner {
+    isSpinning = true;
+}
+
+CancelJob: WCButton {
+    label = "Cancel";
+    action = cancelJob;
+}

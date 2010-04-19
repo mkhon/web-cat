@@ -11,6 +11,7 @@
 	<classpathentry exported="true" kind="con" path="WOFramework/Reporter"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/Admin"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/ANTForPlugins"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/BatchProcessor"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/CheckstyleForPlugins"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/CloverForPlugins"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/Core"/>

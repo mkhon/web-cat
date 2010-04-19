@@ -1,0 +1,41 @@
+<wo name="Page"><wo name="Form">
+
+<wo:if condition="$batchJobDisplayGroup.allObjects.count">
+<wo:WCPageModule title="Batch Jobs Currently in Queue">
+    <p>The following batch jobs are either currently running or in the queue.</p>
+    <wo name="BatchJobTable">
+        <wo name="JobTitleColumn"/>
+        <wo name="JobQueueTimeColumn"/>
+        <wo name="JobProgressColumn"/>
+    </wo>
+</wo:WCPageModule>
+</wo:if>
+
+<wo:WCPageModule title="Previously Run Batch Results">
+<wo:WCContentPane id="resultModule">
+<wo:if condition="$batchResultDisplayGroup.allObjects.count">
+    <p>Click on a previously run batch job to view its results.</p>
+    <wo name="BatchResultTable">
+        <wo name="TitleFilter"/>
+        <wo name="TitleColumn"/>
+        <wo name="PluginVersionColumn"/>
+        <wo name="CompletedTimeColumn"/>
+    </wo>
+    <wo name="DeleteResults">
+        <script type="dojo/connect" event="onClick" args="evt">
+            webcat.confirm({
+                title: "Confirm Delete",
+                message: "Are you sure you want to delete the selected " +
+                    " batch results? This operation cannot be undone.",
+                onYes: function() { deleteSelectedResults(); }
+            });
+        </script>
+    </wo>
+    <wo name="DeleteResultsAction"/>
+</wo:if><wo:else>
+    <p>There are currently no <b>completed batch results</b> available for you to view.</p>
+</wo:else>
+</wo>
+</wo:WCPageModule>
+
+</wo></wo>

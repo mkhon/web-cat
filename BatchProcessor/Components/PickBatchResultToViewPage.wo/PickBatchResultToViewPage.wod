@@ -1,0 +1,73 @@
+Page : net.sf.webcat.core.WCPageWithNavigation {
+    title = "View Batch Results";
+}
+
+Form : WCForm {
+    multipleSubmit = true;
+}
+
+BatchJobTable: WCTable {
+    displayGroup = batchJobDisplayGroup;
+    canSort = true;
+}
+
+JobTitleColumn: WCTableColumn {
+    name = "Job Description";
+    componentName = "net.sf.webcat.batchprocessor.BatchJobDescriptionCell";
+    properties.action = "viewBatchProgress";
+}
+
+JobQueueTimeColumn: WCTableColumn {
+    name = "Requested at";
+    keyPath = "enqueueTime";
+    properties.formatter = session.timeFormatter;
+}
+
+JobProgressColumn: WCTableColumn {
+    name = "Progress";
+    expression = "'' + progressPercentage + '%'";
+}
+
+BatchResultTable: WCTable {
+    id = "batchResultContainer";
+    displayGroup = batchResultDisplayGroup;
+    canSort = true;
+    isBatched = true;
+    allowsSelection = true;
+    multipleSelection = true;
+}
+
+TitleFilter: WCTableFilter {
+    name = "Batch Description";
+    keyPath = "description";
+    type = "string";
+}
+
+TitleColumn: WCTableColumn {
+    name = "Batch Description";
+    componentName = "ActionURLCell";
+    keyPath = "description";
+    properties.action = "viewBatchResult";
+    properties.weight = 1;
+}
+
+PluginVersionColumn: WCTableColumn {
+    name = "Plug-in Version";
+    keyPath = "batchPlugin.descriptor.currentVersion";
+}
+
+CompletedTimeColumn: WCTableColumn {
+    name = "Completed at";
+    keyPath = "completedTime";
+    properties.formatter = session.timeFormatter;
+}
+
+DeleteResults: WCButton {
+    label = "Delete Selected Results";
+}
+
+DeleteResultsAction: WCActionFunction {
+    jsId = "deleteSelectedResults";
+    action = deleteSelectedResults;
+    remote = true;
+}

@@ -1,0 +1,104 @@
+<wo name="Page"><wo name="Form">
+<script type="text/javascript">
+dojo.addOnLoad(function() {
+    <wo:str value="$idFor.batchResultWatcher"/> = new webcat.batchprocessor.BatchResultWatcher(
+        '<wo:str value="$idFor.mainPane"/>'
+    );
+});
+</script>
+<wo name="MainPane">
+<wo:not condition="$result.isComplete">
+    <wo:WCPageModule title="Batch Progress">
+    <wo:if condition="$result.batchJob.isReady">
+        <div style="margin-left: 25%; margin-right: 25%">
+            <wo name="ProgressBar"/>
+            <p>
+                <span style="padding-right: 1em"><wo name="Spinner"/></span>
+                <wo:if condition="$result.batchJob.progressMessage">
+                    <wo name="ProgressMessage"/>
+                </wo:if><wo:else>
+                    Running batch job...
+                </wo:else>
+            </p>
+            <div style="text-align: right">
+                <wo name="CancelJob"/>
+            </div>
+        </div>
+        <script type="text/javascript">
+            dojo.addOnLoad(function() {
+                <wo:str value="$idFor.batchResultWatcher"/>.start();
+            });
+        </script>
+    </wo:if><wo:else>
+        <div style="margin-left: 25%; margin-right: 25%">
+        <p>This job was suspended due to an error during execution. Information
+        about the error is shown below. Click the <b>Restart Job</b> button to
+        place it back into the queue to run again.</p>
+        <p style="text-align: right">
+            <wo name="RestartJob"/>
+        </p>
+        </div>
+        <div class="NoticePanel error">
+           <b>Reason for suspension:</b><br/>
+           <pre><wo:str value="$result.batchJob.suspensionReason"/></pre>
+        </div>
+        <p>
+        The plug-in also generated output to its <b>stderr</b> stream, which
+        you can view by clicking <wo name="DownloadStderr">here.</wo>
+        </p>
+        <script type="text/javascript">
+            dojo.addOnLoad(function() {
+                if (<wo:str value="$idFor.batchResultWatcher"/>)
+                {
+                    <wo:str value="$idFor.batchResultWatcher"/>.stop();
+                }
+            });
+        </script>
+    </wo:else>
+    </wo:WCPageModule>
+</wo:not><wo:else>
+    <script type="text/javascript">
+        dojo.addOnLoad(function() {
+            if (<wo:str value="$idFor.batchResultWatcher"/>)
+            {
+                <wo:str value="$idFor.batchResultWatcher"/>.stop();
+            }
+        });
+    </script>
+    <wo:WCPageModule title="Batch Results">
+    <wo:WCStyledTable>
+        <tr class="e">
+            <td><b>Batch Description:</b></td>
+            <td><wo:str value="$result.description"/></td>
+        </tr>
+        <tr class="o">
+            <td><b>User:</b></td>
+            <td><wo:str value="$result.user.userName"/></td>
+        </tr>
+        <tr class="e">
+            <td><b>Plug-in:</b></td>
+            <td><wo:str value="$result.batchPlugin.name"/>
+            (<wo:str value="$result.batchPlugin.descriptor.currentVersion"/>)</td>
+        </tr>
+        <tr class="o">
+            <td><b>Batch Query:</b></td>
+            <td>
+                <wo:if condition="$result.objectQuery.description">
+                    <b><wo:str value="$result.objectQuery.description"/>:</b><br/>
+                </wo:if>
+                <wo:str value="$result.objectQuery.qualifierDescription"/>
+            </td>
+        </tr>
+    </wo:WCStyledTable>
+    </wo:WCPageModule>
+    <wo name="FeedbackSections">
+        <wo:WCPageModule title="$feedbackSection.title" open="~!feedbackSection.isCollapsed">
+            <wo name="FeedbackSectionContent"/>
+        </wo:WCPageModule>
+    </wo>
+    <wo:WCPageModule title="Generated Result Files">
+        <wo name="FileBrowser"/>
+    </wo:WCPageModule>
+</wo:else>
+</wo>
+</wo></wo>

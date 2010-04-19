@@ -1,0 +1,29 @@
+Page : net.sf.webcat.core.WCPageWithNavigation {
+}
+
+Form : WCForm {
+    multipleSubmit = true;
+}
+
+BatchOptionEditor: net.sf.webcat.core.OptionSetEditor {
+    options           = batchPlugin.configDescription.options;
+    optionValues      = configSettings;
+    categories        = batchPlugin.configDescription.optionCategories;
+    verboseOptionsKey = "EditBatchPluginPageNoVerboseOptions";
+    browsePageName    = "EditBatchPluginFilesPage";
+    base              = baseDir;
+}
+
+Description : WCTextBox {
+    value = jobDescription;
+}
+
+Run : WCButton {
+    label = "Run Batch";
+    action = runBatchJob;
+}
+
+QueryBuilder : net.sf.webcat.core.objectquery.ObjectQueryBuilder {
+    objectType = batchPlugin.batchEntity;
+    surrogate = objectQuerySurrogate;
+}

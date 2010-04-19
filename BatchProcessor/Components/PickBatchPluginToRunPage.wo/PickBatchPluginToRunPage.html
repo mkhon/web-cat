@@ -1,0 +1,20 @@
+<wo name="Page">
+
+<wo:net.sf.webcat.core.WCPageModule title="Select Batch Plug-in to Run">
+<wo:if condition="$pluginsDisplayGroup.allObjects.count">
+    <p>Click on a plug-in below to begin running a batch job.</p>
+
+    <wo name="PluginTable">
+        <wo name="NameFilter"/>
+        <wo name="NameColumn"/>
+        <wo name="VersionColumn"/>
+        <wo name="InstalledByColumn"/>
+    </wo>
+
+</wo:if>
+<wo:else>
+    <p>There are currently no batch plug-ins available. You can use the
+    <b>Batch Plug-in Library</b> to upload one.</p>
+</wo:else>
+</wo:net.sf.webcat.core.WCPageModule>
+</wo>

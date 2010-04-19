@@ -1,0 +1,23 @@
+<wo name="Page"><wo name="Form">
+
+<wo:WCPageModule title="Choose the Objects in the Batch">
+<wo name="QueryBuilder"/>
+</wo>
+
+<wo:WCPageModule title="Batch Job Options">
+<p>For a new job running the plug-in: <span class="hl"><wo:str value="$batchPlugin.name"/></span></p>
+<wo name="BatchOptionEditor"/>
+</wo:WCPageModule>
+
+<wo:WCPageModule title="Start the Batch Process">
+<p>
+Enter a descriptive name for this batch job. This name will be used to identify
+the job and its results on the "View Results" page. If you leave this blank, the
+name of the plug-in will be used.
+</p><p>
+<wo name="Description"/>
+</p>
+<wo name="Run"/>
+</wo:WCPageModule>
+
+</wo></wo>

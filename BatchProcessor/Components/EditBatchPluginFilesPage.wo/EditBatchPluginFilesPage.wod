@@ -1,0 +1,64 @@
+CreateFolder: WCButton {
+    label  = "Create Folder";
+    action = createFolder;
+    remote = true;
+}
+
+FolderList1: WCFilteringSelect {
+    list          = folderList;
+    item          = aFolder;
+    displayString = aFolder;
+    selection     = selectedParentFolderForSubFolder;
+}
+
+FolderList2: WCFilteringSelect {
+    list          = folderList;
+    item          = aFolder;
+    displayString = aFolder;
+    selection     = selectedParentFolderForUpload;
+}
+
+FolderName: WCTextBox {
+    value = folderName;
+    style = "width: 15em;";
+}
+
+FileBrowser: net.sf.webcat.core.FileBrowser {
+    title                 = browserTitle;
+    file                  = base;
+    isEditable            = isEditable;
+    allowSelection        = allowSelection;
+    fileSelectionListener = fileSelectionListener;
+    allowSelectDir        = allowSelectDir;
+    allowSelectExtensions = allowSelectExtensions;
+    includeSeparator      = true;
+    fileEditListener      = thisPage;
+    applyChangesOnMod     = true;
+    currentSelection      = currentSelection;
+}
+
+Page: net.sf.webcat.core.WCPageWithNavigation {
+    title = sideStepTitle;
+}
+
+Section: WCPageModule {
+    title = "~ \"File(s) for \" + batchPlugin.name";
+}
+
+Unzip: WCCheckBox {
+    checked = unzip;
+}
+
+UploadFile2: WCFileUpload {
+    data = uploadedFile2;
+    filePath = uploadedFileName2;
+    clearAfterUpload = true;
+    action = fileWasUploaded;
+}
+
+UploadFile3: WCFileUpload {
+    data = uploadedFile3;
+    filePath = uploadedFileName3;
+    clearAfterUpload = true;
+    action = folderReplacementWasUploaded;
+}
