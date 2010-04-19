@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeedbackPage.java,v 1.3 2009/09/21 01:01:45 stedwar2 Exp $
+ |  $Id: FeedbackPage.java,v 1.4 2010/04/19 15:20:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.apache.log4j.Logger;
  * administrator.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2009/09/21 01:01:45 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2010/04/19 15:20:58 $
  */
 public class FeedbackPage
     extends WCComponent
@@ -125,11 +125,12 @@ public class FeedbackPage
             body.append( extraInfo );
             body.append( "\n" );
         }
-        Application.sendAdminEmail( null, null, true,
+
+        Application.sendAdminEmail(
             "Feedback: " + selectedCategory,
-            body.toString(),
-            null );
+            body.toString() );
         sent = true;
+
         return null;
     }
 
