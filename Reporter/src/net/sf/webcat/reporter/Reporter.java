@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.19 2010/03/10 22:11:03 stedwar2 Exp $
+ |  $Id: Reporter.java,v 1.20 2010/04/19 15:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -50,7 +50,7 @@ import er.extensions.eof.ERXQ;
  * The primary class of the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.19 2010/03/10 22:11:03 stedwar2 Exp $
+ * @version $Id: Reporter.java,v 1.20 2010/04/19 15:23:18 aallowat Exp $
  */
 public class Reporter
     extends Subsystem
@@ -87,7 +87,7 @@ public class Reporter
 
 
     // ----------------------------------------------------------
-    public void startup()
+    public void start()
     {
         new ReportGenerationWorkerThread().start();
 

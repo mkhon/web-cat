@@ -143,9 +143,9 @@ public abstract class _ReportDataSetQuery
     public static final String GENERATED_REPORT_KEY = "generatedReport";
     public static final ERXKey<net.sf.webcat.reporter.GeneratedReport> generatedReport =
         new ERXKey<net.sf.webcat.reporter.GeneratedReport>(GENERATED_REPORT_KEY);
-    public static final String REPORT_QUERY_KEY = "reportQuery";
-    public static final ERXKey<net.sf.webcat.reporter.ReportQuery> reportQuery =
-        new ERXKey<net.sf.webcat.reporter.ReportQuery>(REPORT_QUERY_KEY);
+    public static final String OBJECT_QUERY_KEY = "objectQuery";
+    public static final ERXKey<net.sf.webcat.core.ObjectQuery> objectQuery =
+        new ERXKey<net.sf.webcat.core.ObjectQuery>(OBJECT_QUERY_KEY);
     // To-many relationships ---
     // Fetch specifications ---
     public static final String ENTITY_NAME = "ReportDataSetQuery";
@@ -322,61 +322,61 @@ public abstract class _ReportDataSetQuery
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entity pointed to by the <code>reportQuery</code>
+     * Retrieve the entity pointed to by the <code>objectQuery</code>
      * relationship.
      * @return the entity in the relationship
      */
-    public net.sf.webcat.reporter.ReportQuery reportQuery()
+    public net.sf.webcat.core.ObjectQuery objectQuery()
     {
-        return (net.sf.webcat.reporter.ReportQuery)storedValueForKey( "reportQuery" );
+        return (net.sf.webcat.core.ObjectQuery)storedValueForKey( "objectQuery" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>reportQuery</code>
+     * Set the entity pointed to by the <code>objectQuery</code>
      * relationship (DO NOT USE--instead, use
-     * <code>setReportQueryRelationship()</code>.
+     * <code>setObjectQueryRelationship()</code>.
      * This method is provided for WebObjects use.
      *
      * @param value The new entity to relate to
      */
-    public void setReportQuery( net.sf.webcat.reporter.ReportQuery value )
+    public void setObjectQuery( net.sf.webcat.core.ObjectQuery value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setReportQuery("
-                + value + "): was " + reportQuery() );
+            log.debug( "setObjectQuery("
+                + value + "): was " + objectQuery() );
         }
-        takeStoredValueForKey( value, "reportQuery" );
+        takeStoredValueForKey( value, "objectQuery" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Set the entity pointed to by the <code>reportQuery</code>
+     * Set the entity pointed to by the <code>objectQuery</code>
      * relationship.  This method is a type-safe version of
      * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
      *
      * @param value The new entity to relate to
      */
-    public void setReportQueryRelationship(
-        net.sf.webcat.reporter.ReportQuery value )
+    public void setObjectQueryRelationship(
+        net.sf.webcat.core.ObjectQuery value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setReportQueryRelationship("
-                + value + "): was " + reportQuery() );
+            log.debug( "setObjectQueryRelationship("
+                + value + "): was " + objectQuery() );
         }
         if ( value == null )
         {
-            net.sf.webcat.reporter.ReportQuery object = reportQuery();
+            net.sf.webcat.core.ObjectQuery object = objectQuery();
             if ( object != null )
-                removeObjectFromBothSidesOfRelationshipWithKey( object, "reportQuery" );
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "objectQuery" );
         }
         else
         {
-            addObjectToBothSidesOfRelationshipWithKey( value, "reportQuery" );
+            addObjectToBothSidesOfRelationshipWithKey( value, "objectQuery" );
         }
     }
 

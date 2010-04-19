@@ -63,8 +63,8 @@ public abstract class _GeneratedReport
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param isComplete
-     * @param updateMutableFields
+     * @param isCompleteValue
+     * @param updateMutableFieldsValue
      * @return The newly created object
      */
     public static GeneratedReport create(

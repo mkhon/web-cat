@@ -4,7 +4,13 @@
         entityName = ReportTemplate; 
         fetchLimit = 0; 
         isDeep = YES; 
-        sortOrderings = ({class = EOSortOrdering; key = name; selectorName = "compareAscending:"; }); 
+        sortOrderings = (
+            {
+                class = EOSortOrdering; 
+                key = name; 
+                selectorName = compareCaseInsensitiveAscending; 
+            }
+        ); 
     }; 
     publishedTemplates = {
         class = EOFetchSpecification; 
@@ -17,7 +23,13 @@
             selectorName = "isEqualTo:"; 
             value = {class = NSNumber; value = 1; }; 
         }; 
-        sortOrderings = ({class = EOSortOrdering; key = name; selectorName = "compareAscending:"; }); 
+        sortOrderings = (
+            {
+                class = EOSortOrdering; 
+                key = name; 
+                selectorName = compareCaseInsensitiveAscending; 
+            }
+        ); 
     }; 
     templatesForUser = {
         class = EOFetchSpecification; 
@@ -30,6 +42,12 @@
             selectorName = "isEqualTo:"; 
             value = {"_key" = user; class = EOQualifierVariable; }; 
         }; 
-        sortOrderings = ({class = EOSortOrdering; key = name; selectorName = "compareAscending:"; }); 
+        sortOrderings = (
+            {
+                class = EOSortOrdering; 
+                key = name; 
+                selectorName = compareCaseInsensitiveAscending; 
+            }
+        ); 
     }; 
 }

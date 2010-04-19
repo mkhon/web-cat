@@ -9,13 +9,13 @@
         {columnName = CDATASETID; name = dataSetId; prototypeName = foreignId; }, 
         {
             columnName = CREPORTQUERYID; 
-            name = reportQueryId; 
+            name = objectQueryId; 
             prototypeName = foreignId; 
         }
     ); 
-    attributesUsedForLocking = (generatedReportId, dataSetId, reportQueryId); 
+    attributesUsedForLocking = (generatedReportId, dataSetId, objectQueryId); 
     className = "net.sf.webcat.reporter.ReportDataSetQuery"; 
-    classProperties = (generatedReport, dataSet, reportQuery); 
+    classProperties = (generatedReport, dataSet, objectQuery); 
     externalName = TREPORTDATASETQUERY; 
     fetchSpecificationDictionary = {}; 
     name = ReportDataSetQuery; 
@@ -36,11 +36,11 @@
             name = dataSet; 
         }, 
         {
-            destination = ReportQuery; 
+            destination = ObjectQuery; 
             isToMany = N; 
             joinSemantic = EOInnerJoin; 
-            joins = ({destinationAttribute = id; sourceAttribute = reportQueryId; }); 
-            name = reportQuery; 
+            joins = ({destinationAttribute = id; sourceAttribute = objectQueryId; }); 
+            name = objectQuery; 
         }
     ); 
 }

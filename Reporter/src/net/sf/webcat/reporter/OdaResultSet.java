@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.15 2010/04/19 15:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,37 +21,33 @@
 
 package net.sf.webcat.reporter;
 
-import com.webobjects.eocontrol.EOEditingContext;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Enumeration;
+import net.sf.webcat.core.Application;
+import net.sf.webcat.core.ObjectQuery;
+import net.sf.webcat.core.QualifierUtils;
+import net.sf.webcat.core.ReadOnlyEditingContext;
+import net.sf.webcat.oda.commons.IWebCATResultSet;
+import net.sf.webcat.oda.commons.WebCATDataException;
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+import ognl.enhance.ExpressionAccessor;
+import org.apache.log4j.Logger;
 import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSTimestamp;
 import er.extensions.eof.ERXFetchSpecificationBatchIterator;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Enumeration;
-import java.util.Map;
-import org.apache.log4j.Logger;
-import org.jfree.util.Log;
-import net.sf.webcat.core.Application;
-import net.sf.webcat.core.ReadOnlyEditingContext;
-import net.sf.webcat.grader.Submission;
-import net.sf.webcat.oda.commons.IWebCATResultSet;
-import net.sf.webcat.oda.commons.WebCATDataException;
-import ognl.Node;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlException;
-import ognl.enhance.ExpressionAccessor;
-import ognl.webobjects.WOOgnl;
 
 //-------------------------------------------------------------------------
 /**
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: OdaResultSet.java,v 1.15 2010/04/19 15:23:18 aallowat Exp $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -72,7 +68,7 @@ public class OdaResultSet
      *      The query defining this result set
      */
     public OdaResultSet(int dataSetId, ManagedReportGenerationJob job,
-            ReportQuery query)
+            ObjectQuery query)
     {
         this.dataSetId = dataSetId;
         this.job = job;
@@ -109,16 +105,15 @@ public class OdaResultSet
     {
         recycleEditingContext();
 
-        EOQualifier qualifier = QualifierSerialization.convertGIDsToEOs(
-            query.qualifier(), editingContext);
+        EOQualifier qualifier = query.qualifier(editingContext);
 
         EOQualifier[] quals = QualifierUtils.partitionQualifier(
-            qualifier, query.wcEntityName());
+            qualifier, query.objectType());
         fetchQualifier = quals[0];
         inMemoryQualifier = quals[1];
 
         EOFetchSpecification fetch = new EOFetchSpecification(
-            query.wcEntityName(), fetchQualifier, null);
+            query.objectType(), fetchQualifier, null);
         iterator =
             new ERXFetchSpecificationBatchIterator(fetch, editingContext);
         iterator.setBatchSize(currentBatchSize);
@@ -590,7 +585,7 @@ public class OdaResultSet
 
     private int dataSetId;
     private ManagedReportGenerationJob job;
-    private ReportQuery query;
+    private ObjectQuery query;
     private ReadOnlyEditingContext editingContext;
     private EOQualifier fetchQualifier;
     private EOQualifier inMemoryQualifier;

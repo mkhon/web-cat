@@ -62,9 +62,9 @@ public abstract class _ReportGenerationJob
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param enqueueTime
-     * @param isCancelled
-     * @param isReady
+     * @param enqueueTimeValue
+     * @param isCancelledValue
+     * @param isReadyValue
      * @return The newly created object
      */
     public static ReportGenerationJob create(

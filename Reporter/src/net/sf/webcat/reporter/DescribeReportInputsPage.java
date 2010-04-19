@@ -1,9 +1,9 @@
 package net.sf.webcat.reporter;
 
-import net.sf.webcat.reporter.queryassistants.AbstractQueryAssistantModel;
-import net.sf.webcat.reporter.queryassistants.ModelOrQueryWrapper;
-import net.sf.webcat.reporter.queryassistants.QueryAssistantDescriptor;
-import net.sf.webcat.reporter.queryassistants.QueryAssistantManager;
+import net.sf.webcat.core.objectquery.AbstractQueryAssistantModel;
+import net.sf.webcat.core.objectquery.ObjectQuerySurrogate;
+import net.sf.webcat.core.objectquery.QueryAssistantDescriptor;
+import net.sf.webcat.core.objectquery.QueryAssistantManager;
 import net.sf.webcat.ui.generators.JavascriptGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
@@ -19,7 +19,7 @@ import com.webobjects.foundation.NSMutableSet;
 /**
  *
  * @author Tony Allevato
- * @version $Id: DescribeReportInputsPage.java,v 1.6 2010/01/23 02:29:03 aallowat Exp $
+ * @version $Id: DescribeReportInputsPage.java,v 1.7 2010/04/19 15:23:18 aallowat Exp $
  */
 public class DescribeReportInputsPage extends ReporterComponent
 {
@@ -38,9 +38,6 @@ public class DescribeReportInputsPage extends ReporterComponent
     public ReportDataSet dataSet;
     public int dataSetIndex;
 
-    public QueryAssistantDescriptor queryAssistant;
-    public ReportQuery savedQuery;
-
     public NSDictionary<String, Object> parameter;
 
     public String reportDescription;
@@ -55,12 +52,12 @@ public class DescribeReportInputsPage extends ReporterComponent
 
         if (dataSets != null)
         {
-            modelWrappers = new ModelOrQueryWrapper[dataSets.count()];
+            objectQuerySurrogates = new NSMutableArray<ObjectQuerySurrogate>();
 
             for (int i = 0; i < dataSets.count(); i++)
             {
-                modelWrappers[i] = new ModelOrQueryWrapper(
-                        dataSets.objectAtIndex(i));
+                objectQuerySurrogates.addObject(new ObjectQuerySurrogate(
+                        dataSets.objectAtIndex(i).wcEntityName()));
             }
         }
 
@@ -81,39 +78,9 @@ public class DescribeReportInputsPage extends ReporterComponent
 
 
     // ----------------------------------------------------------
-    public ModelOrQueryWrapper selectedModelOrQueryForDataSet()
+    public ObjectQuerySurrogate objectQuerySurrogateForDataSet()
     {
-        return modelWrappers[dataSetIndex];
-    }
-
-
-    // ----------------------------------------------------------
-    public NSArray<ReportQuery> savedQueriesApplicableToDataSet()
-    {
-        return ReportQuery.savedQueriesForUserAndEntity(localContext(),
-                user(), dataSet.wcEntityName());
-    }
-
-
-    // ----------------------------------------------------------
-    public ReportQuery selectedSavedQueryForDataSet()
-    {
-        return modelWrappers[dataSetIndex].savedQuery();
-    }
-
-
-    // ----------------------------------------------------------
-    public void setSelectedSavedQueryForDataSet(ReportQuery query)
-    {
-        modelWrappers[dataSetIndex].switchToSavedQuery(query);
-    }
-
-
-    // ----------------------------------------------------------
-    public WOActionResults useSavedQuery()
-    {
-        return new JavascriptGenerator()
-            .refresh(idForQueryAssistantContainer());
+        return objectQuerySurrogates.objectAtIndex(dataSetIndex);
     }
 
 
@@ -122,79 +89,6 @@ public class DescribeReportInputsPage extends ReporterComponent
     {
         return "Data set: " + dataSet.name() + " (" +
             (dataSetIndex + 1) + " of " + dataSets.count() + ")";
-    }
-
-
-    // ----------------------------------------------------------
-    public String linkPartOfQueryAssistantDescription()
-    {
-        String desc = queryAssistant.description();
-        int pipe = desc.indexOf('|');
-
-        if (pipe >= 0)
-        {
-            return desc.substring(0, pipe);
-        }
-        else
-        {
-            return desc;
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    public String nonLinkPartOfQueryAssistantDescription()
-    {
-        String desc = queryAssistant.description();
-        int pipe = desc.indexOf('|');
-
-        if (pipe >= 0)
-        {
-            return desc.substring(pipe + 1);
-        }
-        else
-        {
-            return desc;
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    public String idForQueryAssistantPickerForDataSet()
-    {
-        return "queryAssistantPicker_" + dataSetIndex;
-    }
-
-
-    // ----------------------------------------------------------
-    public String idForQueryAssistantContainer()
-    {
-        return "queryAssistantContainer_" + dataSetIndex;
-    }
-
-
-    // ----------------------------------------------------------
-    public String idForSavedQueryPickerForDataSet()
-    {
-        return "savedQueryPicker_" + dataSetIndex;
-    }
-
-
-    // ----------------------------------------------------------
-    public WOActionResults chooseQueryAssistantForDataSet()
-    {
-        modelWrappers[dataSetIndex].switchToQueryAssistant(queryAssistant);
-        return new JavascriptGenerator()
-            .refresh(idForQueryAssistantContainer());
-    }
-
-
-    // ----------------------------------------------------------
-    public WOActionResults revertEditingForDataSet()
-    {
-        modelWrappers[dataSetIndex].switchToAssistantPicker();
-        return new JavascriptGenerator()
-            .refresh(idForQueryAssistantContainer());
     }
 
 
@@ -232,7 +126,7 @@ public class DescribeReportInputsPage extends ReporterComponent
 
         setLocalReportDescription(desc);
 
-        commitReportGeneration(modelWrappers);
+        commitReportGeneration(objectQuerySurrogates, dataSets);
         return pageWithName(GeneratedReportPage.class);
     }
 
@@ -246,6 +140,6 @@ public class DescribeReportInputsPage extends ReporterComponent
 
     //~ Static/instance variables .............................................
 
-    private ModelOrQueryWrapper[] modelWrappers;
+    private NSMutableArray<ObjectQuerySurrogate> objectQuerySurrogates;
     private NSMutableDictionary<String, Object> parameterValues;
 }

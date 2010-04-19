@@ -63,8 +63,8 @@ public abstract class _ReportTemplate
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param isPublished
-     * @param updateMutableFields
+     * @param isPublishedValue
+     * @param updateMutableFieldsValue
      * @return The newly created object
      */
     public static ReportTemplate create(

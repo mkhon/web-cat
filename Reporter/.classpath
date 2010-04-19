@@ -8,6 +8,7 @@
 	<classpathentry exported="true" kind="con" path="WOFramework/BIRTRuntime"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/Core"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/DBUpdateEngine"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JobQueue"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/ERExtensions"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/Ajax"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/ERJars"/>
@@ -19,6 +20,5 @@
 	<classpathentry exported="true" kind="con" path="WOFramework/JavaJDBCAdaptor"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/JavaWebObjects"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="WOFramework/JobQueue"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

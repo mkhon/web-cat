@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: ReportTemplate.java,v 1.15 2010/04/19 15:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -52,7 +52,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.14 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.15 2010/04/19 15:23:18 aallowat Exp $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -462,7 +462,8 @@ public class ReportTemplate extends _ReportTemplate
         ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(allTemplates,
                 publishedTemplates);
 
-        ERXArrayUtilities.sortArrayWithKey(allTemplates, "name");
+        ERXArrayUtilities.sortArrayWithKey(allTemplates,
+                ReportTemplate.NAME_KEY);
 
         return allTemplates;
     }

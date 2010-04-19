@@ -58,6 +58,11 @@
             name = scheduledTime; 
             prototypeName = dateTime; 
         }, 
+        {
+            definition = "jobBase.suspensionReason"; 
+            name = suspensionReason; 
+            prototypeName = mediumText; 
+        }, 
         {definition = "jobBase.userId"; name = userId; prototypeName = foreignId; }, 
         {definition = "jobBase.workerId"; name = workerId; prototypeName = foreignId; }
     ); 
@@ -68,6 +73,7 @@
         isReady, 
         priority, 
         progressMessage, 
+        suspensionReason, 
         userId, 
         workerId
     ); 
@@ -81,6 +87,7 @@
         progress, 
         progressMessage, 
         scheduledTime, 
+        suspensionReason, 
         user, 
         worker
     ); 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterDatabaseUpdates.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: ReporterDatabaseUpdates.java,v 1.11 2010/04/19 15:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: ReporterDatabaseUpdates.java,v 1.10 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.11 2010/04/19 15:23:18 aallowat Exp $
  */
 public class ReporterDatabaseUpdates
     extends UpdateSet
@@ -114,6 +114,22 @@ public class ReporterDatabaseUpdates
                 + "CENQUEUEDREPORTJOBID");
 
         database().executeSQL("DROP TABLE TENQUEUEDREPORTGENERATIONJOB");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Truncates existing generated reports since the report query mechanism
+     * has been generalized and moved into Core.
+     *
+     * @throws SQLException on error
+     */
+    public void updateIncrement4() throws SQLException
+    {
+        database().executeSQL("TRUNCATE TABLE TREPORTDATASETQUERY");
+        database().executeSQL("TRUNCATE TABLE TGENERATEDREPORT");
+
+        database().executeSQL("DROP TABLE TREPORTQUERY");
     }
 
 

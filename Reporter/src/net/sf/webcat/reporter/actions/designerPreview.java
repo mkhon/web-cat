@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.12 2009/07/14 14:40:05 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.13 2010/04/19 15:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,13 +28,13 @@ import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.Enumeration;
 import net.sf.webcat.core.Application;
+import net.sf.webcat.core.QualifierUtils;
 import net.sf.webcat.core.ReadOnlyEditingContext;
-import net.sf.webcat.reporter.QualifierUtils;
+import net.sf.webcat.core.objectquery.AdvancedQueryComparison;
+import net.sf.webcat.core.objectquery.AdvancedQueryCriterion;
+import net.sf.webcat.core.objectquery.AdvancedQueryModel;
+import net.sf.webcat.core.objectquery.AdvancedQueryUtils;
 import net.sf.webcat.reporter.ReportUtilityEnvironment;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryComparison;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryCriterion;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryModel;
-import net.sf.webcat.reporter.queryassistants.AdvancedQueryUtils;
 import ognl.Node;
 import ognl.Ognl;
 import ognl.OgnlContext;
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  * response end-of-data marker is true.
  *
  * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.12 2009/07/14 14:40:05 aallowat Exp $
+ * @version $Id: designerPreview.java,v 1.13 2010/04/19 15:23:18 aallowat Exp $
  */
 public class designerPreview
     extends ERXDirectAction

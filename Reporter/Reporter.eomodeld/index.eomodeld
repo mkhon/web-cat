@@ -23,7 +23,6 @@
             name = ReportGenerationJob; 
             parent = JobBase; 
         }, 
-        {className = "net.sf.webcat.reporter.ReportQuery"; name = ReportQuery; }, 
         {className = "net.sf.webcat.reporter.ReportTemplate"; name = ReportTemplate; }
     ); 
     internalInfo = {

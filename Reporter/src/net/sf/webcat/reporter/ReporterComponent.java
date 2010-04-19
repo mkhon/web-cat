@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterComponent.java,v 1.12 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: ReporterComponent.java,v 1.13 2010/04/19 15:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,24 +21,20 @@
 
 package net.sf.webcat.reporter;
 
+import net.sf.webcat.core.ObjectQuery;
 import net.sf.webcat.core.WCComponent;
-import net.sf.webcat.reporter.queryassistants.ModelOrQueryWrapper;
+import net.sf.webcat.core.objectquery.ObjectQuerySurrogate;
 import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOEnterpriseObject;
-import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableDictionary;
-import com.webobjects.foundation.NSTimestamp;
 
 //-------------------------------------------------------------------------
 /**
  * A base class for pages and subcomponents in the Reporter subsystem.
  *
  * @author Tony Allevato
- * @version $Id: ReporterComponent.java,v 1.12 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: ReporterComponent.java,v 1.13 2010/04/19 15:23:18 aallowat Exp $
  */
 public class ReporterComponent
     extends WCComponent
@@ -50,9 +46,9 @@ public class ReporterComponent
      * Creates a new ReporterComponent object.
      * @param context The context to use
      */
-    public ReporterComponent( WOContext context )
+    public ReporterComponent(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -70,7 +66,7 @@ public class ReporterComponent
     // ----------------------------------------------------------
     public String localReportDescription()
     {
-        return (String)transientState().objectForKey(KEY_REPORT_DESCRIPTION);
+        return (String) transientState().objectForKey(KEY_REPORT_DESCRIPTION);
     }
 
 
@@ -84,7 +80,7 @@ public class ReporterComponent
     // ----------------------------------------------------------
     public ReportTemplate localReportTemplate()
     {
-        return (ReportTemplate)transientState().objectForKey(
+        return (ReportTemplate) transientState().objectForKey(
                 KEY_REPORT_TEMPLATE);
     }
 
@@ -99,7 +95,7 @@ public class ReporterComponent
     // ----------------------------------------------------------
     public GeneratedReport localGeneratedReport()
     {
-        return (GeneratedReport)transientState().objectForKey(
+        return (GeneratedReport) transientState().objectForKey(
             KEY_GENERATED_REPORT);
     }
 
@@ -112,7 +108,9 @@ public class ReporterComponent
 
 
     // ----------------------------------------------------------
-    public String commitReportGeneration(ModelOrQueryWrapper[] modelWrappers)
+    public String commitReportGeneration(
+            NSArray<ObjectQuerySurrogate> surrogates,
+            NSArray<ReportDataSet> dataSets)
     {
         String errorMessage = null;
         log.debug("committing report generation");
@@ -137,16 +135,18 @@ public class ReporterComponent
         // Create ReportDataSetQuery objects to map all of the data sets in
         // the transient state to the queries that were created for them.
 
-        for (ModelOrQueryWrapper modelWrapper : modelWrappers)
+        for (int i = 0; i < surrogates.count(); i++)
         {
-            ReportDataSet dataSet = modelWrapper.dataSet();
-            ReportQuery query = modelWrapper.commitAndGetQuery(ec, user());
+            ObjectQuerySurrogate surrogate = surrogates.objectAtIndex(i);
+            ReportDataSet dataSet = dataSets.objectAtIndex(i);
+
+            ObjectQuery query = surrogate.commitAndGetQuery(ec, user());
 
             ReportDataSetQuery dataSetQuery =
                 report.createDataSetQueriesRelationship();
 
             dataSetQuery.setDataSetRelationship(dataSet);
-            dataSetQuery.setReportQueryRelationship(query);
+            dataSetQuery.setObjectQueryRelationship(query);
 
             applyLocalChanges();
         }
@@ -172,6 +172,5 @@ public class ReporterComponent
     private static final String KEY_GENERATED_REPORT =
         "net.sf.webcat.reporter.generatedReport";
 
-    static Logger log = Logger.getLogger( ReporterComponent.class );
-
+    static Logger log = Logger.getLogger(ReporterComponent.class);
 }

@@ -5,39 +5,9 @@ ChangeReportTemplate: WCLink {
     action = changeReportTemplate;
 }
 
-ChooseQueryAssistant: WCLink {
-    action = chooseQueryAssistantForDataSet;
-    remote = true;
-}
-
-RevertEditing: WCLink {
-    action = revertEditingForDataSet;
-    remote = true;
-}
-
-SavedQueries: WCFilteringSelect {
-    id = idForSavedQueryPickerForDataSet;
-    list = savedQueriesApplicableToDataSet;
-    item = savedQuery;
-    displayString = savedQuery.description;
-    selection = selectedSavedQueryForDataSet;
-}
-
-UseSavedQuery: WCButton {
-    label = "Use this query";
-    action = useSavedQuery;
-    remote = true;
-}
-
-QueryAssistantComponent: WOSwitchComponent {
-    WOComponentName = selectedModelOrQueryForDataSet.queryAssistant.editorComponentName;
-    dataSet = dataSet;
-    model = selectedModelOrQueryForDataSet.model;
-}
-
-QueryDescription: WCTextBox {
-    value = selectedModelOrQueryForDataSet.descriptionToSave;
-    size = 50;
+QueryBuilder : net.sf.webcat.core.objectquery.ObjectQueryBuilder {
+    objectType = dataSet.wcEntityName;
+    surrogate = objectQuerySurrogateForDataSet;
 }
 
 ReportParameter: ReportParameterValueComponent {
