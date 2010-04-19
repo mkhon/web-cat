@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCForm.java,v 1.6 2010/03/15 16:48:47 aallowat Exp $
+ |  $Id: WCForm.java,v 1.7 2010/04/19 15:21:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -47,7 +47,7 @@ import er.extensions.components._private.ERXWOForm;
  * </p>
  *
  * @author Tony Allevato
- * @version $Id: WCForm.java,v 1.6 2010/03/15 16:48:47 aallowat Exp $
+ * @version $Id: WCForm.java,v 1.7 2010/04/19 15:21:59 aallowat Exp $
  */
 public class WCForm extends ERXWOForm
 {
@@ -113,7 +113,9 @@ public class WCForm extends ERXWOForm
         String varName = "validationResults_" + _formName(context);
 
         response.appendContentString("<script type=\"text/javascript\">\n");
-        response.appendContentString(varName + " = new webcat.ValidationResults();\n");
+        response.appendContentString("dojo.addOnLoad(function() {\n");
+        response.appendContentString("    " + varName + " = new webcat.ValidationResults();\n");
+        response.appendContentString("});\n");
         response.appendContentString("</script>\n");
 
         super.appendChildrenToResponse(response, context);
