@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.10 2010/03/15 16:49:54 aallowat Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.11 2010/04/19 15:23:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -26,6 +26,7 @@ import com.webobjects.foundation.*;
 import net.sf.webcat.archives.ArchiveManager;
 import net.sf.webcat.archives.IArchiveEntry;
 import net.sf.webcat.core.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -35,7 +36,7 @@ import org.apache.log4j.Logger;
  *
  * @author Amit Kulkarni
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.10 $, $Date: 2010/03/15 16:49:54 $
+ * @version $Revision: 1.11 $, $Date: 2010/04/19 15:23:04 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -112,11 +113,8 @@ public class ConfirmSubmissionPage
                     + "reported to the administrator.  If you "
                     + "have uploaded the wrong file by accident, "
                     + "use the Back button to try again." );
-                Application.emailExceptionToAdmins(
-                    e,
-                    context(),
-                    "Exception unzipping submission file"
-                );
+                new UnexpectedExceptionMessage(e, context(), null,
+                    "Exception unzipping submission file").send();
             }
         }
         else

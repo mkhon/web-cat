@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.13 2008/10/29 14:15:21 aallowat Exp $
+ |  $Id: GraderComponent.java,v 1.14 2010/04/19 15:23:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,6 +29,7 @@ import com.webobjects.foundation.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import net.sf.webcat.core.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.13 2008/10/29 14:15:21 aallowat Exp $
+ *  @version $Id: GraderComponent.java,v 1.14 2010/04/19 15:23:04 aallowat Exp $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -207,8 +208,8 @@ public class GraderComponent
             }
             catch ( Exception e)
             {
-                Application.emailExceptionToAdmins(
-                    e, context(), "failure initializing prefs!" );
+                new UnexpectedExceptionMessage(e, context(), null,
+                        "failure initializing prefs!").send();
             }
             finally
             {

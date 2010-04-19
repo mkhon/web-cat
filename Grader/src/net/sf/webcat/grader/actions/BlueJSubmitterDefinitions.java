@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BlueJSubmitterDefinitions.java,v 1.6 2010/03/10 21:59:42 stedwar2 Exp $
+ |  $Id: BlueJSubmitterDefinitions.java,v 1.7 2010/04/19 15:23:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,6 +26,7 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.foundation.ERXValueUtilities;
 import net.sf.webcat.core.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import net.sf.webcat.grader.*;
 import org.apache.log4j.Logger;
 
@@ -35,7 +36,7 @@ import org.apache.log4j.Logger;
  * the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @version $Id: BlueJSubmitterDefinitions.java,v 1.6 2010/03/10 21:59:42 stedwar2 Exp $
+ * @version $Id: BlueJSubmitterDefinitions.java,v 1.7 2010/04/19 15:23:04 aallowat Exp $
  */
 public class BlueJSubmitterDefinitions
     extends WOComponent
@@ -285,11 +286,8 @@ public class BlueJSubmitterDefinitions
         }
         catch ( java.io.UnsupportedEncodingException e )
         {
-            Application.emailExceptionToAdmins(
-                e,
-                context(),
-                "For url parameter: '" + name + "'"
-                );
+            new UnexpectedExceptionMessage(e, context(), null,
+                "For url parameter: '" + name + "'").send();
             return name;
         }
     }

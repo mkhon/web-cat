@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.7 2010/02/05 19:15:37 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.8 2010/04/19 15:21:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2010 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat.core;
 
 import java.io.File;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOCookie;
 import com.webobjects.eocontrol.*;
@@ -33,8 +34,8 @@ import er.extensions.foundation.ERXValueUtilities;
  * Represents a theme (stored in the Core framework).
  *
  *  @author stedwar2
- *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.7 $, $Date: 2010/02/05 19:15:37 $
+ *  @author Last changed by $Author: aallowat $
+ *  @version $Revision: 1.8 $, $Date: 2010/04/19 15:21:41 $
  */
 public class Theme
     extends _Theme
@@ -299,11 +300,9 @@ public class Theme
             }
             catch (Exception e)
             {
-                Application.emailExceptionToAdmins(
-                    e,
-                    null,
-                    "Unexpected exception trying to decode theme properties "
-                    + "for theme: " + dirName() + "(" + id() + ").");
+                new UnexpectedExceptionMessage(e, null, null,
+                        "Unexpected exception trying to decode theme properties "
+                        + "for theme: " + dirName() + "(" + id() + ").").send();
             }
         }
         return linkTags;
@@ -427,8 +426,9 @@ public class Theme
         catch (Exception e)
         {
             log.error("Unable to refresh theme from " + plist, e);
-            Application.emailExceptionToAdmins(
-                e, null, "Error refreshing theme.");
+
+            new UnexpectedExceptionMessage(e, null, null,
+                    "Error refreshing theme.").send();
         }
     }
 

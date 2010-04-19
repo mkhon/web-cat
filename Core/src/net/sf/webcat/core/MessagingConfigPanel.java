@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MessagingConfigPanel.java,v 1.3 2010/01/23 02:36:09 aallowat Exp $
+ |  $Id: MessagingConfigPanel.java,v 1.4 2010/04/19 15:21:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -34,6 +34,8 @@ import com.webobjects.appserver.WOResponse;
 import com.webobjects.eocontrol.EOCustomObject;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
+import er.extensions.eof.ERXS;
+import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
 
 //-------------------------------------------------------------------------
 /**
@@ -41,7 +43,7 @@ import com.webobjects.foundation.NSDictionary;
  * user or for the system broadcast messages.
  *
  * @author Tony Allevato
- * @version $Id: MessagingConfigPanel.java,v 1.3 2010/01/23 02:36:09 aallowat Exp $
+ * @version $Id: MessagingConfigPanel.java,v 1.4 2010/04/19 15:21:41 aallowat Exp $
  */
 public class MessagingConfigPanel extends WCComponent
 {
@@ -84,6 +86,10 @@ public class MessagingConfigPanel extends WCComponent
         {
             messageDescriptors = Message.registeredUserMessages(user());
         }
+
+        ERXSortOrderings sort = ERXS.ascInsensitive("category").then(
+                ERXS.ascInsensitive("description"));
+        messageDescriptors = sort.sorted(messageDescriptors);
 
         protocols = Message.registeredProtocols(isShowingBroadcast);
 
@@ -174,6 +180,18 @@ public class MessagingConfigPanel extends WCComponent
 
 
     // ----------------------------------------------------------
+    public boolean shouldInsertCategoryRow()
+    {
+        MessageDescriptor prevDescriptor =
+            (indexOfMessage == 0) ? null :
+                messageDescriptors.objectAtIndex(indexOfMessage - 1);
+
+        return (prevDescriptor == null ||
+                prevDescriptor.category() != messageDescriptor.category());
+    }
+
+
+    // ----------------------------------------------------------
     public boolean isProtocolSelectedForMessage()
     {
         int mIndex = indexOfMessageDescriptor();
@@ -197,6 +215,20 @@ public class MessagingConfigPanel extends WCComponent
         int pIndex = indexOfProtocol();
 
         selectionMatrix[mIndex][pIndex] = value;
+    }
+
+
+    // ----------------------------------------------------------
+    public String editGlobalOptionsDialogShowCall()
+    {
+        return "dijit.byId('editGlobalOptions_" + indexOfProtocol + "').show();";
+    }
+
+
+    // ----------------------------------------------------------
+    public String editOptionsDialogShowCall()
+    {
+        return "dijit.byId('editOptions_" + indexOfProtocol + "').show();";
     }
 
 

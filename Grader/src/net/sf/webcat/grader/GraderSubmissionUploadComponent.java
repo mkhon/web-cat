@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionUploadComponent.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ |  $Id: GraderSubmissionUploadComponent.java,v 1.4 2010/04/19 15:23:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,6 +26,7 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
 import java.io.*;
 import net.sf.webcat.core.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
@@ -34,7 +35,7 @@ import org.apache.log4j.Logger;
  *  {@link SubmissionInProcess} state object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSubmissionUploadComponent.java,v 1.3 2008/04/02 01:55:20 stedwar2 Exp $
+ *  @version $Id: GraderSubmissionUploadComponent.java,v 1.4 2010/04/19 15:23:04 aallowat Exp $
  */
 public class GraderSubmissionUploadComponent
     extends GraderAssignmentComponent
@@ -128,11 +129,8 @@ public class GraderSubmissionUploadComponent
         catch ( Exception e )
         {
             // Security exception
-            Application.emailExceptionToAdmins(
-                    e,
-                    context,
-                    "Exception creating submission directory"
-                );
+            new UnexpectedExceptionMessage(e, context, null,
+                    "Exception creating submission directory").send();
             localContext().deleteObject( submission );
             prefs().setSubmissionRelationship( null );
             submissionInProcess().setSubmission( null );
@@ -156,11 +154,8 @@ public class GraderSubmissionUploadComponent
         catch ( Exception e )
         {
             // Do something with the exception
-            Application.emailExceptionToAdmins(
-                    e,
-                    context,
-                    "Exception uploading submission file"
-                );
+            new UnexpectedExceptionMessage(e, context, null,
+                    "Exception uploading submission file").send();
             localContext().deleteObject( submission );
             prefs().setSubmissionRelationship( null );
             submissionInProcess().setSubmission( null );

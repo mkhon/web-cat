@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.21 2010/02/27 21:19:53 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.22 2010/04/19 15:21:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -24,6 +24,7 @@ package net.sf.webcat.core;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -55,8 +56,8 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.21 $, $Date: 2010/02/27 21:19:53 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.22 $, $Date: 2010/04/19 15:21:41 $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -436,10 +437,8 @@ public class WCComponent
         }
         catch ( Exception e )
         {
-            Application.emailExceptionToAdmins(
-                e,
-                context(),
-                "Exception trying to save component's local changes" );
+            new UnexpectedExceptionMessage(e, context(), null,
+                "Exception trying to save component's local changes" ).send();
             // forces revert and refaultAllObjects
             cancelLocalChanges();
             String msg =

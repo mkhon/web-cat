@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EmailProtocol.java,v 1.1 2009/12/09 04:58:37 aallowat Exp $
+ |  $Id: EmailProtocol.java,v 1.2 2010/04/19 15:21:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -25,13 +25,14 @@ import net.sf.webcat.core.Application;
 import net.sf.webcat.core.ProtocolSettings;
 import net.sf.webcat.core.User;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSDictionary;
 
 //-------------------------------------------------------------------------
 /**
  * A notification protocol that delivers messages via e-mail.
  *
  * @author Tony Allevato
- * @version $Id: EmailProtocol.java,v 1.1 2009/12/09 04:58:37 aallowat Exp $
+ * @version $Id: EmailProtocol.java,v 1.2 2010/04/19 15:21:41 aallowat Exp $
  */
 public class EmailProtocol extends Protocol
 {
@@ -42,9 +43,29 @@ public class EmailProtocol extends Protocol
     public void sendMessage(Message message, User user,
             ProtocolSettings protocolSettings) throws Exception
     {
-        Application.sendAdminEmail(
-                null, new NSArray<User>(user), false,
-                message.title(), message.fullBody(), null);
+        StringBuffer body = new StringBuffer();
+        body.append(message.fullBody());
+        body.append("\n\n");
+
+        NSDictionary<String, String> links = message.links();
+        if (links != null && links.count() > 0)
+        {
+            body.append("Links:\n");
+
+            for (String key : links.allKeys())
+            {
+                String url = links.objectForKey(key);
+
+                body.append(key);
+                body.append(": ");
+                body.append(url);
+                body.append("\n");
+            }
+        }
+
+        Application.sendSimpleEmail(
+                user.email(), message.title(), body.toString(),
+                message.attachments());
     }
 
 

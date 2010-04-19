@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.30 2010/03/15 16:49:48 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.31 2010/04/19 15:23:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -32,6 +32,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
 import net.sf.webcat.core.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import net.sf.webcat.grader.graphs.*;
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.30 $, $Date: 2010/03/15 16:49:48 $
+ * @version $Revision: 1.31 $, $Date: 2010/04/19 15:23:04 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -875,11 +876,8 @@ public class AssignmentOffering
             }
             catch ( NumberFormatException e )
             {
-                Application.emailExceptionToAdmins(
-                    e,
-                    null,
-                    "trying to parse course number = '" + valueObj + "'"
-                    );
+                new UnexpectedExceptionMessage(e, null, null,
+                    "trying to parse course number = '" + valueObj + "'").send();
             }
         }
         boolean forStaff = ERXValueUtilities.booleanValue(

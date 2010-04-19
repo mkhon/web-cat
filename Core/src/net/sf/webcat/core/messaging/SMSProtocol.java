@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SMSProtocol.java,v 1.1 2009/12/15 19:52:03 aallowat Exp $
+ |  $Id: SMSProtocol.java,v 1.2 2010/04/19 15:21:41 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ import net.sf.webcat.core.User;
  * configurable properties with default values for common providers.
  *
  * @author Tony Allevato
- * @version $Id: SMSProtocol.java,v 1.1 2009/12/15 19:52:03 aallowat Exp $
+ * @version $Id: SMSProtocol.java,v 1.2 2010/04/19 15:21:41 aallowat Exp $
  */
 public class SMSProtocol extends Protocol
 {
@@ -46,7 +46,7 @@ public class SMSProtocol extends Protocol
     public void sendMessage(Message message, User user,
             ProtocolSettings settings) throws Exception
     {
-        String mobileNumber = settings.stringSettingForKey(
+/*        String mobileNumber = settings.stringSettingForKey(
                 MOBILE_NUMBER_SETTING, null);
         int providerIndex = settings.intSettingForKey(
                 MOBILE_PROVIDER_SETTING, -1);
@@ -59,7 +59,7 @@ public class SMSProtocol extends Protocol
             Application.sendAdminEmail(
                     gatewayEmail, null, false,
                     message.title(), message.fullBody(), null);
-        }
+        }*/
     }
 
 
