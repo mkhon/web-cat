@@ -82,6 +82,9 @@ public abstract class _JobBase
     public static final String SCHEDULED_TIME_KEY = BASE_PREFIX_DOT + "scheduledTime";
     public static final ERXKey<NSTimestamp> scheduledTime =
         new ERXKey<NSTimestamp>(SCHEDULED_TIME_KEY);
+    public static final String SUSPENSION_REASON_KEY = BASE_PREFIX_DOT + "suspensionReason";
+    public static final ERXKey<String> suspensionReason =
+        new ERXKey<String>(SUSPENSION_REASON_KEY);
     // To-one relationships ---
     public static final String USER_KEY = BASE_PREFIX_DOT + "user";
     public static final ERXKey<net.sf.webcat.core.User> user =
@@ -481,6 +484,35 @@ public abstract class _JobBase
                 + value + "): was " + scheduledTime() );
         }
         takeStoredValueForKey( value, "scheduledTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>suspensionReason</code> value.
+     * @return the value of the attribute
+     */
+    public String suspensionReason()
+    {
+        return (String)storedValueForKey( "suspensionReason" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>suspensionReason</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setSuspensionReason( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setSuspensionReason("
+                + value + "): was " + suspensionReason() );
+        }
+        takeStoredValueForKey( value, "suspensionReason" );
     }
 
 

@@ -62,7 +62,7 @@ public abstract class _HostDescriptor
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param hostName
+     * @param hostNameValue
      * @return The newly created object
      */
     public static HostDescriptor create(

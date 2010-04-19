@@ -62,8 +62,8 @@ public abstract class _WorkerDescriptor
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param currentJobId
-     * @param isAlive
+     * @param currentJobIdValue
+     * @param isAliveValue
      * @return The newly created object
      */
     public static WorkerDescriptor create(

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.8 2009/12/09 04:50:10 aallowat Exp $
+ |  $Id: JobQueue.java,v 1.9 2010/04/19 15:23:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -31,6 +31,7 @@ import com.webobjects.foundation.NSDictionary;
 import er.extensions.eof.ERXEC;
 import er.extensions.eof.ERXQ;
 import net.sf.webcat.core.*;
+import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import net.sf.webcat.dbupdate.*;
 import org.apache.log4j.Logger;
 
@@ -44,7 +45,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2009/12/09 04:50:10 $
+ * @version $Revision: 1.9 $, $Date: 2010/04/19 15:23:44 $
  */
 public class JobQueue
     extends Subsystem
@@ -191,12 +192,10 @@ public class JobQueue
             {
                 log.error("failure registering "
                     + descriptorEntityName + searchBindings);
-                Application.emailExceptionToAdmins(
-                    null,
-                    null,
-                    "failure registering "
-                    + descriptorEntityName
-                    + searchBindings);
+                new UnexpectedExceptionMessage(null, null, null,
+                        "failure registering "
+                        + descriptorEntityName
+                        + searchBindings).send();
             }
             else
             {
@@ -333,12 +332,10 @@ public class JobQueue
             {
                 log.error("failure registering "
                     + descriptorEntityName + searchBindings);
-                Application.emailExceptionToAdmins(
-                    null,
-                    null,
+                new UnexpectedExceptionMessage(null, null, null,
                     "failure registering "
                     + descriptorEntityName
-                    + searchBindings);
+                    + searchBindings).send();
             }
             else
             {

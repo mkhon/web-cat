@@ -49,10 +49,23 @@
             prototypeName = mediumText; 
         }, 
         {columnName = scheduledTime; name = scheduledTime; prototypeName = dateTime; }, 
+        {
+            columnName = suspensionReason; 
+            name = suspensionReason; 
+            prototypeName = mediumText; 
+        }, 
         {columnName = userId; name = userId; prototypeName = foreignId; }, 
         {columnName = workerId; name = workerId; prototypeName = foreignId; }
     ); 
-    attributesUsedForLocking = (isCancelled, isReady, priority, progressMessage, userId, workerId); 
+    attributesUsedForLocking = (
+        isCancelled, 
+        isReady, 
+        priority, 
+        progressMessage, 
+        suspensionReason, 
+        userId, 
+        workerId
+    ); 
     className = "net.sf.webcat.jobqueue.JobBase"; 
     classProperties = (
         enqueueTime, 
@@ -62,6 +75,7 @@
         progress, 
         progressMessage, 
         scheduledTime, 
+        suspensionReason, 
         user, 
         worker
     ); 

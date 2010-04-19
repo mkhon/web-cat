@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueueDatabaseUpdates.java,v 1.5 2009/11/18 19:23:38 aallowat Exp $
+ |  $Id: JobQueueDatabaseUpdates.java,v 1.6 2010/04/19 15:23:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2009/11/18 19:23:38 $
+ * @version $Revision: 1.6 $, $Date: 2010/04/19 15:23:44 $
  */
 public class JobQueueDatabaseUpdates
     extends UpdateSet
@@ -66,6 +66,18 @@ public class JobQueueDatabaseUpdates
         createHostDescriptorTable();
         createQueueDescriptorTable();
         createWorkerDescriptorTable();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds the "suspensionReason" column to the TJobBase table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement1() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TJobBase add suspensionReason MEDIUMTEXT");
     }
 
 

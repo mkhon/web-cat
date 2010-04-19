@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.7 2009/12/02 18:13:31 aallowat Exp $
+ |  $Id: JobBase.java,v 1.8 2010/04/19 15:23:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2009/12/02 18:13:31 $
+ * @version $Revision: 1.8 $, $Date: 2010/04/19 15:23:44 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -100,6 +100,7 @@ public abstract class JobBase
         {
             try
             {
+                setSuspensionReason(null);
                 setWorkerRelationship(worker);
                 editingContext().saveChanges();
 

@@ -62,8 +62,8 @@ public abstract class _QueueDescriptor
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param jobEntityName
-     * @param newestEntryId
+     * @param jobEntityNameValue
+     * @param newestEntryIdValue
      * @return The newly created object
      */
     public static QueueDescriptor create(

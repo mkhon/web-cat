@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedJobBase.java,v 1.6 2009/12/02 18:13:31 aallowat Exp $
+ |  $Id: ManagedJobBase.java,v 1.7 2010/04/19 15:23:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -39,7 +39,7 @@ import net.sf.webcat.core.IndependentEOManager;
  *
  * @author stedwar2
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2009/12/02 18:13:31 $
+ * @version $Revision: 1.7 $, $Date: 2010/04/19 15:23:44 $
  */
 public abstract class ManagedJobBase
     extends IndependentEOManager
@@ -234,6 +234,30 @@ public abstract class ManagedJobBase
     public void setScheduledTime(NSTimestamp value)
     {
         takeValueForKey(value, JobBase.SCHEDULED_TIME_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the value of the <code>suspensionReason</code> attribute.
+     *
+     * @return the value of the attribute
+     */
+    public String suspensionReason()
+    {
+        return (String) valueForKey(JobBase.SUSPENSION_REASON_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the value of the <code>suspensionReason</code> attribute.
+     *
+     * @param value The new value of the attribute
+     */
+    public void setSuspensionReason(String value)
+    {
+        takeValueForKey(value, JobBase.SUSPENSION_REASON_KEY);
     }
 
 
