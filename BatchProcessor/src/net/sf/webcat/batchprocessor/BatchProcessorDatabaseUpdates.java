@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchProcessorDatabaseUpdates.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ |  $Id: BatchProcessorDatabaseUpdates.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * Logging output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: BatchProcessorDatabaseUpdates.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ * @version $Id: BatchProcessorDatabaseUpdates.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  */
 public class BatchProcessorDatabaseUpdates
     extends UpdateSet
@@ -116,12 +116,13 @@ public class BatchProcessorDatabaseUpdates
                 + "batchedObjectIds BLOB , "
                 + "batchPluginId INTEGER , "
                 + "batchResultId INTEGER , "
-                + "batchState TINYTEXT , "
                 + "configSettings BLOB , "
+                + "currentState TINYTEXT , "
                 + "description MEDIUMTEXT , "
                 + "indexOfNextObject INTEGER , "
                 + "isInIteration BIT NOT NULL , "
                 + "objectQueryId INTEGER , "
+                + "stateAfterIteration TINYTEXT , "
                 + "CUPDATEMUTABLEFIELDS BIT NOT NULL"
                 + " )");
             database().executeSQL(

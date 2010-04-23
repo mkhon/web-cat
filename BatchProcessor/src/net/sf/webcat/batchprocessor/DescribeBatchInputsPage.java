@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DescribeBatchInputsPage.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ |  $Id: DescribeBatchInputsPage.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import com.webobjects.foundation.NSArray;
  * other arguments that the plug-in needs to run.
  *
  * @author Tony Allevato
- * @version $Id: DescribeBatchInputsPage.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ * @version $Id: DescribeBatchInputsPage.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  */
 public class DescribeBatchInputsPage extends WCComponent
 {
@@ -109,7 +109,7 @@ public class DescribeBatchInputsPage extends WCComponent
         job.setDescription(desc);
         job.setUserRelationship(user());
         job.setBatchPluginRelationship(batchPlugin);
-        job.setBatchState(BatchJob.STATE_START);
+        job.setCurrentState(BatchJob.STATE_START);
         job.setObjectQueryRelationship(query);
 
         if (!configSettings.isEmpty())

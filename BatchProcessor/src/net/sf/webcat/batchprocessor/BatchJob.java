@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchJob.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ |  $Id: BatchJob.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/04/19 15:24:14 $
+ * @version $Revision: 1.2 $, $Date: 2010/04/23 17:04:57 $
  */
 public class BatchJob
     extends _BatchJob
@@ -153,7 +153,8 @@ public class BatchJob
         }
 
         NSArray remainder = pks.subarrayWithRange(
-                new NSRange(indexOfNextObject(), pks.count()));
+                new NSRange(indexOfNextObject(),
+                        pks.count() - indexOfNextObject()));
 
         ObjectQuery query = objectQuery();
         EOQualifier[] quals = QualifierUtils.partitionQualifier(

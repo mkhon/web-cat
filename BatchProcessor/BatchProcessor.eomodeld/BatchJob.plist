@@ -13,7 +13,6 @@
         }, 
         {columnName = batchPluginId; name = batchPluginId; prototypeName = foreignId; }, 
         {columnName = batchResultId; name = batchResultId; prototypeName = foreignId; }, 
-        {columnName = batchState; name = batchState; prototypeName = tinyText; }, 
         {
             columnName = configSettings; 
             name = configSettings; 
@@ -25,6 +24,7 @@
                 valueFactoryMethodName = objectWithArchiveData; 
             }; 
         }, 
+        {columnName = currentState; name = currentState; prototypeName = tinyText; }, 
         {columnName = description; name = description; prototypeName = mediumText; }, 
         {
             allowsNull = N; 
@@ -99,6 +99,11 @@
             prototypeName = dateTime; 
         }, 
         {
+            columnName = stateAfterIteration; 
+            name = stateAfterIteration; 
+            prototypeName = tinyText; 
+        }, 
+        {
             definition = "jobBase.suspensionReason"; 
             name = suspensionReason; 
             prototypeName = mediumText; 
@@ -114,7 +119,7 @@
     attributesUsedForLocking = (
         batchPluginId, 
         batchResultId, 
-        batchState, 
+        currentState, 
         description, 
         indexOfNextObject, 
         isCancelled, 
@@ -123,6 +128,7 @@
         objectQueryId, 
         priority, 
         progressMessage, 
+        stateAfterIteration, 
         suspensionReason, 
         updateMutableFields, 
         userId, 
@@ -133,8 +139,8 @@
         batchedObjectIds, 
         batchPlugin, 
         batchResult, 
-        batchState, 
         configSettings, 
+        currentState, 
         description, 
         enqueueTime, 
         indexOfNextObject, 
@@ -146,6 +152,7 @@
         progress, 
         progressMessage, 
         scheduledTime, 
+        stateAfterIteration, 
         suspensionReason, 
         updateMutableFields, 
         user, 

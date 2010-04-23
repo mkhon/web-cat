@@ -155,12 +155,12 @@ public abstract class _BatchJob
     public static final String BATCHED_OBJECT_IDS_KEY = "batchedObjectIds";
     public static final ERXKey<NSData> batchedObjectIds =
         new ERXKey<NSData>(BATCHED_OBJECT_IDS_KEY);
-    public static final String BATCH_STATE_KEY = "batchState";
-    public static final ERXKey<String> batchState =
-        new ERXKey<String>(BATCH_STATE_KEY);
     public static final String CONFIG_SETTINGS_KEY = "configSettings";
     public static final ERXKey<NSData> configSettings =
         new ERXKey<NSData>(CONFIG_SETTINGS_KEY);
+    public static final String CURRENT_STATE_KEY = "currentState";
+    public static final ERXKey<String> currentState =
+        new ERXKey<String>(CURRENT_STATE_KEY);
     public static final String DESCRIPTION_KEY = "description";
     public static final ERXKey<String> description =
         new ERXKey<String>(DESCRIPTION_KEY);
@@ -170,6 +170,9 @@ public abstract class _BatchJob
     public static final String IS_IN_ITERATION_KEY = "isInIteration";
     public static final ERXKey<Integer> isInIteration =
         new ERXKey<Integer>(IS_IN_ITERATION_KEY);
+    public static final String STATE_AFTER_ITERATION_KEY = "stateAfterIteration";
+    public static final ERXKey<String> stateAfterIteration =
+        new ERXKey<String>(STATE_AFTER_ITERATION_KEY);
     public static final String UPDATE_MUTABLE_FIELDS_KEY = "updateMutableFields";
     public static final ERXKey<Integer> updateMutableFields =
         new ERXKey<Integer>(UPDATE_MUTABLE_FIELDS_KEY);
@@ -306,35 +309,6 @@ public abstract class _BatchJob
     }
 
 
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>batchState</code> value.
-     * @return the value of the attribute
-     */
-    public String batchState()
-    {
-        return (String)storedValueForKey( "batchState" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>batchState</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setBatchState( String value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setBatchState("
-                + value + "): was " + batchState() );
-        }
-        takeStoredValueForKey( value, "batchState" );
-    }
-
-
     //-- Local mutable cache --
     private net.sf.webcat.core.MutableDictionary configSettingsCache;
     private NSData configSettingsRawCache;
@@ -435,6 +409,35 @@ public abstract class _BatchJob
         takeStoredValueForKey( null, "configSettings" );
         configSettingsRawCache = null;
         configSettingsCache = null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>currentState</code> value.
+     * @return the value of the attribute
+     */
+    public String currentState()
+    {
+        return (String)storedValueForKey( "currentState" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>currentState</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setCurrentState( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setCurrentState("
+                + value + "): was " + currentState() );
+        }
+        takeStoredValueForKey( value, "currentState" );
     }
 
 
@@ -592,6 +595,35 @@ public abstract class _BatchJob
                 + value + "): was " + isInIterationRaw() );
         }
         takeStoredValueForKey( value, "isInIteration" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>stateAfterIteration</code> value.
+     * @return the value of the attribute
+     */
+    public String stateAfterIteration()
+    {
+        return (String)storedValueForKey( "stateAfterIteration" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>stateAfterIteration</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setStateAfterIteration( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setStateAfterIteration("
+                + value + "): was " + stateAfterIteration() );
+        }
+        takeStoredValueForKey( value, "stateAfterIteration" );
     }
 
 

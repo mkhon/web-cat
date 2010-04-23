@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedBatchJob.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ |  $Id: ManagedBatchJob.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -29,7 +29,7 @@ import com.webobjects.foundation.NSArray;
  * TODO real description
  *
  * @author  Tony Allevato
- * @version $Id: ManagedBatchJob.java,v 1.1 2010/04/19 15:24:14 aallowat Exp $
+ * @version $Id: ManagedBatchJob.java,v 1.2 2010/04/23 17:04:57 aallowat Exp $
  */
 public class ManagedBatchJob extends ManagedJobBase
 {
@@ -50,9 +50,9 @@ public class ManagedBatchJob extends ManagedJobBase
      *
      * @return the value of the attribute
      */
-    public String batchState()
+    public String currentState()
     {
-        return (String) valueForKey(BatchJob.BATCH_STATE_KEY);
+        return (String) valueForKey(BatchJob.CURRENT_STATE_KEY);
     }
 
 
@@ -62,9 +62,9 @@ public class ManagedBatchJob extends ManagedJobBase
      *
      * @param value The new value of the attribute
      */
-    public void setBatchState(String value)
+    public void setCurrentState(String value)
     {
-        takeValueForKey(value, BatchJob.BATCH_STATE_KEY);
+        takeValueForKey(value, BatchJob.CURRENT_STATE_KEY);
     }
 
 
@@ -94,6 +94,13 @@ public class ManagedBatchJob extends ManagedJobBase
 
 
     // ----------------------------------------------------------
+    /**
+     * Gets a value indicating whether the job is currently in an entity
+     * iteration.
+     *
+     * @return true if the job is currently iterating over entities, otherwise
+     *     false
+     */
     public boolean isInIteration()
     {
         return (Boolean) valueForKey(BatchJob.IS_IN_ITERATION_KEY);
@@ -101,17 +108,36 @@ public class ManagedBatchJob extends ManagedJobBase
 
 
     // ----------------------------------------------------------
-    public void prepareForIteration()
+    /**
+     * Prepares this job to iterate over a batch of entities.
+     *
+     * @param stateAfterIteration the state that the job should transition into
+     *     after the iteration is complete
+     */
+    public void prepareForIteration(String stateAfterIteration)
     {
         setIndexOfNextObject(0);
         takeValueForKey(Boolean.TRUE, BatchJob.IS_IN_ITERATION_KEY);
+        takeValueForKey(stateAfterIteration,
+                BatchJob.STATE_AFTER_ITERATION_KEY);
     }
 
 
     // ----------------------------------------------------------
-    public void endIteration()
+    /**
+     * Ends the current iteration and returns the next state for the job.
+     *
+     * @return the next state for the job
+     */
+    public String endIteration()
     {
+        String nextState =
+            (String) valueForKey(BatchJob.STATE_AFTER_ITERATION_KEY);
+
         takeValueForKey(Boolean.FALSE, BatchJob.IS_IN_ITERATION_KEY);
+        takeValueForKey(null, BatchJob.STATE_AFTER_ITERATION_KEY);
+
+        return nextState;
     }
 
 
