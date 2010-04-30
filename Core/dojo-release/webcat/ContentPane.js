@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentPane.js,v 1.9 2010/03/15 16:48:57 aallowat Exp $
+ |  $Id: ContentPane.js,v 1.10 2010/04/30 17:17:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ dojo.require("webcat.Spinner");
  * when it is initialized.
  *
  * @author Tony Allevato
- * @version $Id: ContentPane.js,v 1.9 2010/03/15 16:48:57 aallowat Exp $
+ * @version $Id: ContentPane.js,v 1.10 2010/04/30 17:17:20 aallowat Exp $
  */
 dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
 {
@@ -101,7 +101,7 @@ dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
     // ----------------------------------------------------------
     _onShow: function()
     {
-        if (!this.alwaysDynamic)
+        if (!this.alwaysDynamic && this.isLoaded)
         {
             // If alwaysDynamic = false, then the content pane content is
             // already rendered, but _onShow will still cause an unnecessary

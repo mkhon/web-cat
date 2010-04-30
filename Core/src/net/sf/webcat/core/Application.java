@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.50 2010/04/19 15:20:58 aallowat Exp $
+ |  $Id: Application.java,v 1.51 2010/04/30 17:17:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,10 +38,9 @@ import javax.activation.*;
 import javax.mail.internet.*;
 import net.sf.webcat.archives.*;
 import net.sf.webcat.core.messaging.ApplicationStartupMessage;
-import net.sf.webcat.core.messaging.EmailProtocol;
+import net.sf.webcat.core.messaging.FallbackMessageDispatcher;
+import net.sf.webcat.core.messaging.IMessageDispatcher;
 import net.sf.webcat.core.messaging.Message;
-import net.sf.webcat.core.messaging.SMSProtocol;
-import net.sf.webcat.core.messaging.TwitterProtocol;
 import net.sf.webcat.core.messaging.UnexpectedExceptionMessage;
 import net.sf.webcat.dbupdate.*;
 import ognl.helperfunction.WOHelperFunctionHTMLTemplateParser;
@@ -58,7 +57,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.50 $, $Date: 2010/04/19 15:20:58 $
+ * @version $Revision: 1.51 $, $Date: 2010/04/30 17:17:20 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -2652,6 +2651,38 @@ public class Application
 
     // ----------------------------------------------------------
     /**
+     * Gets the message dispatcher used to send Message objects to users. If
+     * no dispatcher is yet registered (by the Notifications subsystem,
+     * primarily), then the default fallback message dispatcher is created so
+     * that messages will be e-mailed.
+     *
+     * @return the message dispatcher used by the application
+     */
+    public IMessageDispatcher messageDispatcher()
+    {
+        if (messageDispatcher == null)
+        {
+            messageDispatcher = new FallbackMessageDispatcher();
+        }
+
+        return messageDispatcher;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets the message dispatcher used to send Message objects to users.
+     *
+     * @param dispatcher the message dispatcher
+     */
+    public void setMessageDispatcher(IMessageDispatcher dispatcher)
+    {
+        messageDispatcher = dispatcher;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Register all messaging protocols and initializes the system-wide
      * protocol settings object if it does not exist.
      */
@@ -2661,33 +2692,6 @@ public class Application
 
         ApplicationStartupMessage.register();
         UnexpectedExceptionMessage.register();
-
-        // Register messaging protocols.
-
-        Message.registerProtocol(new EmailProtocol());
-        Message.registerProtocol(new TwitterProtocol());
-        Message.registerProtocol(new SMSProtocol());
-
-        // Initialize the system-wide broadcast settings object if it does not
-        // already exist (this should only occur when the application is
-        // started for the first time.
-
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
-
-            if (ProtocolSettings.systemSettings(ec) == null)
-            {
-                ProtocolSettings.create(ec, false);
-                ec.saveChanges();
-            }
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext(ec);
-        }
     }
 
 
@@ -2830,6 +2834,8 @@ public class Application
 
     private boolean needsInstallation = true;
     private boolean staticHtmlResourcesNeedInitializing = true;
+
+    private IMessageDispatcher messageDispatcher;
 
     private EOEditingContext errorLoggingContext;
 

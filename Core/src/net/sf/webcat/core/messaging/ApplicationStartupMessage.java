@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ApplicationStartupMessage.java,v 1.2 2010/04/19 15:21:41 aallowat Exp $
+ |  $Id: ApplicationStartupMessage.java,v 1.3 2010/04/30 17:17:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $ $Date: 2010/04/19 15:21:41 $
+ * @version $Revision: 1.3 $ $Date: 2010/04/30 17:17:20 $
  */
 public class ApplicationStartupMessage extends SysAdminMessage
 {
@@ -100,6 +100,6 @@ public class ApplicationStartupMessage extends SysAdminMessage
         String host = Application.application().host();
         int port = Application.application().port().intValue();
 
-        return (port == 80) ? host : host + ":" + port;
+        return (port == 80 || port == -1) ? host : host + ":" + port;
     }
 }

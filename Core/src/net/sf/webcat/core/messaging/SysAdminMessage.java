@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SysAdminMessage.java,v 1.1 2010/04/19 15:21:41 aallowat Exp $
+ |  $Id: SysAdminMessage.java,v 1.2 2010/04/30 17:17:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -28,7 +28,7 @@ package net.sf.webcat.core.messaging;
  * specified in the Web-CAT installation wizard.
  *
  * @author Tony Allevato
- * @version $Id: SysAdminMessage.java,v 1.1 2010/04/19 15:21:41 aallowat Exp $
+ * @version $Id: SysAdminMessage.java,v 1.2 2010/04/30 17:17:20 aallowat Exp $
  */
 public abstract class SysAdminMessage extends Message
 {
@@ -36,7 +36,7 @@ public abstract class SysAdminMessage extends Message
 
     // ----------------------------------------------------------
     @Override
-    public boolean isSentToSysAdmins()
+    public boolean isSevere()
     {
         return true;
     }

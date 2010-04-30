@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UnexpectedExceptionMessage.java,v 1.1 2010/04/19 15:21:41 aallowat Exp $
+ |  $Id: UnexpectedExceptionMessage.java,v 1.2 2010/04/30 17:17:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.core.messaging;
 
+import org.jfree.util.Log;
 import net.sf.webcat.core.Application;
 import net.sf.webcat.core.User;
 import com.webobjects.appserver.WOContext;
@@ -34,7 +35,7 @@ import com.webobjects.foundation.NSDictionary;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/04/19 15:21:41 $
+ * @version $Revision: 1.2 $ $Date: 2010/04/30 17:17:20 $
  */
 public class UnexpectedExceptionMessage extends SysAdminMessage
 {

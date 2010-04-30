@@ -1,0 +1,3 @@
+{
+    userProfile = net.sf.webcat.notifications.MessageSubscriptionsModule;
+}
