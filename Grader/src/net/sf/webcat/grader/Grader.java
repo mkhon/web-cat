@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.20 2010/04/19 15:23:04 aallowat Exp $
+ |  $Id: Grader.java,v 1.21 2010/04/30 17:14:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.20 2010/04/19 15:23:04 aallowat Exp $
+*  @version $Id: Grader.java,v 1.21 2010/04/30 17:14:35 aallowat Exp $
 */
 public class Grader
    extends Subsystem
@@ -184,7 +184,7 @@ public class Grader
      * @param wodBuffer add the binding definitions (the .wod file contents)
      *        for the subsystem's fragment to this buffer
      */
-    public void collectSubsystemFragments(
+/*    public void collectSubsystemFragments(
         String fragmentKey, StringBuffer htmlBuffer, StringBuffer wodBuffer )
     {
         if ( fragmentKey.equals(
@@ -207,7 +207,7 @@ public class Grader
                 + "{}\n"
             );
         }
-    }
+    }*/
 
 
     // ----------------------------------------------------------

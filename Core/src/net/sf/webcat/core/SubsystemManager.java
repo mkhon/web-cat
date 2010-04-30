@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManager.java,v 1.7 2010/03/10 21:42:25 stedwar2 Exp $
+ |  $Id: SubsystemManager.java,v 1.8 2010/04/30 17:14:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package net.sf.webcat.core;
 
+import com.webobjects.appserver.WOComponent;
 import com.webobjects.foundation.*;
 import java.io.*;
 import java.util.*;
@@ -33,7 +34,7 @@ import org.apache.log4j.Logger;
  * framework or a separate jar file that contains a framework.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubsystemManager.java,v 1.7 2010/03/10 21:42:25 stedwar2 Exp $
+ *  @version $Id: SubsystemManager.java,v 1.8 2010/04/30 17:14:35 aallowat Exp $
  */
 public class SubsystemManager
 {
@@ -269,24 +270,31 @@ public class SubsystemManager
 
     // ----------------------------------------------------------
     /**
-     * Generate the component definitions and bindings for a given
-     * pre-defined information fragment, so that the result can be
-     * plugged into other pages defined elsewhere in the system.
-     * @param fragmentKey the identifier for the fragment to generate
-     *        (see the keys defined in {@link SubsystemFragmentCollector}
-     * @param htmlBuffer add the html template for the subsystem's fragment
-     *        to this buffer
-     * @param wodBuffer add the binding definitions (the .wod file contents)
-     *        for the subsystem's fragment to this buffer
+     * Collects the subsystem fragments for the specified fragment key from all
+     * currently loaded subsystems.
+     *
+     * @param fragmentKey the unique identifier of the fragment
+     * @return an array of component classes that should be plugged in for the
+     *     specified fragment
      */
-    public void collectSubsystemFragments(
-        String fragmentKey, StringBuffer htmlBuffer, StringBuffer wodBuffer)
+    public NSArray<Class<? extends WOComponent>> subsystemFragmentsForKey(
+            String fragmentKey)
     {
+        NSMutableArray<Class<? extends WOComponent>> fragments =
+            new NSMutableArray<Class<? extends WOComponent>>();
+
         for (Subsystem sub : subsystems())
         {
-            sub.collectSubsystemFragments(
-                fragmentKey, htmlBuffer, wodBuffer);
+            Class<? extends WOComponent> frag =
+                sub.subsystemFragmentForKey(fragmentKey);
+
+            if (frag != null)
+            {
+                fragments.addObject(frag);
+            }
         }
+
+        return fragments;
     }
 
 

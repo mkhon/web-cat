@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemFragmentCollector.java,v 1.4 2009/10/20 15:45:21 stedwar2 Exp $
+ |  $Id: SubsystemFragmentCollector.java,v 1.5 2010/04/30 17:14:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,12 @@
 
 package net.sf.webcat.core;
 
+import java.io.InputStream;
 import com.webobjects.appserver.*;
+import com.webobjects.appserver._private.WOComponentDefinition;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSBundle;
+import com.webobjects.foundation._NSStringUtilities;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -31,8 +36,8 @@ import org.apache.log4j.Logger;
  *  in pages/components defined elsewhere in the application (like in Core).
  *
  *  @author  Stephen Edwards
- *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2009/10/20 15:45:21 $
+ *  @author Last changed by $Author: aallowat $
+ *  @version $Revision: 1.5 $, $Date: 2010/04/30 17:14:36 $
  */
 public class SubsystemFragmentCollector
     extends WOComponent
@@ -67,18 +72,49 @@ public class SubsystemFragmentCollector
         if ( htmlTemplate == null )
         {
             log.debug( "initializing templates" );
+
+            Application application = (Application) Application.application();
+
+            NSArray<Class<? extends WOComponent>> fragments =
+                application.subsystemManager().subsystemFragmentsForKey(
+                        fragmentKey);
+
             StringBuffer htmlBuffer = new StringBuffer();
             StringBuffer wodBuffer = new StringBuffer();
-            ( (Application)Application.application() ).subsystemManager().
-                collectSubsystemFragments( fragmentKey, htmlBuffer, wodBuffer );
+
+            if (fragments != null)
+            {
+                int i = 1;
+                for (Class<? extends WOComponent> fragmentClass : fragments)
+                {
+                    String fullName = fragmentClass.getCanonicalName();
+                    String simpleName = fragmentClass.getSimpleName();
+
+                    htmlBuffer.append("<wo name=\"");
+                    htmlBuffer.append(simpleName);
+                    htmlBuffer.append(i);
+                    htmlBuffer.append("\"/>\n");
+
+                    wodBuffer.append(simpleName);
+                    wodBuffer.append(i);
+                    wodBuffer.append(": ");
+                    wodBuffer.append(fullName);
+                    wodBuffer.append("{ }\n");
+
+                    i++;
+                }
+            }
+
             htmlTemplate = htmlBuffer.toString();
             bindingDefinitions = wodBuffer.toString();
+
             if (log.isDebugEnabled())
             {
-                log.debug( "htmlTemplate =\n" + htmlTemplate );
-                log.debug( "bindingDefinitions =\n" + bindingDefinitions );
+                log.debug("htmlTemplate =\n" + htmlTemplate);
+                log.debug("bindingDefinitions =\n" + bindingDefinitions);
             }
         }
+
         return templateWithHTMLString( null, null,
                 htmlTemplate, bindingDefinitions, null,
                 Application.application().associationFactoryRegistry(),
