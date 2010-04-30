@@ -18,6 +18,7 @@
 	<classpathentry exported="true" kind="con" path="WOFramework/DBUpdateEngine"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/Grader"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/JobQueue"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/Notifications"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/Opinions"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/PerlForPlugins"/>
 	<classpathentry exported="true" kind="con" path="WOFramework/PMDForPlugins"/>
