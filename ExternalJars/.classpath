@@ -4,9 +4,7 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/eddo-1_3.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/edldap-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jdom.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/jfreechart-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/mail.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/mysql-connector-java-5.1.6-bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/OpenBaseJDBC.jar"/>
@@ -18,6 +16,10 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/bcprov-jdk15-129.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/twitter4j-2.0.10.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/httpclient-4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/httpcore-4.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

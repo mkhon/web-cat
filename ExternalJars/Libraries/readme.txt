@@ -12,6 +12,8 @@ gnujaxp.jar
 jcommon-1.0.0.jar
 jdom.jar
 jfreechart-1.0.1.jar
+httpclient-4.0.jar
+httpcore-4.0.1.jar
 mail.jar
 mysql-connector-java-3.1.13-bin.jar
 tar.jar
