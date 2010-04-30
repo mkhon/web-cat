@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportGenerationWorkerThread.java,v 1.1 2009/12/09 05:03:40 aallowat Exp $
+ |  $Id: ReportGenerationWorkerThread.java,v 1.2 2010/04/30 17:15:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -47,7 +47,7 @@ import net.sf.webcat.reporter.messaging.ReportCompleteMessage;
  * A worker thread that generates reports using the BIRT reporting engine.
  *
  * @author Tony Allevato
- * @version $Id: ReportGenerationWorkerThread.java,v 1.1 2009/12/09 05:03:40 aallowat Exp $
+ * @version $Id: ReportGenerationWorkerThread.java,v 1.2 2010/04/30 17:15:38 aallowat Exp $
  */
 public class ReportGenerationWorkerThread extends
         WorkerThread<ReportGenerationJob>
@@ -114,8 +114,7 @@ public class ReportGenerationWorkerThread extends
 
         // Send a notification that the report was completed.
 
-        ReportCompleteMessage message = new ReportCompleteMessage(report);
-        message.send();
+        new ReportCompleteMessage(report).send();
     }
 
 
