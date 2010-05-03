@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.8 2010/04/19 15:21:41 aallowat Exp $
+ |  $Id: Theme.java,v 1.9 2010/05/03 17:57:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2010 Virginia Tech
  |
@@ -35,7 +35,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author stedwar2
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.8 $, $Date: 2010/04/19 15:21:41 $
+ *  @version $Revision: 1.9 $, $Date: 2010/05/03 17:57:13 $
  */
 public class Theme
     extends _Theme
@@ -124,7 +124,7 @@ public class Theme
 
     // ----------------------------------------------------------
     /**
-     * Get a list of shared hteme objects that have already been loaded
+     * Get a list of shared theme objects that have already been loaded
      * into the shared editing context.
      * @return an array of all theme objects
      */
@@ -247,6 +247,17 @@ public class Theme
             keyPath = keyPath.substring(INHERIT_PREFIX_LEN);
         }
         super.takeValueForKey(value, keyPath);
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean isDark()
+    {
+        Object result =
+            valueForKeyPath(INHERIT_PREFIX + "properties.isDark");
+        return (result == null)
+            ? false
+            : Boolean.valueOf(result.toString());
     }
 
 
