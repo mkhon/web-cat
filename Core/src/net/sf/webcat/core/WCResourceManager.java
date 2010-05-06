@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
+ |  $Id: WCResourceManager.java,v 1.11 2010/05/06 15:44:53 ringenmt Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,8 @@
 
 package net.sf.webcat.core;
 
+import java.util.StringTokenizer;
+
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
@@ -37,7 +39,7 @@ import org.apache.log4j.Logger;
  *  frameworksBaseURL() setting.
  *
  *  @author  stedwar2
- *  @version $Id: WCResourceManager.java,v 1.10 2008/10/29 14:15:51 aallowat Exp $
+ *  @version $Id: WCResourceManager.java,v 1.11 2010/05/06 15:44:53 ringenmt Exp $
  */
 public class WCResourceManager
     extends er.extensions.appserver.ERXResourceManager
@@ -134,7 +136,7 @@ public class WCResourceManager
             result = result.substring( 0, pos + 1 ) + "/"
                 + result.substring( pos + 1 );
         }
-        return result;
+        return result.replaceAll("[/]([A-Za-z])%3A","$1:").replaceAll("[+][%]26[+]", " & ");
     }
 
 
