@@ -16,6 +16,7 @@ httpclient-4.0.jar
 httpcore-4.0.1.jar
 mail.jar
 mysql-connector-java-3.1.13-bin.jar
+poi-3.6-20091214.jar
 tar.jar
 twitter4j-2.0.10.jar
 utils.jar
