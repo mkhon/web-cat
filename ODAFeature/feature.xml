@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.sf.webcat.oda"
+      id="org.webcat.oda"
       label="Web-CAT Extensions for the BIRT Report Designer"
       version="1.0.0"
       provider-name="Virginia Tech Computer Science">
@@ -24,21 +24,21 @@
    </requires>
 
    <plugin
-         id="net.sf.webcat.oda.commons"
+         id="org.webcat.oda.commons"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.sf.webcat.oda.core"
+         id="org.webcat.oda.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.sf.webcat.oda.designer"
+         id="org.webcat.oda.designer"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -6,9 +6,9 @@ For OGNL support (required):
   * ognl-2.7.3.jar
 
 For Velocity template generation (required):
-  * velocity-1.5.jar
-  * commons-collections-3.1.jar
-  * commons-lang-2.1.jar
+  * velocity-1.6.2.jar
+  * commons-collections-3.2.1.jar
+  * commons-lang-2.4.jar
 
 You will also need an appropriate JSON library. To avoid requiring extraneous
 dependencies, we recommend downloading the Java source files from

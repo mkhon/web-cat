@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.5 2008/05/06 19:09:43 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.6 2010/05/11 15:52:46 aallowat Exp $ -->
 
 <plugin>
    <extension
-         point="net.sf.webcat.oda.core.emptyAppContextHandlers">
+         point="org.webcat.oda.core.emptyAppContextHandlers">
       <resultProvider
-            class="net.sf.webcat.oda.designer.preview.PreviewingResultSetProvider">
+            class="org.webcat.oda.designer.preview.PreviewingResultSetProvider">
       </resultProvider>
    </extension>
    <extension
@@ -51,7 +51,7 @@
       <dataSetUI
             supportsOutParameters="false"
             supportsInParameters="true"
-            initialPageId="net.sf.webcat.oda.dataSet.columnMappingPage"
+            initialPageId="org.webcat.oda.dataSet.columnMappingPage"
             id="%oda.data.set.id">
          <dataSetWizard
                class="org.eclipse.datatools.connectivity.oda.design.ui.wizards.DataSetWizard"
@@ -60,23 +60,23 @@
          <dataSetPage
                displayName="%wizard.data.set.columnMappingPage.title"
                icon="icons/datasetpage.ico"
-               wizardPageClass="net.sf.webcat.oda.designer.impl.ColumnMappingPage"
+               wizardPageClass="org.webcat.oda.designer.impl.ColumnMappingPage"
                path="/"
-               id="net.sf.webcat.oda.dataSet.columnMappingPage">
+               id="org.webcat.oda.dataSet.columnMappingPage">
          </dataSetPage>
       </dataSetUI>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="net.sf.webcat.oda.designer.preferences.DataSetPreferencePage"
-            id="net.sf.webcat.oda.ui.preferences.DataSetPreferencePage"
+            class="org.webcat.oda.designer.preferences.DataSetPreferencePage"
+            id="org.webcat.oda.ui.preferences.DataSetPreferencePage"
             name="%preferences.root">
       </page>
       <page
-            category="net.sf.webcat.oda.ui.preferences.DataSetPreferencePage"
-            class="net.sf.webcat.oda.designer.preferences.DesignerPreferencePage"
-            id="net.sf.webcat.oda.ui.preferences.DesignerPreferencePage"
+            category="org.webcat.oda.ui.preferences.DataSetPreferencePage"
+            class="org.webcat.oda.designer.preferences.DesignerPreferencePage"
+            id="org.webcat.oda.ui.preferences.DesignerPreferencePage"
             name="%preferences.designer">
       </page>
    </extension>
@@ -84,27 +84,27 @@
          point="org.eclipse.ui.commands">
       <category
             description="%command.category.description"
-            id="net.sf.webcat.oda.ui.commands.webCatCategory"
+            id="org.webcat.oda.ui.commands.webCatCategory"
             name="%command.category.name">
       </category>
       <command
-            categoryId="net.sf.webcat.oda.ui.commands.webCatCategory"
-            id="net.sf.webcat.oda.ui.commands.resetPreviewCache"
+            categoryId="org.webcat.oda.ui.commands.webCatCategory"
+            id="org.webcat.oda.ui.commands.resetPreviewCache"
             name="%command.resetPreviewCache.name">
       </command>
       <command
-            categoryId="net.sf.webcat.oda.ui.commands.webCatCategory"
-            id="net.sf.webcat.oda.ui.commands.openWebCat"
+            categoryId="org.webcat.oda.ui.commands.webCatCategory"
+            id="org.webcat.oda.ui.commands.openWebCat"
             name="%command.openWebCat.name">
       </command>
       <command
-            categoryId="net.sf.webcat.oda.ui.commands.webCatCategory"
-            id="net.sf.webcat.oda.ui.commands.refreshContentAssist"
+            categoryId="org.webcat.oda.ui.commands.webCatCategory"
+            id="org.webcat.oda.ui.commands.refreshContentAssist"
             name="%command.refreshContentAssist.name">
       </command>
       <command
-            categoryId="net.sf.webcat.oda.ui.commands.webCatCategory"
-            id="net.sf.webcat.oda.ui.commands.deriveTransformedDataSet"
+            categoryId="org.webcat.oda.ui.commands.webCatCategory"
+            id="org.webcat.oda.ui.commands.deriveTransformedDataSet"
             name="Derive a Transformed Data Set...">
       </command>
    </extension>
@@ -113,37 +113,37 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               id="net.sf.webcat.oda.ui.menus.webCat"
+               id="org.webcat.oda.ui.menus.webCat"
                label="%menu.webCat.name"
                mnemonic="%menu.webCat.mnemonic">
             <command
-                  commandId="net.sf.webcat.oda.ui.commands.openWebCat"
-                  id="net.sf.webcat.oda.ui.menus.openWebCat"
+                  commandId="org.webcat.oda.ui.commands.openWebCat"
+                  id="org.webcat.oda.ui.menus.openWebCat"
                   mnemonic="%menu.openWebCat.mnemonic">
             </command>
             <separator
-                  name="net.sf.webcat.oda.ui.menus.openWebCatGroupEnd"
+                  name="org.webcat.oda.ui.menus.openWebCatGroupEnd"
                   visible="true">
             </separator>
             <command
-                  commandId="net.sf.webcat.oda.ui.commands.resetPreviewCache"
-                  id="net.sf.webcat.oda.ui.menus.resetPreviewCache"
+                  commandId="org.webcat.oda.ui.commands.resetPreviewCache"
+                  id="org.webcat.oda.ui.menus.resetPreviewCache"
                   mnemonic="%menu.resetPreviewCache.mnemonic">
             </command>
             <command
-                  commandId="net.sf.webcat.oda.ui.commands.refreshContentAssist"
-                  id="net.sf.webcat.oda.ui.menus.refreshContentAssist"
+                  commandId="org.webcat.oda.ui.commands.refreshContentAssist"
+                  id="org.webcat.oda.ui.menus.refreshContentAssist"
                   mnemonic="%menu.refreshContentAssist.mnemonic">
             </command>
             <separator
-                  name="net.sf.webcat.oda.ui.menus.serverActionsGroupEnd">
+                  name="org.webcat.oda.ui.menus.serverActionsGroupEnd">
             </separator>
             <command
-                  commandId="net.sf.webcat.oda.ui.commands.deriveTransformedDataSet"
-                  id="net.sf.webcat.oda.ui.menus.deriveTransformedDataSet">
+                  commandId="org.webcat.oda.ui.commands.deriveTransformedDataSet"
+                  id="org.webcat.oda.ui.menus.deriveTransformedDataSet">
                <visibleWhen>
                   <reference
-                        definitionId="net.sf.webcat.oda.designer.isReportEditorActive">
+                        definitionId="org.webcat.oda.designer.isReportEditorActive">
                   </reference>
                </visibleWhen>
             </command>
@@ -157,20 +157,20 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="net.sf.webcat.oda.designer.handlers.ResetPreviewCacheHandler"
-            commandId="net.sf.webcat.oda.ui.commands.resetPreviewCache">
+            class="org.webcat.oda.designer.handlers.ResetPreviewCacheHandler"
+            commandId="org.webcat.oda.ui.commands.resetPreviewCache">
       </handler>
       <handler
-            class="net.sf.webcat.oda.designer.handlers.OpenWebCATHandler"
-            commandId="net.sf.webcat.oda.ui.commands.openWebCat">
+            class="org.webcat.oda.designer.handlers.OpenWebCATHandler"
+            commandId="org.webcat.oda.ui.commands.openWebCat">
       </handler>
       <handler
-            class="net.sf.webcat.oda.designer.handlers.RefreshContentAssistHandler"
-            commandId="net.sf.webcat.oda.ui.commands.refreshContentAssist">
+            class="org.webcat.oda.designer.handlers.RefreshContentAssistHandler"
+            commandId="org.webcat.oda.ui.commands.refreshContentAssist">
       </handler>
       <handler
-            class="net.sf.webcat.oda.designer.handlers.DeriveTransformedDataSetHandler"
-            commandId="net.sf.webcat.oda.ui.commands.deriveTransformedDataSet">
+            class="org.webcat.oda.designer.handlers.DeriveTransformedDataSetHandler"
+            commandId="org.webcat.oda.ui.commands.deriveTransformedDataSet">
       </handler>
    </extension>
    <extension
@@ -179,9 +179,9 @@
             targetEditorId="org.eclipse.birt.report.designer.ui.editors.ReportEditor">
          <formPage
                actionBarContributor="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-               class="net.sf.webcat.oda.designer.metadata.OverviewFormPage"
+               class="org.webcat.oda.designer.metadata.OverviewFormPage"
                displayName="Overview"
-               id="net.sf.webcat.oda.ui.editors.metadata"
+               id="org.webcat.oda.ui.editors.metadata"
                position="left"
                relative="org.eclipse.birt.report.designer.ui.editors.layout"
                visible="true">
@@ -191,7 +191,7 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
-            id="net.sf.webcat.oda.designer.isReportEditorActive">
+            id="org.webcat.oda.designer.isReportEditorActive">
          <with
                variable="activeEditorId">
             <equals

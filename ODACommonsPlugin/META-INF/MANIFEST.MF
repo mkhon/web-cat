@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Web-CAT ODA Common Components Plug-in
-Bundle-SymbolicName: net.sf.webcat.oda.commons
-Bundle-Version: 1.0.0
+Bundle-SymbolicName: org.webcat.oda.commons
+Bundle-Version: 1.2.0
 Bundle-Vendor: Virginia Tech Computer Science
-Export-Package: net.sf.webcat.oda.commons
+Export-Package: org.webcat.oda.commons
 Import-Package: org.eclipse.birt.report.model.api,
  org.eclipse.birt.report.model.api.activity,
  org.eclipse.birt.report.model.api.command,
