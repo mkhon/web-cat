@@ -19,7 +19,7 @@ AttributeRepetition: WORepetition {
 	list = d2wContext.displayPropertyKeys;
 }
 
-AttributeSorter: net.sf.webcat.core.WCSortOrder {
+AttributeSorter: org.webcat.core.WCSortOrder {
 	displayGroup = displayGroup;
 	displayKey = d2wContext.displayNameForProperty;
 	key = d2wContext.propertyKey;
@@ -153,7 +153,7 @@ ListTable: WOGenericContainer {
 	elementName = "table";
 }
 
-NavBar: net.sf.webcat.core.WCBatchNavigator {
+NavBar: org.webcat.core.WCBatchNavigator {
 	displayGroup = displayGroup;
 	objectName = entity.name;
 	persistentKey = "WCListPageTemplate.batchSize";

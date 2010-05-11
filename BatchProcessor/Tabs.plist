@@ -6,18 +6,18 @@
         priority = 600;
         children = {
           Run = {
-            pageName   = net.sf.webcat.batchprocessor.PickBatchPluginToRunPage;
+            pageName   = org.webcat.batchprocessor.PickBatchPluginToRunPage;
             accessLevel = 40;
             priority   = 1;
             wantsStart = YES;
           };
           "View Results" = {
-            pageName   = net.sf.webcat.batchprocessor.PickBatchResultToViewPage;
+            pageName   = org.webcat.batchprocessor.PickBatchResultToViewPage;
             accessLevel = 40;
             priority   = 2;
           };
           "Plug-Ins" = {
-            pageName = net.sf.webcat.batchprocessor.BatchPluginLibraryPage;
+            pageName = org.webcat.batchprocessor.BatchPluginLibraryPage;
             accessLevel = 40;
             priority = 3;
           };

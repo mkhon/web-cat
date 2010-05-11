@@ -157,7 +157,7 @@ OutOfDate: WOConditional {
     condition = subsystem.descriptor.updateIsAvailable;
 }
 
-Page : net.sf.webcat.core.WCPageWithNavigation {
+Page : org.webcat.core.WCPageWithNavigation {
     title = "Manage Subsystems";
 }
 
@@ -181,7 +181,7 @@ TerseDescriptions: WOSubmitButton {
     action = toggleVerboseDescriptions;
 }
 
-TR: net.sf.webcat.core.TableRow {
+TR: org.webcat.core.TableRow {
     index = index;
 }
 

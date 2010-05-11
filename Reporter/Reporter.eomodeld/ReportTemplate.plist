@@ -84,7 +84,7 @@
                 adaptorValueConversionMethodName = archiveData;
                 valueFactoryMethodName = objectWithArchiveData;
                 isMutable = true;
-                valueClassName = net.sf.webcat.core.MutableArray;
+                valueClassName = org.webcat.core.MutableArray;
             };
         },
         {
@@ -113,7 +113,7 @@
         language,
         updateMutableFields,
     );
-    className = net.sf.webcat.reporter.ReportTemplate;
+    className = org.webcat.reporter.ReportTemplate;
     classProperties = (
         name,
         description,

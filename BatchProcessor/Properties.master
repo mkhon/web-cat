@@ -1,7 +1,7 @@
 # ===================================================================
 # BatchProcessor subsystem characteristics
 # ===================================================================
-subsystem.BatchProcessor=net.sf.webcat.batchprocessor.BatchProcessor
+subsystem.BatchProcessor=org.webcat.batchprocessor.BatchProcessor
 
 BatchProcessor.version.major=1
 BatchProcessor.version.minor=0

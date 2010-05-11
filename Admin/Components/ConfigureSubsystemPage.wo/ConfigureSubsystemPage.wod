@@ -1,4 +1,4 @@
-OptionEditor: net.sf.webcat.core.OptionSetEditor {
+OptionEditor: org.webcat.core.OptionSetEditor {
     options           = subsystem.parameterDescriptions.options;
     optionValues      = application.properties;
     categories        = subsystem.parameterDescriptions.optionCategories;

@@ -9,19 +9,19 @@
         wantsStart = YES;
         children   = {
           Status = {
-            pageName   = net.sf.webcat.admin.AdminStatusPage;
+            pageName   = org.webcat.admin.AdminStatusPage;
             accessLevel = 75;
             priority   = 100;
             wantsStart = YES;
           };
           "My Profile" = {
-            pageName = net.sf.webcat.core.MyProfilePage;
+            pageName = org.webcat.core.MyProfilePage;
             accessLevel = 0;
             priority = 1001;
             id       = Profile;
           };
           Feedback = {
-            pageName = net.sf.webcat.core.FeedbackPage;
+            pageName = org.webcat.core.FeedbackPage;
             accessLevel = 0;
             priority = 1003;
             id       = Feedback;
@@ -29,17 +29,17 @@
         };
       };
       Subsystems = {
-        pageName    = net.sf.webcat.admin.SubsystemManagerPage;
+        pageName    = org.webcat.admin.SubsystemManagerPage;
         accessLevel = 90;
         priority    = 2;
       };
       "Edit Database" = {
-        pageName    = net.sf.webcat.admin.EntryEditPage;
+        pageName    = org.webcat.admin.EntryEditPage;
         accessLevel = 90;
         priority    = 4;
       };
       "License" = {
-        pageName    = net.sf.webcat.admin.AdminLicensePage;
+        pageName    = org.webcat.admin.AdminLicensePage;
         accessLevel = 90;
         priority    = 6;
       };

@@ -9,7 +9,7 @@
             userInfo = {
                 adaptorValueConversionMethodName = archiveData; 
                 isMutable = true; 
-                valueClassName = "net.sf.webcat.core.MutableDictionary"; 
+                valueClassName = "org.webcat.core.MutableDictionary"; 
                 valueFactoryMethodName = objectWithArchiveData; 
             }; 
         }, 
@@ -20,7 +20,7 @@
             userInfo = {
                 adaptorValueConversionMethodName = archiveData; 
                 isMutable = true; 
-                valueClassName = "net.sf.webcat.core.MutableDictionary"; 
+                valueClassName = "org.webcat.core.MutableDictionary"; 
                 valueFactoryMethodName = objectWithArchiveData; 
             }; 
         }, 
@@ -31,7 +31,7 @@
             userInfo = {
                 adaptorValueConversionMethodName = archiveData; 
                 isMutable = true; 
-                valueClassName = "net.sf.webcat.core.MutableDictionary"; 
+                valueClassName = "org.webcat.core.MutableDictionary"; 
                 valueFactoryMethodName = objectWithArchiveData; 
             }; 
         }, 
@@ -67,7 +67,7 @@
         updateMutableFields, 
         uploadedFileName
     ); 
-    className = "net.sf.webcat.batchprocessor.BatchPlugin"; 
+    className = "org.webcat.batchprocessor.BatchPlugin"; 
     classProperties = (
         author, 
         batchEntity, 

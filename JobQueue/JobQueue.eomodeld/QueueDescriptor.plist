@@ -98,7 +98,7 @@
         requiresExclusiveHostAccess, 
         totalWaitForJobs
     ); 
-    className = "net.sf.webcat.jobqueue.QueueDescriptor"; 
+    className = "org.webcat.jobqueue.QueueDescriptor"; 
     classProperties = (
         defaultJobWait, 
         jobCount, 

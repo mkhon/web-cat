@@ -12,7 +12,7 @@
         {columnName = protocolType; name = protocolType; prototypeName = mediumText; }
     ); 
     attributesUsedForLocking = (isEnabled, messageType, protocolType); 
-    className = "net.sf.webcat.notifications.BroadcastMessageSubscription"; 
+    className = "org.webcat.notifications.BroadcastMessageSubscription"; 
     classProperties = (isEnabled, messageType, protocolType); 
     externalName = BroadcastMessageSubscription; 
     name = BroadcastMessageSubscription; 

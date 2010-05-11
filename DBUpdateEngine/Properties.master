@@ -28,4 +28,4 @@ DBUpdateEngine.description=\
 # -------------------------------------------------------------------
 # DBUpdateEngine logging defaults
 # -------------------------------------------------------------------
-log4j.logger.net.sf.webcat.dbupdate = INFO
+log4j.logger.org.webcat.dbupdate = INFO

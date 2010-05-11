@@ -1,7 +1,7 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
 #Thu Apr 29 11:43:33 EDT 2010
 BatchProcessor.description=This subsystem provides all of Web-CAT's batch processing services.
-subsystem.BatchProcessor=net.sf.webcat.batchprocessor.BatchProcessor
+subsystem.BatchProcessor=org.webcat.batchprocessor.BatchProcessor
 BatchProcessor.provider=Virginia Tech Computer Science
 BatchProcessor.version.minor=0
 BatchProcessor.version.date=20100429

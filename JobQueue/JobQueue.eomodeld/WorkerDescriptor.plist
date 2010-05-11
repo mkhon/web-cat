@@ -35,7 +35,7 @@
         }
     ); 
     attributesUsedForLocking = (currentJobId, hostId, isAlive, queueId); 
-    className = "net.sf.webcat.jobqueue.WorkerDescriptor"; 
+    className = "org.webcat.jobqueue.WorkerDescriptor"; 
     classProperties = (currentJobId, host, isAlive, queue); 
     externalName = TWorkerDescriptor; 
     name = WorkerDescriptor; 

@@ -28,7 +28,7 @@
             userInfo = {
                 adaptorValueConversionMethodName = archiveData; 
                 isMutable = true; 
-                valueClassName = "net.sf.webcat.core.MutableArray"; 
+                valueClassName = "org.webcat.core.MutableArray"; 
                 valueFactoryMethodName = objectWithArchiveData; 
             }; 
         }, 
@@ -47,7 +47,7 @@
         constraints, 
         updateMutableFields
     ); 
-    className = "net.sf.webcat.reporter.ReportDataSet"; 
+    className = "org.webcat.reporter.ReportDataSet"; 
     classProperties = (
         name, 
         description, 

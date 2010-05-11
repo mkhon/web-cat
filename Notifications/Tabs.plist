@@ -9,7 +9,7 @@
         wantsStart = YES;
         children   = {
           "Messaging" = {
-            pageName    = net.sf.webcat.notifications.SystemMessagingConfigPage;
+            pageName    = org.webcat.notifications.SystemMessagingConfigPage;
             accessLevel = 75;
             priority    = 200;
           };

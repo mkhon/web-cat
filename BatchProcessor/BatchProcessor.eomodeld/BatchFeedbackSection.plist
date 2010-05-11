@@ -23,7 +23,7 @@
             userInfo = {
                 enumDefault = DEFAULT; 
                 isEnum = true; 
-                type = "net.sf.webcat.batchprocessor.BatchFeedbackLocation"; 
+                type = "org.webcat.batchprocessor.BatchFeedbackLocation"; 
             }; 
         }, 
         {columnName = mimeType; name = mimeType; prototypeName = tinyText; }, 
@@ -46,7 +46,7 @@
             userInfo = {
                 enumDefault = OWNER; 
                 isEnum = true; 
-                type = "net.sf.webcat.batchprocessor.BatchFeedbackRecipient"; 
+                type = "org.webcat.batchprocessor.BatchFeedbackRecipient"; 
             }; 
         }, 
         {columnName = title; name = title; prototypeName = tinyText; }
@@ -62,7 +62,7 @@
         recipients, 
         title
     ); 
-    className = "net.sf.webcat.batchprocessor.BatchFeedbackSection"; 
+    className = "org.webcat.batchprocessor.BatchFeedbackSection"; 
     classProperties = (
         batchResult, 
         fileName, 

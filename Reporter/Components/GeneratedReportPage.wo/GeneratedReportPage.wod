@@ -3,11 +3,11 @@ RPC : WCJSONRPC {
     proxyName = "page";
 }
 
-Page : net.sf.webcat.core.WCPageWithNavigation {
+Page : org.webcat.core.WCPageWithNavigation {
     title = "Your Generated Report";
 }
 
-MainBlock : net.sf.webcat.core.WCPageModule {
+MainBlock : org.webcat.core.WCPageModule {
     collapsible = false;
     title = mainBlockTitle;
 }
@@ -56,7 +56,7 @@ ErrorBlockContainer : WCContentPane {
     id = "errorBlock";
 }
 
-ErrorBlock : net.sf.webcat.core.WCPageModule {
+ErrorBlock : org.webcat.core.WCPageModule {
     id = "errorBlockTitlePane";
     title = "Errors That Occurred While Generating This Report";
     open = false;

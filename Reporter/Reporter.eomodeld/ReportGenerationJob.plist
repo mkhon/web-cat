@@ -77,7 +77,7 @@
         userId, 
         workerId
     ); 
-    className = "net.sf.webcat.reporter.ReportGenerationJob"; 
+    className = "org.webcat.reporter.ReportGenerationJob"; 
     classProperties = (
         enqueueTime, 
         generatedReport, 

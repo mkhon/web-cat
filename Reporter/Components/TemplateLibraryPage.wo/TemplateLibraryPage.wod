@@ -1,4 +1,4 @@
-Page : net.sf.webcat.core.WCPageWithNavigation {
+Page : org.webcat.core.WCPageWithNavigation {
 	title = "Report Template Library";
 }
 

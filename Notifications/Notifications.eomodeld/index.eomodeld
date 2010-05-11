@@ -10,20 +10,20 @@
     }; 
     entities = (
         {
-            className = "net.sf.webcat.notifications.BroadcastMessageSubscription"; 
+            className = "org.webcat.notifications.BroadcastMessageSubscription"; 
             name = BroadcastMessageSubscription; 
         }, 
         {
-            className = "net.sf.webcat.notifications.ProtocolSettings"; 
+            className = "org.webcat.notifications.ProtocolSettings"; 
             name = ProtocolSettings; 
         }, 
         {
-            className = "net.sf.webcat.notifications.SendMessageJob"; 
+            className = "org.webcat.notifications.SendMessageJob"; 
             name = SendMessageJob; 
             parent = JobBase; 
         }, 
         {
-            className = "net.sf.webcat.notifications.UserMessageSubscription"; 
+            className = "org.webcat.notifications.UserMessageSubscription"; 
             name = UserMessageSubscription; 
         }, 
         {className = EOGenericRecord; name = SendMessageJobUser; }

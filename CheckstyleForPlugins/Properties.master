@@ -2,7 +2,7 @@
 # CheckstyleForPlugins subsystem characteristics
 # ===================================================================
 subsystem.CheckstyleForPlugins=\
-	net.sf.webcat.checkstyleforplugins.CheckstyleForPlugins
+	org.webcat.checkstyleforplugins.CheckstyleForPlugins
 
 CheckstyleForPlugins.version.major=1
 CheckstyleForPlugins.version.minor=1

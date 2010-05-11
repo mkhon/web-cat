@@ -1,7 +1,7 @@
 # ===================================================================
 # Notifications subsystem characteristics
 # ===================================================================
-subsystem.Notifications=net.sf.webcat.notifications.Notifications
+subsystem.Notifications=org.webcat.notifications.Notifications
 
 Notifications.version.major=1
 Notifications.version.minor=0

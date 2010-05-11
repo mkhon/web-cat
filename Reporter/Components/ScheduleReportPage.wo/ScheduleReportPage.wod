@@ -1,2 +1,2 @@
-Page : net.sf.webcat.core.PageWithNavigation {
+Page : org.webcat.core.PageWithNavigation {
 }

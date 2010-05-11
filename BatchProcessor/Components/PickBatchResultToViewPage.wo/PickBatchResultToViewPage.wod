@@ -1,4 +1,4 @@
-Page : net.sf.webcat.core.WCPageWithNavigation {
+Page : org.webcat.core.WCPageWithNavigation {
     title = "View Batch Results";
 }
 
@@ -13,7 +13,7 @@ BatchJobTable: WCTable {
 
 JobTitleColumn: WCTableColumn {
     name = "Job Description";
-    componentName = "net.sf.webcat.batchprocessor.BatchJobDescriptionCell";
+    componentName = "org.webcat.batchprocessor.BatchJobDescriptionCell";
     properties.action = "viewBatchProgress";
 }
 

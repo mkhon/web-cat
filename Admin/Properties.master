@@ -1,7 +1,7 @@
 # ===================================================================
 # Admin subsystem characteristics
 # ===================================================================
-subsystem.Admin=net.sf.webcat.admin.Admin
+subsystem.Admin=org.webcat.admin.Admin
 
 Admin.version.major=1
 Admin.version.minor=2

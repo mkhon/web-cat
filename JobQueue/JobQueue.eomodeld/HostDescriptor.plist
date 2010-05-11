@@ -9,7 +9,7 @@
         {allowsNull = N; name = id; prototypeName = id; }
     ); 
     attributesUsedForLocking = (hostName); 
-    className = "net.sf.webcat.jobqueue.HostDescriptor"; 
+    className = "org.webcat.jobqueue.HostDescriptor"; 
     classProperties = (hostName, workers); 
     externalName = THostDescriptor; 
     fetchSpecificationDictionary = {}; 

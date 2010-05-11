@@ -1,7 +1,7 @@
 # ===================================================================
 # PMDForPlugins subsystem characteristics
 # ===================================================================
-subsystem.PMDForPlugins=net.sf.webcat.pmdforplugins.PMDForPlugins
+subsystem.PMDForPlugins=org.webcat.pmdforplugins.PMDForPlugins
 
 PMDForPlugins.version.major=1
 PMDForPlugins.version.minor=1

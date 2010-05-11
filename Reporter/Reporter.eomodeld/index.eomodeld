@@ -10,20 +10,20 @@
     }; 
     entities = (
         {
-            className = "net.sf.webcat.reporter.GeneratedReport"; 
+            className = "org.webcat.reporter.GeneratedReport"; 
             name = GeneratedReport; 
         }, 
-        {className = "net.sf.webcat.reporter.ReportDataSet"; name = ReportDataSet; }, 
+        {className = "org.webcat.reporter.ReportDataSet"; name = ReportDataSet; }, 
         {
-            className = "net.sf.webcat.reporter.ReportDataSetQuery"; 
+            className = "org.webcat.reporter.ReportDataSetQuery"; 
             name = ReportDataSetQuery; 
         }, 
         {
-            className = "net.sf.webcat.reporter.ReportGenerationJob"; 
+            className = "org.webcat.reporter.ReportGenerationJob"; 
             name = ReportGenerationJob; 
             parent = JobBase; 
         }, 
-        {className = "net.sf.webcat.reporter.ReportTemplate"; name = ReportTemplate; }
+        {className = "org.webcat.reporter.ReportTemplate"; name = ReportTemplate; }
     ); 
     internalInfo = {
         "_schemaSynchronizationOptions" = {

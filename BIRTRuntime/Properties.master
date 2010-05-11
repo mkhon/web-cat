@@ -1,7 +1,7 @@
 # ===================================================================
 # BIRTRuntime subsystem characteristics
 # ===================================================================
-subsystem.BIRTRuntime=net.sf.webcat.birtruntime.BIRTRuntime
+subsystem.BIRTRuntime=org.webcat.birtruntime.BIRTRuntime
 
 BIRTRuntime.version.major=1
 BIRTRuntime.version.minor=1

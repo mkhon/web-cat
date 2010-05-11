@@ -77,7 +77,7 @@
         userId, 
         workerId
     ); 
-    className = "net.sf.webcat.opinions.SurveyReminderJob"; 
+    className = "org.webcat.opinions.SurveyReminderJob"; 
     classProperties = (
         assignmentOffering, 
         dueTime, 

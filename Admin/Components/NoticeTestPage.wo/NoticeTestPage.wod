@@ -15,5 +15,5 @@ HasErrors: WOString {
     value = hasMessages;
 }
 
-Page: net.sf.webcat.core.WCPageWithNavigation {
+Page: org.webcat.core.WCPageWithNavigation {
 }

@@ -13,7 +13,7 @@
         {columnName = userId; name = userId; prototypeName = foreignId; }
     ); 
     attributesUsedForLocking = (isEnabled, messageType, protocolType, userId); 
-    className = "net.sf.webcat.notifications.UserMessageSubscription"; 
+    className = "org.webcat.notifications.UserMessageSubscription"; 
     classProperties = (isEnabled, messageType, protocolType, user); 
     externalName = UserMessageSubscription; 
     name = UserMessageSubscription; 

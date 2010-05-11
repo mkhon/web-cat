@@ -1,7 +1,7 @@
 # ===================================================================
 # JobQueue subsystem characteristics
 # ===================================================================
-subsystem.JobQueue=net.sf.webcat.jobqueue.JobQueue
+subsystem.JobQueue=org.webcat.jobqueue.JobQueue
 
 JobQueue.version.major=1
 JobQueue.version.minor=0

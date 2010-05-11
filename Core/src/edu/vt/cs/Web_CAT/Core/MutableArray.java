@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MutableArray.java,v 1.3 2009/04/07 16:29:14 stedwar2 Exp $
+ |  $Id: MutableArray.java,v 1.4 2010/05/11 14:51:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -24,15 +24,23 @@
 \*==========================================================================*/
 
 package edu.vt.cs.Web_CAT.Core;
-import com.webobjects.foundation.*;
-import com.webobjects.foundation.NSArray.*;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
-import net.sf.webcat.core.*;
 import org.apache.log4j.Logger;
+import org.webcat.core.MutableContainer;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSData;
+import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSForwardException;
+import com.webobjects.foundation.NSLog;
+import com.webobjects.foundation.NSPropertyListSerialization;
+import com.webobjects.foundation.NSRange;
 
 //-------------------------------------------------------------------------
 /**
@@ -43,12 +51,12 @@ import org.apache.log4j.Logger;
  *  See the description in {@link MutableDictionary} for critical
  *  usage details.
  *
- *  @deprecated use the net.sf.webcat.core version of this class instead.
+ *  @deprecated use the org.webcat.core version of this class instead.
  *  This version is only provided for database compatibility during the
  *  Spring 2006 semester.
  *
  *  @author  Stephen Edwards
- *  @version $Id: MutableArray.java,v 1.3 2009/04/07 16:29:14 stedwar2 Exp $
+ *  @version $Id: MutableArray.java,v 1.4 2010/05/11 14:51:59 aallowat Exp $
  */
 public class MutableArray
     extends er.extensions.foundation.ERXMutableArray

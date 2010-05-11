@@ -37,7 +37,7 @@
         text4,
         userId
     );
-    className = "net.sf.webcat.opinions.SurveyResponse";
+    className = "org.webcat.opinions.SurveyResponse";
     classProperties = (
         assignmentOffering,
         isStaff,

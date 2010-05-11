@@ -1,11 +1,11 @@
-Page: net.sf.webcat.core.WCPageWithNavigation {
+Page: org.webcat.core.WCPageWithNavigation {
 }
 
 ChangeReportTemplate: WCLink {
     action = changeReportTemplate;
 }
 
-QueryBuilder : net.sf.webcat.core.objectquery.ObjectQueryBuilder {
+QueryBuilder : org.webcat.core.objectquery.ObjectQueryBuilder {
     objectType = dataSet.wcEntityName;
     surrogate = objectQuerySurrogateForDataSet;
 }

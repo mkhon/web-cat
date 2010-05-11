@@ -15,7 +15,7 @@
         {allowsNull = Y; columnName = userId; name = userId; prototypeName = id; }
     ); 
     attributesUsedForLocking = (batchPluginId, description, id, isComplete, objectQueryId, userId); 
-    className = "net.sf.webcat.batchprocessor.BatchResult"; 
+    className = "org.webcat.batchprocessor.BatchResult"; 
     classProperties = (
         batchJobs, 
         batchPlugin, 

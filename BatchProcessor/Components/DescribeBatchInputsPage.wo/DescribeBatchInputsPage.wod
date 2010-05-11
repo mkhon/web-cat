@@ -1,11 +1,11 @@
-Page : net.sf.webcat.core.WCPageWithNavigation {
+Page : org.webcat.core.WCPageWithNavigation {
 }
 
 Form : WCForm {
     multipleSubmit = true;
 }
 
-BatchOptionEditor: net.sf.webcat.core.OptionSetEditor {
+BatchOptionEditor: org.webcat.core.OptionSetEditor {
     options           = batchPlugin.configDescription.options;
     optionValues      = configSettings;
     categories        = batchPlugin.configDescription.optionCategories;
@@ -23,7 +23,7 @@ Run : WCButton {
     action = runBatchJob;
 }
 
-QueryBuilder : net.sf.webcat.core.objectquery.ObjectQueryBuilder {
+QueryBuilder : org.webcat.core.objectquery.ObjectQueryBuilder {
     objectType = batchPlugin.batchEntity;
     surrogate = objectQuerySurrogate;
 }

@@ -10,10 +10,10 @@
     }; 
     entities = (
         {
-            className = "net.sf.webcat.opinions.SurveyReminderJob"; 
+            className = "org.webcat.opinions.SurveyReminderJob"; 
             name = SurveyReminderJob; 
             parent = JobBase; 
         }, 
-        {className = "net.sf.webcat.opinions.SurveyResponse"; name = SurveyResponse; }
+        {className = "org.webcat.opinions.SurveyResponse"; name = SurveyResponse; }
     ); 
 }

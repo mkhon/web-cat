@@ -4,4 +4,4 @@
 //	_unroll          = true;
 //}
 
-PageWrapper: net.sf.webcat.admin.WCPageWrapper {}
+PageWrapper: org.webcat.admin.WCPageWrapper {}

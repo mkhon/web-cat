@@ -1,8 +1,8 @@
-Page : net.sf.webcat.core.WCPageWithNavigation {
+Page : org.webcat.core.WCPageWithNavigation {
     title = "Error Downloading Report";
 }
 
-MainBlock : net.sf.webcat.core.WCPageModule {
+MainBlock : org.webcat.core.WCPageModule {
     collapsible = false;
     title = mainBlockTitle;
 }

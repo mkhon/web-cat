@@ -10,18 +10,18 @@
     }; 
     entities = (
         {
-            className = "net.sf.webcat.batchprocessor.BatchFeedbackSection"; 
+            className = "org.webcat.batchprocessor.BatchFeedbackSection"; 
             name = BatchFeedbackSection; 
         }, 
         {
-            className = "net.sf.webcat.batchprocessor.BatchJob"; 
+            className = "org.webcat.batchprocessor.BatchJob"; 
             name = BatchJob; 
             parent = JobBase; 
         }, 
-        {className = "net.sf.webcat.batchprocessor.BatchPlugin"; name = BatchPlugin; }, 
-        {className = "net.sf.webcat.batchprocessor.BatchResult"; name = BatchResult; }, 
+        {className = "org.webcat.batchprocessor.BatchPlugin"; name = BatchPlugin; }, 
+        {className = "org.webcat.batchprocessor.BatchResult"; name = BatchResult; }, 
         {
-            className = "net.sf.webcat.batchprocessor.BatchResultProperty"; 
+            className = "org.webcat.batchprocessor.BatchResultProperty"; 
             name = BatchResultProperty; 
         }
     ); 

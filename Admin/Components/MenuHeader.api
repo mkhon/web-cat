@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="macintosh" standalone="yes"?>
 <wodefinitions>
-        <wo class="net.sf.webcat.admin.MenuHeader" wocomponentcontent="NO">
+        <wo class="org.webcat.admin.MenuHeader" wocomponentcontent="NO">
 
         </wo>
 </wodefinitions>

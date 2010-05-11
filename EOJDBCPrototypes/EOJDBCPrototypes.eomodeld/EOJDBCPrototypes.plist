@@ -175,7 +175,7 @@
            {
                adaptorValueConversionMethodName = archiveData;
                isMutable = true;
-               valueClassName = net.sf.webcat.core.MutableArray;
+               valueClassName = org.webcat.core.MutableArray;
                valueFactoryMethodName = objectWithArchiveData;
            };
            valueClassName = NSData;
@@ -190,7 +190,7 @@
            {
                adaptorValueConversionMethodName = archiveData;
                isMutable = true;
-               valueClassName = net.sf.webcat.core.MutableDictionary;
+               valueClassName = org.webcat.core.MutableDictionary;
                valueFactoryMethodName = objectWithArchiveData;
            };
            valueClassName = NSData;

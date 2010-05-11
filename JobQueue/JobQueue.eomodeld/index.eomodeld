@@ -9,14 +9,14 @@
         username = "";
     };
     entities = (
-        {className = "net.sf.webcat.jobqueue.HostDescriptor"; name = HostDescriptor; },
-        {className = "net.sf.webcat.jobqueue.JobBase"; name = JobBase; },
+        {className = "org.webcat.jobqueue.HostDescriptor"; name = HostDescriptor; },
+        {className = "org.webcat.jobqueue.JobBase"; name = JobBase; },
         {
-            className = "net.sf.webcat.jobqueue.QueueDescriptor";
+            className = "org.webcat.jobqueue.QueueDescriptor";
             name = QueueDescriptor;
         },
         {
-            className = "net.sf.webcat.jobqueue.WorkerDescriptor";
+            className = "org.webcat.jobqueue.WorkerDescriptor";
             name = WorkerDescriptor;
         }
     );

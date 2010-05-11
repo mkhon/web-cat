@@ -13,7 +13,7 @@
     (
        id
     );
-    className = net.sf.webcat.jobqueue.User;
+    className = org.webcat.jobqueue.User;
     externalName = TUser;
     internalInfo = 
     {};

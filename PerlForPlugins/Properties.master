@@ -1,7 +1,7 @@
 # ===================================================================
 # PerlForPlugins subsystem characteristics
 # ===================================================================
-subsystem.PerlForPlugins=net.sf.webcat.perlforplugins.PerlForPlugins
+subsystem.PerlForPlugins=org.webcat.perlforplugins.PerlForPlugins
 
 PerlForPlugins.version.major=1
 PerlForPlugins.version.minor=0

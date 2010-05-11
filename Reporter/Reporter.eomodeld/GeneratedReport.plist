@@ -22,7 +22,7 @@
             userInfo = {
                 adaptorValueConversionMethodName = archiveData; 
                 isMutable = true; 
-                valueClassName = "net.sf.webcat.core.MutableArray"; 
+                valueClassName = "org.webcat.core.MutableArray"; 
                 valueFactoryMethodName = objectWithArchiveData; 
             }; 
         }, 
@@ -33,7 +33,7 @@
         }
     ); 
     attributesUsedForLocking = (userId, reportTemplateId, description, isComplete, updateMutableFields); 
-    className = "net.sf.webcat.reporter.GeneratedReport"; 
+    className = "org.webcat.reporter.GeneratedReport"; 
     classProperties = (
         description, 
         user, 

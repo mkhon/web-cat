@@ -14,7 +14,7 @@
         }
     ); 
     attributesUsedForLocking = (generatedReportId, dataSetId, objectQueryId); 
-    className = "net.sf.webcat.reporter.ReportDataSetQuery"; 
+    className = "org.webcat.reporter.ReportDataSetQuery"; 
     classProperties = (generatedReport, dataSet, objectQuery); 
     externalName = TREPORTDATASETQUERY; 
     fetchSpecificationDictionary = {}; 

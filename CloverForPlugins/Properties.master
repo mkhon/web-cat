@@ -1,7 +1,7 @@
 # ===================================================================
 # CloverForPlugins subsystem characteristics
 # ===================================================================
-subsystem.CloverForPlugins=net.sf.webcat.cloverforplugins.CloverForPlugins
+subsystem.CloverForPlugins=org.webcat.cloverforplugins.CloverForPlugins
 
 CloverForPlugins.version.major=1
 CloverForPlugins.version.minor=0

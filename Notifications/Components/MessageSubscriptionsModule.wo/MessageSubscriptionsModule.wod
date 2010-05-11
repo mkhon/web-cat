@@ -1,3 +1,3 @@
-MessagingConfigPanel: net.sf.webcat.notifications.MessagingConfigPanel {
+MessagingConfigPanel: org.webcat.notifications.MessagingConfigPanel {
     isShowingBroadcast = false;
 }

@@ -1,7 +1,7 @@
 # ===================================================================
 # ANTForPlugins subsystem characteristics
 # ===================================================================
-subsystem.ANTForPlugins=net.sf.webcat.antforplugins.ANTForPlugins
+subsystem.ANTForPlugins=org.webcat.antforplugins.ANTForPlugins
 
 ANTForPlugins.version.major=1
 ANTForPlugins.version.minor=1

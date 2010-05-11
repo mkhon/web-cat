@@ -260,7 +260,7 @@
     </tstamp>
     <mkdir dir="api"/>
     <javadoc
-      packagenames="net.sf.webcat.*"
+      packagenames="org.webcat.*"
       destdir="api"
       author="true"
       version="true"

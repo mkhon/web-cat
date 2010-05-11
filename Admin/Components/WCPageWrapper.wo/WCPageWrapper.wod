@@ -5,6 +5,6 @@ Body: WOComponentContent {
 PlainPage: WCPageWithNavigation {
 }
 
-Header: net.sf.webcat.admin.WCMenuHeader {
+Header: org.webcat.admin.WCMenuHeader {
 }
 

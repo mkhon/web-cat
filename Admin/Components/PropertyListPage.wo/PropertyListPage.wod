@@ -32,6 +32,6 @@ SetProperty: WCButton {
     label  = "Set Property";
 }
 
-TR: net.sf.webcat.core.TableRow {
+TR: org.webcat.core.TableRow {
 	index = propertyIndex;
 }
