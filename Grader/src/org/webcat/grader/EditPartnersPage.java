@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPartnersPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: EditPartnersPage.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.core.*;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
  */
 public class EditPartnersPage
     extends GraderComponent
@@ -116,26 +116,9 @@ public class EditPartnersPage
     // ----------------------------------------------------------
     public WOComponent addPartner()
     {
-        int submitNumber = 1;
-        NSArray<Submission> studentSubmissions =
-            Submission.objectsMatchingValues(
-                localContext(),
-                Submission.ASSIGNMENT_OFFERING_KEY,
-                prefs().assignmentOffering(),
-                Submission.USER_KEY,
-                student);
-        for (Submission thisSubmission : studentSubmissions)
-        {
-            int thisSubNo = thisSubmission.submitNumber();
-            if ( thisSubNo  >= submitNumber )
-            {
-                submitNumber = thisSubNo + 1;
-            }
-        }
         // Don't need the return value: we just want it to be created, and
         // partnerSubmission() will save the changes to the DB
-        result.submission().partnerSubmission(
-                student, submitNumber, localContext());
+        result.submission().partnerSubmission(student, localContext());
         applyLocalChanges();
         return null;
     }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -176,7 +176,7 @@ public class NewCourseOfferingPage
     // ----------------------------------------------------------
     public JavascriptGenerator update()
     {
-        return new JavascriptGenerator().refresh("courseblock");
+        return new JavascriptGenerator().refresh("courseblock", "new-course");
     }
 
 

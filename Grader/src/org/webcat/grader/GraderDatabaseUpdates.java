@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @version $Id: GraderDatabaseUpdates.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -290,6 +290,23 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TASSIGNMENTOFFERING add "
             + "lastModified DATETIME" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds field for associating partnered submissions with a primary
+     * submission.
+     * @throws SQLException on error
+     */
+    public void updateIncrement14() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSUBMISSION add "
+            + "primarySubmissionId INTEGER" );
+        database().executeSQL(
+                "alter table TSUBMISSIONPROFILE add "
+                + "allowPartners BIT NOT NULL" );
     }
 
 

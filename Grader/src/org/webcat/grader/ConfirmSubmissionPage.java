@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author Amit Kulkarni
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -59,6 +59,8 @@ public class ConfirmSubmissionPage
 
     /** File object for the uploaded file */
     public IArchiveEntry file;
+    /** User object for a partner in the submission */
+    public User partnerInRepetition;
     /** index of the file in the repetition table */
     public int index;
 

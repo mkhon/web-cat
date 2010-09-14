@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -61,7 +61,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author Amit Kulkarni
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1020,6 +1020,13 @@ public class GraderQueueProcessor
         editingContext.saveChanges();
         boolean wasRegraded = job.regrading();
         submissionResult.addToSubmissionsRelationship( job.submission() );
+
+        for (Submission partneredSubmission :
+            job.submission().partneredSubmissions())
+        {
+            partneredSubmission.setResultRelationship(submissionResult);
+        }
+
         job.setSubmissionRelationship( null );
         editingContext.deleteObject( job );
         editingContext.saveChanges();

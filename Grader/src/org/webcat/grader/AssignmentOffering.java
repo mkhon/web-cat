@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.grader.graphs.*;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -438,7 +438,15 @@ public class AssignmentOffering
     {
         for (Submission sub : mostRecentSubsForAll())
         {
-            sub.requeueForGrading(ec);
+            // A fake partnered submission will have a non-null
+            // primarySubmission attribute. We only want to regrade the actual
+            // submissions, so only enqueue the ones with null
+            // primarySubmission.
+
+            if (sub.primarySubmission() == null)
+            {
+                sub.requeueForGrading(ec);
+            }
         }
         ec.saveChanges();
         Grader.getInstance().graderQueue().enqueue(null);

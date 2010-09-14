@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowserDialog.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: FileBrowserDialog.java,v 1.2 2010/09/14 18:24:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -85,7 +85,7 @@ import com.webobjects.foundation.NSTimestampFormatter;
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: FileBrowserDialog.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: FileBrowserDialog.java,v 1.2 2010/09/14 18:24:25 aallowat Exp $
  */
 public class FileBrowserDialog extends WCComponent
 {
@@ -128,6 +128,8 @@ public class FileBrowserDialog extends WCComponent
 
     public ComponentIDGenerator idFor;
 
+
+    //~ Methods ...............................................................
 
     // ----------------------------------------------------------
     @Override

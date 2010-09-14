@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: Grader.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.messaging.SubmissionSuspendedMessage;
 *  The subsystem defining Web-CAT administrative tasks.
 *
 *  @author Stephen Edwards
-*  @version $Id: Grader.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+*  @version $Id: Grader.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
 */
 public class Grader
    extends Subsystem
@@ -369,6 +369,8 @@ public class Grader
         Number courseNo = request.numericFormValueForKey( "course",
                         new NSNumberFormatter( "0" ) );
         log.debug( "courseNo = " + courseNo );
+        String partnerList = request.stringFormValueForKey( "partners" );
+        log.debug( "partners = " + partnerList );
         NSData file     = (NSData)request.formValueForKey( "file1" );
         String fileName = request.stringFormValueForKey( "file1.filename" );
         log.debug( "fileName = " + fileName );
@@ -670,7 +672,33 @@ public class Grader
             return result.generateResponse();
         }
 
+        // Parse the partner list and get the User objects.
+        // TODO change this to something a little more UI-friendly
+
+        NSMutableArray<User> partners = new NSMutableArray<User>();
+
+        if (partnerList != null)
+        {
+            String[] usernames = partnerList.split("[,\\s]+");
+
+            for (String username : usernames)
+            {
+                username = username.trim();
+
+                if (username.length() > 0)
+                {
+                    User partner = User.userWithName(ec, username);
+
+                    if (partner != null)
+                    {
+                        partners.addObject(partner);
+                    }
+                }
+            }
+        }
+
         result.startSubmission( currentSubNo, result.user() );
+        result.submissionInProcess().setPartners( partners );
         result.submissionInProcess().setUploadedFile( file );
         result.submissionInProcess().setUploadedFileName( fileName );
 
