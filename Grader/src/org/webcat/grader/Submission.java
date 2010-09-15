@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: Submission.java,v 1.3 2010/09/15 17:14:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author Stephen Edwards
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
+ *  @version $Revision: 1.3 $, $Date: 2010/09/15 17:14:21 $
  */
 public class Submission
     extends _Submission
@@ -293,8 +293,15 @@ public class Submission
 
 
     // ----------------------------------------------------------
-    public Submission partnerSubmission(User partner, EOEditingContext ec)
+    public void partnerSubmission(User partner, EOEditingContext ec)
     {
+        // Make sure that a user isn't trying to partner with himself.
+
+        if (partner.equals(user()))
+        {
+            return;
+        }
+
         int submitNumber = 1;
 
         EOQualifier qualifier =
@@ -326,8 +333,6 @@ public class Submission
         newSubmission.setPrimarySubmissionRelationship(this);
 
         addToPartneredSubmissionsRelationship(newSubmission);
-
-        return newSubmission;
     }
 
 

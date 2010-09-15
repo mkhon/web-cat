@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultInfo.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: SubmissionResultInfo.java,v 1.3 2010/09/15 17:14:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -43,7 +43,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  latest changes by: $Author: aallowat $
- *  @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
+ *  @version $Revision: 1.3 $, $Date: 2010/09/15 17:14:21 $
  */
 public class SubmissionResultInfo
     extends GraderComponent
@@ -105,15 +105,10 @@ public class SubmissionResultInfo
 
 
     // ----------------------------------------------------------
-    public String showEditPartnersDialogScript()
+    public void setPartnersForEditing(NSArray<User> users)
     {
-        return "dijit.byId('" + idFor.get("editPartnersDialog") + "').show();";
-    }
+        partnersForEditing = users;
 
-
-    // ----------------------------------------------------------
-    public JavascriptGenerator partnersChanged()
-    {
         NSArray<User> partnersToRemove = ERXArrayUtilities.arrayMinusArray(
                 originalPartners, partnersForEditing);
         submission.unpartnerFromUsers(partnersToRemove, localContext());
@@ -125,12 +120,6 @@ public class SubmissionResultInfo
         applyLocalChanges();
 
         originalPartners = partnersForEditing.mutableClone();
-
-        JavascriptGenerator script = new JavascriptGenerator();
-        script.refresh(idFor.get("partnersPane")).
-               dijit(idFor.get("editPartnersDialog")).call("hide");
-
-        return script;
     }
 
 

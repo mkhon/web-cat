@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.3 2010/09/15 17:14:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/15 17:14:21 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -139,7 +139,10 @@ public class UploadSubmissionPage
             }
         }
 
-        partnersForEditing = previousPartners.mutableClone();
+        if (partnersForEditing == null)
+        {
+            partnersForEditing = previousPartners.mutableClone();
+        }
 
         Number maxSubmissions = prefs().assignmentOffering()
             .assignment().submissionProfile().maxSubmissionsRaw();
