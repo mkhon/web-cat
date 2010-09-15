@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.3 2010/09/15 17:14:21 aallowat Exp $
+ |  $Id: Submission.java,v 1.4 2010/09/15 17:54:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author Stephen Edwards
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.3 $, $Date: 2010/09/15 17:14:21 $
+ *  @version $Revision: 1.4 $, $Date: 2010/09/15 17:54:03 $
  */
 public class Submission
     extends _Submission
@@ -361,6 +361,48 @@ public class Submission
             partneredSubmission.setResultRelationship(null);
             ec.deleteObject(partneredSubmission);
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets a string containing the names of the user who made this submission
+     * and all of his or her partners, in the form "User 1, User 2, ..., and
+     * User N".
+     *
+     * @return a string containing the names of all of the partners
+     */
+    public String namesOfAllUsers()
+    {
+        NSMutableArray<String> names = new NSMutableArray<String>();
+        names.addObject(user().name());
+
+        for (Submission partnerSub : partneredSubmissions())
+        {
+            names.addObject(partnerSub.user().name());
+        }
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(names.objectAtIndex(0));
+
+        if (names.count() > 1)
+        {
+            for (int i = 1; i < names.count() - 1; i++)
+            {
+                buffer.append(", ");
+                buffer.append(names.objectAtIndex(i));
+            }
+
+            if (names.count() > 2)
+            {
+                buffer.append(',');
+            }
+
+            buffer.append(" and ");
+            buffer.append(names.lastObject());
+        }
+
+        return buffer.toString();
     }
 
 
