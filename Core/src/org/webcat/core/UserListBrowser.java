@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UserListBrowser.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: UserListBrowser.java,v 1.2 2010/09/15 19:09:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -54,8 +54,8 @@ import org.apache.log4j.Logger;
  *          gain when being added to the relationship (default: 0).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/15 19:09:09 $
  */
 public class UserListBrowser
     extends WCComponent
@@ -81,6 +81,16 @@ public class UserListBrowser
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
+    @Override
+    public void appendToResponse(WOResponse response, WOContext context)
+    {
+        log.debug("entering appendToResponse()");
+        super.appendToResponse(response, context);
+        log.debug("leaving appendToResponse()");
+    }
+
+
+    // ----------------------------------------------------------
     public boolean synchronizesVariablesWithBindings()
     {
         return false;
@@ -92,20 +102,30 @@ public class UserListBrowser
     {
         if (initializeUserList)
         {
+            log.debug("initializing users list");
             if (canGetValueForBinding("master"))
             {
                 EOGenericRecord master =
                     (EOGenericRecord)valueForBinding("master");
+                String keypath = (String)valueForBinding("keyPath");
+                log.debug("setting data source master = " + master
+                    + ", keypath = " + keypath);
                 users.setDataSource(new EODetailDataSource(
-                    master.classDescription(),
-                    (String)valueForBinding("keyPath")));
+                    master.classDescription(), keypath));
             }
             else
             {
+                log.debug("setting data source to all users");
                 users.setDataSource(
                     new EODatabaseDataSource(localContext(), User.ENTITY_NAME));
             }
+            log.debug("data source = " + users.dataSource());
+            log.debug("    beginning fetch ...");
+            long start = System.currentTimeMillis();
             users.fetch();
+            long end = System.currentTimeMillis();
+            double time = (start - end) / 1000;
+            log.debug("    fetch complete (" + time + "s)");
             initializeUserList = false;
         }
         return users;
