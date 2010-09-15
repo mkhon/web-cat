@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: Application.java,v 1.2 2010/09/15 19:08:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -80,8 +80,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/15 19:08:45 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -188,6 +188,11 @@ public class Application
         // Register the entity resource request handler.
         registerRequestHandler(new EntityResourceRequestHandler(),
                 EntityResourceRequestHandler.REQUEST_HANDLER_KEY);
+
+        // Set page cache size from property
+        setPageCacheSize(
+            ERXValueUtilities.intValueWithDefault(
+                configurationProperties().valueForKey("WOPageCacheSize"), 30));
 
         if (!isDevelopmentModeSafe() && isDirectConnectEnabled())
         {
