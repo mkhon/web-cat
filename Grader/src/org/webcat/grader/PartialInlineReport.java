@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PartialInlineReport.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: PartialInlineReport.java,v 1.2 2010/09/15 02:54:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * fragment to include.
  *
  * @author Stephen Edwards
- * @version $Id: PartialInlineReport.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @version $Id: PartialInlineReport.java,v 1.2 2010/09/15 02:54:38 aallowat Exp $
  */
 public class PartialInlineReport
     extends WOComponent
@@ -244,13 +244,13 @@ public class PartialInlineReport
     static final Pattern MODULE = Pattern.compile(
         "<h2 class=\"collapsible\"><a[^>]*><img[^>]*(collapsed|expanded)[^>]*>"
         + "((.(?!</a>))*.)</a>\\s*</h2>\\s*"
-        + "<div[^>]*\\sclass=\"expboxcontent\"[^>]*>\\s*((.(?!</div>))*.)</div>"
+        + "<div[^>]*\\sclass=\"expboxcontent\"[^>]*>((.(?!</div>))*.)</div>"
         ,
         Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
     static final Pattern NESTED_MODULE = Pattern.compile(
         "<h3 class=\"collapsible\"><a[^>]*><img[^>]*(collapsed|expanded)[^>]*>"
         + "((.(?!</a>))*.)</a>\\s*</h3>\\s*"
-        + "<div[^>]*\\sclass=\"expboxcontent\"[^>]*>\\s*((.(?!</div>))*.)</div>"
+        + "<div[^>]*\\sclass=\"expboxcontent\"[^>]*>((.(?!</div>))*.)</div>"
         ,
         Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
     static Logger log = Logger.getLogger( PartialInlineReport.class );
