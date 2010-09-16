@@ -32,14 +32,14 @@
        WebObjects application. -->
   <context-param>
     <param-name>WOApplicationClass</param-name>
-    <param-value>org.webcat.core.Application</param-value>
+    <param-value>net.sf.webcat.core.Application</param-value>
   </context-param>
 
   <!-- The WebObjects Servlet that interfaces between the Servlet container
        world and the WebObjects world. -->
   <servlet>
     <servlet-name>WOServletAdaptor</servlet-name>
-    <servlet-class>org.webcat.WCServletAdaptor</servlet-class>
+    <servlet-class>net.sf.webcat.WCServletAdaptor</servlet-class>
     <load-on-startup>5</load-on-startup>
   </servlet>
 
@@ -64,8 +64,8 @@
   </taglib>
 
  <context-param>
- 	<param-name>WEBINFROOT</param-name>
- 	<param-value>%WEBINFROOT%</param-value>
+     <param-name>WEBINFROOT</param-name>
+     <param-value>%WEBINFROOT%</param-value>
  </context-param>
 
 </web-app>
