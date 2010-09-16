@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPlugin.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchPlugin.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import org.webcat.FeatureDescriptor;
-import org.webcat.FeatureProvider;
+import net.sf.webcat.FeatureDescriptor;
+import net.sf.webcat.FeatureProvider;
 import org.webcat.core.Application;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.User;
@@ -49,7 +49,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:46 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/16 18:49:36 $
  */
 public class BatchPlugin
     extends _BatchPlugin
@@ -390,7 +390,7 @@ public class BatchPlugin
      */
     public static String installOrUpdate(
         User                            installedBy,
-        org.webcat.FeatureDescriptor plugin,
+        net.sf.webcat.FeatureDescriptor plugin,
         boolean                         overwrite )
     {
         return installOrUpdate( installedBy, plugin, overwrite, null );
@@ -670,7 +670,7 @@ public class BatchPlugin
      */
     private static String installOrUpdate(
         User                            installedBy,
-        org.webcat.FeatureDescriptor plugin,
+        net.sf.webcat.FeatureDescriptor plugin,
         boolean                         overwrite,
         BatchPlugin                     batchPlugin )
     {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.1 2010/05/11 14:51:45 aallowat Exp $
+ |  $Id: WCServletContext.java,v 1.9 2010/09/16 18:49:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -19,7 +19,7 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package org.webcat;
+package net.sf.webcat;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -37,7 +37,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.1 2010/05/11 14:51:45 aallowat Exp $
+ *  @version $Id: WCServletContext.java,v 1.9 2010/09/16 18:49:16 aallowat Exp $
  */
 public class WCServletContext
     implements ServletContext

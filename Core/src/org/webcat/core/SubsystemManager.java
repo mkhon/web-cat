@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManager.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: SubsystemManager.java,v 1.2 2010/09/16 18:50:50 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,8 +28,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import net.sf.webcat.FeatureProvider;
 import org.apache.log4j.Logger;
-import org.webcat.FeatureProvider;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * framework or a separate jar file that contains a framework.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubsystemManager.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @version $Id: SubsystemManager.java,v 1.2 2010/09/16 18:50:50 aallowat Exp $
  */
 public class SubsystemManager
 {

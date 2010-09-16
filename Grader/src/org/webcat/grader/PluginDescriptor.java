@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginDescriptor.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: PluginDescriptor.java,v 1.2 2010/09/16 18:49:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,8 +22,8 @@
 package org.webcat.grader;
 
 import java.util.*;
+import net.sf.webcat.FeatureDescriptor;
 import org.apache.log4j.Logger;
-import org.webcat.FeatureDescriptor;
 
 // -------------------------------------------------------------------------
 /**
@@ -32,7 +32,7 @@ import org.webcat.FeatureDescriptor;
  *  can be obtained on the web.
  *
  *  @author  stedwar2
- *  @version $Id: PluginDescriptor.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ *  @version $Id: PluginDescriptor.java,v 1.2 2010/09/16 18:49:35 aallowat Exp $
  */
 public class PluginDescriptor
     extends FeatureDescriptor

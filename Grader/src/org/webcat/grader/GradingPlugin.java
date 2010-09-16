@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GradingPlugin.java,v 1.2 2010/09/16 18:49:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -27,10 +27,10 @@ import com.webobjects.foundation.*;
 import er.extensions.foundation.ERXValueUtilities;
 import java.io.*;
 import java.util.*;
+import net.sf.webcat.FeatureDescriptor;
+import net.sf.webcat.FeatureProvider;
 import org.webcat.core.MutableDictionary;
 import org.apache.log4j.Logger;
-import org.webcat.FeatureDescriptor;
-import org.webcat.FeatureProvider;
 import org.webcat.core.*;
 
 // -------------------------------------------------------------------------
@@ -39,7 +39,7 @@ import org.webcat.core.*;
  *
  *  @author Stephen Edwards
  *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/16 18:49:35 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -382,7 +382,7 @@ public class GradingPlugin
      */
     public static String installOrUpdate(
         User                            installedBy,
-        org.webcat.FeatureDescriptor plugin,
+        net.sf.webcat.FeatureDescriptor plugin,
         boolean                         overwrite )
     {
         return installOrUpdate( installedBy, plugin, overwrite, null );
@@ -627,7 +627,7 @@ public class GradingPlugin
      */
     private static String installOrUpdate(
         User                            installedBy,
-        org.webcat.FeatureDescriptor plugin,
+        net.sf.webcat.FeatureDescriptor plugin,
         boolean                         overwrite,
         GradingPlugin                      scriptFile )
     {

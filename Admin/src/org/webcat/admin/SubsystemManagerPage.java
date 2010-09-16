@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,9 +29,9 @@ import er.extensions.foundation.ERXValueUtilities;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import net.sf.webcat.FeatureDescriptor;
+import net.sf.webcat.FeatureProvider;
 import org.apache.log4j.Logger;
-import org.webcat.FeatureDescriptor;
-import org.webcat.FeatureProvider;
 import org.webcat.core.*;
 
 // -------------------------------------------------------------------------
@@ -40,7 +40,7 @@ import org.webcat.core.*;
  *  tab.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @version $Id: SubsystemManagerPage.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -101,9 +101,9 @@ public class SubsystemManagerPage
      * Get the current servlet adaptor, if one is available.
      * @return the servlet adaptor, or null when none is available
      */
-    public org.webcat.WCServletAdaptor adaptor()
+    public net.sf.webcat.WCServletAdaptor adaptor()
     {
-        return org.webcat.WCServletAdaptor.getInstance();
+        return net.sf.webcat.WCServletAdaptor.getInstance();
     }
 
 
@@ -237,13 +237,13 @@ public class SubsystemManagerPage
     // ----------------------------------------------------------
     /**
      * Toggle the
-     * {@link org.webcat.WCServletAdaptor#willUpdateAutomatically()}
+     * {@link net.sf.webcat.WCServletAdaptor#willUpdateAutomatically()}
      * attribute.
      * @return null to refresh the current page
      */
     public WOComponent toggleAutoUpdates()
     {
-        org.webcat.WCServletAdaptor adaptor = adaptor();
+        net.sf.webcat.WCServletAdaptor adaptor = adaptor();
         adaptor.setWillUpdateAutomatically(
             !adaptor.willUpdateAutomatically() );
         return null;

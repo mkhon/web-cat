@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPluginDescriptor.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchPluginDescriptor.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,8 +22,8 @@
 package org.webcat.batchprocessor;
 
 import java.util.*;
+import net.sf.webcat.FeatureDescriptor;
 import org.apache.log4j.Logger;
-import org.webcat.FeatureDescriptor;
 
 // -------------------------------------------------------------------------
 /**
@@ -32,7 +32,7 @@ import org.webcat.FeatureDescriptor;
  *  can be obtained on the web.
  *
  *  @author  stedwar2
- *  @version $Id: BatchPluginDescriptor.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ *  @version $Id: BatchPluginDescriptor.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
  */
 public class BatchPluginDescriptor
     extends FeatureDescriptor

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: Subsystem.java,v 1.2 2010/09/16 18:50:50 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,8 +26,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import org.apache.log4j.Logger;
-import org.webcat.FeatureDescriptor;
-import org.webcat.WCServletAdaptor;
+import net.sf.webcat.FeatureDescriptor;
+import net.sf.webcat.WCServletAdaptor;
 import org.webcat.dbupdate.UpdateEngine;
 import org.webcat.dbupdate.UpdateSet;
 import com.webobjects.appserver.WOActionResults;
@@ -48,7 +48,7 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  *
  *  @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/16 18:50:50 $
  */
 public class Subsystem
 {
