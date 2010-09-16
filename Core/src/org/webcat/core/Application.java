@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.2 2010/09/15 19:08:45 stedwar2 Exp $
+ |  $Id: Application.java,v 1.3 2010/09/16 18:51:55 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -80,8 +80,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/15 19:08:45 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2010/09/16 18:51:55 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -452,6 +452,21 @@ public class Application
                 log.error( "requesting > 5 database channels" );
             }
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Returns the class that represents the sessions that WebObjects should
+     * create. Without this override, WebObjects assumes that the session class
+     * is named "Session" in the same package as the application (which may be
+     * the legacy net.sf.webcat.core.Application class in some cases).
+     *
+     * @return the class for the Session objects
+     */
+    protected Class _sessionClass()
+    {
+        return Session.class;
     }
 
 
@@ -1682,6 +1697,18 @@ public class Application
 
     // ----------------------------------------------------------
     /**
+     * Gets a value indicating whether the application is running as a servlet.
+     *
+     * @return true if the application is running as a servlet, otherwise false
+     */
+    public static boolean isRunningAsServlet()
+    {
+        return net.sf.webcat.WCServletAdaptor.getInstance() != null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Method to assemble information on the exception, including the
      * message, stack trace, the name of the component which contained
      * the error (or caused it), and any session information required.
@@ -1814,7 +1841,7 @@ public class Application
                     pwriter.close();
                     loggedError.setStackTrace( writer.getBuffer().toString() );
                 }
-                if ( org.webcat.WCServletAdaptor.getInstance() == null )
+                if ( !isRunningAsServlet() )
                 {
                     // If we're not running as a servlet, then assume we're in
                     // a developer environment and generate fully compliant
@@ -2393,7 +2420,7 @@ public class Application
     // ----------------------------------------------------------
     private void updateStaticHtmlResources()
     {
-        if ( org.webcat.WCServletAdaptor.getInstance() == null )
+        if ( !isRunningAsServlet() )
         {
             // If we're not running as a servlet, there's no updating to do
             log.debug( "Skipping static HTML resource updates" );
@@ -2727,7 +2754,7 @@ public class Application
     // ----------------------------------------------------------
     /**
      * If the app is running as a servlet, this method checks the version
-     * stamp stored in the {@link org.webcat.WCServletAdaptor} to see if
+     * stamp stored in the {@link net.sf.webcat.WCServletAdaptor} to see if
      * it is the same as the "expected" version number stored in the Core
      * subsystem's properties file.  The "expected" version is captured at
      * subsystem build time from the most recent Bootstrap.jar build.
@@ -2747,8 +2774,8 @@ public class Application
             "bootstrap.project.version" );
         if ( expectedVersion != null )
         {
-            org.webcat.WCServletAdaptor adaptor =
-                org.webcat.WCServletAdaptor.getInstance();
+            net.sf.webcat.WCServletAdaptor adaptor =
+                net.sf.webcat.WCServletAdaptor.getInstance();
             // Bootstrapping is only enabled when running as a servlet,
             // so we can only check the version at that time
             if ( adaptor != null )
