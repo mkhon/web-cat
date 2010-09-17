@@ -5,7 +5,7 @@ subsystem.Reporter=org.webcat.reporter.Reporter
 
 Reporter.version.major=1
 Reporter.version.minor=1
-Reporter.version.revision=2
+Reporter.version.revision=3
 Reporter.requires=BIRTRuntime, Core, Grader, JobQueue
 
 Reporter.copyright=(c) 2007-2010 Virginia Tech Department of Computer Science
