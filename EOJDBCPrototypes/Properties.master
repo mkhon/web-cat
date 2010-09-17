@@ -5,7 +5,7 @@ subsystem.EOJDBCPrototypes=
 
 EOJDBCPrototypes.version.major=1
 EOJDBCPrototypes.version.minor=1
-EOJDBCPrototypes.version.revision=8
+EOJDBCPrototypes.version.revision=9
 
 EOJDBCPrototypes.copyright=\
 	(c) 2006-2009 Virginia Tech Department of Computer Science
