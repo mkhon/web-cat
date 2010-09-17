@@ -5,7 +5,7 @@ subsystem.ANTForPlugins=org.webcat.antforplugins.ANTForPlugins
 
 ANTForPlugins.version.major=1
 ANTForPlugins.version.minor=1
-ANTForPlugins.version.revision=3
+ANTForPlugins.version.revision=4
 ANTForPlugins.requires=Core
 ANTForPlugins.provides=env, pluginProperties
 
