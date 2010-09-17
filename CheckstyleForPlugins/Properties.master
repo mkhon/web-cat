@@ -6,7 +6,7 @@ subsystem.CheckstyleForPlugins=\
 
 CheckstyleForPlugins.version.major=1
 CheckstyleForPlugins.version.minor=1
-CheckstyleForPlugins.version.revision=1
+CheckstyleForPlugins.version.revision=2
 CheckstyleForPlugins.requires=Core, ANTForPlugins
 CheckstyleForPlugins.provides=pluginProperties
 
