@@ -37,7 +37,7 @@
                 <wo:if condition="$canEditPlugin">
                     <wo:if condition="$batchPlugin.configDescription.globalOptions.count">
                         <webobject name="EditGlobalOptions"/>
-                    </wo>
+                    </wo:if>
                     <webobject name="ReloadConfig"/>
                 </wo:if>
             </td>
@@ -135,7 +135,7 @@
                 <td style="white-space:nowrap">
                     <wo:if condition="$canDownload">
                         <webobject name="DownloadNow"/>
-                    </webobject>
+                    </wo:if>
                     <wo:if condition="$batchPlugin.isPublished"><wo name="Unpublish"/></wo:if>
                     <wo:else><wo name="Publish"/></wo:else>
                     <webobject name="EditFiles"/>
