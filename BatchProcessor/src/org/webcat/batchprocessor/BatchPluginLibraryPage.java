@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPluginLibraryPage.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchPluginLibraryPage.java,v 1.2 2010/09/17 01:47:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.EditScriptFilesPage;
  * templates or manage existing ones.
  *
  * @author Tony Allevato
- * @version $Id: BatchPluginLibraryPage.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @version $Id: BatchPluginLibraryPage.java,v 1.2 2010/09/17 01:47:05 stedwar2 Exp $
  */
 public class BatchPluginLibraryPage
     extends WCComponent
@@ -151,7 +151,7 @@ public class BatchPluginLibraryPage
      * Edit the selected plug-in's configuration settings.
      * @return the subsystem's edit page
      */
-    public WOComponent edit()
+    public WOComponent editGlobalSettings()
     {
         EditBatchPluginGlobalsPage newPage =
             pageWithName(EditBatchPluginGlobalsPage.class);
