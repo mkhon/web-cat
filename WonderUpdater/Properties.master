@@ -5,7 +5,7 @@ subsystem.WonderUpdater=
 
 WonderUpdater.version.major=1
 WonderUpdater.version.minor=2
-WonderUpdater.version.revision=0
+WonderUpdater.version.revision=1
 
 WonderUpdater.copyright=\
 	(c) 2007-2008 Virginia Tech Department of Computer Science
