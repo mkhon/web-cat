@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderNavigator.java,v 1.2 2010/09/17 01:30:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -82,8 +82,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:40 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $ $Date: 2010/09/17 01:30:59 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -379,6 +379,11 @@ public class GraderNavigator
         if (user().hasAdminPrivileges())
         {
             return true;
+        }
+
+        if (selectedCourseOffering == null)
+        {
+            return false;
         }
 
         NSArray<CourseOffering> offerings = (NSArray<CourseOffering>)
