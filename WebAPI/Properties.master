@@ -5,7 +5,7 @@ subsystem.WebAPI=
 
 WebAPI.version.major=1
 WebAPI.version.minor=0
-WebAPI.version.revision=0
+WebAPI.version.revision=1
 WebAPI.requires=Core, Grader
 
 WebAPI.copyright=\
