@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.6 2010/05/11 15:52:46 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.7 2010/09/20 14:17:35 aallowat Exp $ -->
 
 <plugin>
    <extension
-         point="org.webcat.oda.core.emptyAppContextHandlers">
+         point="net.sf.webcat.oda.core.emptyAppContextHandlers">
       <resultProvider
             class="org.webcat.oda.designer.preview.PreviewingResultSetProvider">
       </resultProvider>

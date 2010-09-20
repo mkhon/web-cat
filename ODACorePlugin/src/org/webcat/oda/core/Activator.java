@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Activator.java,v 1.1 2010/05/11 15:52:44 aallowat Exp $
+ |  $Id: Activator.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.webcat.oda.commons.IWebCATResultSetProvider;
  * The activator class controls the plug-in life cycle
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: Activator.java,v 1.1 2010/05/11 15:52:44 aallowat Exp $
+ * @version $Id: Activator.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
  */
 public class Activator extends Plugin
 {
@@ -132,7 +132,7 @@ public class Activator extends Plugin
     /**
      * The unique identifier of the plug-in.
      */
-    public static final String PLUGIN_ID = "org.webcat.oda.core";
+    public static final String PLUGIN_ID = "net.sf.webcat.oda.core";
 
     /**
      * The singleton instance of the plug-in activator class.

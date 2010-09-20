@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.webcat.oda">
+<schema targetNamespace="net.sf.webcat.oda.core">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.webcat.oda" id="emptyAppContextHandlers" name="Empty App Context Handlers"/>
+         <meta.schema plugin="net.sf.webcat.oda.core" id="emptyAppContextHandlers" name="Empty App Context Handlers"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

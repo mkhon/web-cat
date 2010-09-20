@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Driver.java,v 1.1 2010/05/11 15:52:44 aallowat Exp $
+ |  $Id: Driver.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.eclipse.datatools.connectivity.oda.util.manifest.ManifestExplorer;
  * Implementation class of IDriver for an ODA runtime driver.
  *
  * @author Tony Allevato (Virginia Tech Computer Science)
- * @version $Id: Driver.java,v 1.1 2010/05/11 15:52:44 aallowat Exp $
+ * @version $Id: Driver.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
  */
 public class Driver implements IDriver
 {
@@ -110,5 +110,5 @@ public class Driver implements IDriver
      * The unique identifier of the Web-CAT ODA data source.
      */
     private static final String ODA_DATA_SOURCE_ID =
-        "org.webcat.oda.core.dataSource"; //$NON-NLS-1$
+        "net.sf.webcat.oda.core.dataSource"; //$NON-NLS-1$
 }

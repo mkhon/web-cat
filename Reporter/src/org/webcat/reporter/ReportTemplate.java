@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: ReportTemplate.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -55,7 +55,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: ReportTemplate.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -451,7 +451,7 @@ public class ReportTemplate extends _ReportTemplate
         // data set silently fails, so we have to use the caveman approach
         // instead.
 
-        String templateContents =
+        /*String templateContents =
             FileUtilities.stringWithContentsOfFile(filePath());
 
         if (templateContents != null)
@@ -473,7 +473,7 @@ public class ReportTemplate extends _ReportTemplate
         {
             log.error("Could not load template file contents for migration: "
                     + filePath());
-        }
+        }*/
     }
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<!-- $Id: plugin.xml,v 1.6 2010/05/11 15:52:44 aallowat Exp $ -->
+<!-- $Id: plugin.xml,v 1.7 2010/09/20 14:17:35 aallowat Exp $ -->
 
 <plugin>
    <extension-point id="emptyAppContextHandlers" name="Empty App Context Handlers" schema="schema/emptyAppContextHandlers.exsd"/>
@@ -12,11 +12,11 @@
             defaultDisplayName="%data.source.name"
             setThreadContextClassLoader="false"
             odaVersion="3.1"
-            id="org.webcat.oda.core.dataSource">
+            id="net.sf.webcat.oda.core.dataSource">
       </dataSource>
       <dataSet
             defaultDisplayName="%data.set.name"
-            id="org.webcat.oda.core.dataSet">
+            id="net.sf.webcat.oda.core.dataSet">
          <properties>
             <propertyGroup
                   defaultDisplayName="Data Set Properties"
