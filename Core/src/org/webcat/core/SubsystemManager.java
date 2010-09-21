@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManager.java,v 1.2 2010/09/16 18:50:50 aallowat Exp $
+ |  $Id: SubsystemManager.java,v 1.3 2010/09/21 18:37:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * framework or a separate jar file that contains a framework.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubsystemManager.java,v 1.2 2010/09/16 18:50:50 aallowat Exp $
+ *  @version $Id: SubsystemManager.java,v 1.3 2010/09/21 18:37:20 stedwar2 Exp $
  */
 public class SubsystemManager
 {
@@ -230,7 +230,10 @@ public class SubsystemManager
         }
         catch ( Exception e )
         {
-            log.error( "Exception loading subsystem:", e );
+            System.out.println( "Exception loading subsystem "
+                + name + " from class " + className + ".");
+            log.error( "Exception loading subsystem "
+                + name + " from class " + className + ":", e );
         }
     }
 
