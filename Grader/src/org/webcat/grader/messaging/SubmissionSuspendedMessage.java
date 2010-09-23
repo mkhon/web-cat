@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionSuspendedMessage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SubmissionSuspendedMessage.java,v 1.2 2010/09/23 23:55:14 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $ $Date: 2010/09/23 23:55:14 $
  */
 public class SubmissionSuspendedMessage extends Message
 {
@@ -118,9 +118,24 @@ public class SubmissionSuspendedMessage extends Message
     @Override
     public String title()
     {
+        String username = "<no user>";
+        String submitNumber = "<no submit number>";
+
+        if (submission != null)
+        {
+            if (submission.user() != null)
+            {
+                username = submission.user().userName();
+            }
+
+            if (submission.submitNumberRaw() != null)
+            {
+                submitNumber = Integer.toString(submission.submitNumber());
+            }
+        }
+
         return "[Grader] Grading error: "
-            + submission.user().userName() + " #"
-            + submission.submitNumber();
+            + username + " #" + submitNumber;
     }
 
 
@@ -128,7 +143,15 @@ public class SubmissionSuspendedMessage extends Message
     @Override
     public NSArray<User> users()
     {
-        return submission.assignmentOffering().courseOffering().instructors();
+        if (submission != null && submission.assignmentOffering() != null &&
+                submission.assignmentOffering().courseOffering() != null)
+        {
+            return submission.assignmentOffering().courseOffering().instructors();
+        }
+        else
+        {
+            return new NSArray<User>();
+        }
     }
 
 
