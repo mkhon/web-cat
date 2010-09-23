@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCChartTheme.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: WCChartTheme.java,v 1.2 2010/09/23 23:32:29 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.webcat.core.Theme;
  * Web-CAT theme.
  *
  * @author Tony Allevato
- * @version $Id: WCChartTheme.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @version $Id: WCChartTheme.java,v 1.2 2010/09/23 23:32:29 aallowat Exp $
  */
 public class WCChartTheme extends StandardChartTheme
 {
@@ -59,7 +59,14 @@ public class WCChartTheme extends StandardChartTheme
     {
         super("Web-CAT");
 
-        this.theme = theme;
+        if (theme != null)
+        {
+            this.theme = theme;
+        }
+        else
+        {
+            this.theme = Theme.defaultTheme();
+        }
 
         // Use the font that we currently have as the default Web-CAT font.
 
