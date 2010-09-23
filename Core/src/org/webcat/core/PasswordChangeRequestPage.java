@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PasswordChangeRequestPage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: PasswordChangeRequestPage.java,v 1.2 2010/09/23 23:43:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: PasswordChangeRequestPage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @version $Id: PasswordChangeRequestPage.java,v 1.2 2010/09/23 23:43:33 stedwar2 Exp $
  */
 public class PasswordChangeRequestPage
     extends WOComponent
@@ -185,7 +185,7 @@ public class PasswordChangeRequestPage
                         new ErrorDictionaryPanel.ErrorMessage(
                             Status.ERROR,
                             "Multiple accounts are registered for your "
-                            + "user name!  Contact your Web-CAT "
+                            + "e-mail address!  Contact your Web-CAT "
                             + "administrator for help.", false ), "5" );
                 }
                 finally
