@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.3 2010/09/16 18:51:55 aallowat Exp $
+ |  $Id: Application.java,v 1.4 2010/09/24 19:06:06 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -81,7 +81,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2010/09/16 18:51:55 $
+ * @version $Revision: 1.4 $, $Date: 2010/09/24 19:06:06 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -1336,7 +1336,7 @@ public class Application
     static public void sendSimpleEmail( String to,
                                         String subject,
                                         String body,
-                                        NSDictionary<String, NSData> attachments)
+                                        NSDictionary<String, String> attachments)
     {
         sendSimpleEmail(new NSArray<String>(to), subject, body,
                 attachments);
@@ -1372,7 +1372,7 @@ public class Application
     static public void sendSimpleEmail( NSArray<String> to,
                                         String subject,
                                         String body,
-                                        NSDictionary<String, NSData> attachments)
+                                        NSDictionary<String, String> attachments)
     {
         try
         {
@@ -1421,19 +1421,18 @@ public class Application
             {
                 for (String filename : attachments.allKeys())
                 {
-                    NSData attachmentData = attachments.objectForKey(filename);
-                    File file = new File(filename);
+                    String attachmentPath = attachments.objectForKey(filename);
+                    File file = new File(attachmentPath);
 
                     // Create another body part
                     messageBodyPart = new MimeBodyPart();
 
                     // Don't include files bigger than this as e-mail
                     // attachments
-                    if ( attachmentData.length() < maxAttachmentSize )
+                    if ( file.length() < maxAttachmentSize )
                     {
                         // Get the attachment
-                        DataSource source = new NSDataDataSource(
-                                file.getName(), attachmentData);
+                        FileDataSource source = new FileDataSource(file);
 
                         // Set the data handler to the attachment
                         messageBodyPart.setDataHandler(
@@ -1449,7 +1448,7 @@ public class Application
                                 "File "
                                 + file.getName()
                                 + " has been omitted from this message ("
-                                + attachmentData.length()
+                                + file.length()
                                 + " bytes)\n"
                             );
                     }

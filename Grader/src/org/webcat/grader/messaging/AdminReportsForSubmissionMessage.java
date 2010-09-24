@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdminReportsForSubmissionMessage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: AdminReportsForSubmissionMessage.java,v 1.2 2010/09/24 19:06:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -44,7 +44,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:40 $
+ * @version $Revision: 1.2 $ $Date: 2010/09/24 19:06:05 $
  */
 public class AdminReportsForSubmissionMessage extends SysAdminMessage
 {
@@ -56,38 +56,11 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
     {
         this.submission = submission;
 
-        this.attachments = new NSMutableDictionary<String, NSData>();
+        this.attachments = new NSMutableDictionary<String, String>();
 
         for (String path : attachmentPaths)
         {
-            File file = new File(path);
-            FileInputStream stream = null;
-
-            try
-            {
-                stream = new FileInputStream(file);
-                NSData data = new NSData(stream, 0);
-
-                attachments.setObjectForKey(data, file.getName());
-            }
-            catch (IOException e)
-            {
-                // Do nothing.
-            }
-            finally
-            {
-                try
-                {
-                    if (stream != null)
-                    {
-                        stream.close();
-                    }
-                }
-                catch (IOException e)
-                {
-                    // Do nothing.
-                }
-            }
+            attachments.setObjectForKey(path, new File(path).getName());
         }
     }
 
@@ -140,7 +113,7 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
 
     // ----------------------------------------------------------
     @Override
-    public NSDictionary<String, NSData> attachments()
+    public NSDictionary<String, String> attachments()
     {
         return attachments;
     }
@@ -157,5 +130,5 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
     //~ Static/instance variables .............................................
 
     private Submission submission;
-    private NSMutableDictionary<String, NSData> attachments;
+    private NSMutableDictionary<String, String> attachments;
 }

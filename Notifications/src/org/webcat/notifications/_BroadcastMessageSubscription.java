@@ -151,7 +151,7 @@ public abstract class _BroadcastMessageSubscription
     // To-one relationships ---
     // To-many relationships ---
     // Fetch specifications ---
-    public static final String ENABLED_SUBSCRIPTIONS_FOR_MESSAGE_TYPE_FSPEC = "enabledSubscriptionsForMessageType";
+    public static final String SUBSCRIPTIONS_FOR_MESSAGE_TYPE_FSPEC = "subscriptionsForMessageType";
     public static final String ENTITY_NAME = "BroadcastMessageSubscription";
 
 
@@ -752,20 +752,20 @@ public abstract class _BroadcastMessageSubscription
 
     // ----------------------------------------------------------
     /**
-     * Retrieve objects according to the <code>enabledSubscriptionsForMessageType</code>
+     * Retrieve objects according to the <code>subscriptionsForMessageType</code>
      * fetch specification.
      *
      * @param context The editing context to use
      * @param messageTypeBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<BroadcastMessageSubscription> enabledSubscriptionsForMessageType(
+    public static NSArray<BroadcastMessageSubscription> subscriptionsForMessageType(
             EOEditingContext context,
             String messageTypeBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "enabledSubscriptionsForMessageType", "BroadcastMessageSubscription" );
+            .fetchSpecificationNamed( "subscriptionsForMessageType", "BroadcastMessageSubscription" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
@@ -781,7 +781,7 @@ public abstract class _BroadcastMessageSubscription
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "enabledSubscriptionsForMessageType(ec"
+            log.debug( "subscriptionsForMessageType(ec"
                 + ", " + messageTypeBinding
                 + "): " + result );
         }

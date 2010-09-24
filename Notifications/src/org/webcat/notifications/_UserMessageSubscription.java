@@ -154,7 +154,7 @@ public abstract class _UserMessageSubscription
         new ERXKey<org.webcat.core.User>(USER_KEY);
     // To-many relationships ---
     // Fetch specifications ---
-    public static final String ENABLED_SUBSCRIPTIONS_FOR_MESSAGE_TYPE_AND_USER_FSPEC = "enabledSubscriptionsForMessageTypeAndUser";
+    public static final String SUBSCRIPTIONS_FOR_MESSAGE_TYPE_AND_USER_FSPEC = "subscriptionsForMessageTypeAndUser";
     public static final String SUBSCRIPTIONS_FOR_USER_FSPEC = "subscriptionsForUser";
     public static final String ENTITY_NAME = "UserMessageSubscription";
 
@@ -817,7 +817,7 @@ public abstract class _UserMessageSubscription
 
     // ----------------------------------------------------------
     /**
-     * Retrieve objects according to the <code>enabledSubscriptionsForMessageTypeAndUser</code>
+     * Retrieve objects according to the <code>subscriptionsForMessageTypeAndUser</code>
      * fetch specification.
      *
      * @param context The editing context to use
@@ -825,14 +825,14 @@ public abstract class _UserMessageSubscription
      * @param userBinding fetch spec parameter
      * @return an NSArray of the entities retrieved
      */
-    public static NSArray<UserMessageSubscription> enabledSubscriptionsForMessageTypeAndUser(
+    public static NSArray<UserMessageSubscription> subscriptionsForMessageTypeAndUser(
             EOEditingContext context,
             String messageTypeBinding,
             org.webcat.core.User userBinding
         )
     {
         EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "enabledSubscriptionsForMessageTypeAndUser", "UserMessageSubscription" );
+            .fetchSpecificationNamed( "subscriptionsForMessageTypeAndUser", "UserMessageSubscription" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
@@ -853,7 +853,7 @@ public abstract class _UserMessageSubscription
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug( "enabledSubscriptionsForMessageTypeAndUser(ec"
+            log.debug( "subscriptionsForMessageTypeAndUser(ec"
                 + ", " + messageTypeBinding
                 + ", " + userBinding
                 + "): " + result );
