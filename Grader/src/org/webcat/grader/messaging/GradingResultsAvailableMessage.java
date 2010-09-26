@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingResultsAvailableMessage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GradingResultsAvailableMessage.java,v 1.2 2010/09/26 16:24:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -36,8 +36,8 @@ import com.webobjects.foundation.NSMutableDictionary;
  * results are available.
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:40 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $ $Date: 2010/09/26 16:24:17 $
  */
 public class GradingResultsAvailableMessage extends Message
 {
@@ -93,8 +93,8 @@ public class GradingResultsAvailableMessage extends Message
             new NSMutableDictionary<String, String>();
 
         links.setObjectForKey(
-                properties.stringForKey("${submission.result.link}"),
-                "Click here to log in to Web-CAT and view the report");
+                properties.stringForKey("submission.result.link"),
+                "View your feedback");
 
         return links;
     }
