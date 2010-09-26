@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: AssignmentOffering.java,v 1.3 2010/09/26 16:25:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -42,8 +42,8 @@ import org.webcat.grader.graphs.*;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/26 16:25:43 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -419,7 +419,7 @@ public class AssignmentOffering
             editingContext(), this, user);
         if (subs.count() > 0)
         {
-            newest = subs.objectAtIndex(0);
+            newest = subs.objectAtIndex(subs.count() - 1);
         }
         return newest;
     }
