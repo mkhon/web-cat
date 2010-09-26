@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.3 2010/09/26 16:43:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * confirmation before making it "official".
  *
  * @author Amit Kulkarni
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/26 16:43:45 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -99,12 +99,13 @@ public class ConfirmSubmissionPage
             // NSArray field.  This array is an array of ZipEntry objects.
             try
             {
-                submissionInProcess().setUploadedFileList( new NSArray(
-                    ArchiveManager.getInstance().getContents(
-                        submissionInProcess().uploadedFileName(),
-                        submissionInProcess().uploadedFile().stream(),
-                        submissionInProcess().uploadedFile().length()
-                    ) ) );
+                submissionInProcess().setUploadedFileList(
+                    new NSArray<IArchiveEntry>(
+                        ArchiveManager.getInstance().getContents(
+                            submissionInProcess().uploadedFileName(),
+                            submissionInProcess().uploadedFile().stream(),
+                            submissionInProcess().uploadedFile().length()
+                        )));
             }
             catch ( Exception e )
             {
@@ -143,7 +144,7 @@ public class ConfirmSubmissionPage
     // ----------------------------------------------------------
     public boolean singleFile()
     {
-        NSArray list = submissionInProcess().uploadedFileList();
+        NSArray<IArchiveEntry> list = submissionInProcess().uploadedFileList();
         return list == null || list.count() <= 1;
     }
 

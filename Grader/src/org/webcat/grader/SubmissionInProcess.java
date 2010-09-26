@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionInProcess.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: SubmissionInProcess.java,v 1.3 2010/09/26 16:43:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,6 +23,7 @@ package org.webcat.grader;
 
 import com.webobjects.foundation.*;
 import java.io.*;
+import org.webcat.archives.IArchiveEntry;
 import org.webcat.core.User;
 
 //-------------------------------------------------------------------------
@@ -31,7 +32,7 @@ import org.webcat.core.User;
  * that has been started (but not yet completed).
  *
  * @author stedwar2
- * @version $Id: SubmissionInProcess.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ * @version $Id: SubmissionInProcess.java,v 1.3 2010/09/26 16:43:45 stedwar2 Exp $
  */
 public class SubmissionInProcess
 {
@@ -125,7 +126,7 @@ public class SubmissionInProcess
      * current uploaded file (if it is a zip or jar).
      * @return A list of its files
      */
-    public NSArray uploadedFileList()
+    public NSArray<IArchiveEntry> uploadedFileList()
     {
         return uploadedFileList;
     }
@@ -136,7 +137,7 @@ public class SubmissionInProcess
      * Set the current uploaded file's list of internal contents.
      * @param list An array of files contained within this zip or jar
      */
-    public void setUploadedFileList( NSArray list )
+    public void setUploadedFileList( NSArray<IArchiveEntry> list )
     {
         uploadedFileList = list;
     }
@@ -232,9 +233,9 @@ public class SubmissionInProcess
 
     //~ Instance/static variables .............................................
 
-    private NSData  uploadedFile;
-    private String  uploadedFileName;
-    private NSArray uploadedFileList;
-    private Submission submission;
-    private NSArray<User> partners;
+    private NSData                 uploadedFile;
+    private String                 uploadedFileName;
+    private NSArray<IArchiveEntry> uploadedFileList;
+    private Submission             submission;
+    private NSArray<User>          partners;
 }
