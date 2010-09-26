@@ -5,6 +5,7 @@ use warnings;
 use strict;
 use Carp;
 use File::stat;
+use Web_CAT::Utilities qw(htmlEscape);
 
 #========================================================================
 #                      -----  PUBLIC METHODS -----
@@ -195,7 +196,6 @@ sub allTestsFail
     my $self = shift;
     return ( $self->testsExecuted > 0 )
         && ( $self->testsFailed == $self->testsExecuted );
-    
 }
 
 
@@ -261,7 +261,7 @@ sub formatHints
         while ( $limit >0 && $#hints >= 0 )
         {
             my $hint = pop( @hints );
-            $result .= "<li><p>" . $hint->{'text'};
+            $result .= "<li><p>" . htmlEscape($hint->{'text'});
             if ( $hint->{'count'} > 1 )
             {
                 $result .= " (" . $hint->{'count'} . " occurrences)";
@@ -269,7 +269,8 @@ sub formatHints
             $result .= "</p>\n";
             if ( defined $hint->{'trace'} )
             {
-                $result .= "<pre>\n" . $hint->{'trace'} . "</pre>\n";
+                $result .= "<pre>\n" . htmlEscape($hint->{'trace'})
+                    . "</pre>\n";
             }
             $result .= "</li>";
 
