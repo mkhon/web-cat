@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionSuspendedMessage.java,v 1.3 2010/09/24 19:06:05 aallowat Exp $
+ |  $Id: SubmissionSuspendedMessage.java,v 1.4 2010/09/26 16:23:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,15 +22,10 @@
 package org.webcat.grader.messaging;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Vector;
-import org.apache.log4j.Logger;
 import org.webcat.core.User;
 import org.webcat.core.messaging.Message;
 import org.webcat.grader.Submission;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 
@@ -40,8 +35,8 @@ import com.webobjects.foundation.NSMutableDictionary;
  * submission is suspended due to a technical fault.
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.3 $ $Date: 2010/09/24 19:06:05 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.4 $ $Date: 2010/09/26 16:23:53 $
  */
 public class SubmissionSuspendedMessage extends Message
 {
