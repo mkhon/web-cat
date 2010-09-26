@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultInfo.java,v 1.3 2010/09/15 17:14:21 aallowat Exp $
+ |  $Id: SubmissionResultInfo.java,v 1.4 2010/09/26 16:46:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -42,8 +42,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- *  @author  latest changes by: $Author: aallowat $
- *  @version $Revision: 1.3 $, $Date: 2010/09/15 17:14:21 $
+ *  @author  latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.4 $, $Date: 2010/09/26 16:46:13 $
  */
 public class SubmissionResultInfo
     extends GraderComponent
@@ -111,11 +111,11 @@ public class SubmissionResultInfo
 
         NSArray<User> partnersToRemove = ERXArrayUtilities.arrayMinusArray(
                 originalPartners, partnersForEditing);
-        submission.unpartnerFromUsers(partnersToRemove, localContext());
+        submission.unpartnerFrom(partnersToRemove);
 
         NSArray<User> partnersToAdd = ERXArrayUtilities.arrayMinusArray(
                 partnersForEditing, originalPartners);
-        submission.partnerWithUsers(partnersToAdd, localContext());
+        submission.partnerWith(partnersToAdd);
 
         applyLocalChanges();
 

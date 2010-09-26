@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPartnersPage.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: EditPartnersPage.java,v 1.3 2010/09/26 16:46:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.webcat.core.*;
  * results).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/14 18:24:24 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/26 16:46:13 $
  */
 public class EditPartnersPage
     extends GraderComponent
@@ -118,7 +118,7 @@ public class EditPartnersPage
     {
         // Don't need the return value: we just want it to be created, and
         // partnerSubmission() will save the changes to the DB
-        result.submission().partnerSubmission(student, localContext());
+        result.submission().partnerWith(student);
         applyLocalChanges();
         return null;
     }
