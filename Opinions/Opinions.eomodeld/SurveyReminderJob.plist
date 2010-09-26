@@ -64,6 +64,11 @@
             prototypeName = mediumText; 
         }, 
         {columnName = scheduledTime; name = scheduledTime; prototypeName = dateTime; }, 
+        {
+            columnName = suspensionReason; 
+            name = suspensionReason; 
+            prototypeName = mediumText; 
+        }, 
         {columnName = userId; name = userId; prototypeName = foreignId; }, 
         {columnName = workerId; name = workerId; prototypeName = foreignId; }
     ); 
@@ -74,6 +79,7 @@
         isReady, 
         priority, 
         progressMessage, 
+        suspensionReason, 
         userId, 
         workerId
     ); 
@@ -89,6 +95,7 @@
         progress, 
         progressMessage, 
         scheduledTime, 
+        suspensionReason, 
         user, 
         worker
     ); 

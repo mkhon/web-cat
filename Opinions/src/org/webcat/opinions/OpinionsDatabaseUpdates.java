@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsDatabaseUpdates.java,v 1.1 2010/05/11 14:51:45 aallowat Exp $
+ |  $Id: OpinionsDatabaseUpdates.java,v 1.2 2010/09/26 17:20:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.dbupdate.UpdateSet;
  * output for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:45 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/26 17:20:51 $
  */
 public class OpinionsDatabaseUpdates
     extends UpdateSet
@@ -62,6 +62,18 @@ public class OpinionsDatabaseUpdates
     {
         createSurveyReminderJobTable();
         createSurveyResponseTable();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Changes course CRNs to strings.
+     * @throws SQLException on error
+     */
+    public void updateIncrement1() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSurveyReminderJob add suspensionReason MEDIUMTEXT" );
     }
 
 

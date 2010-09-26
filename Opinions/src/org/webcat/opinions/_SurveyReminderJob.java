@@ -62,11 +62,11 @@ public abstract class _SurveyReminderJob
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
-     * @param enqueueTime
-     * @param isCancelled
-     * @param isPaused
-     * @param isReady
-     * @param priority
+     * @param enqueueTimeValue
+     * @param isCancelledValue
+     * @param isPausedValue
+     * @param isReadyValue
+     * @param priorityValue
      * @return The newly created object
      */
     public static SurveyReminderJob create(
