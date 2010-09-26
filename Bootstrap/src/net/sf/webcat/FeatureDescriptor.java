@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.7 2010/09/16 18:49:16 aallowat Exp $
+ |  $Id: FeatureDescriptor.java,v 1.8 2010/09/26 22:31:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,6 @@ package net.sf.webcat;
 
 import java.io.*;
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.util.*;
 
 // -------------------------------------------------------------------------
@@ -34,7 +33,8 @@ import java.util.*;
  *  web.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureDescriptor.java,v 1.7 2010/09/16 18:49:16 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.8 $, $Date: 2010/09/26 22:31:30 $
  */
 public class FeatureDescriptor
 {

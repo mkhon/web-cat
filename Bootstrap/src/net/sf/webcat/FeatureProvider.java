@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureProvider.java,v 1.7 2010/09/16 18:49:16 aallowat Exp $
+ |  $Id: FeatureProvider.java,v 1.8 2010/09/26 22:31:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,8 @@ import java.util.*;
  *  site for obtaining dynamic updates.
  *
  *  @author  stedwar2
- *  @version $Id: FeatureProvider.java,v 1.7 2010/09/16 18:49:16 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.8 $, $Date: 2010/09/26 22:31:30 $
  */
 public class FeatureProvider
 {
@@ -48,10 +49,10 @@ public class FeatureProvider
     private FeatureProvider( URL url, InputStream stream )
     {
         this.url = url;
-        subsystems = new HashMap();
-        renamedSubsystems = new HashMap();
-        plugins = new HashMap();
-        renamedPlugins = new HashMap();
+        subsystems = new HashMap<String, FeatureDescriptor>();
+        renamedSubsystems = new HashMap<String, String>();
+        plugins = new HashMap<String, FeatureDescriptor>();
+        renamedPlugins = new HashMap<String, String>();
         loadProperties( stream );
     }
 
@@ -68,7 +69,7 @@ public class FeatureProvider
         URL realURL = baseURLFor( url );
         if ( realURL != null )
         {
-            provider = (FeatureProvider)providerRegistry.get( realURL );
+            provider = providerRegistry.get( realURL );
             if ( provider == null )
             {
                 try
@@ -100,7 +101,7 @@ public class FeatureProvider
      * Get the collection of all registered providers.
      * @return the collection of providers
      */
-    public static Collection providers()
+    public static Collection<FeatureProvider> providers()
     {
         return providerRegistry.values();
     }
@@ -159,12 +160,12 @@ public class FeatureProvider
      */
     public FeatureDescriptor subsystemDescriptor( String subsystemName )
     {
-        String newName = (String)renamedSubsystems.get( subsystemName );
+        String newName = renamedSubsystems.get( subsystemName );
         if ( newName != null )
         {
             subsystemName = newName;
         }
-        return (FeatureDescriptor)subsystems.get( subsystemName );
+        return subsystems.get( subsystemName );
     }
 
 
@@ -177,12 +178,12 @@ public class FeatureProvider
      */
     public FeatureDescriptor pluginDescriptor( String pluginName )
     {
-        String newName = (String)renamedPlugins.get( pluginName );
+        String newName = renamedPlugins.get( pluginName );
         if ( newName != null )
         {
             pluginName = newName;
         }
-        return (FeatureDescriptor)plugins.get( pluginName );
+        return plugins.get( pluginName );
     }
 
 
@@ -191,7 +192,7 @@ public class FeatureProvider
      * Get the collection of subsystems provided by this provider.
      * @return the provided subsystems as a collection of descriptors
      */
-    public Collection subsystems()
+    public Collection<FeatureDescriptor> subsystems()
     {
         return subsystems.values();
     }
@@ -202,7 +203,7 @@ public class FeatureProvider
      * Get the collection of plugins provided by this provider.
      * @return the provided plugins as a collection of descriptors
      */
-    public Collection plugins()
+    public Collection<FeatureDescriptor> plugins()
     {
         return plugins.values();
     }
@@ -215,8 +216,8 @@ public class FeatureProvider
      */
     public void refresh()
     {
-        subsystems = new HashMap();
-        plugins = new HashMap();
+        subsystems = new HashMap<String, FeatureDescriptor>();
+        plugins = new HashMap<String, FeatureDescriptor>();
         try
         {
             InputStream stream =
@@ -253,7 +254,7 @@ public class FeatureProvider
             System.out.println( e );
         }
         name = properties.getProperty( "provider.name", url.toString() );
-        for ( Enumeration e = properties.keys(); e.hasMoreElements(); )
+        for ( Enumeration<?> e = properties.keys(); e.hasMoreElements(); )
         {
             String key = (String)e.nextElement();
             if ( key.startsWith( FeatureDescriptor.SUBSYSTEM_NAME_PREFIX )
@@ -341,7 +342,7 @@ public class FeatureProvider
             {
                 result = new URL( updateUrl );
             }
-            catch ( java.net.MalformedURLException e)
+            catch (java.net.MalformedURLException e)
             {
                 System.out.println( "FeatureProvider: ERROR: Malformed "
                     + "feature provider URL: " + updateUrl );
@@ -356,10 +357,11 @@ public class FeatureProvider
     private URL url;
     private String name;
     private Properties properties;
-    private Map subsystems;
-    private Map renamedSubsystems;
-    private Map plugins;
-    private Map renamedPlugins;
-    private static Map providerRegistry = new HashMap();
+    private Map<String, FeatureDescriptor> subsystems;
+    private Map<String, String> renamedSubsystems;
+    private Map<String, FeatureDescriptor> plugins;
+    private Map<String, String> renamedPlugins;
+    private static Map<URL, FeatureProvider> providerRegistry =
+        new HashMap<URL, FeatureProvider>();
     private static final String UPDATE_PROPERTIES_FILE = "update.properties";
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemUpdater.java,v 1.4 2010/09/16 18:49:16 aallowat Exp $
+ |  $Id: SubsystemUpdater.java,v 1.5 2010/09/26 22:31:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,8 @@ import java.util.Properties;
  *  available from its provider.
  *
  *  @author  stedwar2
- *  @version $Id: SubsystemUpdater.java,v 1.4 2010/09/16 18:49:16 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.5 $, $Date: 2010/09/26 22:31:30 $
  */
 public class SubsystemUpdater
     extends FeatureDescriptor
@@ -141,7 +142,7 @@ public class SubsystemUpdater
                            e );
             }
         }
-        for ( Enumeration e = properties.keys(); e.hasMoreElements(); )
+        for ( Enumeration<?> e = properties.keys(); e.hasMoreElements(); )
         {
             String key = (String)e.nextElement();
             if ( key.startsWith( SUBSYSTEM_NAME_PREFIX ) )

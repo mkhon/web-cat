@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletContext.java,v 1.9 2010/09/16 18:49:16 aallowat Exp $
+ |  $Id: WCServletContext.java,v 1.10 2010/09/26 22:31:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import javax.servlet.*;
  *  the WOClasspath parameter is queried.
  *
  *  @author  stedwar2
- *  @version $Id: WCServletContext.java,v 1.9 2010/09/16 18:49:16 aallowat Exp $
+ *  @version $Id: WCServletContext.java,v 1.10 2010/09/26 22:31:30 stedwar2 Exp $
  */
 public class WCServletContext
     implements ServletContext
@@ -190,6 +190,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#getResourcePaths(java.lang.String)
      */
+    @SuppressWarnings("unchecked")
     public Set getResourcePaths( String arg0 )
     {
         return innerContext.getResourcePaths( arg0 );
@@ -254,6 +255,7 @@ public class WCServletContext
      * @see javax.servlet.ServletContext#getServlets()
      */
     @Deprecated
+    @SuppressWarnings("unchecked")
     public Enumeration getServlets()
     {
         return innerContext.getServlets();
@@ -265,6 +267,7 @@ public class WCServletContext
      * @see javax.servlet.ServletContext#getServletNames()
      */
     @Deprecated
+    @SuppressWarnings("unchecked")
     public Enumeration getServletNames()
     {
         return innerContext.getServletNames();
@@ -326,6 +329,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#getInitParameterNames()
      */
+    @SuppressWarnings("unchecked")
     public Enumeration getInitParameterNames()
     {
         return innerContext.getInitParameterNames();
@@ -346,6 +350,7 @@ public class WCServletContext
     /* (non-Javadoc)
      * @see javax.servlet.ServletContext#getAttributeNames()
      */
+    @SuppressWarnings("unchecked")
     public Enumeration getAttributeNames()
     {
         return innerContext.getAttributeNames();

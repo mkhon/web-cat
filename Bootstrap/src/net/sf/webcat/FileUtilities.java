@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.6 2010/09/16 18:49:16 aallowat Exp $
+ |  $Id: FileUtilities.java,v 1.7 2010/09/26 22:31:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,12 +27,11 @@ import java.util.zip.*;
 
 // -------------------------------------------------------------------------
 /**
- *  TODO Write a one-sentence summary of your class here.
- *  TODO Follow it with additional details about its purpose, what abstraction
- *  it represents, and how to use it.
+ *  Provides utility methods for manipulating files and directories.
  *
  *  @author  stedwar2
- *  @version May 18, 2006
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.7 $, $Date: 2010/09/26 22:31:30 $
  */
 public class FileUtilities
 {
@@ -66,10 +65,10 @@ public class FileUtilities
     public static void unZip( ZipFile zipFile, File outputDir )
         throws java.io.IOException
     {
-        Enumeration e = zipFile.entries();
+        Enumeration<? extends ZipEntry> e = zipFile.entries();
         while ( e.hasMoreElements() )
         {
-            ZipEntry entry = (ZipEntry)e.nextElement();
+            ZipEntry entry = e.nextElement();
             File entryFile = new File( outputDir, entry.getName() );
             if ( entry.isDirectory() )
             {
@@ -170,7 +169,7 @@ public class FileUtilities
      * @return true if the directory was removed, false if it was not
      *  (because at least some of its contents were preserved).
      */
-    public static boolean deleteDirectory( File dir, Map preserve )
+    public static boolean deleteDirectory( File dir, Map<String, ?> preserve )
     {
         if ( dir == null || !dir.exists() ) return true;
         File[] files = dir.listFiles();
