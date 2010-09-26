@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderPrefs.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderPrefs.java,v 1.2 2010/09/26 16:42:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -29,8 +29,8 @@ import org.apache.log4j.Level;
  * so on used in navigation.
  *
  * @author stedwar2
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:40 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $ $Date: 2010/09/26 16:42:00 $
  */
 public class GraderPrefs
     extends _GraderPrefs
@@ -93,6 +93,22 @@ public class GraderPrefs
             }
             return super.assignmentOffering();
         }
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void setAssignmentOffering(AssignmentOffering value)
+    {
+        Assignment oldAssignment = super.assignment();
+        // Clear the "assignment" pref (which represents "all offerings" of
+        // some assignment) if a specific assignment offering is being
+        // set.
+        if (value != null && oldAssignment != null)
+        {
+            super.setAssignmentRelationship(null);
+        }
+        super.setAssignmentOffering(value);
     }
 
 
