@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCD2WNoPWAssignment.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: WCD2WNoPWAssignment.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.admin;
 
 import com.webobjects.eocontrol.*;
-import com.webobjects.directtoweb.*;
 import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
 
@@ -33,8 +32,9 @@ import org.apache.log4j.Logger;
  *  sets up the cache-significant keys for DirectToWeb use in its
  *  static initializer.
  *
- *  @author edwards
- *  @version $Id: WCD2WNoPWAssignment.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class WCD2WNoPWAssignment
     extends WCD2WAssignment
@@ -46,10 +46,10 @@ public class WCD2WNoPWAssignment
      * Creates a new WCD2WAssignment object.
      * @param unarchiver
      */
-    public WCD2WNoPWAssignment( EOKeyValueUnarchiver unarchiver )
+    public WCD2WNoPWAssignment(EOKeyValueUnarchiver unarchiver)
     {
-        super( unarchiver );
-        log.debug( "constructor( " + unarchiver + " )" );
+        super(unarchiver);
+        log.debug("constructor( " + unarchiver + " )");
     }
 
 
@@ -59,10 +59,10 @@ public class WCD2WNoPWAssignment
      * @param keyPath
      * @param value
      */
-    public WCD2WNoPWAssignment( String keyPath, String value )
+    public WCD2WNoPWAssignment(String keyPath, String value)
     {
-        super( keyPath, value );
-        log.debug( "constructor( " + keyPath + ", " + value + " )" );
+        super(keyPath, value);
+        log.debug("constructor( " + keyPath + ", " + value + " )");
     }
 
 
@@ -78,17 +78,17 @@ public class WCD2WNoPWAssignment
         EOKeyValueUnarchiver eokeyvalueunarchiver
     )
     {
-        return new WCD2WNoPWAssignment( eokeyvalueunarchiver );
+        return new WCD2WNoPWAssignment(eokeyvalueunarchiver);
     }
 
 
     /*
     // ----------------------------------------------------------
-    public Object fire( D2WContext context )
+    public Object fire(D2WContext context)
     {
-        log.debug( "fire()" );
-        Object result = super.fire( context );
-        log.debug( "fire() = " + result );
+        log.debug("fire()");
+        Object result = super.fire(context);
+        log.debug("fire() = " + result);
         return result;
     }
     */
@@ -100,36 +100,30 @@ public class WCD2WNoPWAssignment
      * that start with "password" removed.
      * @return the property key list
      */
-    public NSArray defaultPropertyKeysFromEntity()
+    public NSArray<String> defaultPropertyKeysFromEntity()
     {
-        log.debug( "defaultPropertyKeysFromEntity()" );
-        NSArray superResult = super.defaultPropertyKeysFromEntity();
-        NSMutableArray result =
-            ( superResult instanceof NSMutableArray )
-            ? (NSMutableArray)superResult
-            : new NSMutableArray( superResult );
-        log.debug( "super = " + result );
-        for ( int i = 0; i < result.count(); i++ )
+        log.debug("defaultPropertyKeysFromEntity()");
+        NSArray<String> superResult = super.defaultPropertyKeysFromEntity();
+        NSMutableArray<String> result =
+            (superResult instanceof NSMutableArray)
+                ? (NSMutableArray<String>)superResult
+                : new NSMutableArray<String>(superResult);
+        log.debug("super = " + result);
+        for (int i = 0; i < result.count(); i++)
         {
-            String key = (String)result.objectAtIndex( i );
-            if ( key != null && ( key.startsWith( "password" ) ) )
+            String key = result.objectAtIndex(i);
+            if (key != null && (key.startsWith("password")))
             {
-                result.removeObjectAtIndex( i );
+                result.removeObjectAtIndex(i);
                 i--;
             }
         }
-        log.debug( "result = " + result );
+        log.debug("result = " + result);
         return result;
     }
 
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( WCD2WNoPWAssignment.class );
-
-    // Sets up the cache-significant keys for DirectToWeb use.
-    static
-    {
-        D2W.factory().newSignificantKey( "session.user.accessLevel" );
-    }
+    static Logger log = Logger.getLogger(WCD2WNoPWAssignment.class);
 }

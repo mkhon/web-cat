@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Admin.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: Admin.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,15 +22,15 @@
 package org.webcat.admin;
 
 import org.webcat.core.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
 // -------------------------------------------------------------------------
 /**
  *  The subsystem defining Web-CAT administrative tasks.
  *
- *  @author Stephen Edwards
- *  @version $Id: Admin.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class Admin
     extends Subsystem
@@ -83,5 +83,5 @@ public class Admin
 
     // TODO: this should be refactored into the Subsystem parent class,
     // but that means handling Core in an appropriate way.
-    private static NSArray subsystemTabTemplate;
+    private static NSArray<TabDescriptor> subsystemTabTemplate;
 }

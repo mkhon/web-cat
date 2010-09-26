@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UnitTestPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: UnitTestPage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,18 +22,14 @@
 package org.webcat.admin;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
-import org.apache.log4j.Logger;
-import org.webcat.core.*;
 
 // -------------------------------------------------------------------------
 /**
  * A component for managing log4J settings.
  *
- *  @author edwards
- *  @version $Id: UnitTestPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class UnitTestPage
     extends com.codefab.wounittest.WOUTMain
@@ -46,15 +42,15 @@ public class UnitTestPage
      *
      * @param context The context to use
      */
-    public UnitTestPage( WOContext context )
+    public UnitTestPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
     // ----------------------------------------------------------
     public WOComponent back()
     {
-        return pageWithName( SettingsPage.class.getName() );
+        return pageWithName(SettingsPage.class.getName());
     }
 }

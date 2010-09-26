@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCListPageTemplate.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: WCListPageTemplate.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,19 +22,17 @@
 package org.webcat.admin;
 
 import com.webobjects.appserver.*;
+import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.*;
 import com.webobjects.directtoweb.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.eoaccess.*;
-import er.directtoweb.*;
-import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
  * The template for D2W list pages in Web-CAT.
  *
- * @author edwards
- * @version $Id: WCListPageTemplate.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class WCListPageTemplate
     extends er.directtoweb.pages.ERD2WListPage
@@ -47,9 +45,9 @@ public class WCListPageTemplate
      *
      * @param context The page's context
      */
-    public WCListPageTemplate( WOContext context )
+    public WCListPageTemplate(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -72,17 +70,17 @@ public class WCListPageTemplate
 
 
     // ----------------------------------------------------------
-    public void setLocalContext( D2WContext arg0 )
+    public void setLocalContext(D2WContext arg0)
     {
-        super.setLocalContext( arg0 );
-        if ( setUpSortOrdering )
+        super.setLocalContext(arg0);
+        if (setUpSortOrdering)
         {
           // override default sort ordering with a new one from the
           // d2w properties
-          NSArray sortOrderings = sortOrderings();
-            if ( sortOrderings != null )
+          NSArray<EOSortOrdering> sortOrderings = sortOrderings();
+            if (sortOrderings != null)
             {
-                displayGroup().setSortOrderings( sortOrderings );
+                displayGroup().setSortOrderings(sortOrderings);
             }
             setUpSortOrdering = false;
         }
@@ -90,21 +88,25 @@ public class WCListPageTemplate
 
 
     // ----------------------------------------------------------
-    public NSArray sortOrderings()
+    public NSArray<EOSortOrdering> sortOrderings()
     {
-        NSArray sortOrderings = null;
-        if ( userPreferencesCanSpecifySorting() )
+        NSArray<EOSortOrdering> sortOrderings = null;
+        if (userPreferencesCanSpecifySorting())
         {
-            sortOrderings = (NSArray)
+            @SuppressWarnings("unchecked")
+            NSArray<EOSortOrdering> theOrderings = (NSArray<EOSortOrdering>)
                 userPreferencesValueForPageConfigurationKey("sortOrdering");
-            if ( log.isDebugEnabled() )
+            sortOrderings = theOrderings;
+            if (log.isDebugEnabled())
                 log.debug(
                     "Found sort Orderings in user prefs " + sortOrderings);
         }
         if (sortOrderings == null)
         {
-            sortOrderings = (NSArray)d2wContext().valueForKey(
-                "defaultSortOrdering" );
+            @SuppressWarnings("unchecked")
+            NSArray<EOSortOrdering> theOrderings = (NSArray<EOSortOrdering>)
+                d2wContext().valueForKey("defaultSortOrdering");
+            sortOrderings = theOrderings;
             if (log.isDebugEnabled())
                 log.debug("Found sort Orderings in rules " + sortOrderings);
         }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DisplayClassNameWithoutPackage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: DisplayClassNameWithoutPackage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,8 +31,9 @@ import java.sql.*;
  * {@link er.directtoweb.components.strings.ERD2WDisplayString}
  * for displaying class names--it strips off the leading package qualification.
  *
- *  @author edwards
- *  @version $Id: DisplayClassNameWithoutPackage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class DisplayClassNameWithoutPackage
     extends er.directtoweb.components.strings.ERD2WDisplayString
@@ -45,9 +46,9 @@ public class DisplayClassNameWithoutPackage
      *
      * @param context The context to use
      */
-    public DisplayClassNameWithoutPackage( WOContext context )
+    public DisplayClassNameWithoutPackage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -61,13 +62,13 @@ public class DisplayClassNameWithoutPackage
     public Object objectPropertyValue()
     {
         Object value = super.objectPropertyValue();
-        if ( value != null )
+        if (value != null)
         {
             String str = value.toString();
-            int pos = str.lastIndexOf( '.' );
-            if ( pos >= 0 && pos < str.length() )
+            int pos = str.lastIndexOf('.');
+            if (pos >= 0 && pos < str.length())
             {
-                str = str.substring( pos + 1 );
+                str = str.substring(pos + 1);
                 value = str;
             }
         }

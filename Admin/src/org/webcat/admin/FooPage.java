@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FooPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: FooPage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -28,9 +28,9 @@ import org.apache.log4j.Logger;
 /**
  * A property listing page.
  *
- *  @author edwards
- *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:43 $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class FooPage
     extends WOComponent
@@ -43,20 +43,21 @@ public class FooPage
      *
      * @param context The context to use
      */
-    public FooPage( WOContext context )
+    public FooPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
+    //~ Methods ...............................................................
+
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse arg0, WOContext arg1 )
+    public void appendToResponse(WOResponse response, WOContext context)
     {
-        log.debug( "appendToResponse()" );
-        // TODO Auto-generated method stub
-        super.appendToResponse( arg0, arg1 );
+        log.debug("appendToResponse()");
+        super.appendToResponse(response, context);
     }
 
     //~ Instance/static variables .............................................
-    static Logger log = Logger.getLogger( FooPage.class );
+    static Logger log = Logger.getLogger(FooPage.class);
 }

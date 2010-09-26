@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SettingsPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: SettingsPage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,9 +22,6 @@
 package org.webcat.admin;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -32,8 +29,9 @@ import org.webcat.core.*;
 /**
  * A page for managing application settings.
  *
- *  @author edwards
- *  @version $Id: SettingsPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class SettingsPage
     extends WCComponent
@@ -46,18 +44,12 @@ public class SettingsPage
      *
      * @param context The context to use
      */
-    public SettingsPage( WOContext context )
+    public SettingsPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
-    //~ KVC Attributes (must be public) .......................................
-
-
-
-    //~ Methods ...............................................................
-
     //~ Instance/static variables .............................................
-    static Logger log = Logger.getLogger( SettingsPage.class );
+    static Logger log = Logger.getLogger(SettingsPage.class);
 }

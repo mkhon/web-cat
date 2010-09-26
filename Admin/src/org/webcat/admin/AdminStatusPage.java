@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdminStatusPage.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
+ |  $Id: AdminStatusPage.java,v 1.3 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,17 +23,17 @@ package org.webcat.admin;
 
 import org.webcat.core.*;
 import com.webobjects.appserver.*;
-import com.webobjects.directtoweb.*;
 import er.extensions.appserver.ERXApplication;
 
 //-------------------------------------------------------------------------
 /**
-* Represents a standard Web-CAT page that has not yet been implemented
-* (is "to be defined").
-*
-*  @author Stephen Edwards
-*  @version $Id: AdminStatusPage.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
-*/
+ * Represents a standard Web-CAT page that has not yet been implemented
+ * (is "to be defined").
+ *
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.3 $, $Date: 2010/09/26 23:35:42 $
+ */
 public class AdminStatusPage
     extends WCComponent
 {
@@ -45,9 +45,9 @@ public class AdminStatusPage
      *
      * @param context The context to use
      */
-    public AdminStatusPage( WOContext context )
+    public AdminStatusPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -74,6 +74,6 @@ public class AdminStatusPage
     {
         return net.sf.webcat.WCServletAdaptor.getInstance() == null
             || Application.configurationProperties()
-                .stringForKey( "coreKillAction" ) != null;
+                .stringForKey("coreKillAction") != null;
     }
 }

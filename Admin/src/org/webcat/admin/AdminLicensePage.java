@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdminLicensePage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: AdminLicensePage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.admin;
 
-import org.webcat.core.*;
 import com.webobjects.appserver.*;
 
 // -------------------------------------------------------------------------
@@ -32,8 +31,9 @@ import com.webobjects.appserver.*;
  *  while the other page is bare and is designed to deliver the license
  *  alone via a direct action.
  *
- *  @author edwards
- *  @version $Id: AdminLicensePage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class AdminLicensePage
     extends WOComponent
@@ -46,8 +46,8 @@ public class AdminLicensePage
      *
      * @param context The context to use
      */
-    public AdminLicensePage( WOContext context )
+    public AdminLicensePage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 }

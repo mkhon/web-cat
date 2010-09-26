@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfigureSubsystemPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: ConfigureSubsystemPage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,8 +29,9 @@ import com.webobjects.appserver.*;
  *  Displays the configuration parameters for a given subsystem and
  *  allows the corresponding settings to be edited.
  *
- *  @author  stedwar2
- *  @version $Id: ConfigureSubsystemPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class ConfigureSubsystemPage
     extends WCComponent
@@ -43,9 +44,9 @@ public class ConfigureSubsystemPage
      *
      * @param context The context to use
      */
-    public ConfigureSubsystemPage( WOContext context )
+    public ConfigureSubsystemPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -64,13 +65,13 @@ public class ConfigureSubsystemPage
     {
         boolean result = Application.configurationProperties().attemptToSave();
         Application.configurationProperties().updateToSystemProperties();
-        ( (Application)application() ).subsystemManager()
+        ((Application)application()).subsystemManager()
             .clearSubsystemPropertyCache();
         boolean superResult = super.applyLocalChanges();
-        if ( !result )
+        if (!result)
         {
-            warning( "Cannot write to configuration file, so changes have "
-                + "not been made permanent." );
+            warning("Cannot write to configuration file, so changes have "
+                + "not been made permanent.");
         }
         return  superResult && result;
     }
@@ -101,7 +102,7 @@ public class ConfigureSubsystemPage
     // ----------------------------------------------------------
     public WOComponent finish()
     {
-        if ( applyLocalChanges() )
+        if (applyLocalChanges())
         {
             return nextPage;
         }

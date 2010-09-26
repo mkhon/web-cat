@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.3 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,7 +28,6 @@ import er.extensions.foundation.ERXArrayUtilities;
 import er.extensions.foundation.ERXValueUtilities;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import net.sf.webcat.FeatureDescriptor;
 import net.sf.webcat.FeatureProvider;
 import org.apache.log4j.Logger;
@@ -39,8 +38,9 @@ import org.webcat.core.*;
  *  The main "control panel" page for subsystems in the administration
  *  tab.
  *
- *  @author  stedwar2
- *  @version $Id: SubsystemManagerPage.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.3 $, $Date: 2010/09/26 23:35:42 $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -53,20 +53,20 @@ public class SubsystemManagerPage
      *
      * @param context The context to use
      */
-    public SubsystemManagerPage( WOContext context )
+    public SubsystemManagerPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
     //~ KVC Attributes (must be public) .......................................
 
-    public Subsystem         subsystem;
-    public NSArray           subsystems;
-    public NSArray           newSubsystems;
-    public FeatureDescriptor feature;
-    public int               index;
-    public String            providerURL;
+    public Subsystem                  subsystem;
+    public NSArray<Subsystem>         subsystems;
+    public NSArray<FeatureDescriptor> newSubsystems;
+    public FeatureDescriptor          feature;
+    public int                        index;
+    public String                     providerURL;
 
     public static final String TERSE_DESCRIPTIONS_KEY =
         "terseSubsystemDescriptions";
@@ -75,24 +75,24 @@ public class SubsystemManagerPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void appendToResponse(WOResponse response, WOContext context)
     {
         terse = null;
-        ( (Application)Application.application() ).subsystemManager()
+        ((Application)Application.application()).subsystemManager()
             .refreshSubsystemDescriptorsAndProviders();
         subsystems = ERXArrayUtilities.sortedArraySortedWithKey(
-            ( (Application)Application.application() )
+            ((Application)Application.application())
                 .subsystemManager().subsystems(),
             "name",
-            EOSortOrdering.CompareCaseInsensitiveAscending );
-        if ( newSubsystems == null )
+            EOSortOrdering.CompareCaseInsensitiveAscending);
+        if (newSubsystems == null)
         {
             newSubsystems = ERXArrayUtilities.sortedArraySortedWithKey(
                 newSubsystems(),
                 "name",
-                EOSortOrdering.CompareCaseInsensitiveAscending );
+                EOSortOrdering.CompareCaseInsensitiveAscending);
         }
-        super.appendToResponse( response, context );
+        super.appendToResponse(response, context);
     }
 
 
@@ -117,24 +117,23 @@ public class SubsystemManagerPage
      * @return an array of feature descriptors for available uninstalled
      *         subsystems
      */
-    public NSArray newSubsystems()
+    public NSArray<FeatureDescriptor> newSubsystems()
     {
-        Collection availableSubsystems = new HashSet();
-        for ( Iterator i = FeatureProvider.providers().iterator();
-              i.hasNext(); )
+        Collection<FeatureDescriptor> availableSubsystems =
+            new HashSet<FeatureDescriptor>();
+        for (FeatureProvider provider : FeatureProvider.providers())
         {
-            FeatureProvider provider = (FeatureProvider)i.next();
-            if ( provider != null )
+            if (provider != null)
             {
-                availableSubsystems.addAll( provider.subsystems() );
+                availableSubsystems.addAll(provider.subsystems());
             }
         }
-        for ( int i = 0; i < subsystems.count(); i++ )
+        for (Subsystem s : subsystems)
         {
-            Subsystem s = (Subsystem)subsystems.objectAtIndex( i );
-            availableSubsystems.remove( s.descriptor().providerVersion() );
+            availableSubsystems.remove(s.descriptor().providerVersion());
         }
-        return new NSArray( availableSubsystems.toArray() );
+        return new NSArray<FeatureDescriptor>(
+            (FeatureDescriptor[])availableSubsystems.toArray());
     }
 
 
@@ -158,14 +157,14 @@ public class SubsystemManagerPage
     public WOComponent download()
     {
         String msg = subsystem.descriptor().providerVersion().downloadTo(
-            adaptor().updateDownloadLocation() );
-        possibleErrorMessage( msg );
-        if ( msg == null )
+            adaptor().updateDownloadLocation());
+        possibleErrorMessage(msg);
+        if (msg == null)
         {
-            confirmationMessage( "The subsystem '" + subsystem.name()
+            confirmationMessage("The subsystem '" + subsystem.name()
                 + "' has been downloaded from its provider.  The downloaded "
                 + " version will replace the current version when "
-                + "Web-CAT restarts." );
+                + "Web-CAT restarts.");
         }
         return null;
     }
@@ -179,13 +178,13 @@ public class SubsystemManagerPage
     public WOComponent downloadNew()
     {
         String msg = feature.providerVersion().downloadTo(
-            adaptor().updateDownloadLocation() );
-        possibleErrorMessage( msg );
-        if ( msg == null )
+            adaptor().updateDownloadLocation());
+        possibleErrorMessage(msg);
+        if (msg == null)
         {
-            confirmationMessage( "New subsystem '" + feature.name()
+            confirmationMessage("New subsystem '" + feature.name()
                 + "' has been downloaded from its provider.  It will be "
-                + " installed when Web-CAT restarts." );
+                + " installed when Web-CAT restarts.");
         }
         return null;
     }
@@ -198,16 +197,16 @@ public class SubsystemManagerPage
      */
     public WOComponent scanNow()
     {
-        if ( providerURL == null || providerURL.equals( "" ) )
+        if (providerURL == null || providerURL.equals(""))
         {
-            error( "Please specify a provider URL first." );
+            error("Please specify a provider URL first.");
         }
         else
         {
-            if ( FeatureProvider.getProvider( providerURL ) == null )
+            if (FeatureProvider.getProvider(providerURL) == null)
             {
-                warning( "Cannot read feature provider information from "
-                    + " specified URL: '" + providerURL + "'." );
+                warning("Cannot read feature provider information from "
+                    + " specified URL: '" + providerURL + "'.");
             }
         }
 
@@ -245,7 +244,7 @@ public class SubsystemManagerPage
     {
         net.sf.webcat.WCServletAdaptor adaptor = adaptor();
         adaptor.setWillUpdateAutomatically(
-            !adaptor.willUpdateAutomatically() );
+            !adaptor.willUpdateAutomatically());
         return null;
     }
 
@@ -257,7 +256,7 @@ public class SubsystemManagerPage
      */
     public String subsystemHistoryUrl()
     {
-        return subsystem.descriptor().getProperty( "history.url" );
+        return subsystem.descriptor().getProperty("history.url");
     }
 
 
@@ -268,7 +267,7 @@ public class SubsystemManagerPage
      */
     public String subsystemInfoUrl()
     {
-        return subsystem.descriptor().getProperty( "info.url" );
+        return subsystem.descriptor().getProperty("info.url");
     }
 
 
@@ -279,7 +278,7 @@ public class SubsystemManagerPage
      */
     public String featureHistoryUrl()
     {
-        return feature.getProperty( "history.url" );
+        return feature.getProperty("history.url");
     }
 
 
@@ -290,7 +289,7 @@ public class SubsystemManagerPage
      */
     public String featureInfoUrl()
     {
-        return feature.getProperty( "info.url" );
+        return feature.getProperty("info.url");
     }
 
 
@@ -304,10 +303,10 @@ public class SubsystemManagerPage
     public void toggleVerboseDescriptions()
     {
         boolean verboseOptions = ERXValueUtilities.booleanValue(
-            user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) );
+            user().preferences().objectForKey(TERSE_DESCRIPTIONS_KEY));
         verboseOptions = !verboseOptions;
         user().preferences().setObjectForKey(
-            Boolean.valueOf( verboseOptions ), TERSE_DESCRIPTIONS_KEY );
+            Boolean.valueOf(verboseOptions), TERSE_DESCRIPTIONS_KEY);
         user().savePreferences();
     }
 
@@ -321,11 +320,11 @@ public class SubsystemManagerPage
      */
     public Boolean terse()
     {
-        if ( terse == null )
+        if (terse == null)
         {
             terse = ERXValueUtilities.booleanValue(
-                user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) )
-                ? Boolean.TRUE : Boolean.FALSE;
+                user().preferences().objectForKey(TERSE_DESCRIPTIONS_KEY))
+                    ? Boolean.TRUE : Boolean.FALSE;
         }
         return terse;
     }
@@ -333,5 +332,5 @@ public class SubsystemManagerPage
 
     //~ Instance/static variables .............................................
     private Boolean terse;
-    static Logger log = Logger.getLogger( SubsystemManagerPage.class );
+    static Logger log = Logger.getLogger(SubsystemManagerPage.class);
 }

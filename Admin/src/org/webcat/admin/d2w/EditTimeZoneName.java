@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditTimeZoneName.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: EditTimeZoneName.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,16 +23,15 @@ package org.webcat.admin.d2w;
 
 import org.webcat.core.*;
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
-
 
 //-------------------------------------------------------------------------
 /**
  * A customized edit component for selecting time zone names.
  *
- *  @author edwards
- *  @version $Id: EditTimeZoneName.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class EditTimeZoneName
     extends er.directtoweb.components.ERDCustomEditComponent
@@ -45,9 +44,9 @@ public class EditTimeZoneName
      *
      * @param context The context to use
      */
-    public EditTimeZoneName( WOContext context )
+    public EditTimeZoneName(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -61,18 +60,16 @@ public class EditTimeZoneName
     // ----------------------------------------------------------
     public AuthenticationDomain.TimeZoneDescriptor selectedZone()
     {
-        if ( selectedZone == null )
+        if (selectedZone == null)
         {
-            NSArray zones = AuthenticationDomain.availableTimeZones();
+            NSArray<AuthenticationDomain.TimeZoneDescriptor> zones =
+                AuthenticationDomain.availableTimeZones();
             String name = (String)objectPropertyValue();
-            for ( int i = 0; i < zones.count(); i++ )
+            for (AuthenticationDomain.TimeZoneDescriptor descriptor : zones)
             {
-                AuthenticationDomain.TimeZoneDescriptor descriptor =
-                    (AuthenticationDomain.TimeZoneDescriptor)zones
-                        .objectAtIndex( i );
-                System.out.println( "checking " + name + " against "
-                    + descriptor.id );
-                if ( descriptor.id.equals( name ) )
+                System.out.println("checking " + name + " against "
+                    + descriptor.id);
+                if (descriptor.id.equals(name))
                 {
                     selectedZone = descriptor;
                     break;
@@ -84,10 +81,10 @@ public class EditTimeZoneName
 
 
     // ----------------------------------------------------------
-    public void setSelectedZone( AuthenticationDomain.TimeZoneDescriptor aZone )
+    public void setSelectedZone(AuthenticationDomain.TimeZoneDescriptor aZone)
     {
         selectedZone = aZone;
-        setObjectPropertyValue( aZone.id );
+        setObjectPropertyValue(aZone.id);
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PropertyListPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: PropertyListPage.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,10 +21,10 @@
 
 package org.webcat.admin;
 
+import java.util.Map;
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+import er.extensions.appserver.ERXDisplayGroup;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -32,8 +32,9 @@ import org.webcat.core.*;
 /**
  * A property listing page.
  *
- *  @author edwards
- *  @version $Id: PropertyListPage.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class PropertyListPage
     extends WCComponent
@@ -46,19 +47,19 @@ public class PropertyListPage
      *
      * @param context The context to use
      */
-    public PropertyListPage( WOContext context )
+    public PropertyListPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
     //~ KVC Attributes (must be public) .......................................
 
-    public java.util.Map.Entry property;
-    public WODisplayGroup      propertyDisplayGroup;
-    public int                 propertyIndex;
-    public String              newPropertyName;
-    public String              newPropertyValue;
+    public Map.Entry<String, String> property;
+    public ERXDisplayGroup<Entry>    propertyDisplayGroup;
+    public int                       propertyIndex;
+    public String                    newPropertyName;
+    public String                    newPropertyValue;
 
 
     //~ Methods ...............................................................
@@ -77,7 +78,7 @@ public class PropertyListPage
      */
     public String propertyKey()
     {
-        return (String)property.getKey();
+        return property.getKey();
     }
 
 
@@ -89,19 +90,19 @@ public class PropertyListPage
     public String propertyValue()
     {
         String result = "";
-        String value = (String)property.getValue();
+        String value = property.getValue();
         int pos = 0;
-        while ( pos < value.length() )
+        while (pos < value.length())
         {
             int remaining = value.length() - pos;
-            if ( remaining > 60 )
+            if (remaining > 60)
             {
-                result += value.substring( pos, pos + 60 ) + "<br/>";
+                result += value.substring(pos, pos + 60) + "<br/>";
                 pos += 60;
             }
             else
             {
-                result += value.substring( pos, value.length() );
+                result += value.substring(pos, value.length());
                 pos += remaining;
             }
         }
@@ -113,16 +114,18 @@ public class PropertyListPage
     /**
      * Setup this page before rendering.
      */
-    @SuppressWarnings("unchecked")
     public void awake()
     {
         super.awake();
-        NSMutableArray<Object> entries = new NSMutableArray<Object>(
-            ((Session)session()).properties().inheritedEntrySet().toArray());
+        @SuppressWarnings("unchecked")
+        NSMutableArray<Map.Entry<String, String>> entries =
+            new NSMutableArray<Map.Entry<String, String>>(
+                (Map.Entry<String, String>[])
+                ((Session)session()).properties().inheritedEntrySet()
+                    .toArray());
         for (int i = 0; i < entries.count(); i++)
         {
-            entries.set(i, new Entry(
-                (java.util.Map.Entry<String, String>)entries.get(i)));
+            entries.set(i, new Entry(entries.get(i)));
         }
         propertyDisplayGroup.setObjectArray(entries);
     }
@@ -139,18 +142,18 @@ public class PropertyListPage
     // ----------------------------------------------------------
     public WOComponent setNewProperty()
     {
-        if ( newPropertyName == null || newPropertyName.equals( "" ) )
+        if (newPropertyName == null || newPropertyName.equals(""))
         {
-            error( "Please specify a property name to set." );
+            error("Please specify a property name to set.");
         }
         else
         {
-            if ( newPropertyValue == null )
+            if (newPropertyValue == null)
             {
                 newPropertyValue = "";
             }
             WCConfigurationFile config = Application.configurationProperties();
-            config.setProperty( newPropertyName, newPropertyValue );
+            config.setProperty(newPropertyName, newPropertyValue);
             config.attemptToSave();
             // This may be redundant if the file is actually saved and the
             // changes are picked up by the ERExtensions notification
@@ -158,8 +161,8 @@ public class PropertyListPage
             // and won't happen if the config file isn't writeable, so we'll
             // be conservative and do it anyway.
             config.updateToSystemProperties();
-            confirmationMessage( "System property \"" + newPropertyName
-                + "\" set to \"" + newPropertyValue + "\"." );
+            confirmationMessage("System property \"" + newPropertyName
+                + "\" set to \"" + newPropertyValue + "\".");
         }
         return null;
     }
@@ -167,7 +170,7 @@ public class PropertyListPage
 
     // ----------------------------------------------------------
     public static class Entry
-        implements java.util.Map.Entry<String, String>,
+        implements Map.Entry<String, String>,
             NSKeyValueCoding
     {
         // ----------------------------------------------------------
@@ -233,10 +236,10 @@ public class PropertyListPage
 
 
         //~ Instance/static variables .........................................
-        private java.util.Map.Entry<String, String> inner;
+        private Map.Entry<String, String> inner;
     }
 
 
     //~ Instance/static variables .............................................
-    static Logger log = Logger.getLogger( PropertyListPage.class );
+    static Logger log = Logger.getLogger(PropertyListPage.class);
 }

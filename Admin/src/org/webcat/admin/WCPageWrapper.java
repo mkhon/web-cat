@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWrapper.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: WCPageWrapper.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.admin;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.*;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -30,8 +29,9 @@ import org.webcat.core.*;
 /**
  * The page wrapper for direct-to-web pages.
  *
- *  @author Stephen Edwards
- *  @version $Id: WCPageWrapper.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class WCPageWrapper
     extends WOComponent
@@ -44,10 +44,10 @@ public class WCPageWrapper
      *
      * @param aContext The context to use
      */
-    public WCPageWrapper( WOContext aContext )
+    public WCPageWrapper(WOContext aContext)
     {
-        super( aContext );
-        log.debug( "constructor" );
+        super(aContext);
+        log.debug("constructor");
     }
 
 
@@ -63,9 +63,9 @@ public class WCPageWrapper
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse arg0, WOContext arg1 )
+    public void appendToResponse(WOResponse response, WOContext context)
     {
-        log.debug( "appendToResponse()" );
+        log.debug("appendToResponse()");
         // TODO Auto-generated method stub
         if (parent() != null && parent().parent() != null)
         {
@@ -76,10 +76,10 @@ public class WCPageWrapper
         {
             title = ((Session)session()).tabs.selectedDescendant().label();
         }
-        super.appendToResponse( arg0, arg1 );
+        super.appendToResponse(response, context);
         if (log.isDebugEnabled())
         {
-            log.debug( "container = " + arg1.page().getClass().getName() );
+            log.debug("container = " + context.page().getClass().getName());
             WOComponent c = this.parent();
             String result = this.getClass().getName();
             while (c != null)

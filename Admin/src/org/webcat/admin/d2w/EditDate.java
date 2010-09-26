@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditDate.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: EditDate.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,8 +23,6 @@ package org.webcat.admin.d2w;
 
 import java.util.TimeZone;
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.foundation.*;
 
 //-------------------------------------------------------------------------
 /**
@@ -33,8 +31,9 @@ import com.webobjects.foundation.*;
  * that uses the user's specified date formatting and selected time zone,
  * and also uses Web-CAT's preferred date picker widget.
  *
- *  @author edwards
- *  @version $Id: EditDate.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class EditDate
     extends er.directtoweb.components.ERDCustomEditComponent
@@ -47,9 +46,9 @@ public class EditDate
      *
      * @param context The context to use
      */
-    public EditDate( WOContext context )
+    public EditDate(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 

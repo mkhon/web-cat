@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DisplayDate.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: DisplayDate.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -29,8 +29,9 @@ import com.webobjects.appserver.*;
  * {@link er.directtoweb.components.dates.ERD2WDisplayDateOrNull}
  * that uses the user's specified date formatting and selected time zone.
  *
- *  @author edwards
- *  @version $Id: DisplayDate.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class DisplayDate
     extends er.directtoweb.components.dates.ERD2WDisplayDateOrNull
@@ -43,8 +44,8 @@ public class DisplayDate
      *
      * @param context The context to use
      */
-    public DisplayDate( WOContext context )
+    public DisplayDate(WOContext context)
     {
-        super( context );
+        super(context);
     }
 }

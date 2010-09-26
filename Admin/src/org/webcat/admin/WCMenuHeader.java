@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCMenuHeader.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ |  $Id: WCMenuHeader.java,v 1.2 2010/09/26 23:35:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,16 +24,15 @@ package org.webcat.admin;
 import org.webcat.core.*;
 import com.webobjects.appserver.*;
 import com.webobjects.directtoweb.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
 //-------------------------------------------------------------------------
 /**
  * The menu header for all of our direct-to-web pages.
  *
- *  @author Stephen Edwards
- *  @version $Id: WCMenuHeader.java,v 1.1 2010/05/11 14:51:43 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/26 23:35:42 $
  */
 public class WCMenuHeader
     extends WOComponent
@@ -46,9 +45,9 @@ public class WCMenuHeader
      *
      * @param aContext The context to use
      */
-    public WCMenuHeader( WOContext aContext )
+    public WCMenuHeader(WOContext aContext)
     {
-        super( aContext );
+        super(aContext);
     }
 
 
@@ -62,27 +61,26 @@ public class WCMenuHeader
     // ----------------------------------------------------------
     public String manipulatedEntityName()
     {
-        if ( _manipulatedEntityName == null )
+        if (manipulatedEntityName == null)
         {
             WOComponent currentPage = context().page();
-            _manipulatedEntityName =
-                D2W.entityNameFromPage( currentPage );
+            manipulatedEntityName = D2W.entityNameFromPage(currentPage);
         }
-        return _manipulatedEntityName;
+        return manipulatedEntityName;
     }
 
 
     // ----------------------------------------------------------
-    public void setManipulatedEntityName( String newValue )
+    public void setManipulatedEntityName(String newValue)
     {
-        _manipulatedEntityName = newValue;
+        manipulatedEntityName = newValue;
     }
 
 
     // ----------------------------------------------------------
-    public NSArray visibleEntityNames()
+    public NSArray<?> visibleEntityNames()
     {
-        return D2W.factory().visibleEntityNames( session() );
+        return D2W.factory().visibleEntityNames(session());
     }
 
 
@@ -90,7 +88,7 @@ public class WCMenuHeader
     public WOComponent findEntityAction()
     {
         QueryPageInterface newQueryPage = D2W.factory()
-            .queryPageForEntityNamed( _manipulatedEntityName, session() );
+            .queryPageForEntityNamed(manipulatedEntityName, session());
         return (WOComponent)newQueryPage;
     }
 
@@ -99,18 +97,19 @@ public class WCMenuHeader
     public WOComponent newObjectAction()
     {
         WOComponent nextPage = null;
-        try {
+        try
+        {
             EditPageInterface epi = D2W.factory()
-                .editPageForNewObjectWithEntityNamed( _manipulatedEntityName,
-                                                      session() );
-            epi.setNextPage( context().page() );
+                .editPageForNewObjectWithEntityNamed(
+                    manipulatedEntityName, session());
+            epi.setNextPage(context().page());
             nextPage = (WOComponent)epi;
         }
-        catch ( IllegalArgumentException e )
+        catch (IllegalArgumentException e)
         {
-            ErrorPageInterface epf = D2W.factory().errorPage( session() );
-            epf.setMessage( e.toString() );
-            epf.setNextPage( context().page() );
+            ErrorPageInterface epf = D2W.factory().errorPage(session());
+            epf.setMessage(e.toString());
+            epf.setNextPage(context().page());
             nextPage = (WOComponent)epf;
         }
         return nextPage;
@@ -120,7 +119,7 @@ public class WCMenuHeader
     // ----------------------------------------------------------
     public WOComponent queryAllAction()
     {
-        return D2W.factory().defaultPage( session() );
+        return D2W.factory().defaultPage(session());
     }
 
 
@@ -128,11 +127,11 @@ public class WCMenuHeader
     public WOComponent homeAction()
     {
         return pageWithName(
-            ( (Session)session() ).tabs.selectDefault().pageName() );
+            ((Session)session()).tabs.selectDefault().pageName());
     }
 
 
     //~ Instance/static variables .............................................
 
-    private String _manipulatedEntityName;
+    private String manipulatedEntityName;
 }
