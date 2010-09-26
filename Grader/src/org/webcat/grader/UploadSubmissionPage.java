@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.3 2010/09/15 17:14:21 aallowat Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.4 2010/09/26 17:17:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,12 +22,12 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.*;
+import er.extensions.appserver.ERXDisplayGroup;
 import er.extensions.eof.ERXQ;
-import er.extensions.foundation.ERXArrayUtilities;
 import org.apache.log4j.Logger;
+import org.webcat.archives.IArchiveEntry;
 import org.webcat.core.*;
 import org.webcat.ui.generators.JavascriptGenerator;
 
@@ -37,8 +37,8 @@ import org.webcat.ui.generators.JavascriptGenerator;
  * to upload a program file for the current (new) submission.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2010/09/15 17:14:21 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2010/09/26 17:17:33 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -59,22 +59,22 @@ public class UploadSubmissionPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public WODisplayGroup submissionDisplayGroup;
-    /** submission item in the worepetition */
+    public ERXDisplayGroup<Submission> submissionDisplayGroup;
+    /** submission item in the repetition */
     public Submission aSubmission;
-    /** index in worepetition */
+    /** index in repetition */
     public int index;
     /** true if there are previous submissions */
     public boolean hasPreviousSubmissions;
     public Boolean showStudentSelector;
 
-    public WODisplayGroup      studentDisplayGroup;
-    public User                student;
-    public User                submitAsStudent;
-    public NSMutableArray<User> previousPartners;
-    public NSMutableArray<User> partnersForEditing;
-    public User                aPartner;
-    public int                 partnerIndex;
+    public ERXDisplayGroup<User> studentDisplayGroup;
+    public User                  student;
+    public User                  submitAsStudent;
+    public NSMutableArray<User>  previousPartners;
+    public NSMutableArray<User>  partnersForEditing;
+    public User                  aPartner;
+    public int                   partnerIndex;
 
 
     //~ Methods ...............................................................
@@ -89,8 +89,8 @@ public class UploadSubmissionPage
     protected void beforeAppendToResponse(
         WOResponse response, WOContext context)
     {
-        log.debug( "primeUser = " + wcSession().primeUser()
-                   + ", localUser = " + user() );
+        log.debug("primeUser = " + wcSession().primeUser()
+                  + ", localUser = " + user());
         if (showStudentSelector == null)
         {
             NSDictionary<?, ?> config =
@@ -106,7 +106,7 @@ public class UploadSubmissionPage
             if (submitAsStudent == null
                 && studentDisplayGroup.displayedObjects().count() > 0)
             {
-                submitAsStudent = (User)
+                submitAsStudent =
                     studentDisplayGroup.displayedObjects().objectAtIndex(0);
             }
         }
@@ -131,7 +131,8 @@ public class UploadSubmissionPage
 
                 if (latestSub != null)
                 {
-                    for (Submission partneredSub : latestSub.partneredSubmissions())
+                    for (Submission partneredSub :
+                        latestSub.partneredSubmissions())
                     {
                         previousPartners.addObject(partneredSub.user());
                     }
@@ -146,8 +147,8 @@ public class UploadSubmissionPage
 
         Number maxSubmissions = prefs().assignmentOffering()
             .assignment().submissionProfile().maxSubmissionsRaw();
-        okayToSubmit = ( maxSubmissions == null )
-            || ( currentSubNo <= maxSubmissions.intValue() );
+        okayToSubmit = (maxSubmissions == null
+                        || currentSubNo <= maxSubmissions.intValue());
 
         if ( okayToSubmit )
         {
@@ -265,7 +266,8 @@ public class UploadSubmissionPage
                       .submissionProfile().deadTimeDelta() );
             log.debug( "deadline = " + deadline );
             log.debug( "now = " + ( new NSTimestamp() ) );
-            CourseOffering course = prefs().assignmentOffering().courseOffering();
+            CourseOffering course =
+                prefs().assignmentOffering().courseOffering();
             User primeUser =
                 wcSession().primeUser().localInstance(localContext());
             if ( deadline.before( new NSTimestamp() )
@@ -281,8 +283,10 @@ public class UploadSubmissionPage
             if ( !submissionInProcess().hasValidFileUpload() )
             {
                 submissionInProcess().setUploadedFile( cachedUploadedFile );
-                submissionInProcess().setUploadedFileName( cachedUploadedFileName );
-                submissionInProcess().setUploadedFileList( cachedUploadedFileList );
+                submissionInProcess().setUploadedFileName(
+                    cachedUploadedFileName );
+                submissionInProcess().setUploadedFileList(
+                    cachedUploadedFileList );
                 clearFileList = false;
             }
             if ( !submissionInProcess().hasValidFileUpload() )
@@ -305,14 +309,6 @@ public class UploadSubmissionPage
                     + ").  Please choose a smaller file." );
                 return null;
             }
-/*
-        if ( gstate.selectedAssignmentOffering().assignment()
-                 .testDrivenAssignment().intValue() == 0 )
-        {
-            state.navigator().setCurrentPage(
-                    state.navigator().currentPage() + 1 );
-        }
-*/
             if (showStudentSelector)
             {
                 setLocalUser(submitAsStudent);
@@ -446,23 +442,14 @@ public class UploadSubmissionPage
     // ----------------------------------------------------------
     private int fillDisplayGroup(User user)
     {
-        NSArray<?> submissions = EOUtilities.objectsMatchingValues(
-            localContext(),
-            Submission.ENTITY_NAME,
-            new NSDictionary<String, Object>(
-                    new Object[] {  user,
-                                    prefs().assignmentOffering()
-                                 },
-                    new String[] {  Submission.USER_KEY,
-                                    Submission.ASSIGNMENT_OFFERING_KEY }
-            )
-        );
+        NSArray<Submission> submissions =
+            Submission.submissionsForAssignmentOfferingAndUser(
+                localContext(), prefs().assignmentOffering(), user);
         submissionDisplayGroup.setObjectArray(submissions);
         int currentSubNo = submissions.count() + 1;
         for (int i = 0; i < submissions.count(); i++)
         {
-            int sno = ( (Submission)submissions.objectAtIndex(i) )
-                .submitNumber();
+            int sno = submissions.objectAtIndex(i).submitNumber();
             if (sno >= currentSubNo)
             {
                 currentSubNo = sno + 1;
@@ -497,8 +484,10 @@ public class UploadSubmissionPage
     {
         CourseOffering courseOffering =
             prefs().assignmentOffering().courseOffering();
-        Course course = courseOffering.course();
-        NSArray<CourseOffering> offerings = course.offerings();
+        NSArray<CourseOffering> offerings =
+            CourseOffering.offeringsForSemesterAndCourse(localContext(),
+                courseOffering.course(),
+                courseOffering.semester());
 
         EOQualifier[] enrollmentQuals = new EOQualifier[offerings.count()];
         int i = 0;
@@ -518,9 +507,9 @@ public class UploadSubmissionPage
     /** Saves the state of the batch navigator to detect setting changes */
     protected int oldBatchIndex;
 
-    protected NSData  cachedUploadedFile;
-    protected String  cachedUploadedFileName;
-    protected NSArray cachedUploadedFileList;
+    protected NSData                 cachedUploadedFile;
+    protected String                 cachedUploadedFileName;
+    protected NSArray<IArchiveEntry> cachedUploadedFileList;
 
     /** True if the user has not reached the maximum allowable submissions
      *  for this assignment and its okay to submit another time.
