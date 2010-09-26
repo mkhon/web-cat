@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JFreeChartComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: JFreeChartComponent.java,v 1.2 2010/09/26 16:24:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSData;
  * images (StackedAreaChart and HistogramChart).
  *
  * @author Tony Allevato
- * @version $Id: JFreeChartComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @version $Id: JFreeChartComponent.java,v 1.2 2010/09/26 16:24:36 stedwar2 Exp $
  */
 public abstract class JFreeChartComponent extends WCComponent
 {
@@ -356,7 +356,7 @@ public abstract class JFreeChartComponent extends WCComponent
         // only one user is modifying it at a time.
         synchronized (ChartFactory.class)
         {
-            WCChartTheme chartTheme = new WCChartTheme(user().theme());
+            WCChartTheme chartTheme = new WCChartTheme(wcSession().theme());
             ChartFactory.setChartTheme(chartTheme);
 
             JFreeChart chart = generateChart(chartTheme);
