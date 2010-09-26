@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionUploadComponent.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: GraderSubmissionUploadComponent.java,v 1.3 2010/09/26 16:49:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *  {@link SubmissionInProcess} state object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderSubmissionUploadComponent.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ *  @version $Id: GraderSubmissionUploadComponent.java,v 1.3 2010/09/26 16:49:43 stedwar2 Exp $
  */
 public class GraderSubmissionUploadComponent
     extends GraderAssignmentComponent
@@ -86,15 +86,14 @@ public class GraderSubmissionUploadComponent
      * @param partners an array of partners to be associated with the
      *     submission
      */
-    public void startSubmission( int submitNumber, User user )
+    public void startSubmission(int submitNumber, User user)
     {
-        Submission submission = new Submission();
-        localContext().insertObject( submission );
-        submission.setSubmitNumber( submitNumber );
-        submission.setUserRelationship( user );
+        Submission submission = Submission.create(localContext(), false);
+        submission.setSubmitNumber(submitNumber);
+        submission.setUserRelationship(user);
 
-        log.debug( "startSubmission( " + submitNumber + ", " + user + " )" );
-        submissionInProcess().setSubmission( submission );
+        log.debug("startSubmission( " + submitNumber + ", " + user + " )");
+        submissionInProcess().setSubmission(submission);
     }
 
 
@@ -127,8 +126,11 @@ public class GraderSubmissionUploadComponent
         // Do the actual partnering of the users (this will create the dummy
         // Submission objects for the other partners).
 
-        submissionInProcess().submission().partnerWithUsers(
-                submissionInProcess().partners(), localContext());
+        if (submissionInProcess().partners() != null)
+        {
+            submissionInProcess().submission().partnerWith(
+                submissionInProcess().partners());
+        }
 
         // Then, make the necessary directory.
 
