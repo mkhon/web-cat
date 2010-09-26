@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.2 2010/09/26 16:45:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.*;
  *  Represents the results for a student submission.
  *
  *  @author Stephen Edwards
- *  @version $Id: SubmissionResult.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ *  @version $Id: SubmissionResult.java,v 1.2 2010/09/26 16:45:48 stedwar2 Exp $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -78,25 +78,47 @@ public class SubmissionResult
     public Submission submission()
     {
         Submission result = null;
-        NSArray submissions = submissions();
-        if ( submissions != null )
+        NSArray<Submission> mySubmissions = submissions();
+        if (mySubmissions != null && mySubmissions.count() > 0)
         {
-            for ( int i = 0; i < submissions().count(); i++ )
+            // First, try the link
+            result = mySubmissions.objectAtIndex(0).primarySubmission();
+            if (result.partnerLink())
             {
-                Submission thisSubmission =
-                    (Submission)submissions.objectAtIndex( i );
-                if ( ! thisSubmission.partnerLink() )
+                if (result == mySubmissions.objectAtIndex(0))
                 {
-                    result = thisSubmission;
-                    break;
+                    // Likely an old submission that has not been migrated
+                    // to use the newer relationships, so search
+
+                    // First, find the primary submission
+                    for (Submission thisSubmission : mySubmissions)
+                    {
+                        if ( !(thisSubmission.partnerLink()
+                               || thisSubmission.primarySubmission() != null))
+                        {
+                            result = thisSubmission;
+                            break;
+                        }
+                    }
+
+                    // Now, set up all the relationships for partners
+                    for (Submission thisSubmission : mySubmissions)
+                    {
+                        if (thisSubmission.partnerLink()
+                            && thisSubmission.primarySubmission() == null)
+                        {
+                            thisSubmission.setPrimarySubmission(result);
+                        }
+                    }
+
+                    // Now its migrated!
                 }
             }
-            if ( result == null && submissions().count() > 0 )
+
+            if (result == null && mySubmissions.count() > 0)
             {
-                Submission thisSubmission =
-                    (Submission)submissions.objectAtIndex( 0 );
-                thisSubmission.setPartnerLink( false );
-                result = thisSubmission;
+                result = mySubmissions.objectAtIndex(0);
+                log.error("No primary submission found for result " + this);
             }
         }
         return result;
@@ -478,22 +500,21 @@ public class SubmissionResult
         EOEditingContext ec = editingContext();
         if ( log.isDebugEnabled() )
         {
-            NSArray subs = resultsForAssignmentAndUser(
+            NSArray<SubmissionResult> subs = resultsForAssignmentAndUser(
                 ec, submission().assignmentOffering(), submission().user() );
             for ( int i = 0; i < subs.count(); i++ )
             {
-                SubmissionResult sr =
-                    (SubmissionResult)subs.objectAtIndex( i );
+                SubmissionResult sr = subs.objectAtIndex( i );
                 log.debug( "sub " + i + ": " + sr.submission().submitNumber()
                            + " " + sr.submission().submitTime() );
             }
         }
         SubmissionResult newest = null;
-        NSArray subs = mostRecentResultsForAssignmentAndUser(
+        NSArray<SubmissionResult> subs = mostRecentResultsForAssignmentAndUser(
             ec, submission().assignmentOffering(), submission().user() );
         if ( subs.count() > 0 )
         {
-            newest = (SubmissionResult)subs.objectAtIndex( 0 );
+            newest = subs.objectAtIndex(0);
             if ( !newest.isMostRecent() )
             {
                 log.warn(
@@ -502,38 +523,14 @@ public class SubmissionResult
                     + " #" + newest.submission().submitNumber() );
             }
         }
-        subs = mostRecentResultsForAssignmentAndUser(
-            ec, submission().assignmentOffering(), submission().user() );
         for ( int i = 1; i < subs.count(); i++ )
         {
-            SubmissionResult thisSub =
-                (SubmissionResult)subs.objectAtIndex( i );
+            SubmissionResult thisSub = subs.objectAtIndex( i );
             log.warn(
                 "multiple submissions marked most recent: "
                 + thisSub.submission().user().userName()
                 + " #" + thisSub.submission().submitNumber() );
             thisSub.setIsMostRecent( false );
-        }
-        if ( subs.count() > 0 )
-        {
-            SubmissionResult thisSub =
-                (SubmissionResult)subs.objectAtIndex( 0 );
-            if ( newest == null )
-            {
-                newest = thisSub;
-            }
-            else if ( newest != thisSub )
-            {
-                if ( newest.submission().submitNumber() >
-                     thisSub.submission().submitNumber() )
-                {
-                    thisSub.setIsMostRecent( false );
-                }
-                else
-                {
-                    newest = thisSub;
-                }
-            }
         }
         if ( newest != null )
         {
