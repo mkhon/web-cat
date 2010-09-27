@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsDatabaseUpdates.java,v 1.2 2010/09/26 17:20:51 stedwar2 Exp $
+ |  $Id: OpinionsDatabaseUpdates.java,v 1.3 2010/09/27 00:41:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.dbupdate.UpdateSet;
  * output for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/26 17:20:51 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 00:41:48 $
  */
 public class OpinionsDatabaseUpdates
     extends UpdateSet
