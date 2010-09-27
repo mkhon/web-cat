@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: XmlResponseWrapper.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ |  $Id: XmlResponseWrapper.java,v 1.2 2010/09/27 00:54:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,19 +21,19 @@
 
 package org.webcat.webapi;
 
-import org.webcat.core.Session;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSTimestamp;
-
+import org.webcat.core.Session;
 
 //-------------------------------------------------------------------------
 /**
  * Sets the MIME type for XML and places an XML header at the top of the
  * output.
  *
- * @author Stephen Edwards
- * @version $Id: XmlResponseWrapper.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:54:06 $
  */
 public class XmlResponseWrapper
     extends WOComponent

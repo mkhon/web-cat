@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: XmlResponsePage.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ |  $Id: XmlResponsePage.java,v 1.2 2010/09/27 00:54:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,21 +21,18 @@
 
 package org.webcat.webapi;
 
+import com.webobjects.appserver.WOContext;
+import er.extensions.components.ERXComponent;
 import org.webcat.core.Application;
 import org.webcat.core.Session;
-import com.webobjects.appserver.WOComponent;
-import com.webobjects.appserver.WOContext;
-import com.webobjects.foundation.NSTimestamp;
-
-
-import er.extensions.components.ERXComponent;
 
 //-------------------------------------------------------------------------
 /**
  * A common base class for all of the XML response pages in this subsystem.
  *
- * @author Stephen Edwards
- * @version $Id: XmlResponsePage.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:54:06 $
  */
 public class XmlResponsePage
     extends ERXComponent

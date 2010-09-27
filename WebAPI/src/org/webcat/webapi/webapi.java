@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: webapi.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ |  $Id: webapi.java,v 1.2 2010/09/27 00:54:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,14 +30,14 @@ import org.webcat.core.AuthenticationDomain;
 import org.webcat.core.Session;
 import org.webcat.core.User;
 
-
 //-------------------------------------------------------------------------
 /**
  * This direct action class handles all response actions for WebAPI
  * queries from external tools.
  *
- * @author Stephen Edwards
- * @version $Id: webapi.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:54:06 $
  */
 public class webapi
     extends ERXDirectAction

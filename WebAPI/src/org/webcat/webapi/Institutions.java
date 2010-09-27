@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Institutions.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ |  $Id: Institutions.java,v 1.2 2010/09/27 00:54:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,13 +26,13 @@ import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
 
-
 //-------------------------------------------------------------------------
 /**
  * XML Response page for webapi/institutions requests.
  *
- * @author Stephen Edwards
- * @version $Id: Institutions.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:54:06 $
  */
 public class Institutions
     extends XmlResponsePage

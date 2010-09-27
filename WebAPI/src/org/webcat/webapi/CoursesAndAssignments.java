@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoursesAndAssignments.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ |  $Id: CoursesAndAssignments.java,v 1.2 2010/09/27 00:54:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,24 +21,21 @@
 
 package org.webcat.webapi;
 
-import org.webcat.core.CourseOffering;
-import org.webcat.core.Semester;
-import org.webcat.grader.AssignmentOffering;
-import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
-
 import er.extensions.foundation.ERXArrayUtilities;
-
+import org.webcat.core.CourseOffering;
+import org.webcat.core.Semester;
+import org.webcat.grader.AssignmentOffering;
 
 //-------------------------------------------------------------------------
 /**
  * XML Response page for webapi/coursesAndAssignments requests.
  *
- * @author Stephen Edwards
- * @version $Id: CoursesAndAssignments.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:54:06 $
  */
 public class CoursesAndAssignments
     extends XmlResponsePage
@@ -78,10 +75,12 @@ public class CoursesAndAssignments
                 session().sessionContext());
 
         // Calculate the courses this user can work with
-        courseOfferings =
+        @SuppressWarnings("unchecked")
+        NSArray<CourseOffering> offerings =
             ERXArrayUtilities.arrayByAddingObjectsFromArrayWithoutDuplicates(
                 session().user().teaching(),
                 session().user().graderFor());
+        courseOfferings = offerings;
 
         // Finally, generate the response
         super.appendToResponse(response, context);

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StartSession.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ |  $Id: StartSession.java,v 1.2 2010/09/27 00:54:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.webapi;
 
-import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.appserver.WOSession;
@@ -31,8 +30,9 @@ import org.apache.log4j.Logger;
 /**
  * XML Response page for webapi/startSession requests.
  *
- * @author Stephen Edwards
- * @version $Id: StartSession.java,v 1.1 2010/05/11 14:51:34 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:54:06 $
  */
 public class StartSession
     extends XmlResponsePage
@@ -50,7 +50,7 @@ public class StartSession
         super(context);
     }
 
-    public void appendToResponse(WOResponse arg0, WOContext arg1)
+    public void appendToResponse(WOResponse response, WOContext context)
     {
         WOSession session = session();
         if (log.isDebugEnabled())
@@ -58,7 +58,7 @@ public class StartSession
             log.debug("session = "
                 + ((session == null) ? "null" : session.sessionID() ));
         }
-        super.appendToResponse(arg0, arg1);
+        super.appendToResponse(response, context);
     }
 
     //~ Instance/static variables .............................................
