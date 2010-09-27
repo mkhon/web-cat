@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CheckstyleForPlugins.java,v 1.1 2010/05/11 14:51:52 aallowat Exp $
+ |  $Id: CheckstyleForPlugins.java,v 1.2 2010/09/27 00:18:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.checkstyleforplugins;
 
-import org.webcat.core.Application;
 import org.webcat.core.Subsystem;
 import com.webobjects.foundation.*;
 
@@ -30,8 +29,9 @@ import com.webobjects.foundation.*;
  *  This subsystem provides <a href="http://checkstyle.sf.net/">Checkstyle</a>
  *  for grading plug-ins.
  *
- *  @author  stedwar2
- *  @version $Id: CheckstyleForPlugins.java,v 1.1 2010/05/11 14:51:52 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 00:18:46 $
  */
 public class CheckstyleForPlugins
     extends Subsystem
@@ -57,14 +57,15 @@ public class CheckstyleForPlugins
     * @param properties the dictionary to add new properties to;
     * individual plug-in information may override these later.
     */
-   public void addPluginPropertyBindings( NSMutableDictionary properties )
+   public void addPluginPropertyBindings(
+       NSMutableDictionary<String, String> properties)
    {
        // checkstyle.jar
        addFileBinding(
            properties,
            CHECKSTYLE_JAR_KEY,
            SUBSYSTEM_PREFIX + CHECKSTYLE_JAR_KEY,
-           "checkstyle-all.jar" );
+           "checkstyle-all.jar");
    }
 
 
