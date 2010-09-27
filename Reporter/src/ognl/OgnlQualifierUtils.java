@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OgnlQualifierUtils.java,v 1.4 2008/04/15 04:09:23 aallowat Exp $
+ |  $Id: OgnlQualifierUtils.java,v 1.5 2010/09/27 00:59:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,7 +28,6 @@ import com.webobjects.eocontrol.EONotQualifier;
 import com.webobjects.eocontrol.EOOrQualifier;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.eocontrol.EOQualifierVariable;
-import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
@@ -40,8 +39,9 @@ import com.webobjects.foundation.NSSelector;
  * to the ognl.AST* classes, but they only have package visibility. Dumping it
  * in the ognl package is easier than using reflection everywhere.
  *
- * @author Tony Allevato
- * @version $Id: OgnlQualifierUtils.java,v 1.4 2008/04/15 04:09:23 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2010/09/27 00:59:42 $
  */
 public class OgnlQualifierUtils
 {
@@ -79,8 +79,7 @@ public class OgnlQualifierUtils
     // ----------------------------------------------------------
     private static EOQualifier qualifierFromOgnlAST(Node node)
     {
-        NodeHandler handler =
-            (NodeHandler)astHandlers.objectForKey(node.getClass());
+        NodeHandler handler = astHandlers.objectForKey(node.getClass());
 
         if (handler != null)
         {
@@ -96,7 +95,7 @@ public class OgnlQualifierUtils
 
     // ----------------------------------------------------------
     private static EOQualifier processRelational(
-        NSSelector selector, Node lhs, Node rhs)
+        NSSelector<?> selector, Node lhs, Node rhs)
     {
         String lhsString = null, rhsString = null;
         Object rhsObject = null;
@@ -203,7 +202,7 @@ public class OgnlQualifierUtils
             return null;
         }
 
-        NSSelector selector = methodName.equals("isLike")
+        NSSelector<?> selector = methodName.equals("isLike")
             ? EOQualifier.QualifierOperatorLike
             : EOQualifier.QualifierOperatorCaseInsensitiveLike;
 
@@ -324,7 +323,7 @@ public class OgnlQualifierUtils
 
     // ----------------------------------------------------------
     public static String computeDependenciesFromOgnlAST(
-        Node node, NSMutableArray dependentBindings)
+        Node node, NSMutableArray<String> dependentBindings)
     {
         int startChild = 0;
 
@@ -396,7 +395,7 @@ public class OgnlQualifierUtils
 
     //~ Instance/static variables .............................................
 
-    private static NSMutableDictionary astHandlers;
+    private static NSMutableDictionary<Class<?>, NodeHandler> astHandlers;
 
     // ----------------------------------------------------------
     private interface NodeHandler
@@ -410,7 +409,8 @@ public class OgnlQualifierUtils
     {
         public EOQualifier handle(Node node)
         {
-            NSMutableArray children = new NSMutableArray();
+            NSMutableArray<EOQualifier> children =
+                new NSMutableArray<EOQualifier>();
             for (int i = 0; i < node.jjtGetNumChildren(); i++)
             {
                 children.addObject(qualifierFromOgnlAST(node.jjtGetChild(i)));
@@ -425,7 +425,8 @@ public class OgnlQualifierUtils
     {
         public EOQualifier handle(Node node)
         {
-            NSMutableArray children = new NSMutableArray();
+            NSMutableArray<EOQualifier> children =
+                new NSMutableArray<EOQualifier>();
             for (int i = 0; i < node.jjtGetNumChildren(); i++)
             {
                 children.addObject(qualifierFromOgnlAST(node.jjtGetChild(i)));
@@ -551,7 +552,7 @@ public class OgnlQualifierUtils
     // static initializer for astHandlers
     static
     {
-        astHandlers = new NSMutableDictionary();
+        astHandlers = new NSMutableDictionary<Class<?>, NodeHandler>();
 
         astHandlers.setObjectForKey(andHandler, ASTAnd.class);
         astHandlers.setObjectForKey(orHandler, ASTOr.class);
