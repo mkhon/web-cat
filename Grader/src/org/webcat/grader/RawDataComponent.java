@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RawDataComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: RawDataComponent.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,6 +26,15 @@ import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSData;
 
+//-------------------------------------------------------------------------
+/**
+ * An component that simply in-lines its "data" binding right into the
+ * response.
+ *
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
+ */
 public class RawDataComponent
     extends WOComponent
 {

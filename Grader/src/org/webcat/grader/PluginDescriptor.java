@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginDescriptor.java,v 1.2 2010/09/16 18:49:35 aallowat Exp $
+ |  $Id: PluginDescriptor.java,v 1.3 2010/09/27 04:23:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.grader;
 
-import java.util.*;
 import net.sf.webcat.FeatureDescriptor;
 import org.apache.log4j.Logger;
 
@@ -31,8 +30,9 @@ import org.apache.log4j.Logger;
  *  The key properties include its version, its provider, and where updates
  *  can be obtained on the web.
  *
- *  @author  stedwar2
- *  @version $Id: PluginDescriptor.java,v 1.2 2010/09/16 18:49:35 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.3 $, $Date: 2010/09/27 04:23:20 $
  */
 public class PluginDescriptor
     extends FeatureDescriptor

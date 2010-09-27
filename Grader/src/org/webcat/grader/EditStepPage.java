@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStepPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: EditStepPage.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -30,9 +30,9 @@ import org.apache.log4j.Logger;
  * This class presents the list of scripts (grading steps) that
  * are available for selection.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
  */
 public class EditStepPage
     extends GraderComponent

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderComponent.java,v 1.2 2010/09/27 04:20:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,12 +22,8 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
@@ -38,7 +34,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *  for use by components in the Grader subsystem.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:20:41 $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -161,7 +158,7 @@ public class GraderComponent
      */
     public void resetPrimeUser()
     {
-        NSDictionary config = currentTab().config();
+        NSDictionary<String, Object> config = currentTab().config();
         if ( config != null
              && config.objectForKey( "resetPrimeUser" ) != null )
         {
@@ -179,7 +176,7 @@ public class GraderComponent
      */
     private GraderPrefs getGraderPrefs()
     {
-        NSArray results = null;
+        NSArray<GraderPrefs> results = null;
         try
         {
             results = GraderPrefs.objectsForUser(localContext(), user());
@@ -192,7 +189,7 @@ public class GraderComponent
         }
         if ( results.count() > 0 )
         {
-            return (GraderPrefs)results.objectAtIndex(0);
+            return results.objectAtIndex(0);
         }
         else
         {

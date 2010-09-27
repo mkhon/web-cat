@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionUploadComponent.java,v 1.4 2010/09/26 18:06:04 stedwar2 Exp $
+ |  $Id: GraderSubmissionUploadComponent.java,v 1.5 2010/09/27 04:22:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,8 +34,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *  {@link SubmissionInProcess} state object.
  *
  *  @author  Stephen Edwards
- *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/09/26 18:06:04 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.5 $, $Date: 2010/09/27 04:22:36 $
  */
 public class GraderSubmissionUploadComponent
     extends GraderAssignmentComponent

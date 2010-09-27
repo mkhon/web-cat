@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.2 2010/09/17 01:30:59 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.3 2010/09/27 04:21:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -81,9 +81,9 @@ import er.extensions.foundation.ERXArrayUtilities;
  * of closed assignments in the navigator. Defaults to false.</dd>
  * </dl>
  *
- * @author Tony Allevato
+ * @author  Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $ $Date: 2010/09/17 01:30:59 $
+ * @version $Revision: 1.3 $ $Date: 2010/09/27 04:21:37 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -173,6 +173,7 @@ public class GraderNavigator
             return JavascriptGenerator.NO_OP;
         }
 
+        @SuppressWarnings("unchecked")
         NSArray<CourseOffering> offerings = (NSArray<CourseOffering>)
             selectedCourseOffering.representedObjects();
 
@@ -229,6 +230,7 @@ public class GraderNavigator
             }
         }
 
+        @SuppressWarnings("unchecked")
         NSArray<Assignment> assigns =
             ERXArrayUtilities.arrayWithoutDuplicates(
                 (NSArray<Assignment>)assnOffs.valueForKey("assignment"));
@@ -386,6 +388,7 @@ public class GraderNavigator
             return false;
         }
 
+        @SuppressWarnings("unchecked")
         NSArray<CourseOffering> offerings = (NSArray<CourseOffering>)
             selectedCourseOffering.representedObjects();
 

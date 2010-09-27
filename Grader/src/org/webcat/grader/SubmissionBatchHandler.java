@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionBatchHandler.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SubmissionBatchHandler.java,v 1.2 2010/09/27 04:24:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,8 +41,9 @@ import org.webcat.core.WCProperties;
  * <dd>True if this submission was graded and has results.</dd>
  * </dl>
  *
- * @author Tony Allevato
- * @version $Id: SubmissionBatchHandler.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:24:58 $
  */
 public class SubmissionBatchHandler
 {

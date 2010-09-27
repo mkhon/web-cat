@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreGraphsBlock.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: ScoreGraphsBlock.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.webcat.grader.graphs.*;
  *  if present, will be used to present file-specific data.
  *
  *  @author  Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ *  @author  Latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
  */
 public class ScoreGraphsBlock
     extends GraderComponent

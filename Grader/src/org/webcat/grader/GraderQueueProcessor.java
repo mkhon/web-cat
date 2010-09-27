@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.3 2010/09/26 17:14:08 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.4 2010/09/27 04:21:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -57,9 +57,9 @@ import er.extensions.eof.ERXConstant;
  * compile/reference execution/execute/grade cycle on a student submission
  * job.
  *
- * @author Amit Kulkarni
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/26 17:14:08 $
+ * @author  Amit Kulkarni
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2010/09/27 04:21:37 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1083,7 +1083,10 @@ public class GraderQueueProcessor
         NSDictionary<String, Object> previousValues =
             previousSubmissionSavedProperties(job);
 
-        for (String key : (NSArray<String>) accumulatedValues.allKeys())
+        @SuppressWarnings("unchecked")
+        NSArray<String> keys = accumulatedValues.allKeys();
+
+        for (String key : keys)
         {
             Object value = accumulatedValues.objectForKey(key);
             gradingProperties.setObjectForKey(value, "mostRecent." + key);
@@ -1142,8 +1145,9 @@ public class GraderQueueProcessor
                 }
                 else
                 {
+                    @SuppressWarnings("unchecked")
                     NSMutableArray<Object> array =
-                        (NSMutableArray<Object>) props.objectForKey(key);
+                        (NSMutableArray<Object>)props.objectForKey(key);
 
                     if (array == null)
                     {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderPrefsManager.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderPrefsManager.java,v 1.2 2010/09/27 04:21:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.grader;
 
 import org.webcat.core.*;
-import com.webobjects.eocontrol.*;
 import er.extensions.foundation.ERXValueUtilities;
 
 //-------------------------------------------------------------------------
@@ -31,7 +30,8 @@ import er.extensions.foundation.ERXValueUtilities;
  *  {@link GraderPrefs} object.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderPrefsManager.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:21:37 $
  */
 public class GraderPrefsManager
     extends CachingEOManager

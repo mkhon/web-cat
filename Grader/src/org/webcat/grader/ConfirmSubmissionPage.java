@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.3 2010/09/26 16:43:45 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.4 2010/09/27 04:19:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,9 +34,9 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * This class summarizes the student's submission and asks for
  * confirmation before making it "official".
  *
- * @author Amit Kulkarni
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/26 16:43:45 $
+ * @author  Amit Kulkarni
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2010/09/27 04:19:54 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent

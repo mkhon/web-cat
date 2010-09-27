@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPartnersPage.java,v 1.3 2010/09/26 16:46:13 stedwar2 Exp $
+ |  $Id: EditPartnersPage.java,v 1.4 2010/09/27 04:19:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -32,9 +31,9 @@ import org.webcat.core.*;
  * this assignment (who will also be able to see the submission and its
  * results).
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/26 16:46:13 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2010/09/27 04:19:54 $
  */
 public class EditPartnersPage
     extends GraderComponent

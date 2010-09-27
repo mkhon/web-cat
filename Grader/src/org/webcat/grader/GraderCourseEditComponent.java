@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderCourseEditComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderCourseEditComponent.java,v 1.2 2010/09/27 04:20:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,9 @@ import com.webobjects.appserver.*;
  *  about creating/editing course offerings using a selection that may
  *  not yet be stored in the user's {@link CoreSelections}.
  *
- *  @author  stedwar2
- *  @version Feb 4, 2008
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:20:41 $
  */
 public class GraderCourseEditComponent
     extends GraderComponent

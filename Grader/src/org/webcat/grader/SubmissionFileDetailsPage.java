@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.2 2010/09/27 04:24:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -30,9 +30,9 @@ import org.apache.log4j.Logger;
  * including all markup comments and a color-highlighted version
  * of the source code.
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @author  Stephen Edwards
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:24:58 $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent

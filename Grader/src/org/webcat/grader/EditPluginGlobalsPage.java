@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditPluginGlobalsPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: EditPluginGlobalsPage.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -29,9 +29,9 @@ import com.webobjects.appserver.*;
  *  The creator of this page must set the plugin attribute before
  *  rendering the page.
  *
- *  @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ *  @author  Stephen Edwards
+ *  @author  Latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
  */
 public class EditPluginGlobalsPage
     extends GraderComponent

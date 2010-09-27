@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.2 2010/09/26 16:27:06 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.3 2010/09/27 04:19:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -28,17 +28,15 @@ import java.io.FileOutputStream;
 import org.apache.log4j.Logger;
 import org.webcat.archives.ArchiveManager;
 import org.webcat.core.*;
-import org.webcat.core.vfs.WCFile;
-import org.webcat.ui.generators.JavascriptGenerator;
 
 // -------------------------------------------------------------------------
 /**
  * This class presents the list of scripts (grading steps) that
  * are available for selection.
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/26 16:27:06 $
+ * @author  Stephen Edwards
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 04:19:54 $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -60,23 +58,23 @@ public class EditScriptFilesPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public GradingPlugin gradingPlugin;
-    public File       base;
-    public boolean    isEditable;
-    public boolean    allowSelectDir;
-    public NSArray    allowSelectExtensions;
-    public String     folderName;
-    public String     aFolder;
-    public String     selectedParentFolderForSubFolder;
-    public String     selectedParentFolderForUpload;
-    public NSMutableArray folderList;
-    public NSData     uploadedFile2;
-    public String     uploadedFileName2;
-    public NSData     uploadedFile3;
-    public String     uploadedFileName3;
-    public boolean    unzip = false;
+    public GradingPlugin          gradingPlugin;
+    public File                   base;
+    public boolean                isEditable;
+    public boolean                allowSelectDir;
+    public NSArray<String>        allowSelectExtensions;
+    public String                 folderName;
+    public String                 aFolder;
+    public String                 selectedParentFolderForSubFolder;
+    public String                 selectedParentFolderForUpload;
+    public NSMutableArray<String> folderList;
+    public NSData                 uploadedFile2;
+    public String                 uploadedFileName2;
+    public NSData                 uploadedFile3;
+    public String                 uploadedFileName3;
+    public boolean                unzip = false;
     public FileBrowser.FileSelectionListener fileSelectionListener = null;
-    public String     currentSelection;
+    public String                 currentSelection;
 
 
     //~ Methods ...............................................................
@@ -100,7 +98,7 @@ public class EditScriptFilesPage
         }
         if ( folderList == null )
         {
-            folderList = new NSMutableArray();
+            folderList = new NSMutableArray<String>();
             String parent = base.getParent();
             int stripLength = 0;
             if ( parent != null && parent.length() > 0 )
@@ -114,7 +112,8 @@ public class EditScriptFilesPage
 
 
     // ----------------------------------------------------------
-    private void addFolders( NSMutableArray list, File file, int stripLength )
+    private void addFolders(
+        NSMutableArray<String> list, File file, int stripLength )
     {
         if ( !file.isDirectory() ) return;
         String name = file.getName();

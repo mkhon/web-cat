@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.2 2010/09/27 04:22:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -23,6 +23,7 @@ package org.webcat.grader;
 
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
+import er.extensions.appserver.ERXDisplayGroup;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -30,9 +31,9 @@ import org.webcat.core.*;
 /**
  * Allow the user to enter/edit "TA" comments for a submission.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:22:36 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -54,7 +55,7 @@ public class GradeStudentSubmissionPage
 
     public SubmissionResult    result;
     public Submission          submission;
-    public WODisplayGroup      statsDisplayGroup;
+    public ERXDisplayGroup<SubmissionFileStats> statsDisplayGroup;
     // For iterating over display group
     public SubmissionFileStats stats;
     public int                 index;
@@ -70,11 +71,11 @@ public class GradeStudentSubmissionPage
         + "}\n"
         + "</script>\n";
 
-    public NSArray formats = SubmissionResult.formats;
+    public NSArray<Byte> formats = SubmissionResult.formats;
     public byte aFormat;
 
-    public NSArray availableSubmissions;
-    public int     thisSubmissionIndex;
+    public NSArray<Submission> availableSubmissions;
+    public int                 thisSubmissionIndex;
 
     //~ Methods ...............................................................
 
@@ -200,7 +201,7 @@ public class GradeStudentSubmissionPage
         if (applyLocalChanges())
         {
             thisSubmissionIndex++;
-            Submission target = (Submission)availableSubmissions
+            Submission target = availableSubmissions
                 .objectAtIndex(thisSubmissionIndex);
             prefs().setSubmissionRelationship(target);
             prefs().setSubmissionFileStatsRelationship(null);
@@ -412,7 +413,7 @@ public class GradeStudentSubmissionPage
     // ----------------------------------------------------------
     public String formatLabel()
     {
-        return (String)SubmissionResult.formatStrings.objectAtIndex( aFormat );
+        return SubmissionResult.formatStrings.objectAtIndex( aFormat );
     }
 
 
@@ -424,11 +425,8 @@ public class GradeStudentSubmissionPage
             showCoverageData = Boolean.FALSE;
             if ( hasFileStats )
             {
-                for ( int i = 0; i < statsDisplayGroup.allObjects().count();
-                      i++ )
+                for (SubmissionFileStats sfs : statsDisplayGroup.allObjects())
                 {
-                    SubmissionFileStats sfs = (SubmissionFileStats)
-                        statsDisplayGroup.allObjects().objectAtIndex( i );
                     if ( sfs.elementsRaw() != null )
                     {
                         showCoverageData = Boolean.TRUE;

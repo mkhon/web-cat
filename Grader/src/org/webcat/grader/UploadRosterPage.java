@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: UploadRosterPage.java,v 1.2 2010/09/27 04:26:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,9 +36,9 @@ import org.webcat.ui.generators.JavascriptGenerator;
 /**
  * This class allows a CSV file of new users to be added to a course.
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @author  Stephen Edwards
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:26:49 $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -668,9 +668,9 @@ public class UploadRosterPage
                     {
                         user = (User)EOUtilities.objectMatchingValues(
                             ec, User.ENTITY_NAME,
-                            new NSDictionary(
+                            new NSDictionary<String, Object>(
                                 new Object[]{ pid  , domain                 },
-                                new Object[]{ User.USER_NAME_KEY,
+                                new String[]{ User.USER_NAME_KEY,
                                               User.AUTHENTICATION_DOMAIN_KEY }
                             ) );
                         log.debug(

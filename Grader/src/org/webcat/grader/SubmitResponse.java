@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmitResponse.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SubmitResponse.java,v 1.2 2010/09/27 04:27:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,8 +31,9 @@ import org.webcat.core.*;
  *  by {@link Grader#handleDirectAction(WORequest,Session,WOContext)}
  *  in response to a BlueJ submitter direct action transaction.
  *
- *  @author Stephen Edwards
- *  @version $Id: SubmitResponse.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:27:30 $
  */
 public class SubmitResponse
     extends GraderSubmissionUploadComponent

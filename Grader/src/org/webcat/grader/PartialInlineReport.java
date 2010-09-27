@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PartialInlineReport.java,v 1.2 2010/09/15 02:54:38 aallowat Exp $
+ |  $Id: PartialInlineReport.java,v 1.3 2010/09/27 04:23:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,11 +22,8 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.foundation.*;
 import er.extensions.foundation.ERXFileUtilities;
 import java.io.File;
-import java.io.FileInputStream;
-import java.nio.CharBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
@@ -37,8 +34,9 @@ import org.apache.log4j.Logger;
  * file property should be bound to a File object referring to the
  * fragment to include.
  *
- * @author Stephen Edwards
- * @version $Id: PartialInlineReport.java,v 1.2 2010/09/15 02:54:38 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 04:23:20 $
  */
 public class PartialInlineReport
     extends WOComponent

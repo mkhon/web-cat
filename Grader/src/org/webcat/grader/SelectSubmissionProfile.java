@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SelectSubmissionProfile.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SelectSubmissionProfile.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,9 +34,9 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * This class presents the list of current submission profiles that
  * are available for selection.
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @author  Stephen Edwards
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
  */
 public class SelectSubmissionProfile
     extends GraderComponent

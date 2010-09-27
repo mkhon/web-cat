@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderPrefs.java,v 1.2 2010/09/26 16:42:00 stedwar2 Exp $
+ |  $Id: GraderPrefs.java,v 1.3 2010/09/27 04:21:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -28,9 +28,9 @@ import org.apache.log4j.Level;
  * A simple EO to record persistent user choices for assignments and
  * so on used in navigation.
  *
- * @author stedwar2
+ * @author  Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $ $Date: 2010/09/26 16:42:00 $
+ * @version $Revision: 1.3 $ $Date: 2010/09/27 04:21:37 $
  */
 public class GraderPrefs
     extends _GraderPrefs
