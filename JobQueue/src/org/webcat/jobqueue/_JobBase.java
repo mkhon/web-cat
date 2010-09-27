@@ -557,7 +557,7 @@ public abstract class _JobBase
      * @param value The new entity to relate to
      */
     public void setUserRelationship(
-            org.webcat.core.User value )
+        org.webcat.core.User value )
     {
         if (log.isDebugEnabled())
         {

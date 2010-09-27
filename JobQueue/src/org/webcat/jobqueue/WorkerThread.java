@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.1 2010/05/11 14:51:44 aallowat Exp $
+ |  $Id: WorkerThread.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -43,9 +43,9 @@ import er.extensions.eof.ERXS;
  * @param <Job> The subclass of {@link JobBase} that this worker thread
  *     works on.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:44 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread

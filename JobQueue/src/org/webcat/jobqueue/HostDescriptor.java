@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.1 2010/05/11 14:51:44 aallowat Exp $
+ |  $Id: HostDescriptor.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -30,9 +30,9 @@ import com.webobjects.foundation.*;
  * Represents and identifies a Web-CAT host within the cluster of
  * servers operating on a single shared database.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:44 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -129,17 +129,17 @@ public class HostDescriptor
      * Registers a host in the database, if it has not already been
      * registered.
      * @param context The editing context to use.
-     * @param hostName The name of the host.
+     * @param forHostName The name of the host.
      * @return The registered descriptor.
      */
     private static HostDescriptor registerHost(
-        EOEditingContext context, String hostName)
+        EOEditingContext context, String forHostName)
     {
         return (HostDescriptor)JobQueue.registerDescriptor(
             context,
             ENTITY_NAME,
             new NSDictionary<String, String>(
-                hostName,
+                forHostName,
                 HOST_NAME_KEY),
             null);
     }

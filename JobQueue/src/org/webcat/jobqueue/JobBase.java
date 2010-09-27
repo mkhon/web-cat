@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.1 2010/05/11 14:51:44 aallowat Exp $
+ |  $Id: JobBase.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -40,8 +40,8 @@ import er.extensions.eof.ERXEOAccessUtilities;
  * method, which will generate the inherited field definitions for you.
  *
  * @author
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:44 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -83,13 +83,13 @@ public abstract class JobBase
      * saved as part of the process, in order to commit the new value of
      * worker() to the database.
      *
-     * @param worker The worker thread that wishes to take on this job
+     * @param withWorker The worker thread that wishes to take on this job
      * @return True if the worker has been allocated this job, or false
      *     if this worker cannot be given the job (because it has been
      *     cancelled or paused, or because it has already been allocated
      *     to another worker).
      */
-    public boolean volunteerToRun(WorkerDescriptor worker)
+    public boolean volunteerToRun(WorkerDescriptor withWorker)
     {
         if (isCancelled() || !isReady())
         {
@@ -101,7 +101,7 @@ public abstract class JobBase
             try
             {
                 setSuspensionReason(null);
-                setWorkerRelationship(worker);
+                setWorkerRelationship(withWorker);
                 editingContext().saveChanges();
 
                 workerThread = (WorkerThread) Thread.currentThread();
@@ -113,7 +113,7 @@ public abstract class JobBase
             }
         }
 
-        return worker() == worker;
+        return worker() == withWorker;
     }
 
 
