@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.2 2010/09/27 04:29:09 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.3 2010/09/27 04:31:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:29:09 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 04:31:32 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -193,6 +193,10 @@ public class StudentsForAssignmentPage
                 {
                     log.debug("submission found = "
                         + thisSubmission.submitNumber());
+
+                    // Force migration of partner relationships
+                    thisSubmission.result().submission();
+
                     double score = thisSubmission.result().finalScore();
                     if (submissions.count() == 0)
                     {
