@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchJobDescriptionCell.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchJobDescriptionCell.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -31,7 +31,8 @@ import com.webobjects.appserver.WOContext;
  * an indicator of whether it is suspended.
  *
  * @author  Tony Allevato
- * @version $Id: BatchJobDescriptionCell.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchJobDescriptionCell extends WCTableCell
 {

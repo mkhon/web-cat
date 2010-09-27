@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPluginLibraryPage.java,v 1.2 2010/09/17 01:47:05 stedwar2 Exp $
+ |  $Id: BatchPluginLibraryPage.java,v 1.3 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,29 +22,20 @@
 package org.webcat.batchprocessor;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
-import com.webobjects.foundation.NSMutableDictionary;
 import er.extensions.foundation.ERXValueUtilities;
-import java.io.File;
-import java.util.Iterator;
 import org.apache.log4j.Logger;
-import org.webcat.core.DeliverFile;
-import org.webcat.core.EditFilePage;
-import org.webcat.core.FileUtilities;
 import org.webcat.core.User;
 import org.webcat.core.WCComponent;
-import org.webcat.grader.EditPluginGlobalsPage;
-import org.webcat.grader.EditScriptFilesPage;
 
 //-------------------------------------------------------------------------
 /**
  * Shows the list of available report templates and allows one to upload new
  * templates or manage existing ones.
  *
- * @author Tony Allevato
- * @version $Id: BatchPluginLibraryPage.java,v 1.2 2010/09/17 01:47:05 stedwar2 Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchPluginLibraryPage
     extends WCComponent

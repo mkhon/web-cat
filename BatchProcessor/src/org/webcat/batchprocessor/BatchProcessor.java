@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchProcessor.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchProcessor.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,26 +21,18 @@
 
 package org.webcat.batchprocessor;
 
-import java.util.Hashtable;
-import java.util.Map;
 import org.apache.log4j.Logger;
-import org.webcat.core.Application;
 import org.webcat.core.EntityResourceRequestHandler;
 import org.webcat.core.Subsystem;
-import org.webcat.grader.EnqueuedJob;
-import org.webcat.grader.Grader;
 import org.webcat.jobqueue.QueueDescriptor;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOQualifier;
-import er.extensions.eof.ERXEOControlUtilities;
-import er.extensions.eof.ERXQ;
 
 //-------------------------------------------------------------------------
 /**
  * The primary class of the BatchProcessor subsystem.
  *
- * @author Tony Allevato
- * @version $Id: BatchProcessor.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchProcessor extends Subsystem
 {

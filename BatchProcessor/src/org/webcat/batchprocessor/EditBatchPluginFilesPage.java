@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditBatchPluginFilesPage.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: EditBatchPluginFilesPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,9 +35,9 @@ import org.webcat.ui.generators.JavascriptGenerator;
  * This class presents the list of scripts (grading steps) that
  * are available for selection.
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:46 $
+ * @author  Stephen Edwards
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class EditBatchPluginFilesPage
     extends WCComponent
@@ -63,22 +63,22 @@ public class EditBatchPluginFilesPage
     //~ KVC Attributes (must be public) .......................................
 
     public BatchPlugin batchPlugin;
-    public File       base;
-    public boolean    isEditable;
-    public boolean    allowSelectDir;
-    public NSArray    allowSelectExtensions;
-    public String     folderName;
-    public String     aFolder;
-    public String     selectedParentFolderForSubFolder;
-    public String     selectedParentFolderForUpload;
-    public NSMutableArray folderList;
-    public NSData     uploadedFile2;
-    public String     uploadedFileName2;
-    public NSData     uploadedFile3;
-    public String     uploadedFileName3;
-    public boolean    unzip = false;
+    public File                   base;
+    public boolean                isEditable;
+    public boolean                allowSelectDir;
+    public NSArray<String>        allowSelectExtensions;
+    public String                 folderName;
+    public String                 aFolder;
+    public String                 selectedParentFolderForSubFolder;
+    public String                 selectedParentFolderForUpload;
+    public NSMutableArray<String> folderList;
+    public NSData                 uploadedFile2;
+    public String                 uploadedFileName2;
+    public NSData                 uploadedFile3;
+    public String                 uploadedFileName3;
+    public boolean                unzip = false;
     public FileBrowser.FileSelectionListener fileSelectionListener = null;
-    public String     currentSelection;
+    public String                 currentSelection;
 
 
     //~ Methods ...............................................................
@@ -112,7 +112,7 @@ public class EditBatchPluginFilesPage
     {
         if ( folderList == null )
         {
-            folderList = new NSMutableArray();
+            folderList = new NSMutableArray<String>();
             String parent = base.getParent();
             int stripLength = 0;
             if ( parent != null && parent.length() > 0 )
@@ -125,7 +125,8 @@ public class EditBatchPluginFilesPage
 
 
     // ----------------------------------------------------------
-    private void addFolders( NSMutableArray list, File file, int stripLength )
+    private void addFolders(
+        NSMutableArray<String> list, File file, int stripLength)
     {
         if ( !file.isDirectory() ) return;
         String name = file.getName();

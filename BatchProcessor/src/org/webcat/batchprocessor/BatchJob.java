@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchJob.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchJob.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,9 +26,7 @@ import org.webcat.core.MutableArray;
 import org.webcat.core.ObjectQuery;
 import org.webcat.core.QualifierUtils;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.eocontrol.EOFetchSpecification;
-import com.webobjects.eocontrol.EOGlobalID;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSTimestamp;
@@ -39,9 +37,9 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
 /**
  * TODO: place a real description here.
  *
- * @author
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:46 $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchJob
     extends _BatchJob
@@ -152,7 +150,7 @@ public class BatchJob
             return null;
         }
 
-        NSArray remainder = pks.subarrayWithRange(
+        NSArray<?> remainder = pks.subarrayWithRange(
                 new NSRange(indexOfNextObject(),
                         pks.count() - indexOfNextObject()));
 

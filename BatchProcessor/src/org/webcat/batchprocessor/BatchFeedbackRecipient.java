@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchFeedbackRecipient.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchFeedbackRecipient.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -26,7 +26,8 @@ package org.webcat.batchprocessor;
  * Describes which users are allowed to see a batch feedback report.
  *
  * @author  Tony Allevato
- * @version $Id: BatchFeedbackRecipient.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public enum BatchFeedbackRecipient
 {

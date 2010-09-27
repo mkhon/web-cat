@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchHandlerProxy.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchHandlerProxy.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,11 +23,9 @@ package org.webcat.batchprocessor;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 import org.webcat.core.WCProperties;
-import org.webcat.core.vfs.WCFile;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 
 //-------------------------------------------------------------------------
@@ -36,8 +34,9 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  * handler, providing appropriate default behavior (usually no-ops) if the
  * handler does not implement a method.
  *
- * @author Tony Allevato
- * @version $Id: BatchHandlerProxy.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchHandlerProxy
 {
@@ -54,7 +53,7 @@ public class BatchHandlerProxy
 
         try
         {
-            Constructor ctor =
+            Constructor<?> ctor =
                 BatchHandlerManager.getHandlerConstructor(handlerClass);
 
             handler = ctor.newInstance(properties, workingDir);

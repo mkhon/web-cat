@@ -3,7 +3,7 @@
     encoding = "UTF-8";
     variables = {
         batchJobDisplayGroup = {
-            class = WODisplayGroup;
+            class = ERXDisplayGroup;
             dataSource = {
                 class = EODatabaseDataSource;
                 editingContext = localContext;
@@ -33,7 +33,7 @@
             );
         };
         batchResultDisplayGroup = {
-            class = WODisplayGroup;
+            class = ERXDisplayGroup;
             dataSource = {
                 class = EODatabaseDataSource;
                 editingContext = localContext;

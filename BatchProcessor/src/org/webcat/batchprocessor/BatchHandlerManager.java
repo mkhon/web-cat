@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchHandlerManager.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchHandlerManager.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,16 +30,11 @@ import org.webcat.core.Application;
 import org.webcat.core.Subsystem;
 import org.webcat.core.SubsystemManager;
 import org.webcat.core.WCProperties;
-import org.webcat.core.objectquery.AbstractQueryAssistantModel;
-import org.webcat.core.objectquery.QueryAssistantDescriptor;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.eocontrol.EOEnterpriseObject;
-import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSPropertyListSerialization;
 
@@ -77,8 +72,9 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  * <dd>Performs any necessary cleanup from the setUpItem method.</dd>
  * </dl>
  *
- * @author Tony Allevato
- * @version $Id: BatchHandlerManager.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchHandlerManager
 {
@@ -166,6 +162,7 @@ public class BatchHandlerManager
             return;
         }
 
+        @SuppressWarnings("unchecked")
         NSDictionary<String, Object> plist = (NSDictionary<String, Object>)
             NSPropertyListSerialization.propertyListFromData(
                     new NSData(new FileInputStream(file), 0), "UTF-8");
@@ -204,8 +201,10 @@ public class BatchHandlerManager
 
 
     // ----------------------------------------------------------
-    /*package*/ static Constructor getHandlerConstructor(Class<?> handlerClass)
-    throws SecurityException, NoSuchMethodException
+    /*package*/ static Constructor<?> getHandlerConstructor(
+        Class<?> handlerClass
+    )
+        throws SecurityException, NoSuchMethodException
     {
         return handlerClass.getConstructor(WCProperties.class, File.class);
     }

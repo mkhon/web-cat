@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditBatchPluginGlobalsPage.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: EditBatchPluginGlobalsPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -31,9 +31,9 @@ import com.webobjects.appserver.*;
  *  The creator of this page must set the plugin attribute before
  *  rendering the page.
  *
- *  @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:46 $
+ *  @author  Stephen Edwards
+ *  @author  latest changes by: $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class EditBatchPluginGlobalsPage extends WCComponent
 {
@@ -53,7 +53,7 @@ public class EditBatchPluginGlobalsPage extends WCComponent
 
     //~ KVC Attributes (must be public) .......................................
 
-    public BatchPlugin   plugin;
+    public BatchPlugin  plugin;
     public java.io.File baseDir;
 
 
@@ -62,18 +62,18 @@ public class EditBatchPluginGlobalsPage extends WCComponent
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        log.debug( "appendToResponse()" );
-        if ( baseDir == null )
+        log.debug("appendToResponse()");
+        if (baseDir == null)
         {
-            baseDir = new java.io.File ( BatchPlugin.userPluginDirName(
-                user(), true ).toString() );
+            baseDir = new java.io.File (BatchPlugin.userPluginDirName(
+                user(), true).toString());
         }
-        if ( log.isDebugEnabled() )
+        if (log.isDebugEnabled())
         {
-            log.debug( "plug-in global settings =\n"
-                + plugin.globalConfigSettings() );
+            log.debug("plug-in global settings =\n"
+                + plugin.globalConfigSettings());
         }
-        super.appendToResponse( response, context );
+        super.appendToResponse(response, context);
     }
 
 

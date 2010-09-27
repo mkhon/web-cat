@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchResult.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchResult.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -30,15 +30,14 @@ import com.webobjects.eocontrol.EOObjectStore;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSComparator;
 import com.webobjects.foundation.NSMutableArray;
-import com.webobjects.foundation.NSTimestamp;
 
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
- * @author
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:46 $
+ * @author  Tony Allevato
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchResult
     extends _BatchResult
@@ -178,11 +177,11 @@ public class BatchResult
      * user, sorted respecting the order and location properties of the
      * sections.
      *
-     * @param user the user
+     * @param viewingUser the user
      * @return the array of feedback sections
      */
     public NSArray<BatchFeedbackSection> sortedVisibleFeedbackSections(
-            User user)
+            User viewingUser)
     {
         NSArray<BatchFeedbackSection> sections = feedbackSections();
 
@@ -205,11 +204,11 @@ public class BatchResult
                 break;
 
             case OWNER:
-                visible = (user == user());
+                visible = (viewingUser == user());
                 break;
 
             case ADMINISTRATOR:
-                visible = (user.accessLevel() >= User.WEBCAT_READ_PRIVILEGES);
+                visible = (viewingUser.accessLevel() >= User.WEBCAT_READ_PRIVILEGES);
                 break;
             }
 

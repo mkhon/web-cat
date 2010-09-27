@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchProcessorDatabaseUpdates.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchProcessorDatabaseUpdates.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,6 @@ package org.webcat.batchprocessor;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.webcat.dbupdate.UpdateSet;
-import org.webcat.jobqueue.JobQueueDatabaseUpdates;
 
 //-------------------------------------------------------------------------
 /**
@@ -32,8 +31,9 @@ import org.webcat.jobqueue.JobQueueDatabaseUpdates;
  * underlying the BatchProcessor subsystem and the BatchProcessor.eomodeld.
  * Logging output for this class uses its parent class' logger.
  *
- * @author Tony Allevato
- * @version $Id: BatchProcessorDatabaseUpdates.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchProcessorDatabaseUpdates
     extends UpdateSet

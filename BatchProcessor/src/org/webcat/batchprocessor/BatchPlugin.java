@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPlugin.java,v 1.2 2010/09/16 18:49:36 aallowat Exp $
+ |  $Id: BatchPlugin.java,v 1.3 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,13 +26,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import net.sf.webcat.FeatureDescriptor;
 import net.sf.webcat.FeatureProvider;
 import org.webcat.core.Application;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.User;
-import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
@@ -45,11 +43,11 @@ import er.extensions.foundation.ERXValueUtilities;
 
 // -------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * Represents an uploaded batch processing plug-in.
  *
- * @author
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/16 18:49:36 $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchPlugin
     extends _BatchPlugin
@@ -116,20 +114,21 @@ public class BatchPlugin
      */
     public String mainFilePath()
     {
-        String name = null;
-        NSDictionary config = configDescription();
+        String pluginName = null;
+        @SuppressWarnings("unchecked")
+        NSDictionary<String, Object> config = configDescription();
 
         if (config != null)
         {
-            name = (String) config.objectForKey("executable");
+            pluginName = (String)config.objectForKey("executable");
         }
 
-        if (name == null)
+        if (pluginName == null)
         {
-            name = mainFileName();
+            pluginName = mainFileName();
         }
 
-        return dirName() + "/" + name;
+        return dirName() + "/" + pluginName;
     }
 
 
@@ -207,14 +206,15 @@ public class BatchPlugin
     {
         Object nameObj = configDescription().valueForKey("displayableName");
 
-        String name = (nameObj == null) ? name() : nameObj.toString();
+        String displayableName =
+            (nameObj == null) ? name() : nameObj.toString();
 
-        if (name == null)
+        if (displayableName == null)
         {
-            name = uploadedFileName();
+            displayableName = uploadedFileName();
         }
 
-        return name;
+        return displayableName;
     }
 
 
@@ -287,21 +287,23 @@ public class BatchPlugin
                     MutableDictionary.fromPropertyList( configPlist );
                 setConfigDescription( dict );
 //              log.debug( "script config.plist = " + dict );
-                String name = (String) dict.objectForKey( "name" );
-                setName(name);
+                String dictName = (String)dict.objectForKey( "name" );
+                setName(dictName);
 
-                String entity = (String) dict.objectForKey("batchEntity");
+                String entity = (String)dict.objectForKey("batchEntity");
                 setBatchEntity(entity);
 
-                NSArray options = (NSArray) dict.objectForKey( "options" );
+                NSArray<?> options =
+                    (NSArray<?>)dict.objectForKey( "options" );
 //              log.debug( "options = " + options );
                 if (options != null)
                 {
                     MutableDictionary defaults = new MutableDictionary();
                     for (int i = 0; i < options.count(); i++)
                     {
-                        NSDictionary thisOption = (NSDictionary)options
-                            .objectAtIndex(i);
+                        @SuppressWarnings("unchecked")
+                        NSDictionary<String, ?> thisOption =
+                            (NSDictionary<String, ?>)options.objectAtIndex(i);
 //                      log.debug( "this option = " + thisOption );
                         if ( thisOption.objectForKey( "disable" ) == null )
                         {
@@ -422,20 +424,21 @@ public class BatchPlugin
     // ----------------------------------------------------------
     /**
      * Retrieve the name of the directory where a user's plug-ins are stored.
-     * @param author the user
+     * @param pluginAuthor the user
      * @param isData true if this is the directory for a plug-in data/config
      *               file, or false if this is the directory where plug-ins
      *               themselves are stored
      * @return the directory name
      */
-    public static StringBuffer userPluginDirName(User author, boolean isData)
+    public static StringBuffer userPluginDirName(
+        User pluginAuthor, boolean isData)
     {
         StringBuffer dir = new StringBuffer(50);
         dir.append(isData ? pluginDataRoot() : pluginRoot());
         dir.append('/');
-        dir.append(author.authenticationDomain().subdirName());
+        dir.append(pluginAuthor.authenticationDomain().subdirName());
         dir.append('/');
-        dir.append(author.userName());
+        dir.append(pluginAuthor.userName());
         return dir;
     }
 
@@ -457,7 +460,7 @@ public class BatchPlugin
     /**
      * Create a new plug-in file object from uploaded file data.
      * @param ec           the editing context in which to add the new object
-     * @param author       the user uploading the plug-in
+     * @param pluginAuthor       the user uploading the plug-in
      * @param uploadedName the plug-in's file name
      * @param uploadedData the file's data
      * @param isData       true if this is a plug-in data/config file, or
@@ -469,24 +472,24 @@ public class BatchPlugin
      * @return the new plug-in file, if successful, or null if unsuccessful
      */
     public static BatchPlugin createNewBatchPlugin(
-            EOEditingContext    ec,
-            User                author,
-            String              uploadedName,
-            NSData              uploadedData,
-            boolean             expand,
-            NSMutableDictionary errors
+            EOEditingContext                    ec,
+            User                                pluginAuthor,
+            String                              uploadedName,
+            NSData                              uploadedData,
+            boolean                             expand,
+            NSMutableDictionary<String, Object> errors
         )
     {
-        String userPluginDir = userPluginDirName( author, false ).toString();
-        String subdirName = null;
+        String userPluginDir = userPluginDirName( pluginAuthor, false ).toString();
+        String newSubdirName = null;
         uploadedName = ( new File( uploadedName ) ).getName();
         String uploadedNameLC = uploadedName.toLowerCase();
         File toLookFor;
         if ( expand && ( uploadedNameLC.endsWith( ".zip" ) ||
                          uploadedNameLC.endsWith( ".jar" ) ) )
         {
-            subdirName = convertToSubdirName( uploadedName );
-            toLookFor = new File( userPluginDir + "/" + subdirName );
+            newSubdirName = convertToSubdirName( uploadedName );
+            toLookFor = new File( userPluginDir + "/" + newSubdirName );
         }
         else
         {
@@ -508,7 +511,7 @@ public class BatchPlugin
         batchPlugin.setUploadedFileName( uploadedName );
         batchPlugin.setMainFileName( uploadedName );
         batchPlugin.setLastModified( new NSTimestamp() );
-        batchPlugin.setAuthorRelationship( author );
+        batchPlugin.setAuthorRelationship( pluginAuthor );
 
         // Save the file to disk
         log.debug( "saving to file " + batchPlugin.mainFilePath() );
@@ -535,7 +538,7 @@ public class BatchPlugin
             try
             {
                 //ZipFile zip = new ZipFile( script.mainFilePath() );
-                batchPlugin.setSubdirName( subdirName );
+                batchPlugin.setSubdirName( newSubdirName );
                 log.debug( "unzipping to " + batchPlugin.dirName() );
                 org.webcat.archives.ArchiveManager.getInstance()
                     .unpack( new File( batchPlugin.dirName() ), pluginPath );
@@ -547,7 +550,7 @@ public class BatchPlugin
             {
                 String msg = e.getMessage();
                 errors.setObjectForKey( msg, msg );
-                batchPlugin.setSubdirName( subdirName );
+                batchPlugin.setSubdirName( newSubdirName );
                 org.webcat.core.FileUtilities
                     .deleteDirectory( batchPlugin.dirName() );
                 pluginPath.delete();
@@ -680,7 +683,7 @@ public class BatchPlugin
         }
 
         BatchPlugin newBatchPlugin = null;
-        String subdirName = convertToSubdirName( plugin.name() );
+        String pluginSubdirName = convertToSubdirName( plugin.name() );
         File newBatchPluginPath = null;
         if ( batchPlugin == null )
         {
@@ -688,14 +691,14 @@ public class BatchPlugin
             installedBy.editingContext().insertObject( newBatchPlugin );
             newBatchPlugin.setLastModified( new NSTimestamp() );
             newBatchPlugin.setAuthorRelationship( installedBy );
-            newBatchPlugin.setSubdirName( subdirName );
+            newBatchPlugin.setSubdirName( pluginSubdirName );
             batchPlugin = newBatchPlugin;
         }
-        else if ( !subdirName.equals( batchPlugin.subdirName() ) )
+        else if ( !pluginSubdirName.equals( batchPlugin.subdirName() ) )
         {
             newBatchPluginPath = new File (
                 userPluginDirName( installedBy, false ).toString(),
-                subdirName );
+                pluginSubdirName );
             if ( newBatchPluginPath.exists() )
             {
                 return "The plug-in you are updating has changed names, but "
@@ -736,7 +739,7 @@ public class BatchPlugin
         }
         else
         {
-            batchPlugin.setSubdirName( subdirName );
+            batchPlugin.setSubdirName( pluginSubdirName );
         }
         File downloadPath = newBatchPluginPath.getParentFile();
         File archiveFile = new File( downloadPath.getAbsolutePath()
@@ -773,16 +776,14 @@ public class BatchPlugin
 
 
     // ----------------------------------------------------------
-    private static NSArray autoUpdatePlugins( EOEditingContext ec )
+    private static NSArray<BatchPlugin> autoUpdatePlugins(EOEditingContext ec)
     {
-        NSArray pluginList = EOUtilities.objectsForEntityNamed(
-            ec, ENTITY_NAME );
+        NSArray<BatchPlugin> pluginList = allObjects(ec);
         if ( !Application.configurationProperties()
                  .booleanForKey( NO_AUTO_UPDATE_KEY ) )
         {
-            for ( int i = 0; i < pluginList.count(); i++ )
+            for (BatchPlugin plugin : pluginList)
             {
-                BatchPlugin plugin = (BatchPlugin) pluginList.objectAtIndex( i );
                 if ( plugin.descriptor().updateIsAvailable() )
                 {
                     log.info( "Updating plug-in: \"" + plugin.name() + "\"" );
@@ -807,7 +808,7 @@ public class BatchPlugin
 
     // ----------------------------------------------------------
     private static void autoInstallNewPlugins(
-        EOEditingContext ec, NSArray pluginList )
+        EOEditingContext ec, NSArray<BatchPlugin> pluginList )
     {
         if ( Application.configurationProperties()
                  .booleanForKey( NO_AUTO_INSTALL_KEY ) )
@@ -823,14 +824,10 @@ public class BatchPlugin
             return;
         }
         User admin = null;
-        NSArray candidates = EOUtilities.objectsMatchingKeyAndValue(
-            ec,
-            User.ENTITY_NAME,
-            User.USER_NAME_KEY,
-            adminUserName );
-        for ( int i = 0; i < candidates.count(); i++ )
+        NSArray<User> candidates = User.objectsMatchingQualifier(ec,
+            User.userName.eq(adminUserName));
+        for (User user : candidates)
         {
-            User user = (User)candidates.objectAtIndex( i );
             if ( user.hasAdminPrivileges() )
             {
                 if ( admin == null )
@@ -840,7 +837,8 @@ public class BatchPlugin
                 else
                 {
                     log.warn( "Duplicate admin accounts with user name \""
-                        + adminUserName + "\" found.  Using first one." );
+                        + adminUserName + "\" found.  Using " + admin
+                        + ", ignoring " + user);
                 }
             }
         }
@@ -851,11 +849,10 @@ public class BatchPlugin
             return;
         }
 
-        Collection availablePlugins = new HashSet();
-        for ( Iterator i = FeatureProvider.providers().iterator();
-              i.hasNext(); )
+        Collection<FeatureDescriptor> availablePlugins =
+            new HashSet<FeatureDescriptor>();
+        for (FeatureProvider provider : FeatureProvider.providers())
         {
-            FeatureProvider provider = (FeatureProvider)i.next();
             if ( provider != null )
             {
                 availablePlugins.addAll( provider.plugins() );
@@ -863,9 +860,8 @@ public class BatchPlugin
         }
         if ( pluginList != null )
         {
-            for ( int i = 0; i < pluginList.count(); i++ )
+            for (BatchPlugin s : pluginList)
             {
-                BatchPlugin s = (BatchPlugin) pluginList.objectAtIndex( i );
                 FeatureDescriptor fd = s.descriptor().providerVersion();
                 if ( fd != null )
                 {
@@ -873,9 +869,8 @@ public class BatchPlugin
                 }
             }
         }
-        for ( Iterator i = availablePlugins.iterator(); i.hasNext(); )
+        for (FeatureDescriptor plugin : availablePlugins)
         {
-            FeatureDescriptor plugin = (FeatureDescriptor)i.next();
             log.info( "Installing new plug-in: \"" + plugin.name() + "\"" );
             String msg = installOrUpdate( admin, plugin, false, null );
             if ( msg != null )

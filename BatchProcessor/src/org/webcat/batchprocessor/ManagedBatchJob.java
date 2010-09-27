@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedBatchJob.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: ManagedBatchJob.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -29,7 +29,8 @@ import com.webobjects.foundation.NSArray;
  * TODO real description
  *
  * @author  Tony Allevato
- * @version $Id: ManagedBatchJob.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class ManagedBatchJob extends ManagedJobBase
 {
@@ -148,7 +149,8 @@ public class ManagedBatchJob extends ManagedJobBase
     public void incrementIndexOfNextObject()
     {
         int index = indexOfNextObject();
-        NSArray ids = (NSArray) valueForKey(BatchJob.BATCHED_OBJECT_IDS_KEY);
+        NSArray<?> ids =
+            (NSArray<?>)valueForKey(BatchJob.BATCHED_OBJECT_IDS_KEY);
 
         if (index < ids.count())
         {

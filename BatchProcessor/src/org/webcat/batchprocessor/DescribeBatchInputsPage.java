@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DescribeBatchInputsPage.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: DescribeBatchInputsPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,21 +26,19 @@ import org.webcat.core.MutableDictionary;
 import org.webcat.core.ObjectQuery;
 import org.webcat.core.WCComponent;
 import org.webcat.core.objectquery.ObjectQuerySurrogate;
-import org.webcat.grader.GradingPlugin;
-import org.webcat.grader.Submission;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
 
 //-------------------------------------------------------------------------
 /**
  * This page allows the user to select the items for the batch job and any
  * other arguments that the plug-in needs to run.
  *
- * @author Tony Allevato
- * @version $Id: DescribeBatchInputsPage.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class DescribeBatchInputsPage extends WCComponent
 {

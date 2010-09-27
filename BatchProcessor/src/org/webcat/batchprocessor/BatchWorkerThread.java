@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchWorkerThread.java,v 1.1 2010/05/11 14:51:46 aallowat Exp $
+ |  $Id: BatchWorkerThread.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,9 +34,6 @@ import org.webcat.core.Application;
 import org.webcat.core.FileUtilities;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.WCProperties;
-import org.webcat.grader.EnqueuedJob;
-import org.webcat.grader.ResultOutcome;
-import org.webcat.grader.SubmissionResult;
 import org.webcat.jobqueue.WorkerThread;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -51,8 +48,8 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:46 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
  */
 public class BatchWorkerThread extends WorkerThread<BatchJob>
 {
@@ -506,7 +503,10 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         }
         else
         {
-            contents = (NSDictionary<String, Object>) value;
+            @SuppressWarnings("unchecked")
+            NSDictionary<String, Object> theContents =
+                (NSDictionary<String, Object>) value;
+            contents = theContents;
         }
 
         BatchResultProperty resultProp = BatchResultProperty.create(
