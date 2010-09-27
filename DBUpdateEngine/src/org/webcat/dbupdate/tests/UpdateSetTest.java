@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UpdateSetTest.java,v 1.1 2010/05/11 14:52:03 aallowat Exp $
+ |  $Id: UpdateSetTest.java,v 1.2 2010/09/27 00:21:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,8 @@ import org.webcat.dbupdate.*;
  * A simple test class to try out the basic methods of {@link UpdateSet}.
  *
  * @author  Stephen Edwards
- * @version $Id: UpdateSetTest.java,v 1.1 2010/05/11 14:52:03 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:21:13 $
  */
 public class UpdateSetTest
     extends junit.framework.TestCase

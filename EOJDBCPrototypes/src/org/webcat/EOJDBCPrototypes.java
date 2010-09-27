@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EOJDBCPrototypes.java,v 1.1 2010/05/11 14:51:33 aallowat Exp $
+ |  $Id: EOJDBCPrototypes.java,v 1.2 2010/09/27 00:21:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,8 +28,9 @@ package org.webcat;
  *  resources end up being included as a live framework by various parts
  *  of WebObjects.
  *
- *  @author  stedwar2
- *  @version $Id: EOJDBCPrototypes.java,v 1.1 2010/05/11 14:51:33 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 00:21:54 $
  */
 public class EOJDBCPrototypes
 {
