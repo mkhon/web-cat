@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SurveyReminderJob.java,v 1.1 2010/05/11 14:51:45 aallowat Exp $
+ |  $Id: SurveyReminderJob.java,v 1.2 2010/09/27 00:43:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006 Virginia Tech
  |
@@ -21,16 +21,13 @@
 
 package org.webcat.opinions;
 
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
-
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:45 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:43:13 $
  */
 public class SurveyReminderJob
     extends _SurveyReminderJob
@@ -45,8 +42,4 @@ public class SurveyReminderJob
     {
         super();
     }
-
-
-    //~ Methods ...............................................................
-
 }

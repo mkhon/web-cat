@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UserMessageSubscription.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ |  $Id: UserMessageSubscription.java,v 1.2 2010/09/27 00:40:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -25,9 +25,9 @@ package org.webcat.notifications;
 /**
  * TODO: place a real description here.
  *
- * @author
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:35 $
+ * @author  Tony Allevato
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:40:53 $
  */
 public class UserMessageSubscription
     extends _UserMessageSubscription
@@ -42,8 +42,4 @@ public class UserMessageSubscription
     {
         super();
     }
-
-
-    //~ Methods ...............................................................
-
 }

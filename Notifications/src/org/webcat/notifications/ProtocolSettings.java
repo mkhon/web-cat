@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ProtocolSettings.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ |  $Id: ProtocolSettings.java,v 1.2 2010/09/27 00:40:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -30,9 +30,9 @@ import com.webobjects.eocontrol.EOEditingContext;
 /**
  * TODO: place a real description here.
  *
- * @author
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:35 $
+ * @author  Tony Allevato
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 00:40:53 $
  */
 public class ProtocolSettings
     extends _ProtocolSettings
@@ -76,25 +76,26 @@ public class ProtocolSettings
      * object yet exists for this user, an empty one is created as associated
      * with them.
      *
-     * @param user the user
+     * @param theUser the user
      * @return the protocol settings for the user
      */
     public static ProtocolSettings protocolSettingsForUser(
-            User user)
+            User theUser)
     {
-        ProtocolSettings settings =
+        ProtocolSettings userSettings =
             ProtocolSettings.uniqueObjectMatchingQualifier(
-                user.editingContext(),
-                ProtocolSettings.user.is(user));
+                theUser.editingContext(),
+                ProtocolSettings.user.is(theUser));
 
-        if (settings == null)
+        if (userSettings == null)
         {
-            settings = ProtocolSettings.create(user.editingContext(), false);
-            settings.setUserRelationship(user);
-            user.editingContext().saveChanges();
+            userSettings = ProtocolSettings.create(
+                theUser.editingContext(), false);
+            userSettings.setUserRelationship(theUser);
+            theUser.editingContext().saveChanges();
         }
 
-        return settings;
+        return userSettings;
     }
 
 

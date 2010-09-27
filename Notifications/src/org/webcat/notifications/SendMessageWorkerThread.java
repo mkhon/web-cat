@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SendMessageWorkerThread.java,v 1.2 2010/09/24 19:06:05 aallowat Exp $
+ |  $Id: SendMessageWorkerThread.java,v 1.3 2010/09/27 00:40:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,8 +42,8 @@ import com.webobjects.foundation.NSDictionary;
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/24 19:06:05 $
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/27 00:40:53 $
  */
 public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
 {
@@ -181,6 +181,7 @@ public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
         body.append(job.fullBody());
         body.append("\n\n");
 
+        @SuppressWarnings("unchecked")
         NSDictionary<String, String> links = job.links();
         if (links != null && links.count() > 0)
         {
