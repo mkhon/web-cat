@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionInProcess.java,v 1.3 2010/09/26 16:43:45 stedwar2 Exp $
+ |  $Id: SubmissionInProcess.java,v 1.4 2010/09/27 04:32:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,8 +31,9 @@ import org.webcat.core.User;
  * Used to hold the data related to a file upload as part of a submission
  * that has been started (but not yet completed).
  *
- * @author stedwar2
- * @version $Id: SubmissionInProcess.java,v 1.3 2010/09/26 16:43:45 stedwar2 Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2010/09/27 04:32:58 $
  */
 public class SubmissionInProcess
 {

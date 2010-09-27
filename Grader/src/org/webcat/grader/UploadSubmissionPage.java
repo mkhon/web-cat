@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.4 2010/09/26 17:17:33 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.5 2010/09/27 04:33:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,9 +36,9 @@ import org.webcat.ui.generators.JavascriptGenerator;
  * This wizard page summarizes past submissions and allows a student
  * to upload a program file for the current (new) submission.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/09/26 17:17:33 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2010/09/27 04:33:09 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent

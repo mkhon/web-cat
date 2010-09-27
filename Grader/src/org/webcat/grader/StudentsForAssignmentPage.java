@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.2 2010/09/27 04:29:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,9 +35,9 @@ import org.webcat.core.*;
  * Show an overview of class grades for an assignment, and allow the user
  * to download them in spreadsheet form or edit them one at a time.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:40 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/09/27 04:29:09 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentComponent
@@ -106,6 +106,7 @@ public class StudentsForAssignmentPage
                         courseOffering,
                         AssignmentOffering.ASSIGNMENT_KEY,
                         assignment);
+                prefs().setAssignmentOfferingRelationship(assignmentOffering);
             }
         }
 
@@ -133,12 +134,8 @@ public class StudentsForAssignmentPage
                 Submission gradedSubmission = null;
                 // Find the submission
                 NSArray<Submission> thisSubmissionSet =
-                    Submission.objectsMatchingValues(
-                        localContext(),
-                        Submission.USER_KEY,
-                        student,
-                        Submission.ASSIGNMENT_OFFERING_KEY,
-                        assignmentOffering);
+                    Submission.submissionsForAssignmentOfferingAndUser(
+                        localContext(), assignmentOffering, student);
                 log.debug("searching for submissions");
                 for (Submission sub : thisSubmissionSet)
                 {
@@ -149,7 +146,10 @@ public class StudentsForAssignmentPage
                         mostRecentSubmission = sub;
                     }
                     log.debug("\tsub #" + sub.submitNumber());
-                    if (sub.result() != null && !sub.partnerLink())
+                    if (sub.result() != null
+                        // The next two are mutually
+                        && !sub.partnerLink()
+                        && sub.primarySubmission() == null)
                     {
                         if (thisSubmission == null)
                         {

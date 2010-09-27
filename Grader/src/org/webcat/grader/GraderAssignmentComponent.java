@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderAssignmentComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderAssignmentComponent.java,v 1.2 2010/09/27 04:28:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,8 @@ import com.webobjects.foundation.*;
  *  assignment selections from login parameters.
  *
  *  @author  Stephen Edwards
- *  @version $Id: GraderAssignmentComponent.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:28:39 $
  */
 public class GraderAssignmentComponent
     extends GraderCourseComponent
@@ -116,7 +117,7 @@ public class GraderAssignmentComponent
      * @param params A dictionary of form values to decode
      * @return True if successful, false if the parameter is missing
      */
-    public boolean startWith( NSDictionary params )
+    public boolean startWith( NSDictionary<String, Object> params )
     {
         boolean result = false;
         String aoid =
