@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PerlForPlugins.java,v 1.1 2010/05/11 14:51:51 aallowat Exp $
+ |  $Id: PerlForPlugins.java,v 1.2 2010/09/27 00:46:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,7 +24,6 @@ package org.webcat.perlforplugins;
 import com.webobjects.foundation.*;
 import java.io.File;
 import org.apache.log4j.Logger;
-import org.webcat.core.Application;
 import org.webcat.core.Subsystem;
 
 // -------------------------------------------------------------------------
@@ -41,8 +40,9 @@ import org.webcat.core.Subsystem;
  *      and writing properties files.</p>
  *  </ul>
  *
- *  @author  stedwar2
- *  @version $Id: PerlForPlugins.java,v 1.1 2010/05/11 14:51:51 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 00:46:00 $
  */
 public class PerlForPlugins
     extends Subsystem
@@ -68,31 +68,31 @@ public class PerlForPlugins
      * @param env the dictionary to add environment variable bindings to;
      * the full set of currently available bindings are passed in.
      */
-    public void addEnvironmentBindings( NSMutableDictionary env )
+    public void addEnvironmentBindings(NSMutableDictionary<String, String> env)
     {
         String lib = myResourcesDir() + "/lib";
-        File libDir = new File( lib );
-        if ( libDir.exists() )
+        File libDir = new File(lib);
+        if (libDir.exists())
         {
             try
             {
                 String path = libDir.getCanonicalPath();
-                Object valueObj = env.valueForKey( PERLLIB_KEY );
-                if ( valueObj != null )
+                Object valueObj = env.valueForKey(PERLLIB_KEY);
+                if (valueObj != null)
                 {
-                    path = path + System.getProperty( "path.separator" )
+                    path = path + System.getProperty("path.separator")
                         + valueObj.toString();
                 }
-                env.takeValueForKey( path, PERLLIB_KEY );
+                env.takeValueForKey(path, PERLLIB_KEY);
             }
-            catch ( java.io.IOException e )
+            catch (java.io.IOException e)
             {
-                log.error( "Attempting to get canonical path for " + lib, e );
+                log.error("Attempting to get canonical path for " + lib, e);
             }
         }
         else
         {
-            log.error( "Cannot locate PERLLIB in Resources directory" );
+            log.error("Cannot locate PERLLIB in Resources directory");
         }
     }
 
@@ -104,17 +104,18 @@ public class PerlForPlugins
      * @param properties the dictionary to add new properties to;
      * individual plug-in information may override these later.
      */
-    public void addPluginPropertyBindings( NSMutableDictionary properties )
+    public void addPluginPropertyBindings(
+        NSMutableDictionary<String, String> properties)
     {
         properties.takeValueForKey(
-            System.getProperty( FILE_SEPARATOR_KEY ),
-            SUBSYSTEM_PREFIX + FILE_SEPARATOR_KEY );
+            System.getProperty(FILE_SEPARATOR_KEY),
+            SUBSYSTEM_PREFIX + FILE_SEPARATOR_KEY);
         properties.takeValueForKey(
-            System.getProperty( PATH_SEPARATOR_KEY ),
-            SUBSYSTEM_PREFIX + PATH_SEPARATOR_KEY );
+            System.getProperty(PATH_SEPARATOR_KEY),
+            SUBSYSTEM_PREFIX + PATH_SEPARATOR_KEY);
         properties.takeValueForKey(
-            System.getProperty( LINE_SEPARATOR_KEY ),
-            SUBSYSTEM_PREFIX + LINE_SEPARATOR_KEY );
+            System.getProperty(LINE_SEPARATOR_KEY),
+            SUBSYSTEM_PREFIX + LINE_SEPARATOR_KEY);
     }
 
 
@@ -125,5 +126,5 @@ public class PerlForPlugins
     private static final String FILE_SEPARATOR_KEY = "file.separator";
     private static final String PATH_SEPARATOR_KEY = "path.separator";
     private static final String LINE_SEPARATOR_KEY = "line.separator";
-    static Logger log = Logger.getLogger( PerlForPlugins.class );
+    static Logger log = Logger.getLogger(PerlForPlugins.class);
 }
