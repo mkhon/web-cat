@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WonderUpdater.java,v 1.1 2010/05/11 14:51:52 aallowat Exp $
+ |  $Id: WonderUpdater.java,v 1.2 2010/09/27 00:55:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,8 +27,9 @@ package org.webcat;
  *  framework has a jar file created for it, and its resources end up being
  *  included as a live framework by Web-CAT.
  *
- *  @author  stedwar2
- *  @version $Id: WonderUpdater.java,v 1.1 2010/05/11 14:51:52 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/09/27 00:55:04 $
  */
 public class WonderUpdater
 {
