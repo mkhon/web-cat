@@ -646,7 +646,6 @@ public abstract class _ReportGenerationJob
      *
      * @return the count of objects that matched the specified values
      */
-    @SuppressWarnings("unchecked")
     public static int countOfObjectsMatchingValues(
         EOEditingContext context,
         NSDictionary<String, Object> keysAndValues)
