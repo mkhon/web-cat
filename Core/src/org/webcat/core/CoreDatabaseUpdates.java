@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.2 2010/09/28 01:03:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.2 2010/09/28 01:03:32 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -103,7 +103,7 @@ public class CoreDatabaseUpdates
 
     // ----------------------------------------------------------
     /**
-     * Changes course CRNs to strings.
+     * Add institution id to departments.
      * @throws SQLException on error
      */
     public void updateIncrement3() throws SQLException
@@ -266,6 +266,19 @@ public class CoreDatabaseUpdates
     {
         database().executeSQL("ALTER TABLE TUSER DROP protocolSettingsId");
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add indexes for better performance.
+     * @throws SQLException on error
+     */
+//    public void updateIncrement16() throws SQLException
+//    {
+//        database().executeSQL("ALTER TABLE TUSER ADD INDEX (CUSERNAME(8))");
+//        database().executeSQL(
+//            "ALTER TABLE TUSER ADD INDEX (CAUTHENTICATIONDOMAINID)");
+//    }
 
 
     //~ Private Methods .......................................................
