@@ -180,11 +180,11 @@ public abstract class _JobBase
      */
     public boolean isCancelled()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "isCancelled" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -244,11 +244,11 @@ public abstract class _JobBase
      */
     public boolean isReady()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "isReady" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -308,11 +308,11 @@ public abstract class _JobBase
      */
     public int priority()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "priority" );
-        return ( result == null )
+        return ( returnValue == null )
             ? 0
-            : result.intValue();
+            : returnValue.intValue();
     }
 
 
@@ -372,11 +372,11 @@ public abstract class _JobBase
      */
     public double progress()
     {
-        Double result =
+        Double returnValue =
             (Double)storedValueForKey( "progress" );
-        return ( result == null )
+        return ( returnValue == null )
             ? 0.0
-            : result.doubleValue();
+            : returnValue.doubleValue();
     }
 
 
