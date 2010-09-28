@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultInfo.java,v 1.5 2010/09/27 04:27:30 stedwar2 Exp $
+ |  $Id: SubmissionResultInfo.java,v 1.6 2010/09/28 02:19:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.5 $, $Date: 2010/09/27 04:27:30 $
+ *  @version $Revision: 1.6 $, $Date: 2010/09/28 02:19:12 $
  */
 public class SubmissionResultInfo
     extends GraderComponent
@@ -85,6 +85,9 @@ public class SubmissionResultInfo
 
         if (submission != null)
         {
+            // TODO: fix this with auto-migration
+            submission.migratePartnerLink();
+
             NSMutableArray<User> partners = new NSMutableArray<User>();
 
             for (Submission partneredSubmission :

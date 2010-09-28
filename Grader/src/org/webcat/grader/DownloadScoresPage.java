@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.2 2010/09/27 04:18:14 stedwar2 Exp $
+ |  $Id: DownloadScoresPage.java,v 1.3 2010/09/28 02:19:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:18:14 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/28 02:19:12 $
  */
 public class DownloadScoresPage
     extends GraderAssignmentComponent
@@ -323,6 +323,8 @@ public class DownloadScoresPage
                 }
                 if (thisSubmission != null)
                 {
+                    // TODO: fix this with auto-migration
+                    thisSubmission.migratePartnerLink();
                     log.debug("\t saving for export = "
                               + thisSubmission.submitNumber());
                     submissionsToExport.addObject(thisSubmission);
