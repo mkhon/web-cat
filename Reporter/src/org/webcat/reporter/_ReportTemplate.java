@@ -114,11 +114,11 @@ public abstract class _ReportTemplate
         ReportTemplate obj = null;
         if (id > 0)
         {
-            NSArray<ReportTemplate> results =
+            NSArray<ReportTemplate> objects =
                 objectsMatchingValues(ec, "id", new Integer(id));
-            if (results != null && results.count() > 0)
+            if (objects != null && objects.count() > 0)
             {
-                obj = results.objectAtIndex(0);
+                obj = objects.objectAtIndex(0);
             }
         }
         return obj;
@@ -376,11 +376,11 @@ public abstract class _ReportTemplate
      */
     public boolean isPublished()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "isPublished" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -630,11 +630,11 @@ public abstract class _ReportTemplate
      */
     public boolean updateMutableFields()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "updateMutableFields" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -1499,10 +1499,10 @@ public abstract class _ReportTemplate
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        NSArray<ReportTemplate> results =
+        NSArray<ReportTemplate> objects =
             objectsMatchingQualifier(context, qualifier, sortOrderings);
-        return (results.size() > 0)
-            ? results.get(0)
+        return (objects.size() > 0)
+            ? objects.get(0)
             : null;
     }
 
@@ -1523,14 +1523,14 @@ public abstract class _ReportTemplate
         EOEditingContext context,
         EOQualifier qualifier) throws EOUtilities.MoreThanOneException
     {
-        NSArray<ReportTemplate> results =
+        NSArray<ReportTemplate> objects =
             objectsMatchingQualifier(context, qualifier);
-        if (results.size() > 1)
+        if (objects.size() > 1)
         {
             throw new EOUtilities.MoreThanOneException(null);
         }
-        return (results.size() > 0)
-            ? results.get(0)
+        return (objects.size() > 0)
+            ? objects.get(0)
             : null;
     }
 
@@ -1660,16 +1660,16 @@ public abstract class _ReportTemplate
             sortOrderings);
         fspec.setFetchLimit(1);
 
-        NSArray<ReportTemplate> result =
+        NSArray<ReportTemplate> objects =
             objectsWithFetchSpecification( context, fspec );
 
-        if ( result.count() == 0 )
+        if ( objects.count() == 0 )
         {
             return null;
         }
         else
         {
-            return result.objectAtIndex(0);
+            return objects.objectAtIndex(0);
         }
     }
 
@@ -1851,14 +1851,14 @@ public abstract class _ReportTemplate
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "allTemplatesOrderedByName", "ReportTemplate" );
 
-        NSArray<ReportTemplate> result =
+        NSArray<ReportTemplate> objects =
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "allTemplatesOrderedByName(ec"
-                + "): " + result );
+                + "): " + objects );
         }
-        return result;
+        return objects;
     }
 
 
@@ -1877,14 +1877,14 @@ public abstract class _ReportTemplate
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "publishedTemplates", "ReportTemplate" );
 
-        NSArray<ReportTemplate> result =
+        NSArray<ReportTemplate> objects =
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "publishedTemplates(ec"
-                + "): " + result );
+                + "): " + objects );
         }
-        return result;
+        return objects;
     }
 
 
@@ -1915,15 +1915,15 @@ public abstract class _ReportTemplate
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<ReportTemplate> result =
+        NSArray<ReportTemplate> objects =
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "templatesForUser(ec"
                 + ", " + userBinding
-                + "): " + result );
+                + "): " + objects );
         }
-        return result;
+        return objects;
     }
 
 

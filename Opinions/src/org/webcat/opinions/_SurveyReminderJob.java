@@ -122,11 +122,11 @@ public abstract class _SurveyReminderJob
         SurveyReminderJob obj = null;
         if (id > 0)
         {
-            NSArray<SurveyReminderJob> results =
+            NSArray<SurveyReminderJob> objects =
                 objectsMatchingValues(ec, "id", new Integer(id));
-            if (results != null && results.count() > 0)
+            if (objects != null && objects.count() > 0)
             {
-                obj = results.objectAtIndex(0);
+                obj = objects.objectAtIndex(0);
             }
         }
         return obj;
@@ -217,11 +217,11 @@ public abstract class _SurveyReminderJob
      */
     public boolean isPaused()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "isPaused" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -423,10 +423,10 @@ public abstract class _SurveyReminderJob
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        NSArray<SurveyReminderJob> results =
+        NSArray<SurveyReminderJob> objects =
             objectsMatchingQualifier(context, qualifier, sortOrderings);
-        return (results.size() > 0)
-            ? results.get(0)
+        return (objects.size() > 0)
+            ? objects.get(0)
             : null;
     }
 
@@ -447,14 +447,14 @@ public abstract class _SurveyReminderJob
         EOEditingContext context,
         EOQualifier qualifier) throws EOUtilities.MoreThanOneException
     {
-        NSArray<SurveyReminderJob> results =
+        NSArray<SurveyReminderJob> objects =
             objectsMatchingQualifier(context, qualifier);
-        if (results.size() > 1)
+        if (objects.size() > 1)
         {
             throw new EOUtilities.MoreThanOneException(null);
         }
-        return (results.size() > 0)
-            ? results.get(0)
+        return (objects.size() > 0)
+            ? objects.get(0)
             : null;
     }
 
@@ -584,16 +584,16 @@ public abstract class _SurveyReminderJob
             sortOrderings);
         fspec.setFetchLimit(1);
 
-        NSArray<SurveyReminderJob> result =
+        NSArray<SurveyReminderJob> objects =
             objectsWithFetchSpecification( context, fspec );
 
-        if ( result.count() == 0 )
+        if ( objects.count() == 0 )
         {
             return null;
         }
         else
         {
-            return result.objectAtIndex(0);
+            return objects.objectAtIndex(0);
         }
     }
 
