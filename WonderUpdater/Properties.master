@@ -8,7 +8,7 @@ WonderUpdater.version.minor=2
 WonderUpdater.version.revision=1
 
 WonderUpdater.copyright=\
-	(c) 2007-2008 Virginia Tech Department of Computer Science
+	(c) 2007-2010 Virginia Tech Department of Computer Science
 WonderUpdater.provider=Virginia Tech Computer Science
 WonderUpdater.provider.url=http\://web-cat.cs.vt.edu/updates
 WonderUpdater.info.url=\

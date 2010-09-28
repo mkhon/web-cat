@@ -14,7 +14,7 @@ webcat.version.major=1
 webcat.version.minor=5
 webcat.version.revision=0
 
-webcat.copyright=(c) 2006-2009 Virginia Tech Department of Computer Science
+webcat.copyright=(c) 2006-2010 Virginia Tech Department of Computer Science
 webcat.provider=Virginia Tech Computer Science
 webcat.provider.url=http://web-cat.cs.vt.edu/updates
 webcat.info.url=http://web-cat.cs.vt.edu/WCWiki/WebCatApplication

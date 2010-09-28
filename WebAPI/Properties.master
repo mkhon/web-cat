@@ -9,7 +9,7 @@ WebAPI.version.revision=1
 WebAPI.requires=Core, Grader
 
 WebAPI.copyright=\
-	(c) 2008 Virginia Tech Department of Computer Science
+	(c) 2008-2010 Virginia Tech Department of Computer Science
 WebAPI.provider=Virginia Tech Computer Science
 WebAPI.provider.url=http\://web-cat.cs.vt.edu/updates
 WebAPI.info.url=\
