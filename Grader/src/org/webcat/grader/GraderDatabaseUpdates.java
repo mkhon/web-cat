@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.3 2010/09/28 02:18:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,8 @@ import org.webcat.dbupdate.UpdateSet;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: GraderDatabaseUpdates.java,v 1.2 2010/09/14 18:24:24 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/09/28 02:18:21 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -308,6 +309,24 @@ public class GraderDatabaseUpdates
                 "alter table TSUBMISSIONPROFILE add "
                 + "allowPartners BIT NOT NULL" );
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add indexes for better performance.
+     * @throws SQLException on error
+     */
+//    public void updateIncrement15() throws SQLException
+//    {
+//        database().executeSQL(
+//            "ALTER TABLE TASSIGNMENTOFFERING ADD INDEX (CASSIGNMENTID)");
+//        database().executeSQL(
+//            "ALTER TABLE TASSIGNMENTOFFERING ADD INDEX (CCOURSEOFFERINGID)");
+//        database().executeSQL(
+//            "ALTER TABLE TSUBMISSION ADD INDEX (CASSIGNMENTID)");
+//        database().executeSQL(
+//            "ALTER TABLE TSUBMISSION ADD INDEX (CUSERID)");
+//    }
 
 
     //~ Private Methods .......................................................
