@@ -9,7 +9,7 @@ BIRTRuntime.version.revision=2
 BIRTRuntime.requires=Core
 
 BIRTRuntime.copyright=\
-    (c) 2008 Virginia Tech Department of Computer Science
+    (c) 2008-2010 Virginia Tech Department of Computer Science
 BIRTRuntime.provider=Virginia Tech Computer Science
 BIRTRuntime.provider.url=http\://web-cat.cs.vt.edu/updates
 BIRTRuntime.info.url=\
