@@ -114,11 +114,11 @@ public abstract class _BatchPlugin
         BatchPlugin obj = null;
         if (id > 0)
         {
-            NSArray<BatchPlugin> results =
+            NSArray<BatchPlugin> objects =
                 objectsMatchingValues(ec, "id", new Integer(id));
-            if (results != null && results.count() > 0)
+            if (objects != null && objects.count() > 0)
             {
-                obj = results.objectAtIndex(0);
+                obj = objects.objectAtIndex(0);
             }
         }
         return obj;
@@ -586,11 +586,11 @@ public abstract class _BatchPlugin
      */
     public boolean isPublished()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "isPublished" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -766,11 +766,11 @@ public abstract class _BatchPlugin
      */
     public boolean updateMutableFields()
     {
-        Integer result =
+        Integer returnValue =
             (Integer)storedValueForKey( "updateMutableFields" );
-        return ( result == null )
+        return ( returnValue == null )
             ? false
-            : ( result.intValue() > 0 );
+            : ( returnValue.intValue() > 0 );
     }
 
 
@@ -1441,10 +1441,10 @@ public abstract class _BatchPlugin
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        NSArray<BatchPlugin> results =
+        NSArray<BatchPlugin> objects =
             objectsMatchingQualifier(context, qualifier, sortOrderings);
-        return (results.size() > 0)
-            ? results.get(0)
+        return (objects.size() > 0)
+            ? objects.get(0)
             : null;
     }
 
@@ -1465,14 +1465,14 @@ public abstract class _BatchPlugin
         EOEditingContext context,
         EOQualifier qualifier) throws EOUtilities.MoreThanOneException
     {
-        NSArray<BatchPlugin> results =
+        NSArray<BatchPlugin> objects =
             objectsMatchingQualifier(context, qualifier);
-        if (results.size() > 1)
+        if (objects.size() > 1)
         {
             throw new EOUtilities.MoreThanOneException(null);
         }
-        return (results.size() > 0)
-            ? results.get(0)
+        return (objects.size() > 0)
+            ? objects.get(0)
             : null;
     }
 
@@ -1602,16 +1602,16 @@ public abstract class _BatchPlugin
             sortOrderings);
         fspec.setFetchLimit(1);
 
-        NSArray<BatchPlugin> result =
+        NSArray<BatchPlugin> objects =
             objectsWithFetchSpecification( context, fspec );
 
-        if ( result.count() == 0 )
+        if ( objects.count() == 0 )
         {
             return null;
         }
         else
         {
-            return result.objectAtIndex(0);
+            return objects.objectAtIndex(0);
         }
     }
 
@@ -1793,14 +1793,14 @@ public abstract class _BatchPlugin
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "allPluginsOrderedByName", "BatchPlugin" );
 
-        NSArray<BatchPlugin> result =
+        NSArray<BatchPlugin> objects =
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "allPluginsOrderedByName(ec"
-                + "): " + result );
+                + "): " + objects );
         }
-        return result;
+        return objects;
     }
 
 
@@ -1831,15 +1831,15 @@ public abstract class _BatchPlugin
         }
         spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
-        NSArray<BatchPlugin> result =
+        NSArray<BatchPlugin> objects =
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "pluginsForUser(ec"
                 + ", " + userBinding
-                + "): " + result );
+                + "): " + objects );
         }
-        return result;
+        return objects;
     }
 
 
@@ -1858,14 +1858,14 @@ public abstract class _BatchPlugin
         EOFetchSpecification spec = EOFetchSpecification
             .fetchSpecificationNamed( "publishedPlugins", "BatchPlugin" );
 
-        NSArray<BatchPlugin> result =
+        NSArray<BatchPlugin> objects =
             objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
             log.debug( "publishedPlugins(ec"
-                + "): " + result );
+                + "): " + objects );
         }
-        return result;
+        return objects;
     }
 
 
