@@ -6,9 +6,10 @@ EditDialog : WCDialog {
 
 EditImage : WOImage {
     framework = "Core";
-    filename = "icons/edit.gif";
-    width = 16;
-    height = 16;
+    filename  = "icons/edit.gif";
+    width     = 16;
+    height    = 16;
+    class     = "icon";
 }
 
 EditLink : WOGenericContainer {
