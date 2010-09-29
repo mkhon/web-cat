@@ -84,7 +84,10 @@
                PerlForPlugins
                PMDForPlugins
       	       BIRTRuntime
-               Reporter"/>
+               Reporter
+      	       JobQueue
+      	       Notifications
+      	       Opinions"/>
     </subant>
   </target>
 
