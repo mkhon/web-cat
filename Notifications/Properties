@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Mon Sep 27 22:41:43 EDT 2010
+#Tue Sep 28 14:30:06 EDT 2010
 Notifications.requires=Core, JobQueue
 Notifications.history.url=http\://web-cat.cs.vt.edu/WCWiki/NotificationsSubsystem/ChangeHistory
 Notifications.provider.url=http\://web-cat.cs.vt.edu/updates
@@ -9,10 +9,10 @@ Notifications.resumeSuspendedJobs=true
 Notifications.description=This subsystem provides Web-CAT's advanced notification services. Without it, notifications are only sent via e-mail.
 Notifications.copyright=(c) 2010 Virginia Tech Department of Computer Science
 Notifications.info.url=http\://web-cat.cs.vt.edu/WCWiki/NotificationsSubsystem
-Notifications.version.date=20100927
+Notifications.version.date=20100928
 subsystem.Notifications=org.webcat.notifications.Notifications
 Notifications.version.minor=0
-Notifications.provider=Virginia Tech Computer Science
 Notifications.version.revision=0
-Notifications.version.major=1
+Notifications.provider=Virginia Tech Computer Science
 Notifications.depends=env, pluginProperties
+Notifications.version.major=1
