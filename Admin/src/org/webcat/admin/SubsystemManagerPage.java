@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.3 2010/09/26 23:35:42 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.4 2010/10/01 01:07:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/09/26 23:35:42 $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/01 01:07:08 $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -132,8 +132,10 @@ public class SubsystemManagerPage
         {
             availableSubsystems.remove(s.descriptor().providerVersion());
         }
+        FeatureDescriptor[] descriptors =
+            new FeatureDescriptor[availableSubsystems.size()];
         return new NSArray<FeatureDescriptor>(
-            (FeatureDescriptor[])availableSubsystems.toArray());
+            availableSubsystems.toArray(descriptors));
     }
 
 
