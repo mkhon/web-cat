@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.7 2010/09/28 02:19:12 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.8 2010/10/04 19:07:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.7 $, $Date: 2010/09/28 02:19:12 $
+ *  @version $Revision: 1.8 $, $Date: 2010/10/04 19:07:43 $
  */
 public class Submission
     extends _Submission
@@ -333,8 +333,23 @@ public class Submission
 
         int partnerSubmitNumber = 1;
 
+        // Find partner's home courseOffering and its assignment offering
+        AssignmentOffering partnerOffering = assignmentOffering();
+        NSArray<AssignmentOffering> partnerOfferings = AssignmentOffering
+            .objectsMatchingQualifier(ec,
+                AssignmentOffering.courseOffering.dot(CourseOffering.course)
+                    .eq(assignmentOffering().courseOffering().course())
+                .and(AssignmentOffering.courseOffering
+                    .dot(CourseOffering.students).eq(partner))
+                .and(AssignmentOffering.assignment
+                    .eq(assignmentOffering().assignment())));
+        if (partnerOfferings.count() > 0)
+        {
+            partnerOffering = partnerOfferings.get(0);
+        }
+
         EOQualifier qualifier =
-            Submission.assignmentOffering.eq(assignmentOffering())
+            Submission.assignmentOffering.eq(partnerOffering)
                 .and(Submission.user.eq(partner));
 
         Submission highestSubmission = Submission.firstObjectMatchingQualifier(
@@ -350,15 +365,15 @@ public class Submission
         Submission newSubmission = new Submission();
         ec.insertObject( newSubmission );
 
-        newSubmission.setFileName( fileName() );
-        newSubmission.setPartnerLink( true );
-        newSubmission.setSubmitNumber( partnerSubmitNumber );
-        newSubmission.setSubmitTime( submitTime() );
-        newSubmission.setAssignmentOfferingRelationship(
-            assignmentOffering() );
-        newSubmission.setResultRelationship( result() );
-        newSubmission.setUserRelationship( partner );
+        newSubmission.setFileName(fileName());
+        newSubmission.setPartnerLink(true);
+        newSubmission.setSubmitNumber(partnerSubmitNumber);
+        newSubmission.setSubmitTime(submitTime());
+        newSubmission.setAssignmentOfferingRelationship(partnerOffering);
+        newSubmission.setResultRelationship(result());
+        newSubmission.setUserRelationship(partner);
         newSubmission.setPrimarySubmissionRelationship(this);
+        newSubmission.setIsSubmissionForGrading(isSubmissionForGrading());
 
         addToPartneredSubmissionsRelationship(newSubmission);
     }
@@ -455,7 +470,14 @@ public class Submission
             log.debug( "removing SubmissionResult " + myResult );
             myResult.setIsMostRecent(false);
             setResultRelationship(null);
-            for (Submission s : myResult.submissions())
+
+            // Have to copy out the list of submissions, since inside
+            // the loop, we'll be removing them one by one from the
+            // relationship.
+            @SuppressWarnings("unchecked")
+            NSArray<Submission> partnerSubs =
+                (NSArray<Submission>)myResult.submissions().clone();
+            for (Submission s : partnerSubs)
             {
                 s.setResultRelationship(null);
             }
@@ -556,6 +578,20 @@ public class Submission
 
 
     // ----------------------------------------------------------
+    public void setIsSubmissionForGrading(boolean value)
+    {
+        super.setIsSubmissionForGrading(value);
+        if (!partnerLink())
+        {
+            for (Submission sub : partneredSubmissions())
+            {
+                sub.setIsSubmissionForGrading(value);
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------
     protected boolean shouldMigrateIsSubmissionForGrading()
     {
         return (isSubmissionForGradingRaw() == null);
@@ -580,9 +616,9 @@ public class Submission
         // submission for grading (which is either the last submission
         // is none are graded, or the latest of those that are graded).
 
-        for ( Submission sub : thisSubmissionSet )
+        for (Submission sub : thisSubmissionSet)
         {
-            if ( latestSubmission == null )
+            if (latestSubmission == null)
             {
                 latestSubmission = sub;
             }
@@ -592,24 +628,21 @@ public class Submission
                 latestSubmission = sub;
             }
 
-            if ( sub.result() != null )
+            if (sub.result() != null && sub.result().status() != Status.TO_DO)
             {
-                if ( sub.result().status() != Status.TO_DO )
+                if (latestGradedSubmission == null)
                 {
-                    if ( latestGradedSubmission == null )
-                    {
-                        latestGradedSubmission = sub;
-                    }
-                    else if (sub.submitNumber() >
-                             latestGradedSubmission.submitNumber() )
-                    {
-                        latestGradedSubmission = sub;
-                    }
+                    latestGradedSubmission = sub;
+                }
+                else if (sub.submitNumber() >
+                         latestGradedSubmission.submitNumber())
+                {
+                    latestGradedSubmission = sub;
                 }
             }
         }
 
-        if ( latestGradedSubmission != null )
+        if (latestGradedSubmission != null)
         {
             latestSubmission = latestGradedSubmission;
         }
