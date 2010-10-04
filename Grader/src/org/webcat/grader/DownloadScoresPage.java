@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DownloadScoresPage.java,v 1.3 2010/09/28 02:19:12 stedwar2 Exp $
+ |  $Id: DownloadScoresPage.java,v 1.4 2010/10/04 19:08:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/28 02:19:12 $
+ * @version $Revision: 1.4 $, $Date: 2010/10/04 19:08:24 $
  */
 public class DownloadScoresPage
     extends GraderAssignmentComponent
@@ -246,30 +246,15 @@ public class DownloadScoresPage
     // ----------------------------------------------------------
     private void collectSubmissionsToExport()
     {
-        NSMutableArray<User> students =
-            assignmentOffering.courseOffering().students().mutableClone();
-        if (omitStaff)
-        {
-            students.removeObjectsInArray(
-                assignmentOffering.courseOffering().instructors());
-            students.removeObjectsInArray(
-                assignmentOffering.courseOffering().graders());
-        }
-        else
-        {
-            ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
-                students,
-                assignmentOffering.courseOffering().instructors());
-            ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
-                students,
-                assignmentOffering.courseOffering().graders());
-        }
+        NSArray<User> students = omitStaff
+            ? assignmentOffering.courseOffering().studentsWithoutStaff()
+            : assignmentOffering.courseOffering().students();
         submissionsToExport = new NSMutableArray<Submission>();
         if (students != null)
         {
             for (User student : students)
             {
-                log.debug("checking " + student.userName());
+                log.debug("checking " + student.userName() + ", " + student);
 
                 Submission thisSubmission = null;
                 Submission gradedSubmission = null;
@@ -285,9 +270,30 @@ public class DownloadScoresPage
                 log.debug("searching for submissions");
                 for (Submission sub : thisSubmissionSet)
                 {
-                    log.debug("\tsub #" + sub.submitNumber());
+                    log.debug("\tsub #" + sub.submitNumber() + " "
+                        + sub.partnerLink());
                     if (sub.result() != null)
                     {
+                        if (log.isDebugEnabled()
+                            && sub.result().submissions().count() > 1)
+                        {
+                            log.debug("\t  has partners");
+                            for (Submission psub : sub.result().submissions())
+                            {
+                                if (psub != sub)
+                                {
+                                    log.debug("\t    partner = "
+                                        + psub.user()
+                                        + " #"
+                                        + psub.submitNumber()
+                                        + " "
+                                        + psub.partnerLink()
+                                        + " to "
+                                        + psub.assignmentOffering());
+                                }
+                            }
+                        }
+
                         if (thisSubmission == null)
                         {
                             thisSubmission = sub;
