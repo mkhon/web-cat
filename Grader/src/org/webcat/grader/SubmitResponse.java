@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmitResponse.java,v 1.2 2010/09/27 04:27:30 stedwar2 Exp $
+ |  $Id: SubmitResponse.java,v 1.3 2010/10/05 19:27:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
+import com.webobjects.foundation.NSArray;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -32,8 +33,8 @@ import org.webcat.core.*;
  *  in response to a BlueJ submitter direct action transaction.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:27:30 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/05 19:27:58 $
  */
 public class SubmitResponse
     extends GraderSubmissionUploadComponent
@@ -50,6 +51,11 @@ public class SubmitResponse
         super( context );
         log.debug( "constructor" );
     }
+
+
+    //~ KVC attributes (must be public) .......................................
+
+    public String aPartnerNotFound;
 
 
     //~ Methods ...............................................................
@@ -124,12 +130,53 @@ public class SubmitResponse
     }
 
 
+    // ----------------------------------------------------------
+    public boolean shouldRefreshImmediately()
+    {
+        boolean werePartnersNotFound =
+            (partnersNotFound != null && partnersNotFound.count() > 0);
+
+        return !criticalError
+            && !notAcceptingSubmissions()
+            && !gradingPaused()
+            && !prefs().assignmentOffering().gradingSuspended()
+            && !werePartnersNotFound;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the list of partner names that were not found.
+     *
+     * @return the list of partner names that were not found
+     */
+    public NSArray<String> partnersNotFound()
+    {
+        return partnersNotFound;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets the list of partner names that were not found. We want to display
+     * these to the user so that they can fix it in a future submission if
+     * necessary.
+     *
+     * @param partnersNotFound the names of any partners that were not found
+     */
+    public void setPartnersNotFound(NSArray<String> partnersNotFound)
+    {
+        this.partnersNotFound = partnersNotFound;
+    }
+
+
     //~ Instance/static variables .............................................
 
     public String  message;
     public String  sessionID;
     public boolean criticalError = false;
     public boolean assignmentClosed = false;
+    public NSArray<String> partnersNotFound;
 
     static Logger log = Logger.getLogger( SubmitResponse.class );
 }

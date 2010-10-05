@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.4 2010/09/27 04:21:37 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.5 2010/10/05 19:27:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -58,8 +58,8 @@ import er.extensions.eof.ERXConstant;
  * job.
  *
  * @author  Amit Kulkarni
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/09/27 04:21:37 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.5 $, $Date: 2010/10/05 19:27:58 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1000,6 +1000,9 @@ public class GraderQueueProcessor
         boolean wasRegraded = job.regrading();
         submissionResult.addToSubmissionsRelationship( job.submission() );
 
+        // TODO Set this latest submission as the submission for grading
+        // job.submission().setIsSubmissionForGrading(true);
+
         try
         {
             if (job.submission() != null)
@@ -1011,6 +1014,10 @@ public class GraderQueueProcessor
                     // Force it to be marked as a partner submission as
                     // a stop-gap until we find the real problem.
                     partneredSubmission.setPartnerLink(true);
+
+                    // TODO Set the partnered submissions as the submission for
+                    // grading as well.
+                    // partneredSubmission.setIsSubmissionForGrading(true);
                 }
             }
         }

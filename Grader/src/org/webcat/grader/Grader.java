@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.3 2010/09/27 04:28:24 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.4 2010/10/05 19:27:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.webcat.grader.messaging.SubmissionSuspendedMessage;
  *  The subsystem defining Web-CAT administrative tasks.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/09/27 04:28:24 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/05 19:27:58 $
  */
 public class Grader
    extends Subsystem
@@ -621,8 +621,9 @@ public class Grader
         }
 
         // Parse the partner list and get the User objects.
-        // TODO change this to something a little more UI-friendly
+
         NSMutableArray<User> partners = new NSMutableArray<User>();
+        NSMutableArray<String> partnersNotFound = new NSMutableArray<String>();
 
         if (partnerList != null)
         {
@@ -636,14 +637,20 @@ public class Grader
                 {
                     User partner = User.userWithDomainAndName(
                         ec, session.user().authenticationDomain(), username);
+
                     if (partner != null)
                     {
                         partners.addObject(partner);
+                    }
+                    else
+                    {
+                        partnersNotFound.addObject(username);
                     }
                 }
             }
         }
 
+        result.setPartnersNotFound(partnersNotFound);
         result.startSubmission( currentSubNo, result.user() );
         result.submissionInProcess().setPartners( partners );
         result.submissionInProcess().setUploadedFile( file );
