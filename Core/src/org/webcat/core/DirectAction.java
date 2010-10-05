@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: DirectAction.java,v 1.2 2010/10/05 01:25:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -48,7 +48,7 @@ import org.webcat.core.install.*;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: DirectAction.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: DirectAction.java,v 1.2 2010/10/05 01:25:22 stedwar2 Exp $
  */
 public class DirectAction
     extends ERXDirectAction
@@ -585,7 +585,15 @@ public class DirectAction
                 session.setUser( pcr.user().localInstance(
                         session.defaultEditingContext() ) );
                 pcr.delete();
-                ec.saveChanges();
+                try
+                {
+                    ec.saveChanges();
+                }
+                catch (Exception e)
+                {
+                    log.error("Unable to delete password change request "
+                        + pcr + " for user " + pcr.user(), e);
+                }
             }
         }
         finally
