@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginManagerPage.java,v 1.3 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: PluginManagerPage.java,v 1.4 2010/10/05 16:02:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/09/27 04:23:20 $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/05 16:02:26 $
  */
 public class PluginManagerPage
 extends WCComponent
@@ -513,8 +513,10 @@ extends WCComponent
                 }
             }
         }
+        FeatureDescriptor[] descriptors =
+            new FeatureDescriptor[availablePlugins.size()];
         return new NSArray<FeatureDescriptor>(
-            (FeatureDescriptor[])availablePlugins.toArray());
+            availablePlugins.toArray(descriptors));
     }
 
 
