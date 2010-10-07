@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.2 2010/10/07 20:47:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXWOContext;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.2 2010/10/07 20:47:31 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -236,6 +236,60 @@ public class JavascriptGenerator implements WOActionResults
         }
 
         return call("webcat.alert", options_);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Displays a themed modal confirmation dialog and executes the specified
+     * function when it is dismissed.
+     *
+     * @param title the title of the dialog
+     * @param message the message inside the dialog
+     * @param onYes the function to execute when the dialog is dismissed with
+     *     the Yes button
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator confirm(String title, String message,
+            JavascriptFunction onYes)
+    {
+        JSHash options = new JSHash();
+        options.put("title", title);
+        options.put("message", message);
+        options.put("onYes", onYes);
+
+        return confirm(options);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Displays a themed modal confirmation dialog with the specified options.
+     *
+     * @param options the options for this alert
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator confirm(JSHash options)
+    {
+        JSHash options_ = options.clone();
+
+        JavascriptFunction onYes = options_.get("onYes",
+                JavascriptFunction.class);
+
+        if (onYes != null)
+        {
+            options_.put("onYes", JSHash.code(javascriptObjectFor(onYes)));
+        }
+
+        JavascriptFunction onNo = options_.get("onNo",
+                JavascriptFunction.class);
+
+        if (onNo != null)
+        {
+            options_.put("onNo", JSHash.code(javascriptObjectFor(onNo)));
+        }
+
+        return call("webcat.confirm", options_);
     }
 
 

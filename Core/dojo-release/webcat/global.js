@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: global.js,v 1.10 2010/03/15 16:48:55 aallowat Exp $
+ |  $Id: global.js,v 1.11 2010/10/07 20:47:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -180,8 +180,6 @@ webcat.serializeChildren = function(/*DOMNode|String*/ node)
  */
 webcat.remoteSubmit = function(/*_Widget*/ widget, /*Object*/ options)
 {
-//	try { throw 'foo'; } catch(e) { }
-
     var evalAttributeFunction = function(code) {
         return eval('__evalAttributeFunction__temp__ = ' + code);
     };

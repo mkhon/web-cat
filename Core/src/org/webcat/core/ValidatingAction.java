@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ValidatingAction.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: ValidatingAction.java,v 1.2 2010/10/07 20:47:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -67,7 +67,7 @@ import er.extensions.appserver.ERXWOContext;
  * </p>
  *
  * @author  Tony Allevato
- * @version $Id: ValidatingAction.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: ValidatingAction.java,v 1.2 2010/10/07 20:47:31 aallowat Exp $
  */
 public class ValidatingAction extends DualAction
 {
@@ -78,7 +78,6 @@ public class ValidatingAction extends DualAction
      * Initializes a new instance of the ValidatingAction class.
      *
      * @param component the component on which the action is being invoked
-     * @param validators the validators used to validate the fields in the form
      */
     public ValidatingAction(WOComponent component)
     {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoActionFormElement.java,v 1.1 2010/05/11 14:52:00 aallowat Exp $
+ |  $Id: DojoActionFormElement.java,v 1.2 2010/10/07 20:47:31 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -130,7 +130,7 @@ import er.extensions.components.ERXComponentUtilities;
  * </table>
  *
  * @author Tony Allevato
- * @version $Id: DojoActionFormElement.java,v 1.1 2010/05/11 14:52:00 aallowat Exp $
+ * @version $Id: DojoActionFormElement.java,v 1.2 2010/10/07 20:47:31 aallowat Exp $
  */
 public abstract class DojoActionFormElement extends DojoFormElement
 {
@@ -295,7 +295,7 @@ public abstract class DojoActionFormElement extends DojoFormElement
             WOContext context)
     {
         WOComponent component = context.component();
-        JSHash requestOptions = null;
+        JSHash requestOptions = new JSHash();
 
         if (_directActionName != null)
         {
@@ -306,7 +306,6 @@ public abstract class DojoActionFormElement extends DojoFormElement
                     ERXComponentUtilities.queryParametersInComponent(
                             _associations, component)).replaceAll("&amp;", "&");
 
-            requestOptions = new JSHash();
             requestOptions.put("url", actionUrl);
         }
 
