@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileComment.java,v 1.2 2010/09/27 04:24:58 stedwar2 Exp $
+ |  $Id: SubmissionFileComment.java,v 1.3 2010/10/07 17:54:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,8 +30,8 @@ import org.webcat.core.*;
  * Represents one TA comment on one source file in a submission.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:24:58 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2010/10/07 17:54:15 $
  */
 public class SubmissionFileComment
     extends _SubmissionFileComment
@@ -294,13 +294,13 @@ public class SubmissionFileComment
         };
     static private String[] categoryIcon = new String[]{
             "/icons/todo.gif",
-            "/icons/exclaim.gif",
-            "/icons/caution.gif",
-            "/icons/help.gif",
-            "/icons/suggestion.gif",
-            "/icons/answer.gif",
-            "/icons/check.gif",
-            "/icons/excred.gif"
+            "/icons/comment-error.png",
+            "/icons/comment-warning.png",
+            "/icons/comment-question.png",
+            "/icons/comment-suggestion.png",
+            "/icons/comment-answer.png",
+            "/icons/comment-good.png",
+            "/icons/comment-extracredit.png"
         };
     static Logger log = Logger.getLogger( SubmissionFileComment.class );
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.2 2010/09/27 04:24:58 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.3 2010/10/07 17:54:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,8 +38,8 @@ import org.webcat.grader.messaging.GraderMarkupParseError;
  *  Represents test coverage metrics for one file/class in a submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:24:58 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/07 17:54:15 $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -531,13 +531,19 @@ public class SubmissionFileStats
                                 "content[e|E]ditable=\"[false|true]\"",
                                 "contentEditable=\"" + isEditable + "\"" );
                             log.debug( newmes );
+
+                            String resUrl = WCResourceManager.resourceURLFor(
+                                    "images/blank.gif", "Core", null, null);
+                            resUrl = resUrl.substring(0,
+                                    resUrl.length() - "images/blank.gif".length());
+
                             String vals = "<table id=\"" + idnum
                                 + ":X\" border=\"0\" cellpadding=\"0\"><tbody "
                                 + "id=\"" + idnum + ":B\"><tr id=\"" + idnum
                                 + ":R\"><td id=\"" + idnum
                                 + ":D\" class=\"messageBox\"><img id=\""
                                 + idnum + ":I\" src=\""
-                                + thisComment.categoryIcon()
+                                + resUrl + thisComment.categoryIcon()
                                 + "\" border=\"0\"/><option id=\"" + idnum
                                 + ":T\" value=\"" + thisComment.to()
                                 + "\"/><b id=\"" + idnum + "\"> <span id=\""
@@ -606,8 +612,9 @@ public class SubmissionFileStats
                                     child.removeAttribute( "class" );
                                 }
                             }
-                            child.setAttribute( "class",
-                            SubmissionFileComment.categoryName( newcat ) );
+                            child.setAttribute("class",
+                                    SubmissionFileComment.categoryName(newcat)
+                                    .replaceAll("\\s", "_"));
                             // inserting the comment box
                             iterator.add( doc1.detachRootElement() );
                             iterator.add( doc2.detachRootElement() );
