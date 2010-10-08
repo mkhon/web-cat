@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.2 2010/09/27 04:22:36 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.3 2010/10/08 14:49:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:22:36 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/08 14:49:59 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -447,6 +447,28 @@ public class GradeStudentSubmissionPage
         report.result = result;
         report.nextPage = this;
         return report;
+    }
+
+
+    // ----------------------------------------------------------
+    public Byte commentFormat()
+    {
+        Byte format = SubmissionResult.formats.get(0);
+        if (result != null)
+        {
+            format = SubmissionResult.formats.get(result.commentFormat());
+        }
+        return format;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setCommentFormat(Byte format)
+    {
+        if (format != null && result != null)
+        {
+            result.setCommentFormat(format.byteValue());
+        }
     }
 
 
