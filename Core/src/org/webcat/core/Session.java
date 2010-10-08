@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: Session.java,v 1.2 2010/10/08 14:41:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSTimestampFormatter;
  * The current user session.
  *
  * @author Stephen Edwards
- * @version $Id: Session.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: Session.java,v 1.2 2010/10/08 14:41:02 stedwar2 Exp $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -276,6 +276,9 @@ public class Session
             if ( loginSession == null )
             {
                 Application.releasePeerEditingContext( ec );
+                log.error("updateLoginSession() cannot find login session for "
+                    + "user " + primeUser + " and sessionId = " + sessionID());
+                return;
             }
         }
         try
