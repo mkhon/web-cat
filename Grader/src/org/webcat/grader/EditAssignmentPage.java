@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.3 2010/10/08 14:48:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/08 14:48:34 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -134,7 +134,7 @@ public class EditAssignmentPage
             else
             {
                 @SuppressWarnings("unchecked")
-                NSDictionary<Object, Object> params =
+                NSMutableDictionary<Object, Object> params =
                     offeringGroup.queryMatch();
                 params.put("courseOffering.semester", selectedSemester);
             }
