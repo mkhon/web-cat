@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.4 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.5 2010/10/08 14:48:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author  Amit Kulkarni
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/09/27 04:19:54 $
+ * @version $Revision: 1.5 $, $Date: 2010/10/08 14:48:02 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -78,9 +78,8 @@ public class ConfirmSubmissionPage
     protected void beforeAppendToResponse(
         WOResponse response, WOContext context)
     {
-        log.debug( "The submission number is "
-                   + submissionInProcess().submission().submitNumber() );
-        if ( !submissionInProcess().hasValidFileUpload() )
+        if ( !submissionInProcess().submissionInProcess()
+            || !submissionInProcess().hasValidFileUpload() )
         {
             WOComponent prevPage = back();
             if ( prevPage != null )
@@ -92,6 +91,8 @@ public class ConfirmSubmissionPage
                 return;
             }
         }
+        log.debug( "The submission number is "
+            + submissionInProcess().submitNumber() );
         if ( submissionInProcess().uploadedFileList() == null )
         {
             // Initialize the list of files contained in this submission,

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.5 2010/09/27 04:33:09 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.6 2010/10/08 14:46:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/09/27 04:33:09 $
+ * @version $Revision: 1.6 $, $Date: 2010/10/08 14:46:42 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -313,9 +313,8 @@ public class UploadSubmissionPage
             {
                 setLocalUser(submitAsStudent);
                 int currentSubNo = fillDisplayGroup(user());
-                submissionInProcess().submission().setSubmitNumber(
-                    currentSubNo);
-                submissionInProcess().submission().setUserRelationship(user());
+                // restart the submission with a new user/number
+                submissionInProcess().startSubmission(user(), currentSubNo);
             }
 
             submissionInProcess().setPartners(partnersForEditing);
