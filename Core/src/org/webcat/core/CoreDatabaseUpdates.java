@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.2 2010/09/28 01:03:32 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.3 2010/10/08 14:41:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @version $Id: CoreDatabaseUpdates.java,v 1.2 2010/09/28 01:03:32 stedwar2 Exp $
+ * @version $Id: CoreDatabaseUpdates.java,v 1.3 2010/10/08 14:41:15 stedwar2 Exp $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -278,6 +278,12 @@ public class CoreDatabaseUpdates
 //        database().executeSQL("ALTER TABLE TUSER ADD INDEX (CUSERNAME(8))");
 //        database().executeSQL(
 //            "ALTER TABLE TUSER ADD INDEX (CAUTHENTICATIONDOMAINID)");
+//        database().executeSQL(
+//            "ALTER TABLE TCOURSEOFFERING ADD INDEX (CCOURSEID)");
+//        database().executeSQL(
+//            "ALTER TABLE TCOURSEOFFERING ADD INDEX (CSEMESTER)");
+//        database().executeSQL(
+//            "ALTER TABLE TCOURSEOFFERING ADD INDEX (CCRN(8))");
 //    }
 
 

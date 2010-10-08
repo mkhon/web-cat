@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.3 2010/09/28 02:18:21 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.4 2010/10/08 14:45:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/28 02:18:21 $
+ * @version $Revision: 1.4 $, $Date: 2010/10/08 14:45:29 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -326,6 +326,10 @@ public class GraderDatabaseUpdates
 //            "ALTER TABLE TSUBMISSION ADD INDEX (CASSIGNMENTID)");
 //        database().executeSQL(
 //            "ALTER TABLE TSUBMISSION ADD INDEX (CUSERID)");
+//        database().executeSQL(
+//            "ALTER TABLE TSUBMISSION ADD INDEX (primarySubmissionId)");
+//        database().executeSQL(
+//            "ALTER TABLE TSUBMISSION ADD INDEX (CRESULTID)");
 //    }
 
 
