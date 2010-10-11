@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCActionFunction.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCActionFunction.java,v 1.2 2010/10/11 14:25:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,8 +51,12 @@ import er.extensions.components.ERXComponentUtilities;
  * determined by the presence of any of the "remote.*" bindings. If they are
  * omitted, the request is synchronous.
  *
+ * @binding jsId the Javascript name of the function
+ * @binding waitForOnLoad if true, the function will be generated in a block
+ *     inside a dojo.addOnLoad handler
+ *
  * @author Tony ALlevato
- * @version $Id: WCActionFunction.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: WCActionFunction.java,v 1.2 2010/10/11 14:25:35 aallowat Exp $
  */
 public class WCActionFunction extends DojoActionFormElement
 {
