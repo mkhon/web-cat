@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DualAction.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: DualAction.java,v 1.2 2010/10/11 18:31:11 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -31,13 +31,14 @@ import er.extensions.appserver.ERXWOContext;
 
 //-------------------------------------------------------------------------
 /**
+ * <p>
  * A wrapper that eases the creation of component actions that can operate both
  * as remote (Ajax) actions and full page load actions. The easiest way to use
  * this is to create a new anonymous instance of the class inside your action
  * method, overriding the {@link #performRemoteAction()} and
  * {@link #performStandardAction()} methods to provide the appropriate
  * behavior. For example:
- *
+ * </p><p>
  * <pre>
  * public WOActionResults myAction()
  * {
@@ -59,9 +60,20 @@ import er.extensions.appserver.ERXWOContext;
  *     };
  * }
  * </pre>
+ * </p><p>
+ * NOTE: This class, and any of its subclasses, are intended to be
+ * <b>stateless</b>. Note that in the above example, the <code>myAction()</code>
+ * method will be called <b>twice</b>: once for the remote action invocation,
+ * and again for the standard action invocation. This means that two separate
+ * instances of the inner class will be created. It is easier to maintain any
+ * state that you need in the surrounding component class; if you want to
+ * include state in the action class, you must pull it out of the method and
+ * into a named inner class, then ensure that the instance gets created once
+ * and only once.
+ * </p>
  *
  * @author  Tony Allevato
- * @version $Id: DualAction.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: DualAction.java,v 1.2 2010/10/11 18:31:11 aallowat Exp $
  */
 public abstract class DualAction implements WOActionResults
 {
