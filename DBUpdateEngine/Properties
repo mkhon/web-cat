@@ -1,0 +1,16 @@
+#This file is automatically rewritten by ANT, so all formatting will be trashed.
+#Mon Oct 11 15:00:19 EDT 2010
+DBUpdateEngine.description=This subsystem provides support services for all other subsystems by implementing the features necessary to automatically update database schemas as subsystems add new features.  It also provides for creating an entire database from scratch if one does not yet exist, when installing a new Web-CAT server.
+log4j.logger.org.webcat.dbupdate=INFO
+DBUpdateEngine.version.major=1
+DBUpdateEngine.version.revision=3
+DBUpdateEngine.copyright=(c) 2006-2010 Virginia Tech Department of Computer Science
+DBUpdateEngine.license=GNU Affero General Public License v.3
+DBUpdateEngine.provider.url=http\://web-cat.cs.vt.edu/updates
+DBUpdateEngine.history.url=http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine/ChangeHistory
+subsystem.DBUpdateEngine=
+DBUpdateEngine.info.url=http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine
+DBUpdateEngine.provider=Virginia Tech Computer Science
+DBUpdateEngine.version.date=20101011
+DBUpdateEngine.license.url=http\://www.gnu.org/licenses/agpl.html
+DBUpdateEngine.version.minor=1

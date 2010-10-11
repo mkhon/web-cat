@@ -1,0 +1,16 @@
+#This file is automatically rewritten by ANT, so all formatting will be trashed.
+#Mon Oct 11 15:01:07 EDT 2010
+JobQueue.description=This subsystem contains the infrastructure used for running job queues in other Web-CAT subsystems.  It provides common base classes and features used by other subsystems.
+JobQueue.version.minor=0
+JobQueue.requires=Core, EOJDBCPrototypes, DBUpdateEngine
+JobQueue.copyright=(c) 2010 Virginia Tech Department of Computer Science
+JobQueue.license.url=http\://www.gnu.org/licenses/agpl.html
+JobQueue.license=GNU Affero General Public License v.3
+JobQueue.version.major=1
+subsystem.JobQueue=org.webcat.jobqueue.JobQueue
+JobQueue.provider.url=http\://web-cat.cs.vt.edu/updates
+JobQueue.info.url=http\://web-cat.cs.vt.edu/WCWiki/JobQueueSubsystem
+JobQueue.provider=Virginia Tech Computer Science
+JobQueue.version.revision=1
+JobQueue.version.date=20101011
+JobQueue.history.url=http\://web-cat.cs.vt.edu/WCWiki/JobQueueSubsystem/ChangeHistory
