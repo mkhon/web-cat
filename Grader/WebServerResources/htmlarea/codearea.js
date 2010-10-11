@@ -7,7 +7,7 @@
 //
 //
 //
-// $Id: codearea.js,v 1.6 2010/10/07 17:54:15 aallowat Exp $
+// $Id: codearea.js,v 1.7 2010/10/11 14:30:10 aallowat Exp $
 
 // Creates a new HTMLArea object.  Tries to replace the textarea with the given
 // ID with it.
@@ -560,7 +560,6 @@ HTMLArea.prototype.generate = function () {
              });
         editor.updateToolbar();
         editor.focusEditor();
-
     };
 
     setTimeout(initIframe, HTMLArea.is_gecko ? 10 : 0);
