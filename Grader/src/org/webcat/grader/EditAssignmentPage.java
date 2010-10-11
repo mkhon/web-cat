@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.3 2010/10/08 14:48:34 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.4 2010/10/11 15:24:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/10/08 14:48:34 $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/11 15:24:34 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentComponent
@@ -729,33 +729,46 @@ public class EditAssignmentPage
 
 
     // ----------------------------------------------------------
-    public WOComponent delete()
+    public WOActionResults delete()
     {
-        ConfirmPage confirmPage = null;
-        if (applyLocalChanges())
-        {
-            confirmPage = pageWithName(ConfirmPage.class);
-            confirmPage.nextPage       = this;
-            confirmPage.message        =
-                "This action will <b>delete the assignment offering \""
-                + thisOffering
-                + "\"</b>, "
-                + "together with any staff submissions that have been "
-                + "made to it.</p>";
-            if (thisOffering.assignment().offerings().count() > 1)
+        applyLocalChanges();
+        offeringToDelete = thisOffering;
+        return new ConfirmingAction(this) {
+            @Override
+            protected String confirmationTitle()
             {
-                confirmPage.message +=
-                    "<p>Since this is the only offering of the selected "
-                    + "assignment, this action will also <b>delete the "
-                    + "assignment altogether</b>.  This action cannot be "
-                    + "undone.</p>";
+                return "Delete This Assignment Offering?";
             }
-            confirmPage.actionReceiver = this;
-            confirmPage.actionOk       = "deleteActionOk";
-            offeringToDelete = thisOffering;
-            confirmPage.setTitle("Confirm Delete Request");
-        }
-        return confirmPage;
+
+            @Override
+            protected String confirmationMessage()
+            {
+                String message =
+                    "<p>This action will <b>delete the assignment offering \""
+                    + offeringToDelete
+                    + "\"</b>, "
+                    + "together with any staff submissions that have been "
+                    + "made to it.</p>";
+                if (offeringToDelete.assignment().offerings().count() == 1)
+                {
+                    message +=
+                        "<p>Since this is the only offering of the selected "
+                        + "assignment, this action will also <b>delete the "
+                        + "assignment altogether</b>.  This action cannot be "
+                        + "undone.</p>";
+                }
+                return message + "<p class=\"center\">Delete this "
+                    + "assignment offering?</p>";
+            }
+
+            @Override
+            protected WOActionResults performStandardAction()
+            {
+                System.out.println("performStandardAction() called");
+//                return null;
+                return deleteActionOk();
+            }
+        };
     }
 
 
