@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmingAction.java,v 1.1 2010/10/07 20:47:31 aallowat Exp $
+ |  $Id: ConfirmingAction.java,v 1.2 2010/10/11 14:26:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -65,7 +65,7 @@ import er.extensions.appserver.ERXWOContext;
  * </p>
  *
  * @author  Tony Allevato
- * @version $Id: ConfirmingAction.java,v 1.1 2010/10/07 20:47:31 aallowat Exp $
+ * @version $Id: ConfirmingAction.java,v 1.2 2010/10/11 14:26:05 aallowat Exp $
  */
 public abstract class ConfirmingAction extends DualAction
 {
@@ -165,7 +165,8 @@ public abstract class ConfirmingAction extends DualAction
     // ----------------------------------------------------------
     /**
      * <p>
-     * Called if the "Yes" button on the confirmation dialog was selected. The
+     * Generates the Javascript code that should be executed on the client
+     * if the "Yes" button on the confirmation dialog was selected. The
      * default behavior is to execute a Javascript statement that will cause
      * the form to be submitted as a standard page-load action. Subclasses may
      * override this if they wish to provide alternate behavior; for example,
