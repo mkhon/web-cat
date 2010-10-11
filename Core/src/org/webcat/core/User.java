@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.2 2010/10/04 19:04:30 stedwar2 Exp $
+ |  $Id: User.java,v 1.3 2010/10/11 22:34:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -29,6 +29,7 @@ import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
+import er.extensions.eof.ERXKey;
 import er.extensions.foundation.ERXArrayUtilities;
 
 // -------------------------------------------------------------------------
@@ -50,7 +51,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/04 19:04:30 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/11 22:34:30 $
  */
 public class User
     extends _User
@@ -80,6 +81,8 @@ public class User
     public static final String TIME_FORMAT_KEY    = "timeFormat";
     public static final String DATE_FORMAT_KEY    = "dateFormat";
 
+    public static final ERXKey<String> name_LF =
+        new ERXKey<String>("name_LF");
 
     //~ Methods ...............................................................
 
