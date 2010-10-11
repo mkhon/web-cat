@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmingAction.java,v 1.2 2010/10/11 14:26:05 aallowat Exp $
+ |  $Id: ConfirmingAction.java,v 1.3 2010/10/11 16:54:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -65,7 +65,7 @@ import er.extensions.appserver.ERXWOContext;
  * </p>
  *
  * @author  Tony Allevato
- * @version $Id: ConfirmingAction.java,v 1.2 2010/10/11 14:26:05 aallowat Exp $
+ * @version $Id: ConfirmingAction.java,v 1.3 2010/10/11 16:54:38 aallowat Exp $
  */
 public abstract class ConfirmingAction extends DualAction
 {
@@ -88,7 +88,7 @@ public abstract class ConfirmingAction extends DualAction
 
         WOContext currentContext = ERXWOContext.currentContext();
         formName = WCForm.formName(currentContext, null);
-        senderID = currentContext.senderID();
+        elementID = currentContext.elementID();
     }
 
 
@@ -183,12 +183,12 @@ public abstract class ConfirmingAction extends DualAction
      */
     protected void actionWasConfirmed(JavascriptGenerator page)
     {
-        page.submit(formName, senderID);
+        page.submit(formName, elementID);
     }
 
 
     //~ Static/instance variables .............................................
 
     private String formName;
-    private String senderID;
+    private String elementID;
 }

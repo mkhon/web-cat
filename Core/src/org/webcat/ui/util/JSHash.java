@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JSHash.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: JSHash.java,v 1.2 2010/10/11 16:54:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * on that since it will quote all the keys and values.
  *
  * @author Tony Allevato
- * @version $Id: JSHash.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: JSHash.java,v 1.2 2010/10/11 16:54:38 aallowat Exp $
  */
 public class JSHash
 {
@@ -188,9 +188,12 @@ public class JSHash
      */
     public void merge(JSHash opts)
     {
-        for (String key : opts.options.keySet())
+        if (opts != null)
         {
-            options.setObjectForKey(opts.options.objectForKey(key), key);
+            for (String key : opts.options.keySet())
+            {
+                options.setObjectForKey(opts.options.objectForKey(key), key);
+            }
         }
     }
 

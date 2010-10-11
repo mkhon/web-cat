@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponentWithErrorMessages.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCComponentWithErrorMessages.java,v 1.2 2010/10/11 16:54:38 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -23,6 +23,8 @@ package org.webcat.core;
 
 import org.webcat.core.ErrorDictionaryPanel;
 import org.webcat.core.Status;
+import org.webcat.ui.generators.JavascriptGenerator;
+import org.webcat.ui.util.JSHash;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 
@@ -33,7 +35,7 @@ import com.webobjects.foundation.*;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/11 16:54:38 $
  */
 public class WCComponentWithErrorMessages
     extends WOComponent
@@ -300,6 +302,25 @@ public class WCComponentWithErrorMessages
 
 
     // ----------------------------------------------------------
+    /**
+     * Returns a JavascriptGenerator that refreshes the page's error panel and
+     * scrolls it into view. This should be called from within remote actions
+     * where errors might occur and you wish to draw the user's attention to
+     * them (since reloading the page entirely is not possible or always
+     * desired from a remote action).
+     *
+     * @return a JavascriptGenerator that displays the error messages
+     */
+    public JavascriptGenerator displayMessages()
+    {
+        JavascriptGenerator js = new JavascriptGenerator();
+        js.refresh("error-panel");
+        js.smoothScroll("error-panel", null, 200).play();
+        return js;
+    }
+
+
+    // ----------------------------------------------------------
     public void validationFailedWithException(
         Throwable ex, Object value, String key)
     {
@@ -308,5 +329,6 @@ public class WCComponentWithErrorMessages
 
 
     //~ Instance/static variables .............................................
-    private NSMutableDictionary<String, Object>  messages;
+
+    private NSMutableDictionary<String, Object> messages;
 }
