@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderAssignmentComponent.java,v 1.2 2010/09/27 04:28:39 stedwar2 Exp $
+ |  $Id: GraderAssignmentComponent.java,v 1.3 2010/10/12 02:39:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2010 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -32,7 +32,7 @@ import com.webobjects.foundation.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:28:39 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/12 02:39:56 $
  */
 public class GraderAssignmentComponent
     extends GraderCourseComponent
@@ -117,6 +117,7 @@ public class GraderAssignmentComponent
      * @param params A dictionary of form values to decode
      * @return True if successful, false if the parameter is missing
      */
+    @Override
     public boolean startWith( NSDictionary<String, Object> params )
     {
         boolean result = false;
