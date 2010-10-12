@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.4 2010/10/12 02:41:01 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.5 2010/10/12 03:15:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/10/12 02:41:01 $
+ * @version $Revision: 1.5 $, $Date: 2010/10/12 03:15:33 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -336,29 +336,42 @@ public class GradeStudentSubmissionPage
 
 
     // ----------------------------------------------------------
-    public WOComponent regrade()
+    public WOActionResults regrade()
     {
-        ConfirmPage confirmPage = null;
         saveGrading();
-        if ( !hasMessages() )
+        if (hasMessages())
         {
-            confirmPage = pageWithName(ConfirmPage.class);
-            confirmPage.nextPage       = this;
-            confirmPage.message        =
-                "This action will <b>regrade this submission</b> "
-            + "for the selected student.</p>"
-            + "<p>This will also <b>delete all prior results</b> for the "
-            + "submission, <b>delete all partner associations</b> for the "
-            + "submission, and <b>delete all TA comments and "
-            + "scoring</b> that have been recorded for the submission.</p>"
-            + "<p>This submission will be "
-            + "re-queued for grading, and the student will receive an e-mail "
-            + "message when new results are available.";
-            confirmPage.actionReceiver = this;
-            confirmPage.actionOk       = "regradeActionOk";
-            confirmPage.setTitle( "Confirm Regrade of This Submission" );
+            return displayMessages();
         }
-        return confirmPage;
+
+        return new ConfirmingAction(this)
+        {
+            @Override
+            protected String confirmationTitle()
+            {
+                return "Confirm Regrade of This Submission?";
+            }
+
+            @Override
+            protected String confirmationMessage()
+            {
+                return "<p>This action will <b>regrade this submission</b> "
+                    + "for the selected student.</p><p>This will also "
+                    + "<b>delete all prior results</b> for the submission "
+                    + "and <b>delete all TA comments and scoring</b> that "
+                    + "have been recorded for the submission.</p><p>This "
+                    + "submission will be re-queued for grading, and the "
+                    + "student will receive an e-mail message when new "
+                    + "results are available.</p><p>Regrade this "
+                    + "submission?</p>";
+            }
+
+            @Override
+            protected WOActionResults performStandardAction()
+            {
+                return regradeActionOk();
+            }
+        };
     }
 
 
