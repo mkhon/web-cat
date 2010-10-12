@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.4 2010/09/28 02:19:12 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.5 2010/10/12 02:41:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/09/28 02:19:12 $
+ *  @version $Revision: 1.5 $, $Date: 2010/10/12 02:41:10 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -531,6 +531,60 @@ public class SubmissionResult
             }
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    public void addCommentByLineFor(User commenter, String priorComments)
+    {
+        String newComments = comments();
+        if (newComments != null
+            && newComments.trim().equals("<br />"))
+        {
+            setComments(null);
+            newComments = null;
+        }
+        if (status() == Status.TO_DO
+            && (taScoreRaw() != null
+                || newComments != null))
+        {
+            setStatus(Status.UNFINISHED);
+        }
+        if (newComments != null
+            && newComments.indexOf("<") < 0
+            && newComments.indexOf(">") < 0)
+        {
+            setCommentFormat(SubmissionResult.FORMAT_TEXT);
+        }
+        if (newComments != null && !newComments.equals(priorComments))
+        {
+            // update author info:
+            String byLine = "-- last updated by " + commenter.name();
+            if (commentFormat() == SubmissionResult.FORMAT_HTML)
+            {
+                byLine = "<p><span style=\"font-size:smaller\"><i>"
+                    + byLine + "</i></span></p>";
+            }
+            if (log.isDebugEnabled())
+            {
+                log.debug("new comments ='" + newComments + "'");
+                log.debug("byline ='" + byLine + "'");
+            }
+            if (!newComments.trim().endsWith(byLine))
+            {
+                log.debug("byLine not found");
+                if (commentFormat() == SubmissionResult.FORMAT_TEXT)
+                {
+                    byLine = "\n" + byLine + "\n";
+                }
+                if (!(newComments.endsWith( "\n")
+                      || newComments.endsWith("\r")))
+                {
+                    byLine = "\n" + byLine;
+                }
+                setComments(newComments + byLine);
+            }
+        }
     }
 
 
