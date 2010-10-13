@@ -7,7 +7,7 @@
 //
 //
 //
-// $Id: codearea.js,v 1.7 2010/10/11 14:30:10 aallowat Exp $
+// $Id: codearea.js,v 1.8 2010/10/13 20:36:04 aallowat Exp $
 
 // Creates a new HTMLArea object.  Tries to replace the textarea with the given
 // ID with it.
@@ -1332,7 +1332,7 @@ HTMLArea.prototype.changeCommentVisibility = function(type) {
         {
             lastRowType = row.className;
         }
-        else if (row.id.match(/I\d+:\d+:\d+/))
+        else if (row.id.match(/[INF]\d*:.*/))
         {
             var shouldShow = (type == "showall" || type == lastRowType);
             row.style.display = shouldShow ? 'table-row' : 'none';
