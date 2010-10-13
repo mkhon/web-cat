@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -95,6 +96,8 @@ public abstract class _JobBase
     // To-many relationships ---
     // Fetch specifications ---
     public static final String NEXT_JOB_FSPEC = "nextJob";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

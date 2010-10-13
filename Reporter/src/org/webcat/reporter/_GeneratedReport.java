@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -177,6 +178,8 @@ public abstract class _GeneratedReport
     public static final String INCOMPLETE_REPORTS_FOR_USER_FSPEC = "incompleteReportsForUser";
     public static final String USER_FSPEC = "user";
     public static final String ENTITY_NAME = "GeneratedReport";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

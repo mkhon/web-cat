@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.3 2010/10/11 22:34:30 stedwar2 Exp $
+ |  $Id: User.java,v 1.4 2010/10/13 20:37:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -50,8 +50,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </ul>
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/11 22:34:30 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2010/10/13 20:37:19 $
  */
 public class User
     extends _User
@@ -1336,6 +1336,40 @@ public class User
             {
                 ec.unlock();
             }
+        }
+    }
+
+
+    /*
+     * The following two overrides cause changes to preferences to be
+     * auto-saved when the modification is made by pushing a value into a KVC
+     * binding.
+     */
+
+    // ----------------------------------------------------------
+    @Override
+    public void takeValueForKey(Object value, String key)
+    {
+        super.takeValueForKey(value, key);
+
+        if (PREFERENCES_KEY.equals(key))
+        {
+            savePreferences();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void takeValueForKeyPath(Object value, String keyPath)
+    {
+        super.takeValueForKeyPath(value, keyPath);
+
+        int dotIndex = keyPath.indexOf('.');
+        if (dotIndex == -1 && PREFERENCES_KEY.equals(keyPath)
+                || PREFERENCES_KEY.equals(keyPath.substring(0, dotIndex)))
+        {
+            savePreferences();
         }
     }
 

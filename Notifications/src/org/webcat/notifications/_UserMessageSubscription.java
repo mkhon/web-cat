@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -157,6 +158,8 @@ public abstract class _UserMessageSubscription
     public static final String SUBSCRIPTIONS_FOR_MESSAGE_TYPE_AND_USER_FSPEC = "subscriptionsForMessageTypeAndUser";
     public static final String SUBSCRIPTIONS_FOR_USER_FSPEC = "subscriptionsForUser";
     public static final String ENTITY_NAME = "UserMessageSubscription";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

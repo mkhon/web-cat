@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -192,6 +193,8 @@ public abstract class _BatchPlugin
     public static final String PLUGINS_FOR_USER_FSPEC = "pluginsForUser";
     public static final String PUBLISHED_PLUGINS_FSPEC = "publishedPlugins";
     public static final String ENTITY_NAME = "BatchPlugin";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

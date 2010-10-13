@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderAssignmentsComponent.java,v 1.1 2010/10/12 02:40:32 stedwar2 Exp $
+ |  $Id: GraderAssignmentsComponent.java,v 1.2 2010/10/13 20:37:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -34,8 +34,8 @@ import com.webobjects.foundation.NSMutableArray;
  * multi-offering course/assignment selections.
  *
  * @author Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2010/10/12 02:40:32 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.2 $, $Date: 2010/10/13 20:37:21 $
  */
 public class GraderAssignmentsComponent
     extends GraderAssignmentComponent
@@ -87,7 +87,8 @@ public class GraderAssignmentsComponent
             {
                 // Just one offering selected
                 CourseOffering co = coreSelections().courseOffering();
-                if (co != null && co.isStaff(user()))
+                if (co != null &&
+                        (co.isStaff(user()) || user().hasAdminPrivileges()))
                 {
                     courseOfferings.add(co);
                 }
@@ -103,7 +104,7 @@ public class GraderAssignmentsComponent
 
                 for (CourseOffering co : candidates)
                 {
-                    if (co.isStaff(user()))
+                    if (co.isStaff(user()) || user().hasAdminPrivileges())
                     {
                         courseOfferings.add(co);
                     }

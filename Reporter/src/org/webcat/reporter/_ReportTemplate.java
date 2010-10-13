@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -204,6 +205,8 @@ public abstract class _ReportTemplate
     public static final String PUBLISHED_TEMPLATES_FSPEC = "publishedTemplates";
     public static final String TEMPLATES_FOR_USER_FSPEC = "templatesForUser";
     public static final String ENTITY_NAME = "ReportTemplate";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -192,6 +193,8 @@ public abstract class _SendMessageJob
         new ERXKey<org.webcat.core.User>(DESTINATION_USERS_KEY);
     // Fetch specifications ---
     public static final String ENTITY_NAME = "SendMessageJob";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

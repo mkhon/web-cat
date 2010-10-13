@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.4 2010/10/12 02:39:36 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.5 2010/10/13 20:37:21 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -41,8 +41,8 @@ import com.webobjects.appserver.WODisplayGroup;
  * of the source code.
  *
  * @author  Stephen Edwards, Hussein Vastani
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/10/12 02:39:36 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.5 $, $Date: 2010/10/13 20:37:21 $
  */
 public class EditFileCommentsPage
     extends GraderComponent
@@ -152,7 +152,7 @@ public class EditFileCommentsPage
 
 
     // ----------------------------------------------------------
-    private WOComponent goToSelectedDestination()
+    public WOComponent goToSelectedDestination()
     {
         if (selectedFile == null)
         {
