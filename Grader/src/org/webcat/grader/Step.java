@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: Step.java,v 1.3 2010/10/14 18:50:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/14 18:50:09 $
  */
 public class Step
     extends _Step
@@ -80,7 +80,7 @@ public class Step
     // ----------------------------------------------------------
     public static boolean timeoutIsWithinLimits( int value )
     {
-        return value > 0  &&  value < maxTimeout;
+        return value > 0  &&  value <= maxTimeout;
     }
 
 
