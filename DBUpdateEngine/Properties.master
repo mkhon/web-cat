@@ -10,10 +10,10 @@ DBUpdateEngine.version.revision=3
 DBUpdateEngine.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 DBUpdateEngine.provider=Virginia Tech Computer Science
-DBUpdateEngine.provider.url=http\://web-cat.cs.vt.edu/updates
-DBUpdateEngine.info.url=http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine
+DBUpdateEngine.provider.url=http\://web-cat.org/updates
+DBUpdateEngine.info.url=http\://web-cat.org/WCWiki/DbUpdateEngine
 DBUpdateEngine.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/DbUpdateEngine/ChangeHistory
+	http\://web-cat.org/WCWiki/DbUpdateEngine/ChangeHistory
 DBUpdateEngine.license=GNU Affero General Public License v.3
 DBUpdateEngine.license.url=http\://www.gnu.org/licenses/agpl.html
 

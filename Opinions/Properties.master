@@ -11,11 +11,11 @@ Opinions.requires=Core, EOJDBCPrototypes, DBUpdateEngine, Grader, JobQueue
 Opinions.copyright=\
     (c) 2010 Virginia Tech Department of Computer Science
 Opinions.provider=Virginia Tech Computer Science
-Opinions.provider.url=http\://web-cat.cs.vt.edu/updates
+Opinions.provider.url=http\://web-cat.org/updates
 Opinions.info.url=\
-    http\://web-cat.cs.vt.edu/WCWiki/OpinionsSubsystem
+    http\://web-cat.org/WCWiki/OpinionsSubsystem
 Opinions.history.url=\
-    http\://web-cat.cs.vt.edu/WCWiki/OpinionsSubsystem/ChangeHistory
+    http\://web-cat.org/WCWiki/OpinionsSubsystem/ChangeHistory
 Opinions.license=GNU Affero General Public License v.3
 Opinions.license.url=http\://www.gnu.org/licenses/agpl.html
 
