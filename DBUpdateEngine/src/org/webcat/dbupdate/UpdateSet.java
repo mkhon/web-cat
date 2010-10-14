@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UpdateSet.java,v 1.2 2010/09/27 00:21:13 stedwar2 Exp $
+ |  $Id: UpdateSet.java,v 1.3 2010/10/14 18:41:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  *
  * @author Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:21:13 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/14 18:41:45 $
  */
 public abstract class UpdateSet
 {
@@ -58,7 +58,7 @@ public abstract class UpdateSet
      * numbers for different names are maintained separately.
      * @param subsystemName the unique identifier for this update set.
      */
-    public UpdateSet( String subsystemName )
+    public UpdateSet(String subsystemName)
     {
         name = subsystemName;
     }
@@ -93,7 +93,7 @@ public abstract class UpdateSet
      * Set the database to which updates will be applied.
      * @param database the database to operate on
      */
-    public void setDatabase( Database database )
+    public void setDatabase(Database database)
     {
         this.database = database;
     }
@@ -115,7 +115,7 @@ public abstract class UpdateSet
      * Set the old version of the database before applying updates.
      * @param version the old database version
      */
-    public void setStartingVersion( int version )
+    public void setStartingVersion(int version)
     {
         startingVersion = version;
     }
@@ -131,10 +131,9 @@ public abstract class UpdateSet
      * @param version The version to check
      * @return true if the given version is recognized by this update set
      */
-    public boolean supportsVersion( int version )
+    public boolean supportsVersion(int version)
     {
-        return version < 0
-            || methodForVersion( version ) != null;
+        return version < 0 || methodForVersion(version) != null;
     }
 
 
@@ -144,24 +143,24 @@ public abstract class UpdateSet
      * @param version The version to move to
      * @return true if the update is applied, false if no such update exists
      */
-    public boolean applyUpdateIncrement( int version )
+    public boolean applyUpdateIncrement(int version)
     {
-        Method  update = methodForVersion( version );
+        Method  update = methodForVersion(version);
         boolean result = false;
-        if ( update != null )
+        if (update != null)
         {
             try
             {
-                log.info( "applying " + subsystemName()
-                          + " database update " + version );
-                update.invoke( this, (Object[])null );
+                log.info("applying " + subsystemName()
+                          + " database update " + version);
+                update.invoke(this);
                 result = true;
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                log.error( "exception trying to update '" + subsystemName()
-                           + "' to version " + version, e );
-                throw new com.webobjects.foundation.NSForwardException( e );
+                log.error("exception trying to update '" + subsystemName()
+                    + "' to version " + version, e);
+                throw new com.webobjects.foundation.NSForwardException(e);
             }
         }
         return result;
@@ -180,6 +179,34 @@ public abstract class UpdateSet
     public abstract void updateIncrement0() throws SQLException;
 
 
+    //~ Protected Methods .....................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates an index for the specified column in the given table.
+     * @param tableName The name of the table to index
+     * @param columnName The name of the column to index on--add a length
+     *                   specification in parentheses (SQL-style) for
+     *                   text columns.
+     */
+    protected void createIndexFor(String tableName, String columnName)
+    {
+        log.info("creating index for table "
+            + tableName + " on column " + columnName);
+        try
+        {
+            database().executeSQL("alter table " + tableName
+                + " add index (" + columnName + ")");
+        }
+        catch (SQLException e)
+        {
+            log.error("Unable to create index in table "
+                + tableName + " for column spec " + columnName
+                + ": " + e.getClass() + ": " + e);
+        }
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -189,14 +216,13 @@ public abstract class UpdateSet
      * @param version The version to update to
      * @return the method object, or null if no such method exists
      */
-    private Method methodForVersion( int version )
+    private Method methodForVersion(int version)
     {
         try
         {
-            return this.getClass().getMethod( "updateIncrement" + version,
-                                              (Class[])null );
+            return this.getClass().getMethod("updateIncrement" + version);
         }
-        catch ( Exception e )
+        catch (Exception e)
         {
             return null;
         }
@@ -209,5 +235,5 @@ public abstract class UpdateSet
     private Database database;
     private int      startingVersion = -1;
 
-    static Logger log = Logger.getLogger( UpdateSet.class );
+    protected static Logger log = Logger.getLogger(UpdateSet.class);
 }
