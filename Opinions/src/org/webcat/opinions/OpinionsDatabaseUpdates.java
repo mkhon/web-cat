@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsDatabaseUpdates.java,v 1.3 2010/09/27 00:41:48 stedwar2 Exp $
+ |  $Id: OpinionsDatabaseUpdates.java,v 1.4 2010/10/14 18:43:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.opinions;
 
 import java.sql.SQLException;
-import org.apache.log4j.Logger;
 import org.webcat.dbupdate.UpdateSet;
 
 //-------------------------------------------------------------------------
@@ -33,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/27 00:41:48 $
+ * @version $Revision: 1.4 $, $Date: 2010/10/14 18:43:42 $
  */
 public class OpinionsDatabaseUpdates
     extends UpdateSet
@@ -74,6 +73,22 @@ public class OpinionsDatabaseUpdates
     {
         database().executeSQL(
             "alter table TSurveyReminderJob add suspensionReason MEDIUMTEXT" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add indexes for better performance.
+     * @throws SQLException on error
+     */
+    public void updateIncrement2() throws SQLException
+    {
+        // Indices for SurveyReminderJob
+        // None needed
+
+        // Indices for SurveyResponse
+        createIndexFor("TSurveyResponse", "assignmentOfferingId");
+        createIndexFor("TSurveyResponse", "userId");
     }
 
 
@@ -131,9 +146,4 @@ public class OpinionsDatabaseUpdates
                 "ALTER TABLE TSurveyResponse ADD PRIMARY KEY (OID)" );
         }
     }
-
-
-    //~ Instance/static variables .............................................
-
-    static Logger log = Logger.getLogger(OpinionsDatabaseUpdates.class);
 }

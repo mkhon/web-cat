@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReporterDatabaseUpdates.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: ReporterDatabaseUpdates.java,v 1.2 2010/10/14 18:45:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.jobqueue.JobQueueDatabaseUpdates;
  * output for this class uses its parent class' logger.
  *
  * @author Tony Allevato
- * @version $Id: ReporterDatabaseUpdates.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: ReporterDatabaseUpdates.java,v 1.2 2010/10/14 18:45:10 stedwar2 Exp $
  */
 public class ReporterDatabaseUpdates
     extends UpdateSet
@@ -130,6 +130,36 @@ public class ReporterDatabaseUpdates
         database().executeSQL("TRUNCATE TABLE TGENERATEDREPORT");
 
         database().executeSQL("DROP TABLE TREPORTQUERY");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add indexes for better performance.
+     * @throws SQLException on error
+     */
+    public void updateIncrement5() throws SQLException
+    {
+        // Indices for GeneratedReport
+        createIndexFor("TGENERATEDREPORT", "CUSERID");
+        createIndexFor("TGENERATEDREPORT", "CREPORTTEMPLATEID");
+
+        // Indices for ReportDataSet
+        createIndexFor("TREPORTDATASET", "CREPORTTEMPLATEID");
+
+        // Indices for ReportDataSetQuery
+        createIndexFor("TREPORTDATASETQUERY", "CDATASETID");
+        createIndexFor("TREPORTDATASETQUERY", "CGENERATEDREPORTID");
+        createIndexFor("TREPORTDATASETQUERY", "CREPORTQUERYID");
+
+        // Indices for ReportGenerationJob
+        // None
+
+        // Indices for ReportTemplate
+        createIndexFor("TREPORTTEMPLATE", "CBRANCHEDFROMTEMPLATEID");
+        createIndexFor("TREPORTTEMPLATE", "CPREDECESSORTEMPLATEID");
+        createIndexFor("TREPORTTEMPLATE", "CROOTTEMPLATEID");
+        createIndexFor("TREPORTTEMPLATE", "CUSERID");
     }
 
 
