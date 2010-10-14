@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.3 2010/09/27 04:21:37 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.4 2010/10/14 18:51:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/09/27 04:21:37 $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/14 18:51:13 $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -208,6 +208,12 @@ public class GraderHomeStatus
     {
         coreSelections().setCourseOfferingRelationship(
             assignment.courseOffering());
+        if (coreSelections().course() != null)
+        {
+            coreSelections().setCourseRelationship(
+                assignment.courseOffering().course());
+        }
+        prefs().setAssignmentRelationship(assignment.assignment());
         prefs().setAssignmentOfferingRelationship(assignment);
         return pageWithName(
             wcSession().tabs.selectById("UploadSubmission").pageName());
@@ -224,6 +230,12 @@ public class GraderHomeStatus
     {
         coreSelections().setCourseOfferingRelationship(
             assignment.courseOffering());
+        if (coreSelections().course() != null)
+        {
+            coreSelections().setCourseRelationship(
+                assignment.courseOffering().course());
+        }
+        prefs().setAssignmentRelationship(assignment.assignment());
         prefs().setAssignmentOfferingRelationship(assignment);
         SubmissionResult subResult =
             assignment.mostRecentSubmissionResultFor(user());
@@ -253,6 +265,12 @@ public class GraderHomeStatus
     {
         coreSelections().setCourseOfferingRelationship(
             assignment.courseOffering());
+        if (coreSelections().course() != null)
+        {
+            coreSelections().setCourseRelationship(
+                assignment.courseOffering().course());
+        }
+        prefs().setAssignmentRelationship(assignment.assignment());
         prefs().setAssignmentOfferingRelationship(assignment);
         return pageWithName(
             wcSession().tabs.selectById("GraphResults").pageName());
@@ -269,6 +287,12 @@ public class GraderHomeStatus
     {
         coreSelections().setCourseOfferingRelationship(
             assignment.courseOffering());
+        if (coreSelections().course() != null)
+        {
+            coreSelections().setCourseRelationship(
+                assignment.courseOffering().course());
+        }
+        prefs().setAssignmentRelationship(assignment.assignment());
         prefs().setAssignmentOfferingRelationship(assignment);
         return pageWithName(
             wcSession().tabs.selectById("AssignmentProperties").pageName());
@@ -285,6 +309,12 @@ public class GraderHomeStatus
     {
         coreSelections().setCourseOfferingRelationship(
             assignment.courseOffering());
+        if (coreSelections().course() != null)
+        {
+            coreSelections().setCourseRelationship(
+                assignment.courseOffering().course());
+        }
+        prefs().setAssignmentRelationship(assignment.assignment());
         prefs().setAssignmentOfferingRelationship(assignment);
         return pageWithName(
             wcSession().tabs.selectById("EnterGrades").pageName());
