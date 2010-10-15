@@ -12,10 +12,10 @@ PerlForPlugins.provides=env
 PerlForPlugins.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 PerlForPlugins.provider=Virginia Tech Computer Science
-PerlForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
-PerlForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/AntForPluginsSubsystem
+PerlForPlugins.provider.url=http\://web-cat.org/updates
+PerlForPlugins.info.url=http\://web-cat.org/WCWiki/AntForPluginsSubsystem
 PerlForPlugins.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/PerlForPluginsSubsystem/ChangeHistory
+	http\://web-cat.org/WCWiki/PerlForPluginsSubsystem/ChangeHistory
 PerlForPlugins.license=GNU Affero General Public License v.3
 PerlForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 

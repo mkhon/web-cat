@@ -12,10 +12,10 @@ PMDForPlugins.provides=pluginProperties
 PMDForPlugins.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 PMDForPlugins.provider=Virginia Tech Computer Science
-PMDForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
-PMDForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem
+PMDForPlugins.provider.url=http\://web-cat.org/updates
+PMDForPlugins.info.url=http\://web-cat.org/WCWiki/PmdForPluginsSubsystem
 PMDForPlugins.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/PmdForPluginsSubsystem/ChangeHistory
+	http\://web-cat.org/WCWiki/PmdForPluginsSubsystem/ChangeHistory
 PMDForPlugins.license=GNU Affero General Public License v.3
 PMDForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 

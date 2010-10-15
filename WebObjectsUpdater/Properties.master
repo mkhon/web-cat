@@ -10,7 +10,7 @@ WebObjectsUpdater.version.revision=2
 WebObjectsUpdater.copyright=\
 	(c) 2007-2010 Virginia Tech Department of Computer Science
 WebObjectsUpdater.provider=Virginia Tech Computer Science
-WebObjectsUpdater.provider.url=http\://web-cat.cs.vt.edu/updates
+WebObjectsUpdater.provider.url=http\://web-cat.org/updates
 WebObjectsUpdater.info.url=\
 	http\://web-cat.org/WCWiki/WebObjectsUpdater
 WebObjectsUpdater.history.url=\

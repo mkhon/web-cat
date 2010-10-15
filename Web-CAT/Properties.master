@@ -16,10 +16,10 @@ webcat.version.revision=0
 
 webcat.copyright=(c) 2006-2010 Virginia Tech Department of Computer Science
 webcat.provider=Virginia Tech Computer Science
-webcat.provider.url=http://web-cat.cs.vt.edu/updates
-webcat.info.url=http://web-cat.cs.vt.edu/WCWiki/WebCatApplication
+webcat.provider.url=http://web-cat.org/updates
+webcat.info.url=http://web-cat.org/WCWiki/WebCatApplication
 webcat.history.url=\
-	http://web-cat.cs.vt.edu/WCWiki/WebCatApplication/ChangeHistory
+	http://web-cat.org/WCWiki/WebCatApplication/ChangeHistory
 webcat.license=GNU Affero General Public License v.3
 webcat.license.url=http://www.gnu.org/licenses/agpl.html
 
