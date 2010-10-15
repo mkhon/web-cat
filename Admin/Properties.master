@@ -10,9 +10,9 @@ Admin.requires=Core
 
 Admin.copyright=(c) 2006-2010 Virginia Tech Department of Computer Science
 Admin.provider=Virginia Tech Computer Science
-Admin.provider.url=http\://web-cat.cs.vt.edu/updates
-Admin.info.url=http\://web-cat.cs.vt.edu/WCWiki/AdminSubsystem
-Admin.history.url=http\://web-cat.cs.vt.edu/WCWiki/AdminSubsystem/ChangeHistory
+Admin.provider.url=http\://web-cat.org/updates
+Admin.info.url=http\://web-cat.org/WCWiki/AdminSubsystem
+Admin.history.url=http\://web-cat.org/WCWiki/AdminSubsystem/ChangeHistory
 Admin.license=GNU Affero General Public License v.3
 Admin.license.url=http\://www.gnu.org/licenses/agpl.html
 

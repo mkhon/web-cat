@@ -12,11 +12,11 @@ CloverForPlugins.provides=pluginProperties
 CloverForPlugins.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 CloverForPlugins.provider=Virginia Tech Computer Science
-CloverForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
+CloverForPlugins.provider.url=http\://web-cat.org/updates
 CloverForPlugins.info.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/CloverForPluginsSubsystem
+	http\://web-cat.org/WCWiki/CloverForPluginsSubsystem
 CloverForPlugins.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/CloverForPluginsSubsystem/ChangeHistory
+	http\://web-cat.org/WCWiki/CloverForPluginsSubsystem/ChangeHistory
 CloverForPlugins.license=GNU Affero General Public License v.3
 CloverForPlugins.license.url=http\://www.gnu.org/license/agpl.html
 

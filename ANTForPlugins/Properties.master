@@ -12,10 +12,10 @@ ANTForPlugins.provides=env, pluginProperties
 ANTForPlugins.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 ANTForPlugins.provider=Virginia Tech Computer Science
-ANTForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
-ANTForPlugins.info.url=http\://web-cat.cs.vt.edu/WCWiki/AntForPluginsSubsystem
+ANTForPlugins.provider.url=http\://web-cat.org/updates
+ANTForPlugins.info.url=http\://web-cat.org/WCWiki/AntForPluginsSubsystem
 ANTForPlugins.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/AntForPluginsSubsystem/ChangeHistory
+	http\://web-cat.org/WCWiki/AntForPluginsSubsystem/ChangeHistory
 ANTForPlugins.license=GNU Affero General Public License v.3
 ANTForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 

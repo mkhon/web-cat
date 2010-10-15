@@ -13,11 +13,11 @@ CheckstyleForPlugins.provides=pluginProperties
 CheckstyleForPlugins.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 CheckstyleForPlugins.provider=Virginia Tech Computer Science
-CheckstyleForPlugins.provider.url=http\://web-cat.cs.vt.edu/updates
+CheckstyleForPlugins.provider.url=http\://web-cat.org/updates
 CheckstyleForPlugins.info.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/CheckstyleForPluginsSubsystem
+	http\://web-cat.org/WCWiki/CheckstyleForPluginsSubsystem
 CheckstyleForPlugins.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/CheckstyleForPluginsSubsystem/ChangeHistory
+	http\://web-cat.org/WCWiki/CheckstyleForPluginsSubsystem/ChangeHistory
 CheckstyleForPlugins.license=GNU Affero General Public License v.3
 CheckstyleForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 

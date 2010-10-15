@@ -11,11 +11,11 @@ BIRTRuntime.requires=Core
 BIRTRuntime.copyright=\
     (c) 2008-2010 Virginia Tech Department of Computer Science
 BIRTRuntime.provider=Virginia Tech Computer Science
-BIRTRuntime.provider.url=http\://web-cat.cs.vt.edu/updates
+BIRTRuntime.provider.url=http\://web-cat.org/updates
 BIRTRuntime.info.url=\
-    http\://web-cat.cs.vt.edu/WCWiki/BIRTRuntimeSubsystem
+    http\://web-cat.org/WCWiki/BIRTRuntimeSubsystem
 BIRTRuntime.history.url=\
-    http\://web-cat.cs.vt.edu/WCWiki/BIRTRuntimeSubsystem/ChangeHistory
+    http\://web-cat.org/WCWiki/BIRTRuntimeSubsystem/ChangeHistory
 BIRTRuntime.license=GNU Affero General Public License v.3
 BIRTRuntime.license.url=http\://www.gnu.org/licenses/agpl.html
 

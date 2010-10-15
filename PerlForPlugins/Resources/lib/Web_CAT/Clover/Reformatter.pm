@@ -12,14 +12,14 @@ use Carp;
 $HTML::SimpleParse::FIX_CASE = -1;
 
 my %icons = (
-    "Error"        => "http://web-cat.cs.vt.edu/icons/exclaim.gif",
-    "Warning"      => "http://web-cat.cs.vt.edu/icons/caution.gif",
-    "Question"     => "http://web-cat.cs.vt.edu/icons/help.gif",
-    "Suggestion"   => "http://web-cat.cs.vt.edu/icons/suggestion.gif",
-    "Answer"       => "http://web-cat.cs.vt.edu/icons/answer.gif",
-    "Good"         => "http://web-cat.cs.vt.edu/icons/check.gif",
-    "Extra Credit" => "http://web-cat.cs.vt.edu/icons/excred.gif",
-    "default"      => "http://web-cat.cs.vt.edu/icons/todo.gif"
+    "Error"        => "http://web-cat.org/icons/exclaim.gif",
+    "Warning"      => "http://web-cat.org/icons/caution.gif",
+    "Question"     => "http://web-cat.org/icons/help.gif",
+    "Suggestion"   => "http://web-cat.org/icons/suggestion.gif",
+    "Answer"       => "http://web-cat.org/icons/answer.gif",
+    "Good"         => "http://web-cat.org/icons/check.gif",
+    "Extra Credit" => "http://web-cat.org/icons/excred.gif",
+    "default"      => "http://web-cat.org/icons/todo.gif"
     );
 
 my %categoryPriority = (
@@ -125,6 +125,8 @@ sub simpleHTMLEscape
     return $message;
 }
 
+
+#========================================================================
 sub commentBody
 {
     my $self = shift;

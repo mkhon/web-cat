@@ -10,10 +10,10 @@ EOJDBCPrototypes.version.revision=9
 EOJDBCPrototypes.copyright=\
 	(c) 2006-2010 Virginia Tech Department of Computer Science
 EOJDBCPrototypes.provider=Virginia Tech Computer Science
-EOJDBCPrototypes.provider.url=http\://web-cat.cs.vt.edu/updates
-EOJDBCPrototypes.info.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes
+EOJDBCPrototypes.provider.url=http\://web-cat.org/updates
+EOJDBCPrototypes.info.url=http\://web-cat.org/WCWiki/EoJdbcPrototypes
 EOJDBCPrototypes.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes/ChangeHistory
+	http\://web-cat.org/WCWiki/EoJdbcPrototypes/ChangeHistory
 EOJDBCPrototypes.license=GNU Affero General Public License v.3
 EOJDBCPrototypes.license.url=http\://www.gnu.org/licenses/agpl.html
 

@@ -11,11 +11,11 @@ JobQueue.requires=Core, EOJDBCPrototypes, DBUpdateEngine
 JobQueue.copyright=\
 	(c) 2010 Virginia Tech Department of Computer Science
 JobQueue.provider=Virginia Tech Computer Science
-JobQueue.provider.url=http\://web-cat.cs.vt.edu/updates
+JobQueue.provider.url=http\://web-cat.org/updates
 JobQueue.info.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/JobQueueSubsystem
+	http\://web-cat.org/WCWiki/JobQueueSubsystem
 JobQueue.history.url=\
-	http\://web-cat.cs.vt.edu/WCWiki/JobQueueSubsystem/ChangeHistory
+	http\://web-cat.org/WCWiki/JobQueueSubsystem/ChangeHistory
 JobQueue.license=GNU Affero General Public License v.3
 JobQueue.license.url=http\://www.gnu.org/licenses/agpl.html
 

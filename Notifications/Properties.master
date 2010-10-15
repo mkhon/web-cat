@@ -11,10 +11,10 @@ Notifications.depends=env, pluginProperties
 
 Notifications.copyright=(c) 2010 Virginia Tech Department of Computer Science
 Notifications.provider=Virginia Tech Computer Science
-Notifications.provider.url=http\://web-cat.cs.vt.edu/updates
-Notifications.info.url=http\://web-cat.cs.vt.edu/WCWiki/NotificationsSubsystem
+Notifications.provider.url=http\://web-cat.org/updates
+Notifications.info.url=http\://web-cat.org/WCWiki/NotificationsSubsystem
 Notifications.history.url=\
-    http\://web-cat.cs.vt.edu/WCWiki/NotificationsSubsystem/ChangeHistory
+    http\://web-cat.org/WCWiki/NotificationsSubsystem/ChangeHistory
 Notifications.license=GNU Affero General Public License v.3
 Notifications.license.url=http\://www.gnu.org/licenses/agpl.html
 
