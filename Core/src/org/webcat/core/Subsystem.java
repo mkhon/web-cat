@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.2 2010/09/16 18:50:50 aallowat Exp $
+ |  $Id: Subsystem.java,v 1.3 2010/10/15 00:59:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -47,8 +47,8 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  *  communicate with subsystems.
  *
  *  @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/09/16 18:50:50 $
+ *  @author Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/15 00:59:25 $
  */
 public class Subsystem
 {
@@ -339,9 +339,11 @@ public class Subsystem
                 subsystemFragments =
                     new NSMutableDictionary<String, Class<? extends WOComponent>>();
 
-                NSDictionary<String, Object> plist = (NSDictionary<String, Object>)
+                @SuppressWarnings("unchecked")
+                NSDictionary<String, Object> plist =
+                    (NSDictionary<String, Object>)
                     NSPropertyListSerialization.propertyListFromData(
-                            new NSData(new FileInputStream(file), 0), "UTF-8");
+                        new NSData(new FileInputStream(file), 0), "UTF-8");
 
                 for (String key : plist.allKeys())
                 {
