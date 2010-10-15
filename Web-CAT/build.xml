@@ -122,6 +122,8 @@
       <frameworks root="External"     embed="true" eclipse="true" />
       <frameworks root="Local"        embed="true" eclipse="true">
         <exclude name="**/WOOgnl.framework/Resources/Java/ognl*.jar"/>
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.original"/>
       </frameworks>
       <frameworks root="User"         embed="true" eclipse="true" />
       <frameworks root="System"       embed="true" eclipse="true" />
@@ -168,6 +170,8 @@
       <frameworks root="External"     embed="false" eclipse="true" />
       <frameworks root="Local"        embed="false" eclipse="true">
         <exclude name="**/WOOgnl.framework/Resources/Java/ognl*.jar"/>
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.original"/>
       </frameworks>
       <frameworks root="User"         embed="false" eclipse="true" />
       <frameworks root="System"       embed="false" eclipse="true" />
