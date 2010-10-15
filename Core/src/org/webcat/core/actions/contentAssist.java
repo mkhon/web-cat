@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: contentAssist.java,v 1.1 2010/05/11 14:52:00 aallowat Exp $
+ |  $Id: contentAssist.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -54,7 +54,7 @@ import er.extensions.appserver.ERXDirectAction;
  * entities and key paths, used for content assistance and previewing purposes.
  *
  * @author Tony Allevato
- * @version $Id: contentAssist.java,v 1.1 2010/05/11 14:52:00 aallowat Exp $
+ * @version $Id: contentAssist.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  */
 public class contentAssist
     extends ERXDirectAction
@@ -446,9 +446,8 @@ public class contentAssist
         NSMutableDictionary<String, String> subsystemVersions =
             new NSMutableDictionary<String, String>();
 
-        NSArray<Subsystem> subsystems =
-            ((Application)Application.application()).
-            subsystemManager().subsystems();
+        NSArray<Subsystem> subsystems = Application.wcApplication()
+            .subsystemManager().subsystems();
 
         for (Subsystem subsystem : subsystems)
         {

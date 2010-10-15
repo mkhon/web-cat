@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage8.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: InstallPage8.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.webcat.core.*;
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage8.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ *  @version $Id: InstallPage8.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  */
 public class InstallPage8
     extends InstallPage
@@ -87,12 +87,11 @@ public class InstallPage8
         configSaved = configuration.attemptToSave();
         configuration.updateToSystemProperties();
         // configuration.setProperty( "configStep", "" + stepNo() );
-        ( (Application)Application.application() )
-            .setNeedsInstallation( false );
+        Application.wcApplication().setNeedsInstallation( false );
         try
         {
-            ( (Application)Application.application() ).initializeApplication();
-            ( (Application)Application.application() ).notifyAdminsOfStartup();
+            Application.wcApplication().initializeApplication();
+            Application.wcApplication().notifyAdminsOfStartup();
 
             String subject = "New Web-CAT installation now active";
             String body = "Congratulations, "

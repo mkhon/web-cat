@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Notifications.java,v 1.2 2010/09/27 00:40:53 stedwar2 Exp $
+ |  $Id: Notifications.java,v 1.3 2010/10/15 00:45:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.eocontrol.EOKeyGlobalID;
  *
  * @author  Tony Allevato
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:40:53 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/15 00:45:31 $
  */
 public class Notifications
     extends Subsystem
@@ -99,9 +99,8 @@ public class Notifications
         // Register the message dispatcher with the application, overriding
         // the built-in fallback dispatcher.
 
-        Application application = (Application) Application.application();
-        application.setMessageDispatcher(
-                MessageDispatcher.sharedDispatcher());
+        Application.wcApplication().setMessageDispatcher(
+            MessageDispatcher.sharedDispatcher());
 
         log.info("Starting SendMessageJob worker thread");
 

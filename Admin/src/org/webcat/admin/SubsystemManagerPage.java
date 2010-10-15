@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManagerPage.java,v 1.4 2010/10/01 01:07:08 stedwar2 Exp $
+ |  $Id: SubsystemManagerPage.java,v 1.5 2010/10/15 00:38:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/01 01:07:08 $
+ *  @version $Revision: 1.5 $, $Date: 2010/10/15 00:38:16 $
  */
 public class SubsystemManagerPage
     extends WCComponent
@@ -78,11 +78,10 @@ public class SubsystemManagerPage
     public void appendToResponse(WOResponse response, WOContext context)
     {
         terse = null;
-        ((Application)Application.application()).subsystemManager()
+        Application.wcApplication().subsystemManager()
             .refreshSubsystemDescriptorsAndProviders();
         subsystems = ERXArrayUtilities.sortedArraySortedWithKey(
-            ((Application)Application.application())
-                .subsystemManager().subsystems(),
+            Application.wcApplication().subsystemManager().subsystems(),
             "name",
             EOSortOrdering.CompareCaseInsensitiveAscending);
         if (newSubsystems == null)

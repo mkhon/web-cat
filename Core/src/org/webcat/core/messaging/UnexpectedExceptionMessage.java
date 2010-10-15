@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UnexpectedExceptionMessage.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: UnexpectedExceptionMessage.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,8 +34,8 @@ import com.webobjects.foundation.NSDictionary;
  * occurs.
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:58 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $ $Date: 2010/10/15 00:43:17 $
  */
 public class UnexpectedExceptionMessage extends SysAdminMessage
 {
@@ -81,7 +81,7 @@ public class UnexpectedExceptionMessage extends SysAdminMessage
     @Override
     public String shortBody()
     {
-        String body = ((Application) Application.application())
+        String body = Application.wcApplication()
             .informationForExceptionInContext(exception, extraInfo, context);
 
         if (message != null)

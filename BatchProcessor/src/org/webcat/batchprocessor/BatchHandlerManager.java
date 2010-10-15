@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchHandlerManager.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchHandlerManager.java,v 1.3 2010/10/15 00:39:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -74,7 +74,7 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/15 00:39:16 $
  */
 public class BatchHandlerManager
 {
@@ -85,9 +85,8 @@ public class BatchHandlerManager
     {
         handlers = new NSMutableDictionary<String, Class<?>>();
 
-        Application application = (Application) Application.application();
-
-        SubsystemManager subsystemManager = application.subsystemManager();
+        SubsystemManager subsystemManager =
+            Application.wcApplication().subsystemManager();
         for (Subsystem subsystem : subsystemManager.subsystems())
         {
             try

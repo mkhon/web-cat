@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchWorkerThread.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchWorkerThread.java,v 1.3 2010/10/15 00:39:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -49,7 +49,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author  Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/15 00:39:16 $
  */
 public class BatchWorkerThread extends WorkerThread<BatchJob>
 {
@@ -392,8 +392,7 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
         // Re-write the properties file
         properties.addPropertiesFromDictionaryIfNotDefined(
-            ((Application) Application.application())
-                .subsystemManager().pluginProperties());
+            Application.wcApplication().subsystemManager().pluginProperties());
 
         properties.addPropertiesFromDictionaryIfNotDefined(
                 batchPlugin.globalConfigSettings());
@@ -408,7 +407,7 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         properties.setProperty("scriptHome", batchPlugin.dirName());
         properties.setProperty("scriptData", BatchPlugin.pluginDataRoot());
         properties.setProperty("frameworksBaseURL",
-            Application.application().frameworksBaseURL());
+            Application.wcApplication().frameworksBaseURL());
     }
 
 

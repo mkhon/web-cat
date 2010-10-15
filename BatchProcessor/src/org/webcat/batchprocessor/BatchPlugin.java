@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPlugin.java,v 1.3 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchPlugin.java,v 1.4 2010/10/15 00:39:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -47,7 +47,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.4 $, $Date: 2010/10/15 00:39:16 $
  */
 public class BatchPlugin
     extends _BatchPlugin
@@ -184,8 +184,8 @@ public class BatchPlugin
             command = command + " " + args;
         }
 
-        Application application = (Application) Application.application();
-        return application.executeExternalCommandAsync(command, cwd);
+        return Application.wcApplication().executeExternalCommandAsync(
+            command, cwd);
     }
 
 

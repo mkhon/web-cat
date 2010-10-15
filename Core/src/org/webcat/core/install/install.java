@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: install.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: install.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.webcat.core.*;
  * The default direct action class for Web-CAT.
  *
  * @author Stephen Edwards
- * @version $Id: install.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: install.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  */
 public class install
     extends ERXDirectAction
@@ -85,7 +85,7 @@ public class install
      */
     public WOActionResults defaultAction()
     {
-        Application app = (Application)Application.application();
+        Application app = Application.wcApplication();
         WCConfigurationFile configuration =
         	Application.configurationProperties();
         if ( log.isDebugEnabled() )

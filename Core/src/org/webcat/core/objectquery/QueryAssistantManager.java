@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueryAssistantManager.java,v 1.1 2010/05/11 14:51:59 aallowat Exp $
+ |  $Id: QueryAssistantManager.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.core.SubsystemManager;
  * stored in the subsystem's resources.
  *
  * @author aallowat
- * @version $Id: QueryAssistantManager.java,v 1.1 2010/05/11 14:51:59 aallowat Exp $
+ * @version $Id: QueryAssistantManager.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
  */
 public class QueryAssistantManager
 {
@@ -71,14 +71,13 @@ public class QueryAssistantManager
      */
     private QueryAssistantManager()
     {
-        Application application = (Application) Application.application();
-
         assistants =
             new NSMutableDictionary<String, QueryAssistantDescriptor>();
         entitiesToIds =
             new NSMutableDictionary<String, NSMutableArray<String>>();
 
-        SubsystemManager subsystemManager = application.subsystemManager();
+        SubsystemManager subsystemManager =
+            Application.wcApplication().subsystemManager();
         for (Subsystem subsystem : subsystemManager.subsystems())
         {
             try

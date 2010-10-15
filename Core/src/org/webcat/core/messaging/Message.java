@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Message.java,v 1.2 2010/09/24 19:06:06 aallowat Exp $
+ |  $Id: Message.java,v 1.3 2010/10/15 00:43:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -56,7 +56,7 @@ import com.webobjects.foundation.NSTimestamp;
  * </p>
  *
  * @author Tony Allevato
- * @version $Id: Message.java,v 1.2 2010/09/24 19:06:06 aallowat Exp $
+ * @version $Id: Message.java,v 1.3 2010/10/15 00:43:17 stedwar2 Exp $
  */
 public abstract class Message
 {
@@ -401,8 +401,7 @@ public abstract class Message
         // Use the application's registered message dispatcher to send the
         // message.
 
-        Application application = (Application) Application.application();
-        application.messageDispatcher().sendMessage(this);
+        Application.wcApplication().messageDispatcher().sendMessage(this);
     }
 
 
