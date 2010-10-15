@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: Theme.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2010 Virginia Tech
  |
@@ -37,9 +37,9 @@ import er.extensions.foundation.ERXValueUtilities;
 /**
  * Represents a theme (stored in the Core framework).
  *
- *  @author stedwar2
- *  @author Last changed by $Author: aallowat $
- *  @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
  */
 public class Theme
     extends _Theme
@@ -464,7 +464,7 @@ public class Theme
         if (themeBaseDir == null)
         {
             themeBaseDir = new File(
-                ((Application)Application.application()).subsystemManager()
+                Application.wcApplication().subsystemManager()
                     .subsystem("Core").myResourcesDir(),
                 "../WebServerResources/theme");
 

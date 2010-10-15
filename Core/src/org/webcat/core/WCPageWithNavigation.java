@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -40,9 +40,9 @@ import org.webcat.core.WCPageWithNavigation;
  * BarePage (which is also uses), mostly to inherit all the same KVC
  * keys, which it passes on to its BarePage container.
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -172,8 +172,7 @@ public class WCPageWithNavigation
                       + " logging out" );
             ( (Session)session() ).userLogout();
         }
-        return ( (Application)Application.application() )
-            .gotoLoginPage( context() );
+        return Application.wcApplication().gotoLoginPage( context() );
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.4 2010/09/24 19:06:06 aallowat Exp $
+ |  $Id: Application.java,v 1.5 2010/10/15 01:00:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -80,8 +80,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2010/09/24 19:06:06 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2010/10/15 01:00:25 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -404,6 +404,18 @@ public class Application
         subsystemManager();
         startTime = new NSTimestamp();
         checkBootstrapVersion();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A subclass-specific version of the inherited application() static
+     * method.
+     * @return The singleton instance of this class.
+     */
+    public static Application wcApplication()
+    {
+        return (Application)application();
     }
 
 

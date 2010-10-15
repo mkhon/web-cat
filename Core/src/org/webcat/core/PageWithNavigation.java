@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PageWithNavigation.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: PageWithNavigation.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,8 +44,9 @@ import org.apache.log4j.Level;
  * BarePage (which is also uses), mostly to inherit all the same KVC
  * keys, which it passes on to its BarePage container.
  *
- * @author Stephen Edwards
- * @version $Id: PageWithNavigation.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
  */
 public class PageWithNavigation
     extends BarePage
@@ -174,8 +175,7 @@ public class PageWithNavigation
                       + " logging out" );
             ( (Session)session() ).userLogout();
         }
-        return ( (Application)Application.application() )
-            .gotoLoginPage( context() );
+        return Application.wcApplication().gotoLoginPage( context() );
     }
 
 

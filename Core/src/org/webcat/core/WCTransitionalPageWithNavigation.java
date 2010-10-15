@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTransitionalPageWithNavigation.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCTransitionalPageWithNavigation.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,8 +45,9 @@ import org.webcat.core.WCTransitionalPageWithNavigation;
  * BarePage (which is also uses), mostly to inherit all the same KVC
  * keys, which it passes on to its BarePage container.
  *
- * @author Stephen Edwards
- * @version $Id: WCTransitionalPageWithNavigation.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
  */
 public class WCTransitionalPageWithNavigation
     extends WCTransitionalBasePage
@@ -170,8 +171,7 @@ public class WCTransitionalPageWithNavigation
                       + " logging out" );
             ( (Session)session() ).userLogout();
         }
-        return ( (Application)Application.application() )
-            .gotoLoginPage( context() );
+        return Application.wcApplication().gotoLoginPage( context() );
     }
 
 

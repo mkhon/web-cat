@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.9 2010/10/08 14:48:55 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.10 2010/10/15 00:57:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.9 $, $Date: 2010/10/08 14:48:55 $
+ *  @version $Revision: 1.10 $, $Date: 2010/10/15 00:57:39 $
  */
 public class Submission
     extends _Submission
@@ -1449,11 +1449,10 @@ public class Submission
         // Set the initial properties that only depend on the submission or
         // the application configuration.
 
-        properties.addPropertiesFromDictionaryIfNotDefined(
-                ((Application) Application.application())
-                    .subsystemManager().pluginProperties());
+        properties.addPropertiesFromDictionaryIfNotDefined(Application
+            .wcApplication().subsystemManager().pluginProperties());
         properties.setProperty("frameworksBaseURL",
-                Application.application().frameworksBaseURL());
+            Application.application().frameworksBaseURL());
 
         properties.setProperty("userName", user().userName());
         properties.setProperty("resultDir", resultDirName());
@@ -1461,7 +1460,7 @@ public class Submission
 
         String crn = assignmentOffering().courseOffering().crn();
         properties.setProperty("course",
-                assignmentOffering().courseOffering().course().deptNumber());
+            assignmentOffering().courseOffering().course().deptNumber());
         properties.setProperty("CRN", (crn == null) ? "null" : crn);
         properties.setProperty("assignment",
             assignmentOffering().assignment().name());
@@ -1470,7 +1469,7 @@ public class Submission
         properties.setProperty("submissionTimestamp",
             Long.toString(submitTime().getTime()));
         properties.setProperty("submissionNo",
-                Integer.toString(submitNumber()));
+            Integer.toString(submitNumber()));
 
         properties.setProperty("numReports", "0");
 

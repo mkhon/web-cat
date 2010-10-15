@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.4 2010/10/05 19:27:58 aallowat Exp $
+ |  $Id: Grader.java,v 1.5 2010/10/15 00:57:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.webcat.grader.messaging.SubmissionSuspendedMessage;
  *  The subsystem defining Web-CAT administrative tasks.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.4 $, $Date: 2010/10/05 19:27:58 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.5 $, $Date: 2010/10/15 00:57:39 $
  */
 public class Grader
    extends Subsystem
@@ -734,8 +734,7 @@ public class Grader
              || genericGComp.prefs().submission() == null )
         {
 
-            result = ( (Application)Application.application() ).gotoLoginPage(
-                            context );
+            result = Application.wcApplication().gotoLoginPage(context);
         }
         else
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderMarkupParseError.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: GraderMarkupParseError.java,v 1.2 2010/10/15 00:57:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -36,8 +36,8 @@ import com.webobjects.foundation.NSArray;
  * the code markup in a submission.
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:40 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $ $Date: 2010/10/15 00:57:39 $
  */
 public class GraderMarkupParseError extends SysAdminMessage
 {
@@ -94,8 +94,8 @@ public class GraderMarkupParseError extends SysAdminMessage
         if (exception != null)
         {
             body.append("Exception details:\n\n");
-            body.append(((Application)Application.application())
-                    .informationForExceptionInContext(exception, null, context));
+            body.append(Application.wcApplication()
+                .informationForExceptionInContext(exception, null, context));
             body.append("\n\n");
         }
 

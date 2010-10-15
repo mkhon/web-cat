@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.5 2010/10/05 19:27:58 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.6 2010/10/15 00:57:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -58,8 +58,8 @@ import er.extensions.eof.ERXConstant;
  * job.
  *
  * @author  Amit Kulkarni
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2010/10/05 19:27:58 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2010/10/15 00:57:39 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -581,10 +581,8 @@ public class GraderQueueProcessor
             step.gradingPlugin().reinitializeConfigAttributesIfNecessary();
             log.debug( "creating properties file" );
             // Re-write the properties file
-            properties.addPropertiesFromDictionaryIfNotDefined(
-                ( (Application)Application.application() )
-                    .subsystemManager().pluginProperties()
-                );
+            properties.addPropertiesFromDictionaryIfNotDefined(Application
+                .wcApplication().subsystemManager().pluginProperties());
             properties.addPropertiesFromDictionaryIfNotDefined(
                 step.gradingPlugin().globalConfigSettings() );
             properties.addPropertiesFromDictionaryIfNotDefined(

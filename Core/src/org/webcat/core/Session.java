@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.2 2010/10/08 14:41:02 stedwar2 Exp $
+ |  $Id: Session.java,v 1.3 2010/10/15 01:00:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -40,8 +40,9 @@ import com.webobjects.foundation.NSTimestampFormatter;
 /**
  * The current user session.
  *
- * @author Stephen Edwards
- * @version $Id: Session.java,v 1.2 2010/10/08 14:41:02 stedwar2 Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/15 01:00:25 $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -130,8 +131,8 @@ public class Session
         log.debug( "setUser: userPreferences = "
             + (primeUser == null
                 ? null : primeUser.preferences() ) );
-        ( (Application)Application.application() ).subsystemManager().
-            initializeSessionData( this );
+        Application.wcApplication().subsystemManager()
+            .initializeSessionData( this );
         if ( ! properties().booleanForKey( "core.suppressAccessControl" ) )
         {
             tabs.filterByAccessLevel( u.accessLevel() );
