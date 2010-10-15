@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectActionRepositoryIdProvider.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: DirectActionRepositoryIdProvider.java,v 1.2 2010/10/15 00:47:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import er.extensions.appserver.ERXWOContext;
  * direct action URL parameterized with the database ID of a report template.
  *
  * @author Tony Allevato
- * @version $Id: DirectActionRepositoryIdProvider.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: DirectActionRepositoryIdProvider.java,v 1.2 2010/10/15 00:47:37 stedwar2 Exp $
  */
 public class DirectActionRepositoryIdProvider implements IRepositoryIdProvider
 {
@@ -68,7 +68,7 @@ public class DirectActionRepositoryIdProvider implements IRepositoryIdProvider
         String params = "id=" + templateId;
 
         String handler = Application.application()
-                .directActionRequestHandlerKey();
+            .directActionRequestHandlerKey();
 
         return Application.completeURLWithRequestHandlerKey(
             context, handler, actionName,
