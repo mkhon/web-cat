@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.2 2010/10/15 01:01:40 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.3 2010/10/17 16:49:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/10/15 01:01:40 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/17 16:49:15 $
  */
 public class WCResourceManager
     extends ERXResourceManager
@@ -97,8 +97,8 @@ public class WCResourceManager
                     pos + FRAMEWORK_SUFFIX.length() );
             }
         }
-        return standardizeURL(super.urlForResourceNamed(
-            aResourceName, aFrameworkName, aLanguageList, aRequest ));
+        return super.urlForResourceNamed(
+            aResourceName, aFrameworkName, aLanguageList, aRequest );
     }
 
 
@@ -160,6 +160,7 @@ public class WCResourceManager
             NSArray languages,
             WORequest request)
         {
+            resourceUrl = standardizeURL(resourceUrl);
             String version = versionFor(bundleName);
             if (version != null)
             {
@@ -272,7 +273,7 @@ public class WCResourceManager
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
-    private String standardizeURL( String url )
+    private static String standardizeURL( String url )
     {
         String result = url;
         int pos = result.indexOf( ':' );
