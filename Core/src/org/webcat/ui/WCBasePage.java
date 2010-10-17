@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCBasePage.java,v 1.2 2010/10/17 16:47:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -74,8 +74,8 @@ import org.webcat.core.WCResourceManager;
  * </table>
  *
  * @author Tony Allevato
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:58 $
+ * @author Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/17 16:47:35 $
  */
 public class WCBasePage
     extends WOComponent
@@ -435,7 +435,7 @@ public class WCBasePage
         String url = WCResourceManager.resourceURLFor(basePath + subPath,
                 context().request());
 
-        url = url.substring(0, url.length() - subPath.length());
+        url = url.replaceFirst(subPath + "(\\?.*)?", "");
         return url;
     }
 
