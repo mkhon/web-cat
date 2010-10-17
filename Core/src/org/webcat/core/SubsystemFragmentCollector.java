@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemFragmentCollector.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
+ |  $Id: SubsystemFragmentCollector.java,v 1.3 2010/10/17 16:50:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/17 16:50:12 $
  */
 public class SubsystemFragmentCollector
     extends WOComponent
@@ -81,6 +81,20 @@ public class SubsystemFragmentCollector
 
             StringBuffer htmlBuffer = new StringBuffer();
             StringBuffer wodBuffer = new StringBuffer();
+            StringBuffer bindingBuffer = new StringBuffer();
+
+            for (String key : bindingKeys())
+            {
+                if (!key.equals(FRAGMENT_KEY_KEY))
+                {
+                    bindingBuffer.append(key);
+                    bindingBuffer.append("=");
+                    bindingBuffer.append(key);
+                    bindingBuffer.append(";");
+                }
+            }
+
+            String bindings = bindingBuffer.toString();
 
             if (fragments != null)
             {
@@ -99,7 +113,9 @@ public class SubsystemFragmentCollector
                     wodBuffer.append(i);
                     wodBuffer.append(": ");
                     wodBuffer.append(fullName);
-                    wodBuffer.append("{ }\n");
+                    wodBuffer.append("{");
+                    wodBuffer.append(bindings);
+                    wodBuffer.append("}\n");
 
                     i++;
                 }
