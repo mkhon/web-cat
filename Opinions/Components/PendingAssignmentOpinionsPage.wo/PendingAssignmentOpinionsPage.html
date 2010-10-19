@@ -1,24 +1,12 @@
 <wo:WCPageWithNavigation title="Provide Your Opinions on Assignments" permalink="$permalink">
-<wo:WCPageModule title="Assignments Waiting for Feedback">
-<wo:if condition="$assignmentOfferingDisplayGroup.displayedObjects.count">
-<p>You can provide your opinions on the following assignments:</p>
 
-<table><thead>
-    <tr><th>Assignment</th><th>Submissions</th><th>Most Recent</th><th class="sm">Score Distribution</th></tr>
-</thead><tbody>
-    <wo:loop list="$assignmentOfferingDisplayGroup.displayedObjects" item="$assignmentOffering" index="$index">
-    <wo:tr index="$index">
-        <td><wo:link action="$surveyForAssignment"><wo:str value="$assignmentOffering.titleString"/></wo:link></td>
-        <td><wo:str value="$highestSubmission.submitNumber"/></td>
-        <td class="nowrap"><wo:str value="$highestSubmission.submitTime" formatter="$session.timeFormatter"/></td>
-        <td><wo:MiniBarGraph graphSummary="$assignmentOffering.graphSummary"/></td>
-    </wo:tr>
-    </wo:loop>
-</tbody></table>
+<wo:OpinionsHomeStatus hasSurveys="$hasSurveys"/>
 
-</wo:if><wo:else>
+<wo:not condition="$hasSurveys">
+<wo:WCPageModule title="Tell Us About Your Assignments">
 <p>None of your assignments are currently available for providing feedback
 opinions.</p>
-</wo:else>
 </wo:WCPageModule>
+</wo:not>
+
 </wo:WCPageWithNavigation>

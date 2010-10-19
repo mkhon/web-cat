@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsDatabaseUpdates.java,v 1.4 2010/10/14 18:43:42 stedwar2 Exp $
+ |  $Id: OpinionsDatabaseUpdates.java,v 1.5 2010/10/19 23:34:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/10/14 18:43:42 $
+ * @version $Revision: 1.5 $, $Date: 2010/10/19 23:34:58 $
  */
 public class OpinionsDatabaseUpdates
     extends UpdateSet
@@ -92,6 +92,19 @@ public class OpinionsDatabaseUpdates
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Add SurveyNotificationMarker table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement3() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSurveyReminderJob drop suspensionReason" );
+        createSurveyNotificationMarkerTable();
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -144,6 +157,27 @@ public class OpinionsDatabaseUpdates
                 + "userId INTEGER )");
             database().executeSQL(
                 "ALTER TABLE TSurveyResponse ADD PRIMARY KEY (OID)" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create the SurveyNotificationMarker table, if needed.
+     * @throws SQLException on error
+     */
+    private void createSurveyNotificationMarkerTable() throws SQLException
+    {
+        if ( !database().hasTable( "SurveyNotificationMarker" ) )
+        {
+            log.info( "creating table SurveyNotificationMarker" );
+            database().executeSQL(
+                "CREATE TABLE SurveyNotificationMarker "
+                + "(assignmentOfferingId INTEGER NOT NULL, "
+                + "OID INTEGER NOT NULL )");
+            database().executeSQL(
+                "ALTER TABLE SurveyNotificationMarker ADD PRIMARY KEY (OID)" );
+            createIndexFor("SurveyNotificationMarker", "assignmentOfferingId");
         }
     }
 }

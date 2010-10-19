@@ -30,6 +30,7 @@ import com.webobjects.foundation.*;
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBasedKeyGenerator;
 
 // -------------------------------------------------------------------------
 /**
@@ -185,6 +186,8 @@ public abstract class _SurveyResponse
     public static final String RESPONSES_FOR_ASSIGNMENT_OFFERING_AND_USER_FSPEC = "responsesForAssignmentOfferingAndUser";
     public static final String RESPONSES_FOR_USER_FSPEC = "responsesForUser";
     public static final String ENTITY_NAME = "SurveyResponse";
+
+    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................

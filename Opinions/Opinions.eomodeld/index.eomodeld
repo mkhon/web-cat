@@ -10,6 +10,10 @@
     }; 
     entities = (
         {
+            className = "org.webcat.opinions.SurveyNotificationMarker"; 
+            name = SurveyNotificationMarker; 
+        }, 
+        {
             className = "org.webcat.opinions.SurveyReminderJob"; 
             name = SurveyReminderJob; 
             parent = JobBase; 
