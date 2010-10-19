@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.5 2010/10/12 02:42:45 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.6 2010/10/19 12:52:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.graphs.*;
  *
  * @author Stephen Edwards
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/10/12 02:42:45 $
+ * @version $Revision: 1.6 $, $Date: 2010/10/19 12:52:06 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -124,6 +124,8 @@ public class AssignmentOffering
 
     public static final ERXKey<String> titleString =
         new ERXKey<String>("titleString");
+
+    public static final String ENQUEUE_SURVEY_JOB = "enqueueSurveyJob";
 
 
     //~ Methods ...............................................................
@@ -1043,6 +1045,22 @@ public class AssignmentOffering
     {
         setLastModified(new NSTimestamp());
         super.willInsert();
+    }
+
+
+    // ----------------------------------------------------------
+    public void triggerSurveyNotificationsIfNecessary()
+    {
+
+        if (assignment() != null && assignment().trackOpinions())
+        {
+            NSTimestamp now = new NSTimestamp();
+            if (now.after(lateDeadline()))
+            {
+                NSNotificationCenter.defaultCenter().postNotification(
+                    new NSNotification(ENQUEUE_SURVEY_JOB, id()));
+            }
+        }
     }
 
 
