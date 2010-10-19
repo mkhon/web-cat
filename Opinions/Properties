@@ -1,16 +1,16 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Mon Oct 11 15:01:21 EDT 2010
+#Tue Oct 19 19:33:47 EDT 2010
 Opinions.description=This subsystem provides feedback forms and data tracking used to survey both students and staff about their opinions about assignments that have been completed, including both engagement and frustration.
 Opinions.provider.url=http\://web-cat.cs.vt.edu/updates
 Opinions.requires=Core, EOJDBCPrototypes, DBUpdateEngine, Grader, JobQueue
 Opinions.version.minor=0
 Opinions.license.url=http\://www.gnu.org/licenses/agpl.html
 Opinions.version.major=1
-Opinions.version.date=20101011
+Opinions.version.date=20101019
 Opinions.info.url=http\://web-cat.cs.vt.edu/WCWiki/OpinionsSubsystem
 Opinions.version.revision=1
-Opinions.license=GNU Affero General Public License v.3
 subsystem.Opinions=org.webcat.opinions.Opinions
-Opinions.history.url=http\://web-cat.cs.vt.edu/WCWiki/OpinionsSubsystem/ChangeHistory
-Opinions.copyright=(c) 2010 Virginia Tech Department of Computer Science
+Opinions.license=GNU Affero General Public License v.3
 Opinions.provider=Virginia Tech Computer Science
+Opinions.copyright=(c) 2010 Virginia Tech Department of Computer Science
+Opinions.history.url=http\://web-cat.cs.vt.edu/WCWiki/OpinionsSubsystem/ChangeHistory
