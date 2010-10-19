@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.4 2010/10/14 18:51:13 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.5 2010/10/19 23:07:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -29,11 +29,11 @@ import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
 /**
- *  Generates the grader subsystem's rows in the system status block.
+ *  Generates the grader subsystem's page sections for the home->status page.
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/14 18:51:13 $
+ *  @version $Revision: 1.5 $, $Date: 2010/10/19 23:07:11 $
  */
 public class GraderHomeStatus
     extends GraderComponent
