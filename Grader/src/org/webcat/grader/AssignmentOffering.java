@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.6 2010/10/19 12:52:06 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.7 2010/10/19 12:52:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -42,9 +42,9 @@ import org.webcat.grader.graphs.*;
  * Represents the binding between an assignment and a course offering
  * (i.e., giving a specific assignment in a given section of a course).
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2010/10/19 12:52:06 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.7 $, $Date: 2010/10/19 12:52:53 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -124,8 +124,6 @@ public class AssignmentOffering
 
     public static final ERXKey<String> titleString =
         new ERXKey<String>("titleString");
-
-    public static final String ENQUEUE_SURVEY_JOB = "enqueueSurveyJob";
 
 
     //~ Methods ...............................................................
@@ -1045,22 +1043,6 @@ public class AssignmentOffering
     {
         setLastModified(new NSTimestamp());
         super.willInsert();
-    }
-
-
-    // ----------------------------------------------------------
-    public void triggerSurveyNotificationsIfNecessary()
-    {
-
-        if (assignment() != null && assignment().trackOpinions())
-        {
-            NSTimestamp now = new NSTimestamp();
-            if (now.after(lateDeadline()))
-            {
-                NSNotificationCenter.defaultCenter().postNotification(
-                    new NSNotification(ENQUEUE_SURVEY_JOB, id()));
-            }
-        }
     }
 
 
