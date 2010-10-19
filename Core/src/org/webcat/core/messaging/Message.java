@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Message.java,v 1.3 2010/10/15 00:43:17 stedwar2 Exp $
+ |  $Id: Message.java,v 1.4 2010/10/19 23:01:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -26,7 +26,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.webcat.core.Application;
 import org.webcat.core.MutableDictionary;
@@ -55,8 +54,9 @@ import com.webobjects.foundation.NSTimestamp;
  * context returned by the {@link #editingContext()} method is valid.
  * </p>
  *
- * @author Tony Allevato
- * @version $Id: Message.java,v 1.3 2010/10/15 00:43:17 stedwar2 Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2010/10/19 23:01:37 $
  */
 public abstract class Message
 {
