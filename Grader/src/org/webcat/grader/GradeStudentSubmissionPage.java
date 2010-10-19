@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.5 2010/10/12 03:15:33 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.6 2010/10/19 18:37:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.core.*;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/10/12 03:15:33 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2010/10/19 18:37:37 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -74,8 +74,8 @@ public class GradeStudentSubmissionPage
     public NSArray<Byte> formats = SubmissionResult.formats;
     public byte aFormat;
 
-    public NSArray<Submission> availableSubmissions;
-    public int                 thisSubmissionIndex;
+    public NSArray<UserSubmissionPair> availableSubmissions;
+    public int                         thisSubmissionIndex;
 
     //~ Methods ...............................................................
 
@@ -141,10 +141,26 @@ public class GradeStudentSubmissionPage
 
 
     // ----------------------------------------------------------
+    public int indexOfNextSubmission()
+    {
+        int index = thisSubmissionIndex;
+
+        do
+        {
+            index++;
+        } while (index < availableSubmissions.count()
+                && !availableSubmissions.objectAtIndex(
+                        index).userHasSubmission());
+
+        return index;
+    }
+
+
+    // ----------------------------------------------------------
     public WOComponent saveThenNextStudent()
     {
         if (availableSubmissions == null
-            || thisSubmissionIndex >= availableSubmissions.count() - 1)
+            || indexOfNextSubmission() >= availableSubmissions.count() - 1)
         {
             // If there's no place to go, then go back to the list
             return saveThenList();
@@ -152,14 +168,16 @@ public class GradeStudentSubmissionPage
 
         if (applyLocalChanges())
         {
-            thisSubmissionIndex++;
+            thisSubmissionIndex = indexOfNextSubmission();
+
             Submission target = availableSubmissions
-                .objectAtIndex(thisSubmissionIndex);
+                .objectAtIndex(thisSubmissionIndex).submission();
             prefs().setSubmissionRelationship(target);
             prefs().setSubmissionFileStatsRelationship(null);
             submission = target;
             result = null;
         }
+
         return null;
     }
 

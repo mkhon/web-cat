@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JFreeChartComponent.java,v 1.2 2010/09/26 16:24:36 stedwar2 Exp $
+ |  $Id: JFreeChartComponent.java,v 1.3 2010/10/19 18:37:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSData;
  * images (StackedAreaChart and HistogramChart).
  *
  * @author Tony Allevato
- * @version $Id: JFreeChartComponent.java,v 1.2 2010/09/26 16:24:36 stedwar2 Exp $
+ * @version $Id: JFreeChartComponent.java,v 1.3 2010/10/19 18:37:37 aallowat Exp $
  */
 public abstract class JFreeChartComponent extends WCComponent
 {
@@ -87,6 +87,12 @@ public abstract class JFreeChartComponent extends WCComponent
                 bindingDefinitions +=
                     "width    = chartWidth;"
                     + "height   = chartHeight;";
+            }
+
+            if (style != null)
+            {
+                bindingDefinitions +=
+                    "style    = \"" + style + "\";";
             }
 
             bindingDefinitions +=
@@ -313,6 +319,30 @@ public abstract class JFreeChartComponent extends WCComponent
 
     // ----------------------------------------------------------
     /**
+     * Gets the label to display on the x-axis of this chart.
+     *
+     * @return the x-axis label
+     */
+    public String style()
+    {
+        return style;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets the label to display on the x-axis of this chart.
+     *
+     * @param aLabel the x-axis label
+     */
+    public void setStyle(String aStyle)
+    {
+        style = aStyle;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Gets a value indicating whether the specified chart width and height
      * values should be ignored and the image tag should automatically size to
      * fit the chart.
@@ -438,6 +468,7 @@ public abstract class JFreeChartComponent extends WCComponent
     private String          title;
     private String          xAxisLabel;
     private String          yAxisLabel;
+    private String          style;
     private PlotOrientation orientation = PlotOrientation.VERTICAL;
 
     protected static Logger log = Logger.getLogger(JFreeChartComponent.class);
