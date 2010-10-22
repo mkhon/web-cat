@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.8 2010/10/19 18:37:37 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.9 2010/10/22 15:52:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,8 +36,8 @@ import org.webcat.ui.util.ComponentIDGenerator;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2010/10/19 18:37:37 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.9 $, $Date: 2010/10/22 15:52:32 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -297,11 +297,11 @@ public class StudentsForAssignmentPage
 
 
     // ----------------------------------------------------------
-    public String submitTimeSpanStyle()
+    public String submitTimeSpanClass()
     {
         if (aSubmission.isLate())
         {
-            return "color: red;";
+            return "warn";
         }
         else
         {

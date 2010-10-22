@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.12 2010/10/19 18:37:37 aallowat Exp $
+ |  $Id: Submission.java,v 1.13 2010/10/22 15:52:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -43,8 +43,8 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *  Represents a single student assignment submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.12 $, $Date: 2010/10/19 18:37:37 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.13 $, $Date: 2010/10/22 15:52:32 $
  */
 public class Submission
     extends _Submission
@@ -527,6 +527,48 @@ public class Submission
             if (names.count() > 2)
             {
                 buffer.append(',');
+            }
+
+            buffer.append(" and ");
+            buffer.append(names.lastObject());
+        }
+
+        return buffer.toString();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets a string containing the names of the user who made this submission
+     * and all of his or her partners, in the form "User 1, User 2, ..., and
+     * User N".
+     *
+     * @return a string containing the names of all of the partners
+     */
+    public String namesOfAllUsers_LF()
+    {
+        NSMutableArray<String> names = new NSMutableArray<String>();
+        names.addObject(user().name_LF());
+
+        for (Submission partnerSub : partneredSubmissions())
+        {
+            names.addObject(partnerSub.user().name_LF());
+        }
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(names.objectAtIndex(0));
+
+        if (names.count() > 1)
+        {
+            for (int i = 1; i < names.count() - 1; i++)
+            {
+                buffer.append("; ");
+                buffer.append(names.objectAtIndex(i));
+            }
+
+            if (names.count() > 2)
+            {
+                buffer.append(';');
             }
 
             buffer.append(" and ");
