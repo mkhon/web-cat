@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.3 2010/10/23 20:40:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2010 Virginia Tech
  |
@@ -39,7 +39,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/23 20:40:39 $
  */
 public class Theme
     extends _Theme
@@ -158,7 +158,9 @@ public class Theme
     {
         if (baseIsNotSet)
         {
-            String baseName = (String)properties().valueForKey("extends");
+            String baseName = properties() != null
+                ? (String)properties().valueForKey("extends")
+                : null;
             if (baseName != null)
             {
                 base = themeFromName(baseName);
