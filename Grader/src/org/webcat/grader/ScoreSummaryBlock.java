@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.3 2010/10/23 21:14:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
+ *  @version $Revision: 1.3 $, $Date: 2010/10/23 21:14:42 $
  */
 public class ScoreSummaryBlock
     extends GraderComponent
@@ -137,7 +137,7 @@ public class ScoreSummaryBlock
     {
         double possible = submission.assignmentOffering()
             .assignment().submissionProfile().availablePoints();
-        double pts = result.finalScore();
+        double pts = result.finalScoreVisibleTo(user());
         return FinalReportPage.meter( pts / possible );
     }
 

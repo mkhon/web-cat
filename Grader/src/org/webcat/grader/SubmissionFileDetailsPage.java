@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.2 2010/09/27 04:24:58 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.3 2010/10/23 21:14:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
+import com.webobjects.foundation.NSNumberFormatter;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -32,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:24:58 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/23 21:14:42 $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -137,7 +138,30 @@ public class SubmissionFileDetailsPage
     }
 
 
+    // ----------------------------------------------------------
+    @Override
+    public String title()
+    {
+        Submission submission = thisFile.submissionResult().submission();
+        AssignmentOffering offering = submission.assignmentOffering();
+        return offering.courseOffering().compactName()
+            + ": "
+            + offering.assignment().name()
+            + " try #"
+            + submission.submitNumber()
+            + " ("
+            + formatter.format(
+                thisFile.submissionResult().finalScoreVisibleTo(user()))
+            + "/"
+            + formatter.format(
+                offering.assignment().submissionProfile().availablePoints())
+            + ")";
+    }
+
+
     //~ Instance/static variables .............................................
 
+    private static final NSNumberFormatter formatter =
+        new NSNumberFormatter("0.0");
     static Logger log = Logger.getLogger( SubmissionFileDetailsPage.class );
 }
