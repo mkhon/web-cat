@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: Reporter.java,v 1.2 2010/10/23 20:44:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.reporter;
 
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -32,9 +31,7 @@ import org.eclipse.birt.report.engine.api.IReportDocument;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunTask;
-import org.eclipse.birt.report.model.api.DesignFileException;
 import org.eclipse.birt.report.model.api.IDesignEngine;
-import org.eclipse.birt.report.model.api.ReportDesignHandle;
 import org.eclipse.birt.report.model.api.SessionHandle;
 import org.webcat.birtruntime.BIRTRuntime;
 import org.webcat.core.Application;
@@ -52,8 +49,9 @@ import er.extensions.eof.ERXQ;
 /**
  * The primary class of the Reporter subsystem.
  *
- * @author Tony Allevato
- * @version $Id: Reporter.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/23 20:44:08 $
  */
 public class Reporter
     extends Subsystem
