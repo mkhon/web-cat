@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.3 2010/10/17 16:49:15 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.4 2010/10/23 20:42:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/10/17 16:49:15 $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/23 20:42:15 $
  */
 public class WCResourceManager
     extends ERXResourceManager
@@ -113,6 +113,27 @@ public class WCResourceManager
         return ( (WCResourceManager) Application.application()
             .resourceManager() ).urlForResourceNamed(
                 aResourceName, aFrameworkName, aLanguageList, aRequest );
+    }
+
+
+    // ----------------------------------------------------------
+    public static String versionlessResourceURLFor(
+        String     aResourceName,
+        String     aFrameworkName,
+        NSArray<?> aLanguageList,
+        WORequest  aRequest )
+    {
+        String result = resourceURLFor(
+            aResourceName, aFrameworkName, aLanguageList, aRequest);
+        if (result != null)
+        {
+            int pos = result.lastIndexOf('?');
+            if (pos >= 0)
+            {
+                result = result.substring(0, pos);
+            }
+        }
+        return result;
     }
 
 
