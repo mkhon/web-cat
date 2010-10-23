@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MiniBarGraph.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: MiniBarGraph.java,v 1.2 2010/10/23 20:46:51 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  * A dynamic element used to generate tiny bar graphs.
  *
  * @author  Stephen Edwards
- * @version $Id: MiniBarGraph.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @version $Id: MiniBarGraph.java,v 1.2 2010/10/23 20:46:51 stedwar2 Exp $
  */
 public class MiniBarGraph
     extends DynamicElement
@@ -181,7 +181,7 @@ public class MiniBarGraph
     {
         if ( _markerUrlPrefix == null )
         {
-            _markerUrlPrefix = WCResourceManager.resourceURLFor(
+            _markerUrlPrefix = WCResourceManager.versionlessResourceURLFor(
                 "images/marker0.gif", "Grader", null, null );
             if ( _markerUrlPrefix != null )
             {
@@ -201,5 +201,5 @@ public class MiniBarGraph
     //~ Instance/static variables .............................................
 
     private static String _markerUrlPrefix;
-    private static NSNumberFormatter formatter = new NSNumberFormatter( "0.0" );
+    private static NSNumberFormatter formatter = new NSNumberFormatter("0.0");
 }
