@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.5 2010/10/14 18:40:57 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.6 2010/10/23 20:47:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/10/14 18:40:57 $
+ * @version $Revision: 1.6 $, $Date: 2010/10/23 20:47:41 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -302,8 +302,7 @@ public class GraderDatabaseUpdates
     public void updateIncrement14() throws SQLException
     {
         database().executeSQL(
-            "alter table TSUBMISSION add "
-            + "primarySubmissionId INTEGER" );
+            "alter table TSUBMISSION add primarySubmissionId INTEGER" );
         database().executeSQL(
                 "alter table TSUBMISSIONPROFILE add "
                 + "allowPartners BIT NOT NULL" );
@@ -375,6 +374,18 @@ public class GraderDatabaseUpdates
 
         // Indices for SubmissionResult
         // None so far
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds lastUpdated field to submission result table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement16() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSUBMISSIONRESULT add lastUpdated DATETIME" );
     }
 
 
