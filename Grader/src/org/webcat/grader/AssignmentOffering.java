@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.7 2010/10/19 12:52:53 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.8 2010/10/23 21:07:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.graphs.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2010/10/19 12:52:53 $
+ * @version $Revision: 1.8 $, $Date: 2010/10/23 21:07:54 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -124,6 +124,10 @@ public class AssignmentOffering
 
     public static final ERXKey<String> titleString =
         new ERXKey<String>("titleString");
+    public static final ERXKey<NSTimestamp> availableFrom =
+        new ERXKey<NSTimestamp>(AVAILABLE_FROM_KEY);
+    public static final ERXKey<NSTimestamp> lateDeadline =
+        new ERXKey<NSTimestamp>(LATE_DEADLINE_KEY);
 
 
     //~ Methods ...............................................................
