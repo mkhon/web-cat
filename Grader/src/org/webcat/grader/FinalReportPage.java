@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.3 2010/10/23 20:54:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/23 20:54:21 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -610,6 +610,15 @@ public class FinalReportPage
             jobData.estimatedWait =
                 grader.estimatedJobTime() * ( jobData.queuePosition + 1 );
         }
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void flushNavigatorDerivedData()
+    {
+        submission = null;
+        super.flushNavigatorDerivedData();
     }
 
 
