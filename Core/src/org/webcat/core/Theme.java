@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.3 2010/10/23 20:40:39 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.4 2010/10/24 18:49:47 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2010 Virginia Tech
  |
@@ -28,6 +28,7 @@ import com.webobjects.appserver.WOCookie;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOSharedEditingContext;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSBundle;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCodingAdditions;
 import com.webobjects.foundation.NSTimestamp;
@@ -39,7 +40,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/10/23 20:40:39 $
+ *  @version $Revision: 1.4 $, $Date: 2010/10/24 18:49:47 $
  */
 public class Theme
     extends _Theme
@@ -461,15 +462,17 @@ public class Theme
 
 
     // ----------------------------------------------------------
+    @SuppressWarnings("deprecation")
     private static File themeBaseDir()
     {
         if (themeBaseDir == null)
         {
+            // We *cannot* use the subsystem itself to find this
+            // information, since this method is called before the
+            // subsystem manager has initialized the subsystems!
             themeBaseDir = new File(
-                Application.wcApplication().subsystemManager()
-                    .subsystem("Core").myResourcesDir(),
-                "../WebServerResources/theme");
-
+                NSBundle.bundleForName("Core").bundlePath(),
+                "WebServerResources/theme");
         }
         return themeBaseDir;
     }
