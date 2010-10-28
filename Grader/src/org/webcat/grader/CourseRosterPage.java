@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.2 2010/09/27 04:18:14 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.3 2010/10/28 00:40:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -21,11 +21,16 @@
 
 package org.webcat.grader;
 
-import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
-import org.webcat.core.*;
+import org.webcat.core.User;
+import com.webobjects.appserver.WOComponent;
+import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WOResponse;
+import com.webobjects.eocontrol.EOKeyValueQualifier;
+import com.webobjects.eocontrol.EONotQualifier;
+import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.foundation.NSData;
+import er.extensions.appserver.ERXDisplayGroup;
 
 // -------------------------------------------------------------------------
 /**
@@ -33,8 +38,8 @@ import org.webcat.core.*;
  * allows new users to be added.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:18:14 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2010/10/28 00:40:37 $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -55,8 +60,8 @@ public class CourseRosterPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public WODisplayGroup studentDisplayGroup;
-    public WODisplayGroup notStudentDisplayGroup;
+    public ERXDisplayGroup<User> studentDisplayGroup;
+    public ERXDisplayGroup<User> notStudentDisplayGroup;
     /** student in the worepetition */
     public User           student;
     /** index in the worepetition */
@@ -81,6 +86,7 @@ public class CourseRosterPage
     {
         // Set up student list filters
         studentDisplayGroup.setObjectArray( courseOffering().students() );
+
         notStudentDisplayGroup.setQualifier( new EONotQualifier(
             new EOKeyValueQualifier(
                 User.ENROLLED_IN_KEY,
@@ -153,7 +159,7 @@ public class CourseRosterPage
             return upload();
         }
         if (    oldBatchSize1  != studentDisplayGroup.numberOfObjectsPerBatch()
-	         || oldBatchIndex1 != studentDisplayGroup.currentBatchIndex()
+             || oldBatchIndex1 != studentDisplayGroup.currentBatchIndex()
              || oldBatchSize2  != notStudentDisplayGroup.numberOfObjectsPerBatch()
              || oldBatchIndex2 != notStudentDisplayGroup.currentBatchIndex() )
         {
