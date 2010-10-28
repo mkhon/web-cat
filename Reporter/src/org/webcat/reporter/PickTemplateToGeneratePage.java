@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickTemplateToGeneratePage.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: PickTemplateToGeneratePage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,7 +26,6 @@ import org.webcat.core.CourseOffering;
 import org.webcat.core.Department;
 import org.webcat.core.Semester;
 import org.webcat.ui.AbstractTreeModel;
-import org.webcat.ui.util.WCTableLayoutBuilder;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WODisplayGroup;
@@ -41,7 +40,7 @@ import er.extensions.eof.ERXS;
  * This page allows the user to select the template to use for a new report.
  *
  * @author Tony Allevato
- * @version $Id: PickTemplateToGeneratePage.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: PickTemplateToGeneratePage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
  */
 public class PickTemplateToGeneratePage
     extends ReporterComponent
@@ -61,6 +60,7 @@ public class PickTemplateToGeneratePage
 
     //~ KVC Attributes (must be public) .......................................
 
+    public ReportTemplate reportTemplate;
     public WODisplayGroup reportTemplatesDisplayGroup;
 
 
@@ -87,11 +87,7 @@ public class PickTemplateToGeneratePage
     public WOComponent templateChosen()
     {
         clearLocalReportState();
-
-        ReportTemplate template =
-            (ReportTemplate) reportTemplatesDisplayGroup.selectedObject();
-
-        setLocalReportTemplate(template);
+        setLocalReportTemplate(reportTemplate);
 
         return pageWithName(DescribeReportInputsPage.class);
     }

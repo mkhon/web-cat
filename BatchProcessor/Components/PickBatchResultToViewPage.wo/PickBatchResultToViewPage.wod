@@ -8,32 +8,31 @@ Form : WCForm {
 
 BatchJobTable: WCTable {
     displayGroup = batchJobDisplayGroup;
-    canSort = true;
 }
 
-JobTitleColumn: WCTableColumn {
-    name = "Job Description";
-    componentName = "org.webcat.batchprocessor.BatchJobDescriptionCell";
-    properties.action = "viewBatchProgress";
+ViewBatchProgress: WCLink {
+    string = batchJob.description;
+    action = viewBatchProgress;
 }
 
-JobQueueTimeColumn: WCTableColumn {
-    name = "Requested at";
-    keyPath = "enqueueTime";
-    properties.formatter = session.timeFormatter;
+JobTitleColumn: WCTableHeading {
+    title = "Job Description";
+    sortOnKeyPaths = "description";
 }
 
-JobProgressColumn: WCTableColumn {
-    name = "Progress";
-    expression = "'' + progressPercentage + '%'";
+JobQueueTimeColumn: WCTableHeading {
+    title = "Requested at";
+    sortOnKeyPaths = "enqueueTime";
+}
+
+JobProgressColumn: WCTableHeading {
+    title = "Progress";
 }
 
 BatchResultTable: WCTable {
     id = "batchResultContainer";
     displayGroup = batchResultDisplayGroup;
-    canSort = true;
-    isBatched = true;
-    allowsSelection = true;
+    canSelectRows = true;
     multipleSelection = true;
 }
 
@@ -43,23 +42,19 @@ TitleFilter: WCTableFilter {
     type = "string";
 }
 
-TitleColumn: WCTableColumn {
-    name = "Batch Description";
-    componentName = "ActionURLCell";
-    keyPath = "description";
-    properties.action = "viewBatchResult";
-    properties.weight = 1;
+TitleColumn: WCTableHeading {
+    title = "Batch Description";
+    sortOnKeyPaths = "description";
 }
 
-PluginVersionColumn: WCTableColumn {
-    name = "Plug-in Version";
-    keyPath = "batchPlugin.descriptor.currentVersion";
+ViewBatchResult: WCLink {
+    string = batchResult.description;
+    action = viewBatchResult;
 }
 
-CompletedTimeColumn: WCTableColumn {
-    name = "Completed at";
-    keyPath = "completedTime";
-    properties.formatter = session.timeFormatter;
+CompletedTimeColumn: WCTableHeading {
+    title = "Completed at";
+    sortOnKeyPaths = "completedTime";
 }
 
 DeleteResults: WCButton {

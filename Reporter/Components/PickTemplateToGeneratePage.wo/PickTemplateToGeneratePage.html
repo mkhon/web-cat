@@ -4,12 +4,20 @@
 <wo:if condition="$reportTemplatesDisplayGroup.allObjects.count">
     <p>Click on a report template below to begin generating a report.</p>
 
-	<wo name="ReportTemplateTable">
-	    <wo name="NameFilter"/>
-	    <wo name="NameColumn"/>
-	    <wo name="VersionColumn"/>
-	    <wo name="InstalledByColumn"/>
-	</wo>
+    <wo name="ReportTemplateTable">
+        <wo:WCTableHeadings>
+	        <wo name="NameColumn"/>
+	        <wo name="VersionColumn"/>
+	        <wo name="InstalledByColumn"/>
+        </wo:WCTableHeadings>
+        <wo:WCTableRows item="$reportTemplate">
+            <wo:WCTableRow>
+                <td><wo name="ChooseTemplate"/></td>
+                <td><wo:str value="$reportTemplate.version"/></td>
+                <td><wo:str value="$reportTemplate.user.name"/></td>
+            </wo:WCTableRow>
+        </wo:WCTableRows>
+    </wo>
 
 </wo:if>
 <wo:else>

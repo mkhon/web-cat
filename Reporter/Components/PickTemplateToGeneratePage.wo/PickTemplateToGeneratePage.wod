@@ -4,28 +4,24 @@ Page: WCPageWithNavigation {
 
 ReportTemplateTable: WCTable {
     displayGroup = reportTemplatesDisplayGroup;
-    canSort = true;
 }
 
-NameFilter: WCTableFilter {
-    name = "Name";
-    keyPath = "name";
-    type = "string";
+ChooseTemplate: WCLink {
+    string = reportTemplate.name;
+    action = templateChosen;
 }
 
-NameColumn: WCTableColumn {
-    name = "Report Template";
-    componentName = "ActionURLCell";
-    keyPath = "name";
-    properties.action = "templateChosen";
+NameColumn: WCTableHeading {
+    title = "Report Template";
+    sortOnKeyPaths = "name";
 }
 
-VersionColumn: WCTableColumn {
-    name = "Version";
-    keyPath = "version";
+VersionColumn: WCTableHeading {
+    title = "Version";
+    sortOnKeyPaths = "version";
 }
 
-InstalledByColumn: WCTableColumn {
-    name = "Installed By";
-    keyPath = "user.name";
+InstalledByColumn: WCTableHeading {
+    title = "Installed By";
+    sortOnKeyPaths = "user.name";
 }

@@ -5,10 +5,18 @@
     <p>Click on a plug-in below to begin running a batch job.</p>
 
     <wo name="PluginTable">
-        <wo name="NameFilter"/>
-        <wo name="NameColumn"/>
-        <wo name="VersionColumn"/>
-        <wo name="InstalledByColumn"/>
+        <wo:WCTableHeadings>
+            <wo name="NameColumn"/>
+            <wo name="VersionColumn"/>
+            <wo name="InstalledByColumn"/>
+        </wo:WCTableHeadings>
+        <wo:WCTableRows item="$batchPlugin">
+            <wo:WCTableRow>
+                <td><wo name="ChoosePlugin"/></td>
+                <td><wo:str value="$batchPlugin.descriptor.currentVersion"/></td>
+                <td><wo:str value="$batchPlugin.author.name"/></td>
+            </wo:WCTableRow>
+        </wo:WCTableRows>
     </wo>
 
 </wo:if>

@@ -3,7 +3,7 @@
     encoding = "UTF-8"; 
     variables = {
         enqueuedReportsDisplayGroup = {
-            class = WODisplayGroup; 
+            class = ERXDisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
                 editingContext = localContext; 
@@ -16,8 +16,8 @@
             }; 
             fetchesOnLoad = NO; 
             formatForLikeQualifier = "%@*"; 
-            numberOfObjectsPerBatch = 15; 
-            selectsFirstObjectAfterFetch = YES; 
+            numberOfObjectsPerBatch = 10; 
+            selectsFirstObjectAfterFetch = NO; 
             sortOrdering = (
                 {
                     class = EOSortOrdering; 
@@ -27,7 +27,7 @@
             ); 
         }; 
         generatedReportsDisplayGroup = {
-            class = WODisplayGroup; 
+            class = ERXDisplayGroup; 
             dataSource = {
                 class = EODatabaseDataSource; 
                 editingContext = localContext; 
@@ -57,8 +57,8 @@
             }; 
             fetchesOnLoad = NO; 
             formatForLikeQualifier = "%@*"; 
-            numberOfObjectsPerBatch = 15; 
-            selectsFirstObjectAfterFetch = YES; 
+            numberOfObjectsPerBatch = 10; 
+            selectsFirstObjectAfterFetch = NO; 
             sortOrdering = (
                 {
                     class = EOSortOrdering; 

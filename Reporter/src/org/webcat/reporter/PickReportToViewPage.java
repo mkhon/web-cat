@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickReportToViewPage.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: PickReportToViewPage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -28,13 +28,15 @@ import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
+import er.extensions.appserver.ERXDisplayGroup;
+import er.extensions.batching.ERXBatchingDisplayGroup;
 
 //-------------------------------------------------------------------------
 /**
  * This page allows the user to select among already-generated reports.
  *
  * @author Tony Allevato
- * @version $Id: PickReportToViewPage.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: PickReportToViewPage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
  */
 public class PickReportToViewPage
     extends ReporterComponent
@@ -54,8 +56,11 @@ public class PickReportToViewPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public WODisplayGroup generatedReportsDisplayGroup;
-    public WODisplayGroup enqueuedReportsDisplayGroup;
+    public ERXDisplayGroup generatedReportsDisplayGroup;
+    public ERXDisplayGroup enqueuedReportsDisplayGroup;
+
+    public ReportGenerationJob reportJob;
+    public GeneratedReport generatedReport;
 
 
     //~ Methods ...............................................................
@@ -80,12 +85,9 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public WOComponent viewReport()
     {
-        GeneratedReport report = (GeneratedReport)
-            generatedReportsDisplayGroup.selectedObject();
-
-        if (report != null)
+        if (generatedReport != null)
         {
-            setLocalGeneratedReport(report);
+            setLocalGeneratedReport(generatedReport);
             return pageWithName(GeneratedReportPage.class);
         }
         else
@@ -117,9 +119,7 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public WOComponent viewReportProgress()
     {
-        ReportGenerationJob job = (ReportGenerationJob)
-            enqueuedReportsDisplayGroup.selectedObject();
-        GeneratedReport report = job.generatedReport();
+        GeneratedReport report = reportJob.generatedReport();
 
         if (report != null)
         {

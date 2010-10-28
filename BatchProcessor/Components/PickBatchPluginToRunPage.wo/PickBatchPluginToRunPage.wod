@@ -4,28 +4,24 @@ Page: WCPageWithNavigation {
 
 PluginTable: WCTable {
     displayGroup = pluginsDisplayGroup;
-    canSort = true;
 }
 
-NameFilter: WCTableFilter {
-    name = "Name";
-    keyPath = "name";
-    type = "string";
+ChoosePlugin: WCLink {
+    string = batchPlugin.name;
+    action = pluginChosen;
 }
 
-NameColumn: WCTableColumn {
-    name = "Batch Plug-in";
-    componentName = "ActionURLCell";
-    keyPath = "name";
-    properties.action = "pluginChosen";
+NameColumn: WCTableHeading {
+    title = "Batch Plug-in";
+    sortOnKeyPaths = "name";
 }
 
-VersionColumn: WCTableColumn {
-    name = "Version";
-    keyPath = "descriptor.currentVersion";
+VersionColumn: WCTableHeading {
+    title = "Version";
+    sortOnKeyPaths = "descriptor.currentVersion";
 }
 
-InstalledByColumn: WCTableColumn {
-    name = "Installed By";
-    keyPath = "author.name";
+InstalledByColumn: WCTableHeading {
+    title = "Installed By";
+    sortOnKeyPaths = "author.name";
 }

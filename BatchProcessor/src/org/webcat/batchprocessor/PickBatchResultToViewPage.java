@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickBatchResultToViewPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: PickBatchResultToViewPage.java,v 1.3 2010/10/28 00:39:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -37,8 +37,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * or view the progress of any jobs currently in the queue.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2010/10/28 00:39:20 $
  */
 public class PickBatchResultToViewPage extends WCComponent
 {
@@ -59,6 +59,9 @@ public class PickBatchResultToViewPage extends WCComponent
 
     public ERXDisplayGroup<BatchResult> batchResultDisplayGroup;
     public ERXDisplayGroup<BatchJob>    batchJobDisplayGroup;
+
+    public BatchResult batchResult;
+    public BatchJob batchJob;
 
 
     //~ Methods ...............................................................
@@ -83,12 +86,10 @@ public class PickBatchResultToViewPage extends WCComponent
     // ----------------------------------------------------------
     public WOComponent viewBatchResult()
     {
-        BatchResult result = batchResultDisplayGroup.selectedObject();
-
-        if (result != null)
+        if (batchResult != null)
         {
             BatchResultPage page = pageWithName(BatchResultPage.class);
-            page.result = result;
+            page.result = batchResult;
             return page;
         }
         else
@@ -121,8 +122,7 @@ public class PickBatchResultToViewPage extends WCComponent
     // ----------------------------------------------------------
     public WOComponent viewBatchProgress()
     {
-        BatchJob job = batchJobDisplayGroup.selectedObject();
-        BatchResult result = job.batchResult();
+        BatchResult result = batchJob.batchResult();
 
         if (result != null)
         {

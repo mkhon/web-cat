@@ -8,64 +8,48 @@ Form : WCForm {
 
 EnqueuedJobTable: WCTable {
     displayGroup = enqueuedReportsDisplayGroup;
-    canSort = true;
+    settingsKey = "PickReportToViewPage_EnqueuedJobTable";
 }
 
-JobTitleFilter: WCTableFilter {
-    name = "Report Title";
-    keyPath = "generatedReport.description";
-    type = "string";
+ViewReportProgress: WCLink {
+    string = reportJob.generatedReport.description;
+    action = viewReportProgress;
 }
 
-JobTitleColumn: WCTableColumn {
-    name = "Report Title";
-    componentName = "ActionURLCell";
-    keyPath = "generatedReport.description";
-    properties.action = "viewReportProgress";
+JobTitleColumn: WCTableHeading {
+    title = "Report Title";
+    sortOnKeyPaths = "generatedReport.description";
 }
 
-JobQueueTimeColumn: WCTableColumn {
-    name = "Requested at";
-    keyPath = "enqueueTime";
-    properties.formatter = session.timeFormatter;
+JobQueueTimeColumn: WCTableHeading {
+    title = "Requested at";
+    sortOnKeyPaths = "enqueueTime";
 }
 
-JobProgressColumn: WCTableColumn {
-    name = "Progress";
-    expression = "'' + progressPercentage + '%'";
+JobProgressColumn: WCTableHeading {
+    title = "Progress";
 }
 
 GeneratedReportTable: WCTable {
     displayGroup = generatedReportsDisplayGroup;
-    canSort = true;
-    isBatched = true;
-    allowsSelection = true;
+    settingsKey = "PickReportToViewPage_GeneratedReportTable";
+    canSelectRows = true;
     multipleSelection = true;
 }
 
-TitleFilter: WCTableFilter {
-    name = "Report Title";
-    keyPath = "description";
-    type = "string";
+TitleColumn: WCTableHeading {
+    title = "Report Title";
+    sortOnKeyPaths = "description";
 }
 
-TitleColumn: WCTableColumn {
-    name = "Report Title";
-    componentName = "ActionURLCell";
-    keyPath = "description";
-    properties.action = "viewReport";
-    properties.weight = 1;
+ViewReport: WCLink {
+    string = generatedReport.description;
+    action = viewReport;
 }
 
-TemplateVersionColumn: WCTableColumn {
-    name = "Template Version";
-    keyPath = "reportTemplate.version";
-}
-
-GeneratedTimeColumn: WCTableColumn {
-    name = "Generated at";
-    keyPath = "generatedTime";
-    properties.formatter = session.timeFormatter;
+GeneratedTimeColumn: WCTableHeading {
+    title = "Generated at";
+    sortOnKeyPaths = "generatedTime";
 }
 
 DeleteReports: WCButton {

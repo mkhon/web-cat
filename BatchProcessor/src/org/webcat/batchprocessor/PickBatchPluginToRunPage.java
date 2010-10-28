@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickBatchPluginToRunPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: PickBatchPluginToRunPage.java,v 1.3 2010/10/28 00:39:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -26,14 +26,15 @@ import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WODisplayGroup;
 import com.webobjects.foundation.NSArray;
+import er.extensions.appserver.ERXDisplayGroup;
 
 //-------------------------------------------------------------------------
 /**
  * This page allows the user to select the batch plug-in that they want to run.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2010/10/28 00:39:20 $
  */
 public class PickBatchPluginToRunPage extends WCComponent
 {
@@ -52,7 +53,8 @@ public class PickBatchPluginToRunPage extends WCComponent
 
     //~ KVC Attributes (must be public) .......................................
 
-    public WODisplayGroup pluginsDisplayGroup;
+    public ERXDisplayGroup<BatchPlugin> pluginsDisplayGroup;
+    public BatchPlugin batchPlugin;
 
 
     //~ Methods ...............................................................
@@ -65,7 +67,7 @@ public class PickBatchPluginToRunPage extends WCComponent
             NSArray<BatchPlugin> batchPlugins =
                 BatchPlugin.pluginsAccessibleByUser(localContext(), user());
 
-            pluginsDisplayGroup = new WODisplayGroup();
+            pluginsDisplayGroup = new ERXDisplayGroup<BatchPlugin>();
             pluginsDisplayGroup.setObjectArray(batchPlugins);
         }
 
@@ -76,9 +78,6 @@ public class PickBatchPluginToRunPage extends WCComponent
     // ----------------------------------------------------------
     public WOComponent pluginChosen()
     {
-        BatchPlugin batchPlugin =
-            (BatchPlugin) pluginsDisplayGroup.selectedObject();
-
         DescribeBatchInputsPage page =
             pageWithName(DescribeBatchInputsPage.class);
 
