@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TableRow.java,v 1.2 2010/10/17 16:49:31 stedwar2 Exp $
+ |  $Id: TableRow.java,v 1.3 2010/10/28 00:37:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * row.
  *
  * @author Stephen Edwards
- * @version $Id: TableRow.java,v 1.2 2010/10/17 16:49:31 stedwar2 Exp $
+ * @version $Id: TableRow.java,v 1.3 2010/10/28 00:37:30 aallowat Exp $
  */
 public class TableRow
     extends WOComponent
@@ -43,7 +43,7 @@ public class TableRow
 
     // ----------------------------------------------------------
     /**
-     * Creates a new WCTableRow object.
+     * Creates a new TableRow object.
      *
      * @param context The page's context
      */

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCLink.java,v 1.2 2010/10/11 14:25:35 aallowat Exp $
+ |  $Id: WCLink.java,v 1.3 2010/10/28 00:37:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -151,7 +151,7 @@ import er.extensions.components._private.ERXWOForm;
  * </table>
  *
  * @author Tony Allevato
- * @version $Id: WCLink.java,v 1.2 2010/10/11 14:25:35 aallowat Exp $
+ * @version $Id: WCLink.java,v 1.3 2010/10/28 00:37:30 aallowat Exp $
  */
 public class WCLink extends WOHTMLDynamicElement
 {
@@ -234,6 +234,12 @@ public class WCLink extends WOHTMLDynamicElement
         {
             super._appendOpenTagToResponse(response, context);
         }
+        else
+        {
+            response.appendContentString("<span");
+            appendAttributesToResponse(response, context);
+            response.appendContentCharacter('>');
+        }
     }
 
 
@@ -245,6 +251,10 @@ public class WCLink extends WOHTMLDynamicElement
         if(!isDisabledInContext(context))
         {
             super._appendCloseTagToResponse(response, context);
+        }
+        else
+        {
+            response.appendContentString("</span>");
         }
     }
 
@@ -375,6 +385,11 @@ public class WCLink extends WOHTMLDynamicElement
             WOContext context)
     {
         super.appendAttributesToResponse(response, context);
+
+        if (isDisabledInContext(context))
+        {
+            return;
+        }
 
         if (_remoteHelper.isRemoteInContext(context))
         {
@@ -764,7 +779,11 @@ public class WCLink extends WOHTMLDynamicElement
         AjaxUtils.createResponse(request, context);
         AjaxUtils.mutableUserInfo(request);
 
-        result = (WOActionResults) _action.valueInComponent(component);
+        context.setActionInvoked(true);
+        if (_action != null)
+        {
+            result = (WOActionResults) _action.valueInComponent(component);
+        }
 
         AjaxUtils.updateMutableUserInfoWithAjaxInfo(context);
 

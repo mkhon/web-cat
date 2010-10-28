@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ContentPane.js,v 1.10 2010/04/30 17:17:20 aallowat Exp $
+ |  $Id: ContentPane.js,v 1.11 2010/10/28 00:37:46 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ dojo.require("webcat.Spinner");
  * when it is initialized.
  *
  * @author Tony Allevato
- * @version $Id: ContentPane.js,v 1.10 2010/04/30 17:17:20 aallowat Exp $
+ * @version $Id: ContentPane.js,v 1.11 2010/10/28 00:37:46 aallowat Exp $
  */
 dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
 {
@@ -72,6 +72,16 @@ dojo.declare("webcat.ContentPane", dijit.layout.ContentPane,
     {
         this._initialStartup = true;
         this.inherited(arguments);
+
+        if ("open" in this)
+        {
+            this.isLoaded = this.open;
+        }
+        else if (!this.alwaysDynamic)
+        {
+            this.isLoaded = true;
+        }
+
         this._initialStartup = false;
     },
 

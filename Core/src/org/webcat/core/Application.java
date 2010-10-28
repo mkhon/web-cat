@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.7 2010/10/24 18:52:31 stedwar2 Exp $
+ |  $Id: Application.java,v 1.8 2010/10/28 00:37:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -78,8 +78,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2010/10/24 18:52:31 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.8 $, $Date: 2010/10/28 00:37:30 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -423,6 +423,8 @@ public class Application
             "org.webcat.core.TableRow", "tr");
         WOHelperFunctionHTMLTemplateParser.registerTagShortcut(
             "WOComponentContent", "content");
+        WOHelperFunctionHTMLTemplateParser.registerTagShortcut(
+            "org.webcat.ui.WCTableString", "tstr");
 
         AjaxUpdateContainerTagProcessor tp =
             new AjaxUpdateContainerTagProcessor();

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCContentPane.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCContentPane.java,v 1.2 2010/10/28 00:37:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -54,7 +54,7 @@ import er.extensions.appserver.ERXWOContext;
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: WCContentPane.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: WCContentPane.java,v 1.2 2010/10/28 00:37:30 aallowat Exp $
  */
 public class WCContentPane extends DojoElement
 {
@@ -173,10 +173,12 @@ public class WCContentPane extends DojoElement
     public void appendChildrenToResponse(WOResponse response, WOContext context)
     {
         WORequest request = context.request();
-        boolean isAjax = ERXApplication.isAjaxRequest(request);
 
-        if ((isAjax && AjaxUtils.shouldHandleRequest(request, context, null)) ||
-                (!isAjax && !alwaysDynamicInContext(context)))
+        boolean isAjax = ERXApplication.isAjaxRequest(request);
+        boolean shouldHandleAjax =
+            isAjax && context.elementID().startsWith(context.senderID());
+
+        if (shouldHandleAjax || (!isAjax && !alwaysDynamicInContext(context)))
         {
             super.appendChildrenToResponse(response, context);
         }
