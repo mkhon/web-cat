@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.10 2010/10/23 21:14:42 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.11 2010/10/29 20:37:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -28,6 +28,7 @@ import com.webobjects.foundation.*;
 import er.extensions.appserver.ERXDisplayGroup;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
+import org.webcat.ui.generators.JavascriptGenerator;
 import org.webcat.ui.util.ComponentIDGenerator;
 
 // -------------------------------------------------------------------------
@@ -36,8 +37,8 @@ import org.webcat.ui.util.ComponentIDGenerator;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2010/10/23 21:14:42 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.11 $, $Date: 2010/10/29 20:37:35 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -75,6 +76,9 @@ public class StudentsForAssignmentPage
     public UserSubmissionPair aUserSubmission;
     public Submission  aSubmission;
     public Submission  partnerSubmission;
+
+    public UserSubmissionPair  selectedUserSubmissionForPickerDialog;
+    public NSArray<UserSubmissionPair> allUserSubmissionsForNavigationForPickerDialog;
 
     /** index in the student worepetition */
     public int         index;
@@ -141,6 +145,10 @@ public class StudentsForAssignmentPage
         }
 
         staffSubmissionGroup.setObjectArray(staffSubs);
+
+        selectedUserSubmissionForPickerDialog = null;
+        allUserSubmissionsForNavigationForPickerDialog = null;
+
         super.beforeAppendToResponse(response, context);
     }
 
@@ -173,6 +181,26 @@ public class StudentsForAssignmentPage
 
 
     // ----------------------------------------------------------
+    public WOActionResults pickOtherSubmission()
+    {
+        selectedUserSubmissionForPickerDialog = aUserSubmission;
+        allUserSubmissionsForNavigationForPickerDialog =
+            userGroup().displayedObjects();
+
+        JavascriptGenerator js = new JavascriptGenerator();
+        js.dijit("pickSubmissionDialog").call("show");
+        return js;
+    }
+
+
+    // ----------------------------------------------------------
+    public WCComponent self()
+    {
+        return this;
+    }
+
+
+    // ----------------------------------------------------------
     public WOComponent editSubmissionScore()
     {
         WCComponent destination = null;
@@ -189,12 +217,11 @@ public class StudentsForAssignmentPage
             }
             prefs().setSubmissionRelationship(aSubmission);
 
-//            destination = pageWithName(GradeStudentSubmissionPage.class);
-            destination = (WCComponent)super.next();
+            destination = (WCComponent) super.next();
             if (destination instanceof GradeStudentSubmissionPage)
             {
                 GradeStudentSubmissionPage page =
-                    (GradeStudentSubmissionPage)destination;
+                    (GradeStudentSubmissionPage) destination;
 
                 if (aUserSubmission != null)
                 {
@@ -207,6 +234,7 @@ public class StudentsForAssignmentPage
 
             destination.nextPage = this;
         }
+
         return destination;
     }
 
@@ -229,7 +257,7 @@ public class StudentsForAssignmentPage
             prefs().setSubmissionRelationship(aNewerSubmission);
 
 //            destination = pageWithName(GradeStudentSubmissionPage.class);
-            destination = (WCComponent)super.next();
+            destination = (WCComponent) super.next();
             if (destination instanceof GradeStudentSubmissionPage)
             {
                 GradeStudentSubmissionPage page =
@@ -259,7 +287,7 @@ public class StudentsForAssignmentPage
     public WOComponent markAsCompleteActionOk()
     {
         assignmentOffering = offeringForAction;
-        for (UserSubmissionPair pair : userGroup().displayedObjects())
+        for (UserSubmissionPair pair : userGroup().allObjects())
         {
             if (pair.userHasSubmission())
             {
@@ -396,7 +424,7 @@ public class StudentsForAssignmentPage
     // ----------------------------------------------------------
     public WOComponent repartner()
     {
-        for (UserSubmissionPair pair : userGroup().displayedObjects())
+        for (UserSubmissionPair pair : userGroup().allObjects())
         {
             Submission sub = pair.submission();
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.7 2010/10/23 21:13:49 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.8 2010/10/29 20:37:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -26,14 +26,15 @@ import com.webobjects.foundation.*;
 import er.extensions.appserver.ERXDisplayGroup;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
+import org.webcat.ui.generators.JavascriptGenerator;
 
 // -------------------------------------------------------------------------
 /**
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2010/10/23 21:13:49 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.8 $, $Date: 2010/10/29 20:37:35 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -59,6 +60,9 @@ public class GradeStudentSubmissionPage
     // For iterating over display group
     public SubmissionFileStats stats;
     public int                 index;
+
+    public UserSubmissionPair  selectedUserSubmissionForPickerDialog;
+    public NSArray<UserSubmissionPair> allUserSubmissionsForNavigationForPickerDialog;
 
     /** true if submission file stats are recorded for this submission */
     public boolean hasFileStats = false;
@@ -246,17 +250,17 @@ public class GradeStudentSubmissionPage
 
 
     // ----------------------------------------------------------
-    public WOComponent selectSubmission()
+    public WOActionResults pickOtherSubmission()
     {
         saveGrading();
-        PickSubmissionPage submissionPage =
-            pageWithName(PickSubmissionPage.class);
-        prefs().setSubmissionRelationship(submission);
-        submissionPage.nextPage = this;
-        submissionPage.sideStepTitle = "Pick submission to grade";
-        submission = null;
-        result = null;
-        return submissionPage;
+
+        selectedUserSubmissionForPickerDialog =
+            new UserSubmissionPair(submission.user(), submission);
+        allUserSubmissionsForNavigationForPickerDialog = availableSubmissions;
+
+        JavascriptGenerator js = new JavascriptGenerator();
+        js.dijit("pickSubmissionDialog").call("show");
+        return js;
     }
 
 
