@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.6 2010/10/23 20:58:51 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.7 2010/10/29 20:36:37 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.core.*;
  *  Represents the results for a student submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.6 $, $Date: 2010/10/23 20:58:51 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.7 $, $Date: 2010/10/29 20:36:37 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -243,6 +243,7 @@ public class SubmissionResult
      * Computes the raw score for this submission, as viewable by the
      * given user (either course staff or a student).
      *
+     * @param user the user
      * @return the final score
      */
     public double rawScoreVisibleTo(User user)
@@ -294,6 +295,7 @@ public class SubmissionResult
      * Computes the final score for this submission, viewable by the
      * given user (either course staff or a student).
      *
+     * @param user the user
      * @return the final score
      */
     public double finalScoreVisibleTo(User user)
