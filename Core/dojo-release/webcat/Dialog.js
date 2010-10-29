@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Dialog.js,v 1.2 2010/01/23 02:32:41 aallowat Exp $
+ |  $Id: Dialog.js,v 1.3 2010/10/29 20:36:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -30,10 +30,39 @@ dojo.require("webcat.ContentPane");
  * dijit.layout.ContentPane.
  *
  * @author Tony Allevato
- * @version $Id: Dialog.js,v 1.2 2010/01/23 02:32:41 aallowat Exp $
+ * @version $Id: Dialog.js,v 1.3 2010/10/29 20:36:15 aallowat Exp $
  */
-dojo.declare(
-    "webcat.Dialog",
-    [webcat.ContentPane, dijit._DialogBase],
-    {}
-);
+dojo.declare("webcat.Dialog", [webcat.ContentPane, dijit._DialogBase],
+{
+    // ----------------------------------------------------------
+    startup: function()
+    {
+        if (this.alwaysDynamic)
+        {
+            this.showsLoadingMessageOnRefresh = true;
+        }
+    },
+
+
+    // ----------------------------------------------------------
+    show: function()
+    {
+        if (this.alwaysDynamic)
+        {
+            this.destroyDescendants();
+            this.isLoaded = false;
+        }
+
+        this.inherited(arguments);
+    },
+
+
+    // ----------------------------------------------------------
+    onShow: function()
+    {
+        if (this.alwaysDynamic && !this._xhrDfd)
+        {
+            this.refresh();
+        }
+    }
+});

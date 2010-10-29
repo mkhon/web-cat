@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTableHeadings.java,v 1.2 2010/10/29 14:02:29 aallowat Exp $
+ |  $Id: WCTableHeadings.java,v 1.3 2010/10/29 20:36:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.appserver.ERXWOContext;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/10/29 14:02:29 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/29 20:36:15 $
  */
 public class WCTableHeadings extends WCTableSubcomponent
 {
@@ -71,6 +71,8 @@ public class WCTableHeadings extends WCTableSubcomponent
             throw new IllegalStateException("WCTableHeadings must be an "
                     + "immediate child of WCTable.");
         }
+
+        cachedNumberOfColumns = null;
 
         super.appendToResponse(response, context);
     }

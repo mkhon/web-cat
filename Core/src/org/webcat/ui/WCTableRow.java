@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTableRow.java,v 1.1 2010/10/28 00:37:30 aallowat Exp $
+ |  $Id: WCTableRow.java,v 1.2 2010/10/29 20:36:15 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.ui._base.WCTableSubcomponent;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/10/28 00:37:30 $
+ * @version $Revision: 1.2 $, $Date: 2010/10/29 20:36:15 $
  */
 public class WCTableRow extends WCTableSubcomponent
 {
@@ -101,35 +101,21 @@ public class WCTableRow extends WCTableSubcomponent
         int index = indexFromParent() +
             displayGroup().indexOfFirstDisplayedObject() - 1;
 
-        if (table().multipleSelection)
+        NSMutableArray<Integer> selection =
+            new NSMutableArray<Integer>(displayGroup().selectionIndexes());
+
+        if (selected)
         {
-            NSMutableArray<Integer> selection =
-                new NSMutableArray<Integer>(displayGroup().selectionIndexes());
-
-            if (selected)
+            if (!selection.containsObject(index))
             {
-                if (!selection.containsObject(index))
-                {
-                    selection.addObject(index);
-                }
+                selection.addObject(index);
             }
-            else
-            {
-                selection.removeObject(index);
-            }
-
-            displayGroup().setSelectionIndexes(selection);
         }
         else
         {
-            if (selected)
-            {
-                displayGroup().setSelectionIndexes(new NSArray<Integer>(index));
-            }
-            else
-            {
-                displayGroup().clearSelection();
-            }
+            selection.removeObject(index);
         }
+
+        displayGroup().setSelectionIndexes(selection);
     }
 }
