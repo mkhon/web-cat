@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTable.java,v 1.2 2010/10/28 00:37:30 aallowat Exp $
+ |  $Id: WCTable.java,v 1.3 2010/10/29 14:02:29 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -71,7 +71,7 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/10/28 00:37:30 $
+ * @version $Revision: 1.3 $, $Date: 2010/10/29 14:02:29 $
  */
 public class WCTable extends WCComponent
 {
@@ -203,7 +203,8 @@ public class WCTable extends WCComponent
         }
         else
         {
-            needsInitialSort = true;
+            NSArray<EOSortOrdering> orderings = displayGroup.sortOrderings();
+            needsInitialSort = (orderings == null || orderings.count() == 0);
         }
     }
 
