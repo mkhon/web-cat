@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SearchField.js,v 1.1 2010/10/28 00:37:46 aallowat Exp $
+ |  $Id: SearchField.js,v 1.2 2010/10/29 14:01:45 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -24,25 +24,34 @@ dojo.require("webcat.global");
 
 webcat.searchField = { };
 
-// --------------------------------------------------------------
-webcat.searchField.handleKeyUp = function(widget, event, callback)
+//--------------------------------------------------------------
+webcat.searchField.handleKeyUp = function(/*Object*/ options)
 {
-    if (webcat.isEventKeyDead(event))
+    if (webcat.isEventKeyDead(options.event))
     {
         return;
     }
 
-    webcat.searchField.forceChange(widget, callback);
+    webcat.searchField.forceChange(options);
 };
 
 //--------------------------------------------------------------
-webcat.searchField.forceChange = function(widget, callback)
+webcat.searchField.forceChange = function(options)
 {
+    var widget = options.widget;
+
     if (widget._webcat_searchField_updateFilterTimeoutId)
     {
        clearTimeout(widget._webcat_searchField_updateFilterTimeoutId);
     }
 
+    if (options.spinner)
+    {
+        options.spinner.start();
+    }
+
     widget._webcat_searchField_updateFilterTimeoutId = setTimeout(
-        dojo.hitch(this, function() { callback(widget); }), 500);
+        dojo.hitch(this, function() {
+            options.callback(widget);
+        }), 500);
 };
