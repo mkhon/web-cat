@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.11 2010/10/29 20:37:35 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.12 2010/10/30 02:54:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,8 +37,8 @@ import org.webcat.ui.util.ComponentIDGenerator;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.11 $, $Date: 2010/10/29 20:37:35 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.12 $, $Date: 2010/10/30 02:54:38 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -109,6 +109,8 @@ public class StudentsForAssignmentPage
 
         log.debug("appendToResponse()");
 
+        subStats =
+            new HashMap<AssignmentOffering, Submission.CumulativeStats>();
         offerings.setObjectArray(assignmentOfferings(courseOfferings()));
         if (log.isDebugEnabled())
         {
@@ -559,8 +561,7 @@ public class StudentsForAssignmentPage
 
     private Map<AssignmentOffering, ERXDisplayGroup<UserSubmissionPair>> userGroups =
         new HashMap<AssignmentOffering, ERXDisplayGroup<UserSubmissionPair>>();
-    private Map<AssignmentOffering, Submission.CumulativeStats> subStats =
-        new HashMap<AssignmentOffering, Submission.CumulativeStats>();
+    private Map<AssignmentOffering, Submission.CumulativeStats> subStats;
 
     private AssignmentOffering offeringForAction;
 
