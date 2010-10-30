@@ -36,12 +36,6 @@ BatchResultTable: WCTable {
     multipleSelection = true;
 }
 
-TitleFilter: WCTableFilter {
-    name = "Batch Description";
-    keyPath = "description";
-    type = "string";
-}
-
 TitleColumn: WCTableHeading {
     title = "Batch Description";
     sortOnKeyPaths = "description";
