@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JSHash.java,v 1.2 2010/10/11 16:54:38 aallowat Exp $
+ |  $Id: JSHash.java,v 1.3 2010/11/01 16:42:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * on that since it will quote all the keys and values.
  *
  * @author Tony Allevato
- * @version $Id: JSHash.java,v 1.2 2010/10/11 16:54:38 aallowat Exp $
+ * @version $Id: JSHash.java,v 1.3 2010/11/01 16:42:52 aallowat Exp $
  */
 public class JSHash
 {
@@ -264,8 +264,8 @@ public class JSHash
 
         if (str.length() > 0)
         {
-            if (javascriptKeywords.contains(str) ||
-                    !Character.isJavaIdentifierStart(str.charAt(0)))
+            if (javascriptKeywords.contains(str)
+                    || !Character.isJavaIdentifierStart(str.charAt(0)))
             {
                 isIdentifier = false;
             }
@@ -273,7 +273,7 @@ public class JSHash
             {
                 for (int i = 1; i < str.length(); i++)
                 {
-                    if (!Character.isJavaIdentifierPart(str.charAt(1)))
+                    if (!Character.isJavaIdentifierPart(str.charAt(i)))
                     {
                         isIdentifier = false;
                         break;

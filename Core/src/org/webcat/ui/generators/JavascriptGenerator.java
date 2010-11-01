@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.4 2010/10/28 00:37:30 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.5 2010/11/01 16:42:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXWOContext;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.4 2010/10/28 00:37:30 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.5 2010/11/01 16:42:52 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -792,6 +792,20 @@ public class JavascriptGenerator implements WOActionResults
                                        String... ids)
     {
         return call("webcat.refresh", ids, onAfterRefresh);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Performs a remote (Ajax) submit.
+     *
+     * @param options the dojo.xhr options, see the Javascript
+     *     {@code webcat.remoteSubmit} method for more details
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator remoteSubmit(JSHash options)
+    {
+        return call("webcat.remoteSubmit", JSHash.code("null"), options);
     }
 
 
