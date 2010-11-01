@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.8 2010/10/29 20:37:35 aallowat Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.9 2010/11/01 17:04:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2010/10/29 20:37:35 $
+ * @version $Revision: 1.9 $, $Date: 2010/11/01 17:04:08 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -316,7 +316,7 @@ public class GradeStudentSubmissionPage
             return displayMessages();
         }
 
-        return new ConfirmingAction(this)
+        return new ConfirmingAction(this, false)
         {
             @Override
             protected String confirmationTitle()
@@ -339,7 +339,7 @@ public class GradeStudentSubmissionPage
             }
 
             @Override
-            protected WOActionResults performStandardAction()
+            protected WOActionResults actionWasConfirmed()
             {
                 return regradeActionOk();
             }

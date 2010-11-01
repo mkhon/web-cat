@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.12 2010/10/30 02:54:38 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.13 2010/11/01 17:04:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,8 +37,8 @@ import org.webcat.ui.util.ComponentIDGenerator;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2010/10/30 02:54:38 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.13 $, $Date: 2010/11/01 17:04:08 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -320,7 +320,7 @@ public class StudentsForAssignmentPage
     {
         offeringForAction = assignmentOffering;
 
-        return new ConfirmingAction(this)
+        return new ConfirmingAction(this, false)
         {
             @Override
             protected String confirmationTitle()
@@ -341,7 +341,7 @@ public class StudentsForAssignmentPage
             }
 
             @Override
-            protected WOActionResults performStandardAction()
+            protected WOActionResults actionWasConfirmed()
             {
                 return markAsCompleteActionOk();
             }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmingAction.java,v 1.4 2010/11/01 16:42:52 aallowat Exp $
+ |  $Id: ConfirmingAction.java,v 1.5 2010/11/01 17:04:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -67,7 +67,7 @@ import er.extensions.appserver.ERXWOContext;
  * </p>
  *
  * @author  Tony Allevato
- * @version $Id: ConfirmingAction.java,v 1.4 2010/11/01 16:42:52 aallowat Exp $
+ * @version $Id: ConfirmingAction.java,v 1.5 2010/11/01 17:04:05 aallowat Exp $
  */
 public abstract class ConfirmingAction extends DualAction
 {

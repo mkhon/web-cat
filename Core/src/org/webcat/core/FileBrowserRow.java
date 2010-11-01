@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowserRow.java,v 1.2 2010/10/30 02:37:20 stedwar2 Exp $
+ |  $Id: FileBrowserRow.java,v 1.3 2010/11/01 17:04:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,8 +42,8 @@ import er.extensions.foundation.ERXFileUtilities;
  *  One row in a directory contents table.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/10/30 02:37:20 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.3 $, $Date: 2010/11/01 17:04:05 $
  */
 public class FileBrowserRow
     extends WOComponent
@@ -365,7 +365,7 @@ public class FileBrowserRow
      */
     public WOActionResults deleteFile()
     {
-        return new ConfirmingAction(this)
+        return new ConfirmingAction(this, true)
         {
             @Override
             protected String confirmationTitle()
@@ -396,7 +396,7 @@ public class FileBrowserRow
             }
 
             @Override
-            protected WOActionResults performStandardAction()
+            protected WOActionResults actionWasConfirmed()
             {
                 if (applyChangesOnMod)
                 {
@@ -412,7 +412,7 @@ public class FileBrowserRow
                 {
                     file.delete();
                 }
-                return context().page();
+                return new JavascriptGenerator().refresh(paneId);
             }
 
             // Can't get ajax-based action to work!

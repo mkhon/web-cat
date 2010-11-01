@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JSHash.java,v 1.3 2010/11/01 16:42:52 aallowat Exp $
+ |  $Id: JSHash.java,v 1.4 2010/11/01 17:04:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * on that since it will quote all the keys and values.
  *
  * @author Tony Allevato
- * @version $Id: JSHash.java,v 1.3 2010/11/01 16:42:52 aallowat Exp $
+ * @version $Id: JSHash.java,v 1.4 2010/11/01 17:04:05 aallowat Exp $
  */
 public class JSHash
 {

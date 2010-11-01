@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.6 2010/10/12 03:15:48 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.7 2010/11/01 17:04:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,8 +40,8 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.6 $, $Date: 2010/10/12 03:15:48 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.7 $, $Date: 2010/11/01 17:04:08 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent
@@ -436,7 +436,7 @@ public class EditAssignmentPage
         }
 
         offeringForAction = thisOffering;
-        return new ConfirmingAction(this)
+        return new ConfirmingAction(this, false)
         {
             @Override
             protected String confirmationTitle()
@@ -461,7 +461,7 @@ public class EditAssignmentPage
             }
 
             @Override
-            protected WOActionResults performStandardAction()
+            protected WOActionResults actionWasConfirmed()
             {
                 return regradeSubsActionOk();
             }
@@ -721,7 +721,7 @@ public class EditAssignmentPage
         }
 
         offeringForAction = thisOffering;
-        return new ConfirmingAction(this) {
+        return new ConfirmingAction(this, false) {
             @Override
             protected String confirmationTitle()
             {
@@ -750,7 +750,7 @@ public class EditAssignmentPage
             }
 
             @Override
-            protected WOActionResults performStandardAction()
+            protected WOActionResults actionWasConfirmed()
             {
                 return deleteActionOk();
             }

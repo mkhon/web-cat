@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.5 2010/11/01 16:42:52 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.6 2010/11/01 17:04:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXWOContext;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.5 2010/11/01 16:42:52 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.6 2010/11/01 17:04:05 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {

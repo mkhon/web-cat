@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmingActionTestPage.java,v 1.4 2010/11/01 16:42:52 aallowat Exp $
+ |  $Id: ConfirmingActionTestPage.java,v 1.5 2010/11/01 17:04:05 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import com.webobjects.appserver.WOContext;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2010/11/01 16:42:52 $
+ * @version $Revision: 1.5 $, $Date: 2010/11/01 17:04:05 $
  */
 public class ConfirmingActionTestPage
     extends WCComponent
