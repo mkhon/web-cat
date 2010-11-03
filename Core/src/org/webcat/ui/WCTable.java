@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTable.java,v 1.4 2010/10/29 20:36:15 aallowat Exp $
+ |  $Id: WCTable.java,v 1.5 2010/11/03 19:37:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -76,7 +76,7 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2010/10/29 20:36:15 $
+ * @version $Revision: 1.5 $, $Date: 2010/11/03 19:37:36 $
  */
 public class WCTable extends WCComponent
 {
@@ -351,6 +351,22 @@ public class WCTable extends WCComponent
             }
         });
         return js;
+    }
+
+
+    // ----------------------------------------------------------
+    public static void refresh(JavascriptGenerator js, String id)
+    {
+        refresh(js, id, null);
+    }
+
+
+    // ----------------------------------------------------------
+    public static void refresh(JavascriptGenerator js, String id,
+            JavascriptFunction onAfterRefresh)
+    {
+        js.append(renderTableBusyScript(id));
+        js.refresh(onAfterRefresh, id);
     }
 
 
