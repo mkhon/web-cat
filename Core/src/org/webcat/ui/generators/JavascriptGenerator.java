@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.6 2010/11/01 17:04:05 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.7 2010/11/03 19:36:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXWOContext;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.6 2010/11/01 17:04:05 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.7 2010/11/03 19:36:56 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -459,6 +459,20 @@ public class JavascriptGenerator implements WOActionResults
     public JavascriptGenerator append(String javascript)
     {
         lines.add(javascript);
+        return this;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Appends the content of the specified JavascriptGenerator to this one.
+     *
+     * @param otherJS the other JavascriptGenerator
+     * @return this generator, for chaining
+     */
+    public JavascriptGenerator append(JavascriptGenerator otherJS)
+    {
+        lines.addAll(otherJS.lines);
         return this;
     }
 
