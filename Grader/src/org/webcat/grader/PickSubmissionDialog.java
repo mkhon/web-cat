@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.1 2010/10/29 20:37:35 aallowat Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.2 2010/11/04 17:44:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -22,12 +22,9 @@
 package org.webcat.grader;
 
 import org.apache.log4j.Logger;
-import org.webcat.core.User;
 import org.webcat.core.WCComponent;
-import org.webcat.ui.util.ComponentIDGenerator;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
 import er.extensions.appserver.ERXDisplayGroup;
 
@@ -37,8 +34,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * is displayed on the StudentsForAssignment page.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/10/29 20:37:35 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2010/11/04 17:44:09 $
  */
 public class PickSubmissionDialog extends GraderComponent
 {
