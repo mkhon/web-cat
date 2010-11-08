@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Table.js,v 1.6 2010/10/28 00:37:46 aallowat Exp $
+ |  $Id: Table.js,v 1.7 2010/11/08 20:16:42 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -32,8 +32,8 @@ dojo.declare("webcat.Table", null,
 {
     //~ Properties ............................................................
 
-    // The prefix used for all of the widget IDs in the table.
-    contentPane: null,
+    // The content pane that wraps the table.
+    contentPane: "",
 
     // The prefix used for all of the widget IDs in the table.
     idPrefix: "",
@@ -45,6 +45,13 @@ dojo.declare("webcat.Table", null,
     constructor: function(/* Object */ args)
     {
         dojo.mixin(this, args);
+    },
+
+
+    // ----------------------------------------------------------
+    startup: function()
+    {
+        this.contentPane = dijit.byId(this.contentPane);
     },
 
 
