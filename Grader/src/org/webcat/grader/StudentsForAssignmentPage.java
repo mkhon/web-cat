@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.14 2010/11/03 19:37:56 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.15 2010/11/12 18:42:44 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.ui.util.ComponentIDGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.14 $, $Date: 2010/11/03 19:37:56 $
+ * @version $Revision: 1.15 $, $Date: 2010/11/12 18:42:44 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -593,19 +593,15 @@ public class StudentsForAssignmentPage
                 result = "queued for grading";
             }
         }
-        else
+        // check date of submission against date of feedback
+        else if (aSubmission.result() != null
+                && aSubmission.result().lastUpdated() != null
+                && aNewerSubmission.submitTime().after(
+                    aSubmission.result().lastUpdated()))
         {
-            // check date of submission against date of feedback
-            NSTimestamp feedbackTime = aSubmission.submitTime();
-            if (aSubmission.result() != null)
-            {
-                feedbackTime = aSubmission.result().lastUpdated();
-            }
-            if (aNewerSubmission.submitTime().after(feedbackTime))
-            {
-                result = "newer than feedback";
-            }
+            result = "newer than feedback";
         }
+
         log.debug("newerSubmissionStatus() = " + result);
         return result;
     }
