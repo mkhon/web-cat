@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.8 2010/10/28 00:37:30 aallowat Exp $
+ |  $Id: Application.java,v 1.9 2010/11/19 14:56:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -78,8 +78,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2010/10/28 00:37:30 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.9 $, $Date: 2010/11/19 14:56:29 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -1358,7 +1358,7 @@ public class Application
      * @param subject     the subject line
      * @param body        the body of the message
      */
-    public static void sendAdminEmail(String subject, String body)
+    public static NSArray<String> adminEmailAddresses()
     {
         String adminList =
             configurationProperties().getProperty("adminNotifyAddrs");
@@ -1381,15 +1381,47 @@ public class Application
 
         if (adminList == null)
         {
+            return null;
+        }
+
+        String[] admins = adminList.split("\\s*,\\s*");
+        return new NSArray<String>(admins);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sends a text e-mail message to the system administrators.
+     *
+     * @param subject     the subject line
+     * @param body        the body of the message
+     */
+    public static void sendAdminEmail(String subject, String body)
+    {
+        sendAdminEmail(subject, body, null);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sends a text e-mail message to the system administrators.
+     *
+     * @param subject     the subject line
+     * @param body        the body of the message
+     */
+    public static void sendAdminEmail(
+        String subject, String body, NSDictionary<String, String> attachments)
+    {
+        NSArray<String> adminList = adminEmailAddresses();
+        if (adminList == null || adminList.count() == 0)
+        {
             log.error("No bound admin e-mail addresses.  "
                       + "Cannot send message:\n"
                       + "Subject: " + subject + "\n"
                       + "Message:\n" + body);
             return;
         }
-
-        String[] admins = adminList.split("\\s*,\\s*");
-        sendSimpleEmail(new NSArray<String>(admins), subject, body);
+        sendSimpleEmail(adminList, subject, body, attachments);
     }
 
 
