@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SendMessageWorkerThread.java,v 1.3 2010/09/27 00:40:53 stedwar2 Exp $
+ |  $Id: SendMessageWorkerThread.java,v 1.4 2010/11/19 14:57:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -43,7 +43,7 @@ import com.webobjects.foundation.NSDictionary;
  *
  * @author  Tony Allevato
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/27 00:40:53 $
+ * @version $Revision: 1.4 $, $Date: 2010/11/19 14:57:16 $
  */
 public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
 {
@@ -198,7 +198,8 @@ public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
             }
         }
 
-        Application.sendAdminEmail(job.title(), body.toString());
+        Application.sendAdminEmail(
+            job.title(), body.toString(), job.attachments());
     }
 
 
