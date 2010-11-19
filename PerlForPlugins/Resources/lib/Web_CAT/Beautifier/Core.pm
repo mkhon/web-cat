@@ -214,7 +214,7 @@ if (!$DEBUG) { print "Selection close\n"; }
 if ($DEBUG) { print "Line Comment!\n"; }
                     $line = substr($line, $j);
                     $lineout = $self->munge($lineout);
-                    if ($self->{output_module}->{html}) { $line = html_entities($line); }
+                    if ($self->{output_module}->{html}) { $line = Web_CAT::Utilities::htmlEscape($line); }
                     $out .= $lineout;
                     if ($self->{context}->{prepro})
                     {
@@ -328,7 +328,7 @@ if ($DEBUG) { print "Closing Block Comment!\n"; }
             if ($self->{context}->{incomment} || $self->{context}->{inbcomment})
             {
 if ($DEBUG) { print "Skipping checks.\n"; }
-                $lineout .= html_entities( $currchar );
+                $lineout .= Web_CAT::Utilities::htmlEscape( $currchar );
                 if ($self->{context}->{newline})
                 {
                     if (defined($self->{statobj}) && $self->{statobj}->{harvest_comments})
@@ -417,7 +417,7 @@ if ($DEBUG) { print "String checks\nAdding $currchar..."; }
                 }
                 if ($self->{output_module}->{html})
                 {
-                    $lineout .= html_entities($currchar);
+                    $lineout .= Web_CAT::Utilities::htmlEscape($currchar);
                 }
                 else
                 {
@@ -644,7 +644,7 @@ sub munge
     {
         if ($self->{output_module}->{html})
         {
-            $strout = html_entities($munge);
+            $strout = Web_CAT::Utilities::htmlEscape($munge);
         }
         else
         {
@@ -652,15 +652,6 @@ sub munge
         }
     }
     return $strout;
-}
-
-sub html_entities
-{
-    my( $text ) = @_;
-    $text =~ s/&/&amp;/g;
-    $text =~ s/</&lt;/g;
-    $text =~ s/>/&gt;/g;
-    return $text;
 }
 
 1;

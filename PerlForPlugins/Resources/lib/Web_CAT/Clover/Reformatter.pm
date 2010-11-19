@@ -114,19 +114,6 @@ sub highestPriorityCommentClass
 
 
 #========================================================================
-sub simpleHTMLEscape
-{
-    my $message = shift;
-    # Attempt to html-escape some of the text
-    $message =~ s/'&'/'&amp;'/go;
-    $message =~ s/'&&'/'&amp;&amp;'/go;
-    $message =~ s/</&lt;/go;
-    $message =~ s/>/&gt;/go;
-    return $message;
-}
-
-
-#========================================================================
 sub commentBody
 {
     my $self = shift;
@@ -134,7 +121,7 @@ sub commentBody
     my $message = ( $self->{nextComment}->{message}->null )
         ? $self->{nextComment}->content
         : $self->{nextComment}->{message}->content;
-    $message = simpleHTMLEscape( $message );
+    $message = Web_CAT::Utilities::htmlEscape( $message );
     my $deduction = "";
     if ( $self->{nextComment}->{deduction}->content > 0 )
     {
@@ -153,8 +140,8 @@ sub commentBody
                 ": 0 <font size=\"-1\" id=\"$id\">(limit exceeded)</font>";
         }
     }
-    my $category =
-        simpleHTMLEscape( $self->{nextComment}->{category}->content );
+    my $category = Web_CAT::Utilities::htmlEscape(
+        $self->{nextComment}->{category}->content );
     my $source = ( $self->{nextComment}->{message}->null )
         ? "PMD"
         : "Checkstyle";
@@ -231,6 +218,8 @@ sub output_text {
     {
         return "";
     }
+    $text = HTML::Entities::encode($text, '^\n\x20-\x7e');
+    $text =~ s/&#([01]?[0-9]);/&#171;&amp;#$1&#187;/g;
     $text =~ s/&nbsp;/&\#160;/go;
 
     $self->SUPER::output_text( $text );

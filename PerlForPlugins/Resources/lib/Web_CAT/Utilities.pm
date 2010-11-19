@@ -211,6 +211,7 @@ characters, returning the final result.
     if ( defined $str )
     {
         $str = encode_entities( expand( $ str ) );
+        $str =~ s/&#([01]?[0-9]);/&#171;&amp;#$1&#187;/g;
     }
     return $str;
 }
@@ -505,4 +506,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.5 2010/11/04 17:45:10 stedwar2 Exp $
+$Id: Utilities.pm,v 1.6 2010/11/19 18:48:23 stedwar2 Exp $
