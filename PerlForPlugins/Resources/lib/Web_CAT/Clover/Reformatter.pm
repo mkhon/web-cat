@@ -218,7 +218,7 @@ sub output_text {
     {
         return "";
     }
-    $text = HTML::Entities::encode($text, '^\n\x20-\x7e');
+    $text = HTML::Entities::encode_numeric($text, '^\n\x20-\x7e');
     $text =~ s/&#([01]?[0-9]);/&#171;&amp;#$1&#187;/g;
     $text =~ s/&nbsp;/&\#160;/go;
 
