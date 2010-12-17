@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickTemplateToGeneratePage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
+ |  $Id: PickTemplateToGeneratePage.java,v 1.3 2010/12/17 16:10:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,26 +21,19 @@
 
 package org.webcat.reporter;
 
-import org.webcat.core.Course;
-import org.webcat.core.CourseOffering;
-import org.webcat.core.Department;
-import org.webcat.core.Semester;
-import org.webcat.ui.AbstractTreeModel;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WODisplayGroup;
-import com.webobjects.eocontrol.EOFetchSpecification;
-import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
-import er.extensions.eof.ERXS;
+import er.extensions.appserver.ERXDisplayGroup;
 
 //-------------------------------------------------------------------------
 /**
  * This page allows the user to select the template to use for a new report.
  *
- * @author Tony Allevato
- * @version $Id: PickTemplateToGeneratePage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2010/12/17 16:10:12 $
  */
 public class PickTemplateToGeneratePage
     extends ReporterComponent
@@ -61,7 +54,7 @@ public class PickTemplateToGeneratePage
     //~ KVC Attributes (must be public) .......................................
 
     public ReportTemplate reportTemplate;
-    public WODisplayGroup reportTemplatesDisplayGroup;
+    public ERXDisplayGroup<ReportTemplate> reportTemplatesDisplayGroup;
 
 
     //~ Methods ...............................................................
@@ -75,7 +68,8 @@ public class PickTemplateToGeneratePage
                 ReportTemplate.templatesAccessibleByUser(
                         localContext(), user());
 
-            reportTemplatesDisplayGroup = new WODisplayGroup();
+            reportTemplatesDisplayGroup =
+                new ERXDisplayGroup<ReportTemplate>();
             reportTemplatesDisplayGroup.setObjectArray(templates);
         }
 
