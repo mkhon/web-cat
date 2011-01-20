@@ -66,7 +66,7 @@ sub advanceComment
     my $self = shift;
 
     if ( defined( $self->{commentList} ) &&
-         $#{@{ $self->{commentList} }} >= 0 )
+         $#{$self->{commentList}} >= 0 )
     {
         $self->{commentId}++;
         $self->{nextComment} = pop( @{ $self->{commentList} } );
@@ -96,7 +96,7 @@ sub highestPriorityCommentClass
     my $class = $self->{nextComment}->{category}->content;
     my $priority = $categoryPriority{$class};
 
-    for ( my $i = $#{@{ $self->{commentList} }}; $i >= 0; $i-- )
+    for ( my $i = $#{$self->{commentList}}; $i >= 0; $i-- )
     {
         last if ( $self->{commentList}->[$i]->{line} != $self->{lineNo} );
         my $thisClass = $self->{commentList}->[$i]->{category};
@@ -323,7 +323,7 @@ sub output_starttag
             $tag =~ s/"srcLineHilight"/"srcLine"/o;
         }
         my $spanCountList = $self->{spanDepth};
-        $spanCountList->[$#{@{$spanCountList}}]++;
+        $spanCountList->[$#{$spanCountList}]++;
 #       if ( defined( $args{class} ) && $args{class} eq "srcHilight" )
 #       {
 #           undef $tag;
@@ -412,7 +412,7 @@ sub output_endtag
 
         $tag =~ s/SPAN/span/io;
         my $spanCountList = $self->{spanDepth};
-        $spanCountList->[$#{@{$spanCountList}}]--;
+        $spanCountList->[$#{$spanCountList}]--;
 #       if ( $self->{spanDepth} )
 #       {
 #           $self->{spanDepth}--;
@@ -449,7 +449,7 @@ sub output_endtag
     elsif ( $word eq "td" || $word eq "a" )
     {
         my $spanCountList = $self->{spanDepth};
-        my $spanPos = $#{@{$spanCountList}};
+        my $spanPos = $#{$spanCountList};
         while ( $spanCountList->[$spanPos] > 0 )
         {
             $tag = "/span><" . $tag;
