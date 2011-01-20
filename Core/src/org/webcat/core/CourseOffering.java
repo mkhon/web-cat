@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.3 2010/10/08 14:40:45 stedwar2 Exp $
+ |  $Id: CourseOffering.java,v 1.4 2011/01/20 15:35:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -23,6 +23,7 @@ package org.webcat.core;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import er.extensions.eof.ERXKey;
 import er.extensions.foundation.ERXArrayUtilities;
 import java.io.File;
 import org.apache.log4j.Logger;
@@ -33,8 +34,8 @@ import org.apache.log4j.Logger;
  * semester).
  *
  * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/08 14:40:45 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2011/01/20 15:35:30 $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -76,8 +77,10 @@ public class CourseOffering
     //~ Constants (for key names) .............................................
 
     // Derived Attributes ---
-    public static final String COURSE_NUMBER_KEY  =
+    public static final String COURSE_NUMBER_KEY =
         COURSE_KEY + "." + Course.NUMBER_KEY;
+    public static final ERXKey<Integer> courseNumber =
+        new ERXKey<Integer>(COURSE_NUMBER_KEY);
 
 
     //~ Methods ...............................................................
