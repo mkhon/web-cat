@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.7 2011/01/20 18:44:34 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.8 2011/01/20 19:18:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.webcat.grader.messaging.SubmissionSuspendedMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.7 $, $Date: 2011/01/20 18:44:34 $
+ *  @version $Revision: 1.8 $, $Date: 2011/01/20 19:18:52 $
  */
 public class Grader
    extends Subsystem
@@ -417,6 +417,7 @@ public class Grader
                 ec, qualifier, orderings);
         }
         AssignmentOffering assignment = null;
+        User localizedUser = result.user();
         if (assignments != null && assignments.count() > 0)
         {
             String msg = null;
@@ -424,9 +425,9 @@ public class Grader
             {
                 log.debug("assignment = " + thisAssignment.assignment().name());
                 CourseOffering co = thisAssignment.courseOffering();
-                if (co.isInstructor(session.user())
-                    || co.isGrader(session.user())
-                    || (co.students().contains(session.user())
+                if (co.isInstructor(localizedUser)
+                    || co.isGrader(localizedUser)
+                    || (co.students().contains(localizedUser)
                         && thisAssignment.publish()
                         && currentTime.after(thisAssignment.availableFrom())
                         && currentTime.before(thisAssignment.lateDeadline())))
