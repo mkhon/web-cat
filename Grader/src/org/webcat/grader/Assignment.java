@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.2 2010/09/27 04:17:43 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.3 2011/01/20 15:37:11 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -23,6 +23,7 @@ package org.webcat.grader;
 
 import com.webobjects.foundation.*;
 import com.webobjects.eocontrol.*;
+import er.extensions.eof.ERXKey;
 import er.extensions.foundation.ERXArrayUtilities;
 import java.io.File;
 import java.util.*;
@@ -35,8 +36,8 @@ import org.webcat.core.*;
  * An assignment that can be given in one or more classes.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:17:43 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/01/20 15:37:11 $
  */
 public class Assignment
     extends _Assignment
@@ -56,14 +57,20 @@ public class Assignment
     //~ Constants (for key names) .............................................
 
     public static final String COURSE_OFFERINGS_KEY =
-        OFFERINGS_KEY
-        + "." + AssignmentOffering.COURSE_OFFERING_KEY;
+        OFFERINGS_KEY + "." + AssignmentOffering.COURSE_OFFERING_KEY;
+    public static final ERXKey<CourseOffering> courseOfferings =
+        new ERXKey<CourseOffering>(COURSE_OFFERINGS_KEY);
+
     public static final String COURSES_KEY =
-        COURSE_OFFERINGS_KEY
-        + "." + CourseOffering.COURSE_KEY;
+        COURSE_OFFERINGS_KEY + "." + CourseOffering.COURSE_KEY;
+    public static final ERXKey<Course> courses =
+        new ERXKey<Course>(COURSES_KEY);
+
     public static final String SEMESTERS_KEY =
-        COURSE_OFFERINGS_KEY
-        + "." + CourseOffering.SEMESTER_KEY;
+        COURSE_OFFERINGS_KEY + "." + CourseOffering.SEMESTER_KEY;
+    public static final ERXKey<Semester> semesters =
+        new ERXKey<Semester>(SEMESTERS_KEY);
+
     public static final String ID_FORM_KEY = "aid";
 
 
