@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStaffPage.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: EditStaffPage.java,v 1.3 2011/01/20 18:09:32 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
+import er.extensions.appserver.ERXDisplayGroup;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -32,8 +33,8 @@ import org.webcat.core.*;
  * results).
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/01/20 18:09:32 $
  */
 public class EditStaffPage
     extends GraderCourseEditComponent
@@ -53,12 +54,12 @@ public class EditStaffPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public WODisplayGroup      staffDisplayGroup;
-    public WODisplayGroup      potentialDisplayGroup;
-    public User                aUser;
-    public int                 index;
-    public boolean             editInstructors = true;
-    public String              sideStepTitle;
+    public ERXDisplayGroup<User>      staffDisplayGroup;
+    public ERXDisplayGroup<User>      potentialDisplayGroup;
+    public User                       aUser;
+    public int                        index;
+    public boolean                    editInstructors = true;
+    public String                     sideStepTitle;
 
 
     //~ Methods ...............................................................
@@ -123,7 +124,7 @@ public class EditStaffPage
     // ----------------------------------------------------------
     public WOComponent addStaff()
     {
-        if( editInstructors)
+        if (editInstructors)
         {
             if (aUser.accessLevel() < User.INSTRUCTOR_PRIVILEGES)
             {
