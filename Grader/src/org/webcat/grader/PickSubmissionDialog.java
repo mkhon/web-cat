@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.2 2010/11/04 17:44:09 stedwar2 Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.3 2011/01/20 18:44:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,7 +35,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/11/04 17:44:09 $
+ * @version $Revision: 1.3 $, $Date: 2011/01/20 18:44:16 $
  */
 public class PickSubmissionDialog extends GraderComponent
 {
@@ -148,10 +148,18 @@ public class PickSubmissionDialog extends GraderComponent
 
         prefs().setSubmissionRelationship(selectedSub);
 
-        page.availableSubmissions =
-            allUserSubmissionsForNavigation.immutableClone();
-        page.thisSubmissionIndex =
-            page.availableSubmissions.indexOf(rootUserSubmission);
+        if (allUserSubmissionsForNavigation == null)
+        {
+            page.availableSubmissions = null;
+            page.thisSubmissionIndex = 0;
+        }
+        else
+        {
+            page.availableSubmissions =
+                allUserSubmissionsForNavigation.immutableClone();
+            page.thisSubmissionIndex =
+                page.availableSubmissions.indexOf(rootUserSubmission);
+        }
         page.nextPage = nextPageForResultsPage;
 
         page.reloadGraderPrefs();
