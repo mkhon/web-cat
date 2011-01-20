@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmitResponse.java,v 1.4 2010/11/15 15:11:28 stedwar2 Exp $
+ |  $Id: SubmitResponse.java,v 1.5 2011/01/20 18:43:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/11/15 15:11:28 $
+ *  @version $Revision: 1.5 $, $Date: 2011/01/20 18:43:10 $
  */
 public class SubmitResponse
     extends GraderSubmissionUploadComponent
@@ -61,7 +61,7 @@ public class SubmitResponse
     public boolean criticalError = false;
     public boolean assignmentClosed = false;
     public NSArray<String> partnersNotFound;
-    public NSMutableArray<String> messages = new NSMutableArray<String>();
+    public NSMutableArray<String> errorMessages = new NSMutableArray<String>();
     public String aMessage;
 
 
@@ -74,7 +74,7 @@ public class SubmitResponse
      */
     public boolean error()
     {
-        boolean result = messages != null && messages.count() > 0;
+        boolean result = errorMessages != null && errorMessages.count() > 0;
         log.debug("error() = " + result);
         return result;
     }
@@ -110,7 +110,7 @@ public class SubmitResponse
         {
             if (error())
             {
-                messages.add("This assignment is not open for submission.");
+                errorMessages.add("This assignment is not open for submission.");
             }
         }
         return result;
@@ -143,6 +143,7 @@ public class SubmitResponse
             (partnersNotFound != null && partnersNotFound.count() > 0);
 
         return !criticalError
+            && !error()
             && !notAcceptingSubmissions()
             && !gradingPaused()
             && !prefs().assignmentOffering().gradingSuspended()
