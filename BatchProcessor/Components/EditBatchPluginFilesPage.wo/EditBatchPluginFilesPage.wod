@@ -4,14 +4,14 @@ CreateFolder: WCButton {
     remote = true;
 }
 
-FolderList1: WCFilteringSelect {
+FolderList1: WOPopUpButton {
     list          = folderList;
     item          = aFolder;
     displayString = aFolder;
     selection     = selectedParentFolderForSubFolder;
 }
 
-FolderList2: WCFilteringSelect {
+FolderList2: WOPopUpButton {
     list          = folderList;
     item          = aFolder;
     displayString = aFolder;
@@ -24,7 +24,6 @@ FolderName: WCTextBox {
 }
 
 FileBrowser: org.webcat.core.FileBrowser {
-    title                 = browserTitle;
     file                  = base;
     isEditable            = isEditable;
     allowSelection        = allowSelection;
@@ -35,6 +34,10 @@ FileBrowser: org.webcat.core.FileBrowser {
     fileEditListener      = thisPage;
     applyChangesOnMod     = true;
     currentSelection      = currentSelection;
+    initialExpansionDepth = 0;
+    browserId             = "fileBrowserId";
+    formId                = "fileForm";
+    focusedFiles          = focusedFiles;
 }
 
 Page: org.webcat.core.WCPageWithNavigation {
@@ -42,23 +45,22 @@ Page: org.webcat.core.WCPageWithNavigation {
 }
 
 Section: WCPageModule {
-    title = "~ \"File(s) for \" + batchPlugin.name";
+    title = "~ (batchPlugin == null) ? \"Your Files\" : (\"Files for \" + batchPlugin.name)";
 }
 
-Unzip: WCCheckBox {
+Unzip: WOCheckBox {
     checked = unzip;
 }
 
-UploadFile2: WCFileUpload {
-    data = uploadedFile2;
-    filePath = uploadedFileName2;
-    clearAfterUpload = true;
-    action = fileWasUploaded;
+Upload: WCButton {
+    label  = "Upload File";
+    action = uploadFile;
 }
 
-UploadFile3: WCFileUpload {
-    data = uploadedFile3;
-    filePath = uploadedFileName3;
-    clearAfterUpload = true;
-    action = folderReplacementWasUploaded;
+UploadFile: WOFileUpload {
+    data = uploadedFile2;
+    filePath = uploadedFileName2;
+    size = 60;
+    dojoType = "dojox.form.FileInput";
+    style = "display:inline-block";
 }

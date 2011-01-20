@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditBatchPluginFilesPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: EditBatchPluginFilesPage.java,v 1.3 2011/01/20 15:33:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,12 +36,12 @@ import org.webcat.ui.generators.JavascriptGenerator;
  * are available for selection.
  *
  * @author  Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/01/20 15:33:22 $
  */
 public class EditBatchPluginFilesPage
     extends WCComponent
-    implements EditFilePage.FileEditListener
+    implements EditFilePage.FileEditListener, FileBrowser.FileSelectionListener
 {
     //~ Constructors ..........................................................
 
@@ -54,15 +54,12 @@ public class EditBatchPluginFilesPage
     public EditBatchPluginFilesPage( WOContext context )
     {
         super( context );
-
-        refresher = new JavascriptGenerator()
-            .refresh("fileBrowser", "folderList1", "folderList2");
     }
 
 
     //~ KVC Attributes (must be public) .......................................
 
-    public BatchPlugin batchPlugin;
+    public BatchPlugin            batchPlugin;
     public File                   base;
     public boolean                isEditable;
     public boolean                allowSelectDir;
@@ -79,6 +76,7 @@ public class EditBatchPluginFilesPage
     public boolean                unzip = false;
     public FileBrowser.FileSelectionListener fileSelectionListener = null;
     public String                 currentSelection;
+    public String                 browserId;
 
 
     //~ Methods ...............................................................
@@ -87,58 +85,10 @@ public class EditBatchPluginFilesPage
     public void appendToResponse(WOResponse response, WOContext context)
     {
         log.debug( "listener = " + fileSelectionListener );
-        folderName = null;
-        if ( base == null )
-        {
-            if ( batchPlugin.hasSubdir() )
-            {
-                base = new File( batchPlugin.dirName() );
-            }
-            else
-            {
-                base = new File( batchPlugin.mainFilePath() );
-            }
-        }
 
-        folderList = null;
-        refreshFolderList();
-
+        rescanFolders();
         super.appendToResponse( response, context );
-    }
-
-
-    // ----------------------------------------------------------
-    private void refreshFolderList()
-    {
-        if ( folderList == null )
-        {
-            folderList = new NSMutableArray<String>();
-            String parent = base.getParent();
-            int stripLength = 0;
-            if ( parent != null && parent.length() > 0 )
-            {
-                stripLength = parent.length() + 1;
-            }
-            addFolders( folderList, base, stripLength );
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    private void addFolders(
-        NSMutableArray<String> list, File file, int stripLength)
-    {
-        if ( !file.isDirectory() ) return;
-        String name = file.getName();
-        if ( name.equals( "." ) || name.equals( ".." ) ) return;
-        name = file.getPath().substring( stripLength )
-            .replaceAll( "\\\\", "/" );
-        list.addObject( name );
-        File[] files = file.listFiles();
-        for ( int i = 0; i < files.length; i++ )
-        {
-            addFolders( list, files[i], stripLength );
-        }
+        showFiles.clear();
     }
 
 
@@ -170,13 +120,6 @@ public class EditBatchPluginFilesPage
 
 
     // ----------------------------------------------------------
-    public String browserTitle()
-    {
-        return sideStepTitle();
-    }
-
-
-    // ----------------------------------------------------------
     public boolean allowSelection()
     {
         return fileSelectionListener != null;
@@ -184,133 +127,104 @@ public class EditBatchPluginFilesPage
 
 
     // ----------------------------------------------------------
-    public JavascriptGenerator createFolder()
+    public void setSelectedParentFolderForSubFolder(String value)
     {
-        if (!applyLocalChanges())
-        {
-            return new JavascriptGenerator();
-        }
-
-        if ( folderName == null || folderName.length() == 0 )
-        {
-            error( "Please enter a folder name." );
-        }
-        else
-        {
-            File target =
-                new File( base.getParent(),
-                          selectedParentFolderForSubFolder + "/" + folderName );
-            try
-            {
-                target.mkdirs();
-            }
-            catch ( Exception e )
-            {
-                error( e.getMessage() );
-            }
-        }
-
-        folderList = null;
-        refreshFolderList();
-
-        return refresher;
+        selectedParentFolderForSubFolder = value;
+        log.debug("setSelectedParentFolderForSubFolder(\"" + value + "\")");
     }
 
 
     // ----------------------------------------------------------
-    public JavascriptGenerator fileWasUploaded()
+    public WOActionResults createFolder()
     {
-        if (!applyLocalChanges())
+        log.debug("createFolder()");
+        JavascriptGenerator page = new JavascriptGenerator();
+        page.refresh("error-panel");
+        if (applyLocalChanges())
         {
-            return new JavascriptGenerator();
-        }
-
-        if ( unzip && FileUtilities.isArchiveFile( uploadedFileName2 ) )
-        {
-            File target =
-                new File( base.getParent(), selectedParentFolderForUpload );
-            // ZipInputStream zipStream =
-            //    new ZipInputStream( uploadedFile2.stream() );
-            try
+            if (folderName == null || folderName.length() == 0)
             {
-                ArchiveManager.getInstance().unpack(
-                    target, uploadedFileName2, uploadedFile2.stream() );
+                log.debug("createFolder(): no folder name");
+                error("Please enter a folder name.");
             }
-            catch ( java.io.IOException e )
+            else
             {
-                error( e.getMessage() );
+                String fullName =
+                    selectedParentFolderForSubFolder + "/" + folderName;
+                File target = new File(base.getParent(), fullName);
+                log.debug("createFolder(): attempting to create " + target);
+                try
+                {
+                    target.mkdirs();
+                }
+                catch (Exception e)
+                {
+                    error(e.getMessage());
+                }
+                rescanFolders();
+                page.refresh(browserId, "folderControls");
+                showFiles.add(fullName);
             }
-
-            folderList = null;
-            refreshFolderList();
         }
         else
         {
-            uploadedFileName2 = new File( uploadedFileName2 ).getName();
-            File target =
-                new File( base.getParent(), selectedParentFolderForUpload
-                                            + "/" + uploadedFileName2 );
-            try
-            {
-                FileOutputStream out = new FileOutputStream( target );
-                uploadedFile2.writeToStream( out );
-                out.close();
-            }
-            catch ( java.io.IOException e )
-            {
-                error( e.getMessage() );
-            }
+            log.debug("createFolder(): applyLocalChanges() failed");
         }
-
-        if ( batchPlugin != null )
-        {
-            batchPlugin.initializeConfigAttributes();
-            applyLocalChanges();
-        }
-
-        return refresher;
+        return page;
     }
 
 
     // ----------------------------------------------------------
-    public JavascriptGenerator folderReplacementWasUploaded()
+    public WOActionResults uploadFile()
     {
-        if (!applyLocalChanges())
+//        JavascriptGenerator page = new JavascriptGenerator();
+//        page.refresh("error-panel");
+        if (applyLocalChanges())
         {
-            return new JavascriptGenerator();
-        }
-
-        if ( FileUtilities.isArchiveFile( uploadedFileName3 ) )
-        {
-            org.webcat.core.FileUtilities.deleteDirectory( base );
-            base.mkdirs();
-            // ZipInputStream zipStream =
-            //    new ZipInputStream( uploadedFile3.stream() );
-            try
+            if (unzip && FileUtilities.isArchiveFile(uploadedFileName2))
             {
-                ArchiveManager.getInstance().unpack(
-                    base, uploadedFileName3, uploadedFile3.stream() );
+                File target =
+                    new File(base.getParent(), selectedParentFolderForUpload);
+                try
+                {
+                    ArchiveManager.getInstance().unpack(
+                        target, uploadedFileName2, uploadedFile2.stream());
+                }
+                catch (java.io.IOException e)
+                {
+                    error(e.getMessage());
+                }
+//                page.refresh("folderControls");
+                showFiles.add(selectedParentFolderForUpload);
+                rescanFolders();
             }
-            catch ( java.io.IOException e )
+            else
             {
-                error( e.getMessage() );
+                uploadedFileName2 = new File(uploadedFileName2).getName();
+                String fullName =
+                    selectedParentFolderForUpload + "/" + uploadedFileName2;
+                File target = new File(base.getParent(), fullName);
+                try
+                {
+                    FileOutputStream out = new FileOutputStream(target);
+                    uploadedFile2.writeToStream(out);
+                    out.close();
+                }
+                catch (java.io.IOException e)
+                {
+                    error(e.getMessage());
+                }
+                showFiles.add(fullName);
             }
-            if ( batchPlugin != null )
+            if (batchPlugin != null)
             {
                 batchPlugin.initializeConfigAttributes();
                 applyLocalChanges();
             }
-
-            folderList = null;
-            refreshFolderList();
+//            page.refresh(browserId);
         }
-        else
-        {
-            error( "To replace this entire folder, you must upload a "
-                          + "zip or a jar file." );
-        }
-
-        return refresher;
+//        return page;
+        return null;
     }
 
 
@@ -349,20 +263,104 @@ public class EditBatchPluginFilesPage
 
 
     // ----------------------------------------------------------
+    public WOComponent selectFile(String filePath)
+    {
+        WOComponent page = this;
+        if (fileSelectionListener != null)
+        {
+            page = fileSelectionListener.selectFile(filePath);
+        }
+
+        if (page == this)
+        {
+            currentSelection = base.getParentFile().getName() + "/" + filePath;
+        }
+        return page;
+    }
+
+
+    // ----------------------------------------------------------
+    public NSArray<String> focusedFiles()
+    {
+        return showFiles;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * This property is read-only, so the setter does nothing and is
+     * provided only for synchronized binding pushing.
+     */
+    public void setFocusedFiles(NSArray<String> values)
+    {
+        // ignore
+    }
+
+
+    // ----------------------------------------------------------
     public EditFilePage.FileEditListener thisPage()
     {
         return this;
     }
 
 
-    //~ Instance/static variables .............................................
+    // ----------------------------------------------------------
+    private void rescanFolders()
+    {
+        folderName = null;
+        folderList = null;
+        if (base == null)
+        {
+            if (batchPlugin.hasSubdir())
+            {
+                base = new File(batchPlugin.dirName());
+            }
+            else
+            {
+                base = new File(batchPlugin.mainFilePath());
+            }
+        }
+        if (folderList == null)
+        {
+            folderList = new NSMutableArray<String>();
+            String parent = base.getParent();
+            int stripLength = 0;
+            if (parent != null && parent.length() > 0)
+            {
+                stripLength = parent.length() + 1;
+            }
+            addFolders(folderList, base, stripLength);
+        }
+    }
 
-    // Since the same panes are refreshed by most of the upload actions, we
-    // create a common JavascriptGenerator here to be returned by those
-    // methods.
-    private JavascriptGenerator refresher;
+
+    // ----------------------------------------------------------
+    private void addFolders(
+        NSMutableArray<String> list, File folder, int stripLength)
+    {
+        if (!folder.isDirectory())
+        {
+            return;
+        }
+        String name = folder.getName();
+        if (name.equals( "." ) || name.equals( ".." ))
+        {
+            return;
+        }
+        name = folder.getPath().substring(stripLength).replaceAll("\\\\", "/");
+        list.addObject(name);
+        for (File file : folder.listFiles())
+        {
+            addFolders(list, file, stripLength);
+        }
+    }
+
+
+    //~ Instance/static variables .............................................
 
     private String title;
     private boolean hideNextBack = false;
+    private NSMutableArray<String> showFiles = new NSMutableArray<String>(1);
+
     static Logger log = Logger.getLogger( EditBatchPluginFilesPage.class );
 }

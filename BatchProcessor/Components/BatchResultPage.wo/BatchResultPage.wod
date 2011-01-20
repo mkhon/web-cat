@@ -20,7 +20,6 @@ FeedbackSections: WORepetition {
 }
 
 FileBrowser: org.webcat.core.FileBrowser {
-    title                 = "Browse Raw Files: Batch Results";
     file                  = result.resultDir;
     initialExpansionDepth = 1;
 }
