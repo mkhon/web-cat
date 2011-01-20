@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.7 2010/10/29 20:36:37 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.8 2011/01/20 18:43:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.core.*;
  *  Represents the results for a student submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.7 $, $Date: 2010/10/29 20:36:37 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.8 $, $Date: 2011/01/20 18:43:52 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -309,6 +309,21 @@ public class SubmissionResult
         {
             return finalScoreForStudent();
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Check whether manual grading has been completed on this
+     * submission.
+     *
+     * @return true if TA markup by hand has been completed
+     * @deprecated Resurrected for old reports, but should not be used by
+     *             any new code.
+     */
+    public boolean taGradingFinished()
+    {
+        return taScoreRaw() != null;
     }
 
 
