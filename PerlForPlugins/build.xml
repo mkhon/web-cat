@@ -18,13 +18,16 @@
   <property name="external.resource.excludes"
     value="lib/XML/Simple/**
            lib/XML/Simple.pm
+  	       lib/Win32.pm
            **/*~"/>
 
   <import file="../Core/framework.xml"/>
 
   <target name="local.copy" depends="setProps" if="PerlForPlugins.Resources">
     <copy todir="${PerlForPlugins.Resources}">
-      <fileset dir="Resources"/>
+      <fileset dir="Resources">
+      	<excludes name="lib/Win32.pm"/>
+      </fileset>
     </copy>
   </target>
 
