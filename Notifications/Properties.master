@@ -5,7 +5,7 @@ subsystem.Notifications=org.webcat.notifications.Notifications
 
 Notifications.version.major=1
 Notifications.version.minor=0
-Notifications.version.revision=0
+Notifications.version.revision=1
 Notifications.requires=Core, JobQueue
 Notifications.depends=env, pluginProperties
 
