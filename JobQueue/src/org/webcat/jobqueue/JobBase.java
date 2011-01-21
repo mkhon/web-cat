@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.3 2011/01/21 18:05:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/01/21 18:05:43 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -147,35 +147,42 @@ public abstract class JobBase
         queueNeedsNotified = false;
 
         EOEditingContext ec = Application.newPeerEditingContext();
-        QueueDescriptor queue = QueueDescriptor.descriptorFor(
+        try
+        {
+            ec.lock();
+            QueueDescriptor queue = QueueDescriptor.descriptorFor(
                 ec, entityName());
 
-        long oldJobCount = 0;
+            long oldJobCount = 0;
 
-        boolean saved = false;
-        while (!saved)
-        {
-            try
+            boolean saved = false;
+            while (!saved)
             {
-                oldJobCount = queue.jobCount();
-                queue.setJobCount(oldJobCount + 1);
-                ec.saveChanges();
-                saved = true;
-            }
-            catch (EOGeneralAdaptorException e)
-            {
-                if (ERXEOAccessUtilities.isOptimisticLockingFailure(e))
+                try
                 {
-                    queue = (QueueDescriptor)
-                        ERXEOAccessUtilities.refetchFailedObject(ec, e);
+                    oldJobCount = queue.jobCount();
+                    queue.setJobCount(oldJobCount + 1);
+                    ec.saveChanges();
+                    saved = true;
+                }
+                catch (EOGeneralAdaptorException e)
+                {
+                    if (ERXEOAccessUtilities.isOptimisticLockingFailure(e))
+                    {
+                        queue = (QueueDescriptor)
+                            ERXEOAccessUtilities.refetchFailedObject(ec, e);
+                    }
                 }
             }
+
+            log.debug(entityName() + " queue job count was "
+                + oldJobCount + "; " + "now " + queue.jobCount());
         }
-
-        log.debug(entityName() + " queue job count was " + oldJobCount + "; "
-                + "now " + queue.jobCount());
-
-        Application.releasePeerEditingContext(ec);
+        finally
+        {
+            ec.unlock();
+            Application.releasePeerEditingContext(ec);
+        }
     }
 
 

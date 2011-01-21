@@ -5,7 +5,7 @@ subsystem.Opinions=org.webcat.opinions.Opinions
 
 Opinions.version.major=1
 Opinions.version.minor=0
-Opinions.version.revision=1
+Opinions.version.revision=2
 Opinions.requires=Core, EOJDBCPrototypes, DBUpdateEngine, Grader, JobQueue
 
 Opinions.copyright=\

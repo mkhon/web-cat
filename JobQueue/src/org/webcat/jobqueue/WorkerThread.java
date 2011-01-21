@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.3 2010/10/23 20:45:23 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.4 2011/01/21 18:05:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/23 20:45:23 $
+ * @version $Revision: 1.4 $, $Date: 2011/01/21 18:05:43 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -119,6 +119,9 @@ public abstract class WorkerThread<Job extends JobBase>
     @SuppressWarnings("unchecked")
     public final void run()
     {
+        // Make sure application is fully initialized before running.
+        Application.waitForInitializationToComplete();
+
         logDebug("started");
 
         try
@@ -289,12 +292,9 @@ public abstract class WorkerThread<Job extends JobBase>
      * Subclasses that override this method should always call the super
      * method first.
      */
-    protected void cancelJob()
+    protected synchronized void cancelJob()
     {
-        synchronized (this)
-        {
-            isCancelled = true;
-        }
+        isCancelled = true;
     }
 
 
@@ -358,12 +358,13 @@ public abstract class WorkerThread<Job extends JobBase>
      */
     protected void recycleAndRelockLocalContext()
     {
+        // Unlock and release the current editing context
         ec.unlock();
         Application.releasePeerEditingContext(ec);
         ec = null;
 
-        EOEditingContext lc = localContext();
-        lc.lock();
+        // Generate a fresh editing context and lock it
+        localContext().lock();
     }
 
 

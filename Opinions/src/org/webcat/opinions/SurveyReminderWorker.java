@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SurveyReminderWorker.java,v 1.2 2010/10/19 23:34:58 stedwar2 Exp $
+ |  $Id: SurveyReminderWorker.java,v 1.3 2011/01/21 18:11:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -36,7 +36,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/19 23:34:58 $
+ * @version $Revision: 1.3 $, $Date: 2011/01/21 18:11:59 $
  */
 public class SurveyReminderWorker
     extends WorkerThread<SurveyReminderJob>
@@ -88,7 +88,7 @@ public class SurveyReminderWorker
         }
 
         // Record that notifications have been sent
-        SurveyNotificationMarker.create(localContext(), assignment);
+// FIXME:        SurveyNotificationMarker.create(localContext(), assignment);
         localContext().saveChanges();
     }
 
@@ -112,7 +112,7 @@ public class SurveyReminderWorker
         {
             log.debug("sending survey reminder message to "
                 + user + " for " + assignment);
-            new SurveyReminderMessage(user, properties).send();
+// FIXME:           new SurveyReminderMessage(user, properties).send();
         }
         catch (Exception e)
         {

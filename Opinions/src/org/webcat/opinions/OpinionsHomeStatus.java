@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OpinionsHomeStatus.java,v 1.1 2010/10/19 23:34:58 stedwar2 Exp $
+ |  $Id: OpinionsHomeStatus.java,v 1.2 2011/01/21 18:11:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -46,7 +46,7 @@ import er.extensions.eof.ERXS;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.1 $, $Date: 2010/10/19 23:34:58 $
+ *  @version $Revision: 1.2 $, $Date: 2011/01/21 18:11:59 $
  */
 public class OpinionsHomeStatus
     extends WCComponent
@@ -147,10 +147,10 @@ public class OpinionsHomeStatus
             if (log.isDebugEnabled())
             {
                 log.debug("final list: " + pendingOpinions);
+                Application.disableSQLLogging();
             }
             assignmentOfferingDisplayGroup.setObjectArray(pendingOpinions);
             hasSurveys = pendingOpinions.count() > 0;
-            Application.disableSQLLogging();
         }
         super.appendToResponse(response, context);
     }

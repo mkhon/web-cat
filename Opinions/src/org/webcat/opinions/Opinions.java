@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Opinions.java,v 1.2 2010/10/19 23:34:58 stedwar2 Exp $
+ |  $Id: Opinions.java,v 1.3 2011/01/21 18:11:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,6 @@ import org.webcat.opinions.messaging.SurveyReminderMessage;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSTimestamp;
-import er.extensions.eof.ERXConstant;
 
 //-------------------------------------------------------------------------
 /**
@@ -43,7 +42,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/19 23:34:58 $
+ * @version $Revision: 1.3 $, $Date: 2011/01/21 18:11:59 $
  */
 public class Opinions
     extends Subsystem
@@ -136,6 +135,8 @@ public class Opinions
         @Override
         public void run()
         {
+            Application.waitForInitializationToComplete();
+
             // repeat forever
             while (true)
             {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.3 2011/01/21 18:05:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package org.webcat.jobqueue;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
@@ -45,7 +46,7 @@ import org.webcat.dbupdate.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/01/21 18:05:43 $
  */
 public class JobQueue
     extends Subsystem
@@ -59,6 +60,7 @@ public class JobQueue
     public JobQueue()
     {
         super();
+        instance = this;
     }
 
 
@@ -69,7 +71,10 @@ public class JobQueue
     {
         super.init();
 
-        initialized = true;
+        // Mark as initialized just a bit early, so that the registration
+        // operations in this method don't choke
+        subsystemInitCompleted();
+
         HostDescriptor.ensureCurrentHostIsRegistered();
         log.info(
             "canonical host name = " + HostDescriptor.canonicalHostName());
@@ -410,7 +415,7 @@ public class JobQueue
     // ----------------------------------------------------------
     private static void ensureInitialized()
     {
-        if (!initialized)
+        if (!instance.isInitialized())
         {
             log.error(
                 "JobQueue subsystem has not yet been initialized "
@@ -422,7 +427,7 @@ public class JobQueue
 
     //~ Instance/static variables .............................................
 
-    private static boolean initialized = false;
+    private static JobQueue instance;
 
     static Logger log = Logger.getLogger(JobQueue.class);
 }
