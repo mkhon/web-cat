@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.9 2010/11/19 14:56:29 stedwar2 Exp $
+ |  $Id: Application.java,v 1.10 2011/01/21 18:53:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -79,7 +79,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2010/11/19 14:56:29 $
+ * @version $Revision: 1.10 $, $Date: 2011/01/21 18:53:20 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -1222,6 +1222,7 @@ public class Application
 
             message.setFrom(new InternetAddress(
                 configurationProperties().getProperty("coreAdminEmail")));
+            message.setSentDate(new NSTimestamp());
 
             // Add each recipient to the message.
             for (String toAddress : to)
@@ -1240,23 +1241,27 @@ public class Application
 
             message.setSubject(appIdentifier() + subject);
 
-            // Create the message part
-            javax.mail.BodyPart messageBodyPart = new MimeBodyPart();
-
-            // Fill the message
-            messageBodyPart.setText(body);
-
-            // Create a Multipart
-            javax.mail.Multipart multipart = new MimeMultipart();
-
-            // Add part one
-            multipart.addBodyPart(messageBodyPart);
-
-            //
-            // The next parts are attachments
-            //
-            if (attachments != null)
+            if (attachments == null || attachments.size() == 0)
             {
+                message.setText(body);
+            }
+            else
+            {
+                // Create the message part
+                javax.mail.BodyPart messageBodyPart = new MimeBodyPart();
+
+                // Fill the message
+                messageBodyPart.setText(body);
+
+                // Create a Multipart
+                javax.mail.Multipart multipart = new MimeMultipart();
+
+                // Add part one
+                multipart.addBodyPart(messageBodyPart);
+
+                //
+                // The next parts are attachments
+                //
                 for (String filename : attachments.allKeys())
                 {
                     String attachmentPath = attachments.objectForKey(filename);
@@ -1293,10 +1298,10 @@ public class Application
                     // Add attachment
                     multipart.addBodyPart(messageBodyPart);
                 }
-            }
 
-            // Put parts in message
-            message.setContent(multipart);
+                // Put parts in message
+                message.setContent(multipart);
+            }
 
             // Send the message
             if ("donotsendmail".equals(
