@@ -7,7 +7,7 @@
            ant/KEYS
            ant/ant-contrib/lib/**
            ant/bin/**
-           ant/cpptasks-1.0b1/*.jar
+           ant/cpptasks*/*.jar
            ant/etc/**
            ant/lib/**"/>
   <property name="external.resource.excludes"
