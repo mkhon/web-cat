@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.10 2011/01/21 18:53:20 stedwar2 Exp $
+ |  $Id: Application.java,v 1.11 2011/02/14 15:26:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -78,8 +78,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2011/01/21 18:53:20 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.11 $, $Date: 2011/02/14 15:26:08 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -106,8 +106,8 @@ public class Application
         // Set UTF-8 encoding, to support localization
         WOMessage.setDefaultEncoding("UTF-8");
         WOMessage.setDefaultURLEncoding("UTF-8");
-        ERXMessageEncoding.setDefaultEncoding("UTF8");
-        ERXMessageEncoding.setDefaultEncodingForAllLanguages("UTF8");
+        ERXMessageEncoding.setDefaultEncoding("UTF-8");
+        ERXMessageEncoding.setDefaultEncodingForAllLanguages("UTF-8");
 
         // We'll use plain WO sessions, even in a servlet context, since
         // restoring sessions through the WCServletSessionStore doesn't

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.3 2010/10/15 01:00:25 stedwar2 Exp $
+ |  $Id: Session.java,v 1.4 2011/02/14 15:26:08 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,8 +41,8 @@ import com.webobjects.foundation.NSTimestampFormatter;
  * The current user session.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/15 01:00:25 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2011/02/14 15:26:08 $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -81,8 +81,8 @@ public class Session
     {
         log.debug( "creating " + sessionID() );
 
-//        setStoresIDsInCookies(true);
-//        setStoresIDsInURLs(false);
+        setStoresIDsInCookies(true);
+        setStoresIDsInURLs(false);
         defaultEditingContext().setUndoManager( null );
 //        defaultEditingContext().setSharedEditingContext( null );
 
