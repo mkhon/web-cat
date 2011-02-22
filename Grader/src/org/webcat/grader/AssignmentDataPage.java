@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AssignmentDataPage.java,v 1.2 2010/09/27 04:17:43 stedwar2 Exp $
+ |  $Id: AssignmentDataPage.java,v 1.3 2011/02/22 03:08:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -36,7 +36,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:17:43 $
+ * @version $Revision: 1.3 $, $Date: 2011/02/22 03:08:58 $
  */
 public class AssignmentDataPage
     extends WCComponent
@@ -174,7 +174,6 @@ public class AssignmentDataPage
                 out.print( "penalty.limit" );  // penalty limit
                 out.print( "penalty.increment" );  // penalty increment
                 out.print( "penalty.time.unit" );  // penalty time unit
-                out.print( "external.submitter" );
                 out.println();
             }
             if ( assignments != null && stepNumber < assignments.count() )
@@ -275,9 +274,6 @@ public class AssignmentDataPage
                             // penalty time unit
                             outPrintObject( ao.assignment().submissionProfile()
                                 .latePenaltyUnitTimeRaw() );
-                            // submitter
-                            outPrintObject( ao.assignment().submissionProfile()
-                                .submissionMethodRaw() );
                         }
                         else
                         {

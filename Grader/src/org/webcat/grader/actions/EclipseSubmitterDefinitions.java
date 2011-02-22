@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EclipseSubmitterDefinitions.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: EclipseSubmitterDefinitions.java,v 1.2 2011/02/22 03:08:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-20011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,11 +22,6 @@
 package org.webcat.grader.actions;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
-import org.apache.log4j.Logger;
-import org.webcat.core.*;
-import org.webcat.grader.*;
 
 //-------------------------------------------------------------------------
 /**
@@ -34,7 +29,8 @@ import org.webcat.grader.*;
  * the Eclipse submitter plugin.
  *
  * @author Stephen Edwards
- * @version $Id: EclipseSubmitterDefinitions.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/02/22 03:08:58 $
  */
 public class EclipseSubmitterDefinitions
     extends BlueJSubmitterDefinitions
@@ -54,13 +50,6 @@ public class EclipseSubmitterDefinitions
 
 
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    public int submitterEngine()
-    {
-        return 2;
-    }
-
 
     // ----------------------------------------------------------
     public boolean useSecureSubmissionURLs()
