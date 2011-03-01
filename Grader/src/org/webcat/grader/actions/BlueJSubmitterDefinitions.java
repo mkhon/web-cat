@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BlueJSubmitterDefinitions.java,v 1.2 2011/02/22 03:08:58 stedwar2 Exp $
+ |  $Id: BlueJSubmitterDefinitions.java,v 1.3 2011/03/01 17:59:28 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -36,8 +36,8 @@ import org.webcat.grader.*;
  * the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2011/02/22 03:08:58 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/03/01 17:59:28 $
  */
 public class BlueJSubmitterDefinitions
     extends WOComponent
@@ -193,7 +193,7 @@ public class BlueJSubmitterDefinitions
     // ----------------------------------------------------------
     public String assignmentName()
     {
-        String name = anAssignmentOffering.assignment().name();
+        String name = anAssignmentOffering.assignment().titleString();
         if ( name == null )
         {
             name = "(missing name)";
