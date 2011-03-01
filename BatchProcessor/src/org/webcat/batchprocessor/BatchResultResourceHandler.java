@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchResultResourceHandler.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchResultResourceHandler.java,v 1.3 2011/03/01 17:58:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -22,7 +22,7 @@
 package org.webcat.batchprocessor;
 
 import java.io.File;
-import org.webcat.core.IEntityResourceHandler;
+import org.webcat.core.EntityResourceHandler;
 
 //-------------------------------------------------------------------------
 /**
@@ -30,11 +30,11 @@ import org.webcat.core.IEntityResourceHandler;
  * BatchResult entities through direct URLs.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/03/01 17:58:49 $
  */
 public class BatchResultResourceHandler
-implements IEntityResourceHandler<BatchResult>
+    extends EntityResourceHandler<BatchResult>
 {
     //~ Methods ...............................................................
 
@@ -43,4 +43,7 @@ implements IEntityResourceHandler<BatchResult>
     {
         return new File(object.resultDir(), relativePath);
     }
+
+
+    // TODO add requirements for log-in and user permissions
 }
