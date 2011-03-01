@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.4 2010/10/15 00:57:39 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.5 2011/03/01 18:01:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -37,8 +37,8 @@ import org.webcat.core.*;
  *  Represents an uploaded grading plug-in.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/15 00:57:39 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.5 $, $Date: 2011/03/01 18:01:07 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -98,6 +98,18 @@ public class GradingPlugin
 
     // ----------------------------------------------------------
     /**
+     * Returns the directory where the plug-in's public resources are stored.
+     *
+     * @return the plug-in's public resources directory
+     */
+    public File publicResourcesDir()
+    {
+        return new File(dirName(), "public");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve the path name for this script's entry point--its main
      * executable file.
      * @return the path to the main file
@@ -127,6 +139,39 @@ public class GradingPlugin
     public String configPlistFilePath()
     {
         return dirName() + "/config.plist";
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the path to the public resource with the specified relative
+     * path in the public resources directory. If the path is invalid (for
+     * example, it tries to navigate to a parent directory), then null is
+     * returned.
+     *
+     * @param path the relative path to the resource
+     * @return the File object that represents the file, or null if the path
+     *     was invalid
+     */
+    public File fileForPublicResourceAtPath(String path)
+    {
+        File file = new File(publicResourcesDir(), path);
+
+        try
+        {
+            if (file.getCanonicalPath().startsWith(
+                    publicResourcesDir().getCanonicalPath()))
+            {
+                return file;
+            }
+        }
+        catch (IOException e)
+        {
+            log.error("An error occurred while retrieving the canonical path "
+                    + "of the file " + file.toString());
+        }
+
+        return null;
     }
 
 

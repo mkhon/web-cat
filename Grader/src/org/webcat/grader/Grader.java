@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.8 2011/01/20 19:18:52 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.9 2011/03/01 18:01:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,27 +21,41 @@
 
 package org.webcat.grader;
 
-import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
-import er.extensions.qualifiers.ERXKeyValueQualifier;
 import org.apache.log4j.Logger;
-import org.webcat.core.*;
+import org.webcat.core.Application;
+import org.webcat.core.Course;
+import org.webcat.core.CourseOffering;
+import org.webcat.core.EntityResourceRequestHandler;
+import org.webcat.core.Session;
+import org.webcat.core.Subsystem;
+import org.webcat.core.User;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.webcat.grader.messaging.AdminReportsForSubmissionMessage;
 import org.webcat.grader.messaging.GraderKilledMessage;
 import org.webcat.grader.messaging.GraderMarkupParseError;
 import org.webcat.grader.messaging.GradingResultsAvailableMessage;
 import org.webcat.grader.messaging.SubmissionSuspendedMessage;
+import com.webobjects.appserver.WOActionResults;
+import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WORequest;
+import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOQualifier;
+import com.webobjects.eocontrol.EOSortOrdering;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSData;
+import com.webobjects.foundation.NSMutableArray;
+import com.webobjects.foundation.NSNumberFormatter;
+import com.webobjects.foundation.NSTimestamp;
+import er.extensions.qualifiers.ERXKeyValueQualifier;
 
 //-------------------------------------------------------------------------
 /**
  *  The subsystem defining Web-CAT administrative tasks.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2011/01/20 19:18:52 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.9 $, $Date: 2011/03/01 18:01:07 $
  */
 public class Grader
    extends Subsystem
@@ -93,6 +107,9 @@ public class Grader
         SubmissionSuspendedMessage.register();
         GraderKilledMessage.register();
         GraderMarkupParseError.register();
+
+        EntityResourceRequestHandler.registerHandler(GradingPlugin.class,
+                new GradingPluginResourceHandler());
 
         // Install or update any plug-ins that need it
 

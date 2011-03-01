@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.6 2010/10/23 20:47:41 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.7 2011/03/01 18:01:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,8 +31,8 @@ import org.webcat.dbupdate.UpdateSet;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2010/10/23 20:47:41 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.7 $, $Date: 2011/03/01 18:01:07 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -386,6 +386,23 @@ public class GraderDatabaseUpdates
     {
         database().executeSQL(
             "alter table TSUBMISSIONRESULT add lastUpdated DATETIME" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds studentReportStyleVersion and staffReportStyleVersion fields to
+     * submission result table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement17() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSUBMISSIONRESULT add "
+                + "studentReportStyleVersion INTEGER" );
+        database().executeSQL(
+            "alter table TSUBMISSIONRESULT add "
+                + "staffReportStyleVersion INTEGER" );
     }
 
 
