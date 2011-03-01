@@ -34,8 +34,8 @@ use Exporter qw( import );
 @ISA = qw( Exporter );
 @EXPORT_OK = qw( initFromConfig
                  confirmExists filePattern copyHere htmlEscape addReportFile
-                 scanTo scanThrough printableSize linesFromFile
-                 ltrim rtrim trim
+                 addReportFileWithStyle scanTo scanThrough printableSize
+                 linesFromFile ltrim rtrim trim
                  $PATH_SEPARATOR
                  $FILE_SEPARATOR
                  $SHELL
@@ -210,8 +210,9 @@ characters, returning the final result.
     my $str = shift;
     if ( defined $str )
     {
-        $str = HTML::Entities::encode_entities_numeric( expand( $ str ) );
-        $str =~ s/&#([01]?[0-9]);/&#171;&amp;#$1&#187;/g;
+        $str = HTML::Entities::encode_entities_numeric(
+            expand($str), '^\n\r\t !\#\$%\(-;=?-~');
+        $str =~ s/&#([01]?[0-9A-Fa-f]);/&#171;&amp;#$1&#187;/g;
     }
     return $str;
 }
@@ -220,8 +221,22 @@ characters, returning the final result.
 #========================================================================
 sub addReportFile
 {
+    my $cfg          = shift || confess "addReportFile: cfg object required";
+    my $file         = shift || confess "addReportFile: file name required";
+    my $mimeType     = shift || "text/html";
+    my $to           = shift;
+    my $inline       = shift;
+    my $label        = shift;
 
-=head2 addReportFile($cfg, $file, $mimeType, $to, $inline, $label)
+    addReportFileWithStyle($cfg, $file, $mimeType, 0, $to, $inline, $label);
+}
+
+
+#========================================================================
+sub addReportFileWithStyle
+{
+
+=head2 addReportFile($cfg, $file, $mimeType, $styleVersion, $to, $inline, $label)
 
 Adds a specified report file to the specified properties file, and
 update the "numReports" property appropriately.
@@ -243,6 +258,11 @@ The relative pathname of the report file to add.
 The mime type to record for the given file.  If omitted, the default is
 "text/html".
 
+=item $styleVersion (optional)
+
+Use the specified style version for collapsible inline report sections.
+0 = legacy styles, 1 = Dojo title panes.
+
 =item $to (optional)
 
 Set to "admin" to target a report for administrators.  The default is
@@ -261,18 +281,23 @@ The label/description to use for downloaded (rather than inline) files.
 
 =cut
 
-    my $cfg      = shift || confess "addReportFile: cfg object required";
-    my $file     = shift || confess "addReportFile: file name required";
-    my $mimeType = shift || "text/html";
-    my $to       = shift;
-    my $inline   = shift;
-    my $label    = shift;
+    my $cfg          = shift || confess "addReportFile: cfg object required";
+    my $file         = shift || confess "addReportFile: file name required";
+    my $mimeType     = shift || "text/html";
+    my $styleVersion = shift || 0;
+    my $to           = shift;
+    my $inline       = shift;
+    my $label        = shift;
 
     my $numReports = $cfg->getProperty( 'numReports', 0 );
     $numReports++;
 
     $cfg->setProperty( "report${numReports}.file",     $file );
     $cfg->setProperty( "report${numReports}.mimeType", $mimeType );
+    if ( $styleVersion )
+    {
+        $cfg->setProperty( "report${numReports}.styleVersion", $styleVersion );
+    }
     if ( defined $to )
     {
         $cfg->setProperty( "report${numReports}.to", $to );
@@ -439,7 +464,7 @@ included in the result.
     close( LINESFROMFILE );
     if ( !$isHTML )
     {
-    	@result = map( htmlEscape( $_ ), @result );
+        @result = map( htmlEscape( $_ ), @result );
     }
     # print "$#result lines to return\n";
     return @result;
@@ -506,4 +531,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.7 2010/11/23 15:30:06 stedwar2 Exp $
+$Id: Utilities.pm,v 1.8 2011/03/01 17:38:14 aallowat Exp $

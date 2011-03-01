@@ -5,6 +5,7 @@ use warnings;
 use strict;
 use Carp;
 use vars qw( $URL_BASE );
+use Web_CAT::Utilities qw( htmlEscape );
 
 $URL_BASE    = "http://web-cat.cs.vt.edu/wcstatic/Core.framework"
     . "/WebServerResources/icons/";
@@ -123,11 +124,11 @@ sub startFeedbackSection
         {
             $level = 2;
         }
-        my $imgfile = $collapsed ? 'collapsed' : 'expanded';
-        my $style = $collapsed ? " style=\"display:none;\"" : "";
+        my $escapedTitle = htmlEscape($title);
+        my $collapsedAttr = $collapsed ? "true" : "false";
         print { $self->{'fileHandle'} } <<EOF;
-<h$level class="collapsible"><a title="show/hide" href="javascript:void(0);" onclick="showHide(this, 'exp$id');"><img width="16" height="16" title="show/hide" src="$URL_BASE$imgfile.gif"/>$title</a></h$level>
-<div class="expboxcontent" id="exp$id"$style>
+<div class="module">
+<div dojoType="webcat.TitlePane" title="$escapedTitle" open="$collapsedAttr">
 EOF
     }
     else
@@ -137,9 +138,10 @@ EOF
         {
             $level = 2;
         }
+        my $escapedTitle = htmlEscape($title);
         print { $self->{'fileHandle'} } <<EOF;
-<h$level class="collapsible">$title</h$level>
-<div class="expboxcontent">
+<div class="module">
+<div dojoType="webcat.TitlePane" title="$escapedTitle" open="false">
 EOF
     }
     if ( defined $openTags )
@@ -165,7 +167,7 @@ sub endFeedbackSection
     {
         print { $self->{'fileHandle'} } "$closeTags\n";
     }
-    print { $self->{'fileHandle'} } "</div>\n";
+    print { $self->{'fileHandle'} } "</div></div>\n";
     $self->{'sectionOpen'}--;
 }
 
