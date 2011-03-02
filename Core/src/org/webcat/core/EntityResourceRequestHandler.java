@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EntityResourceRequestHandler.java,v 1.2 2011/03/01 17:58:41 aallowat Exp $
+ |  $Id: EntityResourceRequestHandler.java,v 1.3 2011/03/02 04:13:11 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -63,7 +63,7 @@ import er.extensions.eof.ERXQ;
  * </p>
  *
  * @author  Tony Allevato
- * @version $Id: EntityResourceRequestHandler.java,v 1.2 2011/03/01 17:58:41 aallowat Exp $
+ * @version $Id: EntityResourceRequestHandler.java,v 1.3 2011/03/02 04:13:11 aallowat Exp $
  */
 public class EntityResourceRequestHandler extends WORequestHandler
 {
@@ -183,8 +183,13 @@ public class EntityResourceRequestHandler extends WORequestHandler
                 }
             }
 
-            scanner.skip("/");
+            if (scanner.hasNext())
+            {
+                scanner.skip("/");
+            }
+
             scanner.useDelimiter("\0");
+
             if (scanner.hasNext())
             {
                 path = scanner.next();
