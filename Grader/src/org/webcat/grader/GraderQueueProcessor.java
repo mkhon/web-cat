@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.7 2011/03/01 18:01:07 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.8 2011/03/02 04:13:29 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -59,7 +59,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author  Amit Kulkarni
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2011/03/01 18:01:07 $
+ * @version $Revision: 1.8 $, $Date: 2011/03/02 04:13:29 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -602,9 +602,8 @@ public class GraderQueueProcessor
                                    job.submission().resultDirName());
             properties.setProperty("scriptHome",
                                    step.gradingPlugin().dirName());
-            properties.setProperty("pluginResourcePrefix",
-                    "${pluginResource:" + step.gradingPlugin().id().toString()
-                        + "}");
+            properties.setProperty("pluginResourcePrefix", "${pluginResource:"
+                    + step.gradingPlugin().name() + "}");
             properties.setProperty("scriptData",
                                    GradingPlugin.scriptDataRoot());
             properties.setProperty("timeout",
