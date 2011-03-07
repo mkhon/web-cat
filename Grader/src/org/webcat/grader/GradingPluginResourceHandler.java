@@ -2,6 +2,8 @@ package org.webcat.grader;
 
 import java.io.File;
 import org.webcat.core.EntityResourceHandler;
+import com.webobjects.eocontrol.EOFetchSpecification;
+import er.extensions.eof.ERXQ;
 
 //-------------------------------------------------------------------------
 /**
@@ -10,7 +12,7 @@ import org.webcat.core.EntityResourceHandler;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/03/01 18:01:07 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 16:11:14 $
  */
 public class GradingPluginResourceHandler
     extends EntityResourceHandler<GradingPlugin>
@@ -18,8 +20,20 @@ public class GradingPluginResourceHandler
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
+    @Override
     public File pathForResource(GradingPlugin object, String relativePath)
     {
         return object.fileForPublicResourceAtPath(relativePath);
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public EOFetchSpecification fetchSpecificationForFriendlyName(String name)
+    {
+        return new EOFetchSpecification(
+                GradingPlugin.ENTITY_NAME,
+                GradingPlugin.name.is(name),
+                GradingPlugin.lastModified.ascs());
     }
 }

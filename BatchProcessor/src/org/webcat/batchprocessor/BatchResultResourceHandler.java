@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchResultResourceHandler.java,v 1.3 2011/03/01 17:58:49 aallowat Exp $
+ |  $Id: BatchResultResourceHandler.java,v 1.4 2011/03/07 16:11:14 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.webcat.core.EntityResourceHandler;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/03/01 17:58:49 $
+ * @version $Revision: 1.4 $, $Date: 2011/03/07 16:11:14 $
  */
 public class BatchResultResourceHandler
     extends EntityResourceHandler<BatchResult>
@@ -41,7 +41,14 @@ public class BatchResultResourceHandler
     // ----------------------------------------------------------
     public File pathForResource(BatchResult object, String relativePath)
     {
-        return new File(object.resultDir(), relativePath);
+        if (relativePath == null)
+        {
+            return object.resultDir();
+        }
+        else
+        {
+            return new File(object.resultDir(), relativePath);
+        }
     }
 
 

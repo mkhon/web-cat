@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.5 2011/03/01 18:01:07 aallowat Exp $
+ |  $Id: GradingPlugin.java,v 1.6 2011/03/07 16:11:14 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.5 $, $Date: 2011/03/01 18:01:07 $
+ *  @version $Revision: 1.6 $, $Date: 2011/03/07 16:11:14 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -155,23 +155,30 @@ public class GradingPlugin
      */
     public File fileForPublicResourceAtPath(String path)
     {
-        File file = new File(publicResourcesDir(), path);
-
-        try
+        if (path == null)
         {
-            if (file.getCanonicalPath().startsWith(
-                    publicResourcesDir().getCanonicalPath()))
+            return publicResourcesDir();
+        }
+        else
+        {
+            File file = new File(publicResourcesDir(), path);
+
+            try
             {
-                return file;
+                if (file.getCanonicalPath().startsWith(
+                        publicResourcesDir().getCanonicalPath()))
+                {
+                    return file;
+                }
             }
-        }
-        catch (IOException e)
-        {
-            log.error("An error occurred while retrieving the canonical path "
-                    + "of the file " + file.toString());
-        }
+            catch (IOException e)
+            {
+                log.error("An error occurred while retrieving the canonical path "
+                        + "of the file " + file.toString());
+            }
 
-        return null;
+            return null;
+        }
     }
 
 
