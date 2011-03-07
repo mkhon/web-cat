@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: IArchiveHandler.java,v 1.1 2010/05/11 14:51:59 aallowat Exp $
+ |  $Id: IArchiveHandler.java,v 1.2 2011/03/07 18:39:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,7 +35,9 @@ import java.io.InputStream;
  * However, if you need to handle Files differently than InputStreams, you
  * can implement this interface in full.
  *
- * @author Tony Allowatt
+ * @author Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:39:42 $
  */
 public interface IArchiveHandler
 {
@@ -64,7 +66,8 @@ public interface IArchiveHandler
 	 *
 	 * @throws IOException
 	 */
-	IArchiveEntry[] getContents(File archiveFile) throws IOException;
+	IArchiveEntry[] getContents(File archiveFile)
+	    throws IOException;
 
 
     // ----------------------------------------------------------
@@ -81,7 +84,8 @@ public interface IArchiveHandler
 	 *
 	 * @throws IOException
 	 */
-	IArchiveEntry[] getContents(InputStream stream) throws IOException;
+	IArchiveEntry[] getContents(InputStream stream)
+	    throws IOException;
 
 
     // ----------------------------------------------------------
@@ -97,7 +101,8 @@ public interface IArchiveHandler
 	 *
 	 * @throws IOException
 	 */
-	void unpack(File destPath, File archiveFile) throws IOException;
+	void unpack(File destPath, File archiveFile)
+	    throws IOException;
 
 
     // ----------------------------------------------------------
@@ -112,5 +117,6 @@ public interface IArchiveHandler
 	 *
 	 * @throws IOException
 	 */
-	void unpack(File destPath, InputStream stream) throws IOException;
+	void unpack(File destPath, InputStream stream)
+	    throws IOException;
 }

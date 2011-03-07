@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: IArchiveEntry.java,v 1.1 2010/05/11 14:51:59 aallowat Exp $
+ |  $Id: IArchiveEntry.java,v 1.2 2011/03/07 18:39:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,7 +27,9 @@ import java.util.Date;
 /**
  * Represents a file or directory in an archive.
  *
- * @author Tony Allowatt
+ * @author Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:39:42 $
  */
 public interface IArchiveEntry
 {

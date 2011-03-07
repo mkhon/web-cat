@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MutableArray.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: MutableArray.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,10 +22,8 @@
 package org.webcat.core;
 
 import com.webobjects.foundation.*;
-import com.webobjects.foundation.NSArray.*;
 import java.io.*;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 import org.webcat.core.MutableArray;
@@ -43,8 +41,9 @@ import org.apache.log4j.Logger;
  *  usage details.
  *
  *  @author  Stephen Edwards
- *  @version $Id: MutableArray.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @version $Id: MutableArray.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  */
+@SuppressWarnings("unchecked")
 public class MutableArray
     extends er.extensions.foundation.ERXMutableArray
     implements MutableContainer

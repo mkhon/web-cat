@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: InstallPage3.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: InstallPage3.java,v 1.2 2011/03/07 18:44:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,27 +24,24 @@ package org.webcat.core.install;
 import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.foundation.*;
-import com.webobjects.foundation.NSValidation.ValidationException;
 import org.webcat.dbupdate.*;
 import er.extensions.foundation.ERXValueUtilities;
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
-
 import org.webcat.core.Application;
 import org.webcat.core.CoreDatabaseUpdates;
 import org.webcat.core.WCConfigurationFile;
 import org.webcat.core.WOEC;
-
 import org.apache.log4j.Logger;
-import org.webcat.core.*;
 
 // -------------------------------------------------------------------------
 /**
  * Implements the login UI functionality of the system.
  *
  *  @author Stephen Edwards
- *  @version $Id: InstallPage3.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:50 $
  */
 public class InstallPage3
     extends InstallPage
@@ -125,7 +122,7 @@ public class InstallPage3
 
 
     // ----------------------------------------------------------
-    public void takeFormValues( NSDictionary formValues )
+    public void takeFormValues( NSDictionary<?, ?> formValues )
     {
         storeFormValueToConfig( formValues, "dbConnectUserGLOBAL",
             "You must specify a user name." );
@@ -234,7 +231,7 @@ public class InstallPage3
     {
         // remove all of the existing EOModels and re-install them, so that
         // they pick up the newly configured connection info.
-        NSArray models = EOModelGroup.defaultGroup().models();
+        NSArray<?> models = EOModelGroup.defaultGroup().models();
         if ( models != null )
         {
             URL[] modelPaths = new URL[models.count()];

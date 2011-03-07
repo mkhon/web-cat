@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: LoggedError.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: LoggedError.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,8 +31,9 @@ import com.webobjects.eocontrol.*;
  * Represents data about a specific logged exception trace, the source of
  * the error, and the number of times this specific error has occurred.
  *
- * @author
- * @version $Id: LoggedError.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:37 $
  */
 public class LoggedError
     extends _LoggedError
@@ -79,7 +80,7 @@ public class LoggedError
             : new StackTraceElement( "unknown", "unknown", "unknown", 0 );
 
         LoggedError result = null;
-        NSArray results = errorsWithExceptionLocation(
+        NSArray<LoggedError> results = errorsWithExceptionLocation(
             context,
             top.getClassName(),
             top.getLineNumber(),
@@ -87,7 +88,7 @@ public class LoggedError
             throwable.getClass().getName() );
         if ( results != null && results.count() > 0 )
         {
-            result = (LoggedError)results.objectAtIndex( 0 );
+            result = results.objectAtIndex( 0 );
         }
         else
         {

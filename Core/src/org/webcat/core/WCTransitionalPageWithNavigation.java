@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCTransitionalPageWithNavigation.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
+ |  $Id: WCTransitionalPageWithNavigation.java,v 1.3 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,13 +22,8 @@
 package org.webcat.core;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
-import org.webcat.core.*;
 import org.webcat.ui.WCTransitionalBasePage;
 import org.webcat.core.Application;
 import org.webcat.core.FeedbackPage;
@@ -47,7 +42,7 @@ import org.webcat.core.WCTransitionalPageWithNavigation;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
+ * @version $Revision: 1.3 $, $Date: 2011/03/07 18:44:37 $
  */
 public class WCTransitionalPageWithNavigation
     extends WCTransitionalBasePage
@@ -453,12 +448,11 @@ public class WCTransitionalPageWithNavigation
         Session session = (Session)session();
         if ( session.user() == null || session.user().restrictToStudentView() )
         {
-            NSArray secondaries = selectedRole.selectedChild()
+            NSArray<TabDescriptor> secondaries = selectedRole.selectedChild()
                 .children();
             for ( int i = 0; i < secondaries.count(); i++ )
             {
-                TabDescriptor secondary =
-                    (TabDescriptor)secondaries.objectAtIndex( i );
+                TabDescriptor secondary = secondaries.objectAtIndex( i );
                 if ( secondary.accessLevel() == 0 )
                 {
                     result = true;

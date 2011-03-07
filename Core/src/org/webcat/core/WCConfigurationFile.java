@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCConfigurationFile.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCConfigurationFile.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,20 +23,18 @@ package org.webcat.core;
 
 import java.io.*;
 import java.util.*;
-
 import org.webcat.core.WCConfigurationFile;
 import org.webcat.core.WCProperties;
 import org.apache.log4j.*;
-
-import sun.security.action.*;
 
 // -------------------------------------------------------------------------
 /**
  *  This extension of WCProperties adds a few small features that are useful
  *  for managing an installation configuration file.
  *
- *  @author  stedwar2
- *  @version $Id: WCConfigurationFile.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:37 $
  */
 public class WCConfigurationFile
     extends WCProperties
@@ -165,10 +163,9 @@ public class WCConfigurationFile
      */
     public void updateToSystemProperties()
     {
-        for ( Iterator i = localEntrySet().iterator(); i.hasNext(); )
+        for (Map.Entry<Object, Object> e : localEntrySet())
         {
-            Map.Entry e = (Map.Entry)i.next();
-            System.setProperty( (String)e.getKey(), e.getValue().toString() );
+            System.setProperty((String)e.getKey(), e.getValue().toString());
         }
         er.extensions.foundation.ERXSystem.updateProperties();
         er.extensions.logging.ERXLogger.configureLoggingWithSystemProperties();

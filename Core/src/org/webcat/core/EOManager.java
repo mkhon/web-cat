@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EOManager.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: EOManager.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  * the other objects related to it.
  *
  * @author stedwar2
- * @version $Id: EOManager.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: EOManager.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  */
 public interface EOManager
     extends NSKeyValueCoding,
@@ -92,30 +92,38 @@ public interface EOManager
                 }
                 else
                 {
-                    return (T)EOUtilities.localInstanceOfObject(
+                    @SuppressWarnings("unchecked")
+                    T resultAsT = (T)EOUtilities.localInstanceOfObject(
                         context, (EOEnterpriseObject)object);
+                    return resultAsT;
                 }
             }
             else if (object instanceof NSDictionary)
             {
-                NSMutableDictionary result =
-                    ((NSDictionary)object).mutableClone();
+                NSMutableDictionary<?, ?> result =
+                    ((NSDictionary<?, ?>)object).mutableClone();
                 for (Object key : result.allKeys())
                 {
                     result.takeValueForKey(
                         localize(context, result.valueForKey((String)key)),
                         (String)key);
                 }
-                return (T)result;
+                @SuppressWarnings("unchecked")
+                T resultAsT = (T)result;
+                return resultAsT;
             }
             else if (object instanceof NSArray)
             {
-                NSMutableArray result = ((NSArray)object).mutableClone();
+                @SuppressWarnings("unchecked")
+                NSMutableArray<Object> result =
+                    ((NSArray<Object>)object).mutableClone();
                 for (int i = 0; i < result.count(); i++)
                 {
                     result.set(i, localize(context, result.objectAtIndex(i)));
                 }
-                return (T)result;
+                @SuppressWarnings("unchecked")
+                T resultAsT = (T)result;
+                return resultAsT;
             }
             else
             {

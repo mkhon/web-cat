@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MutableArray.java,v 1.4 2010/05/11 14:51:59 aallowat Exp $
+ |  $Id: MutableArray.java,v 1.5 2011/03/07 18:39:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -56,8 +56,11 @@ import com.webobjects.foundation.NSRange;
  *  Spring 2006 semester.
  *
  *  @author  Stephen Edwards
- *  @version $Id: MutableArray.java,v 1.4 2010/05/11 14:51:59 aallowat Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.5 $, $Date: 2011/03/07 18:39:42 $
  */
+@Deprecated
+@SuppressWarnings("unchecked")
 public class MutableArray
     extends er.extensions.foundation.ERXMutableArray
     implements MutableContainer
@@ -192,7 +195,7 @@ public class MutableArray
      */
     public Object clone()
     {
-        return new MutableArray( (NSArray)this );
+        return new MutableArray(this);
     }
 
 

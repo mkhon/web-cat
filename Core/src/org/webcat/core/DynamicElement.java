@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: DynamicElement.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: DynamicElement.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -33,7 +33,8 @@ import com.webobjects.foundation.*;
  * http://wodev.spearway.com/cgi-bin/WebObjects/WODev.woa/wa/Main?wikiPage=CreatingADynamicElement
  *
  * @author  Stephen Edwards
- * @version $Id: DynamicElement.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:37 $
  */
 public class DynamicElement
     extends WODynamicElement
@@ -48,7 +49,9 @@ public class DynamicElement
      * @param children     this instance's child elements
      */
     public DynamicElement(
-        String name, NSDictionary associations, WOElement children )
+        String name,
+        NSDictionary<String, WOAssociation> associations,
+        WOElement children )
     {
         super( name, associations, children );
         this.associations = associations;
@@ -62,7 +65,7 @@ public class DynamicElement
      * Get this element's associations.
      * @return this element's associations
      */
-    public NSDictionary associations()
+    public NSDictionary<String, WOAssociation> associations()
     {
         return associations;
     }
@@ -315,5 +318,5 @@ public class DynamicElement
 
     //~ Instance/static variables .............................................
 
-    private NSDictionary associations;
+    private NSDictionary<String, WOAssociation> associations;
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.11 2011/02/14 15:26:08 aallowat Exp $
+ |  $Id: Application.java,v 1.12 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -78,8 +78,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * of exception handling for the Web-CAT application.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.11 $, $Date: 2011/02/14 15:26:08 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.12 $, $Date: 2011/03/07 18:44:37 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -2580,8 +2580,8 @@ public class Application
     private static void loadArchiveManagers()
     {
         @SuppressWarnings("unchecked")
-        NSArray<String> handlers = configurationProperties().arrayForKey(
-            "Core.archive.handler.list");
+        NSArray<String> handlers = (NSArray<String>)configurationProperties()
+            .arrayForKey("Core.archive.handler.list");
         if (handlers != null)
         {
             ArchiveManager manager = ArchiveManager.getInstance();

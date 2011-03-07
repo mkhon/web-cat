@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCFileUpload.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCFileUpload.java,v 1.2 2011/03/07 18:45:12 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -91,8 +91,9 @@ import com.webobjects.foundation.NSDictionary;
  *
  * </dl>
  *
- * @author Tony Allevato
- * @version $Id: WCFileUpload.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:45:12 $
  */
 public class WCFileUpload extends DojoElement
 {
@@ -299,7 +300,7 @@ public class WCFileUpload extends DojoElement
 
             if (_data != null && aFilePath != null)
             {
-                NSArray aValue = request.formValuesForKey(nameString);
+                NSArray<?> aValue = request.formValuesForKey(nameString);
 
                 if (aValue != null)
                 {

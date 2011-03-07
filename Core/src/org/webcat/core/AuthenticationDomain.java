@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.2 2010/10/04 19:05:14 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.3 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/04 19:05:14 $
+ * @version $Revision: 1.3 $, $Date: 2011/03/07 18:44:37 $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -557,7 +557,7 @@ public class AuthenticationDomain
             try
             {
                 @SuppressWarnings("unchecked")
-                NSArray<String> propValues = Application
+                NSArray<String> propValues = (NSArray<String>)Application
                     .configurationProperties().arrayForKey("timeFormats");
                 timeFormats = propValues;
             }
@@ -605,7 +605,7 @@ public class AuthenticationDomain
             try
             {
                 @SuppressWarnings("unchecked")
-                NSArray<String> propValues = Application
+                NSArray<String> propValues = (NSArray<String>)Application
                 .configurationProperties().arrayForKey( "dateFormats" );
                 dateFormats = propValues;
             }

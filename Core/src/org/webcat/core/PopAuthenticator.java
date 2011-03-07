@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PopAuthenticator.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: PopAuthenticator.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,15 +22,11 @@
 package org.webcat.core;
 
 import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-
 import java.io.*;
 import java.net.*;
-
 import javax.net.*;
 import javax.net.ssl.*;
-
 import org.webcat.core.AuthenticationDomain;
 import org.webcat.core.PopAuthenticator;
 import org.webcat.core.User;
@@ -47,8 +43,9 @@ import org.apache.log4j.Logger;
  *  <code>authenticator.POPserver.port</code> to determine the
  *  POP server to use for authentication.
  *
- *  @author Stephen Edwards
- *  @version $Id: PopAuthenticator.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:37 $
  */
 public class PopAuthenticator
     implements UserAuthenticator
@@ -141,9 +138,9 @@ public class PopAuthenticator
             {
                 user = (User)EOUtilities.objectMatchingValues(
                     ec, User.ENTITY_NAME,
-                    new NSDictionary(
+                    new NSDictionary<String, Object>(
                         new Object[]{ userName , domain              },
-                        new Object[]{ User.USER_NAME_KEY,
+                        new String[]{ User.USER_NAME_KEY,
                                       User.AUTHENTICATION_DOMAIN_KEY }
                     ) );
                 if ( user.authenticationDomain() != domain )

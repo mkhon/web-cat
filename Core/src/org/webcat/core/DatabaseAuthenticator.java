@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DatabaseAuthenticator.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: DatabaseAuthenticator.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  *  admitted.
  *
  *  @author Stephen Edwards
- *  @version $Id: DatabaseAuthenticator.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @version $Id: DatabaseAuthenticator.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
  */
 public class DatabaseAuthenticator
     implements UserAuthenticator
@@ -124,9 +124,9 @@ public class DatabaseAuthenticator
         {
             User u = (User)EOUtilities.objectMatchingValues(
                 ec, User.ENTITY_NAME,
-                new NSDictionary(
+                new NSDictionary<String, Object>(
                     new Object[]{ userName , domain              },
-                    new Object[]{ User.USER_NAME_KEY,
+                    new String[]{ User.USER_NAME_KEY,
                                   User.AUTHENTICATION_DOMAIN_KEY }
                 ) );
             if ( skipPasswordChecks || password.equals( u.password() ) )

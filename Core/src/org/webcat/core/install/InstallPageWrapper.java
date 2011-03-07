@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: InstallPageWrapper.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: InstallPageWrapper.java,v 1.2 2011/03/07 18:44:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,20 +22,16 @@
 package org.webcat.core.install;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-
-
 import org.apache.log4j.Logger;
-import org.webcat.core.*;
 
 // -------------------------------------------------------------------------
 /**
  * Implements the login UI functionality of the system.
  *
- *  @author Stephen Edwards
- *  @version $Id: InstallPageWrapper.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:50 $
  */
 public class InstallPageWrapper
     extends WOComponent
@@ -56,14 +52,14 @@ public class InstallPageWrapper
 
     //~ KVC Attributes (must be public) .......................................
 
-    public String       title;
-    public int          stepNo = -1;
-    public int          index;
-    public String       step;
-    public String[]     stepList = install.steps;
-    public NSDictionary errors;
-    public String       stylesheet;
-    public String       externalJavascript;
+    public String             title;
+    public int                stepNo = -1;
+    public int                index;
+    public String             step;
+    public String[]           stepList = install.steps;
+    public NSDictionary<?, ?> errors;
+    public String             stylesheet;
+    public String             externalJavascript;
 
 
     //~ Methods ...............................................................
