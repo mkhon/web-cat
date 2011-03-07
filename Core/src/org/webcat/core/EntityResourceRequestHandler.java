@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EntityResourceRequestHandler.java,v 1.8 2011/03/07 18:55:52 stedwar2 Exp $
+ |  $Id: EntityResourceRequestHandler.java,v 1.9 2011/03/07 19:06:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2011 Virginia Tech
  |
@@ -63,7 +63,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2011/03/07 18:55:52 $
+ * @version $Revision: 1.9 $, $Date: 2011/03/07 19:06:20 $
  */
 public class EntityResourceRequestHandler extends WORequestHandler
 {
@@ -341,7 +341,7 @@ public class EntityResourceRequestHandler extends WORequestHandler
 
         int level = 0;
 
-        String[] components = file.getPath().split(File.separator);
+        String[] components = file.getPath().split("/");
         for (String component : components)
         {
             if (component.equals(".."))
