@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EntityResourceRequestHandler.java,v 1.7 2011/03/07 18:51:53 stedwar2 Exp $
+ |  $Id: EntityResourceRequestHandler.java,v 1.8 2011/03/07 18:55:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2011 Virginia Tech
  |
@@ -63,7 +63,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2011/03/07 18:51:53 $
+ * @version $Revision: 1.8 $, $Date: 2011/03/07 18:55:52 $
  */
 public class EntityResourceRequestHandler extends WORequestHandler
 {
@@ -367,7 +367,7 @@ public class EntityResourceRequestHandler extends WORequestHandler
 
     // ----------------------------------------------------------
     private EOEnterpriseObject fetchObject(EntityRequest entityRequest,
-                                           EntityResourceHandler handler,
+                                           EntityResourceHandler<?> handler,
                                            EOEditingContext ec)
     {
         EOFetchSpecification fspec = null;
@@ -387,6 +387,7 @@ public class EntityResourceRequestHandler extends WORequestHandler
 
         if (fspec != null)
         {
+            @SuppressWarnings("unchecked")
             NSArray<? extends EOEnterpriseObject> objects =
                 ec.objectsWithFetchSpecification(fspec);
 
@@ -401,9 +402,10 @@ public class EntityResourceRequestHandler extends WORequestHandler
 
 
     // ----------------------------------------------------------
-    private boolean canAccessObject(EOEnterpriseObject object,
-                                    EntityResourceHandler handler,
-                                    Session session)
+    private boolean canAccessObject(
+        EOEnterpriseObject object,
+        EntityResourceHandler<EOEnterpriseObject> handler,
+        Session session)
     {
         if (!handler.requiresLogin())
         {

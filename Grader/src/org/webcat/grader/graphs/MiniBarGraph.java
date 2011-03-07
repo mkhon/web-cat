@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MiniBarGraph.java,v 1.2 2010/10/23 20:46:51 stedwar2 Exp $
+ |  $Id: MiniBarGraph.java,v 1.3 2011/03/07 18:57:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -25,7 +25,6 @@ import com.webobjects.appserver.*;
 import com.webobjects.appserver._private.WODynamicElementCreationException;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSNumberFormatter;
-import java.util.Enumeration;
 import org.webcat.core.*;
 
 // -------------------------------------------------------------------------
@@ -33,7 +32,8 @@ import org.webcat.core.*;
  * A dynamic element used to generate tiny bar graphs.
  *
  * @author  Stephen Edwards
- * @version $Id: MiniBarGraph.java,v 1.2 2010/10/23 20:46:51 stedwar2 Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2011/03/07 18:57:09 $
  */
 public class MiniBarGraph
     extends DynamicElement
@@ -48,7 +48,9 @@ public class MiniBarGraph
      * @param children     this instance's child elements
      */
     public MiniBarGraph(
-        String name, NSDictionary associations, WOElement children )
+        String name,
+        NSDictionary<String, WOAssociation> associations,
+        WOElement children )
     {
         super( name, associations, children );
 

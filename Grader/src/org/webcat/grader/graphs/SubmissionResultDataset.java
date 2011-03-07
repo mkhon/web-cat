@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SubmissionResultDataset.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: SubmissionResultDataset.java,v 1.2 2011/03/07 18:57:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,9 +21,7 @@
 
 package org.webcat.grader.graphs;
 
-import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
-
 import org.jfree.data.xy.TableXYDataset;
 import org.jfree.data.xy.AbstractXYDataset;
 import org.webcat.grader.*;
@@ -34,8 +32,10 @@ import org.webcat.grader.*;
  * results.
  *
  * @author  Stephen Edwards
- * @version $Id: SubmissionResultDataset.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/03/07 18:57:09 $
  */
+@SuppressWarnings("unchecked")
 public class SubmissionResultDataset
     extends AbstractXYDataset
     implements TableXYDataset
