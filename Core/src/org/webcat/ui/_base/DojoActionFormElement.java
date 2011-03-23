@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DojoActionFormElement.java,v 1.3 2010/10/11 14:25:35 aallowat Exp $
+ |  $Id: DojoActionFormElement.java,v 1.4 2011/03/23 15:07:45 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -30,6 +30,7 @@ import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOElement;
+import com.webobjects.appserver.WOMessage;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSDictionary;
@@ -131,7 +132,7 @@ import er.extensions.components._private.ERXWOForm;
  * </table>
  *
  * @author Tony Allevato
- * @version $Id: DojoActionFormElement.java,v 1.3 2010/10/11 14:25:35 aallowat Exp $
+ * @version $Id: DojoActionFormElement.java,v 1.4 2011/03/23 15:07:45 aallowat Exp $
  */
 public abstract class DojoActionFormElement extends DojoFormElement
 {
@@ -275,9 +276,29 @@ public abstract class DojoActionFormElement extends DojoFormElement
     {
         super.appendChildrenToResponse(response, context);
 
-        if (hasActionInContext(context))
+        if (dojoType() != null && hasActionInContext(context))
         {
             appendOnClickScriptToResponse(response, context);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void appendAttributesToResponse(WOResponse response,
+            WOContext context)
+    {
+        super.appendAttributesToResponse(response, context);
+
+        if (_remoteHelper.isRemoteInContext(context)
+                && dojoType() == null && hasActionInContext(context))
+        {
+            WOResponse xhrResponse = new WOResponse();
+            appendXhrGetToResponse(xhrResponse, context);
+            xhrResponse.appendContentString(" return false;");
+
+            response._appendTagAttributeAndValue("onclick",
+                    xhrResponse.contentString(), true);
         }
     }
 
