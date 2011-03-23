@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionInProcess.java,v 1.5 2010/10/08 14:46:42 stedwar2 Exp $
+ |  $Id: SubmissionInProcess.java,v 1.6 2011/03/23 15:10:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.grader;
 import com.webobjects.foundation.*;
 import java.io.*;
 import org.webcat.archives.IArchiveEntry;
+import org.webcat.core.PathMatcher;
 import org.webcat.core.User;
 
 //-------------------------------------------------------------------------
@@ -32,8 +33,8 @@ import org.webcat.core.User;
  * that has been started (but not yet completed).
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/10/08 14:46:42 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2011/03/23 15:10:56 $
  */
 public class SubmissionInProcess
 {
@@ -230,6 +231,70 @@ public class SubmissionInProcess
                  && uploadedFile.length() != 0
                  && uploadedFileName      != null
                  && !uploadedFileName.equals( "" ) );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets a list of any missing required files in the submission, based on
+     * the requirements of the specified submission profile.
+     *
+     * @param profile the submission profile to check against
+     * @return an array of any missing required files, which will be empty if
+     *     all required files are present
+     */
+    public NSArray<String> findMissingRequiredFiles(SubmissionProfile profile)
+    {
+        String requiredString = profile.requiredFilePatterns();
+
+        NSMutableArray<String> missing = new NSMutableArray<String>();
+
+        if (requiredString != null)
+        {
+            String[] required = requiredString.split(",");
+
+            NSMutableDictionary<String, Boolean> requiredItemPatterns =
+                new NSMutableDictionary<String, Boolean>();
+
+            // Initialize each required pattern as "not found" initially.
+
+            for (String pattern : required)
+            {
+                requiredItemPatterns.put(pattern, false);
+            }
+
+            for (IArchiveEntry entry : uploadedFileList())
+            {
+                if (!entry.isDirectory())
+                {
+                    for (String requiredPattern : required)
+                    {
+                        PathMatcher pattern = new PathMatcher(requiredPattern);
+
+                        // If some file matches the pattern, we mark it as
+                        // found.
+
+                        if (pattern.matches(entry.getName()))
+                        {
+                            requiredItemPatterns.put(requiredPattern, true);
+                        }
+                    }
+                }
+            }
+
+            // Look for any patterns that were never found and add them to the
+            // array that will be returned.
+
+            for (String requiredPattern : requiredItemPatterns.allKeys())
+            {
+                if (requiredItemPatterns.objectForKey(requiredPattern) == false)
+                {
+                    missing.addObject(requiredPattern);
+                }
+            }
+        }
+
+        return missing;
     }
 
 

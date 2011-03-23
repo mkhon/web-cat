@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.10 2011/02/22 03:08:58 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.11 2011/03/23 15:10:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -45,8 +45,8 @@ import org.webcat.grader.graphs.*;
  * (i.e., giving a specific assignment in a given section of a course).
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2011/02/22 03:08:58 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.11 $, $Date: 2011/03/23 15:10:56 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -303,10 +303,42 @@ public class AssignmentOffering
                 editingContext(), this );
             for (SubmissionResult sr : subs)
             {
-                summary.addSubmission( sr.automatedScore() );
+                if (!courseOffering().isStaff(sr.submission().user()))
+                {
+                    summary.addSubmission( sr.automatedScore() );
+                }
             }
         }
         return summary;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Return a list of all the submissions for this assignment that are
+     * still in the grading queue, both suspended and unsuspended.
+     * @return an NSArray of EnqueuedJob objects representing enqueued
+     *         submissions
+     */
+    public NSArray<EnqueuedJob> allSubmissionsInQueue()
+    {
+        return EnqueuedJob.objectsMatchingQualifier(editingContext(),
+                EnqueuedJob.assignmentOffering.is(this));
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Return a list of all the submissions for this assignment that are
+     * still in the grading queue and that are not suspended.
+     * @return an NSArray of EnqueuedJob objects representing active
+     *         submissions
+     */
+    public NSArray<EnqueuedJob> activeSubmissionsInQueue()
+    {
+        return EnqueuedJob.objectsMatchingQualifier(editingContext(),
+                EnqueuedJob.assignmentOffering.is(this).and(
+                EnqueuedJob.paused.isFalse()));
     }
 
 
@@ -319,20 +351,11 @@ public class AssignmentOffering
      * @return an NSArray of EnqueuedJob objects representing suspended
      *         submissions
      */
-    @SuppressWarnings("unchecked")
-    public NSArray<EnqueuedJob> getSuspendedSubs()
+    public NSArray<EnqueuedJob> suspendedSubmissionsInQueue()
     {
-        return EOUtilities.objectsMatchingValues(
-            editingContext(),
-            EnqueuedJob.ENTITY_NAME,
-            new NSDictionary(
-                new Object[] {  new Integer( 1 ),
-                                this
-                    },
-                new Object[] { EnqueuedJob.PAUSED_KEY,
-                               EnqueuedJob.ASSIGNMENT_OFFERING_KEY }
-                    )
-            );
+        return EnqueuedJob.objectsMatchingQualifier(editingContext(),
+                EnqueuedJob.assignmentOffering.is(this).and(
+                EnqueuedJob.paused.isTrue()));
     }
 
 

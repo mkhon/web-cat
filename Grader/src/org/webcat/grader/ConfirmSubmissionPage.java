@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.5 2010/10/08 14:48:02 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.6 2011/03/23 15:10:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * confirmation before making it "official".
  *
  * @author  Amit Kulkarni
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2010/10/08 14:48:02 $
+ * @author  Latest changes by: $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2011/03/23 15:10:56 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -107,6 +107,8 @@ public class ConfirmSubmissionPage
                             submissionInProcess().uploadedFile().stream(),
                             submissionInProcess().uploadedFile().length()
                         )));
+
+                verifyRequiredFiles();
             }
             catch ( Exception e )
             {
@@ -147,6 +149,13 @@ public class ConfirmSubmissionPage
     {
         NSArray<IArchiveEntry> list = submissionInProcess().uploadedFileList();
         return list == null || list.count() <= 1;
+    }
+
+
+    // ----------------------------------------------------------
+    public NSArray<String> missingRequiredFiles()
+    {
+        return missingRequiredFiles;
     }
 
 
@@ -199,7 +208,47 @@ public class ConfirmSubmissionPage
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Verify that all files required by the submission profile are present and
+     * put an error message on the page if something was missing.
+     */
+    private void verifyRequiredFiles()
+    {
+        missingRequiredFiles =
+            submissionInProcess().findMissingRequiredFiles(
+                prefs().assignmentOffering().assignment()
+                .submissionProfile());
+
+        if (missingRequiredFiles.count() > 0)
+        {
+            StringBuffer buffer = new StringBuffer();
+
+            buffer.append("Your submission cannot be completed because it "
+                    + "is missing one or more of the following required "
+                    + "files: ");
+
+            for (int i = 0; i < missingRequiredFiles.count(); i++)
+            {
+                if (i > 0)
+                {
+                    buffer.append(", ");
+                }
+
+                buffer.append("<strong>");
+                buffer.append(WOMessage.stringByEscapingHTMLString(
+                        missingRequiredFiles.objectAtIndex(i)));
+                buffer.append("</strong>");
+            }
+
+            error(buffer.toString());
+        }
+    }
+
+
     //~ Instance/static variables .............................................
+
+    private NSArray<String> missingRequiredFiles;
 
     static Logger log = Logger.getLogger( ConfirmSubmissionPage.class );
 }

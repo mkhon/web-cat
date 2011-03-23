@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EnqueuedJob.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: EnqueuedJob.java,v 1.3 2011/03/23 15:10:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -21,14 +21,18 @@
 
 package org.webcat.grader;
 
+import org.webcat.core.User;
+import com.webobjects.foundation.NSTimestamp;
+import er.extensions.eof.ERXKey;
+
 // -------------------------------------------------------------------------
 /**
  * This class represents the database record of a student file submission
  * enqueued for compilation/processing but not yet handled.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/03/23 15:10:56 $
  */
 public class EnqueuedJob
     extends _EnqueuedJob
@@ -50,12 +54,19 @@ public class EnqueuedJob
     public static final String ASSIGNMENT_OFFERING_KEY =
         SUBMISSION_KEY
         + "." + Submission.ASSIGNMENT_OFFERING_KEY;
+    public static final ERXKey<AssignmentOffering> assignmentOffering =
+        new ERXKey<AssignmentOffering>(ASSIGNMENT_OFFERING_KEY);
+
     public static final String SUBMIT_TIME_KEY =
         SUBMISSION_KEY
         + "." + Submission.SUBMIT_TIME_KEY;
+    public static final ERXKey<NSTimestamp> submitTime =
+        new ERXKey<NSTimestamp>(SUBMIT_TIME_KEY);
+
     public static final String USER_KEY =
         SUBMISSION_KEY
         + "." + Submission.USER_KEY;
+    public static final ERXKey<User> user = new ERXKey<User>(USER_KEY);
 
 
     //~ Methods ...............................................................

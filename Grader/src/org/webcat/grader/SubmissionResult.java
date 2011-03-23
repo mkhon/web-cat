@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.8 2011/01/20 18:43:52 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.9 2011/03/23 15:10:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.core.*;
  *  Represents the results for a student submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2011/01/20 18:43:52 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.9 $, $Date: 2011/03/23 15:10:56 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -570,26 +570,33 @@ public class SubmissionResult
      *
      * @param value The new value for this property
      */
-    public void setIsMostRecent( boolean value )
+    public void setIsMostRecent(boolean value)
     {
         boolean wasMostRecent = isMostRecent();
-        if ( log.isDebugEnabled() )
+        if (log.isDebugEnabled())
         {
-            log.debug( "setIsMostRecent(" + value + ") called" );
-            log.debug( "   submission = " + submission() );
-            log.debug( "   wasMostRecent = " + wasMostRecent );
+            log.debug("setIsMostRecent(" + value + ") called");
+            log.debug("   submission = " + submission());
+            log.debug("   wasMostRecent = " + wasMostRecent);
         }
-        if ( wasMostRecent && !value )
+
+        User user = submission().user();
+
+        if (!submission().assignmentOffering().courseOffering().isStaff(user))
         {
-            submission().assignmentOffering().graphSummary().removeSubmission(
-                automatedScore() );
+            if (wasMostRecent && !value)
+            {
+                submission().assignmentOffering().graphSummary()
+                    .removeSubmission(automatedScore());
+            }
+            else if (!wasMostRecent && value)
+            {
+                submission().assignmentOffering().graphSummary()
+                    .addSubmission(automatedScore());
+            }
         }
-        else if ( !wasMostRecent && value )
-        {
-            submission().assignmentOffering().graphSummary().addSubmission(
-                automatedScore() );
-        }
-        super.setIsMostRecent( value );
+
+        super.setIsMostRecent(value);
     }
 
 

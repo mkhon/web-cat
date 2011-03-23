@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.6 2010/10/23 20:48:17 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.7 2011/03/23 15:10:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,8 +35,8 @@ import org.webcat.core.Semester;
  *  Generates the grader subsystem's page sections for the home->status page.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.6 $, $Date: 2010/10/23 20:48:17 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.7 $, $Date: 2011/03/23 15:10:56 $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -342,7 +342,7 @@ public class GraderHomeStatus
         return ( user().hasAdminPrivileges()
                  || assignment.courseOffering().instructors()
                      .containsObject( user() ) )
-               && assignment.getSuspendedSubs().count() > 0;
+               && assignment.suspendedSubmissionsInQueue().count() > 0;
     }
 
 
