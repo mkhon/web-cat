@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCImageButton.java,v 1.1 2011/03/23 15:07:20 aallowat Exp $
+ |  $Id: WCImageButton.java,v 1.2 2011/04/19 16:31:36 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -57,7 +57,7 @@ import com.webobjects.foundation.NSLog;
  * </table>
  *
  * @author Tony Allevato
- * @version $Id: WCImageButton.java,v 1.1 2011/03/23 15:07:20 aallowat Exp $
+ * @version $Id: WCImageButton.java,v 1.2 2011/04/19 16:31:36 aallowat Exp $
  */
 public class WCImageButton extends DojoActionFormElement
 {
@@ -230,10 +230,11 @@ public class WCImageButton extends DojoActionFormElement
             if(context.isMultipleSubmitForm())
             {
                 String name = nameInContext(context);
+                String value = (String) request.formValueForKey(name);
                 String ptX = (String) request.formValueForKey(name + ".x");
                 String ptY = (String) request.formValueForKey(name + ".y");
 
-                if (ptX != null && ptY != null)
+                if (value != null || (ptX != null && ptY != null))
                 {
                     context.setActionInvoked(true);
 
