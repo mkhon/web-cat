@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.17 2010/09/26 22:31:30 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.18 2011/04/25 19:08:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -27,6 +27,11 @@ import java.util.zip.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import net.sf.webcat.FileUtilities;
+import net.sf.webcat.SubsystemUpdater;
+import net.sf.webcat.WCServletContext;
+import net.sf.webcat.WCUpdater;
+
 // -------------------------------------------------------------------------
 /**
  *  This is a custom subclass of com.webobjects.jspservlet.WOServletAdaptor.
@@ -35,8 +40,9 @@ import javax.servlet.http.*;
  *
  *  @author  stedwar2
  *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.17 $, $Date: 2010/09/26 22:31:30 $
+ *  @version $Revision: 1.18 $, $Date: 2011/04/25 19:08:23 $
  */
+@SuppressWarnings("serial")
 public class WCServletAdaptor
     extends com.webobjects.jspservlet.WOServletAdaptor
 {
@@ -83,9 +89,15 @@ public class WCServletAdaptor
         String webInfRoot = super.getServletContext().getRealPath("WEB-INF");
         File webInfDir = new File(webInfRoot);
         propertiesFile = new File(webInfDir, "update.properties");
-        updateDir = new File(webInfDir, UPDATE_SUBDIR);
         loadProperties();
+        
+        systemUpdater = WCUpdater.getInstance();
+        systemUpdater.setup(webInfDir);      
+        updateDir = systemUpdater.getUpdateDir();
+        frameworkDir = systemUpdater.getFrameworkDir();
+        
         applyNecessaryUpdates(webInfDir);
+               
         try
         {
             super.init();
@@ -107,6 +119,14 @@ public class WCServletAdaptor
         {
             // Failure during startup
             initFailed = e;
+        }
+        
+        //Run background update process
+        if(willUpdateAutomatically())
+        {      
+        	//Hard coded values currently: Update occurs every 4 minutes
+        	//Most likly change to read in a property containing update checks
+        	systemUpdater.startBackgroundUpdaterThread(1000, 240000);
         }
     }
 
@@ -191,7 +211,7 @@ public class WCServletAdaptor
      */
     public Collection<SubsystemUpdater> subsystems()
     {
-        return subsystems.values();
+        return systemUpdater.subsystems();
     }
 
 
@@ -289,38 +309,15 @@ public class WCServletAdaptor
      * @param webInfDir the WEB-INF directory as a file object
      */
     private void applyNecessaryUpdates(File webInfDir)
-    {
-        File mainBundle   = null;
-        if (webInfDir.isDirectory())
-        {
-            for (File bundleSearchDir : webInfDir.listFiles())
-            {
-                if (bundleSearchDir.isDirectory()
-                    && bundleSearchDir.getName().endsWith(".woa"))
-                {
-                    mainBundle = new File(bundleSearchDir, "Contents");
-                    frameworkDir = new File(
-                        bundleSearchDir.getAbsolutePath()
-                        + FRAMEWORK_SUBDIR1);
-                    if (!frameworkDir.exists())
-                    {
-                        frameworkDir = new File(
-                            bundleSearchDir.getAbsolutePath()
-                            + FRAMEWORK_SUBDIR2);
-                    }
-                    break;
-                }
-            }
-            File appDir = webInfDir.getParentFile();
-            downloadNewUpdates(frameworkDir, mainBundle);
-            applyPendingUpdates(frameworkDir, appDir);
-            refreshSubsystemUpdaters(frameworkDir, mainBundle);
-        }
+    {       
+        File appDir = webInfDir.getParentFile();
+        applyPendingUpdates(frameworkDir, appDir);
+        
         if (frameworkDir != null && frameworkDir.isDirectory())
         {
             File[] subdirs = frameworkDir.listFiles();
             java.util.Arrays.sort(subdirs, new FrameworkComparator());
-            woClasspath = classPathFrom(subdirs,  mainBundle);
+            woClasspath = classPathFrom(subdirs,  systemUpdater.getMainBundle());
             System.out.println("Dynamically computed classpath:");
             System.out.print(woClasspath);
         }
@@ -504,120 +501,6 @@ public class WCServletAdaptor
         }
     }
 
-
-    // ----------------------------------------------------------
-    /**
-     * If automatic updates are turned on, scan all current subsystems and
-     * download any new versions of update files that are available.
-     * @param aFrameworkDir The directory where all subsystems are located
-     * @param mainBundle The main bundle location
-     */
-    private void downloadNewUpdates(File aFrameworkDir, File mainBundle)
-    {
-        // Simply return if no updates should be automatically downloaded
-        if (!willUpdateAutomatically())
-        {
-            return;
-        }
-
-        for (File subdir : aFrameworkDir.listFiles())
-        {
-            downloadUpdateIfNecessary(getUpdaterFor(subdir));
-        }
-
-        // Now handle the application update, if available
-        downloadUpdateIfNecessary( getUpdaterFor(mainBundle));
-
-        // Now check through existing subsystems and check for any required
-        // subsystems that are not yet installed
-        for (SubsystemUpdater thisUpdater : subsystems.values())
-        {
-            String requires = thisUpdater.getProperty("requires");
-            if (thisUpdater.providerVersion() != null)
-            {
-                requires = thisUpdater.providerVersion()
-                    .getProperty("requires");
-            }
-            if (requires != null)
-            {
-                for (String requiredSubsystem : requires.split( ",\\s*" ))
-                {
-                    if (!subsystemsByName.containsKey(requiredSubsystem))
-                    {
-                        // A required subsystem is not present, so find it
-                        // and download it
-                        System.out.println("WCServletAdaptor: ERROR: "
-                            + "Installed subsystem "
-                            + thisUpdater.name() + " requires subsystem "
-                            + requiredSubsystem
-                            + ", which is not installed.");
-                        // First, look in the subsystem's provider
-                        FeatureDescriptor newSubsystem =
-                            thisUpdater.provider().subsystemDescriptor(
-                                requiredSubsystem);
-                        if (newSubsystem == null)
-                        {
-                            // OK, look in all providers for it
-                            for (FeatureProvider fp :
-                                FeatureProvider.providers())
-                            {
-                                newSubsystem = fp.subsystemDescriptor(
-                                    requiredSubsystem);
-                                if (newSubsystem != null)
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                        if (newSubsystem == null)
-                        {
-                            System.out.println(
-                                "Cannot identify provider for subsystem "
-                                + requiredSubsystem);
-                        }
-                        else
-                        {
-                            if (!updateDir.exists())
-                            {
-                                updateDir.mkdirs();
-                            }
-                            String msg = newSubsystem.downloadTo(updateDir);
-                            if (msg != null)
-                            {
-                                System.out.println(
-                                    "Error downloading update for "
-                                    + newSubsystem.name() + ":");
-                                System.out.println(msg);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Check for any updates for the given subsystem, and download them.
-     * @param updater The {@link SubsystemUpdater} to download for
-     */
-    private void downloadUpdateIfNecessary(SubsystemUpdater updater)
-    {
-        if (!updateDir.exists())
-        {
-            updateDir.mkdirs();
-        }
-        String msg = updater.downloadUpdateIfNecessary(updateDir);
-        if (msg != null)
-        {
-            System.out.println("Error downloading update for "
-                + updater.name + ":");
-            System.out.println(msg);
-        }
-    }
-
-
     // ----------------------------------------------------------
     /**
      * Generate the classpath string from a list of framework directories.
@@ -663,6 +546,7 @@ public class WCServletAdaptor
                     subdir = localSubdir;
                 }
             }
+            
             getUpdaterFor(subdir).addToClasspath(buffer);
         }
 
@@ -731,49 +615,9 @@ public class WCServletAdaptor
      * @return the corresponding updater
      */
     private SubsystemUpdater getUpdaterFor(File dir)
-    {
-        SubsystemUpdater updater = null;
-        if (dir != null)
-        {
-            updater = subsystems.get(dir);
-            if (updater == null)
-            {
-                updater = new SubsystemUpdater(dir);
-                subsystems.put(dir, updater);
-                if (updater.name() != null)
-                {
-                    subsystemsByName.put(updater.name(), updater);
-                }
-            }
-        }
-        return updater;
+    {   
+        return systemUpdater.getUpdaterFor(dir);
     }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Refresh the subsystems collection so that it reflects the new
-     * updates (intended to be called after downloading/applying pending
-     * updates).
-     * @param aFrameworkDir The directory where all subsystems are located
-     * @param mainBundle The main bundle location
-     */
-    private void refreshSubsystemUpdaters(File aFrameworkDir, File mainBundle)
-    {
-        // Clear out old values
-        subsystems = new HashMap<File, SubsystemUpdater>();
-        subsystemsByName = new HashMap<String, SubsystemUpdater>();
-
-        // Look up the updater for each framework
-        for (File dir : aFrameworkDir.listFiles())
-        {
-            getUpdaterFor(dir);
-        }
-
-        // Now create the updater for the main bundle
-        getUpdaterFor(mainBundle);
-    }
-
 
     // ----------------------------------------------------------
     /**
@@ -813,7 +657,8 @@ public class WCServletAdaptor
 
 
     //~ Instance/static variables .............................................
-
+    private WCUpdater systemUpdater;
+    
     private javax.servlet.ServletContext  innerContext   = null;
     private javax.servlet.ServletContext  wrappedContext = null;
     private String                        woClasspath    = null;
@@ -821,24 +666,17 @@ public class WCServletAdaptor
     private File                          propertiesFile;
     private File                          updateDir;
     private File                          frameworkDir;
-    private Map<File, SubsystemUpdater>   subsystems       =
-        new HashMap<File, SubsystemUpdater>();
-    private Map<String, SubsystemUpdater> subsystemsByName =
-        new HashMap<String, SubsystemUpdater>();
+    
     private Throwable                     initFailed;
 
     private static WCServletAdaptor instance;
 
-    private static final String FRAMEWORK_SUBDIR1 =
-        "/Contents/Frameworks/Library/Frameworks";
-    private static final String FRAMEWORK_SUBDIR2 =
-        "/Contents/Library/Frameworks";
     private static final String[] PRIORITY_FRAMEWORKS = {
         "EOJDBCPrototypes.framework",
         "ERJars.framework",
         "ERExtensions.framework"
     };
-    private static final String UPDATE_SUBDIR    = "pending-updates";
+    
     private static final String APP_JAR_PREFIX   = "webcat";
     private static final String INSTALLED_WOROOT = "installed.woroot";
     private static final String VERSION          = "1.5";

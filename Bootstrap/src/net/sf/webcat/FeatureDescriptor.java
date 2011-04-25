@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.8 2010/09/26 22:31:30 stedwar2 Exp $
+ |  $Id: FeatureDescriptor.java,v 1.9 2011/04/25 19:08:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -23,7 +23,10 @@ package net.sf.webcat;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
+
+import net.sf.webcat.WCUpdater.Condition;
 
 // -------------------------------------------------------------------------
 /**
@@ -34,7 +37,7 @@ import java.util.*;
  *
  *  @author  stedwar2
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2010/09/26 22:31:30 $
+ *  @version $Revision: 1.9 $, $Date: 2011/04/25 19:08:23 $
  */
 public class FeatureDescriptor
 {
@@ -193,26 +196,26 @@ public class FeatureDescriptor
         return getProperty( "description" );
     }
 
-
     // ----------------------------------------------------------
     /**
      * Get a proxy for this subsystem's provider, which can be used to
      * dynamically download a new version of this subsystem.
      * @return the subsystem's provider
+     * @throws IOException
      */
-    public FeatureProvider provider()
+    public FeatureProvider provider() throws IOException
     {
-        return FeatureProvider.getProvider( getProperty( "provider.url" ) );
+        return FeatureProvider.getProvider(getProperty( "provider.url" ));
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Determine if a newer version of this subsystem is available from
-     * its provider.
-     * @return True if a newer version is available
+     * Gets the latest version of a feature from this FeatureDescriptor's provider
+     * @return The provider's FeatureDiscriptor
+     * @throws IOException
      */
-    public FeatureDescriptor providerVersion()
+    public FeatureDescriptor providerVersion() throws IOException
     {
         FeatureDescriptor latest = null;
         FeatureProvider provider = provider();
@@ -251,8 +254,9 @@ public class FeatureDescriptor
      * Determine if a newer version of this subsystem is available from
      * its provider.
      * @return True if a newer version is available
+     * @throws IOException
      */
-    public boolean updateIsAvailable()
+    public boolean updateIsAvailable() throws IOException
     {
         boolean result = false;
         FeatureDescriptor latest = providerVersion();
@@ -308,34 +312,80 @@ public class FeatureDescriptor
     /**
      * Download this feature version from its provider.
      * @param location the place to put the downloaded file
-     * @return null on success, or an error message on failure
+     * @param finalLocation to move the downloaded file to
+     * @throws IOException
      */
-    public String downloadTo( File location )
+    public void downloadTo( File location,  File finalLocation ) throws IOException
     {
-        FeatureProvider provider = provider();
-        if ( provider != null )
-        {
-            String fileName = name + "_" + currentVersion() + ".jar";
-            String update = ( isPlugin() ? "plugins/" : "subsystems/" )
-                + fileName;
-            try
-            {
-                URL fileUrl = new URL( provider.url(), update );
-                InputStream in = fileUrl.openStream();
-                File outFile = new File( location, fileName );
-                FileOutputStream out = new FileOutputStream( outFile );
-                logInfo( "Downloading " + fileUrl + " to "
-                    + outFile.getAbsolutePath() );
-                FileUtilities.copyStream( in, out );
-                out.close();
-                in.close();
-            }
-            catch ( IOException e )
-            {
-                logError( "unable to download " + update + ":", e );
-            }
-        }
-        return null;
+    	InputStream in = null;
+    	FileOutputStream out = null;
+
+    	try
+    	{
+	        FeatureProvider provider = provider();
+	        if ( provider != null )
+	        {
+	        	boolean crcpassed = true;
+	        	int i = 0;
+	        	String fileName = name + "_" + currentVersion() + ".jar";
+	            String update = ( isPlugin() ? "plugins/" : "subsystems/" )
+	                + fileName;
+	            File outFile = new File( location, fileName );
+	            URL fileUrl = new URL( provider.url(), update );
+
+	            if(outFile.length() == 0)
+	            	WCUpdater.logInfo( "Downloading " + fileUrl + " to " + outFile.getAbsolutePath() );
+	            else
+	            	WCUpdater.logInfo( "Resumed Downloading " + fileUrl + " to " + outFile.getAbsolutePath() );
+
+	            do
+	        	{
+		            URLConnection connection = fileUrl.openConnection();
+		            connection.setRequestProperty("Range", "bytes="+ outFile.length() +"-");
+		            in = connection.getInputStream();
+		            out = new FileOutputStream( outFile, true );
+
+		            FileUtilities.copyStream( in, out );
+		            out.close();
+		            in.close();
+
+		            //Perform checksum comparison
+		            //Should delete file
+		            if(!compareChecksums(outFile))
+		            {
+		            	crcpassed = false;
+		            	outFile.delete();
+		            }
+		            i++;
+	        	}
+	        	while(!crcpassed && i < 5);
+
+	        	if(!crcpassed)
+	        	{
+	        		WCUpdater.logInfo( "CRC mismatch between " + fileUrl + " and " + outFile.getAbsolutePath());
+	        		throw new IOException();
+	        	}
+
+	            //Moving from download location to final location
+	            if(!outFile.renameTo(new File(finalLocation, outFile.getName())))
+	            {
+	            	WCUpdater.logError(getClass(), "Unable to move file from "
+	            			+ location.getAbsolutePath() + " to " + finalLocation.getAbsolutePath());
+	            }
+	            else
+	            {
+	            	WCUpdater.logInfo( "Moving " + outFile.getName() + " to " + outFile.getAbsolutePath());
+	            }
+	        }
+    	}
+    	finally
+    	{
+    		if(out != null)
+    			out.close();
+
+    		if(in != null)
+    			in.close();
+    	}
     }
 
 
@@ -344,9 +394,11 @@ public class FeatureDescriptor
      * Download an updated version of this feature from its provider, if
      * available.
      * @param location the place to put the downloaded file
-     * @return null on success, or an error message on failure
+     * @param finalLocation to move the downloaded file to
+     * @throws IOException
+     * @returns true if update was downloaded
      */
-    public String downloadUpdateIfNecessary( File location )
+    public boolean downloadUpdateIfNecessary( File location, File finalLocation ) throws IOException
     {
         String updateAutomatically = getProperty( "updateAutomatically" );
         if (   updateAutomatically != null
@@ -355,22 +407,68 @@ public class FeatureDescriptor
                 || updateAutomatically.equals( "no" ) ) )
         {
             // If we shouldn't update this subsystem, skip it
-            return null;
+            return false;
         }
 
         FeatureDescriptor latest = providerVersion();
-        if ( latest != null && latest.isNewerThan( this ) )
+        if(latest != null)
         {
-            logInfo( "Updating " + name );
-            return latest.downloadTo( location );
+        	if (latest.isNewerThan( this ) )
+        	{
+        		WCUpdater.logInfo( "Updating " + name );
+        		latest.downloadTo( location, finalLocation );
+        		return true;
+        	}
+        	else if (name != null )
+        	{
+        		WCUpdater.logInfo( "Feature " + name + " is up to date." );
+        		return false;
+        	}
         }
-        else if ( name != null )
-        {
-            logInfo( "Feature " + name + " is up to date." );
-        }
-        return null;
+
+        return false;
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Gets the current update status of this Feature.
+     * @returns The condition the update file is in.
+     */
+    public Condition getUpdateStatus()
+    {
+    	WCUpdater currentUpdater = WCUpdater.getInstance();
+
+    	try
+		{
+    		return currentUpdater.getFileConditionFor(name + "_"
+					+ providerVersion().currentVersion() + ".jar");
+		}
+		catch (IOException e)
+		{
+			return Condition.UNAVAILABLE;
+		}
+    }
+
+    //~ Private Methods .....................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Compares a downloaded checksum to a stored checksum.
+     * @param downloadedFile A file that has been downloaded
+     * @return True if the checksums match
+     */
+    private boolean compareChecksums(File downloadedFile)
+    {
+    	long checksum = FileUtilities.getCRCChecksum(downloadedFile);
+    	long storedChecksum = longProperty("checksum");
+
+    	if (storedChecksum != 0L && checksum != storedChecksum)
+    	{
+    		return false;
+    	}
+
+    	return true;
+    }
 
     //~ Protected Methods .....................................................
 
@@ -393,62 +491,37 @@ public class FeatureDescriptor
         }
         catch ( NumberFormatException e )
         {
-            logError( "Non-numeric property " + propName
+            WCUpdater.logError( getClass(), "Non-numeric property " + propName
                 + " for feature " + name );
         }
         return val;
     }
 
-
-    // ----------------------------------------------------------
+ // ----------------------------------------------------------
     /**
-     * Log an informational message.  This implementation sends output
-     * to {@link System#out}, but provides a hook so that subclasses
-     * can use Log4J (we don't use that here, so that the Log4J library
-     * can be dynamically updatable through subsystems).
-     * @param msg the message to log
+     * Access a given property and convert it to a numeric value (with a
+     * default of zero).
+     * @param propName the name of the property to look up
+     * @return the property's value as an long
      */
-    protected void logInfo( String msg )
+    protected long longProperty( String propName )
     {
-        System.out.println( msg );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Log an error message.  This implementation sends output
-     * to {@link System#out}, but provides a hook so that subclasses
-     * can use Log4J (we don't use that here, so that the Log4J library
-     * can be dynamically updatable through subsystems).
-     * @param msg the message to log
-     */
-    protected void logError( String msg )
-    {
-        String className = getClass().getName();
-        int pos = className.lastIndexOf( '.' );
-        if ( pos >= 0 )
-        {
-            className = className.substring( pos + 1 );
+        long val = 0;
+        String str = getProperty( propName, "0" );
+        try {
+            if ( str.length() > 0 )
+            {
+                val = Long.parseLong( str );
+            }
         }
-        System.out.println( className + ": ERROR: " + msg );
+        catch ( NumberFormatException e )
+        {
+            WCUpdater.logError( getClass(), "Non-numeric property " + propName
+                + " for feature " + name );
+        }
+
+        return val;
     }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Log an error message.  This implementation sends output
-     * to {@link System#out}, but provides a hook so that subclasses
-     * can use Log4J (we don't use that here, so that the Log4J library
-     * can be dynamically updatable through subsystems).
-     * @param msg the message to log
-     * @param exception an optional exception that goes with the message
-     */
-    protected void logError( String msg, Throwable exception )
-    {
-        logError( msg );
-        System.out.println( exception );
-    }
-
 
     //~ Instance/static variables .............................................
 

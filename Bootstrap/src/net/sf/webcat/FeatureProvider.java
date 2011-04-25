@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FeatureProvider.java,v 1.8 2010/09/26 22:31:30 stedwar2 Exp $
+ |  $Id: FeatureProvider.java,v 1.9 2011/04/25 19:08:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import java.util.*;
  *
  *  @author  stedwar2
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2010/09/26 22:31:30 $
+ *  @version $Revision: 1.9 $, $Date: 2011/04/25 19:08:23 $
  */
 public class FeatureProvider
 {
@@ -62,8 +62,9 @@ public class FeatureProvider
      * Get the subsystem provider associated with the specified URL.
      * @param url the URL for the provider
      * @return the subsystem provider, or null if none exists
+     * @throws IOException 
      */
-    public static FeatureProvider getProvider( String url )
+    public static FeatureProvider getProvider( String url ) throws IOException 
     {
         FeatureProvider provider = null;
         URL realURL = baseURLFor( url );
@@ -72,20 +73,12 @@ public class FeatureProvider
             provider = providerRegistry.get( realURL );
             if ( provider == null )
             {
-                try
-                {
-                    InputStream stream =
-                        new URL( realURL, UPDATE_PROPERTIES_FILE ).openStream();
-                    provider = new FeatureProvider( realURL, stream );
-                    stream.close();
-                }
-                catch ( IOException e )
-                {
-                    System.out.println( "FeatureProvider: ERROR: exception "
-                        + "reading from provider at "
-                        + realURL );
-                    System.out.println( e );
-                }
+            	InputStream stream =
+            		new URL( realURL, UPDATE_PROPERTIES_FILE ).openStream();
+                    
+            	provider = new FeatureProvider( realURL, stream );
+                stream.close();
+          
                 if ( provider != null )
                 {
                     providerRegistry.put( realURL, provider );
@@ -104,6 +97,43 @@ public class FeatureProvider
     public static Collection<FeatureProvider> providers()
     {
         return providerRegistry.values();
+    }
+    
+    // ----------------------------------------------------------
+    /**
+     * Gets the current version of a feature provider and clears the old one from
+     * the registry. 
+     */
+    public static void refreshProviderRegistry()
+    {
+    	for(URL realURL : providerRegistry.keySet())
+    	{
+    		if ( realURL != null )
+            {
+    			FeatureProvider provider = null;
+    			
+                provider = providerRegistry.get( realURL );
+                if ( provider == null )
+                {
+					try 
+					{
+						InputStream stream = new URL( realURL, UPDATE_PROPERTIES_FILE ).openStream();
+						provider = new FeatureProvider( realURL, stream );
+	                    stream.close();
+	              
+					} 
+					catch (IOException e) 
+					{
+						provider = null;
+					}
+                                 	
+                    if ( provider != null )
+                    {
+                        providerRegistry.put( realURL, provider );
+                    }
+                }
+            }
+    	}
     }
 
 
@@ -227,9 +257,7 @@ public class FeatureProvider
         }
         catch ( IOException e )
         {
-            System.out.println( "FeatureProvider: ERROR: exception "
-                + "reading from provider at " + url );
-            System.out.println( e );
+            WCUpdater.logError(getClass(), "exception reading from provider at " + url, e );
         }
     }
 
@@ -249,9 +277,7 @@ public class FeatureProvider
         }
         catch ( IOException e )
         {
-            System.out.println( "FeatureProvider: ERROR: exception "
-                + "reading from provider at " + url );
-            System.out.println( e );
+        	WCUpdater.logError(getClass(), "exception reading from provider at " + url, e );
         }
         name = properties.getProperty( "provider.name", url.toString() );
         for ( Enumeration<?> e = properties.keys(); e.hasMoreElements(); )
@@ -344,13 +370,12 @@ public class FeatureProvider
             }
             catch (java.net.MalformedURLException e)
             {
-                System.out.println( "FeatureProvider: ERROR: Malformed "
+            	WCUpdater.logInfo("FeatureProvider: ERROR: Malformed "
                     + "feature provider URL: " + updateUrl );
             }
         }
         return result;
     }
-
 
     //~ Instance/static variables .............................................
 

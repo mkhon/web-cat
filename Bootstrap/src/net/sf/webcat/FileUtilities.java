@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.7 2010/09/26 22:31:30 stedwar2 Exp $
+ |  $Id: FileUtilities.java,v 1.8 2011/04/25 19:08:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import java.util.zip.*;
  *
  *  @author  stedwar2
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.7 $, $Date: 2010/09/26 22:31:30 $
+ *  @version $Revision: 1.8 $, $Date: 2011/04/25 19:08:23 $
  */
 public class FileUtilities
 {
@@ -122,7 +122,79 @@ public class FileUtilities
         out.flush();
     }
 
-
+    // ----------------------------------------------------------
+    /**
+     * Checks to see if the given directory contains a file with the given name.
+     * @param dir The directory to check.
+     * 
+     * @param filename the name of the file
+     * @return True if there is a file in the directory with the given file name.
+     */
+    public static boolean inDirectory(File dir, String filename)
+    {
+    	if(dir != null && filename != null && dir.isDirectory())
+    	{
+    		for(File file : dir.listFiles())
+    		{
+    			if(filename.equals(file.getName()))
+    				return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    // ----------------------------------------------------------
+    /**
+     * Deletes older versions of the update files found in the specified directory.
+     * @param Directory containing update files
+     */
+    public static void deleteOlderFiles(File dir)
+    {
+    	if(dir != null && dir.isDirectory())
+    	{
+	        File[] dirFiles = dir.listFiles();
+	    	
+	    	for(int i = 0; i+1 < dirFiles.length; i++)
+	    	{
+	    		if(dirFiles[i] == null)
+	    			continue;
+	    		
+	    		String[] iFile = dirFiles[i].getName().split("\\_");
+	    		for(int j = i+1; j < dirFiles.length; j++)
+	    		{
+	    			String[] jFile = dirFiles[j].getName().split("\\_");
+	    			
+	    			if(iFile[0].equals(jFile[0]))
+	    			{
+	    				iFile = iFile[1].split("\\.");
+	    				jFile = jFile[1].split("\\.");	
+	    				
+	    				int delete;
+	    				
+	    				if(iFile[2].compareTo(jFile[2]) > 0)
+	    					delete = j;
+	    				else
+	    					delete = i;
+	    				
+	    				if(iFile[1].compareTo(jFile[1]) > 0)
+	    					delete = j;
+	    				else
+	    					delete = i;
+	    				
+	    				if(iFile[0].compareTo(jFile[0]) > 0)
+	    					delete = j;
+	    				else
+	    					delete = i;
+	    					
+	    				dirFiles[delete].delete();
+	    				dirFiles[delete] = null;
+	    			}
+	    		}
+	    	}
+    	}
+    }
+    
     // ----------------------------------------------------------
     /**
      * Return a canonical version of the file name, using "/" as the path
@@ -200,6 +272,35 @@ public class FileUtilities
             dir.delete();
         }
         return deletedAll;
+    }
+    
+    // ----------------------------------------------------------
+    /**
+     * Gets the CRC checksum of a file.
+     * @param file The file to compute the checksum of.
+     * @return the checksum value
+     */
+    public static long getCRCChecksum(File file)
+    {
+    	try 
+    	{
+			CheckedInputStream cis = new CheckedInputStream(new FileInputStream(file), 
+					new CRC32());
+		
+			byte[] buf = new byte[128];
+			while(cis.read(buf) >= 0);
+			long checksum = cis.getChecksum().getValue();
+			cis.close();
+			return checksum;
+		} 
+    	catch (FileNotFoundException e) 
+    	{
+		} 
+    	catch (IOException e) 
+    	{
+		}
+    	  	
+    	return 0;
     }
 
 
