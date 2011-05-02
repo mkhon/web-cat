@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Semester.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: Semester.java,v 1.2 2011/05/02 16:13:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.*;
  * Represents a single school semester.
  *
  * @author Stephen Edwards
- * @version $Id: Semester.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: Semester.java,v 1.2 2011/05/02 16:13:07 aallowat Exp $
  */
 public class Semester
     extends _Semester
@@ -225,7 +225,7 @@ public class Semester
      */
     public String name()
     {
-        return seasonName() + ", " + year();
+        return seasonName() + " " + year();
     }
 
 
