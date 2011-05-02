@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCButton.java,v 1.1 2010/05/11 14:51:57 aallowat Exp $
+ |  $Id: WCButton.java,v 1.2 2011/05/02 16:16:50 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -25,6 +25,7 @@ import org.webcat.ui._base.DojoActionFormElement;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOElement;
+import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSDictionary;
 
 //------------------------------------------------------------------------
@@ -49,7 +50,7 @@ import com.webobjects.foundation.NSDictionary;
  * </table>
  *
  * @author Tony Allevato
- * @version $Id: WCButton.java,v 1.1 2010/05/11 14:51:57 aallowat Exp $
+ * @version $Id: WCButton.java,v 1.2 2011/05/02 16:16:50 aallowat Exp $
  */
 public class WCButton extends DojoActionFormElement
 {
@@ -61,6 +62,8 @@ public class WCButton extends DojoActionFormElement
             WOElement template)
     {
         super("button", someAssociations, template);
+
+        _label = _associations.removeObjectForKey("label");
     }
 
 
@@ -88,4 +91,36 @@ public class WCButton extends DojoActionFormElement
             return "submit";
         }
     }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void appendAttributesToResponse(WOResponse response,
+            WOContext context)
+    {
+        int start = response.contentString().length();
+
+        super.appendAttributesToResponse(response, context);
+
+        if (_label != null)
+        {
+            String label = _label.valueInComponent(
+                    context.component()).toString();
+
+            if (label != null)
+            {
+                response._appendTagAttributeAndValue("label", label, true);
+
+                if (response.contentString().indexOf("value=\"", start) == -1)
+                {
+                    response._appendTagAttributeAndValue("value", label, true);
+                }
+            }
+        }
+    }
+
+
+    //~ Static/instance variables .............................................
+
+    private WOAssociation _label;
 }
