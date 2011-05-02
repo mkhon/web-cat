@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.15 2010/11/12 18:42:44 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.16 2011/05/02 19:38:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.ui.util.ComponentIDGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.15 $, $Date: 2010/11/12 18:42:44 $
+ * @version $Revision: 1.16 $, $Date: 2011/05/02 19:38:07 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -212,10 +212,45 @@ public class StudentsForAssignmentPage
 
 
     // ----------------------------------------------------------
-    public String markCompleteStatusIndicatorId()
+    public WOActionResults regradeSubmissions()
     {
-        return idFor.get("markCompleteStatusIndicator_"
-                + assignmentOffering.id());
+        return new ConfirmingAction(this, false)
+        {
+            @Override
+            protected String confirmationTitle()
+            {
+                return "Regrade Everyone's Submission?";
+            }
+
+            @Override
+            protected String confirmationMessage()
+            {
+                return "<p>This action will <b>regrade the most recent "
+                    + "submission for every student</b> who has submitted to "
+                    + "this assignment.</p><p>This will also <b>delete all "
+                    + "prior results</b> for the submissions to be regraded "
+                    + "and <b>delete all TA comments and scoring</b> that "
+                    + "have been recorded for the submissions to be regraded."
+                    + "</p><p>Each student\'s most recent submission will be "
+                    + "re-queued for grading, and each student will receive "
+                    + "an e-mail message when their new results are "
+                    + "available.</p><p class=\"center\">Regrade everyone's "
+                    + "most recent submission?</p>";
+            }
+
+            @Override
+            protected WOActionResults actionWasConfirmed()
+            {
+                for (AssignmentOffering offering :
+                    assignmentOfferings(courseOfferings()))
+                {
+                    offering.regradeMostRecentSubsForAll(localContext());
+                }
+
+                applyLocalChanges();
+                return null;
+            }
+        };
     }
 
 
@@ -294,6 +329,14 @@ public class StudentsForAssignmentPage
             destination.nextPage = this;
         }
         return destination;
+    }
+
+
+    // ----------------------------------------------------------
+    public String markCompleteStatusIndicatorId()
+    {
+        return idFor.get("markCompleteStatusIndicator_"
+                + assignmentOffering.id());
     }
 
 

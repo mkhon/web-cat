@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.3 2010/09/27 04:21:37 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.4 2011/05/02 19:37:34 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -82,8 +82,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $ $Date: 2010/09/27 04:21:37 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.4 $ $Date: 2011/05/02 19:37:34 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -158,24 +158,58 @@ public class GraderNavigator
 
 
     // ----------------------------------------------------------
-    /**
-     * Updates the list of available assignments.
-     *
-     * @return the result is ignored
-     */
-    public JavascriptGenerator updateAssignments()
+    public JavascriptGenerator updateCourseOfferingsAndClearSelection()
+    {
+        super.updateCourseOfferingsAndClearSelection();
+        selectedAssignment = null;
+        return updateAssignments().refresh(idFor.get("coursePane"));
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean isAssignmentFilterPlaceholder()
+    {
+        return assignmentInRepetition ==
+            GraderNavigatorObjects.FILTER_PLACEHOLDER;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean isAssignmentNoCoursePlaceholder()
+    {
+        return assignmentInRepetition ==
+            GraderNavigatorObjects.NO_COURSE_PLACEHOLDER;
+    }
+
+
+    // ----------------------------------------------------------
+    private void gatherAssignments()
     {
         log.debug("updateAssignments()");
         assignments = new NSMutableArray<INavigatorObject>();
 
         if (selectedCourseOffering == null)
         {
-            return JavascriptGenerator.NO_OP;
+            assignments.addObject(
+                    GraderNavigatorObjects.NO_COURSE_PLACEHOLDER);
+            return;
+        }
+
+        if (userIsStaffForSelectedCourse()
+                || !hideClosedAssignmentsFromStudents)
+        {
+            assignments.addObject(
+                    GraderNavigatorObjects.FILTER_PLACEHOLDER);
         }
 
         @SuppressWarnings("unchecked")
         NSArray<CourseOffering> offerings = (NSArray<CourseOffering>)
             selectedCourseOffering.representedObjects();
+
+        if (offerings == null)
+        {
+            return;
+        }
 
         EOQualifier unpublishedQual = null;
 
@@ -269,28 +303,58 @@ public class GraderNavigator
             {
                 // First, try enabling unpublished assignments
                 setShowUnpublishedAssignments(true);
-                return updateAssignments();
+                gatherAssignments();
             }
             else if (!showClosedAssignments())
             {
                 // Then try enabling closed assignments
                 setShowClosedAssignments(true);
-                return updateAssignments();
+                gatherAssignments();
             }
         }
 
-        if (assignments.count() > 0 && selectedAssignment == null)
+        /*if (assignments.count() > firstAssignmentIndex
+                && selectedAssignment == null)
         {
-            selectedAssignment = assignments.objectAtIndex(0);
-        }
+            selectedAssignment =
+                assignments.objectAtIndex(firstAssignmentIndex);
+        }*/
 
         if (log.isDebugEnabled())
         {
             log.debug("assignments = " + assignments);
             log.debug("selected assignment = " + selectedAssignment);
         }
+    }
 
+
+    // ----------------------------------------------------------
+    /**
+     * Updates the list of available assignments.
+     *
+     * @return the result is ignored
+     */
+    public JavascriptGenerator updateAssignments()
+    {
+        gatherAssignments();
         return new JavascriptGenerator().refresh(idFor.get("assignmentPane"));
+    }
+
+
+    // ----------------------------------------------------------
+    public JavascriptGenerator updateAssignmentMenu()
+    {
+        gatherAssignments();
+        return new JavascriptGenerator().refresh(idFor.get("assignmentMenu"));
+    }
+
+
+    // ----------------------------------------------------------
+    public JavascriptGenerator updateAssignmentsAndClearSelection()
+    {
+        JavascriptGenerator result = updateAssignments();
+        selectedAssignment = null;
+        return result;
     }
 
 
@@ -361,6 +425,14 @@ public class GraderNavigator
 
 
     // ----------------------------------------------------------
+    public JavascriptGenerator toggleUnpublishedAssignments()
+    {
+        setShowUnpublishedAssignments(!showUnpublishedAssignments());
+        return updateAssignmentMenu();
+    }
+
+
+    // ----------------------------------------------------------
     public void setShowClosedAssignments(boolean showClosedAssignments)
     {
         graderParent.prefs().setShowClosedAssignments(
@@ -372,6 +444,14 @@ public class GraderNavigator
     public boolean showClosedAssignments()
     {
         return graderParent.prefs().showClosedAssignments();
+    }
+
+
+    // ----------------------------------------------------------
+    public JavascriptGenerator toggleClosedAssignments()
+    {
+        setShowClosedAssignments(!showClosedAssignments());
+        return updateAssignmentMenu();
     }
 
 
