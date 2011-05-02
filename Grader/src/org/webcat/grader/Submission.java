@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.15 2010/10/29 20:36:59 aallowat Exp $
+ |  $Id: Submission.java,v 1.16 2011/05/02 16:25:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.15 $, $Date: 2010/10/29 20:36:59 $
+ *  @version $Revision: 1.16 $, $Date: 2011/05/02 16:25:10 $
  */
 public class Submission
     extends _Submission
@@ -363,7 +363,7 @@ public class Submission
         NSMutableSet<User> studentsEnrolled = new NSMutableSet<User>();
 
         EOEditingContext ec = editingContext();
-        if (ec == null && assignmentOffering( )!= null)
+        if (ec == null && assignmentOffering() != null)
         {
             ec = assignmentOffering().editingContext();
         }
