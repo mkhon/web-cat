@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.2 2010/10/17 16:47:35 stedwar2 Exp $
+ |  $Id: WCBasePage.java,v 1.3 2011/05/02 19:36:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -74,8 +74,8 @@ import org.webcat.core.WCResourceManager;
  * </table>
  *
  * @author Tony Allevato
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/17 16:47:35 $
+ * @author Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/05/02 19:36:17 $
  */
 public class WCBasePage
     extends WOComponent
@@ -347,9 +347,16 @@ public class WCBasePage
     // ----------------------------------------------------------
     public boolean hasCustomExternalCssLinks()
     {
-        return hasSession()
-            && ((Session)session()).user().preferences()
-                .valueForKey("customCss") != null;
+        try
+        {
+            return hasSession()
+                && ((Session)session()).user().preferences()
+                    .valueForKey("customCss") != null;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
 
