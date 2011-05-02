@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Footer.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: Footer.java,v 1.2 2011/05/02 19:36:52 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -21,6 +21,9 @@
 
 package org.webcat.core;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import com.webobjects.appserver.*;
 
 //-------------------------------------------------------------------------
@@ -28,7 +31,7 @@ import com.webobjects.appserver.*;
  * The common footer text for each generated page.
  *
  * @author Stephen Edwards
- * @version $Id: Footer.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: Footer.java,v 1.2 2011/05/02 19:36:52 aallowat Exp $
  */
 public class Footer
     extends WOComponent
@@ -56,5 +59,20 @@ public class Footer
     public boolean isStateless()
     {
         return true;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the current year, for the final copyright date in the footer.
+     *
+     * @return the current year
+     */
+    public int currentYear()
+    {
+        Date date = new Date();
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
     }
 }
