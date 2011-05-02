@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.3 2011/01/20 18:44:16 stedwar2 Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.4 2011/05/02 19:38:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,8 +34,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * is displayed on the StudentsForAssignment page.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/01/20 18:44:16 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2011/05/02 19:38:49 $
  */
 public class PickSubmissionDialog extends GraderComponent
 {
@@ -55,6 +55,7 @@ public class PickSubmissionDialog extends GraderComponent
     public NSArray<UserSubmissionPair> allUserSubmissionsForNavigation;
     public ERXDisplayGroup<Submission> submissionDisplayGroup;
     public Submission                  aSubmission;
+    public boolean                     sendsToGradingPage;
 
 
     //~ Methods ...............................................................
@@ -143,28 +144,40 @@ public class PickSubmissionDialog extends GraderComponent
             selectedSub = rootUserSubmission.submission();
         }
 
-        GradeStudentSubmissionPage page =
-            pageWithName(GradeStudentSubmissionPage.class);
+        GraderComponent pageToReturn;
 
         prefs().setSubmissionRelationship(selectedSub);
 
-        if (allUserSubmissionsForNavigation == null)
+        if (sendsToGradingPage)
         {
-            page.availableSubmissions = null;
-            page.thisSubmissionIndex = 0;
+            GradeStudentSubmissionPage page =
+                pageWithName(GradeStudentSubmissionPage.class);
+
+            if (allUserSubmissionsForNavigation == null)
+            {
+                page.availableSubmissions = null;
+                page.thisSubmissionIndex = 0;
+            }
+            else
+            {
+                page.availableSubmissions =
+                    allUserSubmissionsForNavigation.immutableClone();
+                page.thisSubmissionIndex =
+                    page.availableSubmissions.indexOf(rootUserSubmission);
+            }
+
+            page.nextPage = nextPageForResultsPage;
+
+            pageToReturn = page;
         }
         else
         {
-            page.availableSubmissions =
-                allUserSubmissionsForNavigation.immutableClone();
-            page.thisSubmissionIndex =
-                page.availableSubmissions.indexOf(rootUserSubmission);
+            pageToReturn = pageWithName(FinalReportPage.class);
         }
-        page.nextPage = nextPageForResultsPage;
 
-        page.reloadGraderPrefs();
+        pageToReturn.reloadGraderPrefs();
 
-        return page;
+        return pageToReturn;
     }
 
 
