@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.2 2011/04/19 16:33:33 aallowat Exp $
+ |  $Id: FileUtilities.java,v 1.3 2011/05/13 19:46:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -696,41 +696,6 @@ public class FileUtilities
     public static boolean showInline( File file )
     {
         return showInline( file.getName() );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Returns a string version of the given file size.
-     *
-     * @param  size the file size to convert
-     * @return the file size as a string
-     */
-    public static String fileSizeAsString( long size )
-    {
-        StringBuffer result = new StringBuffer( 10 );
-        if ( size < 1024L )
-        {
-            result.append( size );
-            result.append( " bytes" );
-        }
-        else if ( size < 1048576L )
-        {
-            double sz = size / 1024.0;
-            DecimalFormat fmt = new DecimalFormat( "0.0" );
-            fmt.format( sz, result,
-                        new FieldPosition( DecimalFormat.FRACTION_FIELD ) );
-            result.append( "kb" );
-        }
-        else
-        {
-            double sz = size / 1048576.0;
-            DecimalFormat fmt = new DecimalFormat( "0.0" );
-            fmt.format( sz, result,
-                        new FieldPosition( DecimalFormat.FRACTION_FIELD ) );
-            result.append( "mb" );
-        }
-        return result.toString();
     }
 
 

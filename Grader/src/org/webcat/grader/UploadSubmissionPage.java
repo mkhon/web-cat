@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.6 2010/10/08 14:46:42 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.7 2011/05/13 19:50:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,8 +37,8 @@ import org.webcat.ui.generators.JavascriptGenerator;
  * to upload a program file for the current (new) submission.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2010/10/08 14:46:42 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.7 $, $Date: 2011/05/13 19:50:19 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -347,12 +347,11 @@ public class UploadSubmissionPage
 
     // ----------------------------------------------------------
     /**
-     * Returns a string version of the file size for the currently
-     * uploaded file.
+     * Returns the file size for the currently uploaded file.
      *
-     * @return the file size as a string
+     * @return the file size
      */
-    public String uploadedFileSize()
+    public long uploadedFileSize()
     {
         long size = 0L;
         NSData file = submissionInProcess().uploadedFile();
@@ -360,7 +359,7 @@ public class UploadSubmissionPage
         {
             size = file.length();
         }
-        return FileUtilities.fileSizeAsString( size );
+        return size;
     }
 
 

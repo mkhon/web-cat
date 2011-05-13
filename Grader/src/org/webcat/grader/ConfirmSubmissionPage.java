@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.6 2011/03/23 15:10:56 aallowat Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.7 2011/05/13 19:50:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -36,7 +36,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author  Amit Kulkarni
  * @author  Latest changes by: $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2011/03/23 15:10:56 $
+ * @version $Revision: 1.7 $, $Date: 2011/05/13 19:50:19 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -134,13 +134,13 @@ public class ConfirmSubmissionPage
 
     // ----------------------------------------------------------
     /**
-     * Returns a string version of the file size for the currrent file.
+     * Returns the file size for the current file.
      *
-     * @return the file size as a string
+     * @return the file size
      */
-    public String fileSize()
+    public long fileSize()
     {
-        return FileUtilities.fileSizeAsString( file.length() );
+        return file.length();
     }
 
 

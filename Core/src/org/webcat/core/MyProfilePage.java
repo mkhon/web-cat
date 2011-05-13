@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: MyProfilePage.java,v 1.2 2011/05/13 19:46:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -21,20 +21,21 @@
 
 package org.webcat.core;
 
-import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.EOUtilities;
-import com.webobjects.foundation.*;
+import java.net.URLEncoder;
+import org.apache.log4j.Logger;
+import org.webcat.core.git.http.GitRequestHandler;
+import com.webobjects.appserver.WOComponent;
+import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.WODisplayGroup;
+import com.webobjects.appserver.WOResponse;
+import com.webobjects.eocontrol.EOEnterpriseObject;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableArray;
+import com.webobjects.foundation.NSTimeZone;
+import com.webobjects.foundation.NSTimestamp;
+import com.webobjects.foundation.NSTimestampFormatter;
 import er.extensions.eof.ERXQ;
 import er.extensions.foundation.ERXArrayUtilities;
-import java.net.URLEncoder;
-import org.webcat.core.Application;
-import org.webcat.core.AuthenticationDomain;
-import org.webcat.core.CourseOffering;
-import org.webcat.core.MyProfilePage;
-import org.webcat.core.Theme;
-import org.webcat.core.User;
-import org.webcat.core.WCComponent;
-import org.apache.log4j.Logger;
 
 //-------------------------------------------------------------------------
 /**
@@ -43,7 +44,7 @@ import org.apache.log4j.Logger;
  *
  *  @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/13 19:46:57 $
  */
 public class MyProfilePage
     extends WCComponent
@@ -82,6 +83,8 @@ public class MyProfilePage
     public String              aFormat;
     public User                anInstructor;
     public Theme               aTheme;
+    public EOEnterpriseObject  aRepositoryProvider;
+    public int                 indexOfARepositoryProvider;
     public boolean             openThemes;
 
 
@@ -379,6 +382,30 @@ public class MyProfilePage
         openThemes = true;
         return null;
     }
+
+
+    // ----------------------------------------------------------
+    public NSArray<? extends EOEnterpriseObject> repositoryProviders()
+    {
+        return RepositoryManager.getInstance().repositoriesPresentedToUser(user(),
+                    localContext());
+    }
+
+
+    // ----------------------------------------------------------
+    public String aRepositoryProviderURL()
+    {
+        return GitRequestHandler.completeURLForRepositoryPath(
+                context(), aRepositoryProvider, null);
+    }
+
+
+    // ----------------------------------------------------------
+    /*public String webdavURL()
+    {
+        return Application.completeURLWithRequestHandlerKey(context(),
+                WebDAVRequestHandler.REQUEST_HANDLER_KEY, null, null, true, 0);
+    }*/
 
 
     //~ Instance/static variables .............................................

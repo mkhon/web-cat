@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WOResponseOutputStream.java,v 1.1 2011/04/19 16:48:00 aallowat Exp $
+ |  $Id: WOResponseOutputStream.java,v 1.2 2011/05/13 19:46:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -32,7 +32,7 @@ import com.webobjects.foundation.NSData;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/04/19 16:48:00 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/13 19:46:57 $
  */
 public class WOResponseOutputStream extends OutputStream
 {
@@ -52,6 +52,22 @@ public class WOResponseOutputStream extends OutputStream
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public void close()
+    {
+        // Do nothing; overridden to eliminate spurious checked exceptions.
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public void flush()
+    {
+        // Do nothing; overridden to eliminate spurious checked exceptions.
+    }
+
 
     // ----------------------------------------------------------
     @Override

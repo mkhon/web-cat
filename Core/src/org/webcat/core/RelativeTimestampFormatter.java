@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RelativeTimestampFormatter.java,v 1.1 2011/04/19 16:47:36 aallowat Exp $
+ |  $Id: RelativeTimestampFormatter.java,v 1.2 2011/05/13 19:46:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -46,7 +46,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/04/19 16:47:36 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/13 19:46:57 $
  */
 public class RelativeTimestampFormatter extends Format
 {
@@ -119,7 +119,8 @@ public class RelativeTimestampFormatter extends Format
     @Override
     public Object parseObject(String source, ParsePosition pos)
     {
-        return null;
+        throw new UnsupportedOperationException("RelativeTimestampFormatter "
+                + "does not support parsing.");
     }
 
 

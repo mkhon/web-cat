@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.8 2011/03/07 18:56:58 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.9 2011/05/13 19:50:19 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,8 +31,8 @@ import org.webcat.dbupdate.UpdateSet;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2011/03/07 18:56:58 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.9 $, $Date: 2011/05/13 19:50:19 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -417,6 +417,19 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TSUBMISSIONPROFILE modify "
             + "CSUBMISSIONMETHOD TINYINT NOT NULL Default 0" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Submission method is no longer used (will eventually be deleted),
+     * so make it optional.
+     * @throws SQLException on error
+     */
+    public void updateIncrement19() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TUPLOADEDSCRIPTFILES add fileConfigSettings BLOB");
     }
 
 
