@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TableRow.java,v 1.3 2010/10/28 00:37:30 aallowat Exp $
+ |  $Id: TableRow.java,v 1.4 2011/05/13 19:45:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * row.
  *
  * @author Stephen Edwards
- * @version $Id: TableRow.java,v 1.3 2010/10/28 00:37:30 aallowat Exp $
+ * @version $Id: TableRow.java,v 1.4 2011/05/13 19:45:03 aallowat Exp $
  */
 public class TableRow
     extends WOComponent
@@ -162,7 +162,14 @@ public class TableRow
         }
         if (isSelected())
         {
-            cssClass += " selected";
+            if (isSelectable())
+            {
+                cssClass += " dojoDndItemSelected";
+            }
+            else
+            {
+                cssClass += " selected";
+            }
         }
         if (dragHandle() != null || isSelectable())
         {

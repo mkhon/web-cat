@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InlineStatusIndicator.java,v 1.1 2010/11/03 19:37:26 aallowat Exp $
+ |  $Id: InlineStatusIndicator.java,v 1.2 2011/05/13 19:45:03 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import com.webobjects.appserver.WOContext;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/11/03 19:37:26 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/13 19:45:03 $
  */
 public class InlineStatusIndicator extends WOComponent
 {
@@ -149,7 +149,7 @@ public class InlineStatusIndicator extends WOComponent
         js.assign("dojo.byId('" + messageBoxId(id) + "').innerHTML", message);
         js.fadeOut(JavascriptGenerator.newHash(
                 "node", messageBoxId(id),
-                "delay", 5000
+                "delay", 10000
                 )).play();
     }
 

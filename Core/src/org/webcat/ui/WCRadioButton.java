@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCRadioButton.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCRadioButton.java,v 1.2 2011/05/13 19:43:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import com.webobjects.foundation.NSDictionary;
  * A radio button.
  *
  * @author Tony Allevato
- * @version $Id: WCRadioButton.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: WCRadioButton.java,v 1.2 2011/05/13 19:43:18 aallowat Exp $
  */
 public class WCRadioButton extends DojoFormElement
 {
@@ -98,26 +98,29 @@ public class WCRadioButton extends DojoFormElement
                 NSArray<Object> formValues = request.formValuesForKey(
                         nameInContext(context));
 
-                Object value;
-                if (_value == null)
+                if (formValues != null)
                 {
-                    value = context.elementID();
-                }
-                else
-                {
-                    value = _value.valueInComponent(component);
-                }
+                    Object value;
+                    if (_value == null)
+                    {
+                        value = context.elementID();
+                    }
+                    else
+                    {
+                        value = _value.valueInComponent(component);
+                    }
 
-                boolean selected = isValueInInputValues(value, formValues);
+                    boolean selected = isValueInInputValues(value, formValues);
 
-                if (_value != null && _selection != null && selected)
-                {
-                    _selection.setValue(value, component);
-                }
+                    if (_value != null && _selection != null && selected)
+                    {
+                        _selection.setValue(value, component);
+                    }
 
-                if (_checked != null)
-                {
-                    _checked.setValue(selected, component);
+                    if (_checked != null)
+                    {
+                        _checked.setValue(selected, component);
+                    }
                 }
             }
         }

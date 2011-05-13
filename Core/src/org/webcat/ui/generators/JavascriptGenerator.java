@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.7 2010/11/03 19:36:56 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.8 2011/05/13 19:44:32 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXWOContext;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.7 2010/11/03 19:36:56 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.8 2011/05/13 19:44:32 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -458,7 +458,11 @@ public class JavascriptGenerator implements WOActionResults
      */
     public JavascriptGenerator append(String javascript)
     {
-        lines.add(javascript);
+        if (javascript != null)
+        {
+            lines.add(javascript);
+        }
+
         return this;
     }
 
@@ -472,7 +476,11 @@ public class JavascriptGenerator implements WOActionResults
      */
     public JavascriptGenerator append(JavascriptGenerator otherJS)
     {
-        lines.addAll(otherJS.lines);
+        if (otherJS != null)
+        {
+            lines.addAll(otherJS.lines);
+        }
+
         return this;
     }
 
