@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DijitProxy.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: DijitProxy.java,v 1.2 2011/05/16 17:29:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ package org.webcat.ui.generators;
  * </p>
  *
  * @author  Tony Allevato
- * @version $Id: DijitProxy.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: DijitProxy.java,v 1.2 2011/05/16 17:29:30 aallowat Exp $
  */
 public class DijitProxy extends JavascriptProxy
 {
@@ -58,28 +58,6 @@ public class DijitProxy extends JavascriptProxy
 
     // ----------------------------------------------------------
     /**
-     * <p>
-     * Sets the value of a named property on a widget.
-     * </p><p>
-     * See <a href="http://api.dojotoolkit.org/jsdoc/HEAD/dijit._Widget.attr">dijit._Widget.attr</a>
-     * for details on this method's parameters and operation.
-     * </p>
-     *
-     * @param attribute the named property to set
-     * @param value the value of the property
-     * @return this proxy object, for chaining
-     */
-    public DijitProxy attr(String attribute, Object value)
-    {
-        appendToFunctionChain("attr('" + attribute + "', "
-                + generator.javascriptObjectFor(value) + ")");
-
-        return this;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * A convenience method to disable this widget. Equivalent to calling
      * <code>attr("disabled", true)</code>.
      *
@@ -87,7 +65,7 @@ public class DijitProxy extends JavascriptProxy
      */
     public DijitProxy disable()
     {
-        return attr("disabled", true);
+        return set("disabled", true);
     }
 
 
@@ -100,6 +78,28 @@ public class DijitProxy extends JavascriptProxy
      */
     public DijitProxy enable()
     {
-        return attr("disabled", false);
+        return set("disabled", false);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * <p>
+     * Sets the value of a named property on a widget.
+     * </p><p>
+     * See <a href="http://api.dojotoolkit.org/jsdoc/HEAD/dijit._Widget.set">dijit._Widget.set</a>
+     * for details on this method's parameters and operation.
+     * </p>
+     *
+     * @param attribute the named property to set
+     * @param value the value of the property
+     * @return this proxy object, for chaining
+     */
+    public DijitProxy set(String attribute, Object value)
+    {
+        appendToFunctionChain("set('" + attribute + "', "
+                + generator.javascriptObjectFor(value) + ")");
+
+        return this;
     }
 }

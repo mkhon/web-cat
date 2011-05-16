@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JavascriptGenerator.java,v 1.8 2011/05/13 19:44:32 aallowat Exp $
+ |  $Id: JavascriptGenerator.java,v 1.9 2011/05/16 17:29:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXWOContext;
  * that it can be evaluated on return.
  *
  * @author  Tony Allevato
- * @version $Id: JavascriptGenerator.java,v 1.8 2011/05/13 19:44:32 aallowat Exp $
+ * @version $Id: JavascriptGenerator.java,v 1.9 2011/05/16 17:29:30 aallowat Exp $
  */
 public class JavascriptGenerator implements WOActionResults
 {
@@ -233,8 +233,16 @@ public class JavascriptGenerator implements WOActionResults
         JSHash options = new JSHash();
         options.put("title", title);
         options.put("message", message);
-        options.put("okLabel", okLabel);
-        options.put("onClose", onClose);
+
+        if (okLabel != null)
+        {
+            options.put("okLabel", okLabel);
+        }
+
+        if (onClose != null)
+        {
+            options.put("onClose", onClose);
+        }
 
         return alert(options);
     }

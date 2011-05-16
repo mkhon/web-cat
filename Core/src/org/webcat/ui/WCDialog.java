@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDialog.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCDialog.java,v 1.2 2011/05/16 17:29:30 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -71,7 +71,7 @@ import er.extensions.foundation.ERXValueUtilities;
  * </dl>
  *
  * @author Tony Allevato
- * @version $Id: WCDialog.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @version $Id: WCDialog.java,v 1.2 2011/05/16 17:29:30 aallowat Exp $
  */
 public class WCDialog extends WOComponent
 {
@@ -250,7 +250,7 @@ public class WCDialog extends WOComponent
                 (JavascriptGenerator) result;
 
             js.dijit(id()).call("hide");
-            js.dijit(idFor.get("okButtonId")).attr("disabled", false);
+            js.dijit(idFor.get("okButtonId")).enable();
 
             return js;
         }
