@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Selector.js,v 1.2 2011/05/13 19:46:15 aallowat Exp $
+ |  $Id: Selector.js,v 1.3 2011/05/16 15:11:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,7 +26,7 @@ dojo.require("dojo.dnd.Selector");
 // ------------------------------------------------------------------------
 /**
  * @author Tony Allevato
- * @version $Id: Selector.js,v 1.2 2011/05/13 19:46:15 aallowat Exp $
+ * @version $Id: Selector.js,v 1.3 2011/05/16 15:11:35 aallowat Exp $
  */
 dojo.declare("webcat.Selector", dojo.dnd.Selector,
 {
@@ -41,7 +41,7 @@ dojo.declare("webcat.Selector", dojo.dnd.Selector,
         this._firstTime = true;
 
         this.events.push(
-            dojo.connect(this.node, "ondblclick",   this, "onDoubleClick"));
+            dojo.connect(this.node, "ondblclick", this, "onDoubleClick"));
     },
 
     markupFactory: function(params, node)
