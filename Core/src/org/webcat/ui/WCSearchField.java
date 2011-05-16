@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCSearchField.java,v 1.2 2010/10/29 14:01:45 aallowat Exp $
+ |  $Id: WCSearchField.java,v 1.3 2011/05/16 15:10:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.appserver.WOResponse;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2010/10/29 14:01:45 $
+ * @version $Revision: 1.3 $, $Date: 2011/05/16 15:10:59 $
  */
 public class WCSearchField extends WOComponent
 {
@@ -115,8 +115,14 @@ public class WCSearchField extends WOComponent
     // ----------------------------------------------------------
     public String onClearClickScript()
     {
-        return "dijit.byId('" + id() + "').attr('value', ''); "
-            + "webcat.searchField.forceChange(this, "
-            + idFor.get("searchAction") + ");";
+        String widget = "dijit.byId('" + id() + "')";
+        String spinner = "dijit.byId('" + idFor.get("spinner") + "')";
+
+        return widget + ".attr('value', ''); "
+            + "webcat.searchField.forceChange({ "
+            + "widget: " + widget
+            + ", spinner: " + spinner
+            + ", callback: " + idFor.get("searchAction")
+            + " }); return false;";
     }
 }
