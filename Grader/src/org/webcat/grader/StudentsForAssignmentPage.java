@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.16 2011/05/02 19:38:07 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.17 2011/05/16 15:12:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.ui.util.ComponentIDGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.16 $, $Date: 2011/05/02 19:38:07 $
+ * @version $Revision: 1.17 $, $Date: 2011/05/16 15:12:04 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -98,7 +98,7 @@ public class StudentsForAssignmentPage
     public boolean omitStaff           = true;
     public boolean useBlackboardFormat = true;
 
-    public ComponentIDGenerator idFor;
+    public ComponentIDGenerator idFor = new ComponentIDGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -107,8 +107,6 @@ public class StudentsForAssignmentPage
     protected void beforeAppendToResponse(
         WOResponse response, WOContext context)
     {
-        idFor = new ComponentIDGenerator(this);
-
         log.debug("appendToResponse()");
 
         subStats =
