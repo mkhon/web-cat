@@ -6,7 +6,6 @@ activation.jar              (http://java.sun.com/javase/technologies/desktop/jav
 bcprov-jdk15-129.jar        (http://www.bouncycastle.org/latest_releases.html)
 commons-io-2.0.1.jar        (http://commons.apache.org/io/)
 commons-logging-1.1.jar     (http://commons.apache.org/logging/)
-commons-vfs-1.0.jar         (http://commons.apache.org/vfs/)
 eddo-1_3.jar                (only needed for VT users)
 edldap-2.0.jar              (only needed for VT users)
 httpclient-4.0.jar          (http://hc.apache.org/)

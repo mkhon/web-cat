@@ -23,7 +23,6 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/commons-io-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/mime-util-2.1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jsch-0.1.44.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/commons-vfs-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/httpclient-4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/httpcore-4.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/org.eclipse.jgit-0.12.1.jar" sourcepath="/Users/allevato/Support Files/org.eclipse.jgit-0.12.1-sources.jar">
