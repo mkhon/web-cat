@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentCourseSummaryPage.java,v 1.2 2011/05/02 20:11:59 aallowat Exp $
+ |  $Id: StudentCourseSummaryPage.java,v 1.3 2011/05/18 19:16:12 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/05/02 20:11:59 $
+ * @version $Revision: 1.3 $, $Date: 2011/05/18 19:16:12 $
  */
 public class StudentCourseSummaryPage extends GraderCourseComponent
 {
@@ -86,7 +86,7 @@ public class StudentCourseSummaryPage extends GraderCourseComponent
         else
         {
             courseOfferings = coreSelections().course().offerings();
-            courseToFetch = courseOfferings.objectAtIndex(0).course();
+            courseToFetch = coreSelections().course();
         }
 
         // Collect the students to display in the drop-down list.
