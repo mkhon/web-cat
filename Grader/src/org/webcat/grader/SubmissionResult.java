@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.9 2011/03/23 15:10:56 aallowat Exp $
+ |  $Id: SubmissionResult.java,v 1.10 2011/05/19 16:52:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,8 +32,8 @@ import org.webcat.core.*;
  *  Represents the results for a student submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.9 $, $Date: 2011/03/23 15:10:56 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.10 $, $Date: 2011/05/19 16:52:34 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -69,6 +69,13 @@ public class SubmissionResult
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
+    /**
+     * Retrieve the primary submission associated with this result.
+     * The primary submission is the one associated with the student
+     * who actually made the submission, as opposed to one of the
+     * partners associated with this submission.
+     * @return The submission from the primary submitter.
+     */
     public Submission submission()
     {
         Submission result = null;
@@ -76,13 +83,37 @@ public class SubmissionResult
         if (mySubmissions != null && mySubmissions.count() > 0)
         {
             result = mySubmissions.objectAtIndex(0);
+            Submission primary = result.primarySubmission();
 
-            if (result.primarySubmission() != null)
+            if (primary != null)
             {
-                result = result.primarySubmission();
+                result = primary;
             }
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrueve the submission associated with this result for the
+     * given user.
+     * @param partner The user whose submission should be retrieved--either
+     *                the primary submitter or one of the partners.
+     * @return The submission associated with the given user (partner) and
+     *         this result, or the primary submission if this user does
+     *         not have any submission for this result.
+     */
+    public Submission submissionFor(User partner)
+    {
+        for (Submission sub : submissions())
+        {
+            if (sub.user() == partner)
+            {
+                return sub;
+            }
+        }
+        return submission();
     }
 
 
