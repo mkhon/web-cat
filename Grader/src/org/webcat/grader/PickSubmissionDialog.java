@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.4 2011/05/02 19:38:49 aallowat Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.5 2011/05/19 16:50:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -34,8 +34,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * is displayed on the StudentsForAssignment page.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2011/05/02 19:38:49 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2011/05/19 16:50:43 $
  */
 public class PickSubmissionDialog extends GraderComponent
 {
@@ -56,6 +56,7 @@ public class PickSubmissionDialog extends GraderComponent
     public ERXDisplayGroup<Submission> submissionDisplayGroup;
     public Submission                  aSubmission;
     public boolean                     sendsToGradingPage;
+    public int                         extraColumnCount;
 
 
     //~ Methods ...............................................................
@@ -72,6 +73,27 @@ public class PickSubmissionDialog extends GraderComponent
     {
         rootUserSubmission = pair;
         collectSubmissions();
+        extraColumnCount = 0;
+        if (pair != null && pair.submission() != null)
+        {
+            Assignment a = pair.submission().assignmentOffering().assignment();
+            if (a.usesTAScore())
+            {
+                extraColumnCount++;
+            }
+            if (a.usesTestingScore())
+            {
+                extraColumnCount++;
+            }
+            if (a.usesToolCheckScore())
+            {
+                extraColumnCount++;
+            }
+            if (a.usesBonusesOrPenalties())
+            {
+                extraColumnCount++;
+            }
+        }
     }
 
 
@@ -112,25 +134,6 @@ public class PickSubmissionDialog extends GraderComponent
         {
             return null;
         }
-    }
-
-
-    // ----------------------------------------------------------
-    public String submissionStatus()
-    {
-        String result = "suspended";
-        EnqueuedJob job = aSubmission.enqueuedJob();
-
-        if (job == null)
-        {
-            result = "cancelled";
-        }
-        else if (!job.paused())
-        {
-            result = "queued for grading";
-        }
-
-        return result;
     }
 
 
