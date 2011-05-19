@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPlugin.java,v 1.4 2010/10/15 00:39:16 stedwar2 Exp $
+ |  $Id: BatchPlugin.java,v 1.5 2011/05/19 16:57:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -47,7 +47,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/10/15 00:39:16 $
+ * @version $Revision: 1.5 $, $Date: 2011/05/19 16:57:22 $
  */
 public class BatchPlugin
     extends _BatchPlugin
@@ -784,21 +784,30 @@ public class BatchPlugin
         {
             for (BatchPlugin plugin : pluginList)
             {
-                if ( plugin.descriptor().updateIsAvailable() )
+                try
                 {
-                    log.info( "Updating plug-in: \"" + plugin.name() + "\"" );
-                    String msg = plugin.installUpdate();
-                    if ( msg != null )
+                    if ( plugin.descriptor().updateIsAvailable() )
                     {
-                        log.error( "Error updating plug-in \""
-                            + plugin.name() + "\": " + msg );
+                        log.info(
+                            "Updating plug-in: \"" + plugin.name() + "\"" );
+                        String msg = plugin.installUpdate();
+                        if ( msg != null )
+                        {
+                            log.error( "Error updating plug-in \""
+                                + plugin.name() + "\": " + msg );
+                        }
+                        ec.saveChanges();
                     }
-                    ec.saveChanges();
+                    else
+                    {
+                        log.debug( "Plug-in \"" + plugin.name()
+                            + "\" is up to date." );
+                    }
                 }
-                else
+                catch (IOException e)
                 {
-                    log.debug( "Plug-in \"" + plugin.name()
-                        + "\" is up to date." );
+                    log.error("Error checking for updates to plug-in \""
+                        + plugin.name() + "\": " + e);
                 }
             }
         }

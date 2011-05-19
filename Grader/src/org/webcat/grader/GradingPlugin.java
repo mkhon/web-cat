@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.7 2011/05/13 19:50:19 aallowat Exp $
+ |  $Id: GradingPlugin.java,v 1.8 2011/05/19 16:54:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -37,8 +37,8 @@ import org.webcat.core.*;
  *  Represents an uploaded grading plug-in.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.7 $, $Date: 2011/05/13 19:50:19 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.8 $, $Date: 2011/05/19 16:54:01 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -856,21 +856,29 @@ public class GradingPlugin
         {
             for (GradingPlugin plugin : pluginList)
             {
-                if (plugin.descriptor().updateIsAvailable())
+                try
                 {
-                    log.info("Updating plug-in: \"" + plugin.name() + "\"");
-                    String msg = plugin.installUpdate();
-                    if (msg != null)
+                    if (plugin.descriptor().updateIsAvailable())
                     {
-                        log.error("Error updating plug-in \""
-                            + plugin.name() + "\": " + msg);
+                        log.info("Updating plug-in: \"" + plugin.name() + "\"");
+                        String msg = plugin.installUpdate();
+                        if (msg != null)
+                        {
+                            log.error("Error updating plug-in \""
+                                + plugin.name() + "\": " + msg);
+                        }
+                        ec.saveChanges();
                     }
-                    ec.saveChanges();
+                    else
+                    {
+                        log.debug("Plug-in \"" + plugin.name()
+                            + "\" is up to date.");
+                    }
                 }
-                else
+                catch (IOException e)
                 {
-                    log.debug("Plug-in \"" + plugin.name()
-                        + "\" is up to date.");
+                    log.error("Error checking for updates to plug-in \""
+                        + plugin.name() + "\": " + e);
                 }
             }
         }

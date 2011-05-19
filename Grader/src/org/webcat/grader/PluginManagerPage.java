@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PluginManagerPage.java,v 1.4 2010/10/05 16:02:26 stedwar2 Exp $
+ |  $Id: PluginManagerPage.java,v 1.5 2011/05/19 16:54:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/05 16:02:26 $
+ *  @version $Revision: 1.5 $, $Date: 2011/05/19 16:54:01 $
  */
 public class PluginManagerPage
 extends WCComponent
@@ -193,10 +193,15 @@ extends WCComponent
         }
         else
         {
-            if ( FeatureProvider.getProvider( providerURL ) == null )
+            try
             {
-                error( "Cannot read feature provider information from "
-                    + " specified URL: '" + providerURL + "'." );
+                // TODO: fix this to correctly re-load ...
+                FeatureProvider.getProvider(providerURL);
+            }
+            catch (java.io.IOException e)
+            {
+                error("Cannot read feature provider information from "
+                    + " specified URL: '" + providerURL + "'.");
             }
         }
 
