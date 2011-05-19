@@ -1,5 +1,5 @@
 /*==========================================================================*\
-|  $Id: submissionResultResource.java,v 1.1 2010/10/18 15:37:10 aallowat Exp $
+|  $Id: submissionResultResource.java,v 1.2 2011/05/19 16:47:53 stedwar2 Exp $
 |*-------------------------------------------------------------------------*|
 |  Copyright (C) 2006-2008 Virginia Tech
 |
@@ -50,7 +50,7 @@ import org.webcat.grader.SubmissionResult;
 * location.
 *
 * @author Tony Allevato
-* @version $Id: submissionResultResource.java,v 1.1 2010/10/18 15:37:10 aallowat Exp $
+* @version $Id: submissionResultResource.java,v 1.2 2011/05/19 16:47:53 stedwar2 Exp $
 */
 public class submissionResultResource
    extends DirectAction
@@ -136,8 +136,8 @@ public class submissionResultResource
    private boolean userHasPermission(User user, SubmissionResult result)
    {
        if (result.submission() == null
-               || result.submission().assignmentOffering() == null
-               || result.submission().assignmentOffering().courseOffering() == null)
+           || result.submission().assignmentOffering() == null
+           || result.submission().assignmentOffering().courseOffering() == null)
        {
            return false;
        }
