@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.17 2011/05/16 15:12:04 aallowat Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.18 2011/05/19 16:51:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -39,8 +39,8 @@ import org.webcat.ui.util.ComponentIDGenerator;
  * to download them in spreadsheet form or edit them one at a time.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.17 $, $Date: 2011/05/16 15:12:04 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.18 $, $Date: 2011/05/19 16:51:49 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -620,7 +620,7 @@ public class StudentsForAssignmentPage
     // ----------------------------------------------------------
     public String newerSubmissionStatus()
     {
-        String result = null;
+        String result = "feedback entered on earlier submission";
         if (aNewerSubmission.result() == null)
         {
             result = "suspended";
@@ -643,7 +643,19 @@ public class StudentsForAssignmentPage
             result = "newer than feedback";
         }
 
-        log.debug("newerSubmissionStatus() = " + result);
+        if (log.isDebugEnabled())
+        {
+            log.debug("newerSubmissionStatus() for " + aNewerSubmission
+                + " = " + result);
+            if (aSubmission.result() != null
+                && aSubmission.result().lastUpdated() != null)
+            {
+                log.debug("    selected submission last updated: "
+                    + aSubmission.result().lastUpdated());
+            }
+            log.debug("    newer submission on: "
+                + aNewerSubmission.submitTime());
+        }
         return result;
     }
 
