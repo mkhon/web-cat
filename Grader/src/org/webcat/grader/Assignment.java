@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.3 2011/01/20 15:37:11 aallowat Exp $
+ |  $Id: Assignment.java,v 1.4 2011/05/19 16:55:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -36,8 +36,8 @@ import org.webcat.core.*;
  * An assignment that can be given in one or more classes.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/01/20 15:37:11 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2011/05/19 16:55:26 $
  */
 public class Assignment
     extends _Assignment
@@ -233,6 +233,15 @@ public class Assignment
         return profile != null
             && ( profile.toolPointsRaw() != null
                  || profile.toolPoints() != 0 );
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean usesTAScore()
+    {
+        SubmissionProfile profile = submissionProfile();
+        return profile != null
+            && ( profile.taPoints() > 0.0 );
     }
 
 
