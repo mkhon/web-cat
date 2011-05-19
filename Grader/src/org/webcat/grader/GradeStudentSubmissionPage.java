@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.9 2010/11/01 17:04:08 aallowat Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.10 2011/05/19 16:56:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.webcat.ui.generators.JavascriptGenerator;
  * Allow the user to enter/edit "TA" comments for a submission.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.9 $, $Date: 2010/11/01 17:04:08 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.10 $, $Date: 2011/05/19 16:56:37 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -211,7 +211,7 @@ public class GradeStudentSubmissionPage
         if (result.status() == Status.TO_DO)
         {
             if (result.taScoreRaw() != null
-                && result.taScore() != result.submission()
+                && result.taScore() != submission
                     .assignmentOffering().assignment()
                     .submissionProfile().taPoints())
             {
@@ -414,7 +414,7 @@ public class GradeStudentSubmissionPage
     {
         if (showAutoGradedComments == null)
         {
-            if (result.submission().assignmentOffering().assignment()
+            if (submission.assignmentOffering().assignment()
                     .submissionProfile().toolPoints() > 0.0)
             {
                 showAutoGradedComments = Boolean.TRUE;
