@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.4 2010/10/30 02:38:39 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.5 2011/05/19 16:55:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/10/30 02:38:39 $
+ * @version $Revision: 1.5 $, $Date: 2011/05/19 16:55:09 $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -87,6 +87,24 @@ public class EditScriptFilesPage
     {
         log.debug("listener = " + fileSelectionListener);
         rescanFolders();
+        if ((selectedParentFolderForSubFolder == null
+             || selectedParentFolderForUpload == null)
+            && currentSelection != null)
+        {
+            int pos = currentSelection.lastIndexOf('/');
+            if (pos > 0)
+            {
+                String path = currentSelection.substring(0, pos);
+                if (selectedParentFolderForSubFolder == null)
+                {
+                    selectedParentFolderForSubFolder = path;
+                }
+                if (selectedParentFolderForUpload == null)
+                {
+                    selectedParentFolderForUpload = path;
+                }
+            }
+        }
         super.beforeAppendToResponse(response, context);
     }
 
