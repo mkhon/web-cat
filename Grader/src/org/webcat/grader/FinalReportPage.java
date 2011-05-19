@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.3 2010/10/23 20:54:21 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.4 2011/05/19 16:55:47 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/23 20:54:21 $
+ * @version $Revision: 1.4 $, $Date: 2011/05/19 16:55:47 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -407,8 +407,8 @@ public class FinalReportPage
      */
     public boolean justCollecting()
     {
-        NSArray<Step> steps =
-            result.submission().assignmentOffering().assignment().steps();
+        NSArray<Step> steps = result.submissionFor(user())
+            .assignmentOffering().assignment().steps();
         return !result.summaryFile().exists()
             && !result.resultFile().exists()
             && (steps == null || steps.count() == 0);
@@ -431,7 +431,7 @@ public class FinalReportPage
 
             // This is all debugging code to figure out why we occasionally
             // get NPEs on the original line commented out above.
-            Submission sub = result.submission();
+            Submission sub = result.submissionFor(user());
             if (sub == null)
             {
                 log.error("null submission for result found!");

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileComment.java,v 1.4 2010/10/23 21:14:10 stedwar2 Exp $
+ |  $Id: SubmissionFileComment.java,v 1.5 2011/05/19 16:53:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/10/23 21:14:10 $
+ * @version $Revision: 1.5 $, $Date: 2011/05/19 16:53:20 $
  */
 public class SubmissionFileComment
     extends _SubmissionFileComment
@@ -173,7 +173,7 @@ public class SubmissionFileComment
             return true;
         }
         CourseOffering course = submissionFileStats().submissionResult()
-            .submission().assignmentOffering().courseOffering();
+            .submissionFor(user).assignmentOffering().courseOffering();
         if (target <= TO_FACULTY_AND_TAS
             && course.graders().contains(user))
         {

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileDetailsPage.java,v 1.3 2010/10/23 21:14:42 stedwar2 Exp $
+ |  $Id: SubmissionFileDetailsPage.java,v 1.4 2011/05/19 16:53:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/23 21:14:42 $
+ * @version $Revision: 1.4 $, $Date: 2011/05/19 16:53:03 $
  */
 public class SubmissionFileDetailsPage
     extends GraderComponent
@@ -126,7 +126,7 @@ public class SubmissionFileDetailsPage
         {
             prefs().setSubmissionFileStatsRelationship( selectedFile );
             prefs().setSubmissionRelationship(
-                selectedFile.submissionResult().submission() );
+                thisFile.submissionResult().submissionFor(user()));
             SubmissionFileDetailsPage statsPage = (SubmissionFileDetailsPage)
                 pageWithName(
                     SubmissionFileDetailsPage.class.getName() );
@@ -142,7 +142,8 @@ public class SubmissionFileDetailsPage
     @Override
     public String title()
     {
-        Submission submission = thisFile.submissionResult().submission();
+        Submission submission =
+            thisFile.submissionResult().submissionFor(user());
         AssignmentOffering offering = submission.assignmentOffering();
         return offering.courseOffering().compactName()
             + ": "

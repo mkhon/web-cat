@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.8 2011/04/21 18:29:30 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.9 2011/05/19 16:54:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.Semester;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2011/04/21 18:29:30 $
+ *  @version $Revision: 1.9 $, $Date: 2011/05/19 16:54:39 $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -229,19 +229,7 @@ public class GraderHomeStatus
      */
     public WOComponent viewResults()
     {
-        selectAssignment(assignment);
-        SubmissionResult subResult =
-            assignment.mostRecentSubmissionResultFor(user());
-        if (subResult != null)
-        {
-            for (Submission s : subResult.submissions())
-            {
-                if (s.user() == user())
-                {
-                    prefs().setSubmissionRelationship(s);
-                }
-            }
-        }
+        selectSubmission(assignment);
         return pageWithName(
             wcSession().tabs.selectById("MostRecent").pageName());
     }
@@ -255,7 +243,7 @@ public class GraderHomeStatus
      */
     public WOComponent graphResults()
     {
-        selectAssignment(assignment);
+        selectSubmission(assignment);
         return pageWithName(
             wcSession().tabs.selectById("GraphResults").pageName());
     }
@@ -312,6 +300,21 @@ public class GraderHomeStatus
         {
             prefs().setShowClosedAssignments(true);
         }
+    }
+
+
+    // ----------------------------------------------------------
+    private void selectSubmission(AssignmentOffering offering)
+    {
+        selectAssignment(offering);
+        SubmissionResult subResult =
+            assignment.mostRecentSubmissionResultFor(user());
+        Submission sub = null;
+        if (subResult != null)
+        {
+            sub = subResult.submissionFor(user());
+        }
+        prefs().setSubmissionRelationship(sub);
     }
 
 
