@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.16 2011/05/02 16:25:10 aallowat Exp $
+ |  $Id: Submission.java,v 1.17 2011/05/19 16:53:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -43,8 +43,8 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *  Represents a single student assignment submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.16 $, $Date: 2011/05/02 16:25:10 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.17 $, $Date: 2011/05/19 16:53:31 $
  */
 public class Submission
     extends _Submission
@@ -1560,6 +1560,32 @@ public class Submission
     public boolean isLate()
     {
         return submitTime().after(assignmentOffering().dueDate());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Get the "status" for this submission: suspended, cancelled, or queued.
+     * @return The status, or null if the submission has been completely
+     *         processed and has a result available.
+     */
+    public String status()
+    {
+        String status = null;
+        if (result() == null)
+        {
+            status = "suspended";
+            EnqueuedJob job = enqueuedJob();
+            if (job == null)
+            {
+                status = "cancelled";
+            }
+            else if (!job.paused())
+            {
+                status = "queued for grading";
+            }
+        }
+        return status;
     }
 
 
