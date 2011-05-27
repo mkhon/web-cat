@@ -30,6 +30,7 @@ use Carp;
     "prolog" => "prolog",
     "readme" => "ascii",
     "rss"    => "xml",
+    "rkt"    => "scheme",
     "scm"    => "scheme",
     "scheme" => "scheme",
     "script" => "ascii",
