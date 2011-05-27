@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.2 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: MyProfilePage.java,v 1.3 2011/05/27 15:03:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.core;
 import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 import org.webcat.core.git.http.GitRequestHandler;
+import org.webcat.core.webdav.WebDAVRequestHandler;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WODisplayGroup;
@@ -44,7 +45,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  *  @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.3 $, $Date: 2011/05/27 15:03:58 $
  */
 public class MyProfilePage
     extends WCComponent
@@ -401,11 +402,11 @@ public class MyProfilePage
 
 
     // ----------------------------------------------------------
-    /*public String webdavURL()
+    public String webdavURL()
     {
         return Application.completeURLWithRequestHandlerKey(context(),
                 WebDAVRequestHandler.REQUEST_HANDLER_KEY, null, null, true, 0);
-    }*/
+    }
 
 
     //~ Instance/static variables .............................................
