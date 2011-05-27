@@ -218,9 +218,16 @@ sub output_text {
     {
         return "";
     }
-    $text = HTML::Entities::encode_numeric($text, '^\n\x20-\x7e');
-    $text =~ s/&#([01]?[0-9]);/&#171;&amp;#$1&#187;/g;
+    $text = HTML::Entities::encode_numeric($text, '^\n\r\t \x20-\x7e');
+#    $text = HTML::Entities::encode_numeric($text, '^\n\x20-\x7e');
+    $text =~ s/&#([01]?[0-9A-Fa-f]);/&#171;&amp;#$1&#187;/g;
     $text =~ s/&nbsp;/&\#160;/go;
+    $text =~ s/((ht|f)tps?:\/\/         # The protocol
+        [\da-z\.-]+\.[a-z\.]{1,5}[a-z]  # The host name
+        (:?                             # There might be a port number
+         (&amp;|(?!&\#?[a-zA-Z0-9]{2,5};)[^\s,;:!()"'])*
+         (?!&\#?[a-zA-Z0-9]{2,5};)[^\s,;:!()"'\.])?)
+        /<a href="$1">$1<\/a>/gix;
 
     $self->SUPER::output_text( $text );
 }
