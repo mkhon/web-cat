@@ -18,6 +18,7 @@ package Web_CAT::Beautifier::Core;
 #            SG: 12/7/04 Reduced the level of indentation from 8 spaces to 4 spaces.
 
 use Web_CAT::Beautifier::Context;
+use Web_CAT::Utilities;
 use Data::Dumper;
 use Text::Tabs qw(expand);
 use warnings;
@@ -214,6 +215,7 @@ if (!$DEBUG) { print "Selection close\n"; }
 if ($DEBUG) { print "Line Comment!\n"; }
                     $line = substr($line, $j);
                     $lineout = $self->munge($lineout);
+                    # TODO: doesn't munge() already do this?
                     if ($self->{output_module}->{html}) { $line = Web_CAT::Utilities::htmlEscape($line); }
                     $out .= $lineout;
                     if ($self->{context}->{prepro})
@@ -651,6 +653,12 @@ sub munge
             $strout = $munge;
         }
     }
+    $strout =~ s/((ht|f)tps?:\/\/       # The protocol
+        [\da-z\.-]+\.[a-z\.]{1,5}[a-z]  # The host name
+        (:?                             # There might be a port number
+         (&amp;|(?!&\#?[a-zA-Z0-9]{2,5};)[^\s,;:!()"'])*
+         (?!&\#?[a-zA-Z0-9]{2,5};)[^\s,;:!()"'\.])?)
+        /<a href="$1">$1<\/a>/giox;
     return $strout;
 }
 
