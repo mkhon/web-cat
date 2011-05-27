@@ -481,6 +481,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 					URL propertiesPath = null;
 
+					if (jarBundles != null)
+					{
 					while (jarBundles.hasMoreElements()) {
 						URL url = (URL) jarBundles.nextElement();
 
@@ -499,6 +501,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 
 							break;
 						}
+					}
 					}
 					mainProps = readProperties(propertiesPath);
 				}
@@ -728,7 +731,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 		if (!ERXApplication.isWO54()) {
 			Class arrayClass = NSMutableArray.class;
 			try {
-				Field f = arrayClass.getField("ERX_MARKER");
+				@SuppressWarnings("unused")
+                Field f = arrayClass.getField("ERX_MARKER");
 			}
 			catch (NoSuchFieldException e) {
 				System.err.println("No ERX_MARKER field in NSMutableArray found. \nThis means your class path is incorrect. Adjust it so that ERExtensions come before JavaFoundation.");
@@ -1006,6 +1010,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	 * tasks.
 	 */
 	public void didFinishLaunching() {
+	    // empty
 	}
 
 	/**
@@ -1801,7 +1806,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	public static boolean isWO54() {
 		if (ERXApplication.isWO54 == null) {
 			try {
-				Method getWebObjectsVersionMethod = WOApplication.class.getMethod("getWebObjectsVersion", new Class[0]);
+				@SuppressWarnings("unused")
+                Method getWebObjectsVersionMethod = WOApplication.class.getMethod("getWebObjectsVersion", new Class[0]);
 				ERXApplication.isWO54 = Boolean.TRUE;
 			}
 			catch (Exception e) {
