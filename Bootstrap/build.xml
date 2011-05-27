@@ -36,18 +36,29 @@
 
   <!-- install ...................................................... -->
   <target name="install"
-    depends="jar"
-    description="Build the jar and install it in an active servlet dir.">
-    <fail message="Property servlet.install.dir is not defined."
-      unless="servlet.install.dir"/>
+    depends="jar, dir.check"
+    description="Build the jar and install it in an active servlet dir."
+  	if="servlet.install.dir.exists">
     <copy todir="${servlet.install.dir}/${project.name}/WEB-INF/lib/"
       preservelastmodified="true"
       overwrite="true"
-      verbose="true">
+      verbose="true"
+      failonerror="false">
       <fileset dir=".">
         <include name="${jar.name}.jar"/>
       </fileset>
     </copy>
+  </target>
+
+
+  <!-- dir.check .................................................... -->
+  <target name="dir.check"
+    description="Check that servlet dir exists, prior to installation."
+    if="servlet.install.dir">
+  	<condition property="servlet.install.dir.exists">
+  	  <available file="${servlet.install.dir}/${project.name/WEB-INF/lib/}"
+  	  	type="dir"/>
+  	</condition>
   </target>
 
 </project>
