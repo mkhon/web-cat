@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ReportTemplate.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
+ |  $Id: ReportTemplate.java,v 1.3 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,20 +24,15 @@ package org.webcat.reporter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.webcat.oda.commons.DataSetDescription;
 import org.webcat.oda.commons.DataSetMetadata;
 import org.webcat.oda.commons.ReportMetadata;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.report.model.api.DataSetHandle;
-import org.eclipse.birt.report.model.api.DesignFileException;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
 import org.eclipse.birt.report.model.api.SessionHandle;
 import org.eclipse.birt.report.model.api.activity.SemanticException;
-import org.webcat.core.FileUtilities;
 import org.webcat.core.MutableArray;
-import org.webcat.core.MutableDictionary;
 import org.webcat.core.User;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
@@ -55,7 +50,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * Represents a BIRT report template and its associated metadata.
  *
  * @author Tony Allevato
- * @version $Id: ReportTemplate.java,v 1.2 2010/09/20 14:17:35 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2011/05/27 15:36:46 $
  */
 public class ReportTemplate extends _ReportTemplate
 {
@@ -165,8 +161,9 @@ public class ReportTemplate extends _ReportTemplate
      */
     public ReportTemplate successorTemplate()
     {
-        NSArray<ReportTemplate> successors =
-            (NSArray) storedValueForKey("successorTemplateArray");
+        @SuppressWarnings("unchecked")
+        NSArray<ReportTemplate> successors = (NSArray<ReportTemplate>)
+            storedValueForKey("successorTemplateArray");
 
         if (successors == null || successors.count() == 0)
         {
@@ -271,7 +268,7 @@ public class ReportTemplate extends _ReportTemplate
      *
      * @param ec
      *            the editing context in which to add the new object
-     * @param user
+     * @param owner
      *            the user uploading the template
      * @param uploadedName
      *            the template's file name
@@ -283,8 +280,8 @@ public class ReportTemplate extends _ReportTemplate
      * @return the new report template, if successful, or null if unsuccessful
      */
     public static ReportTemplate createNewReportTemplate(EOEditingContext ec,
-            User user, String uploadedName, NSData uploadedData,
-            NSMutableDictionary errors)
+            User owner, String uploadedName, NSData uploadedData,
+            NSMutableDictionary<?, ?> errors)
     {
         ReportTemplate template = new ReportTemplate();
         ec.insertObject(template);
@@ -292,7 +289,7 @@ public class ReportTemplate extends _ReportTemplate
         ec.saveChanges();
 
         template.setUploadedTime(new NSTimestamp());
-        template.setUserRelationship(user);
+        template.setUserRelationship(owner);
 
         // Save the file to disk
         log.debug("Saving report template to disk: " + template.filePath());
@@ -433,9 +430,8 @@ public class ReportTemplate extends _ReportTemplate
         // Compute the MD5 checksum of the file contents. This must be the
         // last thing we do, because setting the repository properties
         // (and other modifications) will change the contents of the file.
-        String checksum = ChecksumUtils.checksumFromContentsOfFile(new File(
-                filePath()));
-        setChecksum(checksum);
+        setChecksum(ChecksumUtils.checksumFromContentsOfFile(
+            new File(filePath())));
     }
 
 
@@ -484,21 +480,21 @@ public class ReportTemplate extends _ReportTemplate
      * and all of the published templates.
      *
      * @param ec the editing context to load the templates into
-     * @param user the user
+     * @param forUser the user
      *
      * @return the array of report templates accessible by the user
      */
     public static NSArray<ReportTemplate> templatesAccessibleByUser(
-            EOEditingContext ec, User user)
+            EOEditingContext ec, User forUser)
     {
         // Admins have access to everything, so just short-circuit this.
 
-        if (user.hasAdminPrivileges())
+        if (forUser.hasAdminPrivileges())
         {
             return allTemplatesOrderedByName(ec);
         }
 
-        NSArray<ReportTemplate> userTemplates = templatesForUser(ec, user);
+        NSArray<ReportTemplate> userTemplates = templatesForUser(ec, forUser);
         NSArray<ReportTemplate> publishedTemplates = publishedTemplates(ec);
 
         NSMutableArray<ReportTemplate> allTemplates =
@@ -523,23 +519,24 @@ public class ReportTemplate extends _ReportTemplate
     {
         // Set the title and description of the report.
         String title = ReportMetadata.getTitle(reportHandle);
+        @SuppressWarnings("hiding")
         String description = ReportMetadata.getDescription(reportHandle);
 
         if (title == null || title.trim().length() == 0)
         {
-            String msg = "The report template you tried to upload does not have a "
-                    + "title.  Please enter one in the <b>Title</b> field on "
-                    + "the Overview page of the report in the report designer "
-                    + "and then upload it again.";
+            String msg = "The report template you tried to upload does not "
+                + "have a title.  Please enter one in the <b>Title</b> field "
+                + "on the Overview page of the report in the report designer "
+                + "and then upload it again.";
             return msg;
         }
 
         if (description == null || description.trim().length() == 0)
         {
-            String msg = "The report template you tried to upload does not have a "
-                    + "description.  Please enter one in the <b>Description</b> "
-                    + "field on the Overview page of the report in the report "
-                    + "designer and then upload it again.";
+            String msg = "The report template you tried to upload does not "
+                + "have a description.  Please enter one in the "
+                + "<b>Description</b> field on the Overview page of the "
+                + "report in the report designer and then upload it again.";
             return msg;
         }
 
@@ -547,6 +544,7 @@ public class ReportTemplate extends _ReportTemplate
         setDescription(description);
 
         // Set the language identifier of the template.
+        @SuppressWarnings("hiding")
         String language = ReportMetadata.getLanguage(reportHandle);
         if (language == null)
         {
@@ -606,7 +604,9 @@ public class ReportTemplate extends _ReportTemplate
         {
             int refCount = sets.objectForKey(dataSetHandle);
 
+            @SuppressWarnings("hiding")
             String name = DataSetMetadata.getName(dataSetHandle);
+            @SuppressWarnings("hiding")
             String description = DataSetMetadata.getDescription(dataSetHandle);
 
             String queryText = dataSetHandle.getStringProperty("queryText");
@@ -642,9 +642,6 @@ public class ReportTemplate extends _ReportTemplate
     //~ Instance/static variables .............................................
 
     public static final String TEMPLATE_EXTENSION = ".rptdesign";
-
-    private static Pattern packageNameMigrationPattern = Pattern.compile(
-        "extensionID=\"net\\.sf\\.webcat");
 
     /*
      * Constants that define the valid "kinds" of report elements that are

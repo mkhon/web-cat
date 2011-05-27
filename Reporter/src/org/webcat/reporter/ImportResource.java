@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ImportResource.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: ImportResource.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.reporter;
 
-import org.webcat.core.WCResourceManager;
 import com.webobjects.appserver.WOAssociation;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
@@ -39,7 +38,8 @@ import er.ajax.AjaxUtils;
  * of where in the component content this element is used.
  *
  * @author  Tony Allevato
- * @version $Id: ImportResource.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/27 15:36:46 $
  */
 public class ImportResource
     extends WODynamicElement
@@ -54,13 +54,15 @@ public class ImportResource
      * @param template
      */
     public ImportResource(
-        String aName, NSDictionary associations, WOElement template)
+        String aName,
+        NSDictionary<String, WOAssociation> associations,
+        WOElement template)
     {
         super(aName, associations, template);
 
-        aType = (WOAssociation)associations.objectForKey("type");
-        aFramework = (WOAssociation)associations.objectForKey("framework");
-        aFilename = (WOAssociation)associations.objectForKey("filename");
+        aType = associations.objectForKey("type");
+        aFramework = associations.objectForKey("framework");
+        aFilename = associations.objectForKey("filename");
     }
 
 

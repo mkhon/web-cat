@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PickReportToViewPage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
+ |  $Id: PickReportToViewPage.java,v 1.3 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,22 +21,18 @@
 
 package org.webcat.reporter;
 
-import org.webcat.core.MutableDictionary;
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.EODatabaseDataSource;
-import com.webobjects.eocontrol.EOSortOrdering;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import er.extensions.appserver.ERXDisplayGroup;
-import er.extensions.batching.ERXBatchingDisplayGroup;
 
 //-------------------------------------------------------------------------
 /**
  * This page allows the user to select among already-generated reports.
  *
- * @author Tony Allevato
- * @version $Id: PickReportToViewPage.java,v 1.2 2010/10/28 00:39:20 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2011/05/27 15:36:46 $
  */
 public class PickReportToViewPage
     extends ReporterComponent
@@ -56,8 +52,8 @@ public class PickReportToViewPage
 
     //~ KVC Attributes (must be public) .......................................
 
-    public ERXDisplayGroup generatedReportsDisplayGroup;
-    public ERXDisplayGroup enqueuedReportsDisplayGroup;
+    public ERXDisplayGroup<GeneratedReport> generatedReportsDisplayGroup;
+    public ERXDisplayGroup<ReportGenerationJob> enqueuedReportsDisplayGroup;
 
     public ReportGenerationJob reportJob;
     public GeneratedReport generatedReport;
@@ -68,7 +64,7 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        NSMutableDictionary bindings;
+        NSMutableDictionary<?, ?> bindings;
 
         bindings = generatedReportsDisplayGroup.queryBindings();
         bindings.setObjectForKey(user(), "user");

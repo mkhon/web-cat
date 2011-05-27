@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: designerPreview.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -69,7 +69,7 @@ import er.extensions.eof.ERXQ;
  * response end-of-data marker is true.
  *
  * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: designerPreview.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -143,7 +143,7 @@ public class designerPreview
             ERXFetchSpecificationBatchIterator iterator =
                 new ERXFetchSpecificationBatchIterator(spec, context);
             iterator.setBatchSize(50);
-            
+
             session.setObjectForKey(iterator, SESSION_ITERATOR);
             session.setObjectForKey(compiled, SESSION_EXPRESSIONS);
             session.setObjectForKey(expressions, SESSION_EXPRESSION_STRINGS);
@@ -330,6 +330,7 @@ public class designerPreview
                     q = fastQualifier;
                 }
 
+                @SuppressWarnings("unchecked")
                 NSArray batch = EOQualifier.filteredArrayWithQualifier(
                     iterator.nextBatch(), q);
 
@@ -379,9 +380,9 @@ public class designerPreview
             // flush out all of the current objects.
             ReadOnlyEditingContext oldEC =
                 (ReadOnlyEditingContext) iterator.editingContext();
-            boolean suppressLog = oldEC.isLoggingSuppressed();            
+            boolean suppressLog = oldEC.isLoggingSuppressed();
             Application.releaseReadOnlyEditingContext(oldEC);
-            
+
             ReadOnlyEditingContext newEC =
                 Application.newReadOnlyEditingContext();
             newEC.setSuppressesLogAfterFirstAttempt(true);
@@ -402,7 +403,8 @@ public class designerPreview
     {
         ExpressionAccessor[] compiled =
             new ExpressionAccessor[expressions.length];
-        NSMutableArray prefetchedRelationships = new NSMutableArray();
+        NSMutableArray<String> prefetchedRelationships =
+            new NSMutableArray<String>();
 
         int i = 0;
         for (String expression : expressions)
@@ -485,7 +487,7 @@ public class designerPreview
         {
             // Translate the expression into something a little easier for the
             // user to read.
-            
+
             String msg = String.format(
                 "In the expression (%s), the key \"%s\" is not recognized "
                 + "by the source object (which is of type \"%s\")",

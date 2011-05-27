@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EOGlobalIDUtils.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: EOGlobalIDUtils.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -43,7 +43,8 @@ import java.util.Map;
  * object are skipped and returned unmodified.
  *
  * @author Tony Allevato
- * @version $Id: EOGlobalIDUtils.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/27 15:36:46 $
  */
 public class EOGlobalIDUtils
 {
@@ -73,32 +74,16 @@ public class EOGlobalIDUtils
      *
      * @return an {@link NSArray} containing the corresponding objects
      */
-    public static NSArray enterpriseObjectsForIdArray(List array,
-            EOEditingContext ec)
+    public static NSArray<EOEnterpriseObject> enterpriseObjectsForIdArray(
+        List<?> array, EOEditingContext ec)
     {
-        NSMutableArray newArray = new NSMutableArray();
+        NSMutableArray<EOEnterpriseObject> newArray =
+            new NSMutableArray<EOEnterpriseObject>();
 
-        if (array instanceof NSArray)
+        for (Object value : array)
         {
-            Enumeration e = ((NSArray) array).objectEnumerator();
-            while (e.hasMoreElements())
-            {
-                Object value = e.nextElement();
-
-                Object newValue = tryEnterpriseObjectForId(value, ec);
-                newArray.addObject(newValue);
-            }
-        }
-        else
-        {
-            Iterator it = array.iterator();
-            while (it.hasNext())
-            {
-                Object value = it.next();
-
-                Object newValue = tryEnterpriseObjectForId(value, ec);
-                newArray.addObject(newValue);
-            }
+            Object newValue = tryEnterpriseObjectForId(value, ec);
+            newArray.addObject(newValue);
         }
 
         return newArray;
@@ -117,18 +102,21 @@ public class EOGlobalIDUtils
      *
      * @return an {@link NSDictionary} containing the corresponding objects
      */
-    public static NSDictionary enterpriseObjectsForIdDictionary(Map dictionary,
-            EOEditingContext ec)
+    public static NSDictionary<?, ?> enterpriseObjectsForIdDictionary(
+        Map<?, ?> dictionary, EOEditingContext ec)
     {
-        NSMutableDictionary newDictionary = new NSMutableDictionary();
+        NSMutableDictionary<?, ?> newDictionary =
+            new NSMutableDictionary<Object, Object>();
 
         if (dictionary instanceof NSDictionary)
         {
-            Enumeration e = ((NSDictionary) dictionary).keyEnumerator();
+            Enumeration<?> e =
+                ((NSDictionary<?, ?>) dictionary).keyEnumerator();
             while (e.hasMoreElements())
             {
                 Object key = e.nextElement();
-                Object value = ((NSDictionary) dictionary).objectForKey(key);
+                Object value =
+                    ((NSDictionary<?, ?>) dictionary).objectForKey(key);
 
                 Object newValue = tryEnterpriseObjectForId(value, ec);
                 newDictionary.setObjectForKey(newValue, key);
@@ -136,7 +124,7 @@ public class EOGlobalIDUtils
         }
         else
         {
-            Iterator it = dictionary.keySet().iterator();
+            Iterator<?> it = dictionary.keySet().iterator();
             while (it.hasNext())
             {
                 Object key = it.next();
@@ -171,11 +159,11 @@ public class EOGlobalIDUtils
     {
         if (value instanceof List)
         {
-            return enterpriseObjectsForIdArray((List) value, ec);
+            return enterpriseObjectsForIdArray((List<?>) value, ec);
         }
         else if (value instanceof Map)
         {
-            return enterpriseObjectsForIdDictionary((Map) value, ec);
+            return enterpriseObjectsForIdDictionary((Map<?, ?>) value, ec);
         }
         else if (value instanceof EOGlobalID)
         {
@@ -199,14 +187,14 @@ public class EOGlobalIDUtils
      *
      * @return an {@link NSArray} containing the corresponding global IDs
      */
-    public static NSArray idsForEnterpriseObjectArray(List array,
-            EOEditingContext ec)
+    public static NSArray<?> idsForEnterpriseObjectArray(
+        List<?> array, EOEditingContext ec)
     {
-        NSMutableArray newArray = new NSMutableArray();
+        NSMutableArray<?> newArray = new NSMutableArray<Object>();
 
         if (array instanceof NSArray)
         {
-            Enumeration e = ((NSArray) array).objectEnumerator();
+            Enumeration<?> e = ((NSArray<?>) array).objectEnumerator();
             while (e.hasMoreElements())
             {
                 Object value = e.nextElement();
@@ -217,7 +205,7 @@ public class EOGlobalIDUtils
         }
         else
         {
-            Iterator it = array.iterator();
+            Iterator<?> it = array.iterator();
             while (it.hasNext())
             {
                 Object value = it.next();
@@ -243,18 +231,21 @@ public class EOGlobalIDUtils
      *
      * @return an {@link NSDictionary} containing the corresponding global IDs
      */
-    public static NSDictionary idsForEnterpriseObjectDictionary(Map dictionary,
-            EOEditingContext ec)
+    public static NSDictionary<?, ?> idsForEnterpriseObjectDictionary(
+        Map<?, ?> dictionary, EOEditingContext ec)
     {
-        NSMutableDictionary newDictionary = new NSMutableDictionary();
+        NSMutableDictionary<?, ?> newDictionary =
+            new NSMutableDictionary<Object, Object>();
 
         if (dictionary instanceof NSDictionary)
         {
-            Enumeration e = ((NSDictionary) dictionary).keyEnumerator();
+            Enumeration<?> e =
+                ((NSDictionary<?, ?>) dictionary).keyEnumerator();
             while (e.hasMoreElements())
             {
                 Object key = e.nextElement();
-                Object value = ((NSDictionary) dictionary).objectForKey(key);
+                Object value =
+                    ((NSDictionary<?, ?>) dictionary).objectForKey(key);
 
                 Object newValue = tryIdForEnterpriseObject(value, ec);
                 newDictionary.setObjectForKey(newValue, key);
@@ -262,7 +253,7 @@ public class EOGlobalIDUtils
         }
         else
         {
-            Iterator it = dictionary.keySet().iterator();
+            Iterator<?> it = dictionary.keySet().iterator();
             while (it.hasNext())
             {
                 Object key = it.next();
@@ -297,11 +288,11 @@ public class EOGlobalIDUtils
     {
         if (value instanceof List)
         {
-            return idsForEnterpriseObjectArray((List) value, ec);
+            return idsForEnterpriseObjectArray((List<?>) value, ec);
         }
         else if (value instanceof Map)
         {
-            return idsForEnterpriseObjectDictionary((Map) value, ec);
+            return idsForEnterpriseObjectDictionary((Map<?, ?>) value, ec);
         }
         else if (value instanceof EOEnterpriseObject)
         {

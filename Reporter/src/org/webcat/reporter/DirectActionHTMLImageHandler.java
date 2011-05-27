@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: DirectActionHTMLImageHandler.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: DirectActionHTMLImageHandler.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,30 +21,24 @@
 
 package org.webcat.reporter;
 
-import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.birt.report.engine.api.HTMLImageHandler;
-import org.eclipse.birt.report.engine.api.IHTMLRenderOption;
 import org.eclipse.birt.report.engine.api.IImage;
-import org.eclipse.birt.report.engine.api.script.IReportContext;
-import org.webcat.reporter.actions.reportResource;
 
 //-------------------------------------------------------------------------
 /**
  * A BIRT image handler for online HTML-rendered reports.
  *
  * @author Tony Allevato
- * @version $Id: DirectActionHTMLImageHandler.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/05/27 15:36:46 $
  */
 public class DirectActionHTMLImageHandler
     extends HTMLImageHandler
@@ -204,7 +198,7 @@ public class DirectActionHTMLImageHandler
             query.append('&');
         }
 
-        Enumeration e = parameters.keyEnumerator();
+        Enumeration<?> e = parameters.keyEnumerator();
         while (e.hasMoreElements())
         {
             String key = e.nextElement().toString();

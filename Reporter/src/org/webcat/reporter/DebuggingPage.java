@@ -5,11 +5,9 @@ import org.webcat.ui.generators.JavascriptGenerator;
 import ognl.Node;
 import ognl.Ognl;
 import ognl.OgnlContext;
-import ognl.OgnlException;
 import ognl.enhance.ExpressionAccessor;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
@@ -23,7 +21,6 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSComparator.ComparisonException;
-import er.extensions.eof.ERXQ;
 import er.ajax.AjaxTreeModel;
 
 public class DebuggingPage extends ReporterComponent
@@ -38,8 +35,8 @@ public class DebuggingPage extends ReporterComponent
     public String qualifier;
     public String expression;
     public NSMutableArray<String> entities;
-    public NSMutableArray results;
-    public NSDictionary result;
+    public NSMutableArray<NSDictionary<String, String>> results;
+    public NSDictionary<String, String> result;
     public int index;
 
     public Node astItem;
@@ -54,9 +51,9 @@ public class DebuggingPage extends ReporterComponent
 
         for (EOModel model : EOModelGroup.defaultGroup().models())
         {
-            for (EOEntity entity : model.entities())
+            for (EOEntity anEntity : model.entities())
             {
-                entities.addObject(entity.name());
+                entities.addObject(anEntity.name());
             }
         }
 
@@ -86,7 +83,8 @@ public class DebuggingPage extends ReporterComponent
                 q = EOQualifier.qualifierWithQualifierFormat(qualifier, null);
             }
 
-            EOFetchSpecification fetch = new EOFetchSpecification(entity, q, null);
+            EOFetchSpecification fetch =
+                new EOFetchSpecification(entity, q, null);
             fetch.setFetchLimit(100);
             NSArray<Submission> submissions = Submission
                 .objectsWithFetchSpecification(localContext(), fetch);
@@ -105,28 +103,32 @@ public class DebuggingPage extends ReporterComponent
                 e1.printStackTrace();
             }
 
-            results = new NSMutableArray();
+            results = new NSMutableArray<NSDictionary<String,String>>();
 
             for (EOGenericRecord sub : submissions)
             {
-                NSMutableDictionary result = new NSMutableDictionary();
-                result.setObjectForKey(sub.valueForKey("id").toString(), "id");
+                NSMutableDictionary<String, String> nextResult =
+                    new NSMutableDictionary<String, String>();
+                nextResult.setObjectForKey(
+                    sub.valueForKey("id").toString(), "id");
 
                 try
                 {
                     context.setRoot(sub);
                     context.setCurrentObject(sub);
 
-                    String value = Ognl.getValue(accessor, context, sub).toString();
-                    result.setObjectForKey(value, "value");
+                    String value =
+                        Ognl.getValue(accessor, context, sub).toString();
+                    nextResult.setObjectForKey(value, "value");
                 }
                 catch (Exception e)
                 {
-                    result.setObjectForKey("<span style='color: red'>" + e.toString() + "</span>",
-                            "value");
+                    nextResult.setObjectForKey(
+                        "<span style='color: red'>" + e.toString() + "</span>",
+                        "value");
                 }
 
-                results.addObject(result);
+                results.addObject(nextResult);
             }
         }
 
@@ -136,7 +138,7 @@ public class DebuggingPage extends ReporterComponent
 
     public static class ASTDelegate implements AjaxTreeModel.Delegate
     {
-        public NSArray childrenTreeNodes(Object node)
+        public NSArray<Node> childrenTreeNodes(Object node)
         {
             if (node == null)
             {

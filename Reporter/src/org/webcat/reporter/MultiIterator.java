@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MultiIterator.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: MultiIterator.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import java.util.Iterator;
  *            within this multi-iterator.
  *
  * @author  Tony Allevato
- * @version $Id: MultiIterator.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: MultiIterator.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
  */
 public class MultiIterator<T>
     implements Iterator<T>
@@ -45,7 +45,7 @@ public class MultiIterator<T>
      * Construct a new object.
      * @param iters The sequence of iterators to traverse
      */
-    public MultiIterator(Iterator[] iters)
+    public MultiIterator(Iterator<T>[] iters)
     {
         this.iterators = iters;
         index = 0;
@@ -69,7 +69,7 @@ public class MultiIterator<T>
     // ----------------------------------------------------------
     public T next()
     {
-        return (T)iterators[index].next();
+        return iterators[index].next();
     }
 
 
@@ -82,6 +82,6 @@ public class MultiIterator<T>
 
     //~ Instance/static variables .............................................
 
-    private Iterator[] iterators;
+    private Iterator<T>[] iterators;
     private int index;
 }
