@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCResourceManager.java,v 1.4 2010/10/23 20:42:15 stedwar2 Exp $
+ |  $Id: WCResourceManager.java,v 1.5 2011/05/27 15:37:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/23 20:42:15 $
+ *  @version $Revision: 1.5 $, $Date: 2011/05/27 15:37:40 $
  */
 public class WCResourceManager
     extends ERXResourceManager
@@ -220,7 +220,8 @@ public class WCResourceManager
         // ----------------------------------------------------------
         private String versionFor(String bundleName)
         {
-            if (bundleName == null)
+            if (bundleName == null
+                || Application.wcApplication().needsInstallation())
             {
                 return defaultVersion();
             }
