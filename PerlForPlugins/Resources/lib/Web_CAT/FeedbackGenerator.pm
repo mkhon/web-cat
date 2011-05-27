@@ -112,6 +112,8 @@ sub startFeedbackSection
     # (should start at H2)
     $level++;
 
+    my $moduleClass = ($level > 2) ? '' : ' class="module"';
+
     # Output the section header
     if ( defined $id )
     {
@@ -125,10 +127,10 @@ sub startFeedbackSection
             $level = 2;
         }
         my $escapedTitle = htmlEscape($title);
-        my $collapsedAttr = $collapsed ? "true" : "false";
+        my $openAttr = $collapsed ? "false" : "true";
         print { $self->{'fileHandle'} } <<EOF;
-<div class="module">
-<div dojoType="webcat.TitlePane" title="$escapedTitle" open="$collapsedAttr">
+<div$moduleClass>
+<div dojoType="webcat.TitlePane" title="$escapedTitle" open="$openAttr">
 EOF
     }
     else
@@ -140,7 +142,7 @@ EOF
         }
         my $escapedTitle = htmlEscape($title);
         print { $self->{'fileHandle'} } <<EOF;
-<div class="module">
+<div$moduleClass>
 <div dojoType="webcat.TitlePane" title="$escapedTitle" open="false">
 EOF
     }
