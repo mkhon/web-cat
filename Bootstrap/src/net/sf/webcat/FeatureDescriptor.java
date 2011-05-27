@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: FeatureDescriptor.java,v 1.9 2011/04/25 19:08:23 stedwar2 Exp $
+ |  $Id: FeatureDescriptor.java,v 1.10 2011/05/27 15:30:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -37,7 +37,7 @@ import net.sf.webcat.WCUpdater.Condition;
  *
  *  @author  stedwar2
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.9 $, $Date: 2011/04/25 19:08:23 $
+ *  @version $Revision: 1.10 $, $Date: 2011/05/27 15:30:56 $
  */
 public class FeatureDescriptor
 {
@@ -205,7 +205,7 @@ public class FeatureDescriptor
      */
     public FeatureProvider provider() throws IOException
     {
-        return FeatureProvider.getProvider(getProperty( "provider.url" ));
+        return FeatureProvider.getProvider(getProperty("provider.url" ));
     }
 
 
@@ -215,15 +215,22 @@ public class FeatureDescriptor
      * @return The provider's FeatureDiscriptor
      * @throws IOException
      */
-    public FeatureDescriptor providerVersion() throws IOException
+    public FeatureDescriptor providerVersion()
     {
         FeatureDescriptor latest = null;
-        FeatureProvider provider = provider();
-        if ( provider != null )
+        try
         {
-            latest = isPlugin()
-                ? provider.pluginDescriptor( name )
-                : provider.subsystemDescriptor( name );
+            FeatureProvider provider = provider();
+            if ( provider != null )
+            {
+                latest = isPlugin()
+                    ? provider.pluginDescriptor( name )
+                        : provider.subsystemDescriptor( name );
+            }
+        }
+        catch (IOException e)
+        {
+            // just return null
         }
         return latest;
     }
@@ -232,7 +239,7 @@ public class FeatureDescriptor
     // ----------------------------------------------------------
     /**
      * Determine whether one descriptor's version is less than annother's.
-     * @param other the desscriptor to compare against
+     * @param other the descriptor to compare against
      * @return true if the current version for this subsystem is higher
      * than the current version for the other descriptor
      */
@@ -312,10 +319,38 @@ public class FeatureDescriptor
     /**
      * Download this feature version from its provider.
      * @param location the place to put the downloaded file
+     * @return null on success, or an error message on failure
+     */
+    public String downloadTo(File location)
+    {
+        String result = null;
+        try
+        {
+            downloadTo(location, null);
+        }
+        catch (IOException e)
+        {
+            result = "An I/O exception occurred attempting to download "
+                + "version "
+                + currentVersion()
+                + " of "
+                + name()
+                + ": "
+                + e.getMessage();
+        }
+        return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Download this feature version from its provider.
+     * @param location the place to put the downloaded file
      * @param finalLocation to move the downloaded file to
      * @throws IOException
      */
-    public void downloadTo( File location,  File finalLocation ) throws IOException
+    public void downloadTo(File location,  File finalLocation)
+        throws IOException
     {
     	InputStream in = null;
     	FileOutputStream out = null;
@@ -323,68 +358,90 @@ public class FeatureDescriptor
     	try
     	{
 	        FeatureProvider provider = provider();
-	        if ( provider != null )
+	        if (provider != null)
 	        {
 	        	boolean crcpassed = true;
 	        	int i = 0;
 	        	String fileName = name + "_" + currentVersion() + ".jar";
-	            String update = ( isPlugin() ? "plugins/" : "subsystems/" )
+	            String update = (isPlugin() ? "plugins/" : "subsystems/")
 	                + fileName;
-	            File outFile = new File( location, fileName );
-	            URL fileUrl = new URL( provider.url(), update );
+	            File outFile = new File(location, fileName);
+	            URL fileUrl = new URL(provider.url(), update);
 
-	            if(outFile.length() == 0)
-	            	WCUpdater.logInfo( "Downloading " + fileUrl + " to " + outFile.getAbsolutePath() );
+	            if (outFile.length() == 0)
+	            {
+	            	WCUpdater.logInfo("Downloading " + fileUrl + " to "
+	            	    + outFile.getAbsolutePath());
+	            }
 	            else
-	            	WCUpdater.logInfo( "Resumed Downloading " + fileUrl + " to " + outFile.getAbsolutePath() );
+	            {
+	            	WCUpdater.logInfo("Resumed Downloading " + fileUrl
+	            	    + " to " + outFile.getAbsolutePath());
+	            }
 
 	            do
 	        	{
 		            URLConnection connection = fileUrl.openConnection();
-		            connection.setRequestProperty("Range", "bytes="+ outFile.length() +"-");
+		            connection.setRequestProperty(
+		                "Range", "bytes="+ outFile.length() +"-");
 		            in = connection.getInputStream();
-		            out = new FileOutputStream( outFile, true );
+		            out = new FileOutputStream(outFile, true);
 
-		            FileUtilities.copyStream( in, out );
+		            FileUtilities.copyStream(in, out);
 		            out.close();
 		            in.close();
 
 		            //Perform checksum comparison
 		            //Should delete file
-		            if(!compareChecksums(outFile))
+		            if (!compareChecksums(outFile))
 		            {
 		            	crcpassed = false;
 		            	outFile.delete();
 		            }
 		            i++;
 	        	}
-	        	while(!crcpassed && i < 5);
+	        	while (!crcpassed && i < 5);
 
-	        	if(!crcpassed)
+	        	if (!crcpassed)
 	        	{
-	        		WCUpdater.logInfo( "CRC mismatch between " + fileUrl + " and " + outFile.getAbsolutePath());
+	        		WCUpdater.logInfo("CRC mismatch between "
+	        		    + fileUrl
+	        		    + " and "
+	        		    + outFile.getAbsolutePath());
 	        		throw new IOException();
 	        	}
 
-	            //Moving from download location to final location
-	            if(!outFile.renameTo(new File(finalLocation, outFile.getName())))
-	            {
-	            	WCUpdater.logError(getClass(), "Unable to move file from "
-	            			+ location.getAbsolutePath() + " to " + finalLocation.getAbsolutePath());
-	            }
-	            else
-	            {
-	            	WCUpdater.logInfo( "Moving " + outFile.getName() + " to " + outFile.getAbsolutePath());
-	            }
+	        	if (finalLocation != null && !finalLocation.equals(location))
+	        	{
+	        	    //Moving from download location to final location
+	        	    if (!outFile.renameTo(
+	        	        new File(finalLocation, outFile.getName())))
+	        	    {
+	        	        WCUpdater.logError(getClass(),
+	        	            "Unable to move file from "
+	        	            + location.getAbsolutePath()
+	        	            + " to "
+	        	            + finalLocation.getAbsolutePath());
+	        	    }
+	        	    else
+	        	    {
+	        	        WCUpdater.logInfo("Moved " + outFile.getName()
+	        	            + " to " + outFile.getAbsolutePath());
+	        	    }
+	        	}
 	        }
     	}
     	finally
     	{
-    		if(out != null)
+    		if (out != null)
+    		{
     			out.close();
+    		}
 
-    		if(in != null)
+    		if (in != null)
+    		{
     			in.close();
+    		}
     	}
     }
 
@@ -398,7 +455,9 @@ public class FeatureDescriptor
      * @throws IOException
      * @returns true if update was downloaded
      */
-    public boolean downloadUpdateIfNecessary( File location, File finalLocation ) throws IOException
+    public boolean downloadUpdateIfNecessary(
+        File location, File finalLocation)
+        throws IOException
     {
         String updateAutomatically = getProperty( "updateAutomatically" );
         if (   updateAutomatically != null
@@ -438,16 +497,18 @@ public class FeatureDescriptor
     {
     	WCUpdater currentUpdater = WCUpdater.getInstance();
 
-    	try
+    	FeatureDescriptor providerVersion = providerVersion();
+    	if (providerVersion == null)
+    	{
+            return Condition.UNAVAILABLE;
+    	}
+    	else
 		{
-    		return currentUpdater.getFileConditionFor(name + "_"
-					+ providerVersion().currentVersion() + ".jar");
-		}
-		catch (IOException e)
-		{
-			return Condition.UNAVAILABLE;
+    		return currentUpdater.getFileConditionFor(
+    		    name + "_" + providerVersion().currentVersion() + ".jar");
 		}
     }
+
 
     //~ Private Methods .....................................................
 
@@ -522,6 +583,7 @@ public class FeatureDescriptor
 
         return val;
     }
+
 
     //~ Instance/static variables .............................................
 
