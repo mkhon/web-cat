@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.3 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: OptionEditPanel.java,v 1.4 2011/06/01 14:03:11 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -47,7 +47,7 @@ import er.extensions.eof.ERXConstant;
  *
  *  @author Stephen Edwards
  *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.3 $, $Date: 2011/05/13 19:46:57 $
+ *  @version $Revision: 1.4 $, $Date: 2011/06/01 14:03:11 $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -437,6 +437,10 @@ public class OptionEditPanel
         if (isDirectory && type == FILE_TYPE)
         {
             return false;
+        }
+        else if (isDirectory && type == FILE_OR_DIR_TYPE)
+        {
+            return true;
         }
         else
         {
