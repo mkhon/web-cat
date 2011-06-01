@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectoryResource.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: DirectoryResource.java,v 1.2 2011/06/01 15:34:28 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -69,7 +69,7 @@ import com.webobjects.appserver.WOResponse;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/06/01 15:34:28 $
  */
 public class DirectoryResource
     extends AbstractFSResource
@@ -182,14 +182,7 @@ public class DirectoryResource
      */
     public String checkRedirect(Request request)
     {
-        if (!request.getAbsolutePath().endsWith("/"))
-        {
-            return request.getAbsoluteUrl() + "/";
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
 
@@ -310,6 +303,9 @@ public class DirectoryResource
             Map<String, String> params, String contentType)
         throws IOException, NotAuthorizedException
     {
+        boolean endsWithSlash =
+            MiltonRequestWrapper.currentRequest().uri().endsWith("/");
+
         XmlWriter w = new XmlWriter(out);
         w.open("html");
         w.open("body");
@@ -317,7 +313,8 @@ public class DirectoryResource
         w.open("table");
         for (Resource r : getChildren())
         {
-            String href = r.getName();
+            String href = (!endsWithSlash ? this.getName() + "/" : "")
+                + r.getName();
 
             if (r instanceof CollectionResource)
             {

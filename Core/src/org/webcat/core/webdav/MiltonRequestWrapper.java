@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MiltonRequestWrapper.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: MiltonRequestWrapper.java,v 1.2 2011/06/01 15:34:28 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -49,7 +49,7 @@ import com.webobjects.appserver.WORequest;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/06/01 15:34:28 $
  */
 public class MiltonRequestWrapper extends AbstractRequest
 {
@@ -85,11 +85,8 @@ public class MiltonRequestWrapper extends AbstractRequest
     // ----------------------------------------------------------
     public String getAbsoluteUrl()
     {
-        StringBuffer buffer = new StringBuffer();
-
-        request._completeURLPrefix(buffer, request.isSecure(), 0);
-        buffer.append(request.uri());
-        return buffer.toString();
+        return WebDAVRequestHandler.completeURLForPath(
+                request.context(), request.requestHandlerPath());
     }
 
 

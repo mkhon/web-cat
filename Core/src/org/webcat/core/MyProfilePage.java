@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.3 2011/05/27 15:03:58 aallowat Exp $
+ |  $Id: MyProfilePage.java,v 1.4 2011/06/01 15:34:28 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  *  @author Stephen Edwards
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/05/27 15:03:58 $
+ * @version $Revision: 1.4 $, $Date: 2011/06/01 15:34:28 $
  */
 public class MyProfilePage
     extends WCComponent
@@ -404,8 +404,7 @@ public class MyProfilePage
     // ----------------------------------------------------------
     public String webdavURL()
     {
-        return Application.completeURLWithRequestHandlerKey(context(),
-                WebDAVRequestHandler.REQUEST_HANDLER_KEY, null, null, true, 0);
+        return WebDAVRequestHandler.completeURLForPath(context(), null);
     }
 
 
