@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.8 2011/05/19 16:52:04 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.9 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2011/05/19 16:52:04 $
+ * @version $Revision: 1.9 $, $Date: 2011/06/08 02:21:32 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -237,9 +237,14 @@ public class UploadSubmissionPage
             // assignment offering selection to be null and pop open the
             // navigator.
 
+            if (offering == null)
+            {
+                offering = prefs().assignmentOffering();
+            }
             AssignmentOffering assnOff = offering;
 
-            if (!user().hasAdminPrivileges() && !assnOff.userCanSubmit(user()))
+            if (!user().hasAdminPrivileges() &&
+                (assnOff == null || !assnOff.userCanSubmit(user())))
             {
                 prefs().setAssignmentOfferingRelationship(null);
                 offering = null;

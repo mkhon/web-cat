@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentCourseSummaryPage.java,v 1.4 2011/05/19 16:51:04 stedwar2 Exp $
+ |  $Id: StudentCourseSummaryPage.java,v 1.5 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/05/19 16:51:04 $
+ * @version $Revision: 1.5 $, $Date: 2011/06/08 02:21:32 $
  */
 public class StudentCourseSummaryPage extends GraderCourseComponent
 {
@@ -99,24 +99,27 @@ public class StudentCourseSummaryPage extends GraderCourseComponent
 
         NSMutableArray<User> students = new NSMutableArray<User>();
 
-        for (CourseOffering offering : courseOfferings)
+        if (isUserStaff())
         {
-            students.addObjectsFromArray(offering.studentsAndStaff());
+            for (CourseOffering offering : courseOfferings)
+            {
+                students.addObjectsFromArray(offering.studentsAndStaff());
+            }
+
+            if (students.isEmpty())
+            {
+                students.addObject(wcSession().primeUser());
+            }
+
+            // Sort students by name.
+            User.name_LF.ascInsensitive().sort(students);
+
+            studentsInCourse = students;
         }
 
-        if (students.isEmpty())
+        if (selectedStudent == null)
         {
-            students.addObject(wcSession().primeUser());
-        }
-
-        // Sort students by name.
-        User.name_LF.ascInsensitive().sort(students);
-
-        studentsInCourse = students;
-
-        if (!isUserStaff() || selectedStudent == null)
-        {
-            selectedStudent = wcSession().primeUser();
+            selectedStudent = wcSession().user();
         }
 
         // For every assignment in the course, determine the assignment
@@ -140,6 +143,7 @@ public class StudentCourseSummaryPage extends GraderCourseComponent
         anyAssignmentUsesToolCheckScore = false;
         anyAssignmentUsesTAScore = false;
         anyAssignmentUsesBonusesOrPenalties = false;
+
         for (Assignment assignment : assignments)
         {
             boolean foundSubmission = false;
@@ -154,7 +158,8 @@ public class StudentCourseSummaryPage extends GraderCourseComponent
                     homeAssignmentOffering = ao;
                 }
 
-                NSArray<Submission> subs = Submission.submissionsForGrading(
+                NSArray<Submission> subs =
+                    Submission.submissionsForGrading(
                         localContext(), ao, selectedStudent);
 
                 if (subs.size() > 0)

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.17 2011/05/19 16:53:31 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.18 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.17 $, $Date: 2011/05/19 16:53:31 $
+ *  @version $Revision: 1.18 $, $Date: 2011/06/08 02:21:32 $
  */
 public class Submission
     extends _Submission
@@ -968,20 +968,16 @@ public class Submission
      */
     public Submission gradedSubmission()
     {
-        // TODO replace this code with a fetch specification when the
-        // isSubmissionForGrading property is reified in the database.
-
-        NSArray<Submission> subs = allSubmissions();
-
-        for (Submission sub : subs)
+        NSArray<Submission> candidates = submissionsForGrading(
+            editingContext(), assignmentOffering(), user());
+        if (candidates.size() > 0)
         {
-            if (sub.isSubmissionForGrading())
-            {
-                return sub;
-            }
+            return candidates.get(0);
         }
-
-        return null;
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -1868,12 +1864,47 @@ public class Submission
 
         for (User student : users.immutableClone())
         {
+            log.debug("Scanning submissions for " + student);
             NSArray<Submission> candidates =
                 Submission.objectsMatchingQualifier(
                     ec,
                     Submission.assignmentOffering.eq(anAssignmentOffering).and(
 //                        Submission.result.isNotNull()).and(
                             Submission.user.eq(student)));
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("candidates using old fetch = ");
+                for (Submission s : candidates)
+                {
+                    System.out.println("\t" + s);
+                }
+
+                NSArray<Submission> newCandidates =
+                    Submission.objectsMatchingQualifier(
+                        ec,
+                        Submission.assignmentOffering.eq(anAssignmentOffering)
+                            .and(Submission.user.eq(student)),
+                        Submission.isSubmissionForGrading
+                            .descs().then(
+                        Submission.result.dot(SubmissionResult.lastUpdated)
+                            .desc()).then(
+                        Submission.result.dot(SubmissionResult.status)
+                            .desc()).then(
+                        Submission.submitNumber.desc()));
+                System.out.println();
+                log.debug("candidates using new fetch = ");
+                for (Submission s : newCandidates)
+                {
+                    System.out.println("\t" + s);
+                    System.out.println("\t\tnumber = " + s.submitNumber());
+                    System.out.println("\t\tlast updated = "
+                        + s.result().lastUpdated());
+                    System.out.println("\t\tstatus = " + s.result().status());
+                    System.out.println("\t\tfor grading = "
+                        + s.isSubmissionForGrading());
+                }
+            }
 
             Submission mostRecent = null;
             Submission forGrading = null;
@@ -2060,6 +2091,65 @@ public class Submission
 
         return submissionsForGrading(
             ec, anAssignmentOffering, omitPartners, users, accumulator);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects according to the <code>submissionsForGrading</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param assignmentOfferingBinding fetch spec parameter
+     * @param userBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<Submission> submissionsForGrading(
+            EOEditingContext context,
+            org.webcat.grader.AssignmentOffering assignmentOfferingBinding,
+            org.webcat.core.User userBinding
+        )
+    {
+        NSArray<Submission> subs = _Submission.submissionsForGrading(
+            context, assignmentOfferingBinding, userBinding);
+
+        if (subs.size() == 0)
+        {
+            NSArray<UserSubmissionPair> subPairs = submissionsForGrading(
+                context,
+                assignmentOfferingBinding,
+                false,  // omitPartners
+                new NSArray<User>(userBinding),
+                null);
+
+            if (subPairs.size() > 0
+                && subPairs.objectAtIndex(0).submission() != null)
+            {
+                Submission graded = subPairs.objectAtIndex(0).submission();
+//                EOEditingContext local = Application.newPeerEditingContext();
+//                try
+//                {
+//                    local.lock();
+//                    Submission localSub = graded.localInstance(local);
+//                    localSub.setIsSubmissionForGrading(true);
+//                    local.saveChanges();
+//                }
+//                finally
+//                {
+//                    try
+//                    {
+//                        local.unlock();
+//                    }
+//                    finally
+//                    {
+//                        Application.releasePeerEditingContext(local);
+//                    }
+//                }
+                subs = new NSArray<Submission>(graded);
+            }
+        }
+
+        return subs;
     }
 
 

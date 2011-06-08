@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.3 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
+ * @version $Revision: 1.3 $, $Date: 2011/06/08 02:21:32 $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -83,10 +83,11 @@ public class PickSubmissionPage
         log.debug( "entering appendToResponse()" );
         selectedIndex = -1;
         User user = user();
-        if ( prefs().submission() != null )
-        {
-            user = prefs().submission().user();
-        }
+        // Why is this here?
+//        if ( prefs().submission() != null )
+//        {
+//            user = prefs().submission().user();
+//        }
         previousSubmissions = false;
         if (prefs().assignmentOffering() != null)
         {

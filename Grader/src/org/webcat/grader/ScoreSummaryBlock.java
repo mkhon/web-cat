@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.3 2010/10/23 21:14:42 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.4 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/10/23 21:14:42 $
+ *  @version $Revision: 1.4 $, $Date: 2011/06/08 02:21:32 $
  */
 public class ScoreSummaryBlock
     extends GraderComponent
@@ -78,7 +78,7 @@ public class ScoreSummaryBlock
             .submissionProfile().taPoints() > 0.0
             || (result != null
                 && result.taScoreRaw() != null
-                && result.taScore() != 0.0)
+                && result.taScore() > 0.0)
             || allowScoreEdit;
     }
 
@@ -103,7 +103,7 @@ public class ScoreSummaryBlock
         if ( taPtsNum == null ||
              ( !allowScoreEdit && result.status() != Status.CHECK ) )
         {
-            return "&lt;Awaiting TA&gt;";
+            return "&lt;Awaiting Staff&gt;";
         }
         double taPts = taPtsNum.doubleValue();
         return FinalReportPage.meter( taPts / taPossible );

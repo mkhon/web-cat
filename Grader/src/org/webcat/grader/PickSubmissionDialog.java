@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.5 2011/05/19 16:50:43 stedwar2 Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.6 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -35,7 +35,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/05/19 16:50:43 $
+ * @version $Revision: 1.6 $, $Date: 2011/06/08 02:21:32 $
  */
 public class PickSubmissionDialog extends GraderComponent
 {
@@ -107,6 +107,14 @@ public class PickSubmissionDialog extends GraderComponent
 
             NSArray<Submission> submissions =
                 rootUserSubmission.submission().allSubmissions();
+            // Migrate graded submission, if needed
+            Submission graded =
+                rootUserSubmission.submission().gradedSubmission();
+            if (log.isDebugEnabled())
+            {
+                log.debug("graded submission = " + graded + " = "
+                    + graded.isSubmissionForGradingRaw());
+            }
             submissionDisplayGroup.setObjectArray(submissions);
 
             for (int i = 0; i < submissions.count(); i++)

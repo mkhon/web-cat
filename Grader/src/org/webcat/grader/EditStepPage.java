@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditStepPage.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: EditStepPage.java,v 1.3 2011/06/08 02:21:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
+ * @version $Revision: 1.3 $, $Date: 2011/06/08 02:21:32 $
  */
 public class EditStepPage
     extends GraderComponent
@@ -154,6 +154,13 @@ public class EditStepPage
     public WOComponent defaultAction()
     {
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public WOComponent myProfile()
+    {
+        return pageWithName(currentTab().selectById("Profile").pageName());
     }
 
 
