@@ -1,11 +1,11 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Fri Jan 21 12:37:15 EST 2011
+#Tue Jun 07 22:13:39 EDT 2011
 Admin.provider=Virginia Tech Computer Science
 Admin.copyright=(c) 2006-2010 Virginia Tech Department of Computer Science
 Admin.history.url=http\://web-cat.org/WCWiki/AdminSubsystem/ChangeHistory
-Admin.version.revision=3
+Admin.version.revision=4
 Admin.requires=Core
-Admin.version.date=20110121
+Admin.version.date=20110607
 Admin.version.minor=3
 Admin.description=This subsystem provides tools for Web-CAT administrators to use, including configuration support and direct database browse and edit capabilities.
 Admin.license.url=http\://www.gnu.org/licenses/agpl.html
