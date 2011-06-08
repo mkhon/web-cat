@@ -13,6 +13,8 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/vt-ldap-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/xerces.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/xml-apis.jar"/>
+	<classpathentry kind="lib" path="Libraries/commons-codec-1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/commons-io-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/bcprov-jdk15-129.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jcommon-1.0.16.jar"/>
@@ -20,7 +22,6 @@
 	<classpathentry exported="true" kind="lib" path="Libraries/poi-3.6-20091214.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/twitter4j-core-2.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/milton-api-1.5.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="Libraries/commons-io-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/mime-util-2.1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/jsch-0.1.44.jar"/>
 	<classpathentry exported="true" kind="lib" path="Libraries/httpclient-4.0.jar"/>

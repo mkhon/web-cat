@@ -4,6 +4,7 @@ this directory:
 
 activation.jar              (http://java.sun.com/javase/technologies/desktop/javabeans/jaf/downloads/index.html)
 bcprov-jdk15-129.jar        (http://www.bouncycastle.org/latest_releases.html)
+commons-codec-1.5.jar       (http://commons.apache.org/codec/)
 commons-io-2.0.1.jar        (http://commons.apache.org/io/)
 commons-logging-1.1.jar     (http://commons.apache.org/logging/)
 eddo-1_3.jar                (only needed for VT users)
