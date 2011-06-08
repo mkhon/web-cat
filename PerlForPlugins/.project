@@ -24,7 +24,7 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.epic.perleditor.perlnature</nature>
+        <nature>org.epic.perleditor.perlnature</nature>
 		<nature>org.objectstyle.wolips.incrementalframeworknature</nature>
 	</natures>
 </projectDescription>

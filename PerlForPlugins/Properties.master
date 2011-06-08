@@ -5,12 +5,12 @@ subsystem.PerlForPlugins=org.webcat.perlforplugins.PerlForPlugins
 
 PerlForPlugins.version.major=1
 PerlForPlugins.version.minor=1
-PerlForPlugins.version.revision=1
+PerlForPlugins.version.revision=3
 PerlForPlugins.requires=Core
 PerlForPlugins.provides=env
 
 PerlForPlugins.copyright=\
-	(c) 2006-2010 Virginia Tech Department of Computer Science
+	(c) 2006-2011 Virginia Tech Department of Computer Science
 PerlForPlugins.provider=Virginia Tech Computer Science
 PerlForPlugins.provider.url=http\://web-cat.org/updates
 PerlForPlugins.info.url=http\://web-cat.org/WCWiki/AntForPluginsSubsystem
