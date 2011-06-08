@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.6 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: User.java,v 1.7 2011/06/08 19:05:49 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -56,7 +56,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.7 $, $Date: 2011/06/08 19:05:49 $
  */
 public class User
     extends _User
@@ -1382,7 +1382,7 @@ public class User
 
 
     // ----------------------------------------------------------
-    private static String scriptRoot()
+    public static String scriptRoot()
     {
         // I don't like having this here, but it's necessary to get the same
         // existing behavior in the function below, and it's only used for
@@ -1406,7 +1406,7 @@ public class User
 
 
     // ----------------------------------------------------------
-    private static String userDataRoot()
+    public static String userDataRoot()
     {
         if (userDataRoot == null)
         {
