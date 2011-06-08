@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.13 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: Application.java,v 1.14 2011/06/08 02:16:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -74,7 +74,6 @@ import com.webobjects.foundation.NSNotification;
 import com.webobjects.foundation.NSNotificationCenter;
 import com.webobjects.foundation.NSSelector;
 import com.webobjects.foundation.NSTimestamp;
-import com.webobjects.foundation.NSTimestampFormatter;
 import com.webobjects.woextensions.WOExceptionParser;
 import com.webobjects.woextensions.WOParsedErrorLine;
 import er.extensions.ERXExtensions;
@@ -82,6 +81,7 @@ import er.extensions.appserver.ERXMessageEncoding;
 import er.extensions.foundation.ERXProperties;
 import er.extensions.foundation.ERXSystem;
 import er.extensions.foundation.ERXValueUtilities;
+import er.extensions.formatters.ERXTimestampFormatter;
 
 // -------------------------------------------------------------------------
 /**
@@ -91,8 +91,8 @@ import er.extensions.foundation.ERXValueUtilities;
  * of exception handling for the Web-CAT application.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.13 $, $Date: 2011/05/13 19:46:57 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.14 $, $Date: 2011/06/08 02:16:11 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -1877,8 +1877,8 @@ public class Application
             StringBuffer buffer = new StringBuffer(200);
             buffer.append("<b>Immediate shutdown:</b> ");
             buffer.append("Web-CAT will be going off-line at ");
-            NSTimestampFormatter formatter =
-                new NSTimestampFormatter("%I:%M%p");
+            ERXTimestampFormatter formatter =
+                new ERXTimestampFormatter("%I:%M%p");
             java.text.FieldPosition pos = new java.text.FieldPosition(0);
             formatter.format(dieTime, buffer, pos);
             buffer.append(".  Save your work and logout.");
