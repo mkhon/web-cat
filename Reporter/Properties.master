@@ -5,10 +5,10 @@ subsystem.Reporter=org.webcat.reporter.Reporter
 
 Reporter.version.major=1
 Reporter.version.minor=1
-Reporter.version.revision=4
+Reporter.version.revision=5
 Reporter.requires=BIRTRuntime, Core, Grader, JobQueue
 
-Reporter.copyright=(c) 2007-2010 Virginia Tech Department of Computer Science
+Reporter.copyright=(c) 2007-2011 Virginia Tech Department of Computer Science
 Reporter.provider=Virginia Tech Computer Science
 Reporter.provider.url=http\://web-cat.org/updates
 Reporter.info.url=http\://web-cat.org/WCWiki/ReporterSubsystem
