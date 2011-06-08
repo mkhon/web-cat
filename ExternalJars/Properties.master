@@ -5,10 +5,10 @@ subsystem.ExternalJars=
 
 ExternalJars.version.major=1
 ExternalJars.version.minor=1
-ExternalJars.version.revision=0
+ExternalJars.version.revision=1
 
 ExternalJars.copyright=\
-	(c) 2007-2010 Virginia Tech Department of Computer Science
+	(c) 2007-2011 Virginia Tech Department of Computer Science
 ExternalJars.provider=Virginia Tech Computer Science
 ExternalJars.provider.url=http\://web-cat.org/updates
 ExternalJars.info.url=\
