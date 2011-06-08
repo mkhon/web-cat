@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DatabaseAuthenticator.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
+ |  $Id: DatabaseAuthenticator.java,v 1.3 2011/06/08 20:54:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  *  admitted.
  *
  *  @author Stephen Edwards
- *  @version $Id: DatabaseAuthenticator.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
+ *  @version $Id: DatabaseAuthenticator.java,v 1.3 2011/06/08 20:54:54 stedwar2 Exp $
  */
 public class DatabaseAuthenticator
     implements UserAuthenticator
@@ -129,7 +129,9 @@ public class DatabaseAuthenticator
                     new String[]{ User.USER_NAME_KEY,
                                   User.AUTHENTICATION_DOMAIN_KEY }
                 ) );
-            if ( skipPasswordChecks || password.equals( u.password() ) )
+            if (skipPasswordChecks
+                || (password == null && u.password() == null)
+                || (password != null && password.equals( u.password())))
             {
                 log.debug( "user " + userName + " validated" );
                 user = u;
