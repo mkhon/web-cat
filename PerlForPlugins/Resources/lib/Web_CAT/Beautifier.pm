@@ -28,6 +28,8 @@ use Carp;
     "pp"     => "pascal",
     "pro"    => "prolog",
     "prolog" => "prolog",
+    "py"     => "python",
+    "python" => "python",
     "readme" => "ascii",
     "rss"    => "xml",
     "rkt"    => "scheme",

@@ -21,7 +21,7 @@ sub new
     $self->{indent}             = [];  # ["("];
     $self->{unindent}           = [];  # [")"];
     $self->{stringchars}        = ["\""];
-    $self->{delimiters}         = ["(", ")", "\\", "{", "}", "[", "]", ";", "\"", "\'", " ", ",", " ", "."];
+    $self->{delimiters}         = ["(", ")", "\\", "{", "}", "[", "]", ";", "\"", "\'", " ", ",", "\t", "."];
     $self->{escchar}            = "\\";
     $self->{linecommenton}      = [";"];
     $self->{blockcommenton}     = ["#|"];
