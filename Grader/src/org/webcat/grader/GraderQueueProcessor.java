@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.10 2011/05/13 19:50:19 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.11 2011/06/09 15:50:00 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -67,7 +67,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author  Amit Kulkarni
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.10 $, $Date: 2011/05/13 19:50:19 $
+ * @version $Revision: 1.11 $, $Date: 2011/06/09 15:50:00 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -792,11 +792,25 @@ public class GraderQueueProcessor
             properties.setProperty( "assignment",
                 job.submission().assignmentOffering().assignment()
                 .name() );
+
             properties.setProperty( "dueDateTimestamp",
                 Long.toString( job.submission().assignmentOffering()
                                .dueDate().getTime() ) );
+            properties.setProperty( "lateDeadlineTimestamp",
+                Long.toString( job.submission().assignmentOffering()
+                               .lateDeadline().getTime() ) );
             properties.setProperty( "submissionTimestamp",
                 Long.toString( job.submission().submitTime().getTime() ) );
+            properties.setProperty( "jobQueueTimestamp",
+                    Long.toString( job.queueTime().getTime() ) );
+
+            properties.setProperty("jobQueuedAfterLateDeadline",
+                    Boolean.toString(job.queueTime().after(
+                            job.submission().assignmentOffering()
+                                .lateDeadline())));
+            properties.setProperty("jobIsRegrading",
+                    Boolean.toString(job.regrading()));
+
             properties.setProperty( "submissionNo",
                 Integer.toString( job.submission().submitNumber() ) );
             properties.setProperty( "frameworksBaseURL",
