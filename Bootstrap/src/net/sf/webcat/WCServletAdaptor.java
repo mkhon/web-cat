@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCServletAdaptor.java,v 1.18 2011/04/25 19:08:23 stedwar2 Exp $
+ |  $Id: WCServletAdaptor.java,v 1.19 2011/06/10 00:08:20 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package net.sf.webcat;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.zip.*;
 import javax.servlet.ServletException;
@@ -39,8 +40,8 @@ import net.sf.webcat.WCUpdater;
  *  within Web-CAT, before the application starts up.
  *
  *  @author  stedwar2
- *  @author Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.18 $, $Date: 2011/04/25 19:08:23 $
+ *  @author Last changed by $Author: aallowat $
+ *  @version $Revision: 1.19 $, $Date: 2011/06/10 00:08:20 $
  */
 @SuppressWarnings("serial")
 public class WCServletAdaptor
@@ -86,25 +87,36 @@ public class WCServletAdaptor
     public void init()
         throws ServletException
     {
+        // Cache the additional HTTP methods that we need to handle (for
+        // WebDAV support).
+        additionalHttpMethods = new HashSet<String>();
+        additionalHttpMethods.add("COPY");
+        additionalHttpMethods.add("LOCK");
+        additionalHttpMethods.add("MKCOL");
+        additionalHttpMethods.add("MOVE");
+        additionalHttpMethods.add("PROPFIND");
+        additionalHttpMethods.add("PROPPATCH");
+        additionalHttpMethods.add("UNLOCK");
+
         String webInfRoot = super.getServletContext().getRealPath("WEB-INF");
         File webInfDir = new File(webInfRoot);
         propertiesFile = new File(webInfDir, "update.properties");
         loadProperties();
-        
+
         systemUpdater = WCUpdater.getInstance();
-        systemUpdater.setup(webInfDir);      
+        systemUpdater.setup(webInfDir);
         updateDir = systemUpdater.getUpdateDir();
         frameworkDir = systemUpdater.getFrameworkDir();
-        
+
         applyNecessaryUpdates(webInfDir);
-               
+
         try
         {
             super.init();
         }
         catch (NoClassDefFoundError e)
         {
-        	initFailed = e;
+            initFailed = e;
 //        	for (StackTraceElement frame : e.getStackTrace())
 //        	{
 //        		String fileName = frame.getFileName();
@@ -120,13 +132,13 @@ public class WCServletAdaptor
             // Failure during startup
             initFailed = e;
         }
-        
+
         //Run background update process
         if(willUpdateAutomatically())
-        {      
-        	//Hard coded values currently: Update occurs every 4 minutes
-        	//Most likly change to read in a property containing update checks
-        	systemUpdater.startBackgroundUpdaterThread(1000, 240000);
+        {
+            //Hard coded values currently: Update occurs every 4 minutes
+            //Most likly change to read in a property containing update checks
+            systemUpdater.startBackgroundUpdaterThread(1000, 240000);
         }
     }
 
@@ -169,6 +181,48 @@ public class WCServletAdaptor
         else
         {
             super.doGet(request, response);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public void doPut(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        doGet(request, response);
+    }
+
+
+    // ----------------------------------------------------------
+    public void doDelete(HttpServletRequest request,
+                         HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        doGet(request, response);
+    }
+
+
+    // ----------------------------------------------------------
+    public void doOptions(HttpServletRequest request,
+                          HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        doGet(request, response);
+    }
+
+
+    // ----------------------------------------------------------
+    public void service(HttpServletRequest request,
+                        HttpServletResponse response)
+        throws ServletException, IOException
+    {
+        if (additionalHttpMethods.contains(request.getMethod()))
+        {
+            doGet(request, response);
+        }
+        else
+        {
+            super.service(request, response);
         }
     }
 
@@ -262,13 +316,13 @@ public class WCServletAdaptor
         String vmName = System.getProperty("java.vm.name");
         if (vmName != null && vmName.toLowerCase().contains("gcj"))
         {
-        	out.println("<p>In this case, it appears that you are <b>using");
-        	out.println("gcj</b> to run your servlet container.  Web-CAT ");
-        	out.println("does not run properly under gcj at this time.");
-        	out.println("Please install Sun's JDK and");
-        	out.println("<a href=\"http://web-cat.org/WCWiki/");
-        	out.println("SwitchToSunJdk\">configure your servlet");
-        	out.println("container</a> to use it instead.</p>");
+            out.println("<p>In this case, it appears that you are <b>using");
+            out.println("gcj</b> to run your servlet container.  Web-CAT ");
+            out.println("does not run properly under gcj at this time.");
+            out.println("Please install Sun's JDK and");
+            out.println("<a href=\"http://web-cat.org/WCWiki/");
+            out.println("SwitchToSunJdk\">configure your servlet");
+            out.println("container</a> to use it instead.</p>");
         }
         out.println("<p>For more information, locate your ");
         out.println("servlet container's <b>stdout log file</b> and ");
@@ -279,23 +333,23 @@ public class WCServletAdaptor
         Throwable nested = initFailed;
         while (nested.getCause() != null)
         {
-        	nested = nested.getCause();
+            nested = nested.getCause();
         }
         out.println("<h2>Root Cause</h2>\n<pre>");
         nested.printStackTrace(out);
         out.println("</pre>");
         if (nested != initFailed)
         {
-        	out.println("<h2>Full Exception Details</h2>\n<pre>");
-        	initFailed.printStackTrace(out);
-        	nested = initFailed.getCause();
-        	while (nested != null)
-        	{
-        		out.println("\nCaused by:");
-        		nested.printStackTrace(out);
-        		nested = nested.getCause();
-        	}
-        	out.println("</pre>");
+            out.println("<h2>Full Exception Details</h2>\n<pre>");
+            initFailed.printStackTrace(out);
+            nested = initFailed.getCause();
+            while (nested != null)
+            {
+                out.println("\nCaused by:");
+                nested.printStackTrace(out);
+                nested = nested.getCause();
+            }
+            out.println("</pre>");
         }
         out.println("</body></html>");
         out.flush();
@@ -309,10 +363,10 @@ public class WCServletAdaptor
      * @param webInfDir the WEB-INF directory as a file object
      */
     private void applyNecessaryUpdates(File webInfDir)
-    {       
+    {
         File appDir = webInfDir.getParentFile();
         applyPendingUpdates(frameworkDir, appDir);
-        
+
         if (frameworkDir != null && frameworkDir.isDirectory())
         {
             File[] subdirs = frameworkDir.listFiles();
@@ -546,7 +600,7 @@ public class WCServletAdaptor
                     subdir = localSubdir;
                 }
             }
-            
+
             getUpdaterFor(subdir).addToClasspath(buffer);
         }
 
@@ -615,7 +669,7 @@ public class WCServletAdaptor
      * @return the corresponding updater
      */
     private SubsystemUpdater getUpdaterFor(File dir)
-    {   
+    {
         return systemUpdater.getUpdaterFor(dir);
     }
 
@@ -658,7 +712,7 @@ public class WCServletAdaptor
 
     //~ Instance/static variables .............................................
     private WCUpdater systemUpdater;
-    
+
     private javax.servlet.ServletContext  innerContext   = null;
     private javax.servlet.ServletContext  wrappedContext = null;
     private String                        woClasspath    = null;
@@ -666,8 +720,10 @@ public class WCServletAdaptor
     private File                          propertiesFile;
     private File                          updateDir;
     private File                          frameworkDir;
-    
+
     private Throwable                     initFailed;
+
+    private Set<String>                   additionalHttpMethods;
 
     private static WCServletAdaptor instance;
 
@@ -676,7 +732,7 @@ public class WCServletAdaptor
         "ERJars.framework",
         "ERExtensions.framework"
     };
-    
+
     private static final String APP_JAR_PREFIX   = "webcat";
     private static final String INSTALLED_WOROOT = "installed.woroot";
     private static final String VERSION          = "1.5";
