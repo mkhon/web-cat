@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.9 2011/05/13 19:50:19 aallowat Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.10 2011/06/17 15:31:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,8 +31,8 @@ import org.webcat.dbupdate.UpdateSet;
  * for this class uses its parent class' logger.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.9 $, $Date: 2011/05/13 19:50:19 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.10 $, $Date: 2011/06/17 15:31:59 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -430,6 +430,19 @@ public class GraderDatabaseUpdates
     {
         database().executeSQL(
             "alter table TUPLOADEDSCRIPTFILES add fileConfigSettings BLOB");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Clear all values from isSubmissionForGrading so that all new
+     * stuff will be migrated correctly.
+     * @throws SQLException on error
+     */
+    public void updateIncrement20dontuse() throws SQLException
+    {
+        database().executeSQL(
+            "update table TSUBMISSION set CISSUBMISSIONFORGRADING NULL");
     }
 
 
