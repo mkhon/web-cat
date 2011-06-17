@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.18 2011/06/08 02:21:32 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.19 2011/06/17 15:32:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.18 $, $Date: 2011/06/08 02:21:32 $
+ *  @version $Revision: 1.19 $, $Date: 2011/06/17 15:32:23 $
  */
 public class Submission
     extends _Submission
@@ -610,6 +610,10 @@ public class Submission
      */
     private void deleteResultsForAllPartners()
     {
+        // TODO: This method is broken, since it is called only during
+        // regrades, and the old submissions will end up being orphaned,
+        // but there is no plan to "reattach" the new results to those.
+        //
         SubmissionResult myResult = result();
         if ( myResult != null )
         {
