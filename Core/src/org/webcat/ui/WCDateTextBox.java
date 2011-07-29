@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDateTextBox.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: WCDateTextBox.java,v 1.2 2011/07/29 17:55:33 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -54,7 +54,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:58 $
+ * @version $Revision: 1.2 $, $Date: 2011/07/29 17:55:33 $
  */
 public class WCDateTextBox extends DojoFormElement
 {
@@ -130,32 +130,42 @@ public class WCDateTextBox extends DojoFormElement
 
         Object object;
 
-        synchronized (ISO_DATE_FORMAT)
+        if (stringValue == null)
         {
-            if (_timeZone != null)
+            object = null;
+        }
+        else
+        {
+            synchronized (ISO_DATE_FORMAT)
             {
-                TimeZone tz =
-                    (TimeZone)_timeZone.valueInComponent(context.component());
-                if (tz != null)
+                if (_timeZone != null)
                 {
-                    ISO_DATE_FORMAT.setTimeZone(tz);
+                    TimeZone tz = (TimeZone)_timeZone.valueInComponent(
+                            context.component());
+
+                    if (tz != null)
+                    {
+                        ISO_DATE_FORMAT.setTimeZone(tz);
+                    }
+                    else
+                    {
+                        ISO_DATE_FORMAT.setTimeZone(TimeZone.getDefault());
+                    }
                 }
                 else
                 {
                     ISO_DATE_FORMAT.setTimeZone(TimeZone.getDefault());
                 }
-            }
-            else
-            {
-                ISO_DATE_FORMAT.setTimeZone(TimeZone.getDefault());
-            }
-            try
-            {
-                object = new NSTimestamp(ISO_DATE_FORMAT.parse(stringValue));
-            }
-            catch (ParseException e)
-            {
-                object = null;
+
+                try
+                {
+                    object = new NSTimestamp(
+                            ISO_DATE_FORMAT.parse(stringValue));
+                }
+                catch (ParseException e)
+                {
+                    object = null;
+                }
             }
         }
 
