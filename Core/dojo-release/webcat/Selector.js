@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Selector.js,v 1.3 2011/05/16 15:11:35 aallowat Exp $
+ |  $Id: Selector.js,v 1.4 2011/08/22 19:59:13 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -26,18 +26,18 @@ dojo.require("dojo.dnd.Selector");
 // ------------------------------------------------------------------------
 /**
  * @author Tony Allevato
- * @version $Id: Selector.js,v 1.3 2011/05/16 15:11:35 aallowat Exp $
+ * @version $Id: Selector.js,v 1.4 2011/08/22 19:59:13 aallowat Exp $
  */
 dojo.declare("webcat.Selector", dojo.dnd.Selector,
 {
-    shadowSelectionField: null,
+    shadowSelectionField: '',
     onSelectionChanged: '',
 
     constructor: function(node, params)
     {
         this.onSelectionChanged = params.onSelectionChanged;
         this.onItemDoubleClicked = params.onItemDoubleClicked;
-        this.shadowSelectionField = dojo.byId(params.shadowSelectionField);
+        this.shadowSelectionField = params.shadowSelectionField;
         this._firstTime = true;
 
         this.events.push(
@@ -96,7 +96,7 @@ dojo.declare("webcat.Selector", dojo.dnd.Selector,
 
         if (this.shadowSelectionField)
         {
-            this.shadowSelectionField.value = shadowSelection;
+            dojo.byId(this.shadowSelectionField).value = shadowSelection;
         }
 
         if (changed)
