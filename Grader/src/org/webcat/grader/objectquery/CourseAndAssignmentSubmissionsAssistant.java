@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.2 2011/05/13 19:50:19 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.3 2011/08/29 20:06:42 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -51,7 +51,7 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  * a specified set of course offerings.
  *
  * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.2 2011/05/13 19:50:19 aallowat Exp $
+ * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.3 2011/08/29 20:06:42 aallowat Exp $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends WCComponent
@@ -201,6 +201,14 @@ public class CourseAndAssignmentSubmissionsAssistant
 
             return Assignment.objectsWithFetchSpecification(
                 localContext(), fetchSpec);
+        }
+
+
+        // ----------------------------------------------------------
+        protected void selectionDidChange()
+        {
+            model.setSelectedAssignmentModelItems(
+                    assignmentModel.selectedObjects().allObjects());
         }
     }
 
