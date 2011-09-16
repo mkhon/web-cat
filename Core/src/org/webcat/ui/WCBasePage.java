@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.4 2011/06/08 02:17:47 stedwar2 Exp $
+ |  $Id: WCBasePage.java,v 1.5 2011/09/16 16:11:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -82,7 +82,7 @@ import org.webcat.core.WCResourceManager;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/06/08 02:17:47 $
+ * @version $Revision: 1.5 $, $Date: 2011/09/16 16:11:19 $
  */
 public class WCBasePage
     extends WOComponent
@@ -411,10 +411,24 @@ public class WCBasePage
     // ----------------------------------------------------------
     public String customBackground()
     {
-        return hasSession()
-            ? (String)((Session)session()).user().preferences()
-               .valueForKey("customBackgroundUrl")
-            : null;
+        if (hasSession())
+        {
+            Session session = (Session)session();
+            if (session.user() != null)
+            {
+                org.webcat.core.User user = session.user();
+                if (user != null)
+                {
+                    Object result = user.preferences()
+                        .valueForKey("customBackgroundUrl");
+                    if (result != null)
+                    {
+                        return result.toString();
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 

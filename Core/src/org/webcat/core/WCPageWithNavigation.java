@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCPageWithNavigation.java,v 1.2 2010/10/15 01:00:25 stedwar2 Exp $
+ |  $Id: WCPageWithNavigation.java,v 1.3 2011/09/16 16:11:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import org.webcat.core.WCPageWithNavigation;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/15 01:00:25 $
+ * @version $Revision: 1.3 $, $Date: 2011/09/16 16:11:19 $
  */
 public class WCPageWithNavigation
     extends WCBasePage
@@ -285,7 +285,9 @@ public class WCPageWithNavigation
     public boolean primaryTabIsVisible()
     {
         return primaryTabItem.accessLevel() == 0
-            || !( (Session)session() ).user().restrictToStudentView();
+            || (hasSession()
+                && ((Session)session()).user() != null
+                && !((Session)session()).user().restrictToStudentView());
     }
 
 
@@ -298,7 +300,9 @@ public class WCPageWithNavigation
     public boolean secondaryTabIsVisible()
     {
         return secondaryTabItem.accessLevel() == 0
-            || !( (Session)session() ).user().restrictToStudentView();
+        || (hasSession()
+            && ((Session)session()).user() != null
+            && !((Session)session()).user().restrictToStudentView());
     }
 
 
