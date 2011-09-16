@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitTreePage.java,v 1.2 2011/09/09 14:01:16 aallowat Exp $
+ |  $Id: GitTreePage.java,v 1.3 2011/09/16 15:44:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -48,8 +48,8 @@ import com.webobjects.foundation.NSData;
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/09/09 14:01:16 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2011/09/16 15:44:52 $
  */
 public class GitTreePage extends GitWebComponent
 {
@@ -69,6 +69,7 @@ public class GitTreePage extends GitWebComponent
     public NSData fileDataToUpload;
     public String filePathToUpload;
     public String commitMessageForUpload;
+    public String folderName;
     public boolean expandIfArchive;
 
 
@@ -95,8 +96,13 @@ public class GitTreePage extends GitWebComponent
 
             entries = iterator.allEntries();
         }
+        if (commitMessageForUpload == null)
+        {
+            commitMessageForUpload = "Uploaded from my web browser";
+        }
 
         super.appendToResponse(response, context);
+        clearAllMessages();
     }
 
 
@@ -194,43 +200,99 @@ public class GitTreePage extends GitWebComponent
 
 
     // ----------------------------------------------------------
+    public WOActionResults createFolder()
+    {
+        if (folderName == null || folderName.length() == 0)
+        {
+            error("Please provide a folder name.");
+        }
+        else
+        {
+            Repository workingCopy = GitUtilities.workingCopyForRepository(
+                gitContext().repository().repository(), true);
+            File file = workingCopy.getWorkTree();
+            File destDir = file;
+
+            if (gitContext().path() != null)
+            {
+                destDir = new File(file, gitContext().path());
+            }
+
+            File newFolder = new File(destDir, folderName);
+
+            try
+            {
+                newFolder.mkdirs();
+                File gitIgnore = new File(newFolder, ".gitignore");
+                FileOutputStream os = new FileOutputStream(gitIgnore);
+                os.close();
+                GitUtilities.pushWorkingCopyImmediately(workingCopy, user(),
+                    "created folder \"" + folderName + "\"");
+            }
+            catch (Exception e)
+            {
+                log.error("error creating the folder " + folderName + " as "
+                    + newFolder + ": ", e);
+                error("The following error occurred trying to create "
+                    + "the folder \"" + folderName + "\": " + e.getMessage());
+            }
+        }
+
+        // Refresh the page but do a redirect to make sure we get the proper
+        // URL in the address bar.
+        WORedirect redirect = new WORedirect(context());
+        redirect.setUrl(gitContext().toURL(context()));
+        return redirect.generateResponse();
+    }
+
+
+    // ----------------------------------------------------------
     public WOActionResults uploadFile()
     {
-        Repository workingCopy = GitUtilities.workingCopyForRepository(
+        if (commitMessageForUpload == null ||
+            commitMessageForUpload.length() == 0)
+        {
+            error("Please provide a commit message for your file upload");
+        }
+        else
+        {
+            Repository workingCopy = GitUtilities.workingCopyForRepository(
                 gitContext().repository().repository(), true);
-        File file = workingCopy.getWorkTree();
-        File destDir = file;
+            File file = workingCopy.getWorkTree();
+            File destDir = file;
 
-        if (gitContext().path() != null)
-        {
-            destDir = new File(file, gitContext().path());
-        }
-
-        File destFile = new File(destDir, filePathToUpload);
-
-        try
-        {
-            if (expandIfArchive && FileUtilities.isArchiveFile(filePathToUpload))
+            if (gitContext().path() != null)
             {
-                ArchiveManager.getInstance().unpack(
+                destDir = new File(file, gitContext().path());
+            }
+
+            File destFile = new File(destDir, filePathToUpload);
+
+            try
+            {
+                if (expandIfArchive
+                    && FileUtilities.isArchiveFile(filePathToUpload))
+                {
+                    ArchiveManager.getInstance().unpack(
                         destDir, filePathToUpload, fileDataToUpload.stream());
-            }
-            else
-            {
-                FileOutputStream os = new FileOutputStream(destFile);
-                fileDataToUpload.writeToStream(os);
-                os.close();
-            }
+                }
+                else
+                {
+                    FileOutputStream os = new FileOutputStream(destFile);
+                    fileDataToUpload.writeToStream(os);
+                    os.close();
+                }
 
-            GitUtilities.pushWorkingCopyImmediately(
+                GitUtilities.pushWorkingCopyImmediately(
                     workingCopy, user(), commitMessageForUpload);
-        }
-        catch (IOException e)
-        {
-            log.error("The following error occurred while uploading the file: ",
-                    e);
-
-            // TODO Display the error to the user
+            }
+            catch (IOException e)
+            {
+                log.error("error uploading file " + filePathToUpload + " as "
+                    + destFile + ": ", e);
+                error("The following error occurred trying to upload the "
+                    + "file \"" + filePathToUpload + "\": " + e.getMessage());
+            }
         }
 
         // Refresh the page but do a redirect to make sure we get the proper
