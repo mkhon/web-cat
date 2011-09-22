@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.3 2011/09/22 13:44:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.eof.ERXDefaultEditingContextDelegate;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/09/22 13:44:01 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -164,7 +164,14 @@ public class QueueDescriptor
     /* package */ static void waitForNextJob(Number descriptorId)
     {
         assert descriptorId != null;
-        waitForNextJob(forId(queueContext(), descriptorId.intValue()));
+        QueueDescriptor descriptor =
+            forId(queueContext(), descriptorId.intValue());
+        if (descriptor == null)
+        {
+            log.error("waitForNextJob(id = " + descriptorId + "): no EO with "
+                + "specified ID could be retrieved");
+        }
+        waitForNextJob(descriptor);
     }
 
 

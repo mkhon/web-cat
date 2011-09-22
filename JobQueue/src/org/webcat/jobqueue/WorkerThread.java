@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.4 2011/01/21 18:05:43 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.5 2011/09/22 13:44:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/01/21 18:05:43 $
+ * @version $Revision: 1.5 $, $Date: 2011/09/22 13:44:01 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -451,7 +451,14 @@ public abstract class WorkerThread<Job extends JobBase>
                 // If there aren't any jobs currently available, wait
                 // until something arrives in the queue
                 logDebug("waiting for queue to wake me");
-                QueueDescriptor.waitForNextJob(queueDescriptor().id());
+                try
+                {
+                    QueueDescriptor.waitForNextJob(queueDescriptor().id());
+                }
+                catch (Exception e)
+                {
+                    // If this blows up, just repeat the loop and try again
+                }
                 logDebug("woken by the queue");
             }
             else

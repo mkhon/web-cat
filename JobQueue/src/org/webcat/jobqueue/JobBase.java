@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.3 2011/01/21 18:05:43 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.4 2011/09/22 13:43:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/01/21 18:05:43 $
+ * @version $Revision: 1.4 $, $Date: 2011/09/22 13:43:22 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -96,24 +96,31 @@ public abstract class JobBase
             return false;
         }
 
-        if (worker() == null)
+        EOEditingContext ec = editingContext();
+        try
         {
-            try
+            if (ec != null && worker() == null)
             {
                 setSuspensionReason(null);
                 setWorkerRelationship(withWorker);
-                editingContext().saveChanges();
+                ec.saveChanges();
 
-                workerThread = (WorkerThread) Thread.currentThread();
-            }
-            catch (EOGeneralAdaptorException e)
-            {
-                // assume optimistic locking failure
-                editingContext().revert();
+                if (worker() == withWorker)
+                {
+                    workerThread = (WorkerThread) Thread.currentThread();
+                    return true;
+                }
             }
         }
-
-        return worker() == withWorker;
+        catch (EOGeneralAdaptorException e)
+        {
+            // assume optimistic locking failure
+            if (ec != null)
+            {
+                ec.revert();
+            }
+        }
+        return false;
     }
 
 
