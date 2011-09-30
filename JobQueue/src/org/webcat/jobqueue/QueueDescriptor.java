@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.3 2011/09/22 13:44:01 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.4 2011/09/30 13:29:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,8 +41,8 @@ import er.extensions.eof.ERXDefaultEditingContextDelegate;
  * database.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/09/22 13:44:01 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2011/09/30 13:29:35 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -144,7 +144,16 @@ public class QueueDescriptor
         assert descriptor.editingContext() != null;
         if (descriptor.editingContext() != queueContext())
         {
-            descriptor.localInstance(queueContext());
+            EOEditingContext qc = queueContext();
+            try
+            {
+                qc.lock();
+                descriptor = descriptor.localInstance(qc);
+            }
+            finally
+            {
+                qc.unlock();
+            }
         }
         TokenDispenser dispenser = null;
         synchronized (dispensers)
@@ -164,13 +173,25 @@ public class QueueDescriptor
     /* package */ static void waitForNextJob(Number descriptorId)
     {
         assert descriptorId != null;
-        QueueDescriptor descriptor =
-            forId(queueContext(), descriptorId.intValue());
-        if (descriptor == null)
+        EOEditingContext qc = queueContext();
+        QueueDescriptor descriptor = null;
+
+        try
         {
-            log.error("waitForNextJob(id = " + descriptorId + "): no EO with "
-                + "specified ID could be retrieved");
+            qc.lock();
+            descriptor = forId(qc, descriptorId.intValue());
+
+            if (descriptor == null)
+            {
+                log.error("waitForNextJob(id = " + descriptorId + "): no EO with "
+                    + "specified ID could be retrieved");
+            }
         }
+        finally
+        {
+            qc.unlock();
+        }
+
         waitForNextJob(descriptor);
     }
 
