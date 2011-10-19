@@ -5,10 +5,10 @@ subsystem.WebObjectsUpdater=
 
 WebObjectsUpdater.version.major=1
 WebObjectsUpdater.version.minor=2
-WebObjectsUpdater.version.revision=2
+WebObjectsUpdater.version.revision=3
 
 WebObjectsUpdater.copyright=\
-	(c) 2007-2010 Virginia Tech Department of Computer Science
+	(c) 2007-2011 Virginia Tech Department of Computer Science
 WebObjectsUpdater.provider=Virginia Tech Computer Science
 WebObjectsUpdater.provider.url=http\://web-cat.org/updates
 WebObjectsUpdater.info.url=\
