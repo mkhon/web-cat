@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.19 2011/06/17 15:32:23 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.20 2011/10/19 13:04:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.19 $, $Date: 2011/06/17 15:32:23 $
+ *  @version $Revision: 1.20 $, $Date: 2011/10/19 13:04:39 $
  */
 public class Submission
     extends _Submission
@@ -1963,7 +1963,7 @@ public class Submission
                 {
                     users.removeObject(student);
                 }
-                else if (!(omitPartners && forGrading.partnerLink()))
+                else
                 {
                     submissions.setObjectForKey(forGrading, student);
                     if (accumulator != null)
@@ -1978,7 +1978,7 @@ public class Submission
                 {
                     users.removeObject(student);
                 }
-                else if (!(omitPartners && mostRecent.partnerLink()))
+                else
                 {
                     submissions.setObjectForKey(mostRecent, student);
                     if (accumulator != null)
