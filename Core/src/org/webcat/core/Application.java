@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.15 2011/09/16 15:44:33 stedwar2 Exp $
+ |  $Id: Application.java,v 1.16 2011/10/19 12:59:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -93,7 +93,7 @@ import er.extensions.formatters.ERXTimestampFormatter;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.15 $, $Date: 2011/09/16 15:44:33 $
+ * @version $Revision: 1.16 $, $Date: 2011/10/19 12:59:00 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -149,7 +149,7 @@ public class Application
         if (log.isInfoEnabled())
         {
             log.info("Web-CAT v" + version()
-                + "\nCopyright (C) 2006-2010 Virginia Tech\n\n"
+                + "\nCopyright (C) 2006-2011 Virginia Tech\n\n"
                 + "Web-CAT comes with ABSOLUTELY NO WARRANTY; this is "
                 + "free software\n"
                 + "under the terms of the GNU Affero General Public License "
