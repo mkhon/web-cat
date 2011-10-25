@@ -1,6 +1,6 @@
 {
     responsesForAssignmentOffering = {
-        class = EOFetchSpecification;
+        class = WCFetchSpecification;
         entityName = SurveyResponse;
         prefetchingRelationshipKeyPaths = ();
         qualifier = {
@@ -11,7 +11,7 @@
         };
     };
     responsesForAssignmentOfferingAndUser = {
-        class = EOFetchSpecification;
+        class = WCFetchSpecification;
         entityName = SurveyResponse;
         prefetchingRelationshipKeyPaths = ();
         qualifier = {
@@ -33,7 +33,7 @@
         };
     };
     responsesForUser = {
-        class = EOFetchSpecification;
+        class = WCFetchSpecification;
         entityName = SurveyResponse;
         prefetchingRelationshipKeyPaths = ();
         qualifier = {

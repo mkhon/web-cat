@@ -1,35 +1,35 @@
 {
     subscriptionsForMessageTypeAndUser = {
-        class = EOFetchSpecification; 
-        entityName = UserMessageSubscription; 
-        prefetchingRelationshipKeyPaths = (); 
+        class = WCFetchSpecification;
+        entityName = UserMessageSubscription;
+        prefetchingRelationshipKeyPaths = ();
         qualifier = {
-            class = EOAndQualifier; 
+            class = EOAndQualifier;
             qualifiers = (
                 {
-                    class = EOKeyValueQualifier; 
-                    key = messageType; 
-                    selectorName = "isEqualTo:"; 
-                    value = {"_key" = messageType; class = EOQualifierVariable; }; 
-                }, 
+                    class = EOKeyValueQualifier;
+                    key = messageType;
+                    selectorName = "isEqualTo:";
+                    value = {"_key" = messageType; class = EOQualifierVariable; };
+                },
                 {
-                    class = EOKeyValueQualifier; 
-                    key = user; 
-                    selectorName = "isEqualTo:"; 
-                    value = {"_key" = user; class = EOQualifierVariable; }; 
+                    class = EOKeyValueQualifier;
+                    key = user;
+                    selectorName = "isEqualTo:";
+                    value = {"_key" = user; class = EOQualifierVariable; };
                 }
-            ); 
-        }; 
-    }; 
+            );
+        };
+    };
     subscriptionsForUser = {
-        class = EOFetchSpecification; 
-        entityName = UserMessageSubscription; 
-        prefetchingRelationshipKeyPaths = (); 
+        class = WCFetchSpecification;
+        entityName = UserMessageSubscription;
+        prefetchingRelationshipKeyPaths = ();
         qualifier = {
-            class = EOKeyValueQualifier; 
-            key = user; 
-            selectorName = "isEqualTo:"; 
-            value = {"_key" = user; class = EOQualifierVariable; }; 
-        }; 
-    }; 
+            class = EOKeyValueQualifier;
+            key = user;
+            selectorName = "isEqualTo:";
+            value = {"_key" = user; class = EOQualifierVariable; };
+        };
+    };
 }

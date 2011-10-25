@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -119,7 +120,7 @@ public abstract class _SendMessageJob
      * @return The object, or null if no such id exists
      */
     public static SendMessageJob forId(
-        EOEditingContext ec, int id )
+        EOEditingContext ec, int id)
     {
         SendMessageJob obj = null;
         if (id > 0)
@@ -144,9 +145,9 @@ public abstract class _SendMessageJob
      * @return The object, or null if no such id exists
      */
     public static SendMessageJob forId(
-        EOEditingContext ec, String id )
+        EOEditingContext ec, String id)
     {
-        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
+        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
     }
 
 
@@ -194,7 +195,8 @@ public abstract class _SendMessageJob
     // Fetch specifications ---
     public static final String ENTITY_NAME = "SendMessageJob";
 
-    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
+    public transient final EOBasedKeyGenerator generateKey =
+        new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -224,10 +226,10 @@ public abstract class _SendMessageJob
     public org.webcat.core.MutableDictionary attachments()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "attachments" );
-        if ( attachmentsRawCache != dbValue )
+            (NSData)storedValueForKey("attachments");
+        if (attachmentsRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( attachmentsRawCache ) )
+            if (dbValue != null && dbValue.equals( attachmentsRawCache))
             {
                 // They are still equal, so just update the raw cache
                 attachmentsRawCache = dbValue;
@@ -356,10 +358,10 @@ public abstract class _SendMessageJob
     public org.webcat.core.MutableDictionary broadcastProtocolSettingsSnapshot()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "broadcastProtocolSettingsSnapshot" );
-        if ( broadcastProtocolSettingsSnapshotRawCache != dbValue )
+            (NSData)storedValueForKey("broadcastProtocolSettingsSnapshot");
+        if (broadcastProtocolSettingsSnapshotRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( broadcastProtocolSettingsSnapshotRawCache ) )
+            if (dbValue != null && dbValue.equals( broadcastProtocolSettingsSnapshotRawCache))
             {
                 // They are still equal, so just update the raw cache
                 broadcastProtocolSettingsSnapshotRawCache = dbValue;
@@ -552,10 +554,10 @@ public abstract class _SendMessageJob
     public org.webcat.core.MutableDictionary links()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "links" );
-        if ( linksRawCache != dbValue )
+            (NSData)storedValueForKey("links");
+        if (linksRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( linksRawCache ) )
+            if (dbValue != null && dbValue.equals( linksRawCache))
             {
                 // They are still equal, so just update the raw cache
                 linksRawCache = dbValue;
@@ -1182,8 +1184,9 @@ public abstract class _SendMessageJob
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME, qualifier, sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -1274,7 +1277,7 @@ public abstract class _SendMessageJob
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1336,7 +1339,7 @@ public abstract class _SendMessageJob
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -1360,10 +1363,11 @@ public abstract class _SendMessageJob
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME,
-            EOQualifier.qualifierToMatchAllValues(keysAndValues),
-            sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues),
+                sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<SendMessageJob> objects =
@@ -1416,7 +1420,7 @@ public abstract class _SendMessageJob
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1516,7 +1520,7 @@ public abstract class _SendMessageJob
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -1560,5 +1564,5 @@ public abstract class _SendMessageJob
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( SendMessageJob.class );
+    static Logger log = Logger.getLogger(SendMessageJob.class);
 }

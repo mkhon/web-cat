@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -103,7 +104,7 @@ public abstract class _SurveyResponse
      * @return The object, or null if no such id exists
      */
     public static SurveyResponse forId(
-        EOEditingContext ec, int id )
+        EOEditingContext ec, int id)
     {
         SurveyResponse obj = null;
         if (id > 0)
@@ -128,9 +129,9 @@ public abstract class _SurveyResponse
      * @return The object, or null if no such id exists
      */
     public static SurveyResponse forId(
-        EOEditingContext ec, String id )
+        EOEditingContext ec, String id)
     {
-        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
+        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
     }
 
 
@@ -187,7 +188,8 @@ public abstract class _SurveyResponse
     public static final String RESPONSES_FOR_USER_FSPEC = "responsesForUser";
     public static final String ENTITY_NAME = "SurveyResponse";
 
-    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
+    public transient final EOBasedKeyGenerator generateKey =
+        new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -215,7 +217,7 @@ public abstract class _SurveyResponse
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
+            editingContext().committedSnapshotForObject(this));
     }
 
 
@@ -229,7 +231,7 @@ public abstract class _SurveyResponse
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
+                editingContext() , this).objectForKey("id");
         }
         catch (Exception e)
         {
@@ -807,8 +809,9 @@ public abstract class _SurveyResponse
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME, qualifier, sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -899,7 +902,7 @@ public abstract class _SurveyResponse
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -961,7 +964,7 @@ public abstract class _SurveyResponse
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -985,10 +988,11 @@ public abstract class _SurveyResponse
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME,
-            EOQualifier.qualifierToMatchAllValues(keysAndValues),
-            sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues),
+                sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<SurveyResponse> objects =
@@ -1041,7 +1045,7 @@ public abstract class _SurveyResponse
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1141,7 +1145,7 @@ public abstract class _SurveyResponse
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -1178,29 +1182,29 @@ public abstract class _SurveyResponse
      */
     public static NSArray<SurveyResponse> responsesForAssignmentOffering(
             EOEditingContext context,
-            org.webcat.grader.AssignmentOffering assignmentOfferingBinding
-        )
+            org.webcat.grader.AssignmentOffering assignmentOfferingBinding)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "responsesForAssignmentOffering", "SurveyResponse" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("responsesForAssignmentOffering", "SurveyResponse");
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( assignmentOfferingBinding != null )
+        if (assignmentOfferingBinding != null)
         {
-            bindings.setObjectForKey( assignmentOfferingBinding,
-                                      "assignmentOffering" );
+            bindings.setObjectForKey(assignmentOfferingBinding,
+                                     "assignmentOffering");
         }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
 
         NSArray<SurveyResponse> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "responsesForAssignmentOffering(ec"
+            log.debug("responsesForAssignmentOffering(ec"
                 + ", " + assignmentOfferingBinding
-                + "): " + objects );
+                + "): " + objects);
         }
         return objects;
     }
@@ -1219,35 +1223,35 @@ public abstract class _SurveyResponse
     public static NSArray<SurveyResponse> responsesForAssignmentOfferingAndUser(
             EOEditingContext context,
             org.webcat.grader.AssignmentOffering assignmentOfferingBinding,
-            org.webcat.core.User userBinding
-        )
+            org.webcat.core.User userBinding)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "responsesForAssignmentOfferingAndUser", "SurveyResponse" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("responsesForAssignmentOfferingAndUser", "SurveyResponse");
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( assignmentOfferingBinding != null )
+        if (assignmentOfferingBinding != null)
         {
-            bindings.setObjectForKey( assignmentOfferingBinding,
-                                      "assignmentOffering" );
+            bindings.setObjectForKey(assignmentOfferingBinding,
+                                     "assignmentOffering");
         }
-        if ( userBinding != null )
+        if (userBinding != null)
         {
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
+            bindings.setObjectForKey(userBinding,
+                                     "user");
         }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
 
         NSArray<SurveyResponse> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "responsesForAssignmentOfferingAndUser(ec"
+            log.debug("responsesForAssignmentOfferingAndUser(ec"
                 + ", " + assignmentOfferingBinding
                 + ", " + userBinding
-                + "): " + objects );
+                + "): " + objects);
         }
         return objects;
     }
@@ -1264,29 +1268,29 @@ public abstract class _SurveyResponse
      */
     public static NSArray<SurveyResponse> responsesForUser(
             EOEditingContext context,
-            org.webcat.core.User userBinding
-        )
+            org.webcat.core.User userBinding)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "responsesForUser", "SurveyResponse" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("responsesForUser", "SurveyResponse");
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( userBinding != null )
+        if (userBinding != null)
         {
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
+            bindings.setObjectForKey(userBinding,
+                                     "user");
         }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
 
         NSArray<SurveyResponse> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "responsesForUser(ec"
+            log.debug("responsesForUser(ec"
                 + ", " + userBinding
-                + "): " + objects );
+                + "): " + objects);
         }
         return objects;
     }
@@ -1310,5 +1314,5 @@ public abstract class _SurveyResponse
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( SurveyResponse.class );
+    static Logger log = Logger.getLogger(SurveyResponse.class);
 }
