@@ -94,7 +94,7 @@ sub dispatch
     chomp $state;
 
     $self->reloadProperties();
-    
+
     my $handler = $self->{'stateMap'}->{$state};
 
     if (defined $handler)
@@ -139,8 +139,12 @@ sub dispatch
 sub reloadProperties
 {
     my $self = shift;
-    $self->{'properties'} = Config::Properties::Simple->new(
+    my $reloaded = Config::Properties::Simple->new(
         file => $self->{'propertiesFile'});
+    for my $key (keys %{$reloaded})
+    {
+        $self->{'properties'}->{$key} = $reloaded->{$key};
+    }
 }
 
 
@@ -165,7 +169,7 @@ sub iterationProgress
 {
     my $self = shift;
     my $props = $self->properties();
-    
+
     return $props->getProperty('batch.iterationProgress', 0);
 }
 
@@ -180,7 +184,7 @@ sub updateProgress
     my $props = $self->properties();
 
     $props->setProperty('batch.jobProgress', $progress);
-    
+
     if (defined $message)
     {
         $props->setProperty('batch.jobProgressMessage', $message);
@@ -197,4 +201,4 @@ __END__
 
 Tony Allevato
 
-$Id: Batcher.pm,v 1.1 2010/05/11 14:51:51 aallowat Exp $
+$Id: Batcher.pm,v 1.2 2011/10/25 16:56:07 stedwar2 Exp $
