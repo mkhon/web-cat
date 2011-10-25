@@ -31,7 +31,6 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
-import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -107,7 +106,7 @@ public abstract class _UserMessageSubscription
      * @return The object, or null if no such id exists
      */
     public static UserMessageSubscription forId(
-        EOEditingContext ec, int id)
+        EOEditingContext ec, int id )
     {
         UserMessageSubscription obj = null;
         if (id > 0)
@@ -132,9 +131,9 @@ public abstract class _UserMessageSubscription
      * @return The object, or null if no such id exists
      */
     public static UserMessageSubscription forId(
-        EOEditingContext ec, String id)
+        EOEditingContext ec, String id )
     {
-        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
+        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
     }
 
 
@@ -189,7 +188,7 @@ public abstract class _UserMessageSubscription
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this));
+            editingContext().committedSnapshotForObject(this) );
     }
 
 
@@ -203,7 +202,7 @@ public abstract class _UserMessageSubscription
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this).objectForKey("id");
+                editingContext() , this ).objectForKey( "id" );
         }
         catch (Exception e)
         {
@@ -459,9 +458,8 @@ public abstract class _UserMessageSubscription
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        @SuppressWarnings("unchecked")
-        EOFetchSpecification fspec = new WCFetchSpecification(
-                ENTITY_NAME, qualifier, sortOrderings);
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -552,7 +550,7 @@ public abstract class _UserMessageSubscription
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -614,7 +612,7 @@ public abstract class _UserMessageSubscription
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return firstObjectMatchingValues(
@@ -638,11 +636,10 @@ public abstract class _UserMessageSubscription
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        @SuppressWarnings("unchecked")
-        EOFetchSpecification fspec = new WCFetchSpecification(
-                ENTITY_NAME,
-                EOQualifier.qualifierToMatchAllValues(keysAndValues),
-                sortOrderings);
+        EOFetchSpecification fspec = new EOFetchSpecification(
+            ENTITY_NAME,
+            EOQualifier.qualifierToMatchAllValues(keysAndValues),
+            sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<UserMessageSubscription> objects =
@@ -695,7 +692,7 @@ public abstract class _UserMessageSubscription
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -795,7 +792,7 @@ public abstract class _UserMessageSubscription
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -834,35 +831,35 @@ public abstract class _UserMessageSubscription
     public static NSArray<UserMessageSubscription> subscriptionsForMessageTypeAndUser(
             EOEditingContext context,
             String messageTypeBinding,
-            org.webcat.core.User userBinding)
+            org.webcat.core.User userBinding
+        )
     {
-        @SuppressWarnings("unchecked")
-        EOFetchSpecification spec = WCFetchSpecification
-            .fetchSpecificationNamed("subscriptionsForMessageTypeAndUser", "UserMessageSubscription");
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "subscriptionsForMessageTypeAndUser", "UserMessageSubscription" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if (messageTypeBinding != null)
+        if ( messageTypeBinding != null )
         {
-            bindings.setObjectForKey(messageTypeBinding,
-                                     "messageType");
+            bindings.setObjectForKey( messageTypeBinding,
+                                      "messageType" );
         }
-        if (userBinding != null)
+        if ( userBinding != null )
         {
-            bindings.setObjectForKey(userBinding,
-                                     "user");
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
         }
-        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
         NSArray<UserMessageSubscription> objects =
-            objectsWithFetchSpecification(context, spec);
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug("subscriptionsForMessageTypeAndUser(ec"
+            log.debug( "subscriptionsForMessageTypeAndUser(ec"
                 + ", " + messageTypeBinding
                 + ", " + userBinding
-                + "): " + objects);
+                + "): " + objects );
         }
         return objects;
     }
@@ -879,29 +876,29 @@ public abstract class _UserMessageSubscription
      */
     public static NSArray<UserMessageSubscription> subscriptionsForUser(
             EOEditingContext context,
-            org.webcat.core.User userBinding)
+            org.webcat.core.User userBinding
+        )
     {
-        @SuppressWarnings("unchecked")
-        EOFetchSpecification spec = WCFetchSpecification
-            .fetchSpecificationNamed("subscriptionsForUser", "UserMessageSubscription");
+        EOFetchSpecification spec = EOFetchSpecification
+            .fetchSpecificationNamed( "subscriptionsForUser", "UserMessageSubscription" );
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if (userBinding != null)
+        if ( userBinding != null )
         {
-            bindings.setObjectForKey(userBinding,
-                                     "user");
+            bindings.setObjectForKey( userBinding,
+                                      "user" );
         }
-        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
+        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
 
         NSArray<UserMessageSubscription> objects =
-            objectsWithFetchSpecification(context, spec);
+            objectsWithFetchSpecification( context, spec );
         if (log.isDebugEnabled())
         {
-            log.debug("subscriptionsForUser(ec"
+            log.debug( "subscriptionsForUser(ec"
                 + ", " + userBinding
-                + "): " + objects);
+                + "): " + objects );
         }
         return objects;
     }
@@ -925,5 +922,5 @@ public abstract class _UserMessageSubscription
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger(UserMessageSubscription.class);
+    static Logger log = Logger.getLogger( UserMessageSubscription.class );
 }
