@@ -6,6 +6,8 @@ use strict;
 use Carp;
 use File::stat;
 use Web_CAT::Utilities qw(htmlEscape);
+use Data::Dumper;
+
 
 #========================================================================
 #                      -----  PUBLIC METHODS -----
@@ -19,6 +21,7 @@ sub new
     my $self = {
         'hints'      => [{}, {}, {}],
         'plist'      => "",
+        'perlList'   => "",
         'executed'   => 0.0,
         'failed'     => 0.0,
         'hasResults' => 0,
@@ -66,6 +69,16 @@ sub addHint
 {
     my $self     = shift;
     my $category = shift;
+    my $priority = shift;
+
+    # legacy support, for calls with no priority specified (i.e., hint next)
+    if ($priority !~ m/^[+-]?\d+$/o)
+    {
+        # priority wasn't an integer, so assume it was a hint
+        unshift @_, $priority;
+        $priority = 0;
+    }
+
     my $hint     = shift; croak( "hint text required" ) if !defined( $hint );
     my $trace    = shift;
     croak( "category required" ) if !defined( $category );
@@ -76,9 +89,10 @@ sub addHint
     {
         # print "adding new hint record\n";
         $hintRecord = {
-            'text'  => $hint,
-            'count' => 0,
-            'id'    => ++$self->{'hintId'}
+            'text'     => $hint,
+            'count'    => 0,
+            'priority' => $priority,
+            'id'       => ++$self->{'hintId'}
         };
         if ( defined( $trace ) )
         {
@@ -91,6 +105,10 @@ sub addHint
         $hintRecord = $self->{'hints'}->[$category]->{$hint};
     }
     $hintRecord->{'count'}++;
+    if ($hintRecord->{'priority'} < $priority)
+    {
+        $hintRecord->{'priority'} = $priority;
+    }
     if ( defined( $trace ) && !exists( $hintRecord->{'trace'} ) )
     {
         $hintRecord->{'trace'} = $trace;
@@ -145,6 +163,21 @@ sub addToPlist
 
 
 #========================================================================
+# addToPlist( plist );
+sub addToPerlList
+{
+    my $self = shift;
+    my $add = shift;
+    while ( defined $add )
+    {
+        chomp $add;
+        $self->{'perlList'} .= $add;
+        $add = shift;
+    }
+}
+
+
+#========================================================================
 sub testsExecuted
 {
     my $self = shift;
@@ -186,7 +219,14 @@ sub testPassRate
 sub allTestsPass
 {
     my $self = shift;
-    return ( $self->testsExecuted > 0 )  &&  ( $self->testsFailed == 0 );
+    my $result = ( $self->testsExecuted > 0 )  &&  ( $self->testsFailed == 0 );
+
+    # Ensure an integer return value for properties file usage
+    if (!$result)
+    {
+        $result = 0;
+    }
+    return $result;
 }
 
 
@@ -194,8 +234,15 @@ sub allTestsPass
 sub allTestsFail
 {
     my $self = shift;
-    return ( $self->testsExecuted > 0 )
+    my $result = ( $self->testsExecuted > 0 )
         && ( $self->testsFailed == $self->testsExecuted );
+
+    # Ensure an integer return value for properties file usage
+    if (!$result)
+    {
+        $result = 0;
+    }
+    return $result;
 }
 
 
@@ -210,19 +257,29 @@ sub plist
 
 
 #========================================================================
+sub perlList
+{
+    my $self = shift;
+    my $result = $self->{'perlList'};
+    $result =~ s/,$//o;
+    return "[" . $result . "]";
+}
+
+
+#========================================================================
 # formatHints( category, limit );
 sub formatHints
 {
-    my $self     = shift;
-    my $category = shift || 0;
-    my $limit    = shift;
-    my $result   = undef;
-
-    if ( !defined( $limit ) ) { $limit = -1; }
+    my $self          = shift;
+    my $category      = shift || 0;
+    my $limit         = shift || -1;
+    my $showMandatory = shift || 0;
+    my $result        = undef;
 
     my @hints = sort
-        { ( $a->{'count'} <=> $b->{'count'} )
-          || ( $b->{'id'} <=> $a->{'id'} ) }
+        { ( $b->{'priority'} <=> $a->{'priority'} )
+          || ( $b->{'count'} <=> $a->{'count'} )
+          || ( $a->{'id'} <=> $b->{'id'} ) }
         values %{$self->{'hints'}->[$category]};
 
     my $total = $#hints + 1;
@@ -231,14 +288,15 @@ sub formatHints
         $limit = $total;
     }
 
-    if ( $category == 0 )
+    if ( $category == 0 && $showMandatory )
     {
         my @mandatory = sort
-        { ( $a->{'count'} <=> $b->{'count'} )
-          || ( $b->{'id'} <=> $a->{'id'} ) }
+        { ( $b->{'priority'} <=> $a->{'priority'} )
+          || ( $b->{'count'} <=> $a->{'count'} )
+          || ( $a->{'id'} <=> $b->{'id'} ) }
             values %{$self->{'hints'}->[$category + 1]};
         $limit += $#mandatory + 1;
-        @hints= (@hints, @mandatory);
+        @hints = (@mandatory, @hints);
     }
 
     my $shown = $limit;
@@ -284,6 +342,68 @@ sub formatHints
     }
 
     return $result;
+}
+
+
+#========================================================================
+# hintsAsPerlDump;
+sub hintsAsPerlDump
+{
+    my $self = shift;
+    my $result = Data::Dumper->new([$self->{'hints'}])->Indent(0)->Dump;
+    $result =~ s/^\$VAR[0-9]+\s*=\s*//o;
+    $result =~ s/\s*;\s*$//o;
+    return $result;
+}
+
+
+#========================================================================
+# saveToCfg(simpleCfg, propertyPrefix);
+sub saveToCfg
+{
+    my $self   = shift;
+    my $cfg    = shift || croak "cfg required";
+    my $prefix = shift || croak "property prefix required";
+
+    $cfg->setProperty($prefix . '.results',      $self->plist);
+    $cfg->setProperty($prefix . '.results.perl', $self->perlList);
+    $cfg->setProperty($prefix . '.executed',     $self->testsExecuted);
+    $cfg->setProperty($prefix . '.passed',
+        $self->testsExecuted - $self->testsFailed);
+    $cfg->setProperty($prefix . '.failed',       $self->testsFailed);
+    $cfg->setProperty($prefix . '.passRate',     $self->testPassRate);
+    $cfg->setProperty($prefix . '.allPass',      $self->allTestsPass);
+    $cfg->setProperty($prefix . '.allFail',      $self->allTestsFail);
+    $cfg->setProperty($prefix . '.hints',        $self->hintsAsPerlDump);
+}
+
+
+#========================================================================
+# loadFromCfg(simpleCfg, propertyPrefix);
+sub loadFromCfg
+{
+    my $self   = shift;
+    my $cfg    = shift || croak "cfg required";
+    my $prefix = shift || croak "property prefix required";
+
+    $self->{'plist'}    = $cfg->getProperty($prefix . '.results', '');
+    $self->{'perlList'} = $cfg->getProperty($prefix . '.results.perl', '');
+    $self->{'executed'} = $cfg->getProperty($prefix . '.executed', 0.0);
+    eval('$self->{\'hints\'} = ' .
+        $cfg->getProperty($prefix . '.hints', '[{}, {}, {}]'));
+    $self->{'hasResults'} = ($self->{'executed'} > 0) ? 1 : 0;
+    $self->{'hintId'} = 0;
+    for my $catMap ($self->{'hints'})
+    {
+        for my $key (keys %{$catMap})
+        {
+            my $id = $catMap->{$key}->{'id'};
+            if ($id > $self->{'hintId'})
+            {
+                $self->{'hintId'} = $id;
+            }
+        }
+    }
 }
 
 
