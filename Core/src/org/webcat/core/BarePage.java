@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BarePage.java,v 1.2 2010/10/24 18:48:49 stedwar2 Exp $
+ |  $Id: BarePage.java,v 1.3 2011/10/25 13:12:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -25,7 +25,7 @@ import com.webobjects.appserver.*;
 import java.util.StringTokenizer;
 import org.webcat.core.Application;
 import org.webcat.core.BarePage;
-import org.webcat.core.WCResourceManager;
+import org.webcat.woextensions.WCResourceManager;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/24 18:48:49 $
+ * @version $Revision: 1.3 $, $Date: 2011/10/25 13:12:33 $
  */
 public class BarePage
     extends WOComponent

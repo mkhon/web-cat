@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.16 2011/10/19 12:59:00 stedwar2 Exp $
+ |  $Id: Application.java,v 1.17 2011/10/25 13:12:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -49,6 +49,10 @@ import org.webcat.core.messaging.IMessageDispatcher;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.webcat.core.webdav.WebDAVRequestHandler;
 import org.webcat.dbupdate.UpdateEngine;
+import org.webcat.woextensions.AjaxUpdateContainerTagProcessor;
+import org.webcat.woextensions.WCContext;
+import org.webcat.woextensions.WCResourceManager;
+import org.webcat.woextensions.WCEC;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOMessage;
@@ -93,7 +97,7 @@ import er.extensions.formatters.ERXTimestampFormatter;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.16 $, $Date: 2011/10/19 12:59:00 $
+ * @version $Revision: 1.17 $, $Date: 2011/10/25 13:12:33 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -212,7 +216,7 @@ public class Application
             configurationProperties().valueForKey("WOPageCacheSize"), 30));
 
         updateStaticHtmlResources();
-        WOEC.installWOECFactory();
+        WCEC.installWOECFactory();
 
         if (!isDevelopmentModeSafe() && isDirectConnectEnabled())
         {
