@@ -68,7 +68,7 @@ log4j.loggerFactory=er.extensions.logging.ERXLogger$Factory
 log4j.appender.console                = org.apache.log4j.ConsoleAppender
 log4j.appender.console.layout         = er.extensions.logging.ERXPatternLayout
 log4j.appender.console.ImmediateFlush = true
-log4j.appender.console.layout.ConversionPattern = %5p [%t] %c{1}: %m%n
+log4j.appender.console.layout.ConversionPattern = %5p %d{DATE} %c{1}: %m%n
 
 log4j.appender.logfile                = org.apache.log4j.RollingFileAppender
 log4j.appender.logfile.file           = web-cat.log
