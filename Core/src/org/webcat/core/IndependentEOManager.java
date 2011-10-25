@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
+ |  $Id: IndependentEOManager.java,v 1.3 2011/10/25 13:07:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -39,7 +39,7 @@ import com.webobjects.foundation.NSDictionary;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:37 $
+ * @version $Revision: 1.3 $, $Date: 2011/10/25 13:07:58 $
  */
 public class IndependentEOManager
     implements EOManager
@@ -211,6 +211,60 @@ public class IndependentEOManager
         {
             ecm.lock();
             mirror.removeObjectFromPropertyWithKey(ecm.localize(eo), key);
+        }
+        finally
+        {
+            ecm.unlock();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public void refresh()
+    {
+        try
+        {
+            ecm.lock();
+            ecm.revert();
+            ecm.refreshAllObjects();
+        }
+        finally
+        {
+            ecm.unlock();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    public void revert()
+    {
+        try
+        {
+            ecm.lock();
+            ecm.revert();
+        }
+        finally
+        {
+            ecm.unlock();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Tries to save any pending changes in the managed EO, returning
+     * null on success or an appropriate Exception object on failure.
+     * This method allows the caller to decide what to do when saving
+     * fails.
+     * @return The exception that occurred, if saving fails, or null
+     * on success.
+     */
+    public Exception tryToSaveChanges()
+    {
+        try
+        {
+            ecm.lock();
+            return ecm.tryToSaveChanges();
         }
         finally
         {
