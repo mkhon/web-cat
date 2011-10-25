@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.4 2011/05/19 16:55:47 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.5 2011/10/25 15:32:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -28,6 +28,7 @@ import er.extensions.eof.ERXConstant;
 import java.io.*;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
+import org.webcat.woextensions.WCResourceManager;
 
 // -------------------------------------------------------------------------
 /**
@@ -40,7 +41,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/05/19 16:55:47 $
+ * @version $Revision: 1.5 $, $Date: 2011/10/25 15:32:06 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent

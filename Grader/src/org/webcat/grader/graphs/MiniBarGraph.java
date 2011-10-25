@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MiniBarGraph.java,v 1.3 2011/03/07 18:57:09 stedwar2 Exp $
+ |  $Id: MiniBarGraph.java,v 1.4 2011/10/25 15:32:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -26,6 +26,8 @@ import com.webobjects.appserver._private.WODynamicElementCreationException;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSNumberFormatter;
 import org.webcat.core.*;
+import org.webcat.woextensions.DynamicElement;
+import org.webcat.woextensions.WCResourceManager;
 
 // -------------------------------------------------------------------------
 /**
@@ -33,7 +35,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/03/07 18:57:09 $
+ * @version $Revision: 1.4 $, $Date: 2011/10/25 15:32:06 $
  */
 public class MiniBarGraph
     extends DynamicElement

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.5 2011/02/22 03:08:58 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.6 2011/10/25 15:32:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,6 +35,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 import org.webcat.core.*;
 import org.webcat.grader.messaging.GraderMarkupParseError;
+import org.webcat.woextensions.WCResourceManager;
 
 // -------------------------------------------------------------------------
 /**
@@ -42,7 +43,7 @@ import org.webcat.grader.messaging.GraderMarkupParseError;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.5 $, $Date: 2011/02/22 03:08:58 $
+ *  @version $Revision: 1.6 $, $Date: 2011/10/25 15:32:06 $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats

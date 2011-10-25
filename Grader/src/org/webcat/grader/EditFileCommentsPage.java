@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFileCommentsPage.java,v 1.6 2010/10/23 21:13:49 stedwar2 Exp $
+ |  $Id: EditFileCommentsPage.java,v 1.7 2011/10/25 15:32:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -32,6 +32,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 import org.webcat.core.*;
 import org.webcat.grader.messaging.GraderMarkupParseError;
+import org.webcat.woextensions.WCResourceManager;
 import com.webobjects.appserver.WODisplayGroup;
 
 // -------------------------------------------------------------------------
@@ -42,7 +43,7 @@ import com.webobjects.appserver.WODisplayGroup;
  *
  * @author  Stephen Edwards, Hussein Vastani
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2010/10/23 21:13:49 $
+ * @version $Revision: 1.7 $, $Date: 2011/10/25 15:32:06 $
  */
 public class EditFileCommentsPage
     extends GraderComponent
