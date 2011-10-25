@@ -3,7 +3,7 @@ package Web_CAT::HFile::HFile_cpp;
 ###############################
 #
 # Beautifier Perl HFile
-# Language: Perl
+# Language: C++
 #
 ###############################
 
