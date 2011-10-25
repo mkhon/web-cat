@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.4 2010/10/24 18:49:47 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.5 2011/10/25 12:59:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2010 Virginia Tech
  |
@@ -23,6 +23,7 @@ package org.webcat.core;
 
 import java.io.File;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
+import org.webcat.woextensions.WCResourceManager;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOCookie;
 import com.webobjects.eocontrol.EOEditingContext;
@@ -40,7 +41,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/24 18:49:47 $
+ *  @version $Revision: 1.5 $, $Date: 2011/10/25 12:59:44 $
  */
 public class Theme
     extends _Theme

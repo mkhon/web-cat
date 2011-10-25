@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCComponent.java,v 1.2 2011/10/25 12:59:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -31,10 +31,10 @@ import org.webcat.core.TabDescriptor;
 import org.webcat.core.User;
 import org.webcat.core.WCComponent;
 import org.webcat.core.WCComponentWithErrorMessages;
-import org.webcat.core.WOEC;
 import org.webcat.core.WizardPage;
 import org.apache.log4j.Logger;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
+import org.webcat.woextensions.WCEC;
 
 // -------------------------------------------------------------------------
 /**
@@ -65,8 +65,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * </p>
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:55 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/10/25 12:59:44 $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -882,7 +882,7 @@ public class WCComponent
                 String managerKey  = Thread.currentThread().toString();
 
                 // set up nested ec for this task, if there is one
-                peerContextManager = (WOEC.PeerManager)wcSession()
+                peerContextManager = (WCEC.PeerManager)wcSession()
                     .transientState().valueForKey(managerKey);
                 if (log.isDebugEnabled())
                 {
@@ -898,7 +898,7 @@ public class WCComponent
 
 
     // ----------------------------------------------------------
-    private WOEC.PeerManager peerContextManager()
+    private WCEC.PeerManager peerContextManager()
     {
         if (peerContextManager == null)
         {
@@ -969,7 +969,7 @@ public class WCComponent
     //~ Instance/static variables .............................................
 
     private TabDescriptor     currentTab;
-    private WOEC.PeerManager  peerContextManager;
+    private WCEC.PeerManager  peerContextManager;
     private User              user;
     private boolean           alreadyGrabbed;
     private boolean           breakWorkflow;

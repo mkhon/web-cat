@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCContext.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCContext.java,v 1.1 2011/10/25 12:51:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -19,21 +19,35 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package org.webcat.core;
+package org.webcat.woextensions;
 
-import org.webcat.core.WCContext;
+import org.webcat.woextensions.WCContext;
 import com.webobjects.appserver.WOApplication;
 import com.webobjects.appserver.WORequest;
 import er.extensions.appserver.ERXWOContext54;
 
-public class WCContext extends ERXWOContext54
+//-------------------------------------------------------------------------
+/**
+ * Extends ERExtensions version of the context class with custom fixes
+ * for partial form submission (needed for AJAX support).
+ *
+ * @author  Anthony Allovato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.1 $, $Date: 2011/10/25 12:51:37 $
+ */
+public class WCContext
+    extends ERXWOContext54
 {
+    //~ Constructors ..........................................................
+
     // ----------------------------------------------------------
     public WCContext(WORequest request)
     {
         super(request);
     }
 
+
+    //~ Public Methods ........................................................
 
     // ----------------------------------------------------------
     /**

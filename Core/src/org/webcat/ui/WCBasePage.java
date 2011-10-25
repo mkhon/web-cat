@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCBasePage.java,v 1.5 2011/09/16 16:11:19 stedwar2 Exp $
+ |  $Id: WCBasePage.java,v 1.6 2011/10/25 12:59:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.core.MutableArray;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.Session;
 import org.webcat.core.Theme;
-import org.webcat.core.WCResourceManager;
+import org.webcat.woextensions.WCResourceManager;
 
 // ------------------------------------------------------------------------
 /**
@@ -82,7 +82,7 @@ import org.webcat.core.WCResourceManager;
  *
  * @author Tony Allevato
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/09/16 16:11:19 $
+ * @version $Revision: 1.6 $, $Date: 2011/10/25 12:59:03 $
  */
 public class WCBasePage
     extends WOComponent

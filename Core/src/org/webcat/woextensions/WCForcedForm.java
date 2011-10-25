@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WOForcedForm.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCForcedForm.java,v 1.1 2011/10/25 12:51:37 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -19,13 +19,13 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package org.webcat.core;
+package org.webcat.woextensions;
 
 import com.webobjects.foundation.*;
 import com.webobjects.appserver.*;
 import er.extensions.components._private.ERXWOForm;
 
-import org.webcat.core.WOForcedForm;
+import org.webcat.woextensions.WCForcedForm;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -35,35 +35,37 @@ import org.apache.log4j.Logger;
  *  to fail in some circumstances; use with extreme caution.
  *
  *  @author  stedwar2
- *  @version $Id: WOForcedForm.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.1 $, $Date: 2011/10/25 12:51:37 $
  */
-public class WOForcedForm
+public class WCForcedForm
     extends ERXWOForm
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public WOForcedForm( String name,
-                         NSDictionary associations,
-                         WOElement template )
+    public WCForcedForm(
+        String name,
+        NSDictionary<String, WOAssociation> associations,
+        WOElement template)
     {
-        super( name, associations, template );
+        super(name, associations, template);
     }
 
 
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void appendToResponse(WOResponse response, WOContext context)
     {
-        log.debug( "inForm = " + context.isInForm() );
-        log.debug( "elementName = " + elementName() );
-        context.setInForm( false );
-        super.appendToResponse( response, context );
+        log.debug("inForm = " + context.isInForm());
+        log.debug("elementName = " + elementName());
+        context.setInForm(false);
+        super.appendToResponse(response, context);
     }
 
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( WOForcedForm.class );
+    static Logger log = Logger.getLogger(WCForcedForm.class);
 }

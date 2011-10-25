@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectoryResource.java,v 1.2 2011/06/01 15:34:28 aallowat Exp $
+ |  $Id: DirectoryResource.java,v 1.3 2011/10/25 12:59:33 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -37,9 +37,9 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.webcat.core.Application;
 import org.webcat.core.FileUtilities;
 import org.webcat.core.User;
-import org.webcat.core.WCContext;
 import org.webcat.core.git.GitUtilities;
 import org.webcat.core.git.http.RepositoryRequestUtils;
+import org.webcat.woextensions.WCContext;
 import com.bradmcevoy.http.Auth;
 import com.bradmcevoy.http.CollectionResource;
 import com.bradmcevoy.http.CopyableResource;
@@ -68,8 +68,8 @@ import com.webobjects.appserver.WOResponse;
  * A DAV resources that represents a directory.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/06/01 15:34:28 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2011/10/25 12:59:33 $
  */
 public class DirectoryResource
     extends AbstractFSResource
