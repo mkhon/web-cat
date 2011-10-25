@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTable.java,v 1.5 2010/11/03 19:37:36 aallowat Exp $
+ |  $Id: WCTable.java,v 1.6 2011/10/25 12:58:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -27,7 +27,6 @@ import org.webcat.ui.generators.JavascriptGenerator;
 import org.webcat.ui.util.ComponentIDGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.appserver.WODisplayGroup;
 import com.webobjects.appserver.WOMessage;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
@@ -75,8 +74,8 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  * </dl>
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2010/11/03 19:37:36 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2011/10/25 12:58:38 $
  */
 public class WCTable extends WCComponent
 {
@@ -288,7 +287,7 @@ public class WCTable extends WCComponent
 
         if (orderings != null && orderings.count() > 0)
         {
-            NSSelector selector = orderings.objectAtIndex(0).selector();
+            NSSelector<?> selector = orderings.objectAtIndex(0).selector();
 
             return ERXS.INS_ASC.equals(selector) || ERXS.ASC.equals(selector);
         }

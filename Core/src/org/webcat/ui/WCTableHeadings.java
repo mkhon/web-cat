@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTableHeadings.java,v 1.3 2010/10/29 20:36:15 aallowat Exp $
+ |  $Id: WCTableHeadings.java,v 1.4 2011/10/25 12:58:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -22,17 +22,12 @@
 package org.webcat.ui;
 
 import org.webcat.ui._base.WCTableSubcomponent;
-import org.webcat.ui.generators.JavascriptGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOElement;
 import com.webobjects.appserver.WOResponse;
-import com.webobjects.appserver._private.WOComponentReference;
-import com.webobjects.appserver._private.WODynamicGroup;
-import com.webobjects.appserver._private.WOHTMLBareString;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
 import er.extensions.appserver.ERXWOContext;
 
 //-------------------------------------------------------------------------
@@ -41,8 +36,8 @@ import er.extensions.appserver.ERXWOContext;
  * also provides the paging controls for the table.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2010/10/29 20:36:15 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2011/10/25 12:58:38 $
  */
 public class WCTableHeadings extends WCTableSubcomponent
 {
@@ -75,6 +70,10 @@ public class WCTableHeadings extends WCTableSubcomponent
         cachedNumberOfColumns = null;
 
         super.appendToResponse(response, context);
+
+        // just in case toolbar is hidden, force number of columns to
+        // be evaluated
+        numberOfColumns();
     }
 
 
@@ -162,6 +161,7 @@ public class WCTableHeadings extends WCTableSubcomponent
     // ----------------------------------------------------------
     public boolean areAllRowsSelected()
     {
+        @SuppressWarnings("unchecked")
         NSArray<Integer> selIndices = displayGroup().selectionIndexes();
 
         for (int i = displayGroup().indexOfFirstDisplayedObject();
