@@ -19,7 +19,7 @@ AttributeRepetition: WORepetition {
 	list = d2wContext.displayPropertyKeys;
 }
 
-AttributeSorter: org.webcat.core.WCSortOrder {
+AttributeSorter: org.webcat.woextensions.WCSortOrder {
 	displayGroup = displayGroup;
 	displayKey = d2wContext.displayNameForProperty;
 	key = d2wContext.propertyKey;
