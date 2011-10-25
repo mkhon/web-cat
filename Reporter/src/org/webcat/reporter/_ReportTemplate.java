@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -110,7 +111,7 @@ public abstract class _ReportTemplate
      * @return The object, or null if no such id exists
      */
     public static ReportTemplate forId(
-        EOEditingContext ec, int id )
+        EOEditingContext ec, int id)
     {
         ReportTemplate obj = null;
         if (id > 0)
@@ -135,9 +136,9 @@ public abstract class _ReportTemplate
      * @return The object, or null if no such id exists
      */
     public static ReportTemplate forId(
-        EOEditingContext ec, String id )
+        EOEditingContext ec, String id)
     {
-        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
+        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
     }
 
 
@@ -206,7 +207,8 @@ public abstract class _ReportTemplate
     public static final String TEMPLATES_FOR_USER_FSPEC = "templatesForUser";
     public static final String ENTITY_NAME = "ReportTemplate";
 
-    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
+    public transient final EOBasedKeyGenerator generateKey =
+        new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -234,7 +236,7 @@ public abstract class _ReportTemplate
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
+            editingContext().committedSnapshotForObject(this));
     }
 
 
@@ -248,7 +250,7 @@ public abstract class _ReportTemplate
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
+                editingContext() , this).objectForKey("id");
         }
         catch (Exception e)
         {
@@ -506,10 +508,10 @@ public abstract class _ReportTemplate
     public org.webcat.core.MutableArray parameters()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "parameters" );
-        if ( parametersRawCache != dbValue )
+            (NSData)storedValueForKey("parameters");
+        if (parametersRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( parametersRawCache ) )
+            if (dbValue != null && dbValue.equals( parametersRawCache))
             {
                 // They are still equal, so just update the raw cache
                 parametersRawCache = dbValue;
@@ -1479,8 +1481,9 @@ public abstract class _ReportTemplate
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME, qualifier, sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -1571,7 +1574,7 @@ public abstract class _ReportTemplate
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1633,7 +1636,7 @@ public abstract class _ReportTemplate
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -1657,10 +1660,11 @@ public abstract class _ReportTemplate
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME,
-            EOQualifier.qualifierToMatchAllValues(keysAndValues),
-            sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues),
+                sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<ReportTemplate> objects =
@@ -1713,7 +1717,7 @@ public abstract class _ReportTemplate
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1813,7 +1817,7 @@ public abstract class _ReportTemplate
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -1848,18 +1852,18 @@ public abstract class _ReportTemplate
      * @return an NSArray of the entities retrieved
      */
     public static NSArray<ReportTemplate> allTemplatesOrderedByName(
-            EOEditingContext context
-        )
+            EOEditingContext context)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "allTemplatesOrderedByName", "ReportTemplate" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("allTemplatesOrderedByName", "ReportTemplate");
 
         NSArray<ReportTemplate> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "allTemplatesOrderedByName(ec"
-                + "): " + objects );
+            log.debug("allTemplatesOrderedByName(ec"
+                + "): " + objects);
         }
         return objects;
     }
@@ -1874,18 +1878,18 @@ public abstract class _ReportTemplate
      * @return an NSArray of the entities retrieved
      */
     public static NSArray<ReportTemplate> publishedTemplates(
-            EOEditingContext context
-        )
+            EOEditingContext context)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "publishedTemplates", "ReportTemplate" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("publishedTemplates", "ReportTemplate");
 
         NSArray<ReportTemplate> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "publishedTemplates(ec"
-                + "): " + objects );
+            log.debug("publishedTemplates(ec"
+                + "): " + objects);
         }
         return objects;
     }
@@ -1902,29 +1906,29 @@ public abstract class _ReportTemplate
      */
     public static NSArray<ReportTemplate> templatesForUser(
             EOEditingContext context,
-            org.webcat.core.User userBinding
-        )
+            org.webcat.core.User userBinding)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "templatesForUser", "ReportTemplate" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("templatesForUser", "ReportTemplate");
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( userBinding != null )
+        if (userBinding != null)
         {
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
+            bindings.setObjectForKey(userBinding,
+                                     "user");
         }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
 
         NSArray<ReportTemplate> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "templatesForUser(ec"
+            log.debug("templatesForUser(ec"
                 + ", " + userBinding
-                + "): " + objects );
+                + "): " + objects);
         }
         return objects;
     }
@@ -1948,5 +1952,5 @@ public abstract class _ReportTemplate
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( ReportTemplate.class );
+    static Logger log = Logger.getLogger(ReportTemplate.class);
 }

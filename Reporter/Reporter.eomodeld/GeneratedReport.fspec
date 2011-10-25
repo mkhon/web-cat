@@ -1,60 +1,60 @@
 {
     completedReportsForUser = {
-        class = EOFetchSpecification; 
-        entityName = GeneratedReport; 
-        fetchLimit = 0; 
-        isDeep = YES; 
+        class = WCFetchSpecification;
+        entityName = GeneratedReport;
+        fetchLimit = 0;
+        isDeep = YES;
         qualifier = {
-            class = EOAndQualifier; 
+            class = EOAndQualifier;
             qualifiers = (
                 {
-                    class = EOKeyValueQualifier; 
-                    key = user; 
-                    selectorName = "isEqualTo:"; 
-                    value = {"_key" = user; class = EOQualifierVariable; }; 
-                }, 
+                    class = EOKeyValueQualifier;
+                    key = user;
+                    selectorName = "isEqualTo:";
+                    value = {"_key" = user; class = EOQualifierVariable; };
+                },
                 {
-                    class = EOKeyValueQualifier; 
-                    key = isComplete; 
-                    selectorName = "isEqualTo:"; 
-                    value = {class = NSNumber; value = 1; }; 
+                    class = EOKeyValueQualifier;
+                    key = isComplete;
+                    selectorName = "isEqualTo:";
+                    value = {class = NSNumber; value = 1; };
                 }
-            ); 
-        }; 
-    }; 
+            );
+        };
+    };
     incompleteReportsForUser = {
-        class = EOFetchSpecification; 
-        entityName = GeneratedReport; 
-        fetchLimit = 0; 
-        isDeep = YES; 
+        class = WCFetchSpecification;
+        entityName = GeneratedReport;
+        fetchLimit = 0;
+        isDeep = YES;
         qualifier = {
-            class = EOAndQualifier; 
+            class = EOAndQualifier;
             qualifiers = (
                 {
-                    class = EOKeyValueQualifier; 
-                    key = user; 
-                    selectorName = "isEqualTo:"; 
-                    value = {"_key" = user; class = EOQualifierVariable; }; 
-                }, 
+                    class = EOKeyValueQualifier;
+                    key = user;
+                    selectorName = "isEqualTo:";
+                    value = {"_key" = user; class = EOQualifierVariable; };
+                },
                 {
-                    class = EOKeyValueQualifier; 
-                    key = isComplete; 
-                    selectorName = "isEqualTo:"; 
-                    value = {class = NSNumber; value = 0; }; 
+                    class = EOKeyValueQualifier;
+                    key = isComplete;
+                    selectorName = "isEqualTo:";
+                    value = {class = NSNumber; value = 0; };
                 }
-            ); 
-        }; 
-    }; 
+            );
+        };
+    };
     user = {
-        class = EOFetchSpecification; 
-        entityName = GeneratedReport; 
-        fetchLimit = 0; 
-        isDeep = YES; 
+        class = WCFetchSpecification;
+        entityName = GeneratedReport;
+        fetchLimit = 0;
+        isDeep = YES;
         qualifier = {
-            class = EOKeyValueQualifier; 
-            key = user; 
-            selectorName = "isEqualTo:"; 
-            value = {"_key" = user; class = EOQualifierVariable; }; 
-        }; 
-    }; 
+            class = EOKeyValueQualifier;
+            key = user;
+            selectorName = "isEqualTo:";
+            value = {"_key" = user; class = EOQualifierVariable; };
+        };
+    };
 }
