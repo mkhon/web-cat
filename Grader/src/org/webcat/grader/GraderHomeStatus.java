@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderHomeStatus.java,v 1.10 2011/10/06 01:29:03 stedwar2 Exp $
+ |  $Id: GraderHomeStatus.java,v 1.11 2011/10/25 15:30:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.core.Semester;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2011/10/06 01:29:03 $
+ *  @version $Revision: 1.11 $, $Date: 2011/10/25 15:30:34 $
  */
 public class GraderHomeStatus
     extends GraderComponent
@@ -399,6 +399,20 @@ public class GraderHomeStatus
                  || assignmentOffering.courseOffering().instructors()
                      .containsObject( user() ) )
                && assignmentOffering.suspendedSubmissionsInQueue().count() > 0;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Determine if the current assignment is available to students.
+     *
+     * @return true if the "available from" time for the offering is after
+     * now.
+     */
+    public boolean assignmentOfferingIsUnavailable()
+    {
+        return assignmentOffering.availableFrom() != null
+            && assignmentOffering.availableFrom().after(currentTime);
     }
 
 
