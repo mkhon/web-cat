@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -97,7 +98,8 @@ public abstract class _JobBase
     // Fetch specifications ---
     public static final String NEXT_JOB_FSPEC = "nextJob";
 
-    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
+    public transient final EOBasedKeyGenerator generateKey =
+        new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -125,7 +127,7 @@ public abstract class _JobBase
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
+            editingContext().committedSnapshotForObject(this));
     }
 
 
@@ -139,7 +141,7 @@ public abstract class _JobBase
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
+                editingContext() , this).objectForKey("id");
         }
         catch (Exception e)
         {
@@ -702,5 +704,5 @@ public abstract class _JobBase
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( JobBase.class );
+    static Logger log = Logger.getLogger(JobBase.class);
 }

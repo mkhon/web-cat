@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.5 2011/09/22 13:44:01 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.6 2011/10/26 15:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.webcat.core.Application;
+import org.webcat.woextensions.WCFetchSpecification;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
@@ -45,7 +46,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/09/22 13:44:01 $
+ * @version $Revision: 1.6 $, $Date: 2011/10/26 15:24:30 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -171,16 +172,9 @@ public abstract class WorkerThread<Job extends JobBase>
 
                 if (!jobFailed)
                 {
-                    long jobDuration =
-                        System.currentTimeMillis() - jobStartTime;
-
-                    // Compile the wait statistics.
-
-                    long jobsCountedWithWaits =
-                        queueDescriptor().jobsCountedWithWaits() + 1;
-                    long totalWait =
-                        queueDescriptor().totalWaitForJobs() + jobDuration;
-
+                    long now = System.currentTimeMillis();
+                    long jobDuration = now - jobStartTime;
+                    long jobWait = now - currentJob.enqueueTime().getTime();
                     boolean wasCancelled = currentJob.isCancelled();
                     currentJob.delete();
 
@@ -190,27 +184,10 @@ public abstract class WorkerThread<Job extends JobBase>
                         currentJob = null;
 
                         // Update the wait statistics.
-
-                        boolean statsUpdated = false;
-
-                        while (!wasCancelled && !statsUpdated)
+                        if (!wasCancelled)
                         {
-                            try
-                            {
-                                queueDescriptor().setJobsCountedWithWaits(
-                                        jobsCountedWithWaits);
-                                queueDescriptor()
-                                    .setMostRecentJobWait(jobDuration);
-                                queueDescriptor()
-                                    .setTotalWaitForJobs(totalWait);
-
-                                queueDescriptor().saveChanges();
-                                statsUpdated = true;
-                            }
-                            catch (Exception e)
-                            {
-                                statsUpdated = false;
-                            }
+                            queueDescriptor().addCompletedJobStats(
+                                jobDuration, jobWait);
                         }
                     }
                     catch (Exception e)
@@ -500,13 +477,13 @@ public abstract class WorkerThread<Job extends JobBase>
 
         String entityName = queueDescriptor().jobEntityName();
 
-        EOFetchSpecification fetchSpec = new EOFetchSpecification(
-                entityName,
-                ERXQ.and(
-                        ERXQ.isNull(JobBase.WORKER_KEY),
-                        ERXQ.isFalse(JobBase.IS_CANCELLED_KEY),
-                        ERXQ.isTrue(JobBase.IS_READY_KEY)),
-                ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
+        EOFetchSpecification fetchSpec = new WCFetchSpecification<Job>(
+            entityName,
+            ERXQ.and(
+                ERXQ.isNull(JobBase.WORKER_KEY),
+                ERXQ.isFalse(JobBase.IS_CANCELLED_KEY),
+                ERXQ.isTrue(JobBase.IS_READY_KEY)),
+            ERXS.sortOrders(JobBase.ENQUEUE_TIME_KEY, ERXS.ASC));
         fetchSpec.setFetchLimit(1);
 
         NSArray<Job> jobs = context.objectsWithFetchSpecification(fetchSpec);

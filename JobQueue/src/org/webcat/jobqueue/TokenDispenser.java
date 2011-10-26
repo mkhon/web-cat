@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TokenDispenser.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: TokenDispenser.java,v 1.3 2011/10/26 15:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/10/26 15:24:30 $
  */
 public class TokenDispenser
 {
@@ -44,10 +44,9 @@ public class TokenDispenser
     /**
      * Default constructor
      */
-    public TokenDispenser(long currentTotal)
+    public TokenDispenser(int initialCount)
     {
-        tokens = 0;
-        totalTokenCount = currentTotal;
+        tokens = initialCount;
     }
 
 
@@ -80,10 +79,9 @@ public class TokenDispenser
     /**
      * Add a token to the dispenser.
      */
-    private synchronized void depositToken()
+    public synchronized void depositToken()
     {
         tokens++;
-        totalTokenCount++;
         notify();
     }
 
@@ -94,7 +92,7 @@ public class TokenDispenser
      *
      * @param count The number of tokens to add.
      */
-    private synchronized void depositTokens(long count)
+    public synchronized void depositTokens(long count)
     {
         while (count > 0)
         {
@@ -106,23 +104,23 @@ public class TokenDispenser
 
     // ----------------------------------------------------------
     /**
-     * Add multiple tokens to the dispenser.
+     * Add multiple tokens to the dispenser to ensure at least N are
+     * available.
      *
-     * @param count The number of tokens to add.
+     * @param N The minimum number of tokens to guarantee are present.
+     *          If fewer are in the dispenser, the difference will be added.
      */
-    public synchronized void depositTokensUpToTotalCount(long count)
+    public synchronized void ensureAtLeastNTokens(int n)
     {
-        long amount = count - totalTokenCount;
-        log.debug("depositing " + amount + " tokens in " + this);
+        int amount = n - tokens;
+        log.debug("depositing " + amount + " tokens in " + this
+            + " (already holding " + tokens + " tokens)");
         depositTokens(amount);
-        log.debug("new total = " + totalTokenCount + " in " + this +
-                " (" + tokens + " tokens remain)");
     }
 
 
     //~ Instance/static variables .............................................
 
     int tokens;
-    long totalTokenCount;
     static Logger log = Logger.getLogger( TokenDispenser.class );
 }

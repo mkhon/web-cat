@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobQueueDatabaseUpdates.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: JobQueueDatabaseUpdates.java,v 1.3 2011/10/26 15:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/10/26 15:24:30 $
  */
 public class JobQueueDatabaseUpdates
     extends UpdateSet
@@ -78,6 +78,30 @@ public class JobQueueDatabaseUpdates
     {
         database().executeSQL(
             "alter table TJobBase add suspensionReason MEDIUMTEXT");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds the "suspensionReason" column to the TJobBase table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement2() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TQueueDescriptor change defaultJobWait "
+            + "defaultJobProcessingTime BIGINT");
+        database().executeSQL(
+            "alter table TQueueDescriptor change totalWaitForJobs "
+            + "cumulativeProcessingTime BIGINT");
+        database().executeSQL(
+            "alter table TQueueDescriptor change jobsCountedWithWaits "
+            + "jobsProcessed BIGINT");
+        database().executeSQL(
+            "alter table TQueueDescriptor change jobCount "
+            + "movingAverageProcessingTime BIGINT");
+        database().executeSQL(
+            "update TQueueDescriptor set movingAverageProcessingTime = NULL");
     }
 
 

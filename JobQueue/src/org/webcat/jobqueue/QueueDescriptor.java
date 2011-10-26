@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.4 2011/09/30 13:29:35 aallowat Exp $
+ |  $Id: QueueDescriptor.java,v 1.5 2011/10/26 15:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -25,10 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.webcat.core.Application;
+import org.webcat.woextensions.WCFetchSpecification;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXDefaultEditingContextDelegate;
+import er.extensions.eof.ERXQ;
+import er.extensions.eof.ERXS;
 
 // -------------------------------------------------------------------------
 /**
@@ -41,12 +44,24 @@ import er.extensions.eof.ERXDefaultEditingContextDelegate;
  * database.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2011/09/30 13:29:35 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2011/10/26 15:24:30 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
 {
+    /**
+     * Determines the rate at which past data points in the (exponential)
+     * moving average for job processing times "decay".  A value of 20
+     * means the "half life" of the most recent job processing time is
+     * approximately 20 jobs.  See the "S_t,alternate" and "EMA_today"
+     * formulae under exponential moving averages on
+     * http://en.wikipedia.org/wiki/Rolling_average.  The decay factor
+     * is 1/alpha.
+     */
+    public static final double MOVING_AVERAGE_DECAY_FACTOR = 20.0;
+
+
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
@@ -88,8 +103,21 @@ public class QueueDescriptor
         {
             if (dispensers.get(result.id()) == null)
             {
+                int initialTokenCount = 0;
+                EOEditingContext ec = Application.newPeerEditingContext();
+                try
+                {
+                    ec.lock();
+                    initialTokenCount =
+                        result.localInstance(ec).pendingJobCount(ec);
+                }
+                finally
+                {
+                    ec.unlock();
+                }
+                Application.releasePeerEditingContext(ec);
                 dispensers.put(result.id(),
-                    new TokenDispenser(result.jobCount()));
+                    new TokenDispenser(initialTokenCount));
             }
         }
         return result;
@@ -137,6 +165,20 @@ public class QueueDescriptor
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
+    public int pendingJobCount(EOEditingContext ec)
+    {
+        EOFetchSpecification fetchSpec = new WCFetchSpecification<JobBase>(
+            jobEntityName(),
+            ERXQ.and(
+                ERXQ.isFalse(JobBase.IS_CANCELLED_KEY),
+                ERXQ.isTrue(JobBase.IS_READY_KEY)),
+            null);
+        NSArray<?> jobs = ec.objectsWithFetchSpecification(fetchSpec);
+        return jobs.count();
+    }
+
+
+    // ----------------------------------------------------------
     /* package */ static void waitForNextJob(QueueDescriptor descriptor)
     {
         Number id = descriptor.id();
@@ -161,7 +203,20 @@ public class QueueDescriptor
             dispenser = dispensers.get(id);
             if (dispenser == null)
             {
-                dispenser = new TokenDispenser(descriptor.jobCount());
+                int initialTokenCount = 0;
+                EOEditingContext ec = Application.newPeerEditingContext();
+                try
+                {
+                    ec.lock();
+                    initialTokenCount =
+                        descriptor.localInstance(ec).pendingJobCount(ec);
+                }
+                finally
+                {
+                    ec.unlock();
+                }
+                Application.releasePeerEditingContext(ec);
+                dispenser = new TokenDispenser(initialTokenCount);
                 dispensers.put(id, dispenser);
             }
         }
@@ -183,8 +238,8 @@ public class QueueDescriptor
 
             if (descriptor == null)
             {
-                log.error("waitForNextJob(id = " + descriptorId + "): no EO with "
-                    + "specified ID could be retrieved");
+                log.error("waitForNextJob(id = " + descriptorId
+                    + "): no EO with specified ID could be retrieved");
             }
         }
         finally
@@ -203,7 +258,16 @@ public class QueueDescriptor
         assert id != null;
         if (descriptor.editingContext() != queueContext())
         {
-            descriptor.localInstance(queueContext());
+            EOEditingContext qc = queueContext();
+            try
+            {
+                qc.lock();
+                descriptor = descriptor.localInstance(qc);
+            }
+            finally
+            {
+                qc.unlock();
+            }
         }
         TokenDispenser dispenser = null;
         synchronized (dispensers)
@@ -211,11 +275,24 @@ public class QueueDescriptor
             dispenser = dispensers.get(id);
             if (dispenser == null)
             {
-                dispenser = new TokenDispenser(descriptor.jobCount());
+                int initialTokenCount = 0;
+                EOEditingContext ec = Application.newPeerEditingContext();
+                try
+                {
+                    ec.lock();
+                    initialTokenCount =
+                        descriptor.localInstance(ec).pendingJobCount(ec);
+                }
+                finally
+                {
+                    ec.unlock();
+                }
+                Application.releasePeerEditingContext(ec);
+                dispenser = new TokenDispenser(initialTokenCount);
                 dispensers.put(id, dispenser);
             }
+            dispenser.depositToken();
         }
-        dispenser.depositTokensUpToTotalCount(descriptor.jobCount());
     }
 
 
@@ -249,17 +326,31 @@ public class QueueDescriptor
         // ----------------------------------------------------------
         public void editingContextDidMergeChanges(EOEditingContext context)
         {
+            if (jobContext == null)
+            {
+                jobContext = Application.newPeerEditingContext();
+            }
             synchronized (dispensers)
             {
-                for (Number id : dispensers.keySet())
+                try
                 {
-                    QueueDescriptor descriptor =
-                        forId(queueContext(), id.intValue());
-                    dispensers.get(id).depositTokensUpToTotalCount(
-                        descriptor.jobCount());
+                    jobContext.lock();
+                    for (Number id : dispensers.keySet())
+                    {
+                        QueueDescriptor descriptor =
+                            forId(jobContext, id.intValue());
+                        dispensers.get(id).ensureAtLeastNTokens(
+                            descriptor.pendingJobCount(jobContext));
+                    }
+                }
+                finally
+                {
+                    jobContext.unlock();
                 }
             }
         }
+
+        private EOEditingContext jobContext;
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedQueueDescriptor.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: ManagedQueueDescriptor.java,v 1.3 2011/10/26 15:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -25,6 +25,7 @@ import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
+import er.extensions.eof.ERXKey;
 
 import java.util.Enumeration;
 import org.apache.log4j.Logger;
@@ -36,7 +37,7 @@ import org.webcat.core.IndependentEOManager;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/10/26 15:24:30 $
  */
 public class ManagedQueueDescriptor
     extends IndependentEOManager
@@ -58,13 +59,13 @@ public class ManagedQueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>defaultJobWait</code> value.
+     * Retrieve this object's <code>defaultJobProcessingTime</code> value.
      * @return the value of the attribute
      */
-    public long defaultJobWait()
+    public long defaultJobProcessingTime()
     {
-        Number result =
-            (Number)valueForKey(QueueDescriptor.DEFAULT_JOB_WAIT_KEY);
+        Number result = (Number)valueForKey(
+            QueueDescriptor.DEFAULT_JOB_PROCESSING_TIME_KEY);
         return (result == null)
             ? 0L
             : result.longValue();
@@ -73,42 +74,16 @@ public class ManagedQueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>defaultJobWait</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setDefaultJobWait(long value)
-    {
-        takeValueForKey(new Long(value), QueueDescriptor.DEFAULT_JOB_WAIT_KEY);
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>jobCount</code> value.
+     * Retrieve this object's <code>jobsProcessed</code> value.
      * @return the value of the attribute
      */
-    public long jobCount()
+    public long jobsProcessed()
     {
         Number result =
-            (Number)valueForKey(QueueDescriptor.JOB_COUNT_KEY);
+            (Number)valueForKey(QueueDescriptor.JOBS_PROCESSED_KEY);
         return (result == null)
             ? 0L
             : result.longValue();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>jobCount</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setJobCount(long value)
-    {
-        takeValueForKey(new Long(value), QueueDescriptor.JOB_COUNT_KEY);
     }
 
 
@@ -120,48 +95,6 @@ public class ManagedQueueDescriptor
     public String jobEntityName()
     {
         return (String)valueForKey(QueueDescriptor.JOB_ENTITY_NAME_KEY);
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>jobEntityName</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setJobEntityName(String value)
-    {
-        takeValueForKey(value, QueueDescriptor.JOB_ENTITY_NAME_KEY);
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>jobsCountedWithWaits</code> value.
-     * @return the value of the attribute
-     */
-    public long jobsCountedWithWaits()
-    {
-        Number result =
-            (Number)valueForKey(QueueDescriptor.JOBS_COUNTED_WITH_WAITS_KEY);
-        return (result == null)
-            ? 0L
-            : result.longValue();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>jobsCountedWithWaits</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setJobsCountedWithWaits(long value)
-    {
-        takeValueForKey(
-            new Long(value), QueueDescriptor.JOBS_COUNTED_WITH_WAITS_KEY);
     }
 
 
@@ -182,20 +115,6 @@ public class ManagedQueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>mostRecentJobWait</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setMostRecentJobWait(long value)
-    {
-        takeValueForKey(
-            new Long(value), QueueDescriptor.MOST_RECENT_JOB_WAIT_KEY);
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Retrieve this object's <code>newestEntryId</code> value.
      * @return the value of the attribute
      */
@@ -206,20 +125,6 @@ public class ManagedQueueDescriptor
         return (result == null)
             ? 0L
             : result.longValue();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>newestEntryId</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setNewestEntryId(long value)
-    {
-        takeValueForKey(
-            new Long(value), QueueDescriptor.NEWEST_ENTRY_ID_KEY);
     }
 
 
@@ -240,28 +145,13 @@ public class ManagedQueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>requiresExclusiveHostAccess</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setRequiresExclusiveHostAccess(boolean value)
-    {
-        takeValueForKey(
-            ERXConstant.integerForInt(value ? 1 : 0),
-            QueueDescriptor.REQUIRES_EXCLUSIVE_HOST_ACCESS_KEY);
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>totalWaitForJobs</code> value.
+     * Retrieve this object's <code>cumulativeProcessingTime</code> value.
      * @return the value of the attribute
      */
-    public long totalWaitForJobs()
+    public long cumulativeProcessingTime()
     {
         Number result =
-            (Number)valueForKey(QueueDescriptor.TOTAL_WAIT_FOR_JOBS_KEY);
+            (Number)valueForKey(QueueDescriptor.CUMULATIVE_PROCESSING_TIME_KEY);
         return (result == null)
             ? 0L
             : result.longValue();
@@ -270,15 +160,16 @@ public class ManagedQueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>totalWaitForJobs</code>
-     * property.
-     *
-     * @param value The new value for this property
+     * Retrieve this object's <code>movingAverageProcessingTime</code> value.
+     * @return the value of the attribute
      */
-    public void setTotalWaitForJobs(long value)
+    public long movingAverageProcessingTime()
     {
-        takeValueForKey(
-            new Long(value), QueueDescriptor.TOTAL_WAIT_FOR_JOBS_KEY);
+        Number result = (Number)valueForKey(
+            QueueDescriptor.MOVING_AVERAGE_PROCESSING_TIME_KEY);
+        return (result == null)
+            ? 0L
+            : result.longValue();
     }
 
 
@@ -319,6 +210,90 @@ public class ManagedQueueDescriptor
     {
         removeObjectFromBothSidesOfRelationshipWithKey(
             value, QueueDescriptor.WORKERS_KEY);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Increment all the necessary accumulation stats to indicate that
+     * one more job has been processed.
+     *
+     * @param duration The time (in ms) taken to complete the job
+     */
+    public void addCompletedJobStats(long duration, long waitTime)
+    {
+        saveChanges();
+        boolean saved = false;
+        while (!saved)
+        {
+            takeValueForKey(
+                waitTime, QueueDescriptor.MOST_RECENT_JOB_WAIT_KEY);
+            takeValueForKey(
+                1L + jobsProcessed(), QueueDescriptor.JOBS_PROCESSED_KEY);
+            takeValueForKey(cumulativeProcessingTime() + duration,
+                QueueDescriptor.CUMULATIVE_PROCESSING_TIME_KEY);
+
+            // Calculate the exponential moving average
+
+            // First, get the old value:
+            long ema = movingAverageProcessingTime();
+            if (ema == 0L)
+            {
+                // If we have no past data, first try to use the actual
+                // long-term average as the initial EMA:
+                ema = cumulativeProcessingTime();
+                if (ema != 0L && jobsProcessed() > 0L)
+                {
+                    ema /= jobsProcessed();
+                }
+                else
+                {
+                    // If there is no data for a long-term average, just
+                    // use the default value.
+                    ema = defaultJobProcessingTime();
+                }
+            }
+
+            if (ema == 0L)
+            {
+                // No past history at all, so just use first value we get
+                ema = duration;
+            }
+            else
+            {
+                // We're using the formula for an exponential moving average
+                // (EMA) from http://en.wikipedia.org/wiki/Rolling_average,
+                // using the "S_t,alternate" and "EMA_today" formulae
+                // in the section on Exponential Moving Average.
+                //
+                // EMA_new = EMA_old + alpha * (Duration - EMA_old)
+                //
+                // Here, alpha is a fraction between 0-1 that represents the
+                // rate of decay in the exponential moving average.  The decay
+                // factor we are using is the MOVING_AVERAGE_DECAY_FACTOR
+                // in the QueueDescriptor class.  This decay factor
+                // corresponds to 1/alpha, and roughly determines the "half
+                // life" of data samples in the average.  We do the math in
+                // floating point to ensure we get the right effects for small
+                // durations (truncation wouldn't  significantly affect
+                // results for larger numbers).
+
+                ema = (long)(ema + ((double)duration - ema)
+                    / QueueDescriptor.MOVING_AVERAGE_DECAY_FACTOR);
+            }
+
+            takeValueForKey(
+                ema, QueueDescriptor.MOVING_AVERAGE_PROCESSING_TIME_KEY);
+
+            if (tryToSaveChanges() == null)
+            {
+                saved = true;
+            }
+            else
+            {
+                refresh();
+            }
+        }
     }
 
 

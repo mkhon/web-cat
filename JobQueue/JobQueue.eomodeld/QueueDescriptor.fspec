@@ -1,8 +1,7 @@
-
 {
     descriptorsForJobEntityName =
     {
-        class = EOFetchSpecification;
+        class = WCFetchSpecification;
         entityName = QueueDescriptor;
         qualifier =
         {

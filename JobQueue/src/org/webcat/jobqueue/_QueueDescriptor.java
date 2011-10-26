@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -109,7 +110,7 @@ public abstract class _QueueDescriptor
      * @return The object, or null if no such id exists
      */
     public static QueueDescriptor forId(
-        EOEditingContext ec, int id )
+        EOEditingContext ec, int id)
     {
         QueueDescriptor obj = null;
         if (id > 0)
@@ -134,39 +135,39 @@ public abstract class _QueueDescriptor
      * @return The object, or null if no such id exists
      */
     public static QueueDescriptor forId(
-        EOEditingContext ec, String id )
+        EOEditingContext ec, String id)
     {
-        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
+        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
     }
 
 
     //~ Constants (for key names) .............................................
 
     // Attributes ---
-    public static final String DEFAULT_JOB_WAIT_KEY = "defaultJobWait";
-    public static final ERXKey<Long> defaultJobWait =
-        new ERXKey<Long>(DEFAULT_JOB_WAIT_KEY);
-    public static final String JOB_COUNT_KEY = "jobCount";
-    public static final ERXKey<Long> jobCount =
-        new ERXKey<Long>(JOB_COUNT_KEY);
+    public static final String CUMULATIVE_PROCESSING_TIME_KEY = "cumulativeProcessingTime";
+    public static final ERXKey<Long> cumulativeProcessingTime =
+        new ERXKey<Long>(CUMULATIVE_PROCESSING_TIME_KEY);
+    public static final String DEFAULT_JOB_PROCESSING_TIME_KEY = "defaultJobProcessingTime";
+    public static final ERXKey<Long> defaultJobProcessingTime =
+        new ERXKey<Long>(DEFAULT_JOB_PROCESSING_TIME_KEY);
     public static final String JOB_ENTITY_NAME_KEY = "jobEntityName";
     public static final ERXKey<String> jobEntityName =
         new ERXKey<String>(JOB_ENTITY_NAME_KEY);
-    public static final String JOBS_COUNTED_WITH_WAITS_KEY = "jobsCountedWithWaits";
-    public static final ERXKey<Long> jobsCountedWithWaits =
-        new ERXKey<Long>(JOBS_COUNTED_WITH_WAITS_KEY);
+    public static final String JOBS_PROCESSED_KEY = "jobsProcessed";
+    public static final ERXKey<Long> jobsProcessed =
+        new ERXKey<Long>(JOBS_PROCESSED_KEY);
     public static final String MOST_RECENT_JOB_WAIT_KEY = "mostRecentJobWait";
     public static final ERXKey<Long> mostRecentJobWait =
         new ERXKey<Long>(MOST_RECENT_JOB_WAIT_KEY);
+    public static final String MOVING_AVERAGE_PROCESSING_TIME_KEY = "movingAverageProcessingTime";
+    public static final ERXKey<Long> movingAverageProcessingTime =
+        new ERXKey<Long>(MOVING_AVERAGE_PROCESSING_TIME_KEY);
     public static final String NEWEST_ENTRY_ID_KEY = "newestEntryId";
     public static final ERXKey<Long> newestEntryId =
         new ERXKey<Long>(NEWEST_ENTRY_ID_KEY);
     public static final String REQUIRES_EXCLUSIVE_HOST_ACCESS_KEY = "requiresExclusiveHostAccess";
     public static final ERXKey<Integer> requiresExclusiveHostAccess =
         new ERXKey<Integer>(REQUIRES_EXCLUSIVE_HOST_ACCESS_KEY);
-    public static final String TOTAL_WAIT_FOR_JOBS_KEY = "totalWaitForJobs";
-    public static final ERXKey<Long> totalWaitForJobs =
-        new ERXKey<Long>(TOTAL_WAIT_FOR_JOBS_KEY);
     // To-one relationships ---
     // To-many relationships ---
     public static final String WORKERS_KEY = "workers";
@@ -176,7 +177,8 @@ public abstract class _QueueDescriptor
     public static final String DESCRIPTORS_FOR_JOB_ENTITY_NAME_FSPEC = "descriptorsForJobEntityName";
     public static final String ENTITY_NAME = "QueueDescriptor";
 
-    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
+    public transient final EOBasedKeyGenerator generateKey =
+        new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -204,7 +206,7 @@ public abstract class _QueueDescriptor
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
+            editingContext().committedSnapshotForObject(this));
     }
 
 
@@ -218,7 +220,7 @@ public abstract class _QueueDescriptor
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
+                editingContext() , this).objectForKey("id");
         }
         catch (Exception e)
         {
@@ -228,13 +230,13 @@ public abstract class _QueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>defaultJobWait</code> value.
+     * Retrieve this object's <code>cumulativeProcessingTime</code> value.
      * @return the value of the attribute
      */
-    public long defaultJobWait()
+    public long cumulativeProcessingTime()
     {
         Long returnValue =
-            (Long)storedValueForKey( "defaultJobWait" );
+            (Long)storedValueForKey( "cumulativeProcessingTime" );
         return ( returnValue == null )
             ? 0L
             : returnValue.longValue();
@@ -243,62 +245,62 @@ public abstract class _QueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>defaultJobWait</code>
+     * Change the value of this object's <code>cumulativeProcessingTime</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setDefaultJobWait( long value )
+    public void setCumulativeProcessingTime( long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setDefaultJobWait("
-                + value + "): was " + defaultJobWait() );
+            log.debug( "setCumulativeProcessingTime("
+                + value + "): was " + cumulativeProcessingTime() );
         }
         Long actual =
             new Long( value );
-            setDefaultJobWaitRaw( actual );
+            setCumulativeProcessingTimeRaw( actual );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>defaultJobWait</code> value.
+     * Retrieve this object's <code>cumulativeProcessingTime</code> value.
      * @return the value of the attribute
      */
-    public Long defaultJobWaitRaw()
+    public Long cumulativeProcessingTimeRaw()
     {
-        return (Long)storedValueForKey( "defaultJobWait" );
+        return (Long)storedValueForKey( "cumulativeProcessingTime" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>defaultJobWait</code>
+     * Change the value of this object's <code>cumulativeProcessingTime</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setDefaultJobWaitRaw( Long value )
+    public void setCumulativeProcessingTimeRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setDefaultJobWaitRaw("
-                + value + "): was " + defaultJobWaitRaw() );
+            log.debug( "setCumulativeProcessingTimeRaw("
+                + value + "): was " + cumulativeProcessingTimeRaw() );
         }
-        takeStoredValueForKey( value, "defaultJobWait" );
+        takeStoredValueForKey( value, "cumulativeProcessingTime" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>jobCount</code> value.
+     * Retrieve this object's <code>defaultJobProcessingTime</code> value.
      * @return the value of the attribute
      */
-    public long jobCount()
+    public long defaultJobProcessingTime()
     {
         Long returnValue =
-            (Long)storedValueForKey( "jobCount" );
+            (Long)storedValueForKey( "defaultJobProcessingTime" );
         return ( returnValue == null )
             ? 0L
             : returnValue.longValue();
@@ -307,50 +309,50 @@ public abstract class _QueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>jobCount</code>
+     * Change the value of this object's <code>defaultJobProcessingTime</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setJobCount( long value )
+    public void setDefaultJobProcessingTime( long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setJobCount("
-                + value + "): was " + jobCount() );
+            log.debug( "setDefaultJobProcessingTime("
+                + value + "): was " + defaultJobProcessingTime() );
         }
         Long actual =
             new Long( value );
-            setJobCountRaw( actual );
+            setDefaultJobProcessingTimeRaw( actual );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>jobCount</code> value.
+     * Retrieve this object's <code>defaultJobProcessingTime</code> value.
      * @return the value of the attribute
      */
-    public Long jobCountRaw()
+    public Long defaultJobProcessingTimeRaw()
     {
-        return (Long)storedValueForKey( "jobCount" );
+        return (Long)storedValueForKey( "defaultJobProcessingTime" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>jobCount</code>
+     * Change the value of this object's <code>defaultJobProcessingTime</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setJobCountRaw( Long value )
+    public void setDefaultJobProcessingTimeRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setJobCountRaw("
-                + value + "): was " + jobCountRaw() );
+            log.debug( "setDefaultJobProcessingTimeRaw("
+                + value + "): was " + defaultJobProcessingTimeRaw() );
         }
-        takeStoredValueForKey( value, "jobCount" );
+        takeStoredValueForKey( value, "defaultJobProcessingTime" );
     }
 
 
@@ -385,13 +387,13 @@ public abstract class _QueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>jobsCountedWithWaits</code> value.
+     * Retrieve this object's <code>jobsProcessed</code> value.
      * @return the value of the attribute
      */
-    public long jobsCountedWithWaits()
+    public long jobsProcessed()
     {
         Long returnValue =
-            (Long)storedValueForKey( "jobsCountedWithWaits" );
+            (Long)storedValueForKey( "jobsProcessed" );
         return ( returnValue == null )
             ? 0L
             : returnValue.longValue();
@@ -400,50 +402,50 @@ public abstract class _QueueDescriptor
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>jobsCountedWithWaits</code>
+     * Change the value of this object's <code>jobsProcessed</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setJobsCountedWithWaits( long value )
+    public void setJobsProcessed( long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setJobsCountedWithWaits("
-                + value + "): was " + jobsCountedWithWaits() );
+            log.debug( "setJobsProcessed("
+                + value + "): was " + jobsProcessed() );
         }
         Long actual =
             new Long( value );
-            setJobsCountedWithWaitsRaw( actual );
+            setJobsProcessedRaw( actual );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Retrieve this object's <code>jobsCountedWithWaits</code> value.
+     * Retrieve this object's <code>jobsProcessed</code> value.
      * @return the value of the attribute
      */
-    public Long jobsCountedWithWaitsRaw()
+    public Long jobsProcessedRaw()
     {
-        return (Long)storedValueForKey( "jobsCountedWithWaits" );
+        return (Long)storedValueForKey( "jobsProcessed" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Change the value of this object's <code>jobsCountedWithWaits</code>
+     * Change the value of this object's <code>jobsProcessed</code>
      * property.
      *
      * @param value The new value for this property
      */
-    public void setJobsCountedWithWaitsRaw( Long value )
+    public void setJobsProcessedRaw( Long value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setJobsCountedWithWaitsRaw("
-                + value + "): was " + jobsCountedWithWaitsRaw() );
+            log.debug( "setJobsProcessedRaw("
+                + value + "): was " + jobsProcessedRaw() );
         }
-        takeStoredValueForKey( value, "jobsCountedWithWaits" );
+        takeStoredValueForKey( value, "jobsProcessed" );
     }
 
 
@@ -508,6 +510,70 @@ public abstract class _QueueDescriptor
                 + value + "): was " + mostRecentJobWaitRaw() );
         }
         takeStoredValueForKey( value, "mostRecentJobWait" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>movingAverageProcessingTime</code> value.
+     * @return the value of the attribute
+     */
+    public long movingAverageProcessingTime()
+    {
+        Long returnValue =
+            (Long)storedValueForKey( "movingAverageProcessingTime" );
+        return ( returnValue == null )
+            ? 0L
+            : returnValue.longValue();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>movingAverageProcessingTime</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setMovingAverageProcessingTime( long value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setMovingAverageProcessingTime("
+                + value + "): was " + movingAverageProcessingTime() );
+        }
+        Long actual =
+            new Long( value );
+            setMovingAverageProcessingTimeRaw( actual );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>movingAverageProcessingTime</code> value.
+     * @return the value of the attribute
+     */
+    public Long movingAverageProcessingTimeRaw()
+    {
+        return (Long)storedValueForKey( "movingAverageProcessingTime" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>movingAverageProcessingTime</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setMovingAverageProcessingTimeRaw( Long value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setMovingAverageProcessingTimeRaw("
+                + value + "): was " + movingAverageProcessingTimeRaw() );
+        }
+        takeStoredValueForKey( value, "movingAverageProcessingTime" );
     }
 
 
@@ -636,70 +702,6 @@ public abstract class _QueueDescriptor
                 + value + "): was " + requiresExclusiveHostAccessRaw() );
         }
         takeStoredValueForKey( value, "requiresExclusiveHostAccess" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>totalWaitForJobs</code> value.
-     * @return the value of the attribute
-     */
-    public long totalWaitForJobs()
-    {
-        Long returnValue =
-            (Long)storedValueForKey( "totalWaitForJobs" );
-        return ( returnValue == null )
-            ? 0L
-            : returnValue.longValue();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>totalWaitForJobs</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setTotalWaitForJobs( long value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setTotalWaitForJobs("
-                + value + "): was " + totalWaitForJobs() );
-        }
-        Long actual =
-            new Long( value );
-            setTotalWaitForJobsRaw( actual );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Retrieve this object's <code>totalWaitForJobs</code> value.
-     * @return the value of the attribute
-     */
-    public Long totalWaitForJobsRaw()
-    {
-        return (Long)storedValueForKey( "totalWaitForJobs" );
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Change the value of this object's <code>totalWaitForJobs</code>
-     * property.
-     *
-     * @param value The new value for this property
-     */
-    public void setTotalWaitForJobsRaw( Long value )
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug( "setTotalWaitForJobsRaw("
-                + value + "): was " + totalWaitForJobsRaw() );
-        }
-        takeStoredValueForKey( value, "totalWaitForJobs" );
     }
 
 
@@ -946,8 +948,9 @@ public abstract class _QueueDescriptor
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME, qualifier, sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -1038,7 +1041,7 @@ public abstract class _QueueDescriptor
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1100,7 +1103,7 @@ public abstract class _QueueDescriptor
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -1124,10 +1127,11 @@ public abstract class _QueueDescriptor
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME,
-            EOQualifier.qualifierToMatchAllValues(keysAndValues),
-            sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues),
+                sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<QueueDescriptor> objects =
@@ -1180,7 +1184,7 @@ public abstract class _QueueDescriptor
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1280,7 +1284,7 @@ public abstract class _QueueDescriptor
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -1317,29 +1321,29 @@ public abstract class _QueueDescriptor
      */
     public static NSArray<QueueDescriptor> descriptorsForJobEntityName(
             EOEditingContext context,
-            String jobEntityNameBinding
-        )
+            String jobEntityNameBinding)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "descriptorsForJobEntityName", "QueueDescriptor" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("descriptorsForJobEntityName", "QueueDescriptor");
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( jobEntityNameBinding != null )
+        if (jobEntityNameBinding != null)
         {
-            bindings.setObjectForKey( jobEntityNameBinding,
-                                      "jobEntityName" );
+            bindings.setObjectForKey(jobEntityNameBinding,
+                                     "jobEntityName");
         }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
 
         NSArray<QueueDescriptor> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "descriptorsForJobEntityName(ec"
+            log.debug("descriptorsForJobEntityName(ec"
                 + ", " + jobEntityNameBinding
-                + "): " + objects );
+                + "): " + objects);
         }
         return objects;
     }
@@ -1363,5 +1367,5 @@ public abstract class _QueueDescriptor
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( QueueDescriptor.class );
+    static Logger log = Logger.getLogger(QueueDescriptor.class);
 }

@@ -1,8 +1,20 @@
 {
     attributes = (
         {
-            columnName = defaultJobWait; 
-            name = defaultJobWait; 
+            columnName = cumulativeProcessingTime; 
+            name = cumulativeProcessingTime; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {
+            columnName = defaultJobProcessingTime; 
+            name = defaultJobProcessingTime; 
             prototypeName = long; 
             userInfo = {
                 isScalar = true; 
@@ -14,26 +26,14 @@
         }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {
-            columnName = jobCount; 
-            name = jobCount; 
-            prototypeName = long; 
-            userInfo = {
-                isScalar = true; 
-                scalarConversionMethodName = longValue; 
-                scalarDefault = 0L; 
-                type = long; 
-                valueClassName = Long; 
-            }; 
-        }, 
-        {
             allowsNull = N; 
             columnName = jobEntityName; 
             name = jobEntityName; 
             prototypeName = tinyText; 
         }, 
         {
-            columnName = jobsCountedWithWaits; 
-            name = jobsCountedWithWaits; 
+            columnName = jobsProcessed; 
+            name = jobsProcessed; 
             prototypeName = long; 
             userInfo = {
                 isScalar = true; 
@@ -46,6 +46,18 @@
         {
             columnName = mostRecentJobWait; 
             name = mostRecentJobWait; 
+            prototypeName = long; 
+            userInfo = {
+                isScalar = true; 
+                scalarConversionMethodName = longValue; 
+                scalarDefault = 0L; 
+                type = long; 
+                valueClassName = Long; 
+            }; 
+        }, 
+        {
+            columnName = movingAverageProcessingTime; 
+            name = movingAverageProcessingTime; 
             prototypeName = long; 
             userInfo = {
                 isScalar = true; 
@@ -74,40 +86,28 @@
             name = requiresExclusiveHostAccess; 
             prototypeName = boolean; 
             userInfo = {isScalar = true; scalarDefault = false; type = boolean; }; 
-        }, 
-        {
-            columnName = totalWaitForJobs; 
-            name = totalWaitForJobs; 
-            prototypeName = long; 
-            userInfo = {
-                isScalar = true; 
-                scalarConversionMethodName = longValue; 
-                scalarDefault = 0L; 
-                type = long; 
-                valueClassName = Long; 
-            }; 
         }
     ); 
     attributesUsedForLocking = (
-        defaultJobWait, 
-        jobCount, 
+        cumulativeProcessingTime, 
+        defaultJobProcessingTime, 
         jobEntityName, 
-        jobsCountedWithWaits, 
+        jobsProcessed, 
         mostRecentJobWait, 
+        movingAverageProcessingTime, 
         newestEntryId, 
-        requiresExclusiveHostAccess, 
-        totalWaitForJobs
+        requiresExclusiveHostAccess
     ); 
     className = "org.webcat.jobqueue.QueueDescriptor"; 
     classProperties = (
-        defaultJobWait, 
-        jobCount, 
+        cumulativeProcessingTime, 
+        defaultJobProcessingTime, 
         jobEntityName, 
-        jobsCountedWithWaits, 
+        jobsProcessed, 
         mostRecentJobWait, 
+        movingAverageProcessingTime, 
         newestEntryId, 
         requiresExclusiveHostAccess, 
-        totalWaitForJobs, 
         workers
     ); 
     externalName = TQueueDescriptor; 

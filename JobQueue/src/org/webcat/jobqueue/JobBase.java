@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.4 2011/09/22 13:43:22 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.5 2011/10/26 15:24:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author
  * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/09/22 13:43:22 $
+ * @version $Revision: 1.5 $, $Date: 2011/10/26 15:24:30 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -160,15 +160,12 @@ public abstract class JobBase
             QueueDescriptor queue = QueueDescriptor.descriptorFor(
                 ec, entityName());
 
-            long oldJobCount = 0;
-
             boolean saved = false;
             while (!saved)
             {
                 try
                 {
-                    oldJobCount = queue.jobCount();
-                    queue.setJobCount(oldJobCount + 1);
+                    queue.setNewestEntryId(id().longValue());
                     ec.saveChanges();
                     saved = true;
                 }
@@ -182,8 +179,8 @@ public abstract class JobBase
                 }
             }
 
-            log.debug(entityName() + " queue job count was "
-                + oldJobCount + "; " + "now " + queue.jobCount());
+            log.debug(entityName() + " queue newest id now "
+                + queue.newestEntryId());
         }
         finally
         {
