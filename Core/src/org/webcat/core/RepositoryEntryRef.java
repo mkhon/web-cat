@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryEntryRef.java,v 1.3 2011/11/04 13:09:35 aallowat Exp $
+ |  $Id: RepositoryEntryRef.java,v 1.4 2011/11/04 13:56:16 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -49,7 +49,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/11/04 13:09:35 $
+ * @version $Revision: 1.4 $, $Date: 2011/11/04 13:56:16 $
  */
 public class RepositoryEntryRef implements NSKeyValueCodingAdditions
 {
@@ -200,7 +200,15 @@ public class RepositoryEntryRef implements NSKeyValueCodingAdditions
                 parts[0], parts[1], ec);
         gitRepository = GitRepository.repositoryForObject(provider);
         ref = gitRepository.refWithName(branch);
-        objectId = gitRepository.resolve(ref.objectId().getName() + ":" + path);
+
+        if (ref != null)
+        {
+            objectId = gitRepository.resolve(ref.objectId().getName() + ":" + path);
+        }
+        else
+        {
+            objectId = null;
+        }
     }
 
 
