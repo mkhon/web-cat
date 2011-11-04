@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MetaRequestHandler.java,v 1.3 2011/09/26 18:52:15 aallowat Exp $
+ |  $Id: MetaRequestHandler.java,v 1.4 2011/11/04 13:15:48 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -46,7 +46,7 @@ import com.webobjects.appserver.WOResponse;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/09/26 18:52:15 $
+ * @version $Revision: 1.4 $, $Date: 2011/11/04 13:15:48 $
  */
 public abstract class MetaRequestHandler extends WORequestHandler
 {
@@ -127,7 +127,25 @@ public abstract class MetaRequestHandler extends WORequestHandler
 
         if (log.isDebugEnabled())
         {
-            log.debug("< RESPONSE: " + response.toString());
+            String responseString = response.toString();
+
+            if (response.content().length() > 512)
+            {
+                int index = responseString.indexOf("formValues={");
+                if (index == -1)
+                {
+                    log.debug("< RESPONSE: " + responseString);
+                }
+                else
+                {
+                    log.debug("< RESPONSE: "
+                            + responseString.substring(0, index));
+                }
+            }
+            else
+            {
+                log.debug("< RESPONSE: " + responseString);
+            }
         }
 
         return response;
