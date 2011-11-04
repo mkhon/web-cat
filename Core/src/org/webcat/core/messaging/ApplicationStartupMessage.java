@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ApplicationStartupMessage.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: ApplicationStartupMessage.java,v 1.2 2011/11/04 13:16:42 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.1 $ $Date: 2010/05/11 14:51:58 $
+ * @version $Revision: 1.2 $ $Date: 2011/11/04 13:16:42 $
  */
 public class ApplicationStartupMessage extends SysAdminMessage
 {
@@ -84,7 +84,17 @@ public class ApplicationStartupMessage extends SysAdminMessage
     @Override
     public NSArray<User> users()
     {
-        return User.systemAdmins(editingContext());
+        EOEditingContext ec = editingContext();
+
+        try
+        {
+            ec.lock();
+            return User.systemAdmins(editingContext());
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 

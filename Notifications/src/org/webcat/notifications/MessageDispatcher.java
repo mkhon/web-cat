@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MessageDispatcher.java,v 1.2 2010/09/27 00:40:53 stedwar2 Exp $
+ |  $Id: MessageDispatcher.java,v 1.3 2011/11/04 13:19:10 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -41,8 +41,8 @@ import com.webobjects.foundation.NSMutableArray;
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:40:53 $
+ * @author  Latest changes by: $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2011/11/04 13:19:10 $
  */
 public class MessageDispatcher
     implements IMessageDispatcher
@@ -82,48 +82,58 @@ public class MessageDispatcher
     {
         EOEditingContext ec = message.editingContext();
 
-        SendMessageJob job = SendMessageJob.create(ec, message.isSevere());
-
-        IMessageSettings settings = message.broadcastSettings();
-        if (settings instanceof ProtocolSettings)
+        try
         {
-            job.setBroadcastProtocolSettingsRelationship(
-                    ProtocolSettings.localInstance(ec,
-                            (ProtocolSettings) settings));
-        }
-        else if (settings != null)
-        {
-            job.setBroadcastProtocolSettingsSnapshot(
-                    settings.settingsSnapshot());
-        }
-        else
-        {
-            job.setBroadcastProtocolSettingsRelationship(
-                    ProtocolSettings.systemSettings(ec));
-        }
+            ec.lock();
 
-        job.setMessageType(message.messageType());
-        job.setTitle(message.title());
-        job.setShortBody(message.shortBody());
-        job.setFullBody(message.fullBody());
+            SendMessageJob job = SendMessageJob.create(ec, message.isSevere());
 
-        if (message.links() != null)
-        {
-            job.setLinks(new MutableDictionary(message.links()));
+            IMessageSettings settings = message.broadcastSettings();
+            if (settings instanceof ProtocolSettings)
+            {
+                job.setBroadcastProtocolSettingsRelationship(
+                        ProtocolSettings.localInstance(ec,
+                                (ProtocolSettings) settings));
+            }
+            else if (settings != null)
+            {
+                job.setBroadcastProtocolSettingsSnapshot(
+                        settings.settingsSnapshot());
+            }
+            else
+            {
+                job.setBroadcastProtocolSettingsRelationship(
+                        ProtocolSettings.systemSettings(ec));
+            }
+
+            job.setMessageType(message.messageType());
+            job.setTitle(message.title());
+            job.setShortBody(message.shortBody());
+            job.setFullBody(message.fullBody());
+
+            if (message.links() != null)
+            {
+                job.setLinks(new MutableDictionary(message.links()));
+            }
+
+            if (message.attachments() != null)
+            {
+                job.setAttachments(new MutableDictionary(
+                        message.attachments()));
+            }
+
+            for (User user : message.users())
+            {
+                job.addToDestinationUsers(User.localInstance(ec, user));
+            }
+
+            job.setIsReady(true);
+            ec.saveChanges();
         }
-
-        if (message.attachments() != null)
+        finally
         {
-            job.setAttachments(new MutableDictionary(message.attachments()));
+            ec.unlock();
         }
-
-        for (User user : message.users())
-        {
-            job.addToDestinationUsers(User.localInstance(ec, user));
-        }
-
-        job.setIsReady(true);
-        ec.saveChanges();
     }
 
 
