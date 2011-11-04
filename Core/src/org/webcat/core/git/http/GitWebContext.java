@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitWebContext.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitWebContext.java,v 1.2 2011/11/04 13:09:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -36,7 +36,7 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/04 13:09:35 $
  */
 public class GitWebContext
 {
@@ -81,7 +81,7 @@ public class GitWebContext
                 path = pathSuffix.substring(firstSlash + 1);
             }
 
-            id = repository.resolve(headName() + ":" + path);
+            id = repository.resolve(headObjectId.getName() + ":" + path);
         }
 
         objectId = id;
