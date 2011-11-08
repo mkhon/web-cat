@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTreeModelRepetition.java,v 1.1 2011/05/13 19:43:46 aallowat Exp $
+ |  $Id: WCTreeModelRepetition.java,v 1.2 2011/11/08 14:05:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -47,7 +47,7 @@ import java.util.Stack;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:43:46 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/08 14:05:23 $
  */
 public class WCTreeModelRepetition extends WODynamicGroup
 {
@@ -247,14 +247,17 @@ public class WCTreeModelRepetition extends WODynamicGroup
     private static void pushChildrenOfItem(WCTreeModel model, Object item,
             WCIndexPath indexPath, Stack<TreePosition> stack)
     {
-        NSArray children = model.arrangedChildrenOfObject(item);
-        if (children != null)
+        if (model.objectHasArrangedChildren(item))
         {
-            for (int i = children.count() - 1; i >= 0; i--)
+            NSArray children = model.arrangedChildrenOfObject(item);
+            if (children != null)
             {
-                stack.push(new TreePosition(
-                        indexPath.indexPathByAddingIndex(i),
-                        children.objectAtIndex(i)));
+                for (int i = children.count() - 1; i >= 0; i--)
+                {
+                    stack.push(new TreePosition(
+                            indexPath.indexPathByAddingIndex(i),
+                            children.objectAtIndex(i)));
+                }
             }
         }
     }

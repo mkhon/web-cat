@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTreeCell.java,v 1.1 2011/05/13 19:43:46 aallowat Exp $
+ |  $Id: WCTreeCell.java,v 1.2 2011/11/08 14:05:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -39,7 +39,7 @@ import org.webcat.ui.util.ComponentIDGenerator;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:43:46 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/08 14:05:23 $
  */
 public class WCTreeCell extends WCTreeSubcomponent
 {
@@ -84,8 +84,9 @@ public class WCTreeCell extends WCTreeSubcomponent
     // ----------------------------------------------------------
     public boolean isExpandable()
     {
-        NSArray roots = treeModel().arrangedChildrenOfObject(itemFromParent());
-        return (roots != null && roots.count() > 0);
+        //NSArray roots = treeModel().arrangedChildrenOfObject(itemFromParent());
+        //return (roots != null && roots.count() > 0);
+        return treeModel().objectHasArrangedChildren(itemFromParent());
     }
 
 

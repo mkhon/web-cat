@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTree.java,v 1.2 2011/05/13 19:43:46 aallowat Exp $
+ |  $Id: WCTree.java,v 1.3 2011/11/08 14:05:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -91,7 +91,7 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/05/13 19:43:46 $
+ * @version $Revision: 1.3 $, $Date: 2011/11/08 14:05:23 $
  */
 public class WCTree extends WCComponent
 {
@@ -261,6 +261,35 @@ public class WCTree extends WCComponent
             retrieveExpansionState();
         }
 
+            // If there's a selection, expand to make that visible too.
+
+            for (Object object : treeModel.selectedObjects())
+            {
+                String pathToSelectedObject = treeModel.pathForObject(object);
+
+                if (pathToSelectedObject != null)
+                {
+                    String[] components = pathToSelectedObject.split("/");
+
+                    Object current = null;
+
+                    for (String component : components)
+                    {
+                        current = treeModel.childWithPathComponent(current, component);
+
+                        if (current == null)
+                        {
+                            break;
+                        }
+
+                        if (!expandedItems.containsKey(current))
+                        {
+                            expandedItems.put(current, true);
+                        }
+                    }
+                }
+            }
+
         return expandedItems;
     }
 
@@ -270,7 +299,8 @@ public class WCTree extends WCComponent
     {
         if (!expandedItems().containsKey(item))
         {
-            expandedItems().put(item, false);
+            return false;
+            //expandedItems().put(item, false);
         }
 
         return expandedItems().get(item);
@@ -321,7 +351,7 @@ public class WCTree extends WCComponent
                     }
                 }
 
-                recursivelyExpandChildren(null, 0, expandedItemIds);
+                //recursivelyExpandChildren(null, 0, expandedItemIds);
             }
         }
     }
@@ -331,21 +361,24 @@ public class WCTree extends WCComponent
     private void recursivelyExpandChildren(Object item, int depth,
                                            Map<String, Boolean> expandedItemIds)
     {
-        NSArray<?> children = treeModel.arrangedChildrenOfObject(item);
-        if (children != null)
+        if (treeModel.objectHasArrangedChildren(item))
         {
-            for (Object child : children)
+            NSArray<?> children = treeModel.arrangedChildrenOfObject(item);
+            if (children != null)
             {
-                String childId = treeModel.persistentIdOfObject(child);
-
-                if ((childId != null && expandedItemIds.containsKey(childId))
-                        || (!expandedItemIds.containsKey(childId)
-                                && (initialExpandDepth == -1
-                                        || depth < initialExpandDepth)))
+                for (Object child : children)
                 {
-                    expandedItems.put(child,
-                            expandedItemIds.get(childId));
-                    recursivelyExpandChildren(child, depth + 1, expandedItemIds);
+                    String childId = treeModel.persistentIdOfObject(child);
+
+                    if ((childId != null && expandedItemIds.containsKey(childId))
+                            || (!expandedItemIds.containsKey(childId)
+                                    && (initialExpandDepth == -1
+                                            || depth < initialExpandDepth)))
+                    {
+                        expandedItems.put(child,
+                                expandedItemIds.get(childId));
+                        recursivelyExpandChildren(child, depth + 1, expandedItemIds);
+                    }
                 }
             }
         }
@@ -570,6 +603,7 @@ public class WCTree extends WCComponent
     private String passthroughAttributes;
 
     private Map<Object, Boolean> expandedItems;
+    private boolean expandedItemsCalled;
 
     protected int numberOfColumns = 0;
 }

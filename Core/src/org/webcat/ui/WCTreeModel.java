@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTreeModel.java,v 1.3 2011/08/29 20:06:42 aallowat Exp $
+ |  $Id: WCTreeModel.java,v 1.4 2011/11/08 14:05:23 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -49,7 +49,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/08/29 20:06:42 $
+ * @version $Revision: 1.4 $, $Date: 2011/11/08 14:05:23 $
  */
 public abstract class WCTreeModel<T> implements NSKeyValueCodingAdditions
 {
@@ -88,6 +88,45 @@ public abstract class WCTreeModel<T> implements NSKeyValueCodingAdditions
      *     method may return either null or an empty array
      */
     public abstract NSArray<T> childrenOfObject(T object);
+
+
+    // ----------------------------------------------------------
+    /**
+     * <p>
+     * Gets a value indicating whether a node has children, after any qualifier
+     * filtering has been applied. This method is used by the tree component to
+     * determine if an expansion arrow should be displayed for a particular
+     * item.
+     * </p><p>
+     * By default, this method simply calls {@link #arrangedChildrenOfObject(Object)}
+     * and returns true if the number of children is greater than 0. In
+     * situations where determining the existence of children can be much
+     * faster than computing the children themselves, subclasses should
+     * override this method to provide a faster implementation.
+     * </p>
+     *
+     * @param object the object to check for children
+     * @return true if the object has children, otherwise false
+     */
+    public boolean objectHasArrangedChildren(T object)
+    {
+        NSArray<T> children = arrangedChildrenOfObject(object);
+        return (children != null && children.count() > 0);
+    }
+
+
+    // ----------------------------------------------------------
+    public T childWithPathComponent(T object, String component)
+    {
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public String pathForObject(T object)
+    {
+        return null;
+    }
 
 
     // ----------------------------------------------------------
