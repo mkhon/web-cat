@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitRef.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitRef.java,v 1.2 2011/11/08 14:06:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/08 14:06:07 $
  */
 public class GitRef implements NSKeyValueCodingAdditions
 {
@@ -82,6 +82,13 @@ public class GitRef implements NSKeyValueCodingAdditions
     public boolean isTag()
     {
         return name().startsWith(Constants.R_TAGS);
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean isMaster()
+    {
+        return name().equals(Constants.R_HEADS + Constants.MASTER);
     }
 
 

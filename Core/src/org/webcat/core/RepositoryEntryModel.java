@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryEntryModel.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: RepositoryEntryModel.java,v 1.2 2011/11/08 14:06:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package org.webcat.core;
 
+import java.util.Iterator;
 import org.eclipse.jgit.lib.ObjectId;
 import org.webcat.core.git.GitRef;
 import org.webcat.core.git.GitTreeEntry;
@@ -36,7 +37,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/08 14:06:07 $
  */
 public class RepositoryEntryModel extends WCTreeModel<GitTreeEntry>
 {
@@ -73,8 +74,51 @@ public class RepositoryEntryModel extends WCTreeModel<GitTreeEntry>
             pathPrefix = object.path();
         }
 
-        return new GitTreeIterator(
+        NSArray<GitTreeEntry> entries = new GitTreeIterator(
                 ref.repository(), id, pathPrefix).allEntries();
+
+        Iterator<GitTreeEntry> it = entries.iterator();
+        while (it.hasNext())
+        {
+            GitTreeEntry entry = it.next();
+            if (".gitignore".equals(entry.name()))
+            {
+                it.remove();
+            }
+        }
+
+        return entries;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean objectHasArrangedChildren(GitTreeEntry object)
+    {
+        return object == null || object.isTree();
+    }
+
+
+    // ----------------------------------------------------------
+    public String pathForObject(GitTreeEntry object)
+    {
+        return object.path();
+    }
+
+
+    // ----------------------------------------------------------
+    public GitTreeEntry childWithPathComponent(GitTreeEntry object, String component)
+    {
+        NSArray<GitTreeEntry> entries = childrenOfObject(object);
+
+        for (GitTreeEntry child : entries)
+        {
+            if (child.name().equals(component))
+            {
+                return child;
+            }
+        }
+
+        return null;
     }
 
 
@@ -85,7 +129,7 @@ public class RepositoryEntryModel extends WCTreeModel<GitTreeEntry>
         GitTreeEntry entry = null;
         String[] parts = entryRef.path().split("/");
 
-        NSArray<GitTreeEntry> entries = childrenOfObject(null);
+        NSArray<GitTreeEntry> entries = arrangedChildrenOfObject(null);
         for (String segment : parts)
         {
             for (GitTreeEntry anEntry : entries)

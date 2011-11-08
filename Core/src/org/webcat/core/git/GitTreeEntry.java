@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitTreeEntry.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitTreeEntry.java,v 1.2 2011/11/08 14:06:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -21,6 +21,7 @@
 
 package org.webcat.core.git;
 
+import java.io.File;
 import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.lib.FileMode;
@@ -38,7 +39,7 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/08 14:06:07 $
  */
 public class GitTreeEntry implements NSKeyValueCodingAdditions
 {
@@ -153,12 +154,23 @@ public class GitTreeEntry implements NSKeyValueCodingAdditions
         if (other instanceof GitTreeEntry)
         {
             GitTreeEntry otherEntry = (GitTreeEntry) other;
-            return objectId.equals(otherEntry.objectId);
+            return path.equals(otherEntry.path)
+                && name.equals(otherEntry.name)
+                && objectId.equals(otherEntry.objectId);
         }
         else
         {
             return false;
         }
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public String toString()
+    {
+        return "<" + (isTree ? "tree" : "blob") + ": " + path
+            + " [" + objectId.abbreviate(10).name() + "]>";
     }
 
 

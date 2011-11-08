@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitTreeIterator.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitTreeIterator.java,v 1.2 2011/11/08 14:06:07 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -38,7 +38,7 @@ import com.webobjects.foundation.NSMutableArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2011/11/08 14:06:07 $
  */
 public class GitTreeIterator
     implements Iterator<GitTreeEntry>, Iterable<GitTreeEntry>
@@ -51,7 +51,7 @@ public class GitTreeIterator
      * tree or commit object.
      *
      * @param repository the repository
-     * @param treeOrCommitId the id of the tree or commit object
+     * @param treeOrCommitId the id of the tree or commit   object
      */
     public GitTreeIterator(GitRepository repository, ObjectId treeOrCommitId)
     {
