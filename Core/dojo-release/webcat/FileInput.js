@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileInput.js,v 1.1 2010/03/15 16:48:57 aallowat Exp $
+ |  $Id: FileInput.js,v 1.2 2011/11/08 14:04:35 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -30,7 +30,7 @@ dojo.require("webcat.Spinner");
  * modifications for layout.
  *
  * @author Tony Allevato
- * @version $Id: FileInput.js,v 1.1 2010/03/15 16:48:57 aallowat Exp $
+ * @version $Id: FileInput.js,v 1.2 2011/11/08 14:04:35 aallowat Exp $
  */
 dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
 {
@@ -59,7 +59,8 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
         this.inherited(arguments);
 
         this.inputNode.validator = dojo.hitch(this, function(value, constraints) {
-            return this._hasUploaded || this.validator(value, constraints);
+            return this._hasUploaded
+                || (this.validator && this.validator(value, constraints));
         });
 
         dojo.style(this.messageNode, "vertical-align", "middle");
@@ -77,7 +78,6 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
         this.disconnect(this._blurListener);
         this.disconnect(this._focusListener);
 
-        this.overlay.style.display = "none";
         this.fakeNodeHolder.style.display = "";
 
         // summary: on click of cancel button, since we can't clear the input because of
@@ -104,6 +104,11 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
 
         this.inputNode.attr('value',
             this.clearAfterUpload ? "" : this._lastUploadedFilename);
+
+        if (this.messageNode.firstChild)
+        {
+            this.messageNode.removeChild(this.messageNode.firstChild);
+        }
 
         this._sent = false;
         this._sending = false;
@@ -133,8 +138,10 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
     // ----------------------------------------------------------
     _matchValue: function()
     {
-        this._lastUploadedFilename = this.fileInput.value;
-        this.inputNode.attr('value', this.fileInput.value);
+        var path = this.fileInput.value.replace(/^.*(\\|\/)/, '');
+
+        this._lastUploadedFilename = path;
+        this.inputNode.attr('value', path);
     },
 
 
@@ -150,7 +157,9 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
             this.messageNode.removeChild(this.messageNode.firstChild);
         }
 
-        title = dojo.string.substitute(title, { filename: this.fileInput.value });
+        title = dojo.string.substitute(title, {
+            filename: this.fileInput.value.replace(/^.*(\\|\/)/, '')
+        });
         this.messageNode.appendChild(document.createTextNode(title));
     },
 
@@ -164,10 +173,6 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
         this._sending = true;
 
         dojo.style(this.fakeNodeHolder,"display","none");
-        dojo.style(this.overlay,{
-            opacity:1,
-            display:"block"
-        });
 
         this.setMessage(this.uploadMessage);
 
@@ -208,14 +213,8 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
         this._hasUploaded = true;
         this._sent = true;
         this._sending = false;
-        dojo.style(this.overlay,{
-            opacity:0,
-            border:"none",
-            background:"none"
-        });
 
         this.spinner.stop();
-        this.overlay.style.backgroundImage = "none";
         this.fileInput.style.display = "none";
         this.fakeNodeHolder.style.display = "none";
 
@@ -234,7 +233,14 @@ dojo.declare("webcat.FileInput", dojox.form.FileInputAuto,
     // ----------------------------------------------------------
     isValid: function()
     {
-        return this.validator(null, null);
+        if (this.validator)
+        {
+            return this.validator(null, null);
+        }
+        else
+        {
+            return true;
+        }
     },
 
 
