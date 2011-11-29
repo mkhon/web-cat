@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FilePickerDialog.java,v 1.2 2011/11/08 14:06:07 aallowat Exp $
+ |  $Id: FilePickerDialog.java,v 1.3 2011/11/29 18:21:54 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -57,7 +57,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/11/08 14:06:07 $
+ * @version $Revision: 1.3 $, $Date: 2011/11/29 18:21:54 $
  */
 public class FilePickerDialog extends WCComponent
 {
@@ -517,12 +517,15 @@ public class FilePickerDialog extends WCComponent
 
         JavascriptGenerator js = new JavascriptGenerator();
 
-        boolean isArchive = FileUtilities.isArchiveFile(uploadedFilePath);
+        // FIXME Why doesn't this code run on the production server? Problem
+        // because it gets sent back in a textarea due to iframe I/O weirdness?
+
+/*        boolean isArchive = FileUtilities.isArchiveFile(uploadedFilePath);
 
         js.style(idFor.get("expandIfArchiveContainer"), "visibility",
                 isArchive ? "visible" : "hidden");
 
-        js.dijit(idFor.get("uploadFileOk")).enable();
+        js.dijit(idFor.get("uploadFileOk")).enable();*/
         return js;
     }
 
@@ -532,6 +535,11 @@ public class FilePickerDialog extends WCComponent
     {
         JavascriptGenerator js = new JavascriptGenerator();
         js.dijit(idFor.get("uploadFileDialog")).call("hide");
+
+        if (uploadedFilePath == null)
+        {
+            return js;
+        }
 
         Repository workingCopy = GitUtilities.workingCopyForRepository(
                 createFolderRepo.repository(), true);
