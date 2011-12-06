@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -110,7 +111,7 @@ public abstract class _BatchPlugin
      * @return The object, or null if no such id exists
      */
     public static BatchPlugin forId(
-        EOEditingContext ec, int id )
+        EOEditingContext ec, int id)
     {
         BatchPlugin obj = null;
         if (id > 0)
@@ -135,9 +136,9 @@ public abstract class _BatchPlugin
      * @return The object, or null if no such id exists
      */
     public static BatchPlugin forId(
-        EOEditingContext ec, String id )
+        EOEditingContext ec, String id)
     {
-        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
+        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
     }
 
 
@@ -194,7 +195,8 @@ public abstract class _BatchPlugin
     public static final String PUBLISHED_PLUGINS_FSPEC = "publishedPlugins";
     public static final String ENTITY_NAME = "BatchPlugin";
 
-    public final EOBasedKeyGenerator generateKey = new EOBasedKeyGenerator(this);
+    public transient final EOBasedKeyGenerator generateKey =
+        new EOBasedKeyGenerator(this);
 
 
     //~ Methods ...............................................................
@@ -222,7 +224,7 @@ public abstract class _BatchPlugin
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
+            editingContext().committedSnapshotForObject(this));
     }
 
 
@@ -236,7 +238,7 @@ public abstract class _BatchPlugin
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
+                editingContext() , this).objectForKey("id");
         }
         catch (Exception e)
         {
@@ -285,10 +287,10 @@ public abstract class _BatchPlugin
     public org.webcat.core.MutableDictionary configDescription()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "configDescription" );
-        if ( configDescriptionRawCache != dbValue )
+            (NSData)storedValueForKey("configDescription");
+        if (configDescriptionRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( configDescriptionRawCache ) )
+            if (dbValue != null && dbValue.equals( configDescriptionRawCache))
             {
                 // They are still equal, so just update the raw cache
                 configDescriptionRawCache = dbValue;
@@ -388,10 +390,10 @@ public abstract class _BatchPlugin
     public org.webcat.core.MutableDictionary defaultConfigSettings()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "defaultConfigSettings" );
-        if ( defaultConfigSettingsRawCache != dbValue )
+            (NSData)storedValueForKey("defaultConfigSettings");
+        if (defaultConfigSettingsRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( defaultConfigSettingsRawCache ) )
+            if (dbValue != null && dbValue.equals( defaultConfigSettingsRawCache))
             {
                 // They are still equal, so just update the raw cache
                 defaultConfigSettingsRawCache = dbValue;
@@ -491,10 +493,10 @@ public abstract class _BatchPlugin
     public org.webcat.core.MutableDictionary globalConfigSettings()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "globalConfigSettings" );
-        if ( globalConfigSettingsRawCache != dbValue )
+            (NSData)storedValueForKey("globalConfigSettings");
+        if (globalConfigSettingsRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( globalConfigSettingsRawCache ) )
+            if (dbValue != null && dbValue.equals( globalConfigSettingsRawCache))
             {
                 // They are still equal, so just update the raw cache
                 globalConfigSettingsRawCache = dbValue;
@@ -1421,8 +1423,9 @@ public abstract class _BatchPlugin
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME, qualifier, sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -1513,7 +1516,7 @@ public abstract class _BatchPlugin
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1575,7 +1578,7 @@ public abstract class _BatchPlugin
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -1599,10 +1602,11 @@ public abstract class _BatchPlugin
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME,
-            EOQualifier.qualifierToMatchAllValues(keysAndValues),
-            sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues),
+                sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<BatchPlugin> objects =
@@ -1655,7 +1659,7 @@ public abstract class _BatchPlugin
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1755,7 +1759,7 @@ public abstract class _BatchPlugin
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -1790,18 +1794,18 @@ public abstract class _BatchPlugin
      * @return an NSArray of the entities retrieved
      */
     public static NSArray<BatchPlugin> allPluginsOrderedByName(
-            EOEditingContext context
-        )
+            EOEditingContext context)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "allPluginsOrderedByName", "BatchPlugin" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("allPluginsOrderedByName", "BatchPlugin");
 
         NSArray<BatchPlugin> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "allPluginsOrderedByName(ec"
-                + "): " + objects );
+            log.debug("allPluginsOrderedByName(ec"
+                + "): " + objects);
         }
         return objects;
     }
@@ -1818,29 +1822,29 @@ public abstract class _BatchPlugin
      */
     public static NSArray<BatchPlugin> pluginsForUser(
             EOEditingContext context,
-            org.webcat.core.User userBinding
-        )
+            org.webcat.core.User userBinding)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "pluginsForUser", "BatchPlugin" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("pluginsForUser", "BatchPlugin");
 
         NSMutableDictionary<String, Object> bindings =
             new NSMutableDictionary<String, Object>();
 
-        if ( userBinding != null )
+        if (userBinding != null)
         {
-            bindings.setObjectForKey( userBinding,
-                                      "user" );
+            bindings.setObjectForKey(userBinding,
+                                     "user");
         }
-        spec = spec.fetchSpecificationWithQualifierBindings( bindings );
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
 
         NSArray<BatchPlugin> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "pluginsForUser(ec"
+            log.debug("pluginsForUser(ec"
                 + ", " + userBinding
-                + "): " + objects );
+                + "): " + objects);
         }
         return objects;
     }
@@ -1855,18 +1859,18 @@ public abstract class _BatchPlugin
      * @return an NSArray of the entities retrieved
      */
     public static NSArray<BatchPlugin> publishedPlugins(
-            EOEditingContext context
-        )
+            EOEditingContext context)
     {
-        EOFetchSpecification spec = EOFetchSpecification
-            .fetchSpecificationNamed( "publishedPlugins", "BatchPlugin" );
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("publishedPlugins", "BatchPlugin");
 
         NSArray<BatchPlugin> objects =
-            objectsWithFetchSpecification( context, spec );
+            objectsWithFetchSpecification(context, spec);
         if (log.isDebugEnabled())
         {
-            log.debug( "publishedPlugins(ec"
-                + "): " + objects );
+            log.debug("publishedPlugins(ec"
+                + "): " + objects);
         }
         return objects;
     }
@@ -1890,5 +1894,5 @@ public abstract class _BatchPlugin
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( BatchPlugin.class );
+    static Logger log = Logger.getLogger(BatchPlugin.class);
 }
