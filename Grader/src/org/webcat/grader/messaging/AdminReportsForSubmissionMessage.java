@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AdminReportsForSubmissionMessage.java,v 1.2 2010/09/24 19:06:05 aallowat Exp $
+ |  $Id: AdminReportsForSubmissionMessage.java,v 1.3 2011/12/06 18:38:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -22,18 +22,14 @@
 package org.webcat.grader.messaging;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 import org.webcat.core.User;
 import org.webcat.core.messaging.Message;
 import org.webcat.core.messaging.SysAdminMessage;
-import org.webcat.core.messaging.UnexpectedExceptionMessage;
-import org.webcat.grader.Assignment;
 import org.webcat.grader.AssignmentOffering;
 import org.webcat.grader.Submission;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
 
@@ -43,8 +39,8 @@ import com.webobjects.foundation.NSMutableDictionary;
  * admin-directed reports.
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $ $Date: 2010/09/24 19:06:05 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $ $Date: 2011/12/06 18:38:10 $
  */
 public class AdminReportsForSubmissionMessage extends SysAdminMessage
 {
@@ -54,7 +50,16 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
     public AdminReportsForSubmissionMessage(Submission submission,
             List<String> attachmentPaths)
     {
-        this.submission = submission;
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            this.submission = submission.localInstance(ec);
+        }
+        finally
+        {
+            ec.unlock();
+        }
 
         this.attachments = new NSMutableDictionary<String, String>();
 
@@ -121,9 +126,28 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
 
     // ----------------------------------------------------------
     @Override
-    public NSArray<User> users()
+    public synchronized NSArray<User> users()
     {
-        return submission.assignmentOffering().courseOffering().instructors();
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            if (submission != null
+                && submission.assignmentOffering() != null
+                && submission.assignmentOffering().courseOffering() != null)
+            {
+                return submission.assignmentOffering().courseOffering()
+                    .instructors();
+            }
+            else
+            {
+                return new NSArray<User>();
+            }
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 

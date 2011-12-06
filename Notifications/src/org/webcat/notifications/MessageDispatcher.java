@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MessageDispatcher.java,v 1.3 2011/11/04 13:19:10 aallowat Exp $
+ |  $Id: MessageDispatcher.java,v 1.4 2011/12/06 18:40:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -41,8 +41,8 @@ import com.webobjects.foundation.NSMutableArray;
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
- * @author  Latest changes by: $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/11/04 13:19:10 $
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/06 18:40:16 $
  */
 public class MessageDispatcher
     implements IMessageDispatcher
@@ -78,7 +78,7 @@ public class MessageDispatcher
 
 
     // ----------------------------------------------------------
-    public void sendMessage(Message message)
+    public synchronized void sendMessage(Message message)
     {
         EOEditingContext ec = message.editingContext();
 
@@ -124,7 +124,7 @@ public class MessageDispatcher
 
             for (User user : message.users())
             {
-                job.addToDestinationUsers(User.localInstance(ec, user));
+                job.addToDestinationUsers(user.localInstance(ec));
             }
 
             job.setIsReady(true);
@@ -163,7 +163,7 @@ public class MessageDispatcher
      *
      * @return an array of protocols
      */
-    public NSArray<Protocol> registeredProtocols()
+    public synchronized NSArray<Protocol> registeredProtocols()
     {
         NSMutableArray<Protocol> protocols = new NSMutableArray<Protocol>();
 
@@ -189,7 +189,8 @@ public class MessageDispatcher
      *     message protocols
      * @return an array of protocols
      */
-    public NSArray<Protocol> registeredProtocols(boolean isBroadcast)
+    public synchronized NSArray<Protocol> registeredProtocols(
+        boolean isBroadcast)
     {
         NSMutableArray<Protocol> protocols = new NSMutableArray<Protocol>();
 
@@ -213,7 +214,8 @@ public class MessageDispatcher
      * @return the Protocol object with the specified class name, or null if
      *     none was found
      */
-    public Protocol protocolWithName(String className, boolean isBroadcast)
+    public synchronized Protocol protocolWithName(
+        String className, boolean isBroadcast)
     {
         try
         {

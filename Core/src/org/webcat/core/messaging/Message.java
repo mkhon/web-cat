@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Message.java,v 1.5 2011/11/04 13:16:42 aallowat Exp $
+ |  $Id: Message.java,v 1.6 2011/12/06 18:35:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -55,8 +55,8 @@ import com.webobjects.foundation.NSTimestamp;
  * </p>
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2011/11/04 13:16:42 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2011/12/06 18:35:20 $
  */
 public abstract class Message
 {
@@ -86,7 +86,10 @@ public abstract class Message
                 messageClass.getCanonicalName(),
                 category, description, isBroadcast, accessLevel);
 
-        descriptors.put(messageClass, descriptor);
+        synchronized (descriptors)
+        {
+            descriptors.put(messageClass, descriptor);
+        }
     }
 
 
@@ -104,11 +107,14 @@ public abstract class Message
         NSMutableArray<MessageDescriptor> descs =
             new NSMutableArray<MessageDescriptor>();
 
-        for (MessageDescriptor descriptor : descriptors.values())
+        synchronized (descriptors)
         {
-            if (user.accessLevel() >= descriptor.accessLevel())
+            for (MessageDescriptor descriptor : descriptors.values())
             {
-                descs.addObject(descriptor);
+                if (user.accessLevel() >= descriptor.accessLevel())
+                {
+                    descs.addObject(descriptor);
+                }
             }
         }
 
@@ -127,11 +133,14 @@ public abstract class Message
         NSMutableArray<MessageDescriptor> descs =
             new NSMutableArray<MessageDescriptor>();
 
-        for (MessageDescriptor descriptor : descriptors.values())
+        synchronized (descriptors)
         {
-            if (descriptor.isBroadcast())
+            for (MessageDescriptor descriptor : descriptors.values())
             {
-                descs.addObject(descriptor);
+                if (descriptor.isBroadcast())
+                {
+                    descs.addObject(descriptor);
+                }
             }
         }
 
@@ -160,7 +169,12 @@ public abstract class Message
      */
     public final MessageDescriptor messageDescriptor()
     {
-        return descriptors.get(getClass());
+        MessageDescriptor result = null;
+        synchronized (descriptors)
+        {
+            result = descriptors.get(getClass());
+        }
+        return result;
     }
 
 
@@ -177,7 +191,12 @@ public abstract class Message
         try
         {
             Class<?> klass = Class.forName(messageType);
-            return descriptors.get(klass);
+            MessageDescriptor result = null;
+            synchronized (descriptors)
+            {
+                result = descriptors.get(klass);
+            }
+            return result;
         }
         catch (ClassNotFoundException e)
         {
@@ -390,7 +409,7 @@ public abstract class Message
     /**
      * Sends the message.
      */
-    public final void send()
+    public final synchronized void send()
     {
         recycleEditingContext();
 
@@ -411,18 +430,20 @@ public abstract class Message
      *
      * @param descriptor the message descriptor for this message
      */
-    private void storeMessage()
+    private synchronized void storeMessage()
     {
         MessageDescriptor descriptor = messageDescriptor();
 
         // Create a representation of the message in the database so that it
         // can be viewed by users later.
 
+        EOEditingContext ec = editingContext();
+
         try
         {
-            editingContext.lock();
+            ec.lock();
 
-            SentMessage message = SentMessage.create(editingContext, false);
+            SentMessage message = SentMessage.create(ec, false);
 
             message.setSentTime(new NSTimestamp());
             message.setMessageType(messageType());
@@ -446,17 +467,16 @@ public abstract class Message
 
                     if (user.accessLevel() >= descriptor.accessLevel())
                     {
-                        message.addToUsersRelationship(user.localInstance(
-                                editingContext));
+                        message.addToUsersRelationship(user.localInstance(ec));
                     }
                 }
             }
 
-            editingContext.saveChanges();
+            ec.saveChanges();
         }
         finally
         {
-            editingContext.unlock();
+            ec.unlock();
         }
     }
 
@@ -465,7 +485,7 @@ public abstract class Message
     /**
      * Recycles the editing context after every 20 calls to {@link #send()}.
      */
-    private void recycleEditingContext()
+    private synchronized void recycleEditingContext()
     {
         recycleCount++;
 
@@ -479,12 +499,6 @@ public abstract class Message
 
             recycleCount = 0;
         }
-
-        if (editingContext == null)
-        {
-            editingContext = Application.newPeerEditingContext();
-            editingContext.setSharedEditingContext(null);
-        }
     }
 
 
@@ -496,8 +510,13 @@ public abstract class Message
      *
      * @return an editing context
      */
-    public EOEditingContext editingContext()
+    public synchronized EOEditingContext editingContext()
     {
+        if (editingContext == null)
+        {
+            editingContext = Application.newPeerEditingContext();
+            editingContext.setSharedEditingContext(null);
+        }
         return editingContext;
     }
 
@@ -507,6 +526,6 @@ public abstract class Message
     private int recycleCount = 0;
     private EOEditingContext editingContext;
 
-    private static Map<Class<? extends Message>, MessageDescriptor> descriptors =
-        new HashMap<Class<? extends Message>, MessageDescriptor>();
+    private static Map<Class<? extends Message>, MessageDescriptor> descriptors
+        = new HashMap<Class<? extends Message>, MessageDescriptor>();
 }

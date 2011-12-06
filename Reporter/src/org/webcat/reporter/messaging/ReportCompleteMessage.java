@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ReportCompleteMessage.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: ReportCompleteMessage.java,v 1.2 2011/12/06 18:42:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.reporter.messaging;
 import org.webcat.core.User;
 import org.webcat.core.messaging.Message;
 import org.webcat.reporter.GeneratedReport;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 
 //-------------------------------------------------------------------------
@@ -32,7 +33,7 @@ import com.webobjects.foundation.NSArray;
  * once the report is complete.
  *
  * @author Tony Allevato
- * @version $Id: ReportCompleteMessage.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @version $Id: ReportCompleteMessage.java,v 1.2 2011/12/06 18:42:09 stedwar2 Exp $
  */
 public class ReportCompleteMessage extends Message
 {
@@ -46,7 +47,16 @@ public class ReportCompleteMessage extends Message
      */
     public ReportCompleteMessage(GeneratedReport report)
     {
-        this.report = report;
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            this.report = report.localInstance(ec);
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 
@@ -99,8 +109,16 @@ public class ReportCompleteMessage extends Message
     public NSArray<User> users()
     {
         // Returns an array containing the one user who generated this report.
-
-        return new NSArray<User>(report.user());
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            return new NSArray<User>(report.user());
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 

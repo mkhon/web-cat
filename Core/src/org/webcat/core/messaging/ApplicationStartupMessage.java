@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ApplicationStartupMessage.java,v 1.2 2011/11/04 13:16:42 aallowat Exp $
+ |  $Id: ApplicationStartupMessage.java,v 1.3 2011/12/06 18:35:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -33,8 +33,8 @@ import com.webobjects.foundation.NSArray;
  * A message that is broadcast when the system starts up.
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $ $Date: 2011/11/04 13:16:42 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $ $Date: 2011/12/06 18:35:20 $
  */
 public class ApplicationStartupMessage extends SysAdminMessage
 {
@@ -82,14 +82,14 @@ public class ApplicationStartupMessage extends SysAdminMessage
 
     // ----------------------------------------------------------
     @Override
-    public NSArray<User> users()
+    public synchronized NSArray<User> users()
     {
         EOEditingContext ec = editingContext();
 
         try
         {
             ec.lock();
-            return User.systemAdmins(editingContext());
+            return User.systemAdmins(ec);
         }
         finally
         {

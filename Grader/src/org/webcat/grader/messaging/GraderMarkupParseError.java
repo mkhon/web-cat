@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderMarkupParseError.java,v 1.2 2010/10/15 00:57:39 stedwar2 Exp $
+ |  $Id: GraderMarkupParseError.java,v 1.3 2011/12/06 18:38:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -28,6 +28,7 @@ import org.webcat.core.messaging.Message;
 import org.webcat.core.messaging.SysAdminMessage;
 import org.webcat.grader.Submission;
 import com.webobjects.appserver.WOContext;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 
 //-------------------------------------------------------------------------
@@ -37,7 +38,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $ $Date: 2010/10/15 00:57:39 $
+ * @version $Revision: 1.3 $ $Date: 2011/12/06 18:38:10 $
  */
 public class GraderMarkupParseError extends SysAdminMessage
 {
@@ -48,7 +49,16 @@ public class GraderMarkupParseError extends SysAdminMessage
             Exception exception, WOContext context, File markupFile,
             String detail)
     {
-        this.submission = submission;
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            this.submission = submission;
+        }
+        finally
+        {
+            ec.unlock();
+        }
         this.location = location;
         this.exception = exception;
         this.context = context;
@@ -154,9 +164,28 @@ public class GraderMarkupParseError extends SysAdminMessage
 
     // ----------------------------------------------------------
     @Override
-    public NSArray<User> users()
+    public synchronized NSArray<User> users()
     {
-        return submission.assignmentOffering().courseOffering().instructors();
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            if (submission != null
+                && submission.assignmentOffering() != null
+                && submission.assignmentOffering().courseOffering() != null)
+            {
+                return submission.assignmentOffering().courseOffering()
+                    .instructors();
+            }
+            else
+            {
+                return new NSArray<User>();
+            }
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 

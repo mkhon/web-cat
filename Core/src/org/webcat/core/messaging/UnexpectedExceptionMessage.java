@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UnexpectedExceptionMessage.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
+ |  $Id: UnexpectedExceptionMessage.java,v 1.3 2011/12/06 18:35:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -25,6 +25,7 @@ import org.jfree.util.Log;
 import org.webcat.core.Application;
 import org.webcat.core.User;
 import com.webobjects.appserver.WOContext;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 
@@ -35,7 +36,7 @@ import com.webobjects.foundation.NSDictionary;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $ $Date: 2010/10/15 00:43:17 $
+ * @version $Revision: 1.3 $ $Date: 2011/12/06 18:35:20 $
  */
 public class UnexpectedExceptionMessage extends SysAdminMessage
 {
@@ -103,9 +104,19 @@ public class UnexpectedExceptionMessage extends SysAdminMessage
 
     // ----------------------------------------------------------
     @Override
-    public NSArray<User> users()
+    public synchronized NSArray<User> users()
     {
-        return User.systemAdmins(editingContext());
+        EOEditingContext ec = editingContext();
+
+        try
+        {
+            ec.lock();
+            return User.systemAdmins(ec);
+        }
+        finally
+        {
+            ec.unlock();
+        }
     }
 
 

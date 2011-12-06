@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingResultsAvailableMessage.java,v 1.3 2010/10/19 12:53:15 stedwar2 Exp $
+ |  $Id: GradingResultsAvailableMessage.java,v 1.4 2011/12/06 18:38:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.grader.messaging;
 import org.webcat.core.User;
 import org.webcat.core.WCProperties;
 import org.webcat.core.messaging.Message;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
@@ -35,7 +36,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  *
  * @author  Tony Allevato
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $ $Date: 2010/10/19 12:53:15 $
+ * @version $Revision: 1.4 $ $Date: 2011/12/06 18:38:10 $
  */
 public class GradingResultsAvailableMessage extends Message
 {
@@ -44,7 +45,16 @@ public class GradingResultsAvailableMessage extends Message
     // ----------------------------------------------------------
     public GradingResultsAvailableMessage(User user, WCProperties properties)
     {
-        this.user = user;
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            this.user = user.localInstance(ec);
+        }
+        finally
+        {
+            ec.unlock();
+        }
         this.properties = properties;
     }
 

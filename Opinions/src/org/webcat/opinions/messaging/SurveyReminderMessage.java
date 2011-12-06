@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SurveyReminderMessage.java,v 1.1 2010/10/19 23:34:58 stedwar2 Exp $
+ |  $Id: SurveyReminderMessage.java,v 1.2 2011/12/06 18:40:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.opinions.messaging;
 import org.webcat.core.User;
 import org.webcat.core.WCProperties;
 import org.webcat.core.messaging.Message;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableDictionary;
@@ -35,7 +36,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  *
  * @author  Stephen Edwards
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.1 $ $Date: 2010/10/19 23:34:58 $
+ * @version $Revision: 1.2 $ $Date: 2011/12/06 18:40:43 $
  */
 public class SurveyReminderMessage
     extends Message
@@ -45,7 +46,16 @@ public class SurveyReminderMessage
     // ----------------------------------------------------------
     public SurveyReminderMessage(User user, WCProperties properties)
     {
-        this.user = user;
+        EOEditingContext ec = editingContext();
+        try
+        {
+            ec.lock();
+            this.user = user.localInstance(ec);
+        }
+        finally
+        {
+            ec.unlock();
+        }
         this.properties = properties;
     }
 

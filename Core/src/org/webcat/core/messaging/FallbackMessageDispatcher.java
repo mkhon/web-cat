@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FallbackMessageDispatcher.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: FallbackMessageDispatcher.java,v 1.2 2011/12/06 18:35:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.core.messaging;
 
-import org.apache.log4j.Logger;
 import org.webcat.core.Application;
 import org.webcat.core.User;
 import com.webobjects.foundation.NSArray;
@@ -34,8 +33,8 @@ import com.webobjects.foundation.NSDictionary;
  * urgent messages will still be e-mailed to the system administrator.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2010/05/11 14:51:58 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/06 18:35:20 $
  */
 public class FallbackMessageDispatcher implements IMessageDispatcher
 {
