@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ScoreSummaryBlock.java,v 1.4 2011/06/08 02:21:32 stedwar2 Exp $
+ |  $Id: ScoreSummaryBlock.java,v 1.5 2011/12/06 18:38:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Latest changes by: $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2011/06/08 02:21:32 $
+ *  @version $Revision: 1.5 $, $Date: 2011/12/06 18:38:25 $
  */
 public class ScoreSummaryBlock
     extends GraderComponent
@@ -66,8 +66,11 @@ public class ScoreSummaryBlock
         WOResponse response, WOContext context)
     {
         rowNumber = 0;
-        result = submission.result();
-        super.beforeAppendToResponse( response, context );
+        if (submission != null)
+        {
+            result = submission.result();
+            super.beforeAppendToResponse( response, context );
+        }
     }
 
 

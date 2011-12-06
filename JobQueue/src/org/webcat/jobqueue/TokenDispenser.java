@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TokenDispenser.java,v 1.3 2011/10/26 15:24:30 stedwar2 Exp $
+ |  $Id: TokenDispenser.java,v 1.4 2011/12/06 18:39:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/10/26 15:24:30 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/06 18:39:23 $
  */
 public class TokenDispenser
 {
@@ -112,7 +112,7 @@ public class TokenDispenser
      */
     public synchronized void ensureAtLeastNTokens(int n)
     {
-        int amount = n - tokens;
+        int amount = (n > tokens) ? (n - tokens) : 0;
         log.debug("depositing " + amount + " tokens in " + this
             + " (already holding " + tokens + " tokens)");
         depositTokens(amount);

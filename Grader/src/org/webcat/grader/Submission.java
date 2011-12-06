@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.20 2011/10/19 13:04:39 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.21 2011/12/06 18:38:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -44,7 +44,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.20 $, $Date: 2011/10/19 13:04:39 $
+ *  @version $Revision: 1.21 $, $Date: 2011/12/06 18:38:25 $
  */
 public class Submission
     extends _Submission
@@ -79,9 +79,13 @@ public class Submission
     public String userPresentableDescription()
     {
         if ( fileName() != null )
+        {
             return file().getPath();
+        }
         else
+        {
             return dirName();
+        }
     }
 
 
@@ -1586,6 +1590,36 @@ public class Submission
             }
         }
         return status;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Computes the difference between the submission time and the
+     * due date/time, and renders it in a human-readable string.
+     *
+     * @return the string representation of how early or late
+     */
+    public String earlyLateStatus()
+    {
+        String description = null;
+        long time = submitTime().getTime();
+        long dueTime = assignmentOffering().dueDate().getTime();
+        if (dueTime >= time)
+        {
+            // Early submission
+            description =
+                Submission.getStringTimeRepresentation(dueTime - time)
+                + " early";
+        }
+        else
+        {
+            // Late submission
+            description =
+                Submission.getStringTimeRepresentation(time - dueTime)
+                + " late";
+        }
+        return description;
     }
 
 

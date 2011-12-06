@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.9 2011/05/02 19:38:07 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.10 2011/12/06 18:38:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.grader;
 
-import com.ibm.icu.text.MessageFormat;
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
@@ -40,8 +39,8 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.9 $, $Date: 2011/05/02 19:38:07 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.10 $, $Date: 2011/12/06 18:38:25 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent

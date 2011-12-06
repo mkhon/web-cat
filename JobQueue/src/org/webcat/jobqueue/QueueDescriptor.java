@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.5 2011/10/26 15:24:30 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.6 2011/12/06 18:39:23 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/10/26 15:24:30 $
+ * @version $Revision: 1.6 $, $Date: 2011/12/06 18:39:23 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -95,10 +95,6 @@ public class QueueDescriptor
             new NSDictionary<String, Long>(
                 new Long(0),
                 QueueDescriptor.NEWEST_ENTRY_ID_KEY));
-        if (context != queueContext())
-        {
-            result.localInstance(queueContext());
-        }
         synchronized (dispensers)
         {
             if (dispensers.get(result.id()) == null)
@@ -122,7 +118,6 @@ public class QueueDescriptor
         }
         return result;
     }
-
 
     // ----------------------------------------------------------
     /**
@@ -150,14 +145,17 @@ public class QueueDescriptor
     public static void registerQueue(String theJobEntityName)
     {
         EOEditingContext ec = queueContext();
-        ec.lock();
-        try
+        synchronized (ec)
         {
-            descriptorFor(ec, theJobEntityName);
-        }
-        finally
-        {
-            ec.unlock();
+            ec.lock();
+            try
+            {
+                descriptorFor(ec, theJobEntityName);
+            }
+            finally
+            {
+                ec.unlock();
+            }
         }
     }
 
@@ -183,20 +181,6 @@ public class QueueDescriptor
     {
         Number id = descriptor.id();
         assert id != null;
-        assert descriptor.editingContext() != null;
-        if (descriptor.editingContext() != queueContext())
-        {
-            EOEditingContext qc = queueContext();
-            try
-            {
-                qc.lock();
-                descriptor = descriptor.localInstance(qc);
-            }
-            finally
-            {
-                qc.unlock();
-            }
-        }
         TokenDispenser dispenser = null;
         synchronized (dispensers)
         {
@@ -225,50 +209,10 @@ public class QueueDescriptor
 
 
     // ----------------------------------------------------------
-    /* package */ static void waitForNextJob(Number descriptorId)
-    {
-        assert descriptorId != null;
-        EOEditingContext qc = queueContext();
-        QueueDescriptor descriptor = null;
-
-        try
-        {
-            qc.lock();
-            descriptor = forId(qc, descriptorId.intValue());
-
-            if (descriptor == null)
-            {
-                log.error("waitForNextJob(id = " + descriptorId
-                    + "): no EO with specified ID could be retrieved");
-            }
-        }
-        finally
-        {
-            qc.unlock();
-        }
-
-        waitForNextJob(descriptor);
-    }
-
-
-    // ----------------------------------------------------------
     /* package */ static void newJobIsReadyOn(QueueDescriptor descriptor)
     {
         Number id = descriptor.id();
         assert id != null;
-        if (descriptor.editingContext() != queueContext())
-        {
-            EOEditingContext qc = queueContext();
-            try
-            {
-                qc.lock();
-                descriptor = descriptor.localInstance(qc);
-            }
-            finally
-            {
-                qc.unlock();
-            }
-        }
         TokenDispenser dispenser = null;
         synchronized (dispensers)
         {
@@ -298,13 +242,8 @@ public class QueueDescriptor
 
     // ----------------------------------------------------------
     // Used by QueueDelegate
-    /* package */ static EOEditingContext queueContext()
+    private static EOEditingContext queueContext()
     {
-        if (_ec == null)
-        {
-            _ec = Application.newPeerEditingContext();
-            _ec.setDelegate(new QueueDelegate());
-        }
         return _ec;
     }
 
@@ -357,6 +296,10 @@ public class QueueDescriptor
     //~ Instance/static variables .............................................
 
     private static EOEditingContext _ec;
+    static {
+        _ec = Application.newPeerEditingContext();
+        _ec.setDelegate(new QueueDelegate());
+    }
 
     // Accessed by inner QueueDelegate
     /* package */ static Map<Number, TokenDispenser> dispensers =

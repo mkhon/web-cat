@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.2 2010/09/27 04:19:54 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.3 2011/12/06 18:38:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:19:54 $
+ * @version $Revision: 1.3 $, $Date: 2011/12/06 18:38:25 $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -87,15 +87,25 @@ public class FullPrintableReport
         {
             formattedFiles = new NSMutableArray<Pair>();
             Pair[] rawPairs = (Pair[])task.result();
-            if ( rawPairs != null )
+            if (rawPairs != null && rawPairs.length > 0)
             {
-                for (int i = 0; i < rawPairs.length; i++ )
+                EOEditingContext taskContext =
+                    rawPairs[0].file.editingContext();
+                try
                 {
-                    Pair pair = new Pair();
-                    formattedFiles.addObject( pair );
-                    pair.file = rawPairs[i].file
-                        .localInstance( localContext() );
-                    pair.html = rawPairs[i].html;
+                    taskContext.lock();
+                    for (int i = 0; i < rawPairs.length; i++)
+                    {
+                        Pair pair = new Pair();
+                        formattedFiles.addObject(pair);
+                        pair.file = rawPairs[i].file
+                            .localInstance(localContext());
+                        pair.html = rawPairs[i].html;
+                    }
+                }
+                finally
+                {
+                    taskContext.unlock();
                 }
             }
             task.resultNoLongerNeeded();
@@ -200,8 +210,7 @@ public class FullPrintableReport
 
                     for ( int i = 0; i < files.count(); i++ )
                     {
-                        SubmissionFileStats file =
-                            (SubmissionFileStats)files.objectAtIndex( i );
+                        SubmissionFileStats file = files.objectAtIndex(i);
                         pairs[i] = new Pair();
                         pairs[i].file = file;
                         int lines = file.loc();

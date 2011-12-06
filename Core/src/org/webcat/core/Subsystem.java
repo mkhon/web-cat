@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.4 2010/10/23 20:39:08 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.5 2011/12/06 18:35:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -47,7 +47,7 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2010/10/23 20:39:08 $
+ *  @version $Revision: 1.5 $, $Date: 2011/12/06 18:35:49 $
  */
 public class Subsystem
 {
@@ -121,7 +121,7 @@ public class Subsystem
             // Otherwise, try to create one directly from properties
             if (descriptor == null)
             {
-                log.warn("Unable to find feature descriptor for " + name()
+                log.debug("Unable to find feature descriptor for " + name()
                     + " via adaptor.  Creating one from properties.");
                 descriptor = new FeatureDescriptor(
                     name(), Application.configurationProperties(), false);

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.18 2011/05/19 16:51:49 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.19 2011/12/06 18:38:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -40,7 +40,7 @@ import org.webcat.ui.util.ComponentIDGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.18 $, $Date: 2011/05/19 16:51:49 $
+ * @version $Revision: 1.19 $, $Date: 2011/12/06 18:38:25 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -123,6 +123,8 @@ public class StudentsForAssignmentPage
 
         NSMutableArray<Submission> staffSubs =
             new NSMutableArray<Submission>();
+        NSArray<User> admins = User.administrators(localContext());
+
         for (AssignmentOffering ao : offerings.displayedObjects())
         {
             // Stuff the index variable into the public key so the group/stats
@@ -142,7 +144,8 @@ public class StudentsForAssignmentPage
                             localContext(),
                             ao,
                             true,  // omitPartners
-                            ao.courseOffering().staff(),
+                            ao.courseOffering().staff()
+                                .arrayByAddingObjectsFromArray(admins),
                             null)));
         }
 

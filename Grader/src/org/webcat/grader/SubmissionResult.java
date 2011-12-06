@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.10 2011/05/19 16:52:34 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.11 2011/12/06 18:38:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2011/05/19 16:52:34 $
+ *  @version $Revision: 1.11 $, $Date: 2011/12/06 18:38:25 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -114,37 +114,6 @@ public class SubmissionResult
             }
         }
         return submission();
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Computes the difference between the submission time and the
-     * due date/time, and renders it in a human-readable string.
-     *
-     * @return the string representation of how early or late
-     */
-    public String earlyLateStatus()
-    {
-        String result = null;
-        Submission submission = submission();
-        long submitTime = submission.submitTime().getTime();
-        long dueTime = submission.assignmentOffering().dueDate().getTime();
-        if ( dueTime >= submitTime )
-        {
-            // Early submission
-            result =
-                Submission.getStringTimeRepresentation( dueTime - submitTime )
-                + " early";
-        }
-        else
-        {
-            // Late submission
-            result =
-                Submission.getStringTimeRepresentation( submitTime - dueTime )
-                + " late";
-        }
-        return result;
     }
 
 
