@@ -720,9 +720,9 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	public static void setup(String[] argv) {
 	    if (_loader == null)
 	    {
-		System.out.println("setup(" + Arrays.toString(argv) + ")");
-		System.out.println("    _DisableClasspathReorder = "
-				+ System.getProperty("_DisableClasspathReorder"));
+//		System.out.println("setup(" + Arrays.toString(argv) + ")");
+//		System.out.println("    _DisableClasspathReorder = "
+//				+ System.getProperty("_DisableClasspathReorder"));
 		_loader = new Loader(argv);
 		if (System.getProperty("_DisableClasspathReorder") == null) {
 			ClassLoader loader = AppClassLoader.getAppClassLoader();
@@ -1514,8 +1514,8 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 			else {
 				// We log just in case the log4j call puts us in a bad
 				// state.
-				NSLog.err.appendln("java.lang.Error \"" + throwable.getClass().getName() + "\" occured.");
-				log.error("java.lang.Error \"" + throwable.getClass().getName() + "\" occured.", throwable);
+				NSLog.err.appendln("java.lang.Error \"" + throwable.getClass().getName() + "\" occurred.");
+				log.error("java.lang.Error \"" + throwable.getClass().getName() + "\" occurred.", throwable);
 			}
 			if (shouldQuit)
 				Runtime.getRuntime().exit(1);
