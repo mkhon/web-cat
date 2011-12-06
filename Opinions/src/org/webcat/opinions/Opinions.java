@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Opinions.java,v 1.3 2011/01/21 18:11:59 stedwar2 Exp $
+ |  $Id: Opinions.java,v 1.4 2011/12/06 18:41:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -42,7 +42,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/01/21 18:11:59 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/06 18:41:24 $
  */
 public class Opinions
     extends Subsystem
@@ -87,9 +87,9 @@ public class Opinions
     // ----------------------------------------------------------
     public void start()
     {
-        new SurveyReminderWorker().start();
-
-        new SurveyReminderWatcher().start();
+//        new SurveyReminderWorker().start();
+//
+//        new SurveyReminderWatcher().start();
     }
 
 
@@ -128,6 +128,10 @@ public class Opinions
 
 
     // ----------------------------------------------------------
+    /**
+     * A thread that checks every 24 hours for new assignments where
+     * track opinions is set, and creates survey reminder jobs for them.
+     */
     private static class SurveyReminderWatcher
         extends Thread
     {
