@@ -26,13 +26,16 @@
     </wo:WCStyledTable>
 </wo:WCPageModule>
 <wo:if condition="$result.isComplete">
-    <wo name="FeedbackSections">
+    <wo:loop list="$feedbackSections" item="$feedbackSection">
         <wo:WCPageModule title="$feedbackSection.title" open="~!feedbackSection.isCollapsed">
             <wo name="FeedbackSectionContent"/>
         </wo:WCPageModule>
-    </wo>
+        <wo:WCPageModule title="$feedbackSection.title" open="~!feedbackSection.isCollapsed">
+          <wo:org.webcat.grader.PartialInlineReport file="$feedbackSection.feedbackFile" styleVersion="$1"/>
+        </wo:WCPageModule>
+    </wo:loop>
 </wo:if>
 <wo:WCPageModule title="Generated Result Files" dynamic="true" open="false" id="fileBrowserModule">
-    <wo name="FileBrowser"/>
+    <wo:org.webcat.core.FileBrowser file="$result.resultDir" initialExpansionDepth="$1"/>
 </wo:WCPageModule>
 </wo>

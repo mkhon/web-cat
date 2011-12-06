@@ -38,7 +38,7 @@
         <wo:WCTableRows item="$batchResult">
             <wo:WCTableRow>
                 <td><wo name="ViewBatchResult"/></td>
-                <td style="font-size: smaller">(plug-in version <wo:str value="$batchResult.batchPlugin.descriptor.currentVersion"/>)</td>
+                <td style="font-size: smaller">(<wo:str value="$batchResult.batchPlugin.name"/> v<wo:str value="$batchResult.batchPlugin.descriptor.currentVersion"/>)</td>
                 <td><wo:str value="$batchResult.completedTime" formatter="$session.timeFormatter"/></td>
             </wo:WCTableRow>
         </wo:WCTableRows>

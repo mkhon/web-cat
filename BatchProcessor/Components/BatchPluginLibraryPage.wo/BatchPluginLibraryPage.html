@@ -61,8 +61,8 @@
         <div class="shadow"><table><thead>
         <tr>
             <th>Unpublished Batch Plug-ins
-                <wo:if condition="$terse"><wo name="TerseDescriptions"/></wo:if>
-                <wo:else><wo name="VerboseDescriptions"/></wo:else>
+                <wo:if condition="$terse"><wo name="VerboseDescriptions"/></wo:if>
+                <wo:else><wo name="TerseDescriptions"/></wo:else>
             </th>
             <th class="sm">Upload Date</th>
             <th>Will Update?</th>
@@ -163,8 +163,9 @@
 
 <wo:WCPageModule title="Upload a New Batch Plug-in">
 <p>
-Upload a new template: <wo name="TemplateUpload"/> <wo name="Upload"/>
+Upload a new plug-in: <wo name="PluginUpload"/>
 </p>
+<p><wo name="Upload"/></p>
 <p>
 A plug-in is packaged as a zip or jar file that contains meta-data describing
 the plug-in's capabilities and configuration scheme.

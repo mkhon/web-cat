@@ -13,13 +13,3 @@ FeedbackSectionContent: WOGenericContainer {
     adjustPaths = true;
     preload     = true;
 }
-
-FeedbackSections: WORepetition {
-    list = feedbackSections;
-    item = feedbackSection;
-}
-
-FileBrowser: org.webcat.core.FileBrowser {
-    file                  = result.resultDir;
-    initialExpansionDepth = 1;
-}

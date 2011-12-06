@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchWorkerThread.java,v 1.3 2010/10/15 00:39:16 stedwar2 Exp $
+ |  $Id: BatchWorkerThread.java,v 1.4 2011/12/06 18:08:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -49,7 +49,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author  Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/15 00:39:16 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/06 18:08:28 $
  */
 public class BatchWorkerThread extends WorkerThread<BatchJob>
 {
@@ -408,6 +408,16 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         properties.setProperty("scriptData", BatchPlugin.pluginDataRoot());
         properties.setProperty("frameworksBaseURL",
             Application.wcApplication().frameworksBaseURL());
+        System.out.println("initializeBatchProperties():\n--------------------");
+        try
+        {
+            info.batchProperties.store(System.out, "Properties contents:");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println("--------------------\n");
     }
 
 
@@ -416,13 +426,26 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
     {
         info.batchProperties.clear();
         info.batchProperties.load(info.batchPropertiesFile.getAbsolutePath());
+        System.out.println("reloadBatchProperties():\n--------------------");
+        try
+        {
+            info.batchProperties.store(System.out, "Properties contents:");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println("--------------------\n");
     }
 
 
     // ----------------------------------------------------------
     private void rewriteBatchProperties(JobInfo info)
-    throws IOException
+        throws IOException
     {
+        System.out.println("rewriteBatchProperties():\n--------------------");
+        info.batchProperties.store(System.out, "Properties contents:");
+        System.out.println("--------------------\n");
         BufferedOutputStream out = new BufferedOutputStream(
                 new FileOutputStream(info.batchPropertiesFile));
         info.batchProperties.store(out,

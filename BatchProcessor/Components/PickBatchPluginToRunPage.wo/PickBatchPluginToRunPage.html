@@ -12,7 +12,9 @@
         </wo:WCTableHeadings>
         <wo:WCTableRows item="$batchPlugin">
             <wo:WCTableRow>
-                <td><wo name="ChoosePlugin"/></td>
+                <td><wo name="ChoosePlugin"/><wo:if condition="$batchPlugin.description">
+                    <br/><wo:str value="$batchPlugin.configDescription.description"/>
+                </wo:if></td>
                 <td><wo:str value="$batchPlugin.descriptor.currentVersion"/></td>
                 <td><wo:str value="$batchPlugin.author.name"/></td>
             </wo:WCTableRow>

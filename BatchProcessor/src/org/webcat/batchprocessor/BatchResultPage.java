@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchResultPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchResultPage.java,v 1.3 2011/12/06 18:08:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2011/12/06 18:08:28 $
  */
 public class BatchResultPage extends WCComponent
     implements WCPageWithJobMonitoring.Delegate
@@ -98,6 +98,20 @@ public class BatchResultPage extends WCComponent
     public WOActionResults jobWasCancelled()
     {
         return pageWithName(PickBatchResultToViewPage.class);
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean feedbackSectionIsOpen()
+    {
+        return !feedbackSection.isCollapsed();
+    }
+
+
+    // ----------------------------------------------------------
+    public void setFeedbackSectionIsOpen(boolean value)
+    {
+        // ignore set calls ... just for KVC compliance.
     }
 
 

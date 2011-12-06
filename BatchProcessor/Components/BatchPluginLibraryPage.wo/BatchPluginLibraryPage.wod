@@ -45,7 +45,7 @@ EditGlobalOptions: WOActiveImage {
     action    = editGlobalSettings;
 }
 
-TemplateUpload: WOFileUpload {
+PluginUpload: WOFileUpload {
     dojoType = "dojox.form.FileInput";
     data     = uploadedData;
     filePath = uploadedName;

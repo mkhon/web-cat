@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchPluginLibraryPage.java,v 1.3 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchPluginLibraryPage.java,v 1.4 2011/12/06 18:08:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.webcat.core.WCComponent;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/06 18:08:28 $
  */
 public class BatchPluginLibraryPage
     extends WCComponent
@@ -70,23 +70,22 @@ public class BatchPluginLibraryPage
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public void appendToResponse( WOResponse response, WOContext context )
+    public void appendToResponse(WOResponse response, WOContext context)
     {
         terse = null;
         publishedPluginsGroup.fetch();
-        if ( user().hasAdminPrivileges() )
+        if (user().hasAdminPrivileges())
         {
             unpublishedPluginsGroup.fetch();
         }
         else
         {
             personalPluginsGroup.queryBindings().setObjectForKey(
-                user(), "author"
-            );
+                user(), "author");
             personalPluginsGroup.fetch();
         }
 
-        super.appendToResponse( response, context );
+        super.appendToResponse(response, context);
     }
 
 
@@ -97,7 +96,7 @@ public class BatchPluginLibraryPage
      */
     public boolean canDownload()
     {
-        return batchPlugin.descriptor().getProperty( "provider.url" ) != null;
+        return batchPlugin.descriptor().getProperty("provider.url") != null;
     }
 
 
@@ -108,9 +107,9 @@ public class BatchPluginLibraryPage
      */
     public WOComponent upload()
     {
-        if ( uploadedName == null || uploadedData == null )
+        if (uploadedName == null || uploadedData == null)
         {
-            error( "Please select a file to upload." );
+            error("Please select a file to upload.");
             return null;
         }
 
@@ -165,9 +164,9 @@ public class BatchPluginLibraryPage
                 EditBatchPluginFilesPage.class);
         newPage.nextPage = this;
         newPage.batchPlugin = batchPlugin;
-        newPage.hideNextAndBack( true );
+        newPage.hideNextAndBack(true);
         newPage.isEditable = user().hasAdminPrivileges() ||
-            user().equals( batchPlugin.author() );
+            user().equals(batchPlugin.author());
         return newPage;
     }
 
@@ -198,7 +197,7 @@ public class BatchPluginLibraryPage
      */
     public WOComponent togglePublished()
     {
-        batchPlugin.setIsPublished( !batchPlugin.isPublished() );
+        batchPlugin.setIsPublished(!batchPlugin.isPublished());
         applyLocalChanges();
         return null;
     }
@@ -244,10 +243,10 @@ public class BatchPluginLibraryPage
     public void toggleVerboseDescriptions()
     {
         boolean verboseDescriptions = ERXValueUtilities.booleanValue(
-            user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) );
+            user().preferences().objectForKey(TERSE_DESCRIPTIONS_KEY));
         verboseDescriptions = !verboseDescriptions;
         user().preferences().setObjectForKey(
-            Boolean.valueOf( verboseDescriptions ), TERSE_DESCRIPTIONS_KEY );
+            Boolean.valueOf(verboseDescriptions), TERSE_DESCRIPTIONS_KEY);
         user().savePreferences();
     }
 
@@ -263,9 +262,8 @@ public class BatchPluginLibraryPage
     {
         if ( terse == null )
         {
-            terse = ERXValueUtilities.booleanValue(
-                user().preferences().objectForKey( TERSE_DESCRIPTIONS_KEY ) )
-                ? Boolean.TRUE : Boolean.FALSE;
+            terse = Boolean.valueOf(ERXValueUtilities.booleanValue(
+                user().preferences().objectForKey(TERSE_DESCRIPTIONS_KEY)));
         }
         return terse;
     }
@@ -274,5 +272,5 @@ public class BatchPluginLibraryPage
     //~ Instance/static variables .............................................
 
     private Boolean terse;
-    static Logger log = Logger.getLogger( BatchPluginLibraryPage.class );
+    static Logger log = Logger.getLogger(BatchPluginLibraryPage.class);
 }
