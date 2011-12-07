@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.6 2011/12/06 18:39:23 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.7 2011/12/07 02:06:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2011/12/06 18:39:23 $
+ * @version $Revision: 1.7 $, $Date: 2011/12/07 02:06:54 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -204,7 +204,15 @@ public class QueueDescriptor
                 dispensers.put(id, dispenser);
             }
         }
-        dispenser.getJobToken();
+        try
+        {
+            descriptor.editingContext().unlock();
+            dispenser.getJobToken();
+        }
+        finally
+        {
+            descriptor.editingContext().lock();
+        }
     }
 
 

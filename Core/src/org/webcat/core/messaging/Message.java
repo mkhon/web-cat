@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Message.java,v 1.6 2011/12/06 18:35:20 stedwar2 Exp $
+ |  $Id: Message.java,v 1.7 2011/12/07 02:06:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -56,7 +56,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2011/12/06 18:35:20 $
+ * @version $Revision: 1.7 $, $Date: 2011/12/07 02:06:55 $
  */
 public abstract class Message
 {
@@ -411,10 +411,7 @@ public abstract class Message
      */
     public final synchronized void send()
     {
-        recycleEditingContext();
-
         // Store the message in the database.
-
         storeMessage();
 
         // Use the application's registered message dispatcher to send the
@@ -483,27 +480,6 @@ public abstract class Message
 
     // ----------------------------------------------------------
     /**
-     * Recycles the editing context after every 20 calls to {@link #send()}.
-     */
-    private synchronized void recycleEditingContext()
-    {
-        recycleCount++;
-
-        if (recycleCount == 20)
-        {
-            if (editingContext != null)
-            {
-                Application.releasePeerEditingContext(editingContext);
-                editingContext = null;
-            }
-
-            recycleCount = 0;
-        }
-    }
-
-
-    // ----------------------------------------------------------
-    /**
      * Gets the editing context used during the sending of this message.
      * Subclasses can access this editing context during the message sending
      * cycle if they need to fetch EOs.
@@ -523,7 +499,6 @@ public abstract class Message
 
     //~ Static/instance variables .............................................
 
-    private int recycleCount = 0;
     private EOEditingContext editingContext;
 
     private static Map<Class<? extends Message>, MessageDescriptor> descriptors

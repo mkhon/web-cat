@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.8 2011/05/19 16:54:01 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.9 2011/12/07 02:06:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2011/05/19 16:54:01 $
+ *  @version $Revision: 1.9 $, $Date: 2011/12/07 02:06:54 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -217,7 +217,22 @@ public class GradingPlugin
             command = command + " " + args;
         }
 
-        Application.wcApplication().executeExternalCommand( command, cwd );
+        EOEditingContext ec = editingContext();
+        try
+        {
+            if (ec != null)
+            {
+                ec.unlock();
+            }
+            Application.wcApplication().executeExternalCommand( command, cwd );
+        }
+        finally
+        {
+            if (ec != null)
+            {
+                ec.lock();
+            }
+        }
     }
 
 

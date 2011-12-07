@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.11 2011/06/09 15:50:00 aallowat Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.12 2011/12/07 02:06:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -33,8 +33,6 @@ import org.apache.log4j.Logger;
 import org.webcat.archives.ArchiveManager;
 import org.webcat.archives.IWritableContainer;
 import org.webcat.core.Application;
-import org.webcat.core.Course;
-import org.webcat.core.CourseOffering;
 import org.webcat.core.FileUtilities;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.RepositoryEntryRef;
@@ -54,7 +52,6 @@ import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSMutableSet;
-import com.webobjects.foundation.NSSet;
 import com.webobjects.foundation.NSTimestamp;
 import er.extensions.appserver.ERXApplication;
 import er.extensions.eof.ERXConstant;
@@ -66,8 +63,8 @@ import er.extensions.eof.ERXConstant;
  * job.
  *
  * @author  Amit Kulkarni
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.11 $, $Date: 2011/06/09 15:50:00 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.12 $, $Date: 2011/12/07 02:06:54 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -172,7 +169,9 @@ public class GraderQueueProcessor
                 // Get a job
                 log.debug( "waiting for a token" );
                 // We don't need the return value, since it is just null:
+                editingContext.unlock();
                 queue.getJobToken();
+                editingContext.lock();
                 log.debug( "token received." );
 
                 jobList = null;
@@ -293,7 +292,6 @@ public class GraderQueueProcessor
                                 // Database inconsistency problem
                                 try
                                 {
-                                    editingContext.revert();
                                     editingContext.unlock();
                                     Application.releasePeerEditingContext(
                                         editingContext);
@@ -335,6 +333,13 @@ public class GraderQueueProcessor
 
             log.fatal( "Aborting: job queue processing halted." );
             ERXApplication.erxApplication().killInstance();
+        }
+        finally
+        {
+            if (editingContext != null)
+            {
+                editingContext.unlock();
+            }
         }
     }
 
@@ -602,8 +607,10 @@ public class GraderQueueProcessor
         }
         else if (fileInfo instanceof NSDictionary<?, ?>)
         {
-            entryRef = RepositoryEntryRef.fromDictionary(
-                    (NSDictionary<String, Object>) fileInfo);
+            @SuppressWarnings("unchecked")
+            NSDictionary<String, Object> fileInfoDict =
+                (NSDictionary<String, Object>)fileInfo;
+            entryRef = RepositoryEntryRef.fromDictionary(fileInfoDict);
         }
 
         if (entryRef != null)
@@ -658,7 +665,9 @@ public class GraderQueueProcessor
             WCProperties properties, MutableDictionary fileSettings,
             boolean onlyIfNotDefined) throws IOException
     {
-        for (String property : (NSArray<String>) config.allKeys())
+        @SuppressWarnings("unchecked")
+        NSArray<String> keys = config.allKeys();
+        for (String property : keys)
         {
             if (!onlyIfNotDefined || !properties.containsKey(property))
             {
