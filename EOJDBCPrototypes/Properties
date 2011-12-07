@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Mon Oct 11 15:00:30 EDT 2010
+#Thu Nov 17 11:20:27 EST 2011
 er.extensions.ERXModelGroup.prototypeModelName=EOJDBCPrototypes
 EOJDBCPrototypes.license=GNU Affero General Public License v.3
 EOJDBCPrototypes.provider.url=http\://web-cat.cs.vt.edu/updates
@@ -9,9 +9,9 @@ EOJDBCPrototypes.version.revision=9
 subsystem.EOJDBCPrototypes=
 EOJDBCPrototypes.provider=Virginia Tech Computer Science
 dbConnectPluginGLOBAL=MySQL
-EOJDBCPrototypes.history.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes/ChangeHistory
 EOJDBCPrototypes.version.major=1
-EOJDBCPrototypes.version.date=20101011
+EOJDBCPrototypes.history.url=http\://web-cat.cs.vt.edu/WCWiki/EoJdbcPrototypes/ChangeHistory
+EOJDBCPrototypes.version.date=20111117
 EOJDBCPrototypes.description=This subsystem provides support services for all other subsystems by providing the common mappings from data types that Web-CAT deals with into those supported by the underlying database (MySQL).  This framework localizes this information so that porting to new databases will be easier.
-EOJDBCPrototypes.license.url=http\://www.gnu.org/licenses/agpl.html
 EOJDBCPrototypes.copyright=(c) 2006-2010 Virginia Tech Department of Computer Science
+EOJDBCPrototypes.license.url=http\://www.gnu.org/licenses/agpl.html
