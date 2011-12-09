@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.3 2010/10/14 18:50:09 stedwar2 Exp $
+ |  $Id: Step.java,v 1.4 2011/12/09 02:05:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/14 18:50:09 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/09 02:05:36 $
  */
 public class Step
     extends _Step

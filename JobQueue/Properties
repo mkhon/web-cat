@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Wed Nov 30 09:19:02 EST 2011
+#Thu Dec 08 20:48:24 EST 2011
 JobQueue.description=This subsystem contains the infrastructure used for running job queues in other Web-CAT subsystems.  It provides common base classes and features used by other subsystems.
 JobQueue.version.minor=0
 JobQueue.requires=Core, EOJDBCPrototypes, DBUpdateEngine
@@ -12,5 +12,5 @@ JobQueue.provider.url=http\://web-cat.org/updates
 JobQueue.info.url=http\://web-cat.org/WCWiki/JobQueueSubsystem
 JobQueue.provider=Virginia Tech Computer Science
 JobQueue.version.revision=4
-JobQueue.version.date=20111130
+JobQueue.version.date=20111208
 JobQueue.history.url=http\://web-cat.org/WCWiki/JobQueueSubsystem/ChangeHistory

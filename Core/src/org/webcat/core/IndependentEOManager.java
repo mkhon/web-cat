@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: IndependentEOManager.java,v 1.3 2011/10/25 13:07:58 stedwar2 Exp $
+ |  $Id: IndependentEOManager.java,v 1.4 2011/12/09 02:05:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -39,7 +39,7 @@ import com.webobjects.foundation.NSDictionary;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/10/25 13:07:58 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/09 02:05:35 $
  */
 public class IndependentEOManager
     implements EOManager
@@ -78,9 +78,9 @@ public class IndependentEOManager
         setClientContext(context);
 
         // Now create a mirror in a new EC
-        ecm.lock();
         try
         {
+            ecm.lock();
             mirror = ecm.localize(eo);
         }
         finally
@@ -101,12 +101,17 @@ public class IndependentEOManager
     {
         try
         {
+            ecm.lock();
             return (Number)EOUtilities.primaryKeyForObject(
                 mirror.editingContext(), mirror).objectForKey( "id" );
         }
         catch (Exception e)
         {
             return er.extensions.eof.ERXConstant.ZeroInteger;
+        }
+        finally
+        {
+            ecm.unlock();
         }
     }
 
@@ -121,7 +126,15 @@ public class IndependentEOManager
      */
     public EOEnterpriseObject localInstanceIn(EOEditingContext ec)
     {
-        return EOUtilities.localInstanceOfObject(ec, mirror);
+        try
+        {
+            ecm.lock();
+            return EOUtilities.localInstanceOfObject(ec, mirror);
+        }
+        finally
+        {
+            ecm.unlock();
+        }
     }
 
 
@@ -336,5 +349,5 @@ public class IndependentEOManager
     private EOEnterpriseObject  mirror;   // copy of EO in ecm context
     private EOEditingContext    clientContext;
 
-    static Logger log = Logger.getLogger( IndependentEOManager.class );
+    static Logger log = Logger.getLogger(IndependentEOManager.class);
 }

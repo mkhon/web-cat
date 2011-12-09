@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.10 2011/12/07 03:23:59 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.11 2011/12/09 02:05:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -38,7 +38,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2011/12/07 03:23:59 $
+ *  @version $Revision: 1.11 $, $Date: 2011/12/09 02:05:36 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -173,8 +173,8 @@ public class GradingPlugin
             }
             catch (IOException e)
             {
-                log.error("An error occurred while retrieving the canonical path "
-                        + "of the file " + file.toString());
+                log.error("An error occurred while retrieving the canonical "
+                    + "path of the file " + file.toString());
             }
 
             return null;
@@ -425,8 +425,10 @@ public class GradingPlugin
     private void addFilePropertiesToDictionary(MutableDictionary fileProps,
             NSArray<?> options)
     {
-        for (NSDictionary<String, ?> option :
-            (NSArray<NSDictionary<String, ?>>) options)
+        @SuppressWarnings("unchecked")
+        NSArray<NSDictionary<String, ?>> optionsDict =
+            (NSArray<NSDictionary<String, ?>>) options;
+        for (NSDictionary<String, ?> option : optionsDict)
         {
             if (option.objectForKey("disable") == null)
             {

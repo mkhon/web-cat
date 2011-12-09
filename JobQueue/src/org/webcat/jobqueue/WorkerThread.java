@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.7 2011/12/06 18:39:23 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.8 2011/12/09 02:05:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009-2009 Virginia Tech
  |
@@ -46,7 +46,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2011/12/06 18:39:23 $
+ * @version $Revision: 1.8 $, $Date: 2011/12/09 02:05:35 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -463,16 +463,11 @@ public abstract class WorkerThread<Job extends JobBase>
                 logDebug("waiting for queue to wake me");
                 try
                 {
-                    localContext().unlock();
                     queueDescriptor().waitForNextJob();
                 }
                 catch (Exception e)
                 {
                     // If this blows up, just repeat the loop and try again
-                }
-                finally
-                {
-                    localContext().lock();
                 }
                 logDebug("woken by the queue");
             }
@@ -604,8 +599,19 @@ public abstract class WorkerThread<Job extends JobBase>
     // ----------------------------------------------------------
     private void logDebug(Object obj)
     {
-        log.debug(queueDescriptor().jobEntityName()
+        if (log.isDebugEnabled())
+        {
+            if (ec != null)
+            {
+                ec.lock();
+            }
+            log.debug(queueDescriptor().jobEntityName()
                 + " worker thread " + getId() + ": " + obj);
+            if (ec != null)
+            {
+                ec.unlock();
+            }
+        }
     }
 
 

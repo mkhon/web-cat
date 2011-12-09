@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ManagedQueueDescriptor.java,v 1.4 2011/12/06 18:39:23 stedwar2 Exp $
+ |  $Id: ManagedQueueDescriptor.java,v 1.5 2011/12/09 02:05:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2009 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.core.IndependentEOManager;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/06 18:39:23 $
+ * @version $Revision: 1.5 $, $Date: 2011/12/09 02:05:35 $
  */
 public class ManagedQueueDescriptor
     extends IndependentEOManager
@@ -301,16 +301,8 @@ public class ManagedQueueDescriptor
     public void waitForNextJob()
     {
         EOEditingContext ec = clientContext();
-        try
-        {
-            ec.lock();
-            QueueDescriptor qd = (QueueDescriptor)localInstanceIn(ec);
-            QueueDescriptor.waitForNextJob(qd);
-        }
-        finally
-        {
-            ec.unlock();
-        }
+        QueueDescriptor qd = (QueueDescriptor)localInstanceIn(ec);
+        QueueDescriptor.waitForNextJob(qd);
     }
 
 
