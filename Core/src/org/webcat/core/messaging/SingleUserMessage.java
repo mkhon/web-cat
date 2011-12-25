@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MigratingEditingContext.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: SingleUserMessage.java,v 1.1 2011/12/25 02:24:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -19,34 +19,42 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package org.webcat.core;
+package org.webcat.core.messaging;
 
-import com.webobjects.eocontrol.EOEditingContext;
-import er.extensions.eof.ERXEC;
+import org.webcat.core.User;
+import com.webobjects.foundation.NSArray;
 
 //-------------------------------------------------------------------------
 /**
- * An editing context that is used to handle migration of attribute values in
- * EOs at the beginning of their life cycle. This class does not actually
- * contain any new functionality of its own; it acts merely as an "instanceof"
- * check to prevent an infinite loop in the EO's awake* methods when the object
- * has to be loaded into a child context for migration.
- * 
- * @author Tony Allevato
- * @version $Id: MigratingEditingContext.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * A message that is sent to one person.
+ *
+ * @author  Stephen Edwards
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.1 $ $Date: 2011/12/25 02:24:54 $
  */
-public class MigratingEditingContext extends ERXEC
+public abstract class SingleUserMessage
+    extends Message
 {
-    // ----------------------------------------------------------
-    public MigratingEditingContext()
-    {
-        super();
-    }
-    
+    //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
-    public MigratingEditingContext(EOEditingContext parent)
+    public SingleUserMessage(User user)
     {
-        super(parent);
+        users = new NSArray<User>(user.localInstance(editingContext()));
     }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public NSArray<User> users()
+    {
+        return users;
+    }
+
+
+    //~ Static/instance variables .............................................
+
+    private NSArray<User> users;
 }

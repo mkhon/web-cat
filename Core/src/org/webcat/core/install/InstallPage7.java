@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage7.java,v 1.2 2011/03/07 18:44:50 stedwar2 Exp $
+ |  $Id: InstallPage7.java,v 1.3 2011/12/25 02:24:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.core.install;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.foundation.ERXValueUtilities;
 import java.util.Calendar;
@@ -32,6 +31,8 @@ import org.webcat.core.Course;
 import org.webcat.core.Department;
 import org.webcat.core.Semester;
 import org.webcat.core.WCConfigurationFile;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
  *
  *  @author Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:50 $
+ *  @version $Revision: 1.3 $, $Date: 2011/12/25 02:24:54 $
  */
 public class InstallPage7
     extends InstallPage
@@ -116,11 +117,9 @@ public class InstallPage7
 
 
     // ----------------------------------------------------------
-    public void takeFormValues( NSDictionary<?, ?> formValues )
+    public void takeFormValues( final NSDictionary<?, ?> formValues )
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
+        run(new ECAction() { public void action() {
             // SemesterCreate = ("1");
             if ( ERXValueUtilities.booleanValue(
                  extractFormValue( formValues, "SemesterCreate" ) ) )
@@ -282,11 +281,7 @@ public class InstallPage7
 
             // commit changes to the database
             ec.saveChanges();
-        }
-        finally
-        {
-            Application.releasePeerEditingContext( ec );
-        }
+        }});
         Application.configurationProperties().remove( "StartDate" );
         Application.configurationProperties().remove( "EndDate" );
     }

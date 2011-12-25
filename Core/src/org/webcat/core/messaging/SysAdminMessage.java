@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SysAdminMessage.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ |  $Id: SysAdminMessage.java,v 1.2 2011/12/25 02:24:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,10 +27,12 @@ package org.webcat.core.messaging;
  * be sent to any of the system administrator e-mail addresses that are
  * specified in the Web-CAT installation wizard.
  *
- * @author Tony Allevato
- * @version $Id: SysAdminMessage.java,v 1.1 2010/05/11 14:51:58 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/25 02:24:54 $
  */
-public abstract class SysAdminMessage extends Message
+public abstract class SysAdminMessage
+    extends Message
 {
     //~ Methods ...............................................................
 

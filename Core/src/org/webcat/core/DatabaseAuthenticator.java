@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: DatabaseAuthenticator.java,v 1.3 2011/06/08 20:54:54 stedwar2 Exp $
+ |  $Id: DatabaseAuthenticator.java,v 1.4 2011/12/25 02:24:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,6 +31,7 @@ import org.webcat.core.DatabaseAuthenticator;
 import org.webcat.core.User;
 import org.webcat.core.UserAuthenticator;
 import org.webcat.core.WCProperties;
+import org.webcat.woextensions.WCEC;
 import org.apache.log4j.Logger;
 
 // -------------------------------------------------------------------------
@@ -46,7 +47,8 @@ import org.apache.log4j.Logger;
  *  admitted.
  *
  *  @author Stephen Edwards
- *  @version $Id: DatabaseAuthenticator.java,v 1.3 2011/06/08 20:54:54 stedwar2 Exp $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.4 $, $Date: 2011/12/25 02:24:54 $
  */
 public class DatabaseAuthenticator
     implements UserAuthenticator
@@ -224,7 +226,7 @@ public class DatabaseAuthenticator
                                    String newPassword )
     {
         boolean result = false;
-        EOEditingContext ec = Application.newPeerEditingContext();
+        EOEditingContext ec = WCEC.newEditingContext();
         try
         {
             ec.lock();
@@ -236,7 +238,7 @@ public class DatabaseAuthenticator
         finally
         {
             ec.unlock();
-            Application.releasePeerEditingContext( ec );
+            ec.dispose();
         }
         return result;
     }

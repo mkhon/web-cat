@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.2 2011/10/25 12:59:44 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.3 2011/12/25 02:24:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -66,7 +66,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2011/10/25 12:59:44 $
+ * @version $Revision: 1.3 $, $Date: 2011/12/25 02:24:54 $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -447,7 +447,8 @@ public class WCComponent
         catch ( Exception e )
         {
             new UnexpectedExceptionMessage(e, context(), null,
-                "Exception trying to save component's local changes" ).send();
+                "Exception trying to save component's local changes" )
+                .send();
             // forces revert and refaultAllObjects
             cancelLocalChanges();
             String msg =

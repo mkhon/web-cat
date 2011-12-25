@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EntityResourceRequestHandler.java,v 1.10 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: EntityResourceRequestHandler.java,v 1.11 2011/12/25 02:24:54 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2011 Virginia Tech
  |
@@ -28,6 +28,8 @@ import org.webcat.core.Application;
 import org.webcat.core.EntityResourceRequestHandler;
 import org.webcat.core.EntityResourceHandler;
 import org.webcat.core.Session;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 import org.apache.log4j.Logger;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WORequest;
@@ -61,10 +63,11 @@ import er.extensions.eof.ERXQ;
  * </p>
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.10 $, $Date: 2011/05/13 19:46:57 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.11 $, $Date: 2011/12/25 02:24:54 $
  */
-public class EntityResourceRequestHandler extends WORequestHandler
+public class EntityResourceRequestHandler
+    extends WORequestHandler
 {
     //~ Methods ...............................................................
 
@@ -189,15 +192,18 @@ public class EntityResourceRequestHandler extends WORequestHandler
 
 
     // ----------------------------------------------------------
-    private void _handleRequest(WORequest request, WOContext context,
-            WOResponse response, Session session)
+    private void _handleRequest(
+        final WORequest request,
+        final WOContext context,
+        final WOResponse response,
+        final Session session)
     {
-        String handlerPath = request.requestHandlerPath();
+        final String handlerPath = request.requestHandlerPath();
 
         // Parse the request path into its entity, object ID, and resource
         // path.
 
-        EntityRequestInfo entityRequest =
+        final EntityRequestInfo entityRequest =
             EntityRequestInfo.fromRequestHandlerPath(handlerPath);
 
         if (entityRequest == null
@@ -210,12 +216,7 @@ public class EntityResourceRequestHandler extends WORequestHandler
             return;
         }
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-
-        try
-        {
-            ec.lock();
-
+        run(new ECAction() { public void action() {
             EntityResourceHandler<EOEnterpriseObject> handler =
                 handlerForEntityNamed(entityRequest.entityName(), ec);
 
@@ -251,7 +252,8 @@ public class EntityResourceRequestHandler extends WORequestHandler
                                     + " tried to access entity resource "
                                     + "without permission");
 
-                            response.setStatus(WOResponse.HTTP_STATUS_FORBIDDEN);
+                            response.setStatus(
+                                WOResponse.HTTP_STATUS_FORBIDDEN);
                         }
                     }
                     else
@@ -272,12 +274,7 @@ public class EntityResourceRequestHandler extends WORequestHandler
 
                 response.setStatus(WOResponse.HTTP_STATUS_NOT_FOUND);
             }
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext(ec);
-        }
+        }});
     }
 
 
