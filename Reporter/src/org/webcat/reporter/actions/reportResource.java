@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: reportResource.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: reportResource.java,v 1.2 2011/12/25 21:18:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,16 +24,15 @@ package org.webcat.reporter.actions;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
-import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSData;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import org.apache.log4j.Logger;
-import org.webcat.core.Application;
 import org.webcat.core.DirectAction;
 import org.webcat.reporter.GeneratedReport;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 
 //-------------------------------------------------------------------------
 /**
@@ -42,8 +41,9 @@ import org.webcat.reporter.GeneratedReport;
  * since this rendered content is not actually stored in a web-accessible
  * location.
  *
- * @author Tony Allevato
- * @version $Id: reportResource.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/25 21:18:25 $
  */
 public class reportResource
     extends DirectAction
@@ -66,30 +66,29 @@ public class reportResource
     // ----------------------------------------------------------
     public WOActionResults imageAction()
     {
-        WOResponse response = new WOResponse();
+        final WOResponse response = new WOResponse();
 
-        int reportId = Integer.parseInt(
-                request().stringFormValueForKey("reportId"));
-        String image = request().stringFormValueForKey("image");
+        final int reportId = Integer.parseInt(
+            request().stringFormValueForKey("reportId"));
+        final String image = request().stringFormValueForKey("image");
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        GeneratedReport report = GeneratedReport.forId(ec, reportId);
+        run(new ECAction() { public void action() {
+            GeneratedReport report = GeneratedReport.forId(ec, reportId);
 
-        File file = new File(report.renderedResourcePath(image));
+            File file = new File(report.renderedResourcePath(image));
 
-        try
-        {
-            NSData data = new NSData(new FileInputStream(file),
-                (int)file.length());
+            try
+            {
+                NSData data = new NSData(new FileInputStream(file),
+                    (int)file.length());
 
-            response.appendContentData(data);
-        }
-        catch (IOException e)
-        {
-            log.error(e);
-        }
-
-        Application.releasePeerEditingContext(ec);
+                response.appendContentData(data);
+            }
+            catch (IOException e)
+            {
+                log.error(e);
+            }
+        }});
 
         return response;
     }
@@ -98,36 +97,35 @@ public class reportResource
     // ----------------------------------------------------------
     public WOActionResults csvAction()
     {
-        WOResponse response = new WOResponse();
+        final WOResponse response = new WOResponse();
 
-        int reportId = Integer.parseInt(
-                request().stringFormValueForKey("reportId"));
-        String name = request().stringFormValueForKey("name");
+        final int reportId = Integer.parseInt(
+            request().stringFormValueForKey("reportId"));
+        final String name = request().stringFormValueForKey("name");
 
-        String filename = name + ".csv";
+        final String filename = name + ".csv";
 
         response.setHeader("text/csv", "Content-Type");
         response.setHeader("attachment; filename=\"" + filename + "\"",
             "Content-Disposition");
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        GeneratedReport report = GeneratedReport.forId(ec, reportId);
+        run(new ECAction() { public void action() {
+            GeneratedReport report = GeneratedReport.forId(ec, reportId);
 
-        File file = new File(report.renderedResourcePath(filename));
+            File file = new File(report.renderedResourcePath(filename));
 
-        try
-        {
-            NSData data = new NSData(new FileInputStream(file),
-                (int)file.length());
+            try
+            {
+                NSData data = new NSData(new FileInputStream(file),
+                    (int)file.length());
 
-            response.appendContentData(data);
-        }
-        catch (IOException e)
-        {
-            log.error(e);
-        }
-
-        Application.releasePeerEditingContext(ec);
+                response.appendContentData(data);
+            }
+            catch (IOException e)
+            {
+                log.error(e);
+            }
+        }});
 
         return response;
     }
@@ -136,17 +134,18 @@ public class reportResource
     // ----------------------------------------------------------
     public WOActionResults genericAction()
     {
-        WOResponse response = new WOResponse();
+        final WOResponse response = new WOResponse();
 
-        int reportId = Integer.parseInt(
-                request().stringFormValueForKey("reportId"));
+        final int reportId = Integer.parseInt(
+            request().stringFormValueForKey("reportId"));
         String name = request().stringFormValueForKey("name");
         String type = request().stringFormValueForKey("contentType");
-        String deliveredName = request().stringFormValueForKey("deliveredName");
+        String deliveredName =
+            request().stringFormValueForKey("deliveredName");
         boolean inline = Boolean.parseBoolean(
-                request().stringFormValueForKey("inline"));
+            request().stringFormValueForKey("inline"));
 
-        String filename = name;
+        final String filename = name;
 
         if(deliveredName == null)
         {
@@ -157,28 +156,28 @@ public class reportResource
 
         if(!inline)
         {
-            response.setHeader("attachment; filename=\"" + deliveredName + "\"",
+            response.setHeader(
+                "attachment; filename=\"" + deliveredName + "\"",
                 "Content-Disposition");
         }
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        GeneratedReport report = GeneratedReport.forId(ec, reportId);
+        run(new ECAction() { public void action() {
+            GeneratedReport report = GeneratedReport.forId(ec, reportId);
 
-        File file = new File(report.renderedResourcePath(filename));
+            File file = new File(report.renderedResourcePath(filename));
 
-        try
-        {
-            NSData data = new NSData(new FileInputStream(file),
-                (int)file.length());
+            try
+            {
+                NSData data = new NSData(new FileInputStream(file),
+                    (int)file.length());
 
-            response.appendContentData(data);
-        }
-        catch (IOException e)
-        {
-            log.error(e);
-        }
-
-        Application.releasePeerEditingContext(ec);
+                response.appendContentData(data);
+            }
+            catch (IOException e)
+            {
+                log.error(e);
+            }
+        }});
 
         return response;
     }

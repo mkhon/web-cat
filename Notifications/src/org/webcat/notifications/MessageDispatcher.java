@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MessageDispatcher.java,v 1.4 2011/12/06 18:40:16 stedwar2 Exp $
+ |  $Id: MessageDispatcher.java,v 1.5 2011/12/25 21:18:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -41,8 +41,8 @@ import com.webobjects.foundation.NSMutableArray;
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/06 18:40:16 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2011/12/25 21:18:26 $
  */
 public class MessageDispatcher
     implements IMessageDispatcher
@@ -82,58 +82,58 @@ public class MessageDispatcher
     {
         EOEditingContext ec = message.editingContext();
 
-        try
+        SendMessageJob job = SendMessageJob.create(ec, message.isSevere());
+
+        IMessageSettings settings = message.broadcastSettings();
+        if (settings instanceof ProtocolSettings)
         {
-            ec.lock();
-
-            SendMessageJob job = SendMessageJob.create(ec, message.isSevere());
-
-            IMessageSettings settings = message.broadcastSettings();
-            if (settings instanceof ProtocolSettings)
-            {
-                job.setBroadcastProtocolSettingsRelationship(
-                        ProtocolSettings.localInstance(ec,
-                                (ProtocolSettings) settings));
-            }
-            else if (settings != null)
-            {
-                job.setBroadcastProtocolSettingsSnapshot(
-                        settings.settingsSnapshot());
-            }
-            else
-            {
-                job.setBroadcastProtocolSettingsRelationship(
-                        ProtocolSettings.systemSettings(ec));
-            }
-
-            job.setMessageType(message.messageType());
-            job.setTitle(message.title());
-            job.setShortBody(message.shortBody());
-            job.setFullBody(message.fullBody());
-
-            if (message.links() != null)
-            {
-                job.setLinks(new MutableDictionary(message.links()));
-            }
-
-            if (message.attachments() != null)
-            {
-                job.setAttachments(new MutableDictionary(
-                        message.attachments()));
-            }
-
-            for (User user : message.users())
-            {
-                job.addToDestinationUsers(user.localInstance(ec));
-            }
-
-            job.setIsReady(true);
-            ec.saveChanges();
+            job.setBroadcastProtocolSettingsRelationship(
+                    ProtocolSettings.localInstance(ec,
+                            (ProtocolSettings) settings));
         }
-        finally
+        else if (settings != null)
         {
-            ec.unlock();
+            job.setBroadcastProtocolSettingsSnapshot(
+                    settings.settingsSnapshot());
         }
+        else
+        {
+            job.setBroadcastProtocolSettingsRelationship(
+                    ProtocolSettings.systemSettings(ec));
+        }
+
+        job.setMessageType(message.messageType());
+        job.setTitle(message.title());
+        job.setShortBody(message.shortBody());
+        job.setFullBody(message.fullBody());
+
+        if (message.links() != null)
+        {
+            job.setLinks(new MutableDictionary(message.links()));
+        }
+
+        job.setAttachments(message.attachments());
+
+        NSArray<User> users = message.users();
+        if (users != null && users.count() > 0)
+        {
+            EOEditingContext userContext = users.get(0).editingContext();
+            userContext.lock();
+            try
+            {
+                for (User user : message.users())
+                {
+                    job.addToDestinationUsers(user.localInstance(ec));
+                }
+            }
+            finally
+            {
+                userContext.unlock();
+            }
+        }
+
+        job.setIsReady(true);
+        ec.saveChanges();
     }
 
 

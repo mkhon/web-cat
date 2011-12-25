@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WorkerThread.java,v 1.8 2011/12/09 02:05:35 stedwar2 Exp $
+ |  $Id: WorkerThread.java,v 1.9 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009-2009 Virginia Tech
+ |  Copyright (C) 2009-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.webcat.core.Application;
+import org.webcat.woextensions.WCEC;
 import org.webcat.woextensions.WCFetchSpecification;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eoaccess.EOUtilities;
@@ -46,7 +47,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2011/12/09 02:05:35 $
+ * @version $Revision: 1.9 $, $Date: 2011/12/25 21:18:24 $
  */
 public abstract class WorkerThread<Job extends JobBase>
     extends Thread
@@ -61,21 +62,14 @@ public abstract class WorkerThread<Job extends JobBase>
      */
     public WorkerThread(String queueEntity)
     {
+        setName(this.getClass().getSimpleName() + "-" + getId());
         EOEditingContext myec = localContext();
-        try
-        {
-            myec.lock();
-            descriptor = new ManagedWorkerDescriptor(
-                WorkerDescriptor.registerWorker(
-                    myec,
-                    HostDescriptor.currentHost(myec),
-                    QueueDescriptor.descriptorFor(myec, queueEntity),
-                    this));
-        }
-        finally
-        {
-            myec.unlock();
-        }
+        descriptor = new ManagedWorkerDescriptor(
+            WorkerDescriptor.registerWorker(
+                myec,
+                HostDescriptor.currentHost(myec),
+                QueueDescriptor.descriptorFor(myec, queueEntity),
+                this));
     }
 
 
@@ -138,8 +132,6 @@ public abstract class WorkerThread<Job extends JobBase>
         {
             try
             {
-                localContext().lock();
-
                 killCancelledJobs();
                 waitForAvailableJob();
 
@@ -152,6 +144,7 @@ public abstract class WorkerThread<Job extends JobBase>
                 }
                 catch (Exception e)
                 {
+                    localContext().revert();
                     jobFailed = true;
 
                     currentJob.setIsReady(false);
@@ -204,8 +197,7 @@ public abstract class WorkerThread<Job extends JobBase>
                         Number jobId = currentJob.id();
 
                         // Refresh the editing context.
-
-                        recycleAndRelockLocalContext();
+                        renewContext();
 
                         // Get a local instance of the job with the same id.
 
@@ -230,10 +222,7 @@ public abstract class WorkerThread<Job extends JobBase>
             {
                 // FIXME what should we do here?
                 log.error("Exception in worker thread:", e);
-            }
-            finally
-            {
-                localContext().unlock();
+                renewContext();
             }
         }
     }
@@ -332,29 +321,21 @@ public abstract class WorkerThread<Job extends JobBase>
     {
         if (ec == null)
         {
-            ec = Application.newPeerEditingContext();
-            try
+            ec = WCEC.newAutoLockingEditingContext();
+            if (queueDescriptor != null)
             {
-                ec.lock();
-                if (queueDescriptor != null)
-                {
-                    queueDescriptor = new ManagedQueueDescriptor(
-                        (QueueDescriptor)queueDescriptor.localInstanceIn(ec));
-                }
-                if (hostDescriptor != null)
-                {
-                    hostDescriptor = new ManagedHostDescriptor(
-                        (HostDescriptor)hostDescriptor.localInstanceIn(ec));
-                }
-                if (descriptor != null)
-                {
-                    descriptor = new ManagedWorkerDescriptor(
-                        (WorkerDescriptor)descriptor.localInstanceIn(ec));
-                }
+                queueDescriptor = new ManagedQueueDescriptor(
+                    (QueueDescriptor)queueDescriptor.localInstanceIn(ec));
             }
-            finally
+            if (hostDescriptor != null)
             {
-                ec.unlock();
+                hostDescriptor = new ManagedHostDescriptor(
+                    (HostDescriptor)hostDescriptor.localInstanceIn(ec));
+            }
+            if (descriptor != null)
+            {
+                descriptor = new ManagedWorkerDescriptor(
+                    (WorkerDescriptor)descriptor.localInstanceIn(ec));
             }
         }
         return ec;
@@ -366,15 +347,14 @@ public abstract class WorkerThread<Job extends JobBase>
      * Unlocks the thread's local editing context, recycles it, and then
      * relocks it.
      */
-    protected void recycleAndRelockLocalContext()
+    protected void renewContext()
     {
         // Unlock and release the current editing context
-        ec.unlock();
-        Application.releasePeerEditingContext(ec);
+        ec.dispose();
         ec = null;
 
-        // Generate a fresh editing context and lock it
-        localContext().lock();
+        // Generate a fresh editing context, which will auto-lock on demand
+        localContext();
     }
 
 

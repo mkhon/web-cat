@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.5 2011/10/26 15:24:30 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.6 2011/12/25 21:18:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008-2009 Virginia Tech
+ |  Copyright (C) 2008-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,6 +22,9 @@
 package org.webcat.jobqueue;
 
 import org.webcat.core.Application;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
+import org.webcat.woextensions.WCEC;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
@@ -39,9 +42,9 @@ import er.extensions.eof.ERXEOAccessUtilities;
  * {@link JobQueueDatabaseUpdates#createJobBaseTable(org.webcat.dbupdate.Database,String)}
  * method, which will generate the inherited field definitions for you.
  *
- * @author
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/10/26 15:24:30 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2011/12/25 21:18:25 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -153,10 +156,7 @@ public abstract class JobBase
 
         queueNeedsNotified = false;
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
+        run(new ECAction() { public void action() {
             QueueDescriptor queue = QueueDescriptor.descriptorFor(
                 ec, entityName());
 
@@ -181,12 +181,7 @@ public abstract class JobBase
 
             log.debug(entityName() + " queue newest id now "
                 + queue.newestEntryId());
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext(ec);
-        }
+        }});
     }
 
 

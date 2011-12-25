@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Reporter.java,v 1.2 2010/10/23 20:44:08 stedwar2 Exp $
+ |  $Id: Reporter.java,v 1.3 2011/12/25 21:18:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,16 +34,17 @@ import org.eclipse.birt.report.engine.api.IRunTask;
 import org.eclipse.birt.report.model.api.IDesignEngine;
 import org.eclipse.birt.report.model.api.SessionHandle;
 import org.webcat.birtruntime.BIRTRuntime;
-import org.webcat.core.Application;
 import org.webcat.core.Subsystem;
 import org.webcat.grader.EnqueuedJob;
 import org.webcat.grader.Grader;
 import org.webcat.jobqueue.QueueDescriptor;
 import org.webcat.reporter.messaging.ReportCompleteMessage;
+import org.webcat.woextensions.ECAction;
+import org.webcat.woextensions.WCEC;
+import static org.webcat.woextensions.ECAction.run;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOQualifier;
 import er.extensions.eof.ERXEOControlUtilities;
-import er.extensions.eof.ERXQ;
 
 //-------------------------------------------------------------------------
 /**
@@ -51,7 +52,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author  Tony Allevato
  * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/10/23 20:44:08 $
+ * @version $Revision: 1.3 $, $Date: 2011/12/25 21:18:25 $
  */
 public class Reporter
     extends Subsystem
@@ -220,17 +221,11 @@ public class Reporter
     // ----------------------------------------------------------
     public boolean refreshThrottleStatus()
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-
-        EOQualifier qualifier = ERXQ.and(
-                ERXQ.is(EnqueuedJob.DISCARDED_KEY, 0),
-                ERXQ.is(EnqueuedJob.PAUSED_KEY, 0));
-
-        jobCountAtLastThrottleCheck =
-            ERXEOControlUtilities.objectCountWithQualifier(ec,
-                EnqueuedJob.ENTITY_NAME, qualifier);
-
-        Application.releasePeerEditingContext(ec);
+        run(new ECAction(jobCountEC) { public void action() {
+            jobCountAtLastThrottleCheck =
+                ERXEOControlUtilities.objectCountWithQualifier(
+                    ec, EnqueuedJob.ENTITY_NAME, READY_JOBS);
+        }});
 
         /*if (log.isDebugEnabled())
         {
@@ -258,14 +253,18 @@ public class Reporter
 
     //~ Instance/static variables .............................................
 
-    private SessionHandle designSession;
-    private int           jobCountAtLastThrottleCheck;
+    private SessionHandle    designSession;
+    private int              jobCountAtLastThrottleCheck;
+    private EOEditingContext jobCountEC = WCEC.newEditingContext();
 
     /**
      * This is the sole instance of the reporter subsystem, initialized by the
      * constructor.
      */
     private static Reporter instance;
+
+    private static final EOQualifier READY_JOBS =
+        EnqueuedJob.discarded.isFalse().and(EnqueuedJob.paused.isFalse());
 
     private static Logger log = Logger.getLogger( Reporter.class );
 }

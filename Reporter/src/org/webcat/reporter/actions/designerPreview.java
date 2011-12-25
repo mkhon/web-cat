@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: designerPreview.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
+ |  $Id: designerPreview.java,v 1.3 2011/12/25 21:18:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,14 +27,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.Enumeration;
-import org.webcat.core.Application;
 import org.webcat.core.QualifierUtils;
-import org.webcat.core.ReadOnlyEditingContext;
 import org.webcat.core.objectquery.AdvancedQueryComparison;
 import org.webcat.core.objectquery.AdvancedQueryCriterion;
 import org.webcat.core.objectquery.AdvancedQueryModel;
 import org.webcat.core.objectquery.AdvancedQueryUtils;
 import org.webcat.reporter.ReportUtilityEnvironment;
+import org.webcat.woextensions.ReadOnlyEditingContext;
 import ognl.Node;
 import ognl.Ognl;
 import ognl.OgnlContext;
@@ -68,8 +67,9 @@ import er.extensions.eof.ERXQ;
  * repeatedly sending "designerPreview/retrieveNextBatch" until the
  * response end-of-data marker is true.
  *
- * @author Tony Allevato
- * @version $Id: designerPreview.java,v 1.2 2011/05/27 15:36:46 stedwar2 Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2011/12/25 21:18:25 $
  */
 public class designerPreview
     extends ERXDirectAction
@@ -105,7 +105,7 @@ public class designerPreview
             request().formValueForKey(PARAM_TIMEOUT).toString());
 
         ReadOnlyEditingContext context =
-            Application.newReadOnlyEditingContext();
+            ReadOnlyEditingContext.newEditingContext();
         context.setSuppressesLogAfterFirstAttempt(true);
 
         EOQualifier fastQualifier = null;
@@ -381,10 +381,10 @@ public class designerPreview
             ReadOnlyEditingContext oldEC =
                 (ReadOnlyEditingContext) iterator.editingContext();
             boolean suppressLog = oldEC.isLoggingSuppressed();
-            Application.releaseReadOnlyEditingContext(oldEC);
+            oldEC.dispose();
 
             ReadOnlyEditingContext newEC =
-                Application.newReadOnlyEditingContext();
+                ReadOnlyEditingContext.newEditingContext();
             newEC.setSuppressesLogAfterFirstAttempt(true);
             newEC.setLoggingSuppressed(suppressLog);
             iterator.setEditingContext(newEC);

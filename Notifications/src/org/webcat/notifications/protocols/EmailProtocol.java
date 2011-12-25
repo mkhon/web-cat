@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EmailProtocol.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ |  $Id: EmailProtocol.java,v 1.2 2011/12/25 21:18:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,7 +24,6 @@ package org.webcat.notifications.protocols;
 import org.webcat.core.Application;
 import org.webcat.core.User;
 import org.webcat.core.messaging.IMessageSettings;
-import org.webcat.notifications.ProtocolSettings;
 import org.webcat.notifications.SendMessageJob;
 import com.webobjects.foundation.NSDictionary;
 
@@ -32,10 +31,12 @@ import com.webobjects.foundation.NSDictionary;
 /**
  * A notification protocol that delivers messages via e-mail.
  *
- * @author Tony Allevato
- * @version $Id: EmailProtocol.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/25 21:18:26 $
  */
-public class EmailProtocol extends Protocol
+public class EmailProtocol
+    extends Protocol
 {
     //~ Methods ...............................................................
 
@@ -50,6 +51,7 @@ public class EmailProtocol extends Protocol
         body.append(message.fullBody());
         body.append("\n\n");
 
+        @SuppressWarnings("unchecked")
         NSDictionary<String, String> links = message.links();
         if (links != null && links.count() > 0)
         {
@@ -67,8 +69,8 @@ public class EmailProtocol extends Protocol
         }
 
         Application.sendSimpleEmail(
-                user.email(), message.title(), body.toString(),
-                message.attachments());
+            user.email(), message.title(), body.toString(),
+            message.attachmentsAsList());
     }
 
 

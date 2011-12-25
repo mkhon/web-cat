@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: JobQueue.java,v 1.3 2011/01/21 18:05:43 stedwar2 Exp $
+ |  $Id: JobQueue.java,v 1.4 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008-2009 Virginia Tech
+ |  Copyright (C) 2008-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,6 +35,9 @@ import org.apache.log4j.Logger;
 import org.webcat.core.*;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.webcat.dbupdate.*;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
+import org.webcat.woextensions.WCEC;
 
 //-------------------------------------------------------------------------
 /**
@@ -46,7 +49,7 @@ import org.webcat.dbupdate.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/01/21 18:05:43 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/25 21:18:24 $
  */
 public class JobQueue
     extends Subsystem
@@ -79,50 +82,47 @@ public class JobQueue
         log.info(
             "canonical host name = " + HostDescriptor.canonicalHostName());
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        ec.lock();
-        try
-        {
-            HostDescriptor thisHost = HostDescriptor.currentHost(ec);
-
-            // mark all workers for this host as not alive
-            NSArray<WorkerDescriptor> oldWorkers =
-                WorkerDescriptor.descriptorsForHost(ec, thisHost);
-
-            for (WorkerDescriptor worker : oldWorkers)
+        run(new ECAction() { public void action() {
+            try
             {
-                if (worker.currentJobId() > 0L)
+                HostDescriptor thisHost = HostDescriptor.currentHost(ec);
+
+                // mark all workers for this host as not alive
+                NSArray<WorkerDescriptor> oldWorkers =
+                    WorkerDescriptor.descriptorsForHost(ec, thisHost);
+
+                for (WorkerDescriptor worker : oldWorkers)
                 {
-                    worker.setCurrentJobIdRaw(null);
-                }
-                if (worker.isAlive())
-                {
-                    worker.setIsAlive(false);
+                    if (worker.currentJobId() > 0L)
+                    {
+                        worker.setCurrentJobIdRaw(null);
+                    }
+                    if (worker.isAlive())
+                    {
+                        worker.setIsAlive(false);
+                    }
+
+                    // mark all jobs assigned to workers on this host
+                    // as unassigned
+                    EOFetchSpecification fs = new EOFetchSpecification(
+                        worker.queue().jobEntityName(),
+                        ERXQ.is(JobBase.WORKER_KEY, worker),
+                        null);
+                    NSArray<?> jobs = ec.objectsWithFetchSpecification(fs);
+                    for (Object jobObject : jobs)
+                    {
+                        JobBase job = (JobBase)jobObject;
+                        job.setWorkerRelationship(null);
+                    }
                 }
 
-                // mark all jobs assigned to workers on this host as unassigned
-                EOFetchSpecification fs = new EOFetchSpecification(
-                    worker.queue().jobEntityName(),
-                    ERXQ.is(JobBase.WORKER_KEY, worker),
-                    null);
-                NSArray<?> jobs = ec.objectsWithFetchSpecification(fs);
-                for (Object jobObject : jobs)
-                {
-                    JobBase job = (JobBase)jobObject;
-                    job.setWorkerRelationship(null);
-                }
+                ec.saveChanges();
             }
-
-            ec.saveChanges();
-        }
-        catch (Exception e)
-        {
-            log.error("Unexpected exception initializing subsystem", e);
-        }
-        finally
-        {
-            ec.unlock();
-        }
+            catch (Exception e)
+            {
+                log.error("Unexpected exception initializing subsystem", e);
+            }
+        }});
     }
 
 
@@ -403,10 +403,18 @@ public class JobQueue
         NSDictionary<String, ?> searchBindings,
         NSDictionary<String, ?> initializationBindings)
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        registerDescriptor(
-            ec, descriptorEntityName, searchBindings, initializationBindings);
-        Application.releasePeerEditingContext(ec);
+        EOEditingContext ec = WCEC.newEditingContext();
+        try
+        {
+            ec.lock();
+            registerDescriptor(ec, descriptorEntityName, searchBindings,
+                initializationBindings);
+        }
+        finally
+        {
+            ec.unlock();
+            ec.dispose();
+        }
     }
 
 

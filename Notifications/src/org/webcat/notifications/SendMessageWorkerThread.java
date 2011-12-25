@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SendMessageWorkerThread.java,v 1.4 2010/11/19 14:57:16 stedwar2 Exp $
+ |  $Id: SendMessageWorkerThread.java,v 1.5 2011/12/25 21:18:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -42,8 +42,8 @@ import com.webobjects.foundation.NSDictionary;
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2010/11/19 14:57:16 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2011/12/25 21:18:26 $
  */
 public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
 {
@@ -83,6 +83,10 @@ public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
     private void sendInternal()
     {
         SendMessageJob job = currentJob();
+        if (log.isDebugEnabled())
+        {
+            log.debug("Starting job: " + job.id() + ": "+ job);
+        }
 
         MessageDescriptor descriptor =
             Message.messageDescriptorForMessageType(job.messageType());
@@ -165,6 +169,10 @@ public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
         {
             sendMailToSysAdmins();
         }
+        if (log.isDebugEnabled())
+        {
+            log.debug("Finished job: " + job.id() + ": "+ job);
+        }
     }
 
 
@@ -199,7 +207,7 @@ public class SendMessageWorkerThread extends WorkerThread<SendMessageJob>
         }
 
         Application.sendAdminEmail(
-            job.title(), body.toString(), job.attachments());
+            job.title(), body.toString(), job.attachmentsAsList());
     }
 
 

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: TokenDispenser.java,v 1.4 2011/12/06 18:39:23 stedwar2 Exp $
+ |  $Id: TokenDispenser.java,v 1.5 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009 Virginia Tech
+ |  Copyright (C) 2009-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/06 18:39:23 $
+ * @version $Revision: 1.5 $, $Date: 2011/12/25 21:18:24 $
  */
 public class TokenDispenser
 {
@@ -44,13 +44,27 @@ public class TokenDispenser
     /**
      * Default constructor
      */
-    public TokenDispenser(int initialCount)
+    public TokenDispenser(String name, int initialCount)
     {
-        tokens = initialCount;
+        this.name = name;
+        this.tokens = initialCount;
+        log.debug("creating token dispenser: " + name());
     }
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Get the name of this dispenser (primarily used for debugging/info
+     * purposes).
+     * @return This dispenser's name.
+     */
+    public String name()
+    {
+        return name;
+    }
+
 
     // ----------------------------------------------------------
     /**
@@ -66,12 +80,16 @@ public class TokenDispenser
             }
             catch (InterruptedException e)
             {
-                log.error("client was interrupted while waiting for a token.");
+                log.error(name()
+                    + ": client was interrupted while waiting for a token.");
             }
         }
         tokens--;
-        log.debug("releasing token to worker thread from " + this +
-                " (" + tokens + " tokens remain)");
+        if (log.isDebugEnabled())
+        {
+            log.debug(name() + ": releasing token to worker thread  ("
+                + tokens + " tokens remain)");
+        }
     }
 
 
@@ -81,6 +99,10 @@ public class TokenDispenser
      */
     public synchronized void depositToken()
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug(name() + ": depositing one token");
+        }
         tokens++;
         notify();
     }
@@ -94,10 +116,14 @@ public class TokenDispenser
      */
     public synchronized void depositTokens(long count)
     {
-        while (count > 0)
+        if (log.isDebugEnabled())
         {
-            depositToken();
-            count--;
+            log.debug(name() + ": depositing " + count + " tokens");
+        }
+        if (count > 0)
+        {
+            tokens += count;
+            notify();
         }
     }
 
@@ -113,14 +139,27 @@ public class TokenDispenser
     public synchronized void ensureAtLeastNTokens(int n)
     {
         int amount = (n > tokens) ? (n - tokens) : 0;
-        log.debug("depositing " + amount + " tokens in " + this
-            + " (already holding " + tokens + " tokens)");
+        if (log.isDebugEnabled())
+        {
+            log.debug(name() + ": ensuring " + amount
+                + " tokens (already holding " + tokens + " tokens)");
+        }
         depositTokens(amount);
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public String toString()
+    {
+        return getClass().getSimpleName() + " " + name()
+            + " [" + tokens + " tokens]";
     }
 
 
     //~ Instance/static variables .............................................
 
     int tokens;
+    private String name;
     static Logger log = Logger.getLogger( TokenDispenser.class );
 }

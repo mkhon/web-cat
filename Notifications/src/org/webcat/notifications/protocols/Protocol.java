@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Protocol.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ |  $Id: Protocol.java,v 1.2 2011/12/25 21:18:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,7 +24,6 @@ package org.webcat.notifications.protocols;
 import java.net.URL;
 import org.webcat.core.User;
 import org.webcat.core.messaging.IMessageSettings;
-import org.webcat.notifications.ProtocolSettings;
 import org.webcat.notifications.SendMessageJob;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSBundle;
@@ -44,10 +43,12 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  * instance. Only globally-necessary state, such as logging into an external
  * service, should be stored.
  *
- * @author Tony Allevato
- * @version $Id: Protocol.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/25 21:18:26 $
  */
-public abstract class Protocol implements NSKeyValueCodingAdditions
+public abstract class Protocol
+    implements NSKeyValueCodingAdditions
 {
     //~ Constructors ..........................................................
 
@@ -65,8 +66,10 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
         URL url = bundle.pathURLForResourcePath(name + ".settings.plist");
         if (url != null)
         {
-            settingsDescriptors =
+            @SuppressWarnings("unchecked")
+            NSDictionary<String, Object> plistValue =
                 NSPropertyListSerialization.dictionaryWithPathURL(url);
+            settingsDescriptors = plistValue;
         }
         else
         {
@@ -93,9 +96,8 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
      *
      * @throws Exception if there was an error sending the message
      */
-    public abstract void sendMessage(SendMessageJob messageJob,
-                                     User user,
-                                     IMessageSettings settings)
+    public abstract void sendMessage(
+        SendMessageJob messageJob, User user, IMessageSettings settings)
         throws Exception;
 
 
@@ -139,6 +141,7 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
      *
      * @return the per-user protocol options
      */
+    @SuppressWarnings("unchecked")
     public NSArray<NSDictionary<String, Object>> options()
     {
         return (NSArray<NSDictionary<String, Object>>)
@@ -153,6 +156,7 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
      *
      * @return the system-wide protocol options
      */
+    @SuppressWarnings("unchecked")
     public NSArray<NSDictionary<String, Object>> globalOptions()
     {
         return (NSArray<NSDictionary<String, Object>>)
@@ -164,7 +168,7 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
     public void takeValueForKey(Object value, String key)
     {
         NSKeyValueCoding.DefaultImplementation.takeValueForKey(
-                this, value, key);
+            this, value, key);
     }
 
 
@@ -179,7 +183,7 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
     public void takeValueForKeyPath(Object value, String keyPath)
     {
         NSKeyValueCodingAdditions.DefaultImplementation.takeValueForKeyPath(
-                this, value, keyPath);
+            this, value, keyPath);
     }
 
 
@@ -187,7 +191,7 @@ public abstract class Protocol implements NSKeyValueCodingAdditions
     public Object valueForKeyPath(String keyPath)
     {
         return NSKeyValueCodingAdditions.DefaultImplementation.valueForKeyPath(
-                this, keyPath);
+            this, keyPath);
     }
 
 

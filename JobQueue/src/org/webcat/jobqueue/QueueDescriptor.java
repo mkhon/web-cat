@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: QueueDescriptor.java,v 1.7 2011/12/07 02:06:54 stedwar2 Exp $
+ |  $Id: QueueDescriptor.java,v 1.8 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008-2009 Virginia Tech
+ |  Copyright (C) 2008-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -25,11 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.webcat.core.Application;
+import org.webcat.woextensions.WCEC;
 import org.webcat.woextensions.WCFetchSpecification;
 import com.webobjects.eoaccess.EOGeneralAdaptorException;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXDefaultEditingContextDelegate;
+import er.extensions.eof.ERXEC;
 import er.extensions.eof.ERXQ;
 import er.extensions.eof.ERXS;
 
@@ -45,7 +47,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2011/12/07 02:06:54 $
+ * @version $Revision: 1.8 $, $Date: 2011/12/25 21:18:24 $
  */
 public class QueueDescriptor
     extends _QueueDescriptor
@@ -95,27 +97,10 @@ public class QueueDescriptor
             new NSDictionary<String, Long>(
                 new Long(0),
                 QueueDescriptor.NEWEST_ENTRY_ID_KEY));
-        synchronized (dispensers)
-        {
-            if (dispensers.get(result.id()) == null)
-            {
-                int initialTokenCount = 0;
-                EOEditingContext ec = Application.newPeerEditingContext();
-                try
-                {
-                    ec.lock();
-                    initialTokenCount =
-                        result.localInstance(ec).pendingJobCount(ec);
-                }
-                finally
-                {
-                    ec.unlock();
-                }
-                Application.releasePeerEditingContext(ec);
-                dispensers.put(result.id(),
-                    new TokenDispenser(initialTokenCount));
-            }
-        }
+
+        // Make sure a dispenser has been created for this queue
+        dispenserFor(result);
+
         return result;
     }
 
@@ -150,7 +135,13 @@ public class QueueDescriptor
             ec.lock();
             try
             {
-                descriptorFor(ec, theJobEntityName);
+                QueueDescriptor qd = descriptorFor(ec, theJobEntityName);
+                if (!registeredDescriptors.contains(qd))
+                {
+                    registeredDescriptors.add(qd);
+                }
+                log.debug("registerQueue(): registered objects = " +
+                    ec.registeredObjects());
             }
             finally
             {
@@ -172,6 +163,11 @@ public class QueueDescriptor
                 ERXQ.isTrue(JobBase.IS_READY_KEY)),
             null);
         NSArray<?> jobs = ec.objectsWithFetchSpecification(fetchSpec);
+        if (log.isDebugEnabled())
+        {
+            log.debug("pendingJobCount(): " + jobs.count() + " "
+                + jobEntityName() + " jobs are ready");
+        }
         return jobs.count();
     }
 
@@ -179,45 +175,41 @@ public class QueueDescriptor
     // ----------------------------------------------------------
     /* package */ static void waitForNextJob(QueueDescriptor descriptor)
     {
-        Number id = descriptor.id();
-        assert id != null;
-        TokenDispenser dispenser = null;
-        synchronized (dispensers)
-        {
-            dispenser = dispensers.get(id);
-            if (dispenser == null)
-            {
-                int initialTokenCount = 0;
-                EOEditingContext ec = Application.newPeerEditingContext();
-                try
-                {
-                    ec.lock();
-                    initialTokenCount =
-                        descriptor.localInstance(ec).pendingJobCount(ec);
-                }
-                finally
-                {
-                    ec.unlock();
-                }
-                Application.releasePeerEditingContext(ec);
-                dispenser = new TokenDispenser(initialTokenCount);
-                dispensers.put(id, dispenser);
-            }
-        }
+        TokenDispenser dispenser = dispenserFor(descriptor);
+        int lockCount = 0;
         try
         {
-            descriptor.editingContext().unlock();
+            if (descriptor.editingContext() instanceof ERXEC)
+            {
+                ERXEC ec = (ERXEC)descriptor.editingContext();
+                while (ec.lockCount() > 0)
+                {
+                    ec.unlock();
+                    lockCount++;
+                }
+            }
             dispenser.getJobToken();
         }
         finally
         {
-            descriptor.editingContext().lock();
+            while (lockCount > 0)
+            {
+                descriptor.editingContext().lock();
+                lockCount--;
+            }
         }
     }
 
 
     // ----------------------------------------------------------
     /* package */ static void newJobIsReadyOn(QueueDescriptor descriptor)
+    {
+        dispenserFor(descriptor).depositToken();
+    }
+
+
+    // ----------------------------------------------------------
+    private static TokenDispenser dispenserFor(QueueDescriptor descriptor)
     {
         Number id = descriptor.id();
         assert id != null;
@@ -228,23 +220,25 @@ public class QueueDescriptor
             if (dispenser == null)
             {
                 int initialTokenCount = 0;
-                EOEditingContext ec = Application.newPeerEditingContext();
+                String name = null;
+                EOEditingContext ec = WCEC.newEditingContext();
                 try
                 {
                     ec.lock();
-                    initialTokenCount =
-                        descriptor.localInstance(ec).pendingJobCount(ec);
+                    QueueDescriptor qd = descriptor.localInstance(ec);
+                    initialTokenCount = qd.pendingJobCount(ec);
+                    name = qd.jobEntityName();
                 }
                 finally
                 {
                     ec.unlock();
+                    ec.dispose();
                 }
-                Application.releasePeerEditingContext(ec);
-                dispenser = new TokenDispenser(initialTokenCount);
+                dispenser = new TokenDispenser(name, initialTokenCount);
                 dispensers.put(id, dispenser);
             }
-            dispenser.depositToken();
         }
+        return dispenser;
     }
 
 
@@ -270,22 +264,37 @@ public class QueueDescriptor
             // nothing to do
         }
 
+
         // ----------------------------------------------------------
         public void editingContextDidMergeChanges(EOEditingContext context)
         {
+            if (log.isDebugEnabled())
+            {
+                log.debug(this + "editingContextDidMergeChanges(" + context
+                    + ")");
+            }
             if (jobContext == null)
             {
-                jobContext = Application.newPeerEditingContext();
+                jobContext = WCEC.newEditingContext();
             }
             synchronized (dispensers)
             {
                 try
                 {
                     jobContext.lock();
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("dispenser map = " + dispensers);
+                    }
                     for (Number id : dispensers.keySet())
                     {
                         QueueDescriptor descriptor =
                             forId(jobContext, id.intValue());
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Updating queue info for " +
+                                descriptor.jobEntityName());
+                        }
                         dispensers.get(id).ensureAtLeastNTokens(
                             descriptor.pendingJobCount(jobContext));
                     }
@@ -304,14 +313,111 @@ public class QueueDescriptor
     //~ Instance/static variables .............................................
 
     private static EOEditingContext _ec;
+    public static class QueueEC extends WCEC
+    {
+        // ----------------------------------------------------------
+        /**
+         * Creates a new object.
+         * @param os the parent object store
+         */
+        protected QueueEC(EOObjectStore os)
+        {
+            super(os);
+        }
+
+
+        // ----------------------------------------------------------
+        @Override
+        protected NSDictionary _objectBasedChangeInfoForGIDInfo(
+            NSDictionary info)
+        {
+            NSDictionary result = super._objectBasedChangeInfoForGIDInfo(info);
+            if (captureInfo)
+            {
+                captureInfo = false;
+//                log.debug("_objectBasedChangeInfoForGIDInfo() = " + result);
+                if (result != null)
+                {
+                    @SuppressWarnings("unchecked")
+                    NSArray<EOEnterpriseObject> updates =
+                        (NSArray<EOEnterpriseObject>)result
+                        .valueForKey("updated");
+                    if (updates != null && updates.count() > 0)
+                    {
+                        synchronized (dispensers)
+                        {
+                            for (EOEnterpriseObject eo : updates)
+                            {
+                                if (eo instanceof QueueDescriptor)
+                                {
+                                    QueueDescriptor descriptor =
+                                        (QueueDescriptor)eo;
+                                    log.debug(
+                                        "QueueEC: Updating queue info for "
+                                        + descriptor.jobEntityName());
+                                    dispensers.get(descriptor.id())
+                                        .ensureAtLeastNTokens(
+                                            descriptor.pendingJobCount(this));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        // ----------------------------------------------------------
+        @Override
+        public void _processObjectStoreChanges(NSDictionary arg0)
+        {
+            captureInfo = true;
+            if (log.isDebugEnabled())
+            {
+                log.debug("QueueEC: _processObjectStoreChanges(): "
+                    + arg0);
+                try
+                {
+                    log.debug("    known = " + registeredObjects());
+                }
+                catch (Exception e)
+                {
+                    log.debug("    known = <exception printing list>");
+                }
+            }
+            super._processObjectStoreChanges(arg0);
+        }
+
+
+        //~ Instance/static variables .........................................
+        private boolean captureInfo = false;
+    }
+
+
     static {
-        _ec = Application.newPeerEditingContext();
-        _ec.setDelegate(new QueueDelegate());
+//        _ec = Application.newPeerEditingContext();
+        _ec = new WCEC.WCECFactory() {
+            protected EOEditingContext _createEditingContext(
+                EOObjectStore parent)
+            {
+                return new QueueEC(parent == null
+                    ? EOEditingContext.defaultParentObjectStore()
+                    : parent);
+            }
+        }._newEditingContext();
+//        _ec.setDelegate(new QueueDelegate());
     }
 
     // Accessed by inner QueueDelegate
     /* package */ static Map<Number, TokenDispenser> dispensers =
         new HashMap<Number, TokenDispenser>();
+
+    // Keep all registered descriptors loaded in _ec in this array so
+    // that the EC can detect changes to them, without them being
+    // garbage-collected.
+    private static final NSMutableArray<QueueDescriptor> registeredDescriptors
+        = new NSMutableArray<QueueDescriptor>();
 
     static Logger log = Logger.getLogger(QueueDescriptor.class);
 }

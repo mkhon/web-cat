@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SurveyReminderMessage.java,v 1.2 2011/12/06 18:40:43 stedwar2 Exp $
+ |  $Id: SurveyReminderMessage.java,v 1.3 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2010 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,10 +24,8 @@ package org.webcat.opinions.messaging;
 import org.webcat.core.User;
 import org.webcat.core.WCProperties;
 import org.webcat.core.messaging.Message;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
+import org.webcat.core.messaging.SingleUserMessage;
 import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableDictionary;
 
 //-------------------------------------------------------------------------
 /**
@@ -35,27 +33,18 @@ import com.webobjects.foundation.NSMutableDictionary;
  * survey is available for an assignment.
  *
  * @author  Stephen Edwards
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $ $Date: 2011/12/06 18:40:43 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $ $Date: 2011/12/25 21:18:24 $
  */
 public class SurveyReminderMessage
-    extends Message
+    extends SingleUserMessage
 {
     //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     public SurveyReminderMessage(User user, WCProperties properties)
     {
-        EOEditingContext ec = editingContext();
-        try
-        {
-            ec.lock();
-            this.user = user.localInstance(ec);
-        }
-        finally
-        {
-            ec.unlock();
-        }
+        super(user);
         this.properties = properties;
     }
 
@@ -69,11 +58,11 @@ public class SurveyReminderMessage
     public static void register()
     {
         Message.registerMessage(
-                SurveyReminderMessage.class,
-                "Opinions",
-                "Survey Announcement",
-                false,
-                User.STUDENT_PRIVILEGES);
+            SurveyReminderMessage.class,
+            "Opinions",
+            "Survey Announcement",
+            false,
+            User.STUDENT_PRIVILEGES);
     }
 
 
@@ -96,9 +85,9 @@ public class SurveyReminderMessage
     public String shortBody()
     {
         return properties.stringForKeyWithDefault(
-                "survey.email.short.body",
-                "Login to Web-CAT to complete a short survey on your "
-                + "assignment: \"${assignment.title}\".\n\n");
+            "survey.email.short.body",
+            "Login to Web-CAT to complete a short survey on your "
+            + "assignment: \"${assignment.title}\".\n\n");
     }
 
 
@@ -106,14 +95,9 @@ public class SurveyReminderMessage
     @Override
     public NSDictionary<String, String> links()
     {
-        NSMutableDictionary<String, String> links =
-            new NSMutableDictionary<String, String>();
-
-        links.setObjectForKey(
-                properties.stringForKey("survey.link"),
-                "Complete your survey");
-
-        return links;
+        return new NSDictionary<String, String>(
+            properties.stringForKey("survey.link"),
+            "Complete your survey");
     }
 
 
@@ -121,22 +105,13 @@ public class SurveyReminderMessage
     @Override
     public String title()
     {
-        return properties.stringForKeyWithDefault("survey.email.title",
-                "[Opinions] Tell us about: \""
-                + "${assignment.title}\"");
-    }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public NSArray<User> users()
-    {
-        return new NSArray<User>(user);
+        return properties.stringForKeyWithDefault(
+            "survey.email.title",
+            "[Opinions] Tell us about: \"${assignment.title}\"");
     }
 
 
     //~ Static/instance variables .............................................
 
-    private User user;
     private WCProperties properties;
 }

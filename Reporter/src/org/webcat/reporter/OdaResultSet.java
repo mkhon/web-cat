@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ |  $Id: OdaResultSet.java,v 1.2 2011/12/25 21:18:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -26,15 +26,14 @@ import java.sql.Timestamp;
 import java.util.Enumeration;
 import org.webcat.oda.commons.IWebCATResultSet;
 import org.webcat.oda.commons.WebCATDataException;
+import org.webcat.woextensions.ReadOnlyEditingContext;
 import ognl.Ognl;
 import ognl.OgnlContext;
 import ognl.OgnlException;
 import ognl.enhance.ExpressionAccessor;
 import org.apache.log4j.Logger;
-import org.webcat.core.Application;
 import org.webcat.core.ObjectQuery;
 import org.webcat.core.QualifierUtils;
-import org.webcat.core.ReadOnlyEditingContext;
 import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
@@ -47,7 +46,8 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  * A result set for a report.
  *
  * @author  Tony Allevato
- * @version $Id: OdaResultSet.java,v 1.1 2010/05/11 14:51:48 aallowat Exp $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/25 21:18:25 $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -86,7 +86,7 @@ public class OdaResultSet
     // ----------------------------------------------------------
     public void close()
     {
-        Application.releaseReadOnlyEditingContext(editingContext);
+        editingContext.dispose();
 
 //        ReportGenerationTracker.getInstance().completeDataSetForJobId(jobId);
         job.completeCurrentTask();
@@ -172,8 +172,8 @@ public class OdaResultSet
 //            ReportGenerationTracker tracker =
 //                ReportGenerationTracker.getInstance();
 
-            // Check to see if the report has been canceled. If it has, we just
-            // return no more rows here.
+            // Check to see if the report has been canceled. If it has, we
+            // just return no more rows here.
             if (job.isCancelled())
             {
                 return false;
@@ -294,10 +294,10 @@ public class OdaResultSet
         if (editingContext != null)
         {
             suppressLog = editingContext.isLoggingSuppressed();
-            Application.releaseReadOnlyEditingContext(editingContext);
+            editingContext.dispose();
         }
 
-        editingContext = Application.newReadOnlyEditingContext();
+        editingContext = ReadOnlyEditingContext.newEditingContext();
         editingContext.setSuppressesLogAfterFirstAttempt(true);
         editingContext.setLoggingSuppressed(suppressLog);
 
@@ -457,13 +457,15 @@ public class OdaResultSet
             // user to read.
 
             String msg = String.format(
-                    "In the expression above, the property \"%s\" is not " +
-                    "recognized by the source object (which is of type \"%s\")",
-                    e.key(), e.object().getClass().getName());
+                "In the expression above, the property \"%s\" is not " +
+                "recognized by the source object (which is of type \"%s\")",
+                e.key(), e.object().getClass().getName());
 
             // FIXME fix this
-//            ReportGenerationTracker rgt = ReportGenerationTracker.getInstance();
-//            ReportDataSet dataSet = ReportDataSet.forId(editingContext, dataSetId);
+//            ReportGenerationTracker rgt =
+//                ReportGenerationTracker.getInstance();
+//            ReportDataSet dataSet =
+//                ReportDataSet.forId(editingContext, dataSetId);
 //            rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column, null,
 //                    expressions[column], msg);
 
@@ -481,10 +483,10 @@ public class OdaResultSet
             {
                 // Before rethrowing the exception, pass the extra information
                 // about where the error occurred to the report generation
-                // tracker so that the queue processor can pass it along to the
-                // user. This gets us better feedback than the standard BIRT
-                // error message, which is something like "cannot get value
-                // from column: N" with no other information.
+                // tracker so that the queue processor can pass it along to
+                // the user. This gets us better feedback than the standard
+                // BIRT error message, which is something like "cannot get
+                // value from column: N" with no other information.
 
                 // FIXME fix this
 //                ReportGenerationTracker rgt =
@@ -612,8 +614,8 @@ public class OdaResultSet
     private static final long MILLIS_BETWEEN_THROTTLE_CHECK = 3000;
     private static final long MILLIS_TO_THROTTLE = 5000;
 
-    // TODO: Add these as Reporter subsystem configuration options; cache their
-    // values when this object is created
+    // TODO: Add these as Reporter subsystem configuration options; cache
+    // their values when this object is created
     /* Ideal amount of time to spend on each batch */
     private static final int BATCH_TIME_SLICE = 600;
     /* Fraction of the time slice to spend working (instead of resting) */

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: HostDescriptor.java,v 1.2 2010/09/27 00:30:22 stedwar2 Exp $
+ |  $Id: HostDescriptor.java,v 1.3 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008-2009 Virginia Tech
+ |  Copyright (C) 2008-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,6 +22,7 @@
 package org.webcat.jobqueue;
 
 import org.webcat.core.Application;
+import org.webcat.woextensions.WCEC;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 
@@ -32,7 +33,7 @@ import com.webobjects.foundation.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:30:22 $
+ * @version $Revision: 1.3 $, $Date: 2011/12/25 21:18:24 $
  */
 public class HostDescriptor
     extends _HostDescriptor
@@ -118,8 +119,9 @@ public class HostDescriptor
     {
         if (currentHost == null)
         {
+            // TODO: This needs to be fixed regarding the EC used
             currentHost =
-                newHostDescriptor(Application.newPeerEditingContext());
+                newHostDescriptor(WCEC.newAutoLockingEditingContext());
         }
     }
 

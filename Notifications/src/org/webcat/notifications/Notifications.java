@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Notifications.java,v 1.3 2010/10/15 00:45:31 stedwar2 Exp $
+ |  $Id: Notifications.java,v 1.4 2011/12/25 21:18:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,19 +23,23 @@ package org.webcat.notifications;
 
 import org.apache.log4j.Logger;
 import org.webcat.core.Application;
+import org.webcat.core.SentMessage;
 import org.webcat.core.Subsystem;
 import org.webcat.jobqueue.QueueDescriptor;
-import com.webobjects.eocontrol.EOEditingContext;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 import com.webobjects.eocontrol.EOGlobalID;
 import com.webobjects.eocontrol.EOKeyGlobalID;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSTimestamp;
 
 //-------------------------------------------------------------------------
 /**
  * The primary class of the Notifications subsystem.
  *
  * @author  Tony Allevato
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/10/15 00:45:31 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/25 21:18:26 $
  */
 public class Notifications
     extends Subsystem
@@ -65,11 +69,7 @@ public class Notifications
         // already exist (this should only occur when the application is
         // started for the first time.
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
-
+        run(new ECAction() { public void action() {
             if (ProtocolSettings.systemSettings(ec) == null)
             {
                 ProtocolSettings settings = new ProtocolSettings();
@@ -80,12 +80,23 @@ public class Notifications
                 ec.insertObjectWithGlobalID(settings, gid);
                 ec.saveChanges();
             }
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext(ec);
-        }
+
+            // 30 days ago
+            NSTimestamp limit = new NSTimestamp()
+                .timestampByAddingGregorianUnits(0, 0, -30, 0, 0, 0);
+
+            NSArray<SentMessage> messages =
+                SentMessage.objectsMatchingQualifier(
+                    ec,
+                    SentMessage.sentTime.before(limit));
+            log.info("deleting " + messages.size()
+                + " SentMessage objects over 30 days old");
+            for (SentMessage message : messages)
+            {
+                message.delete();
+            }
+            ec.saveChanges();
+        }});
 
         // Register the batch job queue and create worker threads.
 

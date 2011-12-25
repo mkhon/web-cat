@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AsyncURLConnection.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ |  $Id: AsyncURLConnection.java,v 1.2 2011/12/25 21:18:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009 Virginia Tech
+ |  Copyright (C) 2009-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,7 +35,8 @@ import org.apache.http.impl.client.DefaultRedirectHandler;
  * to receive events as data comes across the pipe.
  *
  * @author  Tony Allevato
- * @version $Id: AsyncURLConnection.java,v 1.1 2010/05/11 14:51:35 aallowat Exp $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2011/12/25 21:18:26 $
  */
 public class AsyncURLConnection
 {
@@ -126,6 +127,13 @@ public class AsyncURLConnection
      */
     private class RequestThread extends Thread
     {
+        // ----------------------------------------------------------
+        public RequestThread()
+        {
+            super(RequestThread.class.getName());
+        }
+
+
         //~ Methods ...........................................................
 
         // ----------------------------------------------------------

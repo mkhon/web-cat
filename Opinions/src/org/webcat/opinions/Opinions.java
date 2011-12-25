@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Opinions.java,v 1.4 2011/12/06 18:41:24 stedwar2 Exp $
+ |  $Id: Opinions.java,v 1.5 2011/12/25 21:18:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -30,6 +30,7 @@ import org.webcat.grader.Assignment;
 import org.webcat.grader.AssignmentOffering;
 import org.webcat.jobqueue.QueueDescriptor;
 import org.webcat.opinions.messaging.SurveyReminderMessage;
+import org.webcat.woextensions.ECAction;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSTimestamp;
@@ -42,7 +43,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/06 18:41:24 $
+ * @version $Revision: 1.5 $, $Date: 2011/12/25 21:18:24 $
  */
 public class Opinions
     extends Subsystem
@@ -136,6 +137,13 @@ public class Opinions
         extends Thread
     {
         // ----------------------------------------------------------
+        public SurveyReminderWatcher()
+        {
+            super(SurveyReminderWatcher.class.getSimpleName());
+        }
+
+
+        // ----------------------------------------------------------
         @Override
         public void run()
         {
@@ -144,60 +152,56 @@ public class Opinions
             // repeat forever
             while (true)
             {
-                EOEditingContext ec = Application.newPeerEditingContext();
-                try
-                {
-                    ec.lock();
-
-                    // Find all assignments that need notifications sent
-
-                    // First, find current semester
-                    Semester current = Semester.forDate(ec, new NSTimestamp());
-                    if (current == null)
+                ECAction.run(new ECAction() { public void action() {
+                    try
                     {
-                        NSArray<Semester> allSemesters =
-                            Semester.allObjectsOrderedByStartDate(ec);
-                        if (allSemesters.count() > 0)
+                        // Find all assignments that need notifications sent
+
+                        // First, find current semester
+                        Semester current =
+                            Semester.forDate(ec, new NSTimestamp());
+                        if (current == null)
                         {
-                            current = allSemesters.get(0);
+                            NSArray<Semester> allSemesters =
+                                Semester.allObjectsOrderedByStartDate(ec);
+                            if (allSemesters.count() > 0)
+                            {
+                                current = allSemesters.get(0);
+                            }
                         }
-                    }
 
-                    // Then, find all assignment offerings for current semester
-                    // that want surveys
-                    NSArray<AssignmentOffering> offerings =
-                        AssignmentOffering.objectsMatchingQualifier(ec,
-                            AssignmentOffering.courseOffering
-                                .dot(CourseOffering.semester).eq(current).and(
-                                    AssignmentOffering.assignment
-                                        .dot(Assignment.trackOpinions)
-                                        .isTrue()));
+                        // Then, find all assignment offerings for current
+                        // semester that want surveys
+                        NSArray<AssignmentOffering> offerings =
+                            AssignmentOffering.objectsMatchingQualifier(ec,
+                                AssignmentOffering.courseOffering
+                                    .dot(CourseOffering.semester).eq(current)
+                                .and(AssignmentOffering.assignment
+                                    .dot(Assignment.trackOpinions)
+                                    .isTrue()));
 
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("SurveyReminderWatcher: found "
-                            + offerings.count() + " offerings to check");
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("SurveyReminderWatcher: found "
+                                + offerings.count() + " offerings to check");
+                            for (AssignmentOffering offering : offerings)
+                            {
+                                log.debug("\t" + offering);
+                            }
+                        }
+
+                        // The call sendSurveyRemindersFor() on each one
                         for (AssignmentOffering offering : offerings)
                         {
-                            log.debug("\t" + offering);
+                            sendSurveyRemindersFor(offering);
                         }
                     }
-
-                    // The call sendSurveyRemindersFor() on each one
-                    for (AssignmentOffering offering : offerings)
+                    catch (Exception e)
                     {
-                        sendSurveyRemindersFor(offering);
+                        log.error(
+                            "SurveyReminderWatcher: Exception occurred", e);
                     }
-                }
-                catch (Exception e)
-                {
-                    log.error("SurveyReminderWatcher: Exception occurred", e);
-                }
-                finally
-                {
-                    ec.unlock();
-                    Application.releasePeerEditingContext(ec);
-                }
+                }});
 
                 try
                 {
