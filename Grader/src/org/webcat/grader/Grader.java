@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.9 2011/03/01 18:01:07 aallowat Exp $
+ |  $Id: Grader.java,v 1.10 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,6 +35,8 @@ import org.webcat.grader.messaging.GraderKilledMessage;
 import org.webcat.grader.messaging.GraderMarkupParseError;
 import org.webcat.grader.messaging.GradingResultsAvailableMessage;
 import org.webcat.grader.messaging.SubmissionSuspendedMessage;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WORequest;
@@ -54,8 +56,8 @@ import er.extensions.qualifiers.ERXKeyValueQualifier;
  *  The subsystem defining Web-CAT administrative tasks.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.9 $, $Date: 2011/03/01 18:01:07 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.10 $, $Date: 2011/12/25 21:11:41 $
  */
 public class Grader
    extends Subsystem
@@ -134,11 +136,7 @@ public class Grader
         {
             // Resume any enqueued jobs (if grader is coming back up
             // after an application restart)
-            EOEditingContext ec = Application.newPeerEditingContext();
-            try
-            {
-                ec.lock();
-
+            run(new ECAction() { public void action() {
                 for (EnqueuedJob job : EnqueuedJob.allObjects(ec))
                 {
                     if (!job.paused())
@@ -149,12 +147,7 @@ public class Grader
                         break;
                     }
                 }
-            }
-            finally
-            {
-                ec.unlock();
-                Application.releasePeerEditingContext( ec );
-            }
+            }});
         }
     }
 
@@ -601,7 +594,8 @@ public class Grader
         }
         catch (Exception e)
         {
-            new UnexpectedExceptionMessage(e, context, null, null).send();
+            new UnexpectedExceptionMessage(e, context, null, null)
+                .send();
             result.clearSubmission();
             result.submissionInProcess().clearUpload();
             result.cancelLocalChanges();

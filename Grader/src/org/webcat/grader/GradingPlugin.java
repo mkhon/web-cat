@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.11 2011/12/09 02:05:36 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.12 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -31,6 +31,8 @@ import net.sf.webcat.FeatureProvider;
 import org.webcat.core.MutableDictionary;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 
 // -------------------------------------------------------------------------
 /**
@@ -38,7 +40,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.11 $, $Date: 2011/12/09 02:05:36 $
+ *  @version $Revision: 1.12 $, $Date: 2011/12/25 21:11:41 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -531,17 +533,9 @@ public class GradingPlugin
      */
     public static void autoUpdateAndInstall()
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
-            autoInstallNewPlugins( ec, autoUpdatePlugins( ec ) );
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext( ec );
-        }
+        run(new ECAction() { public void action() {
+            autoInstallNewPlugins(ec, autoUpdatePlugins(ec));
+        }});
     }
 
 

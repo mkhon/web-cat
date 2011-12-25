@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AdminReportsForSubmissionMessage.java,v 1.3 2011/12/06 18:38:10 stedwar2 Exp $
+ |  $Id: AdminReportsForSubmissionMessage.java,v 1.4 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -25,48 +25,28 @@ import java.io.File;
 import java.util.List;
 import org.webcat.core.User;
 import org.webcat.core.messaging.Message;
-import org.webcat.core.messaging.SysAdminMessage;
 import org.webcat.grader.AssignmentOffering;
 import org.webcat.grader.Submission;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableDictionary;
 
 //-------------------------------------------------------------------------
 /**
  * A message that is sent to course instructors when a submission generates
  * admin-directed reports.
  *
- * @author Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $ $Date: 2011/12/06 18:38:10 $
+ * @author  Tony Allevato
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.4 $ $Date: 2011/12/25 21:11:41 $
  */
-public class AdminReportsForSubmissionMessage extends SysAdminMessage
+public class AdminReportsForSubmissionMessage
+    extends SubmissionErrorMessage
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public AdminReportsForSubmissionMessage(Submission submission,
-            List<String> attachmentPaths)
+    public AdminReportsForSubmissionMessage(
+        Submission submission, List<File> attachments)
     {
-        EOEditingContext ec = editingContext();
-        try
-        {
-            ec.lock();
-            this.submission = submission.localInstance(ec);
-        }
-        finally
-        {
-            ec.unlock();
-        }
-
-        this.attachments = new NSMutableDictionary<String, String>();
-
-        for (String path : attachmentPaths)
-        {
-            attachments.setObjectForKey(path, new File(path).getName());
-        }
+        super(submission, attachments);
     }
 
 
@@ -79,19 +59,11 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
     public static void register()
     {
         Message.registerMessage(
-                AdminReportsForSubmissionMessage.class,
-                "Grader",
-                "Admin Reports for Submission",
-                false,
-                User.INSTRUCTOR_PRIVILEGES);
-    }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public String fullBody()
-    {
-        return shortBody();
+            AdminReportsForSubmissionMessage.class,
+            "Grader",
+            "Admin Reports for Submission",
+            false,
+            User.INSTRUCTOR_PRIVILEGES);
     }
 
 
@@ -107,52 +79,19 @@ public class AdminReportsForSubmissionMessage extends SysAdminMessage
     @Override
     public String title()
     {
-        AssignmentOffering assignment = submission.assignmentOffering();
+        AssignmentOffering assignment = submission().assignmentOffering();
 
         return "[Grader] reports: "
-            + submission.user().email() + " #"
-            + submission.submitNumber()
+            + submission().user().email() + " #"
+            + submission().submitNumber()
             + (assignment == null ? "" : (", " + assignment.titleString()));
     }
 
 
     // ----------------------------------------------------------
     @Override
-    public NSDictionary<String, String> attachments()
+    public boolean isSevere()
     {
-        return attachments;
+        return true;
     }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public synchronized NSArray<User> users()
-    {
-        EOEditingContext ec = editingContext();
-        try
-        {
-            ec.lock();
-            if (submission != null
-                && submission.assignmentOffering() != null
-                && submission.assignmentOffering().courseOffering() != null)
-            {
-                return submission.assignmentOffering().courseOffering()
-                    .instructors();
-            }
-            else
-            {
-                return new NSArray<User>();
-            }
-        }
-        finally
-        {
-            ec.unlock();
-        }
-    }
-
-
-    //~ Static/instance variables .............................................
-
-    private Submission submission;
-    private NSMutableDictionary<String, String> attachments;
 }

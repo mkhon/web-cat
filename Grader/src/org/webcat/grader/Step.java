@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Step.java,v 1.4 2011/12/09 02:05:36 stedwar2 Exp $
+ |  $Id: Step.java,v 1.5 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/09 02:05:36 $
+ * @version $Revision: 1.5 $, $Date: 2011/12/25 21:11:41 $
  */
 public class Step
     extends _Step
@@ -208,8 +208,9 @@ public class Step
     private class ExecThread
         extends Thread
     {
-        public ExecThread( Thread parent, String argList, File dir )
+        public ExecThread(Thread parent, String argList, File dir)
         {
+            super("Step.ExecThread");
             parentThread = parent;
             args         = argList;
             cwd          = dir;

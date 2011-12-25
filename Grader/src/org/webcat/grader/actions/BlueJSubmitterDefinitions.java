@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BlueJSubmitterDefinitions.java,v 1.3 2011/03/01 17:59:28 aallowat Exp $
+ |  $Id: BlueJSubmitterDefinitions.java,v 1.4 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.webcat.core.*;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.webcat.grader.*;
+import org.webcat.woextensions.WCEC;
 
 //-------------------------------------------------------------------------
 /**
@@ -36,8 +37,8 @@ import org.webcat.grader.*;
  * the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/03/01 17:59:28 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/25 21:11:41 $
  */
 public class BlueJSubmitterDefinitions
     extends WOComponent
@@ -77,7 +78,7 @@ public class BlueJSubmitterDefinitions
         excludePatternsIndex = -1;
         requirePatternsIndex = -1;
         currentTime = new NSTimestamp();
-        EOEditingContext ec = Application.newPeerEditingContext();
+        EOEditingContext ec = WCEC.newEditingContext();
         try
         {
             ec.lock();
@@ -111,6 +112,7 @@ public class BlueJSubmitterDefinitions
         finally
         {
             ec.unlock();
+            ec.dispose();
         }
     }
 

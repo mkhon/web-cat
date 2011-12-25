@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GradingResultsAvailableMessage.java,v 1.4 2011/12/06 18:38:10 stedwar2 Exp $
+ |  $Id: GradingResultsAvailableMessage.java,v 1.5 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2010-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -24,10 +24,8 @@ package org.webcat.grader.messaging;
 import org.webcat.core.User;
 import org.webcat.core.WCProperties;
 import org.webcat.core.messaging.Message;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSArray;
+import org.webcat.core.messaging.SingleUserMessage;
 import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSMutableDictionary;
 
 //-------------------------------------------------------------------------
 /**
@@ -35,26 +33,18 @@ import com.webobjects.foundation.NSMutableDictionary;
  * results are available.
  *
  * @author  Tony Allevato
- * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $ $Date: 2011/12/06 18:38:10 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.5 $ $Date: 2011/12/25 21:11:41 $
  */
-public class GradingResultsAvailableMessage extends Message
+public class GradingResultsAvailableMessage
+    extends SingleUserMessage
 {
     //~ Constructor ...........................................................
 
     // ----------------------------------------------------------
     public GradingResultsAvailableMessage(User user, WCProperties properties)
     {
-        EOEditingContext ec = editingContext();
-        try
-        {
-            ec.lock();
-            this.user = user.localInstance(ec);
-        }
-        finally
-        {
-            ec.unlock();
-        }
+        super(user);
         this.properties = properties;
     }
 
@@ -68,19 +58,11 @@ public class GradingResultsAvailableMessage extends Message
     public static void register()
     {
         Message.registerMessage(
-                GradingResultsAvailableMessage.class,
-                "Grader",
-                "Grading Results Available",
-                false,
-                User.STUDENT_PRIVILEGES);
-    }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public String fullBody()
-    {
-        return shortBody();
+            GradingResultsAvailableMessage.class,
+            "Grader",
+            "Grading Results Available",
+            false,
+            User.STUDENT_PRIVILEGES);
     }
 
 
@@ -89,9 +71,9 @@ public class GradingResultsAvailableMessage extends Message
     public String shortBody()
     {
         return properties.stringForKeyWithDefault(
-                "submission.email.body",
-                "The feedback report for ${assignment.title}\n"
-                + "submission number ${submission.number} ${message}.\n\n");
+            "submission.email.body",
+            "The feedback report for ${assignment.title}\n"
+            + "submission number ${submission.number} ${message}.\n\n");
     }
 
 
@@ -99,14 +81,9 @@ public class GradingResultsAvailableMessage extends Message
     @Override
     public NSDictionary<String, String> links()
     {
-        NSMutableDictionary<String, String> links =
-            new NSMutableDictionary<String, String>();
-
-        links.setObjectForKey(
-                properties.stringForKey("submission.result.link"),
-                "View your feedback");
-
-        return links;
+        return new NSDictionary<String, String>(
+            properties.stringForKey("submission.result.link"),
+            "View your feedback");
     }
 
 
@@ -114,22 +91,14 @@ public class GradingResultsAvailableMessage extends Message
     @Override
     public String title()
     {
-        return properties.stringForKeyWithDefault("submission.email.title",
-                "[Grader] results available: #${submission.number}, "
-                + "${assignment.title}");
-    }
-
-
-    // ----------------------------------------------------------
-    @Override
-    public NSArray<User> users()
-    {
-        return new NSArray<User>(user);
+        return properties.stringForKeyWithDefault(
+            "submission.email.title",
+            "[Grader] results available: #${submission.number}, "
+            + "${assignment.title}");
     }
 
 
     //~ Static/instance variables .............................................
 
-    private User user;
     private WCProperties properties;
 }

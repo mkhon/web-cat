@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.10 2011/12/06 18:38:25 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.11 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -22,7 +22,6 @@
 package org.webcat.grader;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import er.extensions.appserver.ERXDisplayGroup;
 import java.net.URL;
@@ -33,6 +32,8 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 import org.webcat.ui.generators.JavascriptGenerator;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 
 // -------------------------------------------------------------------------
 /**
@@ -40,7 +41,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2011/12/06 18:38:25 $
+ *  @version $Revision: 1.11 $, $Date: 2011/12/25 21:11:41 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent
@@ -576,15 +577,12 @@ public class EditAssignmentPage
         log.info("releasing all paused assignments: "
               + assignment.titleString());
 
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
-
+        run(new ECAction() { public void action() {
             for (AssignmentOffering offering : offeringGroup.displayedObjects())
             {
                 AssignmentOffering localAO = offering.localInstance(ec);
-                NSArray<EnqueuedJob> jobList = localAO.suspendedSubmissionsInQueue();
+                NSArray<EnqueuedJob> jobList =
+                    localAO.suspendedSubmissionsInQueue();
                 for (EnqueuedJob job : jobList)
                 {
                     job.setPaused(false);
@@ -594,12 +592,8 @@ public class EditAssignmentPage
             }
 
             ec.saveChanges();
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext(ec);
-        }
+        }});
+
         // trigger the grading queue to read the released jobs
         Grader.getInstance().graderQueue().enqueue(null);
 
@@ -611,11 +605,7 @@ public class EditAssignmentPage
     // ----------------------------------------------------------
     public WOActionResults cancelSuspendedSubs()
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
-
+        run(new ECAction() { public void action() {
             for (AssignmentOffering offering : offeringGroup.displayedObjects())
             {
                 AssignmentOffering localAO = offering.localInstance(ec);
@@ -624,7 +614,8 @@ public class EditAssignmentPage
                     + coreSelections().courseOffering().course().deptNumber()
                     + " "
                     + localAO.assignment().name());
-                NSArray<EnqueuedJob> jobList = localAO.suspendedSubmissionsInQueue();
+                NSArray<EnqueuedJob> jobList =
+                    localAO.suspendedSubmissionsInQueue();
                 for (EnqueuedJob job : jobList)
                 {
                     ec.deleteObject(job);
@@ -633,15 +624,10 @@ public class EditAssignmentPage
             }
 
             ec.saveChanges();
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext(ec);
-        }
+        }});
 
         return new JavascriptGenerator().refresh(
-                "allOfferings", "allOfferingsActions");
+            "allOfferings", "allOfferingsActions");
     }
 
 

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderComponent.java,v 1.2 2010/09/27 04:20:41 stedwar2 Exp $
+ |  $Id: GraderComponent.java,v 1.3 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,6 +27,7 @@ import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
+import org.webcat.woextensions.WCEC;
 
 // -------------------------------------------------------------------------
 /**
@@ -35,7 +36,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:20:41 $
+ *  @version $Revision: 1.3 $, $Date: 2011/12/25 21:11:41 $
  */
 public class GraderComponent
     extends WCCourseComponent
@@ -193,7 +194,7 @@ public class GraderComponent
         }
         else
         {
-            EOEditingContext ec = Application.newPeerEditingContext();
+            EOEditingContext ec = WCEC.newEditingContext();
             GraderPrefs newPrefs = null;
             try
             {
@@ -211,7 +212,7 @@ public class GraderComponent
             finally
             {
                 ec.unlock();
-                Application.releasePeerEditingContext( ec );
+                ec.dispose();
             }
             /*  Appears to be unnecessary ...
             if ( newPrefs == null )

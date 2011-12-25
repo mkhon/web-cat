@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.21 2011/12/06 18:38:25 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.22 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -37,6 +37,9 @@ import org.apache.log4j.Logger;
 import org.webcat.core.*;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
 import org.webcat.grader.messaging.GradingResultsAvailableMessage;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
+import org.webcat.woextensions.MigratingEditingContext;
 
 // -------------------------------------------------------------------------
 /**
@@ -44,7 +47,7 @@ import org.webcat.grader.messaging.GradingResultsAvailableMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.21 $, $Date: 2011/12/06 18:38:25 $
+ *  @version $Revision: 1.22 $, $Date: 2011/12/25 21:11:41 $
  */
 public class Submission
     extends _Submission
@@ -162,7 +165,8 @@ public class Submission
 
             new UnexpectedExceptionMessage(e, null, null,
                     "An exception was generated trying to retrieve the "
-                    + "id for a submission.\n\nSubmission = " + subInfo).send();
+                    + "id for a submission.\n\nSubmission = " + subInfo)
+                .send();
 
             return ERXConstant.ZeroInteger;
         }
@@ -708,7 +712,8 @@ public class Submission
 
         try
         {
-            new GradingResultsAvailableMessage(user(), properties).send();
+            new GradingResultsAvailableMessage(user(), properties)
+                .send();
         }
         catch (Exception e)
         {
@@ -1889,7 +1894,7 @@ public class Submission
      */
     private static boolean submissionsForGradingWithMigration(
         EOEditingContext                      ec,
-        AssignmentOffering                    anAssignmentOffering,
+        final AssignmentOffering              anAssignmentOffering,
         boolean                               omitPartners,
         NSMutableArray<User>                  users,
         NSMutableDictionary<User, Submission> submissions,
@@ -1897,7 +1902,7 @@ public class Submission
     {
 /*        NSMutableArray<Submission> subs =
             new NSMutableArray<Submission>(users.count());*/
-        NSMutableArray<Submission> brokenPartners =
+        final NSMutableArray<Submission> brokenPartners =
             new NSMutableArray<Submission>();
 
         for (User student : users.immutableClone())
@@ -2026,70 +2031,67 @@ public class Submission
             // the wrong assignment were found, patch them now.
             if (brokenPartners.count() > 0)
             {
-                EOEditingContext partnerEC =
-                    Application.newPeerEditingContext();
-                try
-                {
-                    partnerEC.lock();
-                    AssignmentOffering offering =
-                        anAssignmentOffering.localInstance(partnerEC);
-                    for (Submission sub : brokenPartners)
+                run(new ECAction() { public void action() {
+                    try
                     {
-                        Submission psub = sub.localInstance(partnerEC);
-                        log.warn("found partner submission "
-                            + psub.user() + " #" + psub.submitNumber()
-                            + "\non incorrect assignment offering "
-                            + psub.assignmentOffering());
-
-                        NSArray<AssignmentOffering> partnerOfferings =
-                            AssignmentOffering.objectsMatchingQualifier(
-                                partnerEC,
-                                AssignmentOffering.courseOffering
-                                    .dot(CourseOffering.course).eq(
-                                        offering.courseOffering().course())
-                                .and(AssignmentOffering.courseOffering
-                                    .dot(CourseOffering.students).eq(
-                                        psub.user()))
-                                .and(AssignmentOffering.assignment
-                                .eq(offering.assignment())));
-                        if (partnerOfferings.count() == 0)
+                        AssignmentOffering offering =
+                            anAssignmentOffering.localInstance(ec);
+                        for (Submission sub : brokenPartners)
                         {
-                            log.error("Cannot locate correct assignment "
-                                + "offering for partner"
+                            Submission psub = sub.localInstance(ec);
+                            log.warn("found partner submission "
                                 + psub.user() + " #" + psub.submitNumber()
                                 + "\non incorrect assignment offering "
                                 + psub.assignmentOffering());
-                        }
-                        else
-                        {
-                            if (partnerOfferings.count() > 1)
+
+                            NSArray<AssignmentOffering> partnerOfferings =
+                                AssignmentOffering.objectsMatchingQualifier(
+                                    ec,
+                                    AssignmentOffering.courseOffering
+                                        .dot(CourseOffering.course).eq(
+                                            offering.courseOffering().course())
+                                    .and(AssignmentOffering.courseOffering
+                                        .dot(CourseOffering.students).eq(
+                                            psub.user()))
+                                    .and(AssignmentOffering.assignment
+                                    .eq(offering.assignment())));
+                            if (partnerOfferings.count() == 0)
                             {
-                                log.warn("Multiple possible offerings for "
-                                    + "partner "
+                                log.error("Cannot locate correct assignment "
+                                    + "offering for partner"
                                     + psub.user() + " #" + psub.submitNumber()
                                     + "\non incorrect assignment offering "
                                     + psub.assignmentOffering());
-                                for (AssignmentOffering ao : partnerOfferings)
-                                {
-                                    log.warn("\t" + ao);
-                                }
                             }
+                            else
+                            {
+                                if (partnerOfferings.count() > 1)
+                                {
+                                    log.warn("Multiple possible offerings for "
+                                        + "partner "
+                                        + psub.user() + " #"
+                                        + psub.submitNumber()
+                                        + "\non incorrect assignment offering "
+                                        + psub.assignmentOffering());
+                                    for (AssignmentOffering ao :
+                                        partnerOfferings)
+                                    {
+                                        log.warn("\t" + ao);
+                                    }
+                                }
 
-                            psub.setAssignmentOfferingRelationship(
-                                partnerOfferings.get(0));
+                                psub.setAssignmentOfferingRelationship(
+                                    partnerOfferings.get(0));
+                            }
                         }
+                        ec.saveChanges();
                     }
-                    partnerEC.saveChanges();
-                }
-                catch (Exception e)
-                {
-                    log.error("Cannot update broken partner submissions", e);
-                }
-                finally
-                {
-                    partnerEC.unlock();
-                    Application.releasePeerEditingContext(partnerEC);
-                }
+                    catch (Exception e)
+                    {
+                        log.error(
+                            "Cannot update broken partner submissions", e);
+                    }
+                }});
             }
         }
 

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: FullPrintableReport.java,v 1.3 2011/12/06 18:38:25 stedwar2 Exp $
+ |  $Id: FullPrintableReport.java,v 1.4 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,6 +27,7 @@ import com.webobjects.foundation.*;
 import er.extensions.foundation.ERXArrayUtilities;
 import org.webcat.core.*;
 import org.webcat.core.messaging.UnexpectedExceptionMessage;
+import org.webcat.woextensions.WCEC;
 
 // -------------------------------------------------------------------------
 /**
@@ -34,7 +35,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/12/06 18:38:25 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/25 21:11:41 $
  */
 public class FullPrintableReport
     extends GraderComponent
@@ -176,7 +177,7 @@ public class FullPrintableReport
             this.context = context;
             // Create a local EC, transfer the result into it, and
             // store both locally
-            ec = Application.newPeerEditingContext();
+            ec = WCEC.newEditingContext();
             try
             {
                 ec.lock();
@@ -264,15 +265,16 @@ public class FullPrintableReport
         {
             submissionResult = null;
             user = null;
-            if ( ec != null )
+            if (ec != null)
             {
-                Application.releasePeerEditingContext( ec );
+                ec.dispose();
             }
             ec = null;
         }
 
 
         //~ Instance/static variables .........................................
+
         private EOEditingContext ec;
         private SubmissionResult submissionResult;
         private User             user;

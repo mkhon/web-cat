@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentDataPage.java,v 1.3 2011/02/22 03:08:58 stedwar2 Exp $
+ |  $Id: AssignmentDataPage.java,v 1.4 2011/12/25 21:11:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -28,6 +28,7 @@ import com.webobjects.foundation.*;
 import java.io.*;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
+import org.webcat.woextensions.WCEC;
 
 // -------------------------------------------------------------------------
 /**
@@ -36,7 +37,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/02/22 03:08:58 $
+ * @version $Revision: 1.4 $, $Date: 2011/12/25 21:11:41 $
  */
 public class AssignmentDataPage
     extends WCComponent
@@ -107,16 +108,8 @@ public class AssignmentDataPage
         {
             // Create a local EC, transfer the result into it, and
             // store both locally
-            ec = Application.newPeerEditingContext();
-            try
-            {
-                ec.lock();
-                assignments = AssignmentOffering.allObjects(ec);
-            }
-            finally
-            {
-                ec.unlock();
-            }
+            ec = WCEC.newAutoLockingEditingContext();
+            assignments = AssignmentOffering.allObjects(ec);
             this.formatter = formatter;
         }
 
@@ -309,7 +302,7 @@ public class AssignmentDataPage
         {
             if ( ec != null )
             {
-                Application.releasePeerEditingContext( ec );
+                ec.dispose();
             }
             ec = null;
         }
