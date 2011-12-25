@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: BatchPlugin.java,v 1.5 2011/05/19 16:57:22 stedwar2 Exp $
+ |  $Id: BatchPlugin.java,v 1.6 2011/12/25 02:42:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2011 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,6 +31,8 @@ import net.sf.webcat.FeatureProvider;
 import org.webcat.core.Application;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.User;
+import org.webcat.woextensions.ECAction;
+import static org.webcat.woextensions.ECAction.run;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
@@ -47,7 +49,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/05/19 16:57:22 $
+ * @version $Revision: 1.6 $, $Date: 2011/12/25 02:42:16 $
  */
 public class BatchPlugin
     extends _BatchPlugin
@@ -251,7 +253,7 @@ public class BatchPlugin
         if (hasSubdir())
         {
             return initializeConfigAttributes(
-                            new File(configPlistFilePath()));
+                new File(configPlistFilePath()));
         }
 
         return null;
@@ -278,7 +280,7 @@ public class BatchPlugin
             catch (IOException e)
             {
                 log.error("error attempting to load confg.plist file for "
-                           + this, e);
+                    + this, e);
             }
 
             try
@@ -305,33 +307,33 @@ public class BatchPlugin
                         NSDictionary<String, ?> thisOption =
                             (NSDictionary<String, ?>)options.objectAtIndex(i);
 //                      log.debug( "this option = " + thisOption );
-                        if ( thisOption.objectForKey( "disable" ) == null )
+                        if (thisOption.objectForKey("disable") == null)
                         {
                             String property = (String)thisOption
-                                .objectForKey( "property" );
+                                .objectForKey("property");
                             Object value = thisOption
-                                .objectForKey( "default" );
-                            if ( property != null && value != null )
+                                .objectForKey("default");
+                            if (property != null && value != null)
                             {
-                                defaults.setObjectForKey( value, property );
+                                defaults.setObjectForKey(value, property);
                             }
                         }
                     }
-                    setDefaultConfigSettings( defaults );
+                    setDefaultConfigSettings(defaults);
                 }
                 else
                 {
-                    setDefaultConfigSettings( null );
+                    setDefaultConfigSettings(null);
                 }
                 setLastModified(
-                    new NSTimestamp( configPlist.lastModified() ) );
-                if ( ERXValueUtilities.booleanValue(
-                     configDescription().get( AUTO_PUBLISH_KEY ) ) )
+                    new NSTimestamp(configPlist.lastModified()));
+                if (ERXValueUtilities.booleanValue(
+                    configDescription().get(AUTO_PUBLISH_KEY)))
                 {
-                    setIsPublished( true );
+                    setIsPublished(true);
                 }
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
                 return e.getMessage()
                     + " (error reading plug-in's config.plist file)";
@@ -373,7 +375,7 @@ public class BatchPlugin
     public String installUpdate()
     {
         return installOrUpdate(
-            author(), descriptor().providerVersion(), true, this );
+            author(), descriptor().providerVersion(), true, this);
     }
 
 
@@ -393,9 +395,9 @@ public class BatchPlugin
     public static String installOrUpdate(
         User                            installedBy,
         net.sf.webcat.FeatureDescriptor plugin,
-        boolean                         overwrite )
+        boolean                         overwrite)
     {
-        return installOrUpdate( installedBy, plugin, overwrite, null );
+        return installOrUpdate(installedBy, plugin, overwrite, null);
     }
 
 
@@ -407,17 +409,9 @@ public class BatchPlugin
      */
     public static void autoUpdateAndInstall()
     {
-        EOEditingContext ec = Application.newPeerEditingContext();
-        try
-        {
-            ec.lock();
-            autoInstallNewPlugins( ec, autoUpdatePlugins( ec ) );
-        }
-        finally
-        {
-            ec.unlock();
-            Application.releasePeerEditingContext( ec );
-        }
+        run(new ECAction() { public void action() {
+            autoInstallNewPlugins(ec, autoUpdatePlugins(ec));
+        }});
     }
 
 
@@ -450,7 +444,7 @@ public class BatchPlugin
      * @return the subdirectory name based on the uploaded file name, with
      * all dots replaced by underscores
      */
-    public static String convertToSubdirName( String fileName )
+    public static String convertToSubdirName(String fileName)
     {
         return fileName.replace('.', '_').replace(' ', '-');
     }
@@ -477,93 +471,92 @@ public class BatchPlugin
             String                              uploadedName,
             NSData                              uploadedData,
             boolean                             expand,
-            NSMutableDictionary<String, Object> errors
-        )
+            NSMutableDictionary<String, Object> errors)
     {
-        String userPluginDir = userPluginDirName( pluginAuthor, false ).toString();
+        String userPluginDir =
+            userPluginDirName(pluginAuthor, false).toString();
         String newSubdirName = null;
-        uploadedName = ( new File( uploadedName ) ).getName();
+        uploadedName = (new File(uploadedName)).getName();
         String uploadedNameLC = uploadedName.toLowerCase();
         File toLookFor;
-        if ( expand && ( uploadedNameLC.endsWith( ".zip" ) ||
-                         uploadedNameLC.endsWith( ".jar" ) ) )
+        if (expand && (uploadedNameLC.endsWith(".zip") ||
+                       uploadedNameLC.endsWith(".jar")))
         {
-            newSubdirName = convertToSubdirName( uploadedName );
-            toLookFor = new File( userPluginDir + "/" + newSubdirName );
+            newSubdirName = convertToSubdirName(uploadedName);
+            toLookFor = new File(userPluginDir + "/" + newSubdirName);
         }
         else
         {
-            toLookFor = new File( userPluginDir + "/" + uploadedName );
+            toLookFor = new File(userPluginDir + "/" + uploadedName);
         }
-        if ( toLookFor.exists() )
+        if (toLookFor.exists())
         {
-            String msg = "You already have an uploaded batch plug-in with this "
-                         + "name.  If you want to change that plug-in's "
-                         + "files, then edit its configuration.  "
-                         + "Otherwise, please use a different file name "
-                         + "for this new plug-in.";
-            errors.setObjectForKey( msg, msg );
+            String msg = "You already have an uploaded batch plug-in with "
+                + "this name.  If you want to change that plug-in's "
+                + "files, then edit its configuration.  Otherwise, please "
+                + "use a different file name for this new plug-in.";
+            errors.setObjectForKey(msg, msg);
             return null;
         }
 
         BatchPlugin batchPlugin = new BatchPlugin();
-        ec.insertObject( batchPlugin );
-        batchPlugin.setUploadedFileName( uploadedName );
-        batchPlugin.setMainFileName( uploadedName );
-        batchPlugin.setLastModified( new NSTimestamp() );
-        batchPlugin.setAuthorRelationship( pluginAuthor );
+        ec.insertObject(batchPlugin);
+        batchPlugin.setUploadedFileName(uploadedName);
+        batchPlugin.setMainFileName(uploadedName);
+        batchPlugin.setLastModified(new NSTimestamp());
+        batchPlugin.setAuthorRelationship(pluginAuthor);
 
         // Save the file to disk
-        log.debug( "saving to file " + batchPlugin.mainFilePath() );
-        File pluginPath = new File( batchPlugin.mainFilePath() );
+        log.debug("saving to file " + batchPlugin.mainFilePath());
+        File pluginPath = new File(batchPlugin.mainFilePath());
         try
         {
             pluginPath.getParentFile().mkdirs();
-            FileOutputStream out = new FileOutputStream( pluginPath );
-            uploadedData.writeToStream( out );
+            FileOutputStream out = new FileOutputStream(pluginPath);
+            uploadedData.writeToStream(out);
             out.close();
         }
-        catch ( java.io.IOException e )
+        catch (java.io.IOException e)
         {
             String msg = e.getMessage();
-            errors.setObjectForKey( msg, msg );
-            ec.deleteObject( batchPlugin );
+            errors.setObjectForKey(msg, msg);
+            ec.deleteObject(batchPlugin);
             pluginPath.delete();
             return null;
         }
 
-        if ( expand && ( uploadedNameLC.endsWith( ".zip" ) ||
-                         uploadedNameLC.endsWith( ".jar" ) ) )
+        if (expand && (uploadedNameLC.endsWith(".zip") ||
+                       uploadedNameLC.endsWith(".jar")))
         {
             try
             {
-                //ZipFile zip = new ZipFile( script.mainFilePath() );
-                batchPlugin.setSubdirName( newSubdirName );
-                log.debug( "unzipping to " + batchPlugin.dirName() );
+                // ZipFile zip = new ZipFile(script.mainFilePath());
+                batchPlugin.setSubdirName(newSubdirName);
+                log.debug("unzipping to " + batchPlugin.dirName());
                 org.webcat.archives.ArchiveManager.getInstance()
-                    .unpack( new File( batchPlugin.dirName() ), pluginPath );
-                //Grader.unZip( zip, new File( script.dirName() ) );
+                    .unpack(new File(batchPlugin.dirName()), pluginPath);
+                //Grader.unZip(zip, new File(script.dirName()));
                 //zip.close();
                 pluginPath.delete();
             }
-            catch ( java.io.IOException e )
+            catch (java.io.IOException e)
             {
                 String msg = e.getMessage();
-                errors.setObjectForKey( msg, msg );
-                batchPlugin.setSubdirName( newSubdirName );
+                errors.setObjectForKey(msg, msg);
+                batchPlugin.setSubdirName(newSubdirName);
                 org.webcat.core.FileUtilities
-                    .deleteDirectory( batchPlugin.dirName() );
+                    .deleteDirectory(batchPlugin.dirName());
                 pluginPath.delete();
-                log.warn( "error unzipping:", e );
-                // throw new NSForwardException( e );
-                ec.deleteObject( batchPlugin );
+                log.warn("error unzipping:", e);
+                // throw new NSForwardException(e);
+                ec.deleteObject(batchPlugin);
                 return null;
             }
-            batchPlugin.setMainFileName( null );
+            batchPlugin.setMainFileName(null);
             String msg = batchPlugin.initializeConfigAttributes();
-            if ( msg != null )
+            if (msg != null)
             {
-                errors.setObjectForKey( msg, msg );
+                errors.setObjectForKey(msg, msg);
             }
         }
         return batchPlugin;
@@ -577,15 +570,15 @@ public class BatchPlugin
      */
     public static String pluginRoot()
     {
-        if ( pluginRoot == null )
+        if (pluginRoot == null)
         {
             pluginRoot = org.webcat.core.Application
-                .configurationProperties().getProperty( "grader.scriptsroot" );
-            if ( pluginRoot == null )
+                .configurationProperties().getProperty("grader.scriptsroot");
+            if (pluginRoot == null)
             {
                 pluginRoot = org.webcat.core.Application
                     .configurationProperties()
-                        .getProperty( "grader.submissiondir" )
+                        .getProperty("grader.submissiondir")
                     + "/BatchPlugins";
             }
         }
@@ -601,12 +594,12 @@ public class BatchPlugin
      */
     public static String pluginDataRoot()
     {
-        if ( pluginDataRoot == null )
+        if (pluginDataRoot == null)
         {
             pluginDataRoot = org.webcat.core.Application
                 .configurationProperties()
-                .getProperty( "grader.scriptsdataroot" );
-            if ( pluginDataRoot == null )
+                .getProperty("grader.scriptsdataroot");
+            if (pluginDataRoot == null)
             {
                 pluginDataRoot = pluginRoot() + "Data";
             }
@@ -643,8 +636,8 @@ public class BatchPlugin
             new NSMutableArray<BatchPlugin>();
 
         allPlugins.addObjectsFromArray(userPlugins);
-        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(allPlugins,
-                publishedPlugins);
+        ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
+            allPlugins, publishedPlugins);
 
         ERXArrayUtilities.sortArrayWithKey(allPlugins, BatchPlugin.NAME_KEY);
 
@@ -675,31 +668,31 @@ public class BatchPlugin
         User                            installedBy,
         net.sf.webcat.FeatureDescriptor plugin,
         boolean                         overwrite,
-        BatchPlugin                     batchPlugin )
+        BatchPlugin                     batchPlugin)
     {
-        if ( batchPlugin != null && !batchPlugin.hasSubdir() )
+        if (batchPlugin != null && !batchPlugin.hasSubdir())
         {
             return "Installed plug-in does not support downloads!";
         }
 
         BatchPlugin newBatchPlugin = null;
-        String pluginSubdirName = convertToSubdirName( plugin.name() );
+        String pluginSubdirName = convertToSubdirName(plugin.name());
         File newBatchPluginPath = null;
-        if ( batchPlugin == null )
+        if (batchPlugin == null)
         {
             newBatchPlugin = new BatchPlugin();
-            installedBy.editingContext().insertObject( newBatchPlugin );
-            newBatchPlugin.setLastModified( new NSTimestamp() );
-            newBatchPlugin.setAuthorRelationship( installedBy );
-            newBatchPlugin.setSubdirName( pluginSubdirName );
+            installedBy.editingContext().insertObject(newBatchPlugin);
+            newBatchPlugin.setLastModified(new NSTimestamp());
+            newBatchPlugin.setAuthorRelationship(installedBy);
+            newBatchPlugin.setSubdirName(pluginSubdirName);
             batchPlugin = newBatchPlugin;
         }
-        else if ( !pluginSubdirName.equals( batchPlugin.subdirName() ) )
+        else if (!pluginSubdirName.equals(batchPlugin.subdirName()))
         {
             newBatchPluginPath = new File (
-                userPluginDirName( installedBy, false ).toString(),
-                pluginSubdirName );
-            if ( newBatchPluginPath.exists() )
+                userPluginDirName(installedBy, false).toString(),
+                pluginSubdirName);
+            if (newBatchPluginPath.exists())
             {
                 return "The plug-in you are updating has changed names, but "
                     + "you already have an installed plug-in with the new "
@@ -708,22 +701,21 @@ public class BatchPlugin
             }
         }
 
-        File pluginSubdir = new File( batchPlugin.dirName() );
-        if ( pluginSubdir.exists() )
+        File pluginSubdir = new File(batchPlugin.dirName());
+        if (pluginSubdir.exists())
         {
             log.debug(
-                "directory " + pluginSubdir.getAbsolutePath() + " exists" );
-            if ( overwrite )
+                "directory " + pluginSubdir.getAbsolutePath() + " exists");
+            if (overwrite)
             {
-                org.webcat.core.FileUtilities
-                    .deleteDirectory( pluginSubdir );
+                org.webcat.core.FileUtilities.deleteDirectory(pluginSubdir);
             }
             else
             {
-                if ( newBatchPlugin != null )
+                if (newBatchPlugin != null)
                 {
                     newBatchPlugin.editingContext()
-                        .deleteObject( newBatchPlugin );
+                        .deleteObject(newBatchPlugin);
                 }
                 return "You already have an installed plug-in with this name."
                     + " If you want to change that plug-in's files, then "
@@ -732,43 +724,43 @@ public class BatchPlugin
         }
 
         // Save the file to disk
-        log.debug( "downloading plug-in archive" );
-        if ( newBatchPluginPath == null )
+        log.debug("downloading plug-in archive");
+        if (newBatchPluginPath == null)
         {
-            newBatchPluginPath = new File( batchPlugin.dirName() );
+            newBatchPluginPath = new File(batchPlugin.dirName());
         }
         else
         {
-            batchPlugin.setSubdirName( pluginSubdirName );
+            batchPlugin.setSubdirName(pluginSubdirName);
         }
         File downloadPath = newBatchPluginPath.getParentFile();
-        File archiveFile = new File( downloadPath.getAbsolutePath()
-            + "/" + plugin.name() + "_" + plugin.currentVersion() + ".jar" );
+        File archiveFile = new File(downloadPath.getAbsolutePath()
+            + "/" + plugin.name() + "_" + plugin.currentVersion() + ".jar");
         downloadPath.mkdirs();
-        plugin.downloadTo( downloadPath );
+        plugin.downloadTo(downloadPath);
         try
         {
             org.webcat.archives.ArchiveManager.getInstance()
-                .unpack( newBatchPluginPath,  archiveFile );
+                .unpack(newBatchPluginPath,  archiveFile);
         }
-        catch ( java.io.IOException e )
+        catch (java.io.IOException e)
         {
-            if ( newBatchPlugin != null )
+            if (newBatchPlugin != null)
             {
                 newBatchPlugin.editingContext()
-                    .deleteObject( newBatchPlugin );
+                    .deleteObject(newBatchPlugin);
             }
             return e.getMessage();
         }
 
         archiveFile.delete();
         String msg = batchPlugin.initializeConfigAttributes();
-        if ( msg != null )
+        if (msg != null)
         {
-            if ( newBatchPlugin != null )
+            if (newBatchPlugin != null)
             {
                 newBatchPlugin.editingContext()
-                    .deleteObject( newBatchPlugin );
+                    .deleteObject(newBatchPlugin);
             }
         }
         return msg;
@@ -779,29 +771,29 @@ public class BatchPlugin
     private static NSArray<BatchPlugin> autoUpdatePlugins(EOEditingContext ec)
     {
         NSArray<BatchPlugin> pluginList = allObjects(ec);
-        if ( !Application.configurationProperties()
-                 .booleanForKey( NO_AUTO_UPDATE_KEY ) )
+        if (!Application.configurationProperties()
+            .booleanForKey(NO_AUTO_UPDATE_KEY))
         {
             for (BatchPlugin plugin : pluginList)
             {
                 try
                 {
-                    if ( plugin.descriptor().updateIsAvailable() )
+                    if (plugin.descriptor().updateIsAvailable())
                     {
                         log.info(
                             "Updating plug-in: \"" + plugin.name() + "\"" );
                         String msg = plugin.installUpdate();
-                        if ( msg != null )
+                        if (msg != null)
                         {
-                            log.error( "Error updating plug-in \""
-                                + plugin.name() + "\": " + msg );
+                            log.error("Error updating plug-in \""
+                                + plugin.name() + "\": " + msg);
                         }
                         ec.saveChanges();
                     }
                     else
                     {
-                        log.debug( "Plug-in \"" + plugin.name()
-                            + "\" is up to date." );
+                        log.debug("Plug-in \"" + plugin.name()
+                            + "\" is up to date.");
                     }
                 }
                 catch (IOException e)
@@ -817,19 +809,19 @@ public class BatchPlugin
 
     // ----------------------------------------------------------
     private static void autoInstallNewPlugins(
-        EOEditingContext ec, NSArray<BatchPlugin> pluginList )
+        EOEditingContext ec, NSArray<BatchPlugin> pluginList)
     {
-        if ( Application.configurationProperties()
-                 .booleanForKey( NO_AUTO_INSTALL_KEY ) )
+        if (Application.configurationProperties()
+            .booleanForKey(NO_AUTO_INSTALL_KEY))
         {
             return;
         }
         String adminUserName = Application.configurationProperties()
-            .getProperty( "AdminUsername" );
-        if ( adminUserName == null )
+            .getProperty("AdminUsername");
+        if (adminUserName == null)
         {
-            log.error( "No definition for 'AdminUsername' config property!\n"
-                + "Cannot install new plug-ins without admin user name." );
+            log.error("No definition for 'AdminUsername' config property!\n"
+                + "Cannot install new plug-ins without admin user name.");
             return;
         }
         User admin = null;
@@ -837,24 +829,24 @@ public class BatchPlugin
             User.userName.eq(adminUserName));
         for (User user : candidates)
         {
-            if ( user.hasAdminPrivileges() )
+            if (user.hasAdminPrivileges())
             {
-                if ( admin == null )
+                if (admin == null)
                 {
                     admin = user;
                 }
                 else
                 {
-                    log.warn( "Duplicate admin accounts with user name \""
+                    log.warn("Duplicate admin accounts with user name \""
                         + adminUserName + "\" found.  Using " + admin
                         + ", ignoring " + user);
                 }
             }
         }
-        if ( admin == null )
+        if (admin == null)
         {
-            log.error( "Cannot find admin account with user name \""
-                + adminUserName + "\"!" );
+            log.error("Cannot find admin account with user name \""
+                + adminUserName + "\"!");
             return;
         }
 
@@ -862,30 +854,30 @@ public class BatchPlugin
             new HashSet<FeatureDescriptor>();
         for (FeatureProvider provider : FeatureProvider.providers())
         {
-            if ( provider != null )
+            if (provider != null)
             {
-                availablePlugins.addAll( provider.plugins() );
+                availablePlugins.addAll(provider.plugins());
             }
         }
-        if ( pluginList != null )
+        if (pluginList != null)
         {
             for (BatchPlugin s : pluginList)
             {
                 FeatureDescriptor fd = s.descriptor().providerVersion();
-                if ( fd != null )
+                if (fd != null)
                 {
-                    availablePlugins.remove( fd );
+                    availablePlugins.remove(fd);
                 }
             }
         }
         for (FeatureDescriptor plugin : availablePlugins)
         {
-            log.info( "Installing new plug-in: \"" + plugin.name() + "\"" );
-            String msg = installOrUpdate( admin, plugin, false, null );
-            if ( msg != null )
+            log.info("Installing new plug-in: \"" + plugin.name() + "\"");
+            String msg = installOrUpdate(admin, plugin, false, null);
+            if (msg != null)
             {
-                log.error( "Error installing new plug-in \""
-                    + plugin.name() + "\": " + msg );
+                log.error("Error installing new plug-in \""
+                    + plugin.name() + "\": " + msg);
             }
             ec.saveChanges();
         }
