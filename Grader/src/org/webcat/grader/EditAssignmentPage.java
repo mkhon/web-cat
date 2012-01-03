@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.11 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.12 2012/01/03 18:52:51 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -40,8 +40,8 @@ import static org.webcat.woextensions.ECAction.run;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.11 $, $Date: 2011/12/25 21:11:41 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.12 $, $Date: 2012/01/03 18:52:51 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent
@@ -731,7 +731,7 @@ public class EditAssignmentPage
 
         scriptDisplayGroup.fetch();
 
-        return new JavascriptGenerator().refresh("gradingSteps");
+        return null; //FIXME new JavascriptGenerator().refresh("gradingSteps");
     }
 
 
@@ -744,7 +744,7 @@ public class EditAssignmentPage
         }
 
         stepForAction = thisStep;
-        return new ConfirmingAction(this, true)
+        return new ConfirmingAction(this, false)
         {
             @Override
             protected String confirmationTitle()
