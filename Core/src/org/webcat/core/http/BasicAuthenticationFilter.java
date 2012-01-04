@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BasicAuthenticationFilter.java,v 1.2 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: BasicAuthenticationFilter.java,v 1.3 2012/01/04 15:53:57 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -28,6 +28,7 @@ import org.webcat.core.LoginSession;
 import org.webcat.core.Session;
 import org.webcat.core.User;
 import org.webcat.woextensions.ECAction;
+import org.webcat.woextensions.WCEC;
 import static org.webcat.woextensions.ECAction.run;
 import com.Ostermiller.util.Base64;
 import com.webobjects.appserver.WOContext;
@@ -46,8 +47,8 @@ import com.webobjects.eocontrol.EOEditingContext;
  * be used by components further down the request handler chain.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2011/12/25 02:24:54 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2012/01/04 15:53:57 $
  */
 public abstract class BasicAuthenticationFilter
      implements RequestFilter
@@ -164,7 +165,7 @@ public abstract class BasicAuthenticationFilter
         final WORequest request = context.request();
         final WOResponse response = context.response();
 
-        final Session session = (context._requestSessionID() != null)
+        Session session = (context._requestSessionID() != null)
             ? // Use an existing session if we have one.
             (Session)Application.wcApplication()
                 .restoreSessionWithID(context._requestSessionID(),
@@ -192,7 +193,12 @@ public abstract class BasicAuthenticationFilter
                 final String username = parts[0];
                 final String password = (parts.length > 1) ? parts[1] : null;
 
-                run(new ECAction() { public void action() {
+                EOEditingContext ec = WCEC.newEditingContext();
+
+                try
+                {
+                    ec.lock();
+
                     User user = validateUser(username, password, ec);
 
                     if (user == null)
@@ -203,12 +209,17 @@ public abstract class BasicAuthenticationFilter
                     else
                     {
                         context._setRequestSessionID(existingSessionId);
-                        Session existingSession = (Session)context.session();
-                        existingSession.setUser(user.localInstance(
-                                existingSession.defaultEditingContext()));
-                        existingSession._appendCookieToResponse(response);
+                        session = (Session)context.session();
+                        session.setUser(user.localInstance(
+                                session.defaultEditingContext()));
+                        session._appendCookieToResponse(response);
                     }
-                }});
+                }
+                finally
+                {
+                    ec.unlock();
+                    ec.dispose();
+                }
             }
         }
 
