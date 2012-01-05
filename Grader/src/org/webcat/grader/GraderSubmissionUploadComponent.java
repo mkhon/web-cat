@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionUploadComponent.java,v 1.6 2010/10/08 14:48:14 stedwar2 Exp $
+ |  $Id: GraderSubmissionUploadComponent.java,v 1.7 2012/01/05 19:54:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,7 +35,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.6 $, $Date: 2010/10/08 14:48:14 $
+ *  @version $Revision: 1.7 $, $Date: 2012/01/05 19:54:43 $
  */
 public class GraderSubmissionUploadComponent
     extends GraderAssignmentComponent
@@ -184,7 +184,8 @@ public class GraderSubmissionUploadComponent
                 EnqueuedJob.objectsMatchingQualifier(localContext(),
                     EnqueuedJob.submission.dot(Submission.user).eq(user()).and(
                     EnqueuedJob.submission.dot(Submission.assignmentOffering)
-                        .eq(submission.assignmentOffering())));
+                        .eq(submission.assignmentOffering()))
+                    .and(EnqueuedJob.regrading.isFalse()));
             for (EnqueuedJob job : oldJobs)
             {
                 job.setDiscarded(true);
