@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: JobBase.java,v 1.6 2011/12/25 21:18:25 stedwar2 Exp $
+ |  $Id: JobBase.java,v 1.7 2012/01/05 19:49:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2011 Virginia Tech
  |
@@ -44,7 +44,7 @@ import er.extensions.eof.ERXEOAccessUtilities;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2011/12/25 21:18:25 $
+ * @version $Revision: 1.7 $, $Date: 2012/01/05 19:49:57 $
  */
 public abstract class JobBase
     extends _JobBase
@@ -62,6 +62,29 @@ public abstract class JobBase
 
 
     //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public void setProgress(double value)
+    {
+        if (Double.isNaN(value) || Double.isInfinite(value) || value < 0.0)
+        {
+            value = 0.0;
+        }
+        else if (value > 1.0)
+        {
+            if (value <= 100.0)
+            {
+                value /= 100.0;
+            }
+            else
+            {
+                value = 1.0;
+            }
+        }
+        super.setProgress(value);
+    }
+
 
     // ----------------------------------------------------------
     /**
