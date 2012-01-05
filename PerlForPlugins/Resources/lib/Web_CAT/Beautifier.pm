@@ -12,13 +12,33 @@ use Carp;
 
 @ISA = qw( Web_CAT::Beautifier::Core );
 
+my %icons = (
+    "Error"        => "http://web-cat.org/icons/exclaim.gif",
+    "Warning"      => "http://web-cat.org/icons/caution.gif",
+    "Question"     => "http://web-cat.org/icons/help.gif",
+    "Suggestion"   => "http://web-cat.org/icons/suggestion.gif",
+    "Answer"       => "http://web-cat.org/icons/answer.gif",
+    "Good"         => "http://web-cat.org/icons/check.gif",
+    "Extra Credit" => "http://web-cat.org/icons/excred.gif",
+    "default"      => "http://web-cat.org/icons/todo.gif"
+);
+
+my %categoryPriority = (
+    "Error"        => 1,
+    "Warning"      => 2,
+    "Question"     => 3,
+    "Suggestion"   => 4,
+    "Answer"       => 5,
+    "Good"         => 6,
+    "Extra Credit" => 7
+);
+
 %extensionMap = (
     "ascii"  => "ascii",
     "cpp"    => "cpp",
     "cxx"    => "cpp",
     "h"      => "cpp",
     "hpp"    => "cpp",
-    "hs"     => "haskell",
     "htm"    => "html",
     "html"   => "html",
     "input"  => "ascii",
@@ -144,6 +164,7 @@ sub highlightFile
             . qq(bgcolor="white" id="bigtab">\n),
         qq(<TBODY id="tab">)
         );
+    my $messageCount = 0;
 
     for ( my $i = 0; $i < $numLines; $i++ )
     {
@@ -155,39 +176,118 @@ sub highlightFile
         my $Line = "Line";
         my $starta = "";
         my $enda = "";
+        my $lineClass = "";
+
         if ( defined( $self->{codeMessages} )
              && defined( $self->{codeMessages}{$self->{fileName}} )
              && defined( $self->{codeMessages}{$self->{fileName}}{$num} ) )
         {
+            $messageCount++;
+            my $category = $self->{codeMessages}{$self->{fileName}}{$num}{category};
+            
+            if ($categoryPriority{$category})
+            {
+                $lineClass = " class=\"$category\"";
+            }
+            else
+            {
+                $starta = "<a title=\"" . $self->{codeMessages}{$self->{fileName}}{$num}{message} . "\" id=\"$id\">";
+                $enda = "</a>";
+            }
             $hl = "Hilight";
             $Line = $hl;
-            $starta = "<a title=\""
-                . $self->{codeMessages}{$self->{fileName}}{$num}{message}
-                . "\" id=\"$id\">";
-            $enda = "</a>";
         }
         my $mungedFileName = lcfirst( $self->{fileName} );
         if ( defined( $self->{codeMessages} )
              && defined( $self->{codeMessages}{$mungedFileName} )
              && defined( $self->{codeMessages}{$mungedFileName}{$num} ) )
         {
+            if ($lineClass eq "")
+            {
+                $messageCount++;
+            }
+            my $category = $self->{codeMessages}{$self->{fileName}}{$num}{category};
+
+            if ($categoryPriority{$category})
+            {
+                $lineClass = " class=\"$category\"";
+            }
+            else
+            {
+                $starta = "<a title=\"" . $self->{codeMessages}{$self->{fileName}}{$num}{message} . "\" id=\"$id\">";
+                $enda = "</a>";
+            }
             $hl = "Hilight";
             $Line = $hl;
-            $starta = "<a title=\""
-                . $self->{codeMessages}{$mungedFileName}{$num}{message}
-                . "\" id=\"$id\">";
-            $enda = "</a>";
         }
-        push( @newLines, <<EOF );
-<TR id="$id"><TD align="right" class="lineCount$hl" id="$id">&#160;$num</TD>
-<TD align="right" class="coverageCount$hl" id="$id">&#160;&#160;</TD>
-<TD class="src$Line" id="$id">
-<PRE class="srcLine" id="$id">$starta&#160;$line$enda</PRE></TD></TR>
+        my $outLine = <<EOF;
+<tr id="$id"$lineClass>
+    <td align="right" class="lineCount$hl" id="$id">&#160;$num</td>
+    <td align="right" class="lineCount$hl" id="$id">&#160;&#160;</td>
+    <td class="src$Line" id="$id">
+        <pre class="srcLine" id="$id">$starta&#160;$line$enda</pre>
+    </td>
+</tr>
 EOF
+
+        if ($lineClass)
+        {
+            my $messageId = "N:$messageCount:$num";
+            my $commentBody = ${self}->commentBody($messageId,
+                $self->{codeMessages}{$self->{fileName}}{$num});
+            $outLine .= <<EOF;
+<tr id="$messageId"><td colspan="3" id="$messageId">
+    <img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" border="0" id="$messageId"/>
+</td></tr>
+<tr id="$messageId">
+    <td id="$messageId">&#160;</td>
+    <td id="$messageId">&#160;</td>
+    <td id="$messageId">$commentBody</td>
+</tr>
+<tr id="$messageId"><td colspan="3" id="$messageId">
+    <img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" border="0" id="$messageId"/>
+</td></tr>
+EOF
+        }
+
+        push(@newLines, $outLine);
     }
 
     push( @newLines, "</TBODY></TABLE>\n" );
     return @newLines;
+}
+
+
+#========================================================================
+sub commentBody
+{
+    my $self = shift;
+    my $messageId = shift;
+    my $violationRef = shift;
+    my (%violation) = %{$violationRef};
+    my $category = $violation{category};
+    my $deduction = "";
+    if ($violation{deduction})
+    {
+        $deduction = ": -" . $violation{deduction};
+    }
+    my $message = $violation{message};
+    my $icon = $icons{$category};
+    if ( !defined( $icon ) )
+    {
+        $icon = $icons{default};
+    }
+
+    return <<EOF;
+<table border="0" cellpadding="1" cellspacing="0" id="$messageId"><tbody>
+    <tr id="$messageId"><td class="messageBox" id="$messageId">
+        <img src="$icon" width="16" height="16" id="$messageId"/>
+        <b id="$messageId"><span id="$messageId">$category</span>$deduction</b>
+        <br id="$messageId"/>
+        <i id="$messageId">$message</i>
+    </td></tr>
+</tbody></table>
+EOF
 }
 
 
@@ -208,6 +308,8 @@ sub generateHighlightOutputFile
     # print "  checking for $fileName\n";
     return if ( ! -f $fileName );
     # print "   found\n";
+
+    print "$fileName is file\n";
 
     if ( $self->setInputFileName( $fileName ) )
     {
@@ -248,11 +350,14 @@ sub beautify
     my $skipExtensions = shift;
     my $cfg            = shift;
     # print "attempting to beautify $fileName\n";
+
+    print "beautifying $fileName\n";
+
     if ( defined $skipExtensions )
     {
         foreach my $ext ( @{$skipExtensions} )
         {
-            if ( $fileName =~ m,\Q$ext\E$, )
+            if ( $fileName =~ m,\Q$ext\E, )
             {
                 return;
             }
@@ -260,7 +365,9 @@ sub beautify
     }
     if ( -d $fileName )
     {
-        foreach my $f ( < $fileName/* > )
+        print "$fileName is directory\n";
+        
+        foreach my $f ( <$fileName/*> )
         {
             $self->beautify( $f, $outBase, $outPrefix, $numCodeMarkups,
                              $skipExtensions, $cfg );
@@ -270,6 +377,7 @@ sub beautify
     {
         my $outfile = $self->generateHighlightOutputFile(
             "$outBase/$outPrefix", $fileName );
+
         if ( defined $outfile )
         {
             my $thisMarkup;
