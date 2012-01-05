@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ObjectQuery.java,v 1.2 2011/03/07 18:44:37 stedwar2 Exp $
+ |  $Id: ObjectQuery.java,v 1.3 2012/01/05 19:57:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.eof.ERXEOControlUtilities;
  *
  * @author  Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2011/03/07 18:44:37 $
+ * @version $Revision: 1.3 $, $Date: 2012/01/05 19:57:01 $
  */
 public class ObjectQuery
     extends _ObjectQuery
@@ -60,6 +60,27 @@ public class ObjectQuery
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    @Override
+    public String userPresentableDescription()
+    {
+        return description();
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public String description()
+    {
+        String result = super.description();
+        if (result == null)
+        {
+            result = qualifierDescription();
+        }
+        return result;
+    }
+
 
     // ----------------------------------------------------------
     /**
