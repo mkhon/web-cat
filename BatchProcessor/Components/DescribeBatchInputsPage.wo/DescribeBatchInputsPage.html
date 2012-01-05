@@ -1,4 +1,4 @@
-<wo name="Page"><wo name="Form">
+<wo:WCPageWithNavigation><wo:WCForm multipleSubmit="true">
 
 <wo:WCPageModule title="Choose the Objects in the Batch">
 <wo name="QueryBuilder"/>
@@ -9,15 +9,8 @@
 <wo name="BatchOptionEditor"/>
 </wo:WCPageModule>
 
-<wo:WCPageModule title="Start the Batch Process">
-<p>
-Enter a descriptive name for this batch job. This name will be used to identify
-the job and its results on the "View Results" page. If you leave this blank, the
-name of the plug-in will be used.
-</p><p>
-<wo name="Description"/>
-</p>
-<wo name="Run"/>
-</wo:WCPageModule>
+<div class="module right">
+<wo:WCButton label="Run Action" action="$runBatchJob"/>
+</div>
 
-</wo></wo>
+</wo:WCForm></wo:WCPageWithNavigation>

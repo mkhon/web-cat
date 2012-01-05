@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: DescribeBatchInputsPage.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: DescribeBatchInputsPage.java,v 1.3 2012/01/05 20:01:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -38,7 +38,7 @@ import com.webobjects.eocontrol.EOEditingContext;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2012/01/05 20:01:44 $
  */
 public class DescribeBatchInputsPage extends WCComponent
 {
@@ -60,7 +60,6 @@ public class DescribeBatchInputsPage extends WCComponent
 
     public BatchPlugin batchPlugin;
     public MutableDictionary configSettings;
-    public String jobDescription;
     public File baseDir;
 
     public ObjectQuerySurrogate objectQuerySurrogate;
@@ -92,14 +91,11 @@ public class DescribeBatchInputsPage extends WCComponent
         ObjectQuery query = objectQuerySurrogate.commitAndGetQuery(ec, user());
         applyLocalChanges();
 
-        String desc;
-        if (jobDescription == null || jobDescription.length() == 0)
+        String desc = batchPlugin.displayableName();
+        String extra = query.description();
+        if (extra != null)
         {
-            desc = batchPlugin.name();
-        }
-        else
-        {
-            desc = jobDescription;
+            desc += ": " + extra;
         }
 
         BatchJob job = BatchJob.create(ec);

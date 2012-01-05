@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: BatchWorkerThread.java,v 1.4 2011/12/06 18:08:28 stedwar2 Exp $
+ |  $Id: BatchWorkerThread.java,v 1.5 2012/01/05 20:01:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import org.apache.log4j.Logger;
 import org.webcat.core.Application;
 import org.webcat.core.FileUtilities;
@@ -45,11 +46,11 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
 
 //-------------------------------------------------------------------------
 /**
- * TODO: place a real description here.
+ * A job queue worker thread for processing BatchJobs.
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/06 18:08:28 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2012/01/05 20:01:44 $
  */
 public class BatchWorkerThread extends WorkerThread<BatchJob>
 {
@@ -79,11 +80,12 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         lastSuspensionInfo = null;
 
         JobInfo info = prepareJob();
+        info.job.setProgress(0.0);
 
         while (!info.jobShouldDie
                 && !BatchJob.STATE_END.equals(info.currentState))
         {
-            if (isCancelling())
+            if (isCancelling() || info.job.isDeletedEO())
             {
                 info.jobShouldDie = true;
                 break;
@@ -91,7 +93,7 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
             // TODO: implement throttling
 
-            if (info.currentState.contains(":"))
+            if (info.currentState != null && info.currentState.contains(":"))
             {
                 handleNewIteration(info);
             }
@@ -105,8 +107,8 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
             }
 
             rewriteBatchProperties(info);
-            info.managedJob.setCurrentState(info.currentState);
-            info.managedJob.saveChanges();
+            info.job.setCurrentState(info.currentState);
+            localContext().saveChanges();
         }
 
         if (!info.jobShouldDie)
@@ -129,7 +131,7 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
         try
         {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
         }
         catch (InterruptedException e)
         {
@@ -190,13 +192,11 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         JobInfo info = new JobInfo();
 
         BatchJob job = currentJob();
-        ManagedBatchJob managedJob = new ManagedBatchJob(job);
         BatchResult result = job.batchResult();
 
         info.job = job;
-        info.managedJob = managedJob;
         info.result = result;
-        info.currentState = managedJob.currentState();
+        info.currentState = job.currentState();
 
         // Create the working directories for the batch job.
 
@@ -264,7 +264,7 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         info.currentState = stateParts[0];
         String stateAfterIteration = stateParts[1];
 
-        info.managedJob.prepareForIteration(stateAfterIteration);
+        info.job.prepareForIteration(stateAfterIteration);
     }
 
 
@@ -274,23 +274,26 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         String action = null;
         EOEnterpriseObject nextObject = null;
 
-        while (info.iterator.hasNext() && nextObject == null)
+        if (info.iterator != null)
         {
-            EOEnterpriseObject object =
-                (EOEnterpriseObject) info.iterator.next();
-
-            info.managedJob.incrementIndexOfNextObject();
-
-            if (info.qualifier.evaluateWithObject(object)
-                    && info.batchHandler.shouldProcessItem(object))
+            while (info.iterator.hasNext() && nextObject == null)
             {
-                nextObject = object;
+                EOEnterpriseObject object =
+                    (EOEnterpriseObject) info.iterator.next();
+
+                info.job.incrementIndexOfNextObject();
+
+                if (info.qualifier.evaluateWithObject(object)
+                        && info.batchHandler.shouldProcessItem(object))
+                {
+                    nextObject = object;
+                }
             }
         }
 
         if (nextObject == null)
         {
-            info.currentState = info.managedJob.endIteration();
+            info.currentState = info.job.endIteration();
         }
         else
         {
@@ -304,17 +307,17 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
             if ("continue".equals(action))
             {
-                if (!info.iterator.hasNext())
+                if (info.iterator == null || !info.iterator.hasNext())
                 {
                     // If there are no more objects to process, transition
                     // to the post-iteration state.
 
-                    info.currentState = info.managedJob.endIteration();
+                    info.currentState = info.job.endIteration();
                 }
             }
             else if ("break".equals(action))
             {
-                info.currentState = info.managedJob.endIteration();
+                info.currentState = info.job.endIteration();
             }
             else if ("die".equals(action))
             {
@@ -383,6 +386,7 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
 
     // ----------------------------------------------------------
+    @SuppressWarnings("unchecked")
     private void initializeBatchProperties(JobInfo info)
     {
         BatchJob job = info.job;
@@ -408,16 +412,21 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         properties.setProperty("scriptData", BatchPlugin.pluginDataRoot());
         properties.setProperty("frameworksBaseURL",
             Application.wcApplication().frameworksBaseURL());
-        System.out.println("initializeBatchProperties():\n--------------------");
-        try
+        if (log.isDebugEnabled())
         {
-            info.batchProperties.store(System.out, "Properties contents:");
+            log.debug("initializeBatchProperties():\n--------------------");
+            StringWriter out = new StringWriter();
+            try
+            {
+                info.batchProperties.store(out, "Properties contents:");
+            }
+            catch (Exception e)
+            {
+                log.warn("Exception writing properties file", e);
+            }
+            log.debug(out);
+            log.debug("--------------------\n");
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        System.out.println("--------------------\n");
     }
 
 
@@ -426,16 +435,21 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
     {
         info.batchProperties.clear();
         info.batchProperties.load(info.batchPropertiesFile.getAbsolutePath());
-        System.out.println("reloadBatchProperties():\n--------------------");
-        try
+        if (log.isDebugEnabled())
         {
-            info.batchProperties.store(System.out, "Properties contents:");
+            log.debug("reloadBatchProperties():\n--------------------");
+            StringWriter out = new StringWriter();
+            try
+            {
+                info.batchProperties.store(out, "Properties contents:");
+            }
+            catch (Exception e)
+            {
+                log.warn("Exception writing properties file", e);
+            }
+            log.debug(out);
+            log.debug("--------------------\n");
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        System.out.println("--------------------\n");
     }
 
 
@@ -443,9 +457,21 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
     private void rewriteBatchProperties(JobInfo info)
         throws IOException
     {
-        System.out.println("rewriteBatchProperties():\n--------------------");
-        info.batchProperties.store(System.out, "Properties contents:");
-        System.out.println("--------------------\n");
+        if (log.isDebugEnabled())
+        {
+            log.debug("rewriteBatchProperties():\n--------------------");
+            StringWriter out = new StringWriter();
+            try
+            {
+                info.batchProperties.store(out, "Properties contents:");
+            }
+            catch (Exception e)
+            {
+                log.warn("Exception writing properties file", e);
+            }
+            log.debug(out);
+            log.debug("--------------------\n");
+        }
         BufferedOutputStream out = new BufferedOutputStream(
                 new FileOutputStream(info.batchPropertiesFile));
         info.batchProperties.store(out,
@@ -611,9 +637,11 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
         // Update certain properties that are used on each state transition.
 
+        double iterationProgress = (info.objectCount > 0)
+            ? info.job.indexOfNextObject()  / (double)info.objectCount
+            : 1.0;
         info.batchProperties.setProperty("batch.iterationProgress",
-                Double.toString(info.managedJob.indexOfNextObject() /
-                        (double) info.objectCount));
+            Double.toString(iterationProgress));
 
         rewriteBatchProperties(info);
 
@@ -637,23 +665,27 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         {
             double progress =
                 info.batchProperties.doubleForKey("batch.jobProgress");
-            info.managedJob.setProgress(progress);
+            info.job.setProgress(progress);
 
             needToSave = true;
+        }
+        else
+        {
+            info.job.setProgress(iterationProgress);
         }
 
         if (info.batchProperties.containsKey("batch.jobProgressMessage"))
         {
             String message =
                 info.batchProperties.stringForKey("batch.jobProgressMessage");
-            info.managedJob.setProgressMessage(message);
+            info.job.setProgressMessage(message);
 
             needToSave = true;
         }
 
         if (needToSave)
         {
-            info.managedJob.saveChanges();
+            localContext().saveChanges();
         }
 
         return response;
@@ -668,10 +700,10 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
         captureAdditionalSuspensionInfo(info.job);
 
-        info.managedJob.setSuspensionReason(reason);
-        info.managedJob.setIsReady(false);
-        info.managedJob.setCurrentState(BatchJob.STATE_START);
-        info.managedJob.saveChanges();
+        info.job.setSuspensionReason(reason);
+        info.job.setIsReady(false);
+        info.job.setCurrentState(BatchJob.STATE_START);
+        localContext().saveChanges();
         info.jobShouldDie = true;
     }
 
@@ -682,7 +714,6 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
     private class JobInfo
     {
         BatchJob          job;
-        ManagedBatchJob   managedJob;
         BatchResult       result;
         WCProperties      batchProperties;
         File              batchPropertiesFile;

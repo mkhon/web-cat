@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: BatchPlugin.java,v 1.6 2011/12/25 02:42:16 stedwar2 Exp $
+ |  $Id: BatchPlugin.java,v 1.7 2012/01/05 20:01:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -49,7 +49,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2011/12/25 02:42:16 $
+ * @version $Revision: 1.7 $, $Date: 2012/01/05 20:01:44 $
  */
 public class BatchPlugin
     extends _BatchPlugin
@@ -629,15 +629,11 @@ public class BatchPlugin
             return allPluginsOrderedByName(ec);
         }
 
-        NSArray<BatchPlugin> userPlugins = pluginsForUser(ec, user);
-        NSArray<BatchPlugin> publishedPlugins = publishedPlugins(ec);
-
         NSMutableArray<BatchPlugin> allPlugins =
-            new NSMutableArray<BatchPlugin>();
+            publishedPlugins(ec).mutableClone();
 
-        allPlugins.addObjectsFromArray(userPlugins);
         ERXArrayUtilities.addObjectsFromArrayWithoutDuplicates(
-            allPlugins, publishedPlugins);
+            allPlugins, pluginsForUser(ec, user));
 
         ERXArrayUtilities.sortArrayWithKey(allPlugins, BatchPlugin.NAME_KEY);
 

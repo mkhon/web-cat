@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: BatchJob.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchJob.java,v 1.3 2012/01/05 20:01:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -39,7 +39,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2012/01/05 20:01:44 $
  */
 public class BatchJob
     extends _BatchJob
@@ -94,6 +94,16 @@ public class BatchJob
     {
         return create(editingContext, new NSTimestamp(),
                 false, false, false, false);
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public String userPresentableDescription()
+    {
+        return "BatchJob(" + description() + ")[" + id() + "] for " + user()
+            + ": state = " + stateAfterIteration() + "; ready = " + isReady()
+            + "; cancelled = " + isCancelled();
     }
 
 
@@ -163,5 +173,52 @@ public class BatchJob
 
         return new ERXFetchSpecificationBatchIterator(fspec, remainder, ec,
                     ERXFetchSpecificationBatchIterator.DefaultBatchSize);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Prepares this job to iterate over a batch of entities.
+     *
+     * @param stateAfter the state that the job should transition into
+     *     after the iteration is complete
+     */
+    public void prepareForIteration(String stateAfter)
+    {
+        setIndexOfNextObject(0);
+        setIsInIteration(true);
+        setStateAfterIteration(stateAfter);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Ends the current iteration and returns the next state for the job.
+     *
+     * @return the next state for the job
+     */
+    public String endIteration()
+    {
+        String nextState = stateAfterIteration();
+        setIsInIteration(false);
+        setStateAfterIteration(null);
+
+        return nextState;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Increments the next object index.
+     */
+    public void incrementIndexOfNextObject()
+    {
+        int index = indexOfNextObject();
+        NSArray<?> ids = batchedObjectIds();
+
+        if (index < ids.count())
+        {
+            setIndexOfNextObject(index + 1);
+        }
     }
 }

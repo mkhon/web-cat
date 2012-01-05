@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: BatchResultPage.java,v 1.3 2011/12/06 18:08:28 stedwar2 Exp $
+ |  $Id: BatchResultPage.java,v 1.4 2012/01/05 20:01:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2010 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/12/06 18:08:28 $
+ * @version $Revision: 1.4 $, $Date: 2012/01/05 20:01:44 $
  */
 public class BatchResultPage extends WCComponent
     implements WCPageWithJobMonitoring.Delegate
@@ -85,12 +85,18 @@ public class BatchResultPage extends WCComponent
 
 
     // ----------------------------------------------------------
+    public String feedbackSectionBaseURL()
+    {
+        return EntityResourceRequestHandler.urlForEntityResource(
+                context(), result, null);
+    }
+
+
+    // ----------------------------------------------------------
     public String feedbackSectionResourceURL()
     {
-        String filename = feedbackSection.fileName();
-
         return EntityResourceRequestHandler.urlForEntityResource(
-                context(), result, filename);
+                context(), result, feedbackSection.fileName());
     }
 
 

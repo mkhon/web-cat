@@ -1,39 +1,27 @@
 <wo name="Page">
-<wo:WCPageModule title="Batch Information">
+<wo:WCPageModule title="Batch Action Information">
     <wo:WCStyledTable>
-        <tr class="e">
-            <td><b>Batch Description:</b></td>
+        <tr class="o">
+            <td><b>Description:</b></td>
             <td><wo:str value="$result.description"/></td>
         </tr>
-        <tr class="o">
-            <td><b>User:</b></td>
-            <td><wo:str value="$result.user.userName"/></td>
-        </tr>
         <tr class="e">
-            <td><b>Plug-in:</b></td>
-            <td><wo:str value="$result.batchPlugin.name"/>
-            (<wo:str value="$result.batchPlugin.descriptor.currentVersion"/>)</td>
-        </tr>
-        <tr class="o">
-            <td><b>Batch Query:</b></td>
-            <td>
-                <wo:if condition="$result.objectQuery.description">
-                    <b><wo:str value="$result.objectQuery.description"/>:</b><br/>
-                </wo:if>
-                <wo:str value="$result.objectQuery.qualifierDescription"/>
-            </td>
+            <td><b>Date:</b></td>
+            <td><wo:str value="$result.completedTime" formatter="$session.timeFormatter"/>
+              (Requested by <wo:str value="$result.user"/>
+              using <wo:str value="$result.batchPlugin.name"/>)</td>
         </tr>
     </wo:WCStyledTable>
 </wo:WCPageModule>
 <wo:if condition="$result.isComplete">
-    <wo:loop list="$feedbackSections" item="$feedbackSection">
-        <wo:WCPageModule title="$feedbackSection.title" open="~!feedbackSection.isCollapsed">
-            <wo name="FeedbackSectionContent"/>
-        </wo:WCPageModule>
-        <wo:WCPageModule title="$feedbackSection.title" open="~!feedbackSection.isCollapsed">
-          <wo:org.webcat.grader.PartialInlineReport file="$feedbackSection.feedbackFile" styleVersion="$1"/>
-        </wo:WCPageModule>
-    </wo:loop>
+  <wo:loop list="$feedbackSections" item="$feedbackSection">
+    <wo:WCPageModule title="$feedbackSection.title" open="~!feedbackSection.isCollapsed">
+      <wo:org.webcat.grader.PartialInlineReport
+        file="$feedbackSection.feedbackFile"
+        styleVersion="$1"
+        baseUrl="$feedbackSectionBaseURL"/>
+    </wo:WCPageModule>
+  </wo:loop>
 </wo:if>
 <wo:WCPageModule title="Generated Result Files" dynamic="true" open="false" id="fileBrowserModule">
     <wo:org.webcat.core.FileBrowser file="$result.resultDir" initialExpansionDepth="$1"/>

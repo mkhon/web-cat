@@ -1,25 +1,14 @@
 {
   staff = {
     children = {
-      "Batch" = {
+      Grading = {
         accessLevel = 40;
-        priority = 600;
+        priority = 200;
         children = {
-          Run = {
+          "Batch Actions" = {
             pageName   = org.webcat.batchprocessor.PickBatchPluginToRunPage;
             accessLevel = 40;
-            priority   = 1;
-            wantsStart = YES;
-          };
-          "View Results" = {
-            pageName   = org.webcat.batchprocessor.PickBatchResultToViewPage;
-            accessLevel = 40;
-            priority   = 2;
-          };
-          "Plug-Ins" = {
-            pageName = org.webcat.batchprocessor.BatchPluginLibraryPage;
-            accessLevel = 40;
-            priority = 3;
+            priority   = 100;
           };
         };
       };
