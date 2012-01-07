@@ -20,7 +20,7 @@ milton-api-1.5.7.jar        (http://milton.ettrema.com/index.html)
 mime-util-2.1.3.jar         (http://sourceforge.net/projects/mime-util/)
 mysql-connector-java-5.1.6-bin.jar  (http://dev.mysql.com/downloads/connector/j/)
 OpenBaseJDBC.jar
-org.eclipse.jgit-0.12.1.jar (MUST BE 0.12.1 OR HIGHER: http://mirrors.xmission.com/eclipse/jgit/maven/org/eclipse/jgit/org.eclipse.jgit/0.12.1/)
+org.eclipse.jgit-1.0.0.201106090707-r.jar (http://download.eclipse.org/jgit/maven/org/eclipse/jgit/org.eclipse.jgit/1.0.0.201106090707-r/org.eclipse.jgit-1.0.0.201106090707-r.jar)
 poi-3.6-20091214.jar        (http://poi.apache.org/)
 tar.jar                     (http://www.trustice.com/java/tar/)
 twitter4j-core-2.1.2.jar    (http://twitter4j.org/en/index.html)

@@ -1,5 +1,5 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Wed Jun 08 16:53:59 EDT 2011
+#Fri Jan 06 22:09:52 EST 2012
 ExternalJars.version.major=1
 ExternalJars.provider.url=http\://web-cat.org/updates
 ExternalJars.history.url=http\://web-cat.org/WCWiki/ExternalJarsSubsystem/ChangeHistory
@@ -8,8 +8,8 @@ ExternalJars.description=This subsystem contains all of the external support jar
 ExternalJars.license=GNU Affero General Public License v.3
 ExternalJars.info.url=http\://web-cat.org/WCWiki/ExternalJarsSubsystem
 subsystem.ExternalJars=
-ExternalJars.copyright=(c) 2007-2011 Virginia Tech Department of Computer Science
-ExternalJars.version.date=20110608
+ExternalJars.copyright=(c) 2007-2012 Virginia Tech Department of Computer Science
+ExternalJars.version.date=20120106
 ExternalJars.provider=Virginia Tech Computer Science
 ExternalJars.version.minor=1
-ExternalJars.version.revision=2
+ExternalJars.version.revision=3
