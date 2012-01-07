@@ -1,18 +1,18 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Thu Dec 08 20:48:27 EST 2011
+#Fri Jan 06 22:16:37 EST 2012
 Notifications.requires=Core, JobQueue
 Notifications.history.url=http\://web-cat.org/WCWiki/NotificationsSubsystem/ChangeHistory
-Notifications.provider.url=http\://web-cat.org/updates
+Notifications.resumeSuspendedJobs=true
 Notifications.license.url=http\://www.gnu.org/licenses/agpl.html
 Notifications.license=GNU Affero General Public License v.3
-Notifications.resumeSuspendedJobs=true
+Notifications.provider.url=http\://web-cat.org/updates
 Notifications.description=This subsystem provides Web-CAT's advanced notification services. Without it, notifications are only sent via e-mail.
-Notifications.copyright=(c) 2010 Virginia Tech Department of Computer Science
+Notifications.copyright=(c) 2010-2012 Virginia Tech Department of Computer Science
 Notifications.info.url=http\://web-cat.org/WCWiki/NotificationsSubsystem
-Notifications.version.date=20111208
+Notifications.version.date=20120106
 subsystem.Notifications=org.webcat.notifications.Notifications
 Notifications.version.minor=0
-Notifications.version.revision=1
+Notifications.version.revision=2
 Notifications.provider=Virginia Tech Computer Science
 Notifications.depends=env, pluginProperties
 Notifications.version.major=1
