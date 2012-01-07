@@ -1,15 +1,15 @@
 #This file is automatically rewritten by ANT, so all formatting will be trashed.
-#Wed Nov 30 09:19:10 EST 2011
+#Fri Jan 06 22:24:38 EST 2012
 Reporter.provider=Virginia Tech Computer Science
 Reporter.version.major=1
-Reporter.version.revision=5
-Reporter.version.date=20111130
+Reporter.version.date=20120106
 reporter.resumeSuspendedJobs=true
+Reporter.version.revision=6
+Reporter.history.url=http\://web-cat.org/WCWiki/ReporterSubsystem/ChangeHistory
 Reporter.requires=BIRTRuntime, Core, Grader, JobQueue
 subsystem.Reporter=org.webcat.reporter.Reporter
-Reporter.history.url=http\://web-cat.org/WCWiki/ReporterSubsystem/ChangeHistory
 Reporter.description=This subsystem provides all of Web-CAT's data reporting services.
-Reporter.copyright=(c) 2007-2011 Virginia Tech Department of Computer Science
+Reporter.copyright=(c) 2007-2012 Virginia Tech Department of Computer Science
 Reporter.license.url=http\://www.gnu.org/licenses/agpl.html
 Reporter.info.url=http\://web-cat.org/WCWiki/ReporterSubsystem
 Reporter.provider.url=http\://web-cat.org/updates
