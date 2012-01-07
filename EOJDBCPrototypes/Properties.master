@@ -1,23 +1,23 @@
 # ===================================================================
 # EOJDBCPrototypes subsystem characteristics
 # ===================================================================
-subsystem.EOJDBCPrototypes=
+subsystem.EOJDBCPrototypes =
 
-EOJDBCPrototypes.version.major=1
-EOJDBCPrototypes.version.minor=1
-EOJDBCPrototypes.version.revision=9
+EOJDBCPrototypes.version.major = 1
+EOJDBCPrototypes.version.minor = 1
+EOJDBCPrototypes.version.revision = 10
 
-EOJDBCPrototypes.copyright=\
-	(c) 2006-2010 Virginia Tech Department of Computer Science
-EOJDBCPrototypes.provider=Virginia Tech Computer Science
-EOJDBCPrototypes.provider.url=http\://web-cat.org/updates
-EOJDBCPrototypes.info.url=http\://web-cat.org/WCWiki/EoJdbcPrototypes
-EOJDBCPrototypes.history.url=\
+EOJDBCPrototypes.copyright =\
+	(c) 2006-2012 Virginia Tech Department of Computer Science
+EOJDBCPrototypes.provider = Virginia Tech Computer Science
+EOJDBCPrototypes.provider.url = http\://web-cat.org/updates
+EOJDBCPrototypes.info.url = http\://web-cat.org/WCWiki/EoJdbcPrototypes
+EOJDBCPrototypes.history.url =\
 	http\://web-cat.org/WCWiki/EoJdbcPrototypes/ChangeHistory
-EOJDBCPrototypes.license=GNU Affero General Public License v.3
-EOJDBCPrototypes.license.url=http\://www.gnu.org/licenses/agpl.html
+EOJDBCPrototypes.license = GNU Affero General Public License v.3
+EOJDBCPrototypes.license.url = http\://www.gnu.org/licenses/agpl.html
 
-EOJDBCPrototypes.description=\
+EOJDBCPrototypes.description =\
 	This subsystem provides support services for all other subsystems by \
 	providing the common mappings from data types that Web-CAT deals with \
 	into those supported by the underlying database (MySQL).  This framework \
@@ -27,5 +27,5 @@ EOJDBCPrototypes.description=\
 # -------------------------------------------------------------------
 # Tell WONDER that this framework contains our prototypes
 # -------------------------------------------------------------------
-er.extensions.ERXModelGroup.prototypeModelName=EOJDBCPrototypes
-dbConnectPluginGLOBAL=MySQL
+er.extensions.ERXModelGroup.prototypeModelName = EOJDBCPrototypes
+dbConnectPluginGLOBAL = MySQL
