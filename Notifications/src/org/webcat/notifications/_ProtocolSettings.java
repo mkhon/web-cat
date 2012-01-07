@@ -4,7 +4,7 @@
  |  Created by eogenerator
  |  DO NOT EDIT.  Make changes to ProtocolSettings.java instead.
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,6 +31,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 
 // -------------------------------------------------------------------------
 /**
@@ -107,7 +108,7 @@ public abstract class _ProtocolSettings
      * @return The object, or null if no such id exists
      */
     public static ProtocolSettings forId(
-        EOEditingContext ec, int id )
+        EOEditingContext ec, int id)
     {
         ProtocolSettings obj = null;
         if (id > 0)
@@ -132,9 +133,9 @@ public abstract class _ProtocolSettings
      * @return The object, or null if no such id exists
      */
     public static ProtocolSettings forId(
-        EOEditingContext ec, String id )
+        EOEditingContext ec, String id)
     {
-        return forId( ec, er.extensions.foundation.ERXValueUtilities.intValue( id ) );
+        return forId(ec, er.extensions.foundation.ERXValueUtilities.intValue(id));
     }
 
 
@@ -190,7 +191,7 @@ public abstract class _ProtocolSettings
     public NSDictionary<String, Object> changedProperties()
     {
         return changesFromSnapshot(
-            editingContext().committedSnapshotForObject(this) );
+            editingContext().committedSnapshotForObject(this));
     }
 
 
@@ -204,7 +205,7 @@ public abstract class _ProtocolSettings
         try
         {
             return (Number)EOUtilities.primaryKeyForObject(
-                editingContext() , this ).objectForKey( "id" );
+                editingContext() , this).objectForKey("id");
         }
         catch (Exception e)
         {
@@ -224,10 +225,10 @@ public abstract class _ProtocolSettings
     public org.webcat.core.MutableDictionary settings()
     {
         NSData dbValue =
-            (NSData)storedValueForKey( "settings" );
-        if ( settingsRawCache != dbValue )
+            (NSData)storedValueForKey("settings");
+        if (settingsRawCache != dbValue)
         {
-            if ( dbValue != null && dbValue.equals( settingsRawCache ) )
+            if (dbValue != null && dbValue.equals( settingsRawCache))
             {
                 // They are still equal, so just update the raw cache
                 settingsRawCache = dbValue;
@@ -810,8 +811,9 @@ public abstract class _ProtocolSettings
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME, qualifier, sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
     }
@@ -902,7 +904,7 @@ public abstract class _ProtocolSettings
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -964,7 +966,7 @@ public abstract class _ProtocolSettings
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -988,10 +990,11 @@ public abstract class _ProtocolSettings
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        EOFetchSpecification fspec = new EOFetchSpecification(
-            ENTITY_NAME,
-            EOQualifier.qualifierToMatchAllValues(keysAndValues),
-            sortOrderings);
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
+                ENTITY_NAME,
+                EOQualifier.qualifierToMatchAllValues(keysAndValues),
+                sortOrderings);
         fspec.setFetchLimit(1);
 
         NSArray<ProtocolSettings> objects =
@@ -1044,7 +1047,7 @@ public abstract class _ProtocolSettings
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1144,7 +1147,7 @@ public abstract class _ProtocolSettings
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);
@@ -1188,5 +1191,5 @@ public abstract class _ProtocolSettings
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( ProtocolSettings.class );
+    static Logger log = Logger.getLogger(ProtocolSettings.class);
 }
