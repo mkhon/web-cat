@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.9 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: User.java,v 1.10 2012/01/09 21:42:02 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -55,8 +55,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </ul>
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2011/12/25 02:24:54 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.10 $, $Date: 2012/01/09 21:42:02 $
  */
 public class User
     extends _User
@@ -1394,12 +1394,22 @@ public class User
 
         if (dotIndex != -1)
         {
-            String authDomain = "authenticator." + repoId.substring(0, dotIndex);
-            String name = repoId.substring(dotIndex + 1);
+            String authDomain = repoId.substring(0, dotIndex);
 
-            qualifier = userName.is(name).and(
-                    authenticationDomain.dot(
-                            AuthenticationDomain.propertyName).is(authDomain));
+            AuthenticationDomain domain =
+                AuthenticationDomain.authDomainByName(authDomain);
+
+            if (domain != null)
+            {
+                String name = repoId.substring(dotIndex + 1);
+
+                qualifier = userName.is(name).and(
+                        authenticationDomain.is(domain));
+            }
+            else
+            {
+                qualifier = userName.is(repoId);
+            }
         }
         else
         {
