@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.10 2012/01/09 21:42:02 aallowat Exp $
+ |  $Id: User.java,v 1.11 2012/01/10 00:18:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -55,8 +55,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </ul>
  *
  * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.10 $, $Date: 2012/01/09 21:42:02 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.11 $, $Date: 2012/01/10 00:18:06 $
  */
 public class User
     extends _User
@@ -1390,28 +1390,23 @@ public class User
         throws EOUtilities.MoreThanOneException
     {
         int dotIndex = repoId.indexOf('.');
-        EOQualifier qualifier;
+        EOQualifier qualifier = null;
 
         if (dotIndex != -1)
         {
-            String authDomain = repoId.substring(0, dotIndex);
-
+            String authDomain =
+                "authenticator." + repoId.substring(0, dotIndex);
             AuthenticationDomain domain =
                 AuthenticationDomain.authDomainByName(authDomain);
-
             if (domain != null)
             {
                 String name = repoId.substring(dotIndex + 1);
 
                 qualifier = userName.is(name).and(
-                        authenticationDomain.is(domain));
-            }
-            else
-            {
-                qualifier = userName.is(repoId);
+                    authenticationDomain.is(domain));
             }
         }
-        else
+        if (qualifier == null)
         {
             qualifier = userName.is(repoId);
         }
