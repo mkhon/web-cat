@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.3 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.4 2012/01/10 00:24:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2010/09/27 04:23:20 $
+ * @version $Revision: 1.4 $, $Date: 2012/01/10 00:24:57 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -103,7 +103,8 @@ public class NewCourseOfferingPage
             institution = user().authenticationDomain();
         }
 
-        if (coreSelections().courseOffering() != null)
+        if (coreSelections().courseOffering() != null
+            && coreSelections().courseOffering().editingContext() != null)
         {
             coreSelections().setCourseRelationship(
                 coreSelections().courseOffering().course());
@@ -167,9 +168,16 @@ public class NewCourseOfferingPage
         newOffering.setSemesterRelationship(semester);
         newOffering.addToInstructorsRelationship(user());
         newOffering.setCrn(crn);
-        setCourseOffering(newOffering);
-        coreSelections().setCourseOfferingRelationship(newOffering);
-        return super.next();
+        if (applyLocalChanges())
+        {
+            setCourseOffering(newOffering);
+            coreSelections().setCourseOfferingRelationship(newOffering);
+            return super.next();
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
