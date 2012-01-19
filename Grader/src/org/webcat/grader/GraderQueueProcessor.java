@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.13 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.14 2012/01/19 20:03:31 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -36,6 +36,7 @@ import org.webcat.core.Application;
 import org.webcat.core.FileUtilities;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.RepositoryEntryRef;
+import org.webcat.core.Status;
 import org.webcat.core.User;
 import org.webcat.core.WCProperties;
 import org.webcat.grader.messaging.AdminReportsForSubmissionMessage;
@@ -65,7 +66,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author  Amit Kulkarni
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2011/12/25 21:11:41 $
+ * @version $Revision: 1.14 $, $Date: 2012/01/19 20:03:31 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1218,6 +1219,14 @@ public class GraderQueueProcessor
         editingContext.saveChanges();
         boolean wasRegraded = job.regrading();
         submissionResult.addToSubmissionsRelationship( job.submission() );
+
+        if (job.submission().assignmentOffering().assignment()
+                .submissionProfile().taPointsRaw() == null
+            || job.submission().assignmentOffering().assignment()
+                .submissionProfile().taPoints() == 0.0)
+        {
+            submissionResult.setStatus(Status.CHECK);
+        }
 
         if (job.submission().assignmentOffering().assignment()
                 .submissionProfile().allowPartners())
