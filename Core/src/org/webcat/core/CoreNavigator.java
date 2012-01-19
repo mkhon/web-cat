@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.3 2012/01/19 16:29:52 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.4 2012/01/19 19:31:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -64,7 +64,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $ $Date: 2012/01/19 16:29:52 $
+ * @version $Revision: 1.4 $ $Date: 2012/01/19 19:31:26 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -340,9 +340,11 @@ public class CoreNavigator
                             new CoreNavigatorObjects
                             .CourseOfferingSet(subset);
                         courseOfferings.addObject(courseWrapper);
-                        if (wantOfferingsForCourse != null
-                            && exemplar != null
-                            && wantOfferingsForCourse == exemplar.course())
+                        if ((oldSelection != null
+                              && oldSelection.equals(courseWrapper))
+                            || (wantOfferingsForCourse != null
+                                && exemplar != null
+                                && wantOfferingsForCourse == exemplar.course()))
                         {
                             selectedCourseOffering = courseWrapper;
                         }
@@ -585,7 +587,8 @@ public class CoreNavigator
     {
         WOComponent ancestor = parent();
         while (ancestor != null
-            && !(targetClass.isAssignableFrom(ancestor.getClass())))
+            && (!(targetClass.isInstance(ancestor))
+                || PageWithCourseNavigation.class.isInstance(ancestor)))
         {
             ancestor = ancestor.parent();
         }
