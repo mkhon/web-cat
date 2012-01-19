@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentsForAssignmentPage.java,v 1.20 2012/01/19 16:32:18 stedwar2 Exp $
+ |  $Id: StudentsForAssignmentPage.java,v 1.21 2012/01/19 20:02:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.webcat.ui.util.ComponentIDGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.20 $, $Date: 2012/01/19 16:32:18 $
+ * @version $Revision: 1.21 $, $Date: 2012/01/19 20:02:45 $
  */
 public class StudentsForAssignmentPage
     extends GraderAssignmentsComponent
@@ -363,7 +363,12 @@ public class StudentsForAssignmentPage
             {
                 Submission sub = pair.submission();
 
-                if (sub.result().status() == Status.UNFINISHED)
+                if (sub.result().status() == Status.UNFINISHED
+                    || (sub.result().status() != Status.CHECK
+                        && (sub.assignmentOffering().assignment()
+                                .submissionProfile().taPointsRaw() == null
+                            || sub.assignmentOffering().assignment()
+                                .submissionProfile().taPoints() == 0.0)))
                 {
                     sub.result().setStatus(Status.CHECK);
                     if (applyLocalChanges())
