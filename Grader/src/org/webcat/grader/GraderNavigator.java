@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.4 2011/05/02 19:37:34 aallowat Exp $
+ |  $Id: GraderNavigator.java,v 1.5 2012/01/19 16:31:29 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -30,7 +30,6 @@ import org.webcat.core.CourseOffering;
 import org.webcat.core.EntityUtils;
 import org.webcat.core.INavigatorObject;
 import org.webcat.ui.generators.JavascriptGenerator;
-import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOQualifier;
@@ -82,8 +81,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.4 $ $Date: 2011/05/02 19:37:34 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.5 $ $Date: 2012/01/19 16:31:29 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -152,6 +151,7 @@ public class GraderNavigator
      */
     public JavascriptGenerator updateCourseOfferings()
     {
+        log.debug("updateCourseOfferings()");
         super.updateCourseOfferings();
         return updateAssignments().refresh(idFor.get("coursePane"));
     }
@@ -160,9 +160,20 @@ public class GraderNavigator
     // ----------------------------------------------------------
     public JavascriptGenerator updateCourseOfferingsAndClearSelection()
     {
+        log.debug("updateCourseOfferingsAndClearSelection()");
         super.updateCourseOfferingsAndClearSelection();
         selectedAssignment = null;
-        return updateAssignments().refresh(idFor.get("coursePane"));
+        JavascriptGenerator result = updateAssignments();
+        if (selectedAssignment == null)
+        {
+            result = result.refresh(idFor.get("coursePane"));
+        }
+        else
+        {
+            saveAssignmentSelection();
+            result = new JavascriptGenerator().redirectTo("");
+        }
+        return result;
     }
 
 
@@ -185,7 +196,7 @@ public class GraderNavigator
     // ----------------------------------------------------------
     private void gatherAssignments()
     {
-        log.debug("updateAssignments()");
+        log.debug("gatherAssignments()");
         assignments = new NSMutableArray<INavigatorObject>();
 
         if (selectedCourseOffering == null)
@@ -281,6 +292,16 @@ public class GraderNavigator
                 targetAssignment = ao.assignment();
             }
         }
+        String targetName = null;
+        if (targetAssignment != null)
+        {
+            targetName = targetAssignment.name();
+            if (targetName == null)
+            {
+                targetName = "";
+            }
+            targetName = targetName.toLowerCase();
+        }
 
         for (Assignment assignment : assigns)
         {
@@ -292,6 +313,20 @@ public class GraderNavigator
             if (assignment == targetAssignment)
             {
                 selectedAssignment = thisAssignment;
+            }
+            else if (selectedAssignment == null && targetName != null)
+            {
+                // default to any assignment with the same name, ignoring case
+                String thisName = assignment.name();
+                if (thisName == null)
+                {
+                    thisName = "";
+                }
+                thisName = thisName.toLowerCase();
+                if (targetName.equals(thisName))
+                {
+                    selectedAssignment = thisAssignment;
+                }
             }
             assignments.addObject(thisAssignment);
         }
@@ -336,6 +371,7 @@ public class GraderNavigator
      */
     public JavascriptGenerator updateAssignments()
     {
+        log.debug("updateAssignments()");
         gatherAssignments();
         return new JavascriptGenerator().refresh(idFor.get("assignmentPane"));
     }
@@ -344,6 +380,7 @@ public class GraderNavigator
     // ----------------------------------------------------------
     public JavascriptGenerator updateAssignmentMenu()
     {
+        log.debug("updateAssignmentsMenu()");
         gatherAssignments();
         return new JavascriptGenerator().refresh(idFor.get("assignmentMenu"));
     }
@@ -352,23 +389,22 @@ public class GraderNavigator
     // ----------------------------------------------------------
     public JavascriptGenerator updateAssignmentsAndClearSelection()
     {
-        JavascriptGenerator result = updateAssignments();
+        log.debug("updateAssignmentsAndClearSelection()");
+        saveCourseSelection();
         selectedAssignment = null;
+        JavascriptGenerator result = updateAssignments();
+        if (selectedAssignment != null)
+        {
+            saveAssignmentSelection();
+            result = new JavascriptGenerator().redirectTo("");
+        }
         return result;
     }
 
 
     // ----------------------------------------------------------
-    /**
-     * Invoked when the OK button in the dialog is pressed.
-     *
-     * @return null to reload the current page
-     */
-    public WOActionResults okPressed()
+    protected void saveAssignmentSelection()
     {
-        log.debug("okPressed()");
-        WOActionResults result = super.okPressed();
-
         if (selectedAssignment != null)
         {
             NSArray<?> assignArray = selectedAssignment.representedObjects();
@@ -376,6 +412,11 @@ public class GraderNavigator
             {
                 Assignment targetAssignment =
                     (Assignment)assignArray.objectAtIndex(0);
+                if (log.isDebugEnabled())
+                {
+                    log.debug("saving assignment selection = "
+                        + targetAssignment);
+                }
                 graderParent.prefs().setAssignmentRelationship(
                     targetAssignment);
                 graderParent.prefs().setAssignmentOfferingRelationship(null);
@@ -388,6 +429,11 @@ public class GraderNavigator
                         || (co == null
                             && course == ao.courseOffering().course()))
                     {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("saving assignment offering selection ="
+                                + ao);
+                        }
                         graderParent.prefs().setAssignmentOfferingRelationship(
                             ao);
                         break;
@@ -396,15 +442,24 @@ public class GraderNavigator
             }
             else
             {
+                log.debug("saving assignment selection = null");
                 graderParent.prefs().setAssignmentRelationship(null);
             }
         }
         else
         {
+            log.debug("saving assignment selection = null");
             graderParent.prefs().setAssignmentRelationship(null);
         }
+    }
 
-        return result;
+
+    // ----------------------------------------------------------
+    @Override
+    protected void saveSelections()
+    {
+        super.saveSelections();
+        saveAssignmentSelection();
     }
 
 
