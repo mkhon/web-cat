@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: NewCourseOfferingPage.java,v 1.4 2012/01/10 00:24:57 stedwar2 Exp $
+ |  $Id: NewCourseOfferingPage.java,v 1.5 2012/01/20 02:54:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -37,7 +37,7 @@ import er.extensions.eof.ERXQ;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2012/01/10 00:24:57 $
+ * @version $Revision: 1.5 $, $Date: 2012/01/20 02:54:08 $
  */
 public class NewCourseOfferingPage
     extends GraderCourseEditComponent
@@ -163,6 +163,8 @@ public class NewCourseOfferingPage
                 + "course offering.");
             return null;
         }
+        coreSelections().setSemester(semester);
+
         CourseOffering newOffering = CourseOffering.create(localContext());
         newOffering.setCourseRelationship(coreSelections().course());
         newOffering.setSemesterRelationship(semester);
