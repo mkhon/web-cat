@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.14 2012/01/19 20:03:31 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.15 2012/01/20 21:22:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -66,7 +66,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author  Amit Kulkarni
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.14 $, $Date: 2012/01/19 20:03:31 $
+ * @version $Revision: 1.15 $, $Date: 2012/01/20 21:22:21 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1220,10 +1220,7 @@ public class GraderQueueProcessor
         boolean wasRegraded = job.regrading();
         submissionResult.addToSubmissionsRelationship( job.submission() );
 
-        if (job.submission().assignmentOffering().assignment()
-                .submissionProfile().taPointsRaw() == null
-            || job.submission().assignmentOffering().assignment()
-                .submissionProfile().taPoints() == 0.0)
+        if (!job.submission().assignmentOffering().assignment().usesTAScore())
         {
             submissionResult.setStatus(Status.CHECK);
         }
