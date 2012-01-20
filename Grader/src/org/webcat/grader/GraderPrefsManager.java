@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderPrefsManager.java,v 1.2 2010/09/27 04:21:37 stedwar2 Exp $
+ |  $Id: GraderPrefsManager.java,v 1.3 2012/01/20 21:21:44 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -31,7 +31,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2010/09/27 04:21:37 $
+ *  @version $Revision: 1.3 $, $Date: 2012/01/20 21:21:44 $
  */
 public class GraderPrefsManager
     extends CachingEOManager
@@ -194,6 +194,10 @@ public class GraderPrefsManager
     {
         addObjectToBothSidesOfRelationshipWithKey(
             value, GraderPrefs.SUBMISSION_KEY);
+        if (value != null && value.assignmentOffering() != assignmentOffering())
+        {
+            setAssignmentOfferingRelationship(value.assignmentOffering());
+        }
     }
 
 
