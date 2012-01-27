@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.19 2011/12/25 02:24:53 stedwar2 Exp $
+ |  $Id: Application.java,v 1.20 2012/01/27 16:38:15 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -68,7 +68,6 @@ import com.webobjects.appserver.WOSessionStore;
 import com.webobjects.eoaccess.EODatabaseChannel;
 import com.webobjects.eoaccess.EODatabaseContext;
 import com.webobjects.eoaccess.EOModelGroup;
-import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.NSArray;
@@ -99,7 +98,7 @@ import er.extensions.formatters.ERXTimestampFormatter;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.19 $, $Date: 2011/12/25 02:24:53 $
+ * @version $Revision: 1.20 $, $Date: 2012/01/27 16:38:15 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -420,8 +419,7 @@ public class Application
             // the name jdbc is not bound
             try
             {
-                EOUtilities.objectsForEntityNamed(
-                    ec, LoginSession.ENTITY_NAME);
+                LoginSession.allObjects(ec);
             }
             catch (Exception e)
             {
@@ -429,7 +427,14 @@ public class Application
             }
             for (LoginSession session : LoginSession.allObjects(ec))
             {
-                ec.deleteObject(session);
+                session.delete();
+            }
+            NSTimestamp thirtyDaysAgo = new NSTimestamp()
+                .timestampByAddingGregorianUnits(0, 0, -30, 0, 0, 0);
+            for (UsagePeriod period : UsagePeriod.objectsMatchingQualifier(
+                ec, UsagePeriod.startTime.before(thirtyDaysAgo)))
+            {
+                period.delete();
             }
             ec.saveChanges();
         }}.run();
