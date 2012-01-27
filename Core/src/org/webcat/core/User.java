@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.12 2012/01/12 02:19:51 stedwar2 Exp $
+ |  $Id: User.java,v 1.13 2012/01/27 16:39:59 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -54,9 +54,9 @@ import er.extensions.foundation.ERXArrayUtilities;
  * <li> WEBCAT_RW_PRIVILEGES
  * </ul>
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2012/01/12 02:19:51 $
+ * @author  Stephen Edwards
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.13 $, $Date: 2012/01/27 16:39:59 $
  */
 public class User
     extends _User
@@ -1428,7 +1428,10 @@ public class User
 
         File oldLocation = new File(userDataRoot(),
                 authenticationDomain().name() + "/" + userName());
-        FileUtilities.copyDirectoryContents(oldLocation, location);
+        if (oldLocation.exists())
+        {
+            FileUtilities.copyDirectoryContents(oldLocation, location);
+        }
 
         // Create a welcome file that describes the repository.
 
