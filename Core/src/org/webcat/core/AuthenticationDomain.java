@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.4 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.5 2012/01/29 03:02:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/25 02:24:54 $
+ * @version $Revision: 1.5 $, $Date: 2012/01/29 03:02:57 $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -60,6 +60,12 @@ public class AuthenticationDomain
     {
         super();
     }
+
+
+    //~ Constants .............................................................
+
+    public static final String COOKIE_LAST_USED_INSTITUTION =
+        "org.webcat.core.AuthenticationDomain.lastUsed";
 
 
     //~ Methods ...............................................................

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.5 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.6 2012/01/29 03:02:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -50,7 +50,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/12/25 02:24:54 $
+ * @version $Revision: 1.6 $, $Date: 2012/01/29 03:02:57 $
  */
 public class DirectAction
     extends WCDirectActionWithSession
@@ -140,7 +140,7 @@ public class DirectAction
             {
                 startPage = pageWithName(session.currentPageName());
             }
-            WOActionResults result = startPage.generateResponse();
+            WOResponse result = startPage.generateResponse();
 
             // Update the current theme in the cookie when the user logs in,
             // so that it is always the most recent theme in situations where
@@ -148,6 +148,22 @@ public class DirectAction
             if (session.user().theme() != null)
             {
                 session.user().theme().setAsLastUsedThemeInContext(context());
+            }
+
+            // Store selected authentication domain in cookie
+            if (domain != null)
+            {
+                result.addCookie(
+                    new WOCookie(
+                        AuthenticationDomain.COOKIE_LAST_USED_INSTITUTION,
+                        domain.propertyName()
+                            .substring("authenticator.".length()),
+                        context().urlWithRequestHandlerKey(null, null, null),
+                        null, -1, false));
+            }
+            if (log.isDebugEnabled())
+            {
+                log.debug("response cookies = " + result.cookies());
             }
 
             return result;
