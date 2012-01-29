@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickBatchPluginToRunPage.java,v 1.4 2012/01/05 20:01:44 stedwar2 Exp $
+ |  $Id: PickBatchPluginToRunPage.java,v 1.5 2012/01/29 18:24:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2012 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2012/01/05 20:01:44 $
+ * @version $Revision: 1.5 $, $Date: 2012/01/29 18:24:19 $
  */
 public class PickBatchPluginToRunPage
     extends WCComponent
@@ -340,8 +340,7 @@ public class PickBatchPluginToRunPage
                 }
             }
         }
-        NSArray<BatchPlugin> exclude =
-            pluginsDisplayGroup.displayedObjects();
+        NSArray<BatchPlugin> exclude = BatchPlugin.allObjects(localContext());
         if (exclude != null)
         {
             for (BatchPlugin s : exclude)
