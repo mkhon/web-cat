@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: BatchProcessorDatabaseUpdates.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchProcessorDatabaseUpdates.java,v 1.3 2012/02/05 21:59:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -33,7 +33,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2012/02/05 21:59:53 $
  */
 public class BatchProcessorDatabaseUpdates
     extends UpdateSet
@@ -69,6 +69,18 @@ public class BatchProcessorDatabaseUpdates
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Creates all tables in their baseline configuration, as needed.
+     * @throws SQLException on error
+     */
+    public void updateIncrement1() throws SQLException
+    {
+        database().executeSQL("alter table BatchJob change "
+            + "batchedObjectIds batchedObjectIds LONGBLOB");
+    }
+
+
     //~ Private Methods .......................................................
 
     // ----------------------------------------------------------
@@ -78,9 +90,9 @@ public class BatchProcessorDatabaseUpdates
      */
     private void createBatchFeedbackSectionTable() throws SQLException
     {
-        if ( !database().hasTable( "BatchFeedbackSection" ) )
+        if (!database().hasTable("BatchFeedbackSection"))
         {
-            log.info( "creating table BatchFeedbackSection" );
+            log.info("creating table BatchFeedbackSection");
 
             database().executeSQL("CREATE TABLE BatchFeedbackSection ("
                 + "OID INTEGER NOT NULL , "
@@ -95,7 +107,7 @@ public class BatchProcessorDatabaseUpdates
                 + "title TINYTEXT"
                 + " )");
             database().executeSQL(
-                "ALTER TABLE BatchFeedbackSection ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE BatchFeedbackSection ADD PRIMARY KEY (OID)");
         }
     }
 
@@ -107,9 +119,9 @@ public class BatchProcessorDatabaseUpdates
      */
     private void createBatchJobTable() throws SQLException
     {
-        if ( !database().hasTable( "BatchJob" ) )
+        if (!database().hasTable("BatchJob"))
         {
-            log.info( "creating table BatchJob" );
+            log.info("creating table BatchJob");
 
             database().executeSQL("CREATE TABLE BatchJob ("
                 + "OID INTEGER NOT NULL , "
@@ -126,7 +138,7 @@ public class BatchProcessorDatabaseUpdates
                 + "CUPDATEMUTABLEFIELDS BIT NOT NULL"
                 + " )");
             database().executeSQL(
-                "ALTER TABLE BatchJob ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE BatchJob ADD PRIMARY KEY (OID)");
         }
     }
 
@@ -138,9 +150,9 @@ public class BatchProcessorDatabaseUpdates
      */
     private void createBatchPluginTable() throws SQLException
     {
-        if ( !database().hasTable( "BatchPlugin" ) )
+        if (!database().hasTable("BatchPlugin"))
         {
-            log.info( "creating table BatchPlugin" );
+            log.info("creating table BatchPlugin");
 
             database().executeSQL("CREATE TABLE BatchPlugin ("
                 + "OID INTEGER NOT NULL , "
@@ -156,9 +168,9 @@ public class BatchProcessorDatabaseUpdates
                 + "subdirName TINYTEXT , "
                 + "CUPDATEMUTABLEFIELDS BIT NOT NULL , "
                 + "uploadedFileName TINYTEXT"
-                + " )" );
+                + " )");
             database().executeSQL(
-                "ALTER TABLE BatchPlugin ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE BatchPlugin ADD PRIMARY KEY (OID)");
         }
     }
 
@@ -170,9 +182,9 @@ public class BatchProcessorDatabaseUpdates
      */
     private void createBatchResultTable() throws SQLException
     {
-        if ( !database().hasTable( "BatchResult" ) )
+        if (!database().hasTable("BatchResult"))
         {
-            log.info( "creating table BatchResult" );
+            log.info("creating table BatchResult");
 
             database().executeSQL("CREATE TABLE BatchResult ("
                 + "OID INTEGER NOT NULL , "
@@ -182,9 +194,9 @@ public class BatchProcessorDatabaseUpdates
                 + "isComplete BIT NOT NULL , "
                 + "objectQueryId INTEGER , "
                 + "userId INTEGER"
-                + " )" );
+                + " )");
             database().executeSQL(
-                "ALTER TABLE BatchResult ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE BatchResult ADD PRIMARY KEY (OID)");
         }
     }
 
@@ -196,21 +208,21 @@ public class BatchProcessorDatabaseUpdates
      */
     private void createBatchResultPropertyTable() throws SQLException
     {
-        if ( !database().hasTable( "BatchResultProperty" ) )
+        if (!database().hasTable("BatchResultProperty"))
         {
-            log.info( "creating table BatchResultProperty" );
+            log.info("creating table BatchResultProperty");
             database().executeSQL(
                 "CREATE TABLE BatchResultProperty "
                 + "(OID INTEGER NOT NULL , batchResultId INTEGER , "
                 + "theIndex INTEGER , tag TINYTEXT , "
-                + "contents BLOB , CUPDATEMUTABLEFIELDS BIT NOT NULL )" );
+                + "contents BLOB , CUPDATEMUTABLEFIELDS BIT NOT NULL )");
             database().executeSQL(
-                "ALTER TABLE BatchResultProperty ADD PRIMARY KEY (OID)" );
+                "ALTER TABLE BatchResultProperty ADD PRIMARY KEY (OID)");
         }
     }
 
 
     //~ Instance/static variables .............................................
 
-    static Logger log = Logger.getLogger( UpdateSet.class );
+    static Logger log = Logger.getLogger(UpdateSet.class);
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchResult.java,v 1.2 2010/09/27 00:15:32 stedwar2 Exp $
+ |  $Id: BatchResult.java,v 1.3 2012/02/05 21:59:53 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -37,7 +37,7 @@ import com.webobjects.foundation.NSMutableArray;
  *
  * @author  Tony Allevato
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 00:15:32 $
+ * @version $Revision: 1.3 $, $Date: 2012/02/05 21:59:53 $
  */
 public class BatchResult
     extends _BatchResult
@@ -95,6 +95,18 @@ public class BatchResult
 
             return jobs.objectAtIndex(0);
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Provided as a KVC-mirror to {@link #batchJob()}.  It simply calls
+     * {@link #addToBatchJobsRelationship(BatchJob)}.
+     * @param job The job to add.
+     */
+    public void setBatchJob(BatchJob job)
+    {
+        addToBatchJobsRelationship(job);
     }
 
 
