@@ -309,7 +309,7 @@ sub generateHighlightOutputFile
     return if ( ! -f $fileName );
     # print "   found\n";
 
-    print "$fileName is file\n";
+    # print "$fileName is file\n";
 
     if ( $self->setInputFileName( $fileName ) )
     {
@@ -351,8 +351,6 @@ sub beautify
     my $cfg            = shift;
     # print "attempting to beautify $fileName\n";
 
-    print "beautifying $fileName\n";
-
     if ( defined $skipExtensions )
     {
         foreach my $ext ( @{$skipExtensions} )
@@ -365,7 +363,7 @@ sub beautify
     }
     if ( -d $fileName )
     {
-        print "$fileName is directory\n";
+        # print "$fileName is directory\n";
         
         foreach my $f ( <$fileName/*> )
         {
