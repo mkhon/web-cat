@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.6 2012/01/29 03:02:57 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.7 2012/02/09 04:27:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -50,7 +50,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2012/01/29 03:02:57 $
+ * @version $Revision: 1.7 $, $Date: 2012/02/09 04:27:26 $
  */
 public class DirectAction
     extends WCDirectActionWithSession
@@ -107,7 +107,14 @@ public class DirectAction
             log.debug("formValues = " + request().formValues());
         }
 
-        if (tryLogin(request(), errors))
+        // Look for an existing session via cookie
+        Session existingSession = (Session)existingSession();
+        if ((existingSession != null
+            && existingSession.isLoggedIn()
+            && !existingSession.isTerminating())
+
+            // Or, if no existing session, try logging in
+            || tryLogin(request(), errors))
         {
             Session session = (Session)session();
             String pageId = request().stringFormValueForKey("page");
