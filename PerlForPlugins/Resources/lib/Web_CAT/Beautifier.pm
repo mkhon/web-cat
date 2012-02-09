@@ -39,6 +39,7 @@ my %categoryPriority = (
     "cxx"    => "cpp",
     "h"      => "cpp",
     "hpp"    => "cpp",
+    "hs"     => "haskell",
     "htm"    => "html",
     "html"   => "html",
     "input"  => "ascii",
@@ -355,7 +356,7 @@ sub beautify
     {
         foreach my $ext ( @{$skipExtensions} )
         {
-            if ( $fileName =~ m,\Q$ext\E, )
+            if ( $fileName =~ m,\Q$ext\E$, )
             {
                 return;
             }
