@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: DirectAction.java,v 1.7 2012/02/09 04:27:26 stedwar2 Exp $
+ |  $Id: DirectAction.java,v 1.8 2012/02/13 02:53:52 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -50,7 +50,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2012/02/09 04:27:26 $
+ * @version $Revision: 1.8 $, $Date: 2012/02/13 02:53:52 $
  */
 public class DirectAction
     extends WCDirectActionWithSession
@@ -166,7 +166,7 @@ public class DirectAction
                         domain.propertyName()
                             .substring("authenticator.".length()),
                         context().urlWithRequestHandlerKey(null, null, null),
-                        null, -1, false));
+                        null, ONE_YEAR, false));
             }
             if (log.isDebugEnabled())
             {
@@ -653,7 +653,7 @@ public class DirectAction
     private User                 user    = null;
     private AuthenticationDomain domain  = null;
 
-    private static String[] keysToScreen = new String[] {
+    private static final String[] keysToScreen = new String[] {
         "u",
         "UserName",
         "p",
@@ -662,6 +662,8 @@ public class DirectAction
         "institution",
         "AuthenticationDomain"
     };
+    // One year, in seconds
+    private static final int ONE_YEAR = 60 * 60 * 24 * 365;
 
     static Logger log = Logger.getLogger(DirectAction.class);
 }

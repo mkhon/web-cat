@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.7 2012/01/05 19:56:16 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.8 2012/02/13 02:53:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2012 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.7 $, $Date: 2012/01/05 19:56:16 $
+ *  @version $Revision: 1.8 $, $Date: 2012/02/13 02:53:21 $
  */
 public class Theme
     extends _Theme
@@ -111,7 +111,7 @@ public class Theme
     {
         String path = context.urlWithRequestHandlerKey(null, null, null);
         WOCookie cookie = new WOCookie(COOKIE_LAST_USED_THEME, dirName(), path,
-                null, -1, false);
+                null, ONE_YEAR, false);
         context.response().addCookie(cookie);
     }
 
@@ -528,6 +528,8 @@ public class Theme
     private static final String INHERIT_KEY    = "inherit";
     private static final String INHERIT_PREFIX = INHERIT_KEY + ".";
     private static final int INHERIT_PREFIX_LEN = INHERIT_PREFIX.length();
+    // One year, in seconds
+    private static final int ONE_YEAR = 60 * 60 * 24 * 365;
 
     private static final String COOKIE_LAST_USED_THEME =
         "org.webcat.core.Theme.lastUsed";
