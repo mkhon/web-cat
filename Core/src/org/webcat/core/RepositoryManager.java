@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryManager.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: RepositoryManager.java,v 1.2 2012/02/23 19:21:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSComparator.ComparisonException;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/02/23 19:21:27 $
  */
 public class RepositoryManager
 {
@@ -198,6 +198,25 @@ public class RepositoryManager
                 repositoriesPresentedToUser(entity, user, ec);
 
             providers.addObjectsFromArray(providersForEntity);
+        }
+
+        try
+        {
+            providers.sortUsingComparator(new NSComparator() {
+                @Override
+                public int compare(Object _lhs, Object _rhs)
+                {
+                    EOEnterpriseObject lhs = (EOEnterpriseObject) _lhs;
+                    EOEnterpriseObject rhs = (EOEnterpriseObject) _rhs;
+
+                    return repositoryNameForObject(lhs).compareTo(
+                            repositoryNameForObject(rhs));
+                }
+            });
+        }
+        catch (ComparisonException e)
+        {
+            // Do nothing.
         }
 
         return providers;

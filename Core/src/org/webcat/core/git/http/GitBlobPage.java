@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitBlobPage.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitBlobPage.java,v 1.2 2012/02/23 19:21:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -35,7 +35,7 @@ import com.webobjects.foundation.NSData;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/02/23 19:21:27 $
  */
 public class GitBlobPage extends GitWebComponent
 {
@@ -103,6 +103,13 @@ public class GitBlobPage extends GitWebComponent
     {
         return gitContext().repository().stringContentForBlob(
                 gitContext().objectId());
+    }
+
+
+    // ----------------------------------------------------------
+    public String blobMimeType()
+    {
+        return FileUtilities.mimeType(gitContext().lastPathComponent());
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditFilePage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: EditFilePage.java,v 1.2 2012/02/23 19:21:27 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,7 +35,7 @@ import er.extensions.foundation.ERXFileUtilities;
  * are available for selection.
  *
  * @author Stephen Edwards
- * @version $Id: EditFilePage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @version $Id: EditFilePage.java,v 1.2 2012/02/23 19:21:27 aallowat Exp $
  */
 public class EditFilePage
     extends WCComponent
@@ -114,6 +114,13 @@ public class EditFilePage
         log.debug ( "fileName = " + fileName );
         fileName = fileName.replaceAll( "\\\\", "/" );
         return fileName;
+    }
+
+
+    // ----------------------------------------------------------
+    public String fileMimeType()
+    {
+        return FileUtilities.mimeType(file);
     }
 
 
