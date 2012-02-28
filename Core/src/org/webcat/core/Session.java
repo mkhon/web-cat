@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.9 2012/01/27 16:36:20 stedwar2 Exp $
+ |  $Id: Session.java,v 1.10 2012/02/28 17:36:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2012/01/27 16:36:20 $
+ * @version $Revision: 1.10 $, $Date: 2012/02/28 17:36:11 $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -263,6 +263,10 @@ public class Session
         if (primeUser == null)
         {
             return;
+        }
+        if (loginSession != null && loginSession.editingContext() == null)
+        {
+            loginSession = null;
         }
         if (loginSession == null)
         {
