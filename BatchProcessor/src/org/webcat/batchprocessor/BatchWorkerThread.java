@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchWorkerThread.java,v 1.5 2012/01/05 20:01:44 stedwar2 Exp $
+ |  $Id: BatchWorkerThread.java,v 1.6 2012/03/07 03:20:49 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2012 Virginia Tech
  |
@@ -50,7 +50,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author  Tony Allevato
  * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2012/01/05 20:01:44 $
+ * @version $Revision: 1.6 $, $Date: 2012/03/07 03:20:49 $
  */
 public class BatchWorkerThread extends WorkerThread<BatchJob>
 {
@@ -209,10 +209,15 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         info.batchPropertiesFile = new File(result.resultDirName(),
                 BatchResult.propertiesFileName());
 
-        if (BatchJob.STATE_START.equals(info.job.currentState()))
+        if (BatchJob.STATE_START.equals(info.job.currentState())
+            || !info.batchPropertiesFile.exists())
         {
             initializeBatchProperties(info);
             rewriteBatchProperties(info);
+        }
+        else
+        {
+            reloadBatchProperties(info);
         }
 
         // Start the process.
@@ -409,7 +414,9 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
         properties.setProperty("workingDir", job.workingDirName());
         properties.setProperty("resultDir", job.batchResult().resultDirName());
         properties.setProperty("scriptHome", batchPlugin.dirName());
+        properties.setProperty("pluginHome", batchPlugin.dirName());
         properties.setProperty("scriptData", BatchPlugin.pluginDataRoot());
+        properties.setProperty("pluginData", BatchPlugin.pluginDataRoot());
         properties.setProperty("frameworksBaseURL",
             Application.wcApplication().frameworksBaseURL());
         if (log.isDebugEnabled())
