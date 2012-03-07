@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Grader.java,v 1.10 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: Grader.java,v 1.11 2012/03/07 03:25:35 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -36,6 +36,7 @@ import org.webcat.grader.messaging.GraderMarkupParseError;
 import org.webcat.grader.messaging.GradingResultsAvailableMessage;
 import org.webcat.grader.messaging.SubmissionSuspendedMessage;
 import org.webcat.woextensions.ECAction;
+import org.webcat.woextensions.WCFetchSpecification;
 import static org.webcat.woextensions.ECAction.run;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
@@ -57,7 +58,7 @@ import er.extensions.qualifiers.ERXKeyValueQualifier;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2011/12/25 21:11:41 $
+ *  @version $Revision: 1.11 $, $Date: 2012/03/07 03:25:35 $
  */
 public class Grader
    extends Subsystem
@@ -651,6 +652,46 @@ public class Grader
         }
         log.debug( "handleReport() returning" );
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    protected void performPeriodicMaintenance()
+    {
+        run(new ECAction() {
+            // ----------------------------------------------------------
+            @Override
+            public void action()
+            {
+                WCFetchSpecification<Submission> needsMigration =
+                    new WCFetchSpecification<Submission>(
+                        Submission.ENTITY_NAME,
+                        Submission.isSubmissionForGrading.isNull(),
+                        Submission.submitTime.descs());
+                needsMigration.setRefreshesRefetchedObjects(false);
+                needsMigration.setFetchLimit(500);
+
+                NSArray<Submission> migrated = Submission
+                    .objectsWithFetchSpecification(ec, needsMigration);
+                while (migrated.size() > 0)
+                {
+                    log.info("performPeriodicMaintenance(): migrated "
+                        + migrated.size() + " submissions");
+                    try
+                    {
+                        // Sleep for 2 seconds
+                        Thread.sleep(2000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        // ignore
+                    }
+                    migrated = Submission
+                        .objectsWithFetchSpecification(ec, needsMigration);
+                }
+            }
+        });
     }
 
 
