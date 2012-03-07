@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Subsystem.java,v 1.5 2011/12/06 18:35:49 stedwar2 Exp $
+ |  $Id: Subsystem.java,v 1.6 2012/03/07 03:03:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -47,7 +47,7 @@ import com.webobjects.foundation.NSPropertyListSerialization;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.5 $, $Date: 2011/12/06 18:35:49 $
+ *  @version $Revision: 1.6 $, $Date: 2012/03/07 03:03:41 $
  */
 public class Subsystem
 {
@@ -620,6 +620,17 @@ public class Subsystem
         log.debug("database updater for " + this.getClass().getName()
             + " is " + result);
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Called periodically (say, daily) by the subsystem manager to give
+     * subsystems a chance to perform periodic maintenance tasks.
+     */
+    protected void performPeriodicMaintenance()
+    {
+        // Nothing by default
     }
 
 

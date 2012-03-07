@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubsystemManager.java,v 1.5 2010/10/24 18:50:11 stedwar2 Exp $
+ |  $Id: SubsystemManager.java,v 1.6 2012/03/07 03:03:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -43,7 +43,7 @@ import com.webobjects.foundation.NSMutableDictionary;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.5 $, $Date: 2010/10/24 18:50:11 $
+ *  @version $Revision: 1.6 $, $Date: 2012/03/07 03:03:41 $
  */
 public class SubsystemManager
 {
@@ -98,6 +98,23 @@ public class SubsystemManager
         envp();
         pluginProperties();
         startAllSubsystems();
+
+        // Start up a thread to run periodic maintenance tasks every day
+        new Thread(new Runnable() {
+            // ----------------------------------------------------------
+            public void run()
+            {
+                performPeriodicMaintenance();
+                try
+                {
+                    Thread.sleep(1000 * 60 * 60 * 24);
+                }
+                catch (InterruptedException e)
+                {
+                    log.info("periodic maintenance task interrupted", e);
+                }
+            }
+        }).start();
     }
 
 
@@ -388,6 +405,36 @@ public class SubsystemManager
             sub.start();
             sub.subsystemHasStarted();
             log.debug("subsystem " + sub.name() + " started");
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Calls {@link Subsystem#performPeriodicMaintenance()} for all
+     * registered subsystems.
+     */
+    private void performPeriodicMaintenance()
+    {
+        for (Subsystem sub : subsystems())
+        {
+            log.debug("periodic maintenance on subsystem " + sub.name());
+            try
+            {
+                sub.performPeriodicMaintenance();
+            }
+            catch (Exception e)
+            {
+                log.error("Exception performing periodic maintenance on "
+                    + sub.name(), e);
+            }
+            catch (Error e)
+            {
+                log.error("Error performing periodic maintenance on "
+                    + sub.name(), e);
+            }
+            log.debug("subsystem " + sub.name()
+                + " periodic maintenance finished");
         }
     }
 
