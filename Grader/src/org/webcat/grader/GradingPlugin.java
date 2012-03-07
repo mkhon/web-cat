@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.12 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.13 2012/03/07 03:24:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -40,7 +40,7 @@ import static org.webcat.woextensions.ECAction.run;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.12 $, $Date: 2011/12/25 21:11:41 $
+ *  @version $Revision: 1.13 $, $Date: 2012/03/07 03:24:01 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -956,20 +956,37 @@ public class GradingPlugin
                 FeatureDescriptor fd = s.descriptor().providerVersion();
                 if (fd != null)
                 {
-                    availablePlugins.remove(fd);
+                    if (availablePlugins.size() > 0
+                        && !availablePlugins.remove(fd))
+                    {
+                        Iterator<FeatureDescriptor> available =
+                            availablePlugins.iterator();
+                        while (available.hasNext())
+                        {
+                            FeatureDescriptor candidate = available.next();
+                            if (candidate.name() == null
+                                || candidate.name().equals(fd.name()))
+                            {
+                                available.remove();
+                            }
+                        }
+                    }
                 }
             }
         }
         for (FeatureDescriptor plugin : availablePlugins)
         {
-            log.info("Installing new plug-in: \"" + plugin.name() + "\"");
-            String msg = installOrUpdate(admin, plugin, false, null);
-            if (msg != null)
+            if (plugin.getProperty("batchEntity") == null)
             {
-                log.error("Error installing new plug-in \""
-                    + plugin.name() + "\": " + msg);
+                log.info("Installing new plug-in: \"" + plugin.name() + "\"");
+                String msg = installOrUpdate(admin, plugin, false, null);
+                if (msg != null)
+                {
+                    log.error("Error installing new plug-in \""
+                        + plugin.name() + "\": " + msg);
+                }
+                ec.saveChanges();
             }
-            ec.saveChanges();
         }
     }
 
