@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: CourseAndAssignmentSubmissionsModel.java,v 1.2 2012/03/07 03:24:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -43,8 +43,9 @@ import er.extensions.foundation.ERXArrayUtilities;
  * The model of the query built by a
  * {@link CourseAndAssignmentSubmissionsAssistant}.
  *
- * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsModel.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @author Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/07 03:24:20 $
  */
 public class CourseAndAssignmentSubmissionsModel
     extends AbstractQueryAssistantModel
@@ -83,7 +84,7 @@ public class CourseAndAssignmentSubmissionsModel
 
             if (includeOnlySubmissionsForGrading)
             {
-                terms.addObject(ERXQ.isTrue("submissionForGrading"));
+                terms.addObject(ERXQ.isTrue("isSubmissionForGrading"));
             }
 
             if (!includeCourseStaff)
@@ -150,7 +151,7 @@ public class CourseAndAssignmentSubmissionsModel
                 {
                     EOKeyValueQualifier kvq = (EOKeyValueQualifier)q;
 
-                    if ("submissionForGrading".equals(kvq.key())
+                    if ("isSubmissionForGrading".equals(kvq.key())
                             && EOQualifier.QualifierOperatorEqual.equals(kvq.selector())
                             && Boolean.TRUE.equals(kvq.value()))
                     {
@@ -203,7 +204,7 @@ public class CourseAndAssignmentSubmissionsModel
     // ----------------------------------------------------------
     public void pruneAssignmentsFromUnselectedCourses()
     {
-        NSArray<Course> selectedCourses = selectedCourses();
+        NSArray<CourseOffering> selectedCourses = selectedCourseOfferings();
 
         for (int i = 0; i < selectedAssignmentModelItems.count(); )
         {
@@ -213,10 +214,12 @@ public class CourseAndAssignmentSubmissionsModel
             {
                 Assignment a = (Assignment) o;
 
-                NSArray<Course> assignmentCourses = (NSArray<Course>)
-                    a.valueForKeyPath(Assignment.COURSES_KEY);
+                @SuppressWarnings("unchecked")
+                NSArray<CourseOffering> assignmentCourses =
+                    (NSArray<CourseOffering>)a.valueForKeyPath(
+                        Assignment.COURSE_OFFERINGS_KEY);
 
-                if (ERXArrayUtilities.arrayContainsAnyObjectFromArray(
+                if (ERXArrayUtilities.arrayContainsArray(
                         assignmentCourses, selectedCourses))
                 {
                     i++;
