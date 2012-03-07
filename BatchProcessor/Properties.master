@@ -5,7 +5,7 @@ subsystem.BatchProcessor = org.webcat.batchprocessor.BatchProcessor
 
 BatchProcessor.version.major = 1
 BatchProcessor.version.minor = 0
-BatchProcessor.version.revision = 4
+BatchProcessor.version.revision = 5
 BatchProcessor.requires = Core, JobQueue, Grader
 BatchProcessor.depends = env, pluginProperties
 
