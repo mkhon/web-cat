@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCDropDownItem.java,v 1.2 2011/05/13 19:43:18 aallowat Exp $
+ |  $Id: WCDropDownItem.java,v 1.3 2012/03/09 18:36:53 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -33,7 +33,7 @@ import com.webobjects.appserver.WOContext;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/05/13 19:43:18 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/09 18:36:53 $
  */
 public class WCDropDownItem extends WOComponent
 {
@@ -74,6 +74,13 @@ public class WCDropDownItem extends WOComponent
     public WOActionResults action()
     {
         return (WOActionResults) valueForBinding("action");
+    }
+
+
+    // ----------------------------------------------------------
+    public String onClick()
+    {
+        return (String) valueForBinding("onClick");
     }
 
 
@@ -141,6 +148,13 @@ public class WCDropDownItem extends WOComponent
 
             js.call("webcat.dropDownList.updateSelection", selectionId,
                     JSHash.code("this"));
+        }
+
+        String onClick = onClick();
+
+        if (onClick != null)
+        {
+            js.append(onClick);
         }
 
         return js.toString(true);
