@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.17 2012/03/07 03:26:04 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.18 2012/03/20 19:59:43 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -61,8 +61,8 @@ import er.extensions.eof.ERXConstant;
  * job.
  *
  * @author  Amit Kulkarni
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.17 $, $Date: 2012/03/07 03:26:04 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.18 $, $Date: 2012/03/20 19:59:43 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -1368,12 +1368,16 @@ public class GraderQueueProcessor
 
         for (String key : keys)
         {
+            key = key.replaceFirst("^(?:previous|mostRecent)\\.", "");
+
             Object value = accumulatedValues.objectForKey(key);
             gradingProperties.setObjectForKey(value, "mostRecent." + key);
         }
 
         for (String key : previousValues.allKeys())
         {
+            key = key.replaceFirst("^(?:previous|mostRecent)\\.", "");
+
             Object value = previousValues.objectForKey(key);
             gradingProperties.setObjectForKey(value, "previous." + key);
         }
