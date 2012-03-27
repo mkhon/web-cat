@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.13 2012/01/27 16:39:59 stedwar2 Exp $
+ |  $Id: User.java,v 1.14 2012/03/27 17:22:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -55,8 +55,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </ul>
  *
  * @author  Stephen Edwards
- * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2012/01/27 16:39:59 $
+ * @author  Last changed by: $Author: aallowat $
+ * @version $Revision: 1.14 $, $Date: 2012/03/27 17:22:58 $
  */
 public class User
     extends _User
@@ -1431,6 +1431,11 @@ public class User
         if (oldLocation.exists())
         {
             FileUtilities.copyDirectoryContents(oldLocation, location);
+        }
+        else
+        {
+            log.warn("Location " + oldLocation.getAbsolutePath() + " does not "
+                    + "exist; not copying any files into repository");
         }
 
         // Create a welcome file that describes the repository.

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitUtilities.java,v 1.5 2012/02/24 16:22:26 aallowat Exp $
+ |  $Id: GitUtilities.java,v 1.6 2012/03/27 17:22:58 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -60,7 +60,7 @@ import com.webobjects.foundation.NSMutableArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2012/02/24 16:22:26 $
+ * @version $Revision: 1.6 $, $Date: 2012/03/27 17:22:58 $
  */
 public class GitUtilities
 {
@@ -120,6 +120,12 @@ public class GitUtilities
                 {
                     repository = RepositoryCache.open(
                             FileKey.lenient(fsDir, FS.DETECTED), true);
+
+                    if (repository == null)
+                    {
+                        log.error("RepositoryCache.open returned null for "
+                                + "object " + object);
+                    }
                 }
                 catch (RepositoryNotFoundException e)
                 {
@@ -127,6 +133,11 @@ public class GitUtilities
                             + " for the first time");
 
                     repository = setUpNewRepository(object, fsDir);
+                }
+                catch (Exception e)
+                {
+                    log.error("An exception occurred while trying to get the "
+                            + "repository for object " + object, e);
                 }
             }
             catch (IOException e)
