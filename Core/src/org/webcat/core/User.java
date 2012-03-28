@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.14 2012/03/27 17:22:58 aallowat Exp $
+ |  $Id: User.java,v 1.15 2012/03/28 18:49:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -56,7 +56,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author  Stephen Edwards
  * @author  Last changed by: $Author: aallowat $
- * @version $Revision: 1.14 $, $Date: 2012/03/27 17:22:58 $
+ * @version $Revision: 1.15 $, $Date: 2012/03/28 18:49:04 $
  */
 public class User
     extends _User
@@ -1395,7 +1395,7 @@ public class User
         if (dotIndex != -1)
         {
             AuthenticationDomain domain = AuthenticationDomain
-                .authDomainByName(repoId.substring(0, dotIndex));
+                .authDomainBySubdirName(repoId.substring(0, dotIndex));
             if (domain != null)
             {
                 String name = repoId.substring(dotIndex + 1);
@@ -1416,7 +1416,7 @@ public class User
     // ----------------------------------------------------------
     public String repositoryIdentifier()
     {
-        return authenticationDomain().name() + "." + userName();
+        return authenticationDomain().subdirName() + "." + userName();
     }
 
 
@@ -1427,7 +1427,7 @@ public class User
         // grader location.
 
         File oldLocation = new File(userDataRoot(),
-                authenticationDomain().name() + "/" + userName());
+                authenticationDomain().subdirName() + "/" + userName());
         if (oldLocation.exists())
         {
             FileUtilities.copyDirectoryContents(oldLocation, location);

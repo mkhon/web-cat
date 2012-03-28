@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: Course.java,v 1.4 2012/03/28 18:49:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -36,8 +36,8 @@ import com.webobjects.foundation.NSMutableSet;
  * semesters (represented by separate course offerings).
  *
  * @author  Stephen Edwards
- * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by: $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2012/03/28 18:49:04 $
  */
 public class Course
     extends _Course
@@ -185,13 +185,21 @@ public class Course
                 return null;
             }
 
-            qualifier = department.dot(Department.institution).dot(
-                    AuthenticationDomain.propertyName).is(
-                            "authenticator." + institution).and(
-                department.dot(Department.abbreviation).is(
-                    deptAbbrev).and(number.is(courseNumber)));
+            qualifier = department.dot(Department.abbreviation).is(deptAbbrev)
+                .and(number.is(courseNumber));
 
-            return uniqueObjectMatchingQualifier(ec, qualifier);
+            NSArray<Course> courses = objectsMatchingQualifier(ec, qualifier);
+
+            for (Course course : courses)
+            {
+                if (institution.equals(
+                        course.department().institution().subdirName()))
+                {
+                    return course;
+                }
+            }
+
+            return null;
         }
         else
         {
@@ -203,7 +211,7 @@ public class Course
     // ----------------------------------------------------------
     public String repositoryIdentifier()
     {
-        return department().institution().name() + "."
+        return department().institution().subdirName() + "."
             + department().abbreviation() + "." + number();
     }
 

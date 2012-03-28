@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.5 2012/01/29 03:02:57 stedwar2 Exp $
+ |  $Id: AuthenticationDomain.java,v 1.6 2012/03/28 18:49:04 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -44,8 +44,8 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2012/01/29 03:02:57 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2012/03/28 18:49:04 $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -327,6 +327,36 @@ public class AuthenticationDomain
             EOSharedEditingContext.defaultSharedEditingContext(),
             propertyName.eq("authenticator." + name),
             null);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Look up and return an authentication domain object by its
+     * (partial) property name.  If you use a property called
+     * <code>authenticator.<i>MyAuthenticator</i></code> to define
+     * an authentication domain in a property file, then you can retrieve
+     * this authenticator using the name "<i>MyAuthenticator</i>".
+     *
+     * @param name the property name of the authenticator
+     * @return The matching AuthenticationDomain object
+     */
+    public static AuthenticationDomain authDomainBySubdirName(String name)
+    {
+        ensureAuthDomainsLoaded();
+
+        if (authDomainsBySubdirName == null)
+        {
+            authDomainsBySubdirName =
+                new HashMap<String, AuthenticationDomain>();
+
+            for (AuthenticationDomain domain : authDomains)
+            {
+                authDomainsBySubdirName.put(domain.subdirName(), domain);
+            }
+        }
+
+        return authDomainsBySubdirName.get(name);
     }
 
 
@@ -762,6 +792,7 @@ public class AuthenticationDomain
     private static NSArray<AuthenticationDomain> authDomains;
     private static AuthenticationDomain defaultDomain;
     private static Map<String, UserAuthenticator> theAuthenticatorMap;
+    private static Map<String, AuthenticationDomain> authDomainsBySubdirName;
     private String cachedSubdirName = null;
     private String cachedName = null;
     private static NSArray<String> timeFormats;
