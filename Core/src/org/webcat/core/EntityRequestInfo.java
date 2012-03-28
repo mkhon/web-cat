@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EntityRequestInfo.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: EntityRequestInfo.java,v 1.2 2012/03/28 13:15:56 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -21,8 +21,10 @@
 
 package org.webcat.core;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.Scanner;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOUtilities;
@@ -36,7 +38,7 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:15:56 $
  */
 public class EntityRequestInfo
 {
@@ -74,6 +76,15 @@ public class EntityRequestInfo
      */
     public static EntityRequestInfo fromRequestHandlerPath(String handlerPath)
     {
+        try
+        {
+            handlerPath = URLDecoder.decode(handlerPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            // Do nothing.
+        }
+
         EntityRequestInfo request = new EntityRequestInfo();
 
         Scanner scanner = new Scanner(handlerPath);
