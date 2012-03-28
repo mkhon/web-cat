@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: InlineStatusIndicator.java,v 1.2 2011/05/13 19:45:03 aallowat Exp $
+ |  $Id: InlineStatusIndicator.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,7 +22,6 @@
 package org.webcat.core;
 
 import org.webcat.ui.generators.JavascriptGenerator;
-import org.webcat.ui.util.ComponentIDGenerator;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 
@@ -32,8 +31,8 @@ import com.webobjects.appserver.WOContext;
  * along with a spinner that can be activated for longer running operations.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/05/13 19:45:03 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class InlineStatusIndicator extends WOComponent
 {

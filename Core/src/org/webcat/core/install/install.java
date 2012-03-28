@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: install.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
+ |  $Id: install.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,21 +22,18 @@
 package org.webcat.core.install;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.foundation.*;
 import er.extensions.appserver.ERXDirectAction;
-import er.extensions.foundation.ERXValueUtilities;
 import org.webcat.core.Application;
 import org.webcat.core.WCConfigurationFile;
 import org.apache.log4j.Logger;
-import org.webcat.core.*;
 
 //-------------------------------------------------------------------------
 /**
  * The default direct action class for Web-CAT.
  *
- * @author Stephen Edwards
- * @version $Id: install.java,v 1.2 2010/10/15 00:43:17 stedwar2 Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class install
     extends ERXDirectAction

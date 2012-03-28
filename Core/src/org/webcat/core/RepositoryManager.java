@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: RepositoryManager.java,v 1.2 2012/02/23 19:21:27 aallowat Exp $
+ |  $Id: RepositoryManager.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -40,8 +40,8 @@ import com.webobjects.foundation.NSComparator.ComparisonException;
  * EOs.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2012/02/23 19:21:27 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class RepositoryManager
 {
@@ -247,8 +247,11 @@ public class RepositoryManager
             Method method = klass.getMethod("repositoriesPresentedToUser",
                     User.class, EOEditingContext.class);
 
-            return (NSArray<? extends EOEnterpriseObject>) method.invoke(
+            @SuppressWarnings("unchecked")
+            NSArray<? extends EOEnterpriseObject> result =
+                (NSArray<? extends EOEnterpriseObject>) method.invoke(
                     null, user, ec);
+            return result;
         }
         catch (Exception e)
         {

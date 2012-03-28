@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Theme.java,v 1.8 2012/02/13 02:53:21 stedwar2 Exp $
+ |  $Id: Theme.java,v 1.9 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2008-2012 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2012/02/13 02:53:21 $
+ *  @version $Revision: 1.9 $, $Date: 2012/03/28 13:48:08 $
  */
 public class Theme
     extends _Theme
@@ -289,41 +289,45 @@ public class Theme
             linkTags = (parent() == null)
                 ? ""
                 : parent().linkTags();
-            try
+            if (properties() != null)
             {
-                Object cssFileList = properties().valueForKey("cssOrder");
-                if (cssFileList != null && cssFileList instanceof NSArray)
+                try
                 {
-                    @SuppressWarnings("unchecked")
-                    NSArray<NSDictionary<String, String>> cssFiles =
-                        (NSArray<NSDictionary<String, String>>)cssFileList;
-                    String baseLocation =
-                        "Core.framework/WebServerResources/theme/"
-                        + dirName() + "/";
-                    for (NSDictionary<String, String> css : cssFiles)
+                    Object cssFileList = properties().valueForKey("cssOrder");
+                    if (cssFileList != null && cssFileList instanceof NSArray)
                     {
-                        linkTags += "<link rel=\"stylesheet\" type=\"text/css\""
-                            + "href=\""
-                            + WCResourceManager.resourceURLFor(
-                                baseLocation
-                                + css.get("file"),
-                                null)
-                            + "\"";
-                        String media = css.get("media");
-                        if (media != null)
+                        @SuppressWarnings("unchecked")
+                        NSArray<NSDictionary<String, String>> cssFiles =
+                            (NSArray<NSDictionary<String, String>>)cssFileList;
+                        String baseLocation =
+                            "Core.framework/WebServerResources/theme/"
+                            + dirName() + "/";
+                        for (NSDictionary<String, String> css : cssFiles)
                         {
-                            linkTags += " media=\"" + media + "\"";
+                            linkTags += "<link rel=\"stylesheet\" "
+                                + "type=\"text/css\" href=\""
+                                + WCResourceManager.resourceURLFor(
+                                    baseLocation
+                                    + css.get("file"),
+                                    null)
+                                + "\"";
+                            String media = css.get("media");
+                            if (media != null)
+                            {
+                                linkTags += " media=\"" + media + "\"";
+                            }
+                            linkTags += " />";
                         }
-                        linkTags += " />";
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                new UnexpectedExceptionMessage(e, null, null,
-                        "Unexpected exception trying to decode theme properties "
-                        + "for theme: " + dirName() + "(" + id() + ").")
-                    .send();
+                catch (Exception e)
+                {
+                    new UnexpectedExceptionMessage(e, null, null,
+                        "Unexpected exception trying to decode theme "
+                        + "properties for theme: " + dirName()
+                        + "(" + id() + ").")
+                        .send();
+                }
             }
         }
         return linkTags;

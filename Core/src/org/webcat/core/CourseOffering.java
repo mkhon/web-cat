@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: CourseOffering.java,v 1.5 2011/04/21 17:18:30 aallowat Exp $
+ |  $Id: CourseOffering.java,v 1.6 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -33,9 +33,9 @@ import org.apache.log4j.Logger;
  * Represents a single offering of a course (i.e., one section in a given
  * semester).
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2011/04/21 17:18:30 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2012/03/28 13:48:08 $
  */
 public class CourseOffering
     extends _CourseOffering
@@ -219,6 +219,17 @@ public class CourseOffering
     public boolean isStaff(User user)
     {
         return isInstructor(user) || isGrader(user);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accessibleByUser(User user)
+    {
+        return isStaff(user);
     }
 
 

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: KeyPathParser.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: KeyPathParser.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -25,7 +25,6 @@ import com.webobjects.eoaccess.EOEntityClassDescription;
 import com.webobjects.eocontrol.EOClassDescription;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
-import com.webobjects.foundation.NSTimestamp;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,8 +34,9 @@ import org.webcat.core.WCProperties;
 /**
  * A KVC parser for use in queries.
  *
- * @author aallowat
- * @version $Id: KeyPathParser.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class KeyPathParser
 {

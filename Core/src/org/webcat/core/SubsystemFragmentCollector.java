@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SubsystemFragmentCollector.java,v 1.3 2010/10/17 16:50:12 stedwar2 Exp $
+ |  $Id: SubsystemFragmentCollector.java,v 1.4 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,12 +21,8 @@
 
 package org.webcat.core;
 
-import java.io.InputStream;
 import com.webobjects.appserver.*;
-import com.webobjects.appserver._private.WOComponentDefinition;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSBundle;
-import com.webobjects.foundation._NSStringUtilities;
 import org.webcat.core.Application;
 import org.webcat.core.SubsystemFragmentCollector;
 import org.apache.log4j.Logger;
@@ -39,7 +35,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/10/17 16:50:12 $
+ *  @version $Revision: 1.4 $, $Date: 2012/03/28 13:48:08 $
  */
 public class SubsystemFragmentCollector
     extends WOComponent

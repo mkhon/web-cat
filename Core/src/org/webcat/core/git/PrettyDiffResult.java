@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PrettyDiffResult.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: PrettyDiffResult.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2010 Virginia Tech
+ |  Copyright (C) 2010-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,14 +21,13 @@
 
 package org.webcat.core.git;
 
-import java.io.IOException;
 import org.eclipse.jgit.diff.RawText;
-import org.eclipse.jgit.lib.Constants;
 import com.webobjects.appserver.WOMessage;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSKeyValueCodingAdditions;
 
-public class PrettyDiffResult implements NSKeyValueCodingAdditions
+public class PrettyDiffResult
+    implements NSKeyValueCodingAdditions
 {
     // ----------------------------------------------------------
     public PrettyDiffResult()

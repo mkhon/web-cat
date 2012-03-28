@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: PopUpInfo.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: PopUpInfo.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,7 +22,6 @@
 package org.webcat.core;
 
 import com.webobjects.appserver.*;
-import org.apache.log4j.Logger;
 import org.webcat.ui.util.ComponentIDGenerator;
 
 // -------------------------------------------------------------------------
@@ -30,8 +29,9 @@ import org.webcat.ui.util.ComponentIDGenerator;
  * A component that renders as an info icon and an overlib-based pop-up
  * info/help message.
  *
- * @author Stephen Edwards
- * @version $Id: PopUpInfo.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class PopUpInfo
     extends WOComponent
@@ -60,11 +60,11 @@ public class PopUpInfo
     public void appendToResponse(WOResponse response, WOContext context)
     {
         idFor = new ComponentIDGenerator(this);
-        
+
         super.appendToResponse(response, context);
     }
-    
-    
+
+
     // ----------------------------------------------------------
     public boolean isStateless()
     {

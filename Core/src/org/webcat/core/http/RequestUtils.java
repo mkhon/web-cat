@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: RequestUtils.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: RequestUtils.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -30,7 +30,6 @@ import java.util.zip.GZIPOutputStream;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.util.HttpSupport;
-import org.webcat.core.NSMutableDataOutputStream;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSData;
@@ -40,8 +39,8 @@ import com.webobjects.foundation.NSData;
  * Helper methods for working with HTTP requests and responses.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class RequestUtils
 {

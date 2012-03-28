@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MigratoryAttributeOwner.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: MigratoryAttributeOwner.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,8 +21,6 @@
 
 package org.webcat.core;
 
-import er.extensions.concurrency.ERXLongResponseTask;
-
 //-------------------------------------------------------------------------
 /**
  * Enterprise objects that implement this interface will automatically have
@@ -30,7 +28,7 @@ import er.extensions.concurrency.ERXLongResponseTask;
  * have semantically correct values (perhaps derived from values in other
  * columns) will be updated on-demand when the object is first retrieved from
  * the data store.
- * 
+ *
  * To make use of this functionality, create a new attribute in your EOModel
  * and place "needsMigration = true" in its userInfo dictionary. When the
  * EOGenerator runs on the model, this interface will automatically be
@@ -41,13 +39,14 @@ import er.extensions.concurrency.ERXLongResponseTask;
  * this accessor to either compute the property (migrating it) or, if already
  * migrated, just return its value.
  *
- * @author Tony Allevato
- * @version $Id: MigratoryAttributeOwner.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public interface MigratoryAttributeOwner
 {
     //~ Methods ...............................................................
-    
+
     // ----------------------------------------------------------
     /**
      * Called as part of an object's life cycle to compute on-demand any

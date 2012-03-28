@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: RepositoryEntryRef.java,v 1.4 2011/11/04 13:56:16 aallowat Exp $
+ |  $Id: RepositoryEntryRef.java,v 1.5 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -28,15 +28,12 @@ import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.webcat.core.git.GitRef;
 import org.webcat.core.git.GitRepository;
-import org.webcat.core.git.GitTreeEntry;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
-import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCoding;
 import com.webobjects.foundation.NSKeyValueCodingAdditions;
 import com.webobjects.foundation.NSMutableDictionary;
-import com.webobjects.foundation.NSTimestamp;
 
 //-------------------------------------------------------------------------
 /**
@@ -48,10 +45,11 @@ import com.webobjects.foundation.NSTimestamp;
  * stored in the database.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2011/11/04 13:56:16 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2012/03/28 13:48:08 $
  */
-public class RepositoryEntryRef implements NSKeyValueCodingAdditions
+public class RepositoryEntryRef
+    implements NSKeyValueCodingAdditions
 {
     //~ Constructors ..........................................................
 

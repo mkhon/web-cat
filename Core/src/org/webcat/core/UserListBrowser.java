@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: UserListBrowser.java,v 1.2 2010/09/15 19:09:09 stedwar2 Exp $
+ |  $Id: UserListBrowser.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,7 +23,6 @@ package org.webcat.core;
 
 import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.EODatabaseDataSource;
-import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eocontrol.EODetailDataSource;
 import com.webobjects.eocontrol.EOGenericRecord;
 import org.webcat.core.User;
@@ -53,9 +52,9 @@ import org.apache.log4j.Logger;
  * @binding promoteToAccessLevel The minimum access level that users will
  *          gain when being added to the relationship (default: 0).
  *
- * @author Stephen Edwards
- * @author Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/15 19:09:09 $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class UserListBrowser
     extends WCComponent

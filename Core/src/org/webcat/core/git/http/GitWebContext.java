@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GitWebContext.java,v 1.2 2011/11/04 13:09:35 aallowat Exp $
+ |  $Id: GitWebContext.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,8 +23,6 @@ package org.webcat.core.git.http;
 
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
 import org.webcat.core.git.GitRef;
 import org.webcat.core.git.GitRepository;
 import com.webobjects.appserver.WOContext;
@@ -35,8 +33,8 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/11/04 13:09:35 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class GitWebContext
 {
@@ -282,19 +280,19 @@ public class GitWebContext
     // ----------------------------------------------------------
     public String lastPathComponent()
     {
-        String path = path();
+        String thePath = path();
 
-        if (path != null)
+        if (thePath != null)
         {
-            int lastSlash = path.lastIndexOf('/');
+            int lastSlash = thePath.lastIndexOf('/');
 
             if (lastSlash == -1)
             {
-                return path;
+                return thePath;
             }
             else
             {
-                String component = path.substring(lastSlash + 1);
+                String component = thePath.substring(lastSlash + 1);
 
                 if (component.length() == 0)
                 {
@@ -316,22 +314,22 @@ public class GitWebContext
     // ----------------------------------------------------------
     public void removeLastPathComponent()
     {
-        String path = path();
+        String thePath = path();
 
-        if (path != null)
+        if (thePath != null)
         {
-            int lastSlash = path.lastIndexOf('/');
+            int lastSlash = thePath.lastIndexOf('/');
 
             if (lastSlash == -1)
             {
-                path = null;
+                thePath = null;
             }
             else
             {
-                path = path.substring(0, lastSlash);
+                thePath = thePath.substring(0, lastSlash);
             }
 
-            setPath(path);
+            setPath(thePath);
         }
     }
 

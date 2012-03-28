@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCFetchSpecification.java,v 1.1 2011/10/25 12:55:01 stedwar2 Exp $
+ |  $Id: WCFetchSpecification.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -41,7 +41,7 @@ import er.extensions.eof.ERXFetchSpecification;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2011/10/25 12:55:01 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class WCFetchSpecification<T extends EOEnterpriseObject>
     extends ERXFetchSpecification<T>
@@ -136,7 +136,7 @@ public class WCFetchSpecification<T extends EOEnterpriseObject>
      */
     private void setDefaults()
     {
-        setRefreshesRefetchedObjects(true);
+        setRefreshesRefetchedObjects(false); // FIXME: TRUE!!!
         // Want to do this:
         // setIncludeEditingContextChanges(true);
         // but ... it doesn't work.  See Javadoc comments above.  Instead:

@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCTreeTestPage.java,v 1.1 2011/05/13 19:45:03 aallowat Exp $
+ |  $Id: WCTreeTestPage.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2009 Virginia Tech
+ |  Copyright (C) 2009-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,28 +21,25 @@
 
 package org.webcat.core;
 
-import org.webcat.ui.WCTable;
 import org.webcat.ui.WCTree;
 import org.webcat.ui.WCTreeModel;
 import org.webcat.ui.generators.JavascriptGenerator;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
-import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSSet;
-import er.extensions.appserver.ERXDisplayGroup;
 
 //-------------------------------------------------------------------------
 /**
  * A test page for the WCTree component.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:45:03 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
-public class WCTreeTestPage extends WCComponent
+public class WCTreeTestPage
+    extends WCComponent
 {
     //~ Constructors ..........................................................
 

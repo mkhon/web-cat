@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.2 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: Course.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -29,16 +29,15 @@ import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableSet;
-import er.extensions.eof.ERXQ;
 
 // -------------------------------------------------------------------------
 /**
  * Represents one course, which may be taught multiple times in different
  * semesters (represented by separate course offerings).
  *
- * @author Stephen Edwards
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/05/13 19:46:57 $
+ * @author  Stephen Edwards
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class Course
     extends _Course
@@ -106,6 +105,21 @@ public class Course
     public String userPresentableDescription()
     {
         return deptNumber();
+    }
+
+
+    // ----------------------------------------------------------
+    @Override
+    public boolean accessibleByUser(User user)
+    {
+        for (CourseOffering offering : offerings())
+        {
+            if (offering.accessibleByUser(user))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 

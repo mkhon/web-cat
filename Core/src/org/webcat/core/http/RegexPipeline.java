@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: RegexPipeline.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: RegexPipeline.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,7 +21,6 @@
 
 package org.webcat.core.http;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.webobjects.appserver.WODynamicURL;
@@ -34,10 +33,11 @@ import com.webobjects.appserver.WOResponse;
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
-public class RegexPipeline extends UrlPipeline
+public class RegexPipeline
+    extends UrlPipeline
 {
     //~ Constructors ..........................................................
 

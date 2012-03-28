@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: EntityRequestInfo.java,v 1.2 2012/03/28 13:15:56 aallowat Exp $
+ |  $Id: EntityRequestInfo.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,12 +22,8 @@
 package org.webcat.core;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Scanner;
-import com.webobjects.eoaccess.EOEntity;
-import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 
@@ -37,8 +33,8 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  * request (the entity name, the object ID, and the resource path).
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2012/03/28 13:15:56 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
  */
 public class EntityRequestInfo
 {

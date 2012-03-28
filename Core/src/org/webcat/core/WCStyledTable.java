@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WCStyledTable.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WCStyledTable.java,v 1.2 2012/03/28 13:48:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -23,15 +23,12 @@ package org.webcat.core;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.webcat.ui.util.ComponentIDGenerator;
 import org.webcat.ui.util.DojoUtils;
 import org.webcat.core.WCStyledTable;
 import com.webobjects.appserver.*;
-import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSMutableSet;
 import er.extensions.components.ERXComponentUtilities;
 import er.extensions.foundation.ERXStringUtilities;
@@ -99,11 +96,13 @@ import er.extensions.foundation.ERXStringUtilities;
  *
  * </dl>
  *
- * @author Stephen Edwards, Tony Allevato
- * @version $Id: WCStyledTable.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ *  @author  Stephen Edwards, Tony Allevato
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:07 $
  */
 
-public class WCStyledTable extends WOComponent
+public class WCStyledTable
+    extends WOComponent
 {
     //~ Constructors ..........................................................
 

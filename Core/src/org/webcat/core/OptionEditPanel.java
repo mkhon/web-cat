@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: OptionEditPanel.java,v 1.4 2011/06/01 14:03:11 aallowat Exp $
+ |  $Id: OptionEditPanel.java,v 1.5 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -45,9 +45,9 @@ import er.extensions.eof.ERXConstant;
  *  A small component that allows editing of one option in an option set.
  *  @see OptionSetEditor
  *
- *  @author Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.4 $, $Date: 2011/06/01 14:03:11 $
+ *  @author  Stephen Edwards
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.5 $, $Date: 2012/03/28 13:48:08 $
  */
 public class OptionEditPanel
     extends WCComponent
@@ -408,8 +408,10 @@ public class OptionEditPanel
         }
         else if (value() instanceof NSDictionary<?, ?>)
         {
-            entryRef = RepositoryEntryRef.fromDictionary(
-                    (NSDictionary<String, Object>) value());
+            @SuppressWarnings("unchecked")
+            NSDictionary<String, Object> value =
+                (NSDictionary<String, Object>) value();
+            entryRef = RepositoryEntryRef.fromDictionary(value);
         }
         else
         {

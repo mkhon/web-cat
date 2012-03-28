@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: KVCAttributeFinder.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: KVCAttributeFinder.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -29,10 +29,8 @@ import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSMutableDictionary;
 import er.extensions.eof.ERXGenericRecord;
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
 import org.webcat.core.KVCAttributeInfo;
 
 //-------------------------------------------------------------------------
@@ -40,8 +38,9 @@ import org.webcat.core.KVCAttributeInfo;
  * Provides a static utility method (and an internal cache) for looking
  * up the KVC-accessible attributes for a class.
  *
- * @author aallowat
- * @version $Id: KVCAttributeFinder.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class KVCAttributeFinder
 {

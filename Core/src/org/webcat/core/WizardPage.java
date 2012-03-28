@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: WizardPage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: WizardPage.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,9 +22,6 @@
 package org.webcat.core;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eoaccess.*;
-import com.webobjects.eocontrol.*;
-import com.webobjects.foundation.*;
 import org.webcat.core.PageWithNavigation;
 import org.webcat.core.WCComponent;
 import org.webcat.core.WizardPage;
@@ -38,8 +35,9 @@ import org.apache.log4j.Logger;
  * this component is primarily through method redefinition of inherited
  * methods from WCComponent.
  *
- * @author Stephen Edwards
- * @version $Id: WizardPage.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Stephen Edwards
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class WizardPage
     extends PageWithNavigation

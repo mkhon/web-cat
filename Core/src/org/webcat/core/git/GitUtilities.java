@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitUtilities.java,v 1.6 2012/03/27 17:22:58 aallowat Exp $
+ |  $Id: GitUtilities.java,v 1.7 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -59,8 +59,8 @@ import com.webobjects.foundation.NSMutableArray;
  * objects.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2012/03/27 17:22:58 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.7 $, $Date: 2012/03/28 13:48:08 $
  */
 public class GitUtilities
 {
@@ -516,7 +516,9 @@ public class GitUtilities
 
         // Push the changes to the bare repository.
         PushCommand push = new Git(tempRepository).push();
-        push.setRemote(location.toURL().toString());
+        @SuppressWarnings("deprecation")
+        String url = location.toURL().toString();
+        push.setRemote(url);
         push.setRefSpecs(new RefSpec("master"), new RefSpec("master"));
 
         try

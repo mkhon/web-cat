@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GitBlobPage.java,v 1.3 2012/02/24 16:22:27 aallowat Exp $
+ |  $Id: GitBlobPage.java,v 1.4 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -22,12 +22,10 @@
 package org.webcat.core.git.http;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.lib.Repository;
-import org.webcat.archives.ArchiveManager;
 import org.webcat.core.FileUtilities;
 import org.webcat.core.git.GitCommit;
 import org.webcat.core.git.GitUtilities;
@@ -43,10 +41,11 @@ import com.webobjects.foundation.NSData;
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2012/02/24 16:22:27 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2012/03/28 13:48:08 $
  */
-public class GitBlobPage extends GitWebComponent
+public class GitBlobPage
+    extends GitWebComponent
 {
     //~ Constructors ..........................................................
 

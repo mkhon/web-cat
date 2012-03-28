@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: MetaRequestHandler.java,v 1.4 2011/11/04 13:15:48 aallowat Exp $
+ |  $Id: MetaRequestHandler.java,v 1.5 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2011 Virginia Tech
+ |  Copyright (C) 2011-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.webcat.core.Application;
 import com.webobjects.appserver.WOApplication;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.appserver.WOCookie;
 import com.webobjects.appserver.WOMessage;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WORequestHandler;
@@ -45,10 +44,11 @@ import com.webobjects.appserver.WOResponse;
  * </p>
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2011/11/04 13:15:48 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.5 $, $Date: 2012/03/28 13:48:08 $
  */
-public abstract class MetaRequestHandler extends WORequestHandler
+public abstract class MetaRequestHandler
+    extends WORequestHandler
 {
     //~ Constructors ..........................................................
 

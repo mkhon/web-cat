@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCAccessibleQualifier.java,v 1.1 2012/02/13 03:03:51 stedwar2 Exp $
+ |  $Id: WCAccessibleQualifier.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2012 Virginia Tech
  |
@@ -32,7 +32,7 @@ import er.extensions.qualifiers.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2012/02/13 03:03:51 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class WCAccessibleQualifier
     extends ERXKeyValueQualifier
@@ -58,8 +58,9 @@ public class WCAccessibleQualifier
     public boolean evaluateWithObject(Object object)
     {
         return object != null
-            && object instanceof EOBase
-            && ((EOBase)object).accessibleByUser((User)value());
+            && (((User)value()).hasAdminPrivileges()
+                || (object instanceof EOBase
+                    && ((EOBase)object).accessibleByUser((User)value())));
     }
 
 

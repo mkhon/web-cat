@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: LockErrorScreamerEditingContext.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ |  $Id: LockErrorScreamerEditingContext.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -36,8 +36,9 @@ import org.apache.log4j.Logger;
  *  class of the same name by Jonathan 'Wolf' Rentzsch (jon at redshed dot net)
  *  enhanced by Anthony Ingraldi (a.m.ingraldi at larc.nasa.gov).
  *
- * @author Jonathan 'Wolf' Rentzsch
- * @version $Id: LockErrorScreamerEditingContext.java,v 1.1 2010/05/11 14:51:55 aallowat Exp $
+ * @author  Jonathan 'Wolf' Rentzsch
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
  */
 public class LockErrorScreamerEditingContext
     extends er.extensions.eof.ERXEC
@@ -237,7 +238,7 @@ public class LockErrorScreamerEditingContext
     //~ Instance/static variables .............................................
 
     private String         nameOfLockingThread = null;
-    private NSMutableArray stackTraces         = new NSMutableArray();
+    private NSMutableArray<String> stackTraces = new NSMutableArray<String>();
 
     static Logger log =
         Logger.getLogger( LockErrorScreamerEditingContext.class );
