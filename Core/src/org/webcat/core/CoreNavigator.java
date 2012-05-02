@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.4 2012/01/19 19:31:26 stedwar2 Exp $
+ |  $Id: CoreNavigator.java,v 1.5 2012/05/02 14:01:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -63,8 +63,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $ $Date: 2012/01/19 19:31:26 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.5 $ $Date: 2012/05/02 14:01:22 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -389,7 +389,9 @@ public class CoreNavigator
     {
         log.debug("updateCourseOfferings()");
         gatherCourseOfferings();
-        return new JavascriptGenerator().refresh(idFor.get("coursePane"));
+        return new JavascriptGenerator()
+            .refresh(idFor.get("coursePane"))
+            .append("window.navUnderlay.hide(); window.navUnderlay.destroyRecursive()");
     }
 
 

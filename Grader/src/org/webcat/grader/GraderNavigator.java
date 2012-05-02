@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.5 2012/01/19 16:31:29 stedwar2 Exp $
+ |  $Id: GraderNavigator.java,v 1.6 2012/05/02 14:01:22 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -81,8 +81,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.5 $ $Date: 2012/01/19 16:31:29 $
+ * @author  latest changes by: $Author: aallowat $
+ * @version $Revision: 1.6 $ $Date: 2012/05/02 14:01:22 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -373,7 +373,8 @@ public class GraderNavigator
     {
         log.debug("updateAssignments()");
         gatherAssignments();
-        return new JavascriptGenerator().refresh(idFor.get("assignmentPane"));
+        return new JavascriptGenerator().refresh(idFor.get("assignmentPane"))
+            .append("window.navUnderlay.hide(); window.navUnderlay.destroyRecursive()");
     }
 
 
@@ -382,7 +383,8 @@ public class GraderNavigator
     {
         log.debug("updateAssignmentsMenu()");
         gatherAssignments();
-        return new JavascriptGenerator().refresh(idFor.get("assignmentMenu"));
+        return new JavascriptGenerator().refresh(idFor.get("assignmentMenu"))
+            .append("window.navUnderlay.hide(); window.navUnderlay.destroyRecursive()");
     }
 
 
