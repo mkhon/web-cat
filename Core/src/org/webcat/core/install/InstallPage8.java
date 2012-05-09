@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: InstallPage8.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: InstallPage8.java,v 1.4 2012/05/09 14:26:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
+ *  @version $Revision: 1.4 $, $Date: 2012/05/09 14:26:21 $
  */
 public class InstallPage8
     extends InstallPage
@@ -96,8 +96,8 @@ public class InstallPage8
                 + "least 15 minutes or more away, please) to ensure that "
                 + "any\nautomatic updates do not get cut off when the "
                 + "primary Web-CAT update site\nreboots daily at that "
-                + "time.\n\nFor support, see the Web-CAT wiki at:\n\n"
-                + "http://web-cat.cs.vt.edu/WCWiki\n\nOr e-mail "
+                + "time.\n\nFor support, see the Web-CAT forums at:\n\n"
+                + "http://web-cat.org\n\nOr e-mail "
                 + "the Web-CAT staff at: webcat@vt.edu.";
 
             Application.sendAdminEmail(subject, body);
