@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: OdaResultSet.java,v 1.2 2011/12/25 21:18:25 stedwar2 Exp $
+ |  $Id: OdaResultSet.java,v 1.3 2012/05/09 14:34:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -27,14 +27,16 @@ import java.util.Enumeration;
 import org.webcat.oda.commons.IWebCATResultSet;
 import org.webcat.oda.commons.WebCATDataException;
 import org.webcat.woextensions.ReadOnlyEditingContext;
+import org.webcat.woextensions.WCFetchSpecification;
 import ognl.Ognl;
 import ognl.OgnlContext;
 import ognl.OgnlException;
 import ognl.enhance.ExpressionAccessor;
 import org.apache.log4j.Logger;
+import org.webcat.core.EOBase;
 import org.webcat.core.ObjectQuery;
 import org.webcat.core.QualifierUtils;
-import com.webobjects.eocontrol.EOFetchSpecification;
+import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSKeyValueCoding;
@@ -47,7 +49,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2011/12/25 21:18:25 $
+ * @version $Revision: 1.3 $, $Date: 2012/05/09 14:34:43 $
  */
 public class OdaResultSet
     implements IWebCATResultSet
@@ -110,10 +112,11 @@ public class OdaResultSet
         EOQualifier[] quals = QualifierUtils.partitionQualifier(
             qualifier, query.objectType());
         fetchQualifier = quals[0];
-        inMemoryQualifier = quals[1];
+        inMemoryQualifier = EOBase.accessibleBy(job.user()).and(quals[1]);
 
-        EOFetchSpecification fetch = new EOFetchSpecification(
-            query.objectType(), fetchQualifier, null);
+        WCFetchSpecification<?> fetch =
+            new WCFetchSpecification<EOEnterpriseObject>(
+                query.objectType(), fetchQualifier, null);
         iterator =
             new ERXFetchSpecificationBatchIterator(fetch, editingContext);
         iterator.setBatchSize(currentBatchSize);
@@ -384,7 +387,9 @@ public class OdaResultSet
             while (getBatch)
             {
                 recycleEditingContext();
-                currentBatch = iterator.nextBatch();
+                @SuppressWarnings("unchecked")
+                NSArray<Object> nextBatch = iterator.nextBatch();
+                currentBatch = nextBatch;
 
                 if (inMemoryQualifier != null)
                 {
@@ -469,9 +474,12 @@ public class OdaResultSet
 //            rgt.setLastErrorInfoForJobId(jobId, dataSet.name(), column, null,
 //                    expressions[column], msg);
 
-            // Rethrow the original exception.
-
-            throw new WebCATDataException(e);
+            // Rethrow modified version of original exception with new msg
+            NSKeyValueCoding.UnknownKeyException replacement =
+                new NSKeyValueCoding.UnknownKeyException(
+                    msg, e.object(), e.key());
+            replacement.setStackTrace(e.getStackTrace());
+            throw new WebCATDataException(replacement);
         }
         catch (Exception e)
         {
@@ -519,14 +527,15 @@ public class OdaResultSet
 
             if (destType.isInstance(result))
             {
-                return (T)result;
+                return destType.cast(result);
             }
             else
             {
                 try
                 {
-                    return (T)defaultContext.getTypeConverter().convertValue(
-                            null, null, null, null, result, destType);
+                    return destType.cast(defaultContext.getTypeConverter()
+                        .convertValue(
+                            null, null, null, null, result, destType));
                 }
                 catch (Exception e)
                 {
@@ -548,8 +557,8 @@ public class OdaResultSet
 
             try
             {
-                return (T) Integer.valueOf(
-                        (int) Double.parseDouble(result.toString()));
+                return destType.cast(Integer.valueOf(
+                        (int) Double.parseDouble(result.toString())));
             }
             catch (NumberFormatException e)
             {
@@ -560,7 +569,8 @@ public class OdaResultSet
         {
             try
             {
-                return (T) new NSTimestamp(Long.parseLong(result.toString()));
+                return destType.cast(
+                    new NSTimestamp(Long.parseLong(result.toString())));
             }
             catch (NumberFormatException e)
             {
@@ -585,7 +595,9 @@ public class OdaResultSet
 
     //~ Instance/static variables .............................................
 
+    @SuppressWarnings("unused")
     private int dataSetId;
+
     private ManagedReportGenerationJob job;
     private ObjectQuery query;
     private ReadOnlyEditingContext editingContext;
