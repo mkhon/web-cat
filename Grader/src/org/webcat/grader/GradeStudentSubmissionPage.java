@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.10 2011/05/19 16:56:37 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.11 2012/05/09 16:32:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2011/05/19 16:56:37 $
+ * @version $Revision: 1.11 $, $Date: 2012/05/09 16:32:02 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -153,8 +153,10 @@ public class GradeStudentSubmissionPage
         {
             nextIndex++;
         } while (nextIndex < availableSubmissions.count()
-                && !availableSubmissions.objectAtIndex(
-                        nextIndex).userHasSubmission());
+                && (!availableSubmissions.objectAtIndex(
+                        nextIndex).userHasSubmission()
+                    || availableSubmissions.objectAtIndex(
+                        nextIndex).submission().result() == null));
 
         return nextIndex;
     }
@@ -163,8 +165,9 @@ public class GradeStudentSubmissionPage
     // ----------------------------------------------------------
     public WOComponent saveThenNextStudent()
     {
+        int nextSub = indexOfNextSubmission();
         if (availableSubmissions == null
-            || indexOfNextSubmission() >= availableSubmissions.count() - 1)
+            || nextSub >= availableSubmissions.count())
         {
             // If there's no place to go, then go back to the list
             return saveThenList();
@@ -172,14 +175,12 @@ public class GradeStudentSubmissionPage
 
         if (applyLocalChanges())
         {
-            thisSubmissionIndex = indexOfNextSubmission();
-
-            Submission target = availableSubmissions
-                .objectAtIndex(thisSubmissionIndex).submission();
-            prefs().setSubmissionRelationship(target);
+            thisSubmissionIndex = nextSub;
+            submission = availableSubmissions
+                .objectAtIndex(nextSub).submission();
+            prefs().setSubmissionRelationship(submission);
             prefs().setSubmissionFileStatsRelationship(null);
-            submission = target;
-            result = null;
+            result = submission.result();
         }
 
         return null;
@@ -189,8 +190,8 @@ public class GradeStudentSubmissionPage
     // ----------------------------------------------------------
     public WOComponent cancel()
     {
-        super.cancel();
-        return super.next();
+        return super.cancel();
+//        return super.next();
     }
 
 
