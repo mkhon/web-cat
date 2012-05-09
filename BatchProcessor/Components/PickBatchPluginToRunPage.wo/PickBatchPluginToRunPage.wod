@@ -10,17 +10,6 @@ DeleteResultsAction: WCActionFunction {
     remote = true;
 }
 
-DownloadNow: WOActiveImage {
-    border    = "0";
-    filename  = "icons/download.gif";
-    framework = "Core";
-    height    = "18";
-    width     = "18";
-    alt       = "Download this plug-in";
-    title     = "Download this plug-in";
-    action    = download;
-}
-
 EditFiles: WOActiveImage {
     border    = "0";
     filename  = "icons/explore.gif";
