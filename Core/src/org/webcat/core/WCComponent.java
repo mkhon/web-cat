@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.3 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.4 2012/05/09 14:25:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -66,7 +66,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/12/25 02:24:54 $
+ * @version $Revision: 1.4 $, $Date: 2012/05/09 14:25:30 $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -837,8 +837,19 @@ public class WCComponent
         }
         else
         {
-            return pageWithName(
-                currentTab().nextSibling().select().pageName() );
+            try
+            {
+                return pageWithName(
+                    currentTab().nextSibling().select().pageName() );
+            }
+            catch (NullPointerException e)
+            {
+                log.error("exception selecting next tab from "
+                    + currentTab().printableTabLocationDetails(), e);
+                // Assume something is broken w/ the current tab selection
+                return pageWithName(
+                    wcSession().tabs.selectDefault().pageName());
+            }
         }
     }
 
