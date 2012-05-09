@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreNavigator.java,v 1.5 2012/05/02 14:01:22 aallowat Exp $
+ |  $Id: CoreNavigator.java,v 1.6 2012/05/09 14:25:07 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -63,8 +63,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.5 $ $Date: 2012/05/02 14:01:22 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.6 $ $Date: 2012/05/09 14:25:07 $
  */
 public class CoreNavigator
     extends WCComponent
@@ -174,16 +174,25 @@ public class CoreNavigator
             }
         }
 
-        TabDescriptor selectedRole = ((Session)session()).tabs.selectedChild();
-        if (selectedRole != null)
+        if (selectedRoleAccessLevel < 0)
         {
-            selectedRoleAccessLevel = selectedRole.accessLevel();
+            TabDescriptor selectedRole =
+                ((Session)session()).tabs.selectedChild();
+            if (selectedRole != null)
+            {
+                selectedRoleAccessLevel = selectedRole.accessLevel();
+            }
+            else
+            {
+                selectedRoleAccessLevel = 0;
+            }
         }
 
         log.debug("selected semester = " + selectedSemester);
         log.debug("want offerings for = " + wantOfferingsForCourse);
         log.debug("selected course = " + selectedCourseOffering);
-        log.debug("parent = " + parent().getClass().getName());
+        log.debug("selectionsParent = "
+            + selectionsParent.getClass().getName());
         super.awake();
         log.debug("leaving awake()");
     }
@@ -602,7 +611,7 @@ public class CoreNavigator
 
     protected WCCourseComponent selectionsParent = null;
     private Course wantOfferingsForCourse;
-    private int selectedRoleAccessLevel = 0;
+    private int selectedRoleAccessLevel = -1;
     private NSArray<CourseOffering> unfilteredOfferings = null;
     static Logger log = Logger.getLogger(CoreNavigator.class);
 }
