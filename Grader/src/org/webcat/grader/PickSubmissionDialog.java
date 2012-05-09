@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.7 2012/01/20 21:23:32 stedwar2 Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.8 2012/05/09 16:22:05 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -36,7 +36,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.7 $, $Date: 2012/01/20 21:23:32 $
+ * @version $Revision: 1.8 $, $Date: 2012/05/09 16:22:05 $
  */
 public class PickSubmissionDialog
 	extends GraderComponent
@@ -220,6 +220,11 @@ public class PickSubmissionDialog
                 pageToReturn = pageWithName(FinalReportPage.class);
             }
             pageToReturn.reloadGraderPrefs();
+            if (nextPageForResultsPage != null)
+            {
+                pageToReturn.setCurrentTab(
+                    nextPageForResultsPage.currentTab());
+            }
         }
 
         return pageToReturn;
