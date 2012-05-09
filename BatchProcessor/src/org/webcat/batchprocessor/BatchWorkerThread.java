@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BatchWorkerThread.java,v 1.6 2012/03/07 03:20:49 stedwar2 Exp $
+ |  $Id: BatchWorkerThread.java,v 1.7 2012/05/09 16:34:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2012 Virginia Tech
  |
@@ -32,6 +32,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import org.apache.log4j.Logger;
 import org.webcat.core.Application;
+import org.webcat.core.EOBase;
 import org.webcat.core.FileUtilities;
 import org.webcat.core.MutableDictionary;
 import org.webcat.core.WCProperties;
@@ -50,7 +51,7 @@ import er.extensions.eof.ERXFetchSpecificationBatchIterator;
  *
  * @author  Tony Allevato
  * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2012/03/07 03:20:49 $
+ * @version $Revision: 1.7 $, $Date: 2012/05/09 16:34:04 $
  */
 public class BatchWorkerThread extends WorkerThread<BatchJob>
 {
@@ -244,7 +245,8 @@ public class BatchWorkerThread extends WorkerThread<BatchJob>
 
         // Get an iterator that points to the current item in the batch.
 
-        info.qualifier = job.objectQuery().qualifier();
+        info.qualifier = EOBase.accessibleBy(job.user()).and(
+            job.objectQuery().qualifier());
         info.objectCount = job.objectQuery().upperBoundOfObjectCount();
         info.iterator = job.iteratorForRemainingItems(localContext());
 
