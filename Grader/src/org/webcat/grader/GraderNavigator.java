@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderNavigator.java,v 1.6 2012/05/02 14:01:22 aallowat Exp $
+ |  $Id: GraderNavigator.java,v 1.7 2012/05/09 16:31:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -81,8 +81,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </dl>
  *
  * @author  Tony Allevato
- * @author  latest changes by: $Author: aallowat $
- * @version $Revision: 1.6 $ $Date: 2012/05/02 14:01:22 $
+ * @author  latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.7 $ $Date: 2012/05/09 16:31:03 $
  */
 public class GraderNavigator
     extends CoreNavigator
@@ -124,6 +124,7 @@ public class GraderNavigator
         graderParent = (GraderAssignmentComponent)selectionsParent;
 
         log.debug("selected assignment = " + selectedAssignment);
+        log.debug("graderParent = " + graderParent.getClass().getName());
         log.debug("leaving awake()");
     }
 
@@ -433,7 +434,7 @@ public class GraderNavigator
                     {
                         if (log.isDebugEnabled())
                         {
-                            log.debug("saving assignment offering selection ="
+                            log.debug("saving assignment offering selection = "
                                 + ao);
                         }
                         graderParent.prefs().setAssignmentOfferingRelationship(
