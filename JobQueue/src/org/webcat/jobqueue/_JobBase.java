@@ -4,7 +4,7 @@
  |  Created by eogenerator
  |  DO NOT EDIT.  Make changes to JobBase.java instead.
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.WCFetchSpecification;
  * @version version suppressed to control auto-generation
  */
 public abstract class _JobBase
-    extends er.extensions.eof.ERXGenericRecord
+    extends org.webcat.core.EOBase
 {
     //~ Constructors ..........................................................
 
