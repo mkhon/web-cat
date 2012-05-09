@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.7 2011/05/13 19:50:19 aallowat Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.8 2012/05/09 16:28:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2010 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -35,8 +35,8 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  * confirmation before making it "official".
  *
  * @author  Amit Kulkarni
- * @author  Latest changes by: $Author: aallowat $
- * @version $Revision: 1.7 $, $Date: 2011/05/13 19:50:19 $
+ * @author  Latest changes by: $Author: stedwar2 $
+ * @version $Revision: 1.8 $, $Date: 2012/05/09 16:28:04 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -87,9 +87,14 @@ public class ConfirmSubmissionPage
                 log.debug( "skipping to previous page" );
                 response.setContent(
                     prevPage.generateResponse().content() );
-                // skip calling super.appendToResponse
-                return;
             }
+            else
+            {
+                error("Your file is no longer available.  "
+                    + "Please upload it again.");
+            }
+            // skip calling super.beforeAppendToResponse()
+            return;
         }
         log.debug( "The submission number is "
             + submissionInProcess().submitNumber() );
