@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileSizeFormatter.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: FileSizeFormatter.java,v 1.2 2012/05/09 14:24:09 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -31,8 +31,8 @@ import java.text.ParsePosition;
  * A formatter that formats numbers intended to represent sizes of files.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2012/05/09 14:24:09 $
  */
 public class FileSizeFormatter extends Format
 {
@@ -58,15 +58,23 @@ public class FileSizeFormatter extends Format
                 DecimalFormat fmt = new DecimalFormat("0.0");
                 fmt.format(sz, toAppendTo,
                         new FieldPosition(DecimalFormat.FRACTION_FIELD));
-                toAppendTo.append("kb");
+                toAppendTo.append(" kB");
             }
-            else
+            else if (size < 1073741824L)
             {
                 double sz = size / 1048576.0;
                 DecimalFormat fmt = new DecimalFormat("0.0");
                 fmt.format(sz, toAppendTo,
                         new FieldPosition(DecimalFormat.FRACTION_FIELD));
-                toAppendTo.append("mb");
+                toAppendTo.append(" MB");
+            }
+            else
+            {
+                double sz = size / 1073741824.0;
+                DecimalFormat fmt = new DecimalFormat("0.0");
+                fmt.format(sz, toAppendTo,
+                        new FieldPosition(DecimalFormat.FRACTION_FIELD));
+                toAppendTo.append(" GB");
             }
         }
         else
