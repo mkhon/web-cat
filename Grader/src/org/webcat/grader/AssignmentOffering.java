@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.12 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.13 2012/05/09 16:20:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2011/12/25 21:11:41 $
+ * @version $Revision: 1.13 $, $Date: 2012/05/09 16:20:01 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -514,6 +514,18 @@ public class AssignmentOffering
         return ( dueDate() == null )
             ? false
             : dueDate().before( new NSTimestamp() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accessibleByUser(User user)
+    {
+        return courseOffering() != null
+            && courseOffering().accessibleByUser(user);
     }
 
 

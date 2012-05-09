@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.5 2011/12/07 20:29:47 aallowat Exp $
+ |  $Id: Assignment.java,v 1.6 2012/05/09 16:19:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2009 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -28,6 +28,7 @@ import er.extensions.foundation.ERXArrayUtilities;
 import java.io.File;
 import java.util.*;
 import org.webcat.core.MutableDictionary;
+import org.webcat.core.User;
 import org.apache.log4j.Logger;
 import org.webcat.core.*;
 
@@ -36,8 +37,8 @@ import org.webcat.core.*;
  * An assignment that can be given in one or more classes.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2011/12/07 20:29:47 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2012/05/09 16:19:41 $
  */
 public class Assignment
     extends _Assignment
@@ -251,6 +252,24 @@ public class Assignment
         SubmissionProfile profile = submissionProfile();
         return profile != null
             && ( profile.awardEarlyBonus() || profile.deductLatePenalty() );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accessibleByUser(User user)
+    {
+        for (AssignmentOffering offering : offerings())
+        {
+            if (offering.accessibleByUser(user))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 

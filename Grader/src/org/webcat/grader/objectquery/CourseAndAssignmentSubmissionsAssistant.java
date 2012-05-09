@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.5 2012/03/07 03:24:20 stedwar2 Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.6 2012/05/09 16:24:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -24,16 +24,17 @@ package org.webcat.grader.objectquery;
 import org.webcat.core.Course;
 import org.webcat.core.CourseOffering;
 import org.webcat.core.Department;
+import org.webcat.core.EOBase;
 import org.webcat.core.Semester;
 import org.webcat.core.WCComponent;
 import org.webcat.grader.Assignment;
 import org.webcat.ui.WCTreeModel;
 import org.webcat.ui.generators.JavascriptGenerator;
 import org.webcat.ui.util.ComponentIDGenerator;
+import org.webcat.woextensions.WCFetchSpecification;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
-import com.webobjects.eocontrol.EOFetchSpecification;
 import com.webobjects.eocontrol.EOGenericRecord;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
@@ -46,8 +47,9 @@ import er.extensions.eof.ERXS;
  * submissions from one or more assignment offerings that are common across
  * a specified set of course offerings.
  *
- * @author aallowat
- * @version $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.5 2012/03/07 03:24:20 stedwar2 Exp $
+ * @author  Tony Allevato
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2012/05/09 16:24:22 $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends WCComponent
@@ -134,7 +136,8 @@ public class CourseAndAssignmentSubmissionsAssistant
                 Semester semester)
         {
             NSArray<CourseOffering> offerings =
-                CourseOffering.offeringsForSemester(localContext(), semester);
+                EOBase.accessibleBy(user()).filtered(
+                CourseOffering.offeringsForSemester(localContext(), semester));
 
             return ERXS.sorted(offerings,
                     ERXS.ascInsensitive(
@@ -202,7 +205,8 @@ public class CourseAndAssignmentSubmissionsAssistant
                 return result;
             }
 
-            EOFetchSpecification fetchSpec = new EOFetchSpecification(
+            WCFetchSpecification<Assignment> fetchSpec =
+                new WCFetchSpecification<Assignment>(
                     Assignment.ENTITY_NAME,
                     ERXQ.containsObject(Assignment.COURSES_KEY, course),
                     Assignment.name.ascInsensitives());
@@ -215,6 +219,7 @@ public class CourseAndAssignmentSubmissionsAssistant
                 qualifier = ERXQ.and(qualifier, ERXQ.containsObject(
                     Assignment.COURSE_OFFERINGS_KEY, courses.get(i)));
             }
+            qualifier = ERXQ.and(qualifier, EOBase.accessibleBy(user()));
 
             return EOQualifier.filteredArrayWithQualifier(
                 Assignment.objectsWithFetchSpecification(

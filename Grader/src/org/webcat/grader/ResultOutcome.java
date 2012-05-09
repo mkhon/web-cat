@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: ResultOutcome.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: ResultOutcome.java,v 1.3 2012/05/09 16:21:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2008-2009 Virginia Tech
+ |  Copyright (C) 2008-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -21,13 +21,15 @@
 
 package org.webcat.grader;
 
+import org.webcat.core.User;
+
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
+ * @version $Revision: 1.3 $, $Date: 2012/05/09 16:21:27 $
  */
 public class ResultOutcome
     extends _ResultOutcome
@@ -41,5 +43,19 @@ public class ResultOutcome
     public ResultOutcome()
     {
         super();
+    }
+
+
+    //~ Public Methods ........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accessibleByUser(User user)
+    {
+        return submissionResult() != null
+            && submissionResult().accessibleByUser(user);
     }
 }

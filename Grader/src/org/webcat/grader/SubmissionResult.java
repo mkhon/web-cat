@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.12 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.13 2012/05/09 16:20:45 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -34,7 +34,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.12 $, $Date: 2011/12/25 21:11:41 $
+ *  @version $Revision: 1.13 $, $Date: 2012/05/09 16:20:45 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -115,6 +115,24 @@ public class SubmissionResult
             }
         }
         return submission();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accessibleByUser(User user)
+    {
+        for (Submission sub : submissions())
+        {
+            if (sub.accessibleByUser(user))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -322,6 +340,7 @@ public class SubmissionResult
      * @deprecated Resurrected for old reports, but should not be used by
      *             any new code.
      */
+    @Deprecated
     public boolean taGradingFinished()
     {
         return taScoreRaw() != null;

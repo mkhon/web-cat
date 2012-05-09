@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.23 2012/03/07 03:26:28 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.24 2012/05/09 16:20:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -48,7 +48,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.23 $, $Date: 2012/03/07 03:26:28 $
+ *  @version $Revision: 1.24 $, $Date: 2012/05/09 16:20:21 $
  */
 public class Submission
     extends _Submission
@@ -684,6 +684,19 @@ public class Submission
                 + ID_FORM_KEY + "=" + id();
         }
         return cachedPermalink;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accessibleByUser(User aUser)
+    {
+        return aUser == user()
+            || (assignmentOffering() != null
+                && assignmentOffering().accessibleByUser(aUser));
     }
 
 
