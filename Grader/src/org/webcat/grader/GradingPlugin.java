@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.13 2012/03/07 03:24:01 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.14 2012/05/09 16:32:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2011 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -40,7 +40,7 @@ import static org.webcat.woextensions.ECAction.run;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.13 $, $Date: 2012/03/07 03:24:01 $
+ *  @version $Revision: 1.14 $, $Date: 2012/05/09 16:32:42 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -219,22 +219,7 @@ public class GradingPlugin
             command = command + " " + args;
         }
 
-        EOEditingContext ec = editingContext();
-        try
-        {
-            if (ec != null)
-            {
-//                ec.unlock();
-            }
-            Application.wcApplication().executeExternalCommand( command, cwd );
-        }
-        finally
-        {
-            if (ec != null)
-            {
-//                ec.lock();
-            }
-        }
+        Application.wcApplication().executeExternalCommand( command, cwd );
     }
 
 
