@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: GraderSystemStatusRows.java,v 1.3 2010/10/14 18:49:43 stedwar2 Exp $
+ |  $Id: GraderSystemStatusRows.java,v 1.4 2012/05/09 16:25:38 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.3 $, $Date: 2010/10/14 18:49:43 $
+ *  @version $Revision: 1.4 $, $Date: 2012/05/09 16:25:38 $
  */
 public class GraderSystemStatusRows
     extends WOComponent
@@ -54,7 +54,8 @@ public class GraderSystemStatusRows
 
     //~ KVC Attributes (must be public) .......................................
 
-    public int     index;
+    public int                  index;
+    public Grader.StorageStatus storageStatus;
 
 
     //~ Methods ...............................................................
@@ -69,6 +70,7 @@ public class GraderSystemStatusRows
     public void appendToResponse(WOResponse response, WOContext context)
     {
         queuedJobs = -1;
+        storageStatus = Grader.StorageStatus.instance();
         super.appendToResponse(response, context);
     }
 
