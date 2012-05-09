@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionUploadComponent.java,v 1.7 2012/01/05 19:54:43 stedwar2 Exp $
+ |  $Id: GraderSubmissionUploadComponent.java,v 1.8 2012/05/09 16:31:36 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.7 $, $Date: 2012/01/05 19:54:43 $
+ *  @version $Revision: 1.8 $, $Date: 2012/05/09 16:31:36 $
  */
 public class GraderSubmissionUploadComponent
     extends GraderAssignmentComponent
@@ -108,10 +108,15 @@ public class GraderSubmissionUploadComponent
         String errorMessage = null;
         log.debug( "committing submission" );
 
+        String uploadedFileName = submissionInProcess().uploadedFileName();
+        if (uploadedFileName == null)
+        {
+            return "No file name provided for uploaded file!";
+        }
+
         Submission submission = Submission.create(localContext(), false);
         submission.setSubmitNumber(submissionInProcess().submitNumber());
         submission.setUserRelationship(submissionInProcess().user());
-        String uploadedFileName = submissionInProcess().uploadedFileName();
         submission.setSubmitTime( submitTime );
         submission.setFileName( uploadedFileName );
         // wcSession().localContext().insertObject( submission );
