@@ -5,11 +5,3 @@ Page: WCPageWithJobMonitoring {
     delegate      = self;
 //    permalink = submission.permalink;
 }
-
-FeedbackSectionContent: WOGenericContainer {
-    elementName = "div";
-    dojoType    = "dojox.layout.ContentPane";
-    href        = feedbackSectionResourceURL;
-    adjustPaths = true;
-    preload     = true;
-}
