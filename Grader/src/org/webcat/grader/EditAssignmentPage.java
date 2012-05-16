@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.12 2012/01/03 18:52:51 aallowat Exp $
+ |  $Id: EditAssignmentPage.java,v 1.13 2012/05/16 14:10:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -40,8 +40,8 @@ import static org.webcat.woextensions.ECAction.run;
  *  This class presents an assignment's properties so they can be edited.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.12 $, $Date: 2012/01/03 18:52:51 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.13 $, $Date: 2012/05/16 14:10:42 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent
@@ -212,33 +212,9 @@ public class EditAssignmentPage
      */
     protected boolean saveAndCanProceed(boolean requireProfile)
     {
-/*        if (thisOffering != null)
+        if (requireProfile && assignment.submissionProfile() == null)
         {
-            boolean offeringIsSuspended =
-                thisOffering.gradingSuspended();
-            if ( offeringIsSuspended != isSuspended )
-            {
-                if ( ! offeringIsSuspended )
-                {
-                    log.debug( "suspending grading on this assignment" );
-                    thisOffering.setGradingSuspended( true );
-                    isSuspended = true;
-                }
-                else
-                {
-                    log.debug( "resuming grading on this assignment" );
-                    thisOffering.setGradingSuspended( false );
-                    // Have to save this change first!
-//                    if (!applyLocalChanges()) return false;
-                    releaseSuspendedSubs();
-                }
-            }
-        }
-*/      if (requireProfile
-            && assignment.submissionProfile() == null)
-        {
-            error(
-                "please select submission rules for this assignment." );
+            error("please select submission rules for this assignment.");
         }
         return validateURL(assignment.url()) && !hasMessages();
     }
@@ -305,6 +281,7 @@ public class EditAssignmentPage
     public WOComponent newSubmissionProfile()
     {
         WCComponent result = null;
+        clearAllMessages();
         if (saveAndCanProceed(false))
         {
             SubmissionProfile newProfile = new SubmissionProfile();
@@ -413,7 +390,8 @@ public class EditAssignmentPage
             applyLocalChanges();
         }
 
-        return new JavascriptGenerator().refresh("allOfferings");
+        return new JavascriptGenerator()
+            .refresh("allOfferings", "error-panel");
     }
 
 
@@ -426,7 +404,8 @@ public class EditAssignmentPage
             applyLocalChanges();
         }
 
-        return new JavascriptGenerator().refresh("allOfferings");
+        return new JavascriptGenerator()
+            .refresh("allOfferings", "error-panel");
     }
 
 
@@ -492,7 +471,8 @@ public class EditAssignmentPage
             applyLocalChanges();
         }
 
-        return new JavascriptGenerator().refresh("allOfferingsActions");
+        return new JavascriptGenerator()
+            .refresh("allOfferingsActions", "error-panel");
     }
 
 
@@ -598,7 +578,7 @@ public class EditAssignmentPage
         Grader.getInstance().graderQueue().enqueue(null);
 
         return new JavascriptGenerator().refresh(
-                "allOfferings", "allOfferingsActions");
+                "allOfferings", "allOfferingsActions", "error-panel");
     }
 
 
@@ -627,7 +607,7 @@ public class EditAssignmentPage
         }});
 
         return new JavascriptGenerator().refresh(
-            "allOfferings", "allOfferingsActions");
+            "allOfferings", "allOfferingsActions", "error-panel");
     }
 
 
@@ -655,7 +635,7 @@ public class EditAssignmentPage
         }
 
         return new JavascriptGenerator().refresh(
-                "allOfferings", "allOfferingsActions");
+                "allOfferings", "allOfferingsActions", "error-panel");
     }
 
 
@@ -699,7 +679,7 @@ public class EditAssignmentPage
         }
 
         return new JavascriptGenerator()
-            .refresh("gradingSteps")
+            .refresh("gradingSteps", "error-panel")
             .unblock("gradingStepsTable");
     }
 
