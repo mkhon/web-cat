@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: AuthenticationDomain.java,v 1.6 2012/03/28 18:49:04 aallowat Exp $
+ |  $Id: AuthenticationDomain.java,v 1.7 2012/05/16 13:31:34 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -44,8 +44,8 @@ import org.apache.log4j.Logger;
  * different classes of user names.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2012/03/28 18:49:04 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.7 $, $Date: 2012/05/16 13:31:34 $
  */
 public class AuthenticationDomain
     extends _AuthenticationDomain
@@ -464,7 +464,8 @@ public class AuthenticationDomain
                     if (uaClassName == null || uaClassName.equals(""))
                     {
                         uaClassName = properties.getProperty(
-                            "authenticator.default.class");
+                            "authenticator.default.class",
+                            DatabaseAuthenticator.class.getName());
                     }
                     try
                     {
