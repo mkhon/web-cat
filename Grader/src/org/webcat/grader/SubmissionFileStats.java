@@ -1,7 +1,7 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.6 2011/10/25 15:32:06 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.7 2012/05/17 18:17:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
- |  Copyright (C) 2006-2008 Virginia Tech
+ |  Copyright (C) 2006-2012 Virginia Tech
  |
  |  This file is part of Web-CAT.
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.WCResourceManager;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.6 $, $Date: 2011/10/25 15:32:06 $
+ *  @version $Revision: 1.7 $, $Date: 2012/05/17 18:17:04 $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -488,14 +488,6 @@ public class SubmissionFileStats
 
         //make the html file
         StringBuffer contents = new StringBuffer( (int)file.length() );
-//        contents.append( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 " );
-//        contents.append( "Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD" );
-//        contents.append( "/xhtml1-strict.dtd\">\n" );
-        contents.append(
-        "<link rel=\"stylesheet\" type=\"text/css\" href=\"" );
-        contents.append(WCResourceManager.versionlessResourceURLFor(
-            "wc-code.css", "Grader", null, request ));
-        contents.append( "\"/>\n" );
 
         //get the array of file comments from the database
         NSArray<SubmissionFileComment> myComments = comments()
