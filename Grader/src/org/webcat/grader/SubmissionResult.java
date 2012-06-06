@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.13 2012/05/09 16:20:45 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.14 2012/06/06 18:43:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.13 $, $Date: 2012/05/09 16:20:45 $
+ *  @version $Revision: 1.14 $, $Date: 2012/06/06 18:43:56 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -740,6 +740,24 @@ public class SubmissionResult
                     org.webcat.core.FileUtilities.deleteDirectory(dir);
                 }
             }
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>lastUpdated</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    @Override
+    public void setLastUpdated(NSTimestamp value)
+    {
+        super.setLastUpdated(value);
+        for (Submission sub : submissions())
+        {
+            sub.setIsSubmissionForGradingIfNecessary();
         }
     }
 

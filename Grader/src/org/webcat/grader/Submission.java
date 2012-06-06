@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.24 2012/05/09 16:20:21 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.25 2012/06/06 18:43:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -48,7 +48,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.24 $, $Date: 2012/05/09 16:20:21 $
+ *  @version $Revision: 1.25 $, $Date: 2012/06/06 18:43:56 $
  */
 public class Submission
     extends _Submission
@@ -1969,7 +1969,7 @@ public class Submission
             NSArray<User> users, NSDictionary<User, Submission> submissions)
     {
         NSMutableArray<UserSubmissionPair> pairs =
-            new NSMutableArray<UserSubmissionPair>();
+            new NSMutableArray<UserSubmissionPair>(users.size());
 
         for (User aUser : users)
         {
@@ -1979,20 +1979,6 @@ public class Submission
 
         return pairs;
     }
-
-
-    // ----------------------------------------------------------
-/*    private static class Submissions
-    {
-        public NSArray<Submission> subs;
-        public NSArray<Submission> brokenPartners;
-        public Submissions(
-            NSArray<Submission> subs, NSArray<Submission> brokenPartners)
-        {
-            this.subs = subs;
-            this.brokenPartners = brokenPartners;
-        }
-    }*/
 
 
     // ----------------------------------------------------------
@@ -2021,8 +2007,6 @@ public class Submission
         NSMutableDictionary<User, Submission> submissions,
         CumulativeStats                       accumulator)
     {
-/*        NSMutableArray<Submission> subs =
-            new NSMutableArray<Submission>(users.count());*/
         final NSMutableArray<Submission> brokenPartners =
             new NSMutableArray<Submission>();
 

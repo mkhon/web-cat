@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.12 2012/05/09 16:29:38 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.13 2012/06/06 18:43:56 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.12 $, $Date: 2012/05/09 16:29:38 $
+ * @version $Revision: 1.13 $, $Date: 2012/06/06 18:43:56 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -453,6 +453,19 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TSUBMISSIONRESULT modify "
             + "accumulatedSavedProperties LONGBLOB");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Clear all values from isSubmissionForGrading so that all new
+     * stuff will be migrated correctly.
+     * @throws SQLException on error
+     */
+    public void updateIncrement22() throws SQLException
+    {
+        database().executeSQL(
+            "update TSUBMISSION set CISSUBMISSIONFORGRADING = NULL");
     }
 
 
