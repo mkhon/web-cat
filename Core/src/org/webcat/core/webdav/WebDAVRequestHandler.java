@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WebDAVRequestHandler.java,v 1.2 2011/06/01 15:34:28 aallowat Exp $
+ |  $Id: WebDAVRequestHandler.java,v 1.3 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -24,8 +24,8 @@ package org.webcat.core.webdav;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.webcat.core.Application;
-import org.webcat.core.git.http.NoCacheRequestFilter;
 import org.webcat.core.http.MetaRequestHandler;
+import org.webcat.core.http.NoCacheRequestFilter;
 import org.webcat.core.http.RequestHandlerBinder;
 import com.bradmcevoy.http.StandardFilter;
 import com.webobjects.appserver.WOContext;
@@ -36,7 +36,7 @@ import com.webobjects.appserver.WOContext;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/06/01 15:34:28 $
+ * @version $Revision: 1.3 $, $Date: 2012/06/22 16:23:18 $
  */
 public class WebDAVRequestHandler extends MetaRequestHandler
 {

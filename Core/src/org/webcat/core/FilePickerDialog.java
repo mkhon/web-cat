@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FilePickerDialog.java,v 1.4 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: FilePickerDialog.java,v 1.5 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -48,8 +48,8 @@ import com.webobjects.foundation.NSTimestamp;
  * repositories that they have access to.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.5 $, $Date: 2012/06/22 16:23:18 $
  */
 public class FilePickerDialog
     extends WCComponent
@@ -115,7 +115,7 @@ public class FilePickerDialog
     // ----------------------------------------------------------
     private void updateRefModel()
     {
-        NSArray<? extends EOEnterpriseObject> providers =
+        NSArray<? extends EOBase> providers =
             RepositoryManager.getInstance().repositoriesPresentedToUser(
                     user(), localContext());
 
@@ -136,10 +136,10 @@ public class FilePickerDialog
     {
         GitRef ref;
 
-        if (object instanceof EOEnterpriseObject)
+        if (object instanceof EOBase)
         {
             GitRepository repo = GitRepository.repositoryForObject(
-                    (EOEnterpriseObject) object);
+                    (EOBase) object);
             ref = repo.refWithName(Constants.R_HEADS + Constants.MASTER);
         }
         else
@@ -254,10 +254,10 @@ public class FilePickerDialog
     // ----------------------------------------------------------
     public String displayNameForRepositoryItem()
     {
-        if (repositoryItem instanceof EOEnterpriseObject)
+        if (repositoryItem instanceof EOBase)
         {
             return RepositoryManager.getInstance().repositoryNameForObject(
-                    (EOEnterpriseObject) repositoryItem);
+                    (EOBase) repositoryItem);
         }
         else
         {

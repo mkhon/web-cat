@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RegexPipeline.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: RegexPipeline.java,v 1.3 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -27,14 +27,16 @@ import com.webobjects.appserver.WODynamicURL;
 import com.webobjects.appserver.WOMessage;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
+import com.webobjects.foundation.NSKeyValueCoding;
+import com.webobjects.foundation.NSMutableArray;
 
 //-------------------------------------------------------------------------
 /**
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2012/06/22 16:23:18 $
  */
 public class RegexPipeline
     extends UrlPipeline
@@ -99,6 +101,23 @@ public class RegexPipeline
 
                 Object oldFilterPath = request.userInfoForKey(
                         MetaRequestHandler.REGEX_FILTER_PATH_KEY);
+
+                NSMutableArray<String> groups = new NSMutableArray<String>();
+
+                for (int i = 0; i <= matcher.groupCount(); i++)
+                {
+                    if (matcher.group(i) == null)
+                    {
+                        groups.add("");
+                    }
+                    else
+                    {
+                        groups.add(matcher.group(i));
+                    }
+                }
+
+                request.setUserInfoForKey(groups,
+                        MetaRequestHandler.REGEX_CAPTURE_GROUPS_KEY);
 
                 try
                 {

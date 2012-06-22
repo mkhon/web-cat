@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitWebContext.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: GitWebContext.java,v 1.4 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -23,25 +23,25 @@ package org.webcat.core.git.http;
 
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
+import org.webcat.core.EOBase;
 import org.webcat.core.git.GitRef;
 import org.webcat.core.git.GitRepository;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.eocontrol.EOEnterpriseObject;
 
 //-------------------------------------------------------------------------
 /**
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2012/06/22 16:23:17 $
  */
 public class GitWebContext
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public GitWebContext(EOEnterpriseObject originator,
+    public GitWebContext(EOBase originator,
             GitRepository repository, String repositoryName, GitWebMode mode)
     {
         this.originator = originator;
@@ -53,7 +53,7 @@ public class GitWebContext
 
 
     // ----------------------------------------------------------
-    public GitWebContext(EOEnterpriseObject originator,
+    public GitWebContext(EOBase originator,
             GitRepository repository, String repositoryName, GitWebMode mode,
             String pathSuffix)
     {
@@ -103,7 +103,7 @@ public class GitWebContext
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public EOEnterpriseObject originator()
+    public EOBase originator()
     {
         return originator;
     }
@@ -335,7 +335,7 @@ public class GitWebContext
 
 
     // ----------------------------------------------------------
-    public static GitWebContext parse(EOEnterpriseObject originator,
+    public static GitWebContext parse(EOBase originator,
             GitRepository repository, String repositoryName, String path)
     {
         GitWebContext newContext = null;
@@ -493,7 +493,7 @@ public class GitWebContext
 
     //~ Static/instance variables .............................................
 
-    private EOEnterpriseObject originator;
+    private EOBase originator;
     private GitWebMode mode;
     private GitRepository repository;
     private String repositoryName;

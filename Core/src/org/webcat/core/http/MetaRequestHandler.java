@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MetaRequestHandler.java,v 1.5 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: MetaRequestHandler.java,v 1.6 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -44,8 +44,8 @@ import com.webobjects.appserver.WOResponse;
  * </p>
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2012/06/22 16:23:18 $
  */
 public abstract class MetaRequestHandler
     extends WORequestHandler
@@ -281,6 +281,8 @@ public abstract class MetaRequestHandler
 
     public static final String REGEX_FILTER_PATH_KEY =
         "org.webcat.core.http.RegexFilterPathKey";
+    public static final String REGEX_CAPTURE_GROUPS_KEY =
+        "org.webcat.core.http.RegexCaptureGroupsKey";
 
     private List<RequestHandlerBinderImpl> bindings;
     private volatile UrlPipeline[] pipelines;

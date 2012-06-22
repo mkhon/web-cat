@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryRequestUtils.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: RepositoryRequestUtils.java,v 1.2 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -22,6 +22,7 @@
 package org.webcat.core.git.http;
 
 import org.eclipse.jgit.lib.Repository;
+import org.webcat.core.EOBase;
 import org.webcat.core.EntityRequestInfo;
 import org.webcat.core.Session;
 import org.webcat.core.git.GitRepository;
@@ -35,7 +36,7 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/06/22 16:23:17 $
  */
 public class RepositoryRequestUtils
 {
@@ -74,7 +75,7 @@ public class RepositoryRequestUtils
             Session session = (Session) request.context().session();
             EOEditingContext ec = session.defaultEditingContext();
 
-            EOEnterpriseObject object = info.requestedObject(ec);
+            EOBase object = info.requestedObject(ec);
             repo = GitRepository.repositoryForObject(object).repository();
         }
 

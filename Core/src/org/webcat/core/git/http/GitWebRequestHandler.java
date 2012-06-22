@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitWebRequestHandler.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitWebRequestHandler.java,v 1.2 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.core.git.http;
 import java.util.EnumMap;
 import org.eclipse.jgit.util.HttpSupport;
 import org.webcat.core.Application;
+import org.webcat.core.EOBase;
 import org.webcat.core.EntityRequestInfo;
 import org.webcat.core.Session;
 import org.webcat.core.git.GitRepository;
@@ -48,7 +49,7 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/06/22 16:23:17 $
  */
 public class GitWebRequestHandler implements RequestHandlerWithResponse
 {
@@ -72,7 +73,7 @@ public class GitWebRequestHandler implements RequestHandlerWithResponse
         Session session = (Session) request.context().session();
         EOEditingContext ec = session.defaultEditingContext();
 
-        EOEnterpriseObject object = requestInfo.requestedObject(ec);
+        EOBase object = requestInfo.requestedObject(ec);
         GitRepository repository = GitRepository.repositoryForObject(object);
 
         String repoName = requestInfo.entityName() + "/"

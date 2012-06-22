@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NoCacheRequestFilter.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: NoCacheRequestFilter.java,v 1.1 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -19,10 +19,8 @@
  |  along with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 \*==========================================================================*/
 
-package org.webcat.core.git.http;
+package org.webcat.core.http;
 
-import org.webcat.core.http.RequestFilter;
-import org.webcat.core.http.RequestFilterChain;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
 
@@ -32,8 +30,8 @@ import com.webobjects.appserver.WOResponse;
  * caching it.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.1 $, $Date: 2012/06/22 16:23:18 $
  */
 public class NoCacheRequestFilter
     implements RequestFilter

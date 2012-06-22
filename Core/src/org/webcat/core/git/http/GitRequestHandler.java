@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitRequestHandler.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: GitRequestHandler.java,v 1.2 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -23,8 +23,10 @@ package org.webcat.core.git.http;
 
 import org.eclipse.jgit.lib.Constants;
 import org.webcat.core.Application;
+import org.webcat.core.EOBase;
 import org.webcat.core.RepositoryProvider;
 import org.webcat.core.http.MetaRequestHandler;
+import org.webcat.core.http.NoCacheRequestFilter;
 import org.webcat.core.http.RequestHandlerBinder;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -37,7 +39,7 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/06/22 16:23:17 $
  */
 public class GitRequestHandler extends MetaRequestHandler
 {
@@ -45,7 +47,7 @@ public class GitRequestHandler extends MetaRequestHandler
 
     // ----------------------------------------------------------
     /**
-     * Initializes a new RepositoryResourceHandler.
+     * Initializes a new GitRequestHandler.
      */
     public GitRequestHandler()
     {
@@ -81,7 +83,7 @@ public class GitRequestHandler extends MetaRequestHandler
      * @return the file store URL
      */
     public static String completeURLForRepositoryPath(WOContext context,
-            EOEnterpriseObject eo, String path)
+            EOBase eo, String path)
     {
         String requestPath = requestPathForRepositoryPath(eo, path);
 
@@ -108,7 +110,7 @@ public class GitRequestHandler extends MetaRequestHandler
      * @return the file store URL
      */
     public static String urlForRepositoryPath(WOContext context,
-            EOEnterpriseObject eo, String path)
+            EOBase eo, String path)
     {
         String requestPath = requestPathForRepositoryPath(eo, path);
 
@@ -133,7 +135,7 @@ public class GitRequestHandler extends MetaRequestHandler
      * @param path the entity-relative path to the resource
      * @return the file store URL suffix
      */
-    private static String requestPathForRepositoryPath(EOEnterpriseObject eo,
+    private static String requestPathForRepositoryPath(EOBase eo,
             String path)
     {
         if (!(eo instanceof RepositoryProvider))
@@ -142,7 +144,7 @@ public class GitRequestHandler extends MetaRequestHandler
         }
 
         String entityName = eo.entityName();
-        String repoId = ((RepositoryProvider) eo).repositoryIdentifier();
+        String repoId = eo.apiId();
 
         StringBuffer buffer = new StringBuffer();
 

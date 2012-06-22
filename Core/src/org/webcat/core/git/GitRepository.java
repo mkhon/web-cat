@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitRepository.java,v 1.2 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: GitRepository.java,v 1.3 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -42,9 +42,9 @@ import org.eclipse.jgit.treewalk.filter.PathSuffixFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.jfree.util.Log;
 import org.webcat.archives.IWritableContainer;
+import org.webcat.core.EOBase;
 import org.webcat.core.NSMutableDataOutputStream;
 import org.webcat.core.git.GitUtilities.RefFilter;
-import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSDictionary;
@@ -58,8 +58,8 @@ import com.webobjects.foundation.NSMutableDictionary;
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.3 $, $Date: 2012/06/22 16:23:18 $
  */
 public class GitRepository
     implements NSKeyValueCodingAdditions
@@ -76,7 +76,7 @@ public class GitRepository
     //~ Methods ...............................................................
 
     // ----------------------------------------------------------
-    public static GitRepository repositoryForObject(EOEnterpriseObject eo)
+    public static GitRepository repositoryForObject(EOBase eo)
     {
         Repository repo = GitUtilities.repositoryForObject(eo);
         GitRepository gr = new GitRepository(repo);
@@ -86,7 +86,7 @@ public class GitRepository
 
 
     // ----------------------------------------------------------
-    public EOEnterpriseObject provider()
+    public EOBase provider()
     {
         return provider;
     }
@@ -540,7 +540,7 @@ public class GitRepository
     //~ Static/instance variables .............................................
 
     private Repository repository;
-    private EOEnterpriseObject provider;
+    private EOBase provider;
 
     private static final Logger log = Logger.getLogger(GitRepository.class);
 }

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryProvider.java,v 1.1 2011/05/13 19:46:57 aallowat Exp $
+ |  $Id: RepositoryProvider.java,v 1.2 2012/06/22 16:23:18 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -28,20 +28,14 @@ import java.io.IOException;
 /**
  * <p>
  * An interface implemented by EOs that want to provide their own file
- * repositories.
+ * repositories. The API identifier of the object (see {@link EOBase#apiId()}
+ * is also used to refer to the repository for the object.
  * </p><p>
  * In addition to these methods, any class implementing this interface must
- * also provide the following static methods (where {@code [Type]} represents
+ * also provide the following static method (where {@code [Type]} represents
  * the concrete EO type):
  * </p>
  * <dl>
- * <dt>{@code [Type] objectWithRepositoryIdentifier(String, EOEditingContext)}</dt>
- * <dd>This method should process the repository identifier specified by the
- * first parameter, then fetch and return the actual EO that represents that
- * repository. Note that the search performed by this method can be more
- * flexible than just a 1:1 mapping of the names returned by
- * {@link #repositoryIdentifier()}. For example, while it would accept "VT.hokie" as an
- * authdomain/user combo, it may also accept just the username "hokie".</dd>
  * <dt>{@code NSArray<[Type]> repositoriesPresentedToUser(User, EOEditingContext)}</dt>
  * <dd>This method should return an array of all EOs that have repositories
  * that the given user may access. This is used to provide a repository list on
@@ -51,23 +45,11 @@ import java.io.IOException;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:46:57 $
+ * @version $Revision: 1.2 $, $Date: 2012/06/22 16:23:18 $
  */
 public interface RepositoryProvider
 {
     //~ Methods ...............................................................
-
-    // ----------------------------------------------------------
-    /**
-     * Gets the unique identifier that should be used for the repository. For
-     * example, a User would use a combination of their authentication domain
-     * and user name, while a Course might use the department name and course
-     * number.
-     *
-     * @return the unique identifier for the repository
-     */
-    public String repositoryIdentifier();
-
 
     // ----------------------------------------------------------
     /**

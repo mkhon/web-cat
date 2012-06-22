@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Course.java,v 1.4 2012/03/28 18:49:04 aallowat Exp $
+ |  $Id: Course.java,v 1.5 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -37,7 +37,7 @@ import com.webobjects.foundation.NSMutableSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by: $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2012/03/28 18:49:04 $
+ * @version $Revision: 1.5 $, $Date: 2012/06/22 16:23:17 $
  */
 public class Course
     extends _Course
@@ -162,8 +162,8 @@ public class Course
 
 
     // ----------------------------------------------------------
-    public static Course objectWithRepositoryIdentifier(
-            String repoId, EOEditingContext ec)
+    public static Course findObjectWithApiId(
+            EOEditingContext ec, String repoId)
         throws EOUtilities.MoreThanOneException
     {
         String[] parts = repoId.split("\\.");
@@ -209,10 +209,17 @@ public class Course
 
 
     // ----------------------------------------------------------
-    public String repositoryIdentifier()
+    public String apiId()
     {
-        return department().institution().subdirName() + "."
-            + department().abbreviation() + "." + number();
+        try
+        {
+            return department().institution().subdirName() + "."
+                + department().abbreviation() + "." + number();
+        }
+        catch (Exception e)
+        {
+            return id().toString();
+        }
     }
 
 

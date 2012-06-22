@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryEntryRef.java,v 1.5 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: RepositoryEntryRef.java,v 1.6 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -45,8 +45,8 @@ import com.webobjects.foundation.NSMutableDictionary;
  * stored in the database.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.6 $, $Date: 2012/06/22 16:23:17 $
  */
 public class RepositoryEntryRef
     implements NSKeyValueCodingAdditions
@@ -194,8 +194,7 @@ public class RepositoryEntryRef
     {
         String[] parts = repository.split("/");
 
-        provider = RepositoryManager.getInstance().objectWithRepositoryId(
-                parts[0], parts[1], ec);
+        provider = EOBase.objectWithApiId(ec, parts[0], parts[1]);
         gitRepository = GitRepository.repositoryForObject(provider);
         ref = gitRepository.refWithName(branch);
 
@@ -333,7 +332,7 @@ public class RepositoryEntryRef
     private String path;
     private String branch;
 
-    private EOEnterpriseObject provider;
+    private EOBase provider;
     private GitRepository gitRepository;
     private GitRef ref;
     private ObjectId objectId;

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.5 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: MyProfilePage.java,v 1.6 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -29,7 +29,6 @@ import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WODisplayGroup;
 import com.webobjects.appserver.WOResponse;
-import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimeZone;
@@ -43,8 +42,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * (is "to be defined").
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.5 $, $Date: 2012/03/28 13:48:08 $
+ *  @author  Last changed by $Author: aallowat $
+ *  @version $Revision: 1.6 $, $Date: 2012/06/22 16:23:17 $
  */
 public class MyProfilePage
     extends WCComponent
@@ -83,7 +82,7 @@ public class MyProfilePage
     public String              aFormat;
     public User                anInstructor;
     public Theme               aTheme;
-    public EOEnterpriseObject  aRepositoryProvider;
+    public EOBase              aRepositoryProvider;
     public int                 indexOfARepositoryProvider;
     public boolean             openThemes;
 
@@ -387,7 +386,7 @@ public class MyProfilePage
 
 
     // ----------------------------------------------------------
-    public NSArray<? extends EOEnterpriseObject> repositoryProviders()
+    public NSArray<? extends EOBase> repositoryProviders()
     {
         return RepositoryManager.getInstance().repositoriesPresentedToUser(user(),
                     localContext());

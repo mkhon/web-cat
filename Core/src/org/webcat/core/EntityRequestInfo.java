@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EntityRequestInfo.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: EntityRequestInfo.java,v 1.4 2012/06/22 16:23:17 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -33,8 +33,8 @@ import com.webobjects.eocontrol.EOEnterpriseObject;
  * request (the entity name, the object ID, and the resource path).
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2012/06/22 16:23:17 $
  */
 public class EntityRequestInfo
 {
@@ -71,6 +71,27 @@ public class EntityRequestInfo
      *     information, or null
      */
     public static EntityRequestInfo fromRequestHandlerPath(String handlerPath)
+    {
+        return fromRequestHandlerPath(handlerPath, false);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Parses the specified handler path and returns an
+     * {@code EntityRequestInfo} containing the request information. This
+     * method returns null if the request path was malformed or invalid.
+     *
+     * @param handlerPath the full handler path
+     * @param allowMissingComponents if true, an object will be returned even
+     *     if the entity name or object ID are null; if false, null will be
+     *     returned in this case
+     *
+     * @return an instance of {@code EntityRequestInfo} with the desired
+     *     information, or null
+     */
+    public static EntityRequestInfo fromRequestHandlerPath(String handlerPath,
+            boolean allowMissingComponents)
     {
         try
         {
@@ -113,7 +134,8 @@ public class EntityRequestInfo
             }
         }
 
-        if (request.entityName == null || request.objectID == null)
+        if (!allowMissingComponents
+                && (request.entityName == null || request.objectID == null))
         {
             return null;
         }
@@ -168,10 +190,9 @@ public class EntityRequestInfo
      * @param ec the editing context
      * @return the requested object
      */
-    public EOEnterpriseObject requestedObject(EOEditingContext ec)
+    public EOBase requestedObject(EOEditingContext ec)
     {
-        return RepositoryManager.getInstance().objectWithRepositoryId(
-                entityName(), objectID(), ec);
+        return EOBase.objectWithApiId(ec, entityName(), objectID());
     }
 
 
