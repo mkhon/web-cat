@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Session.java,v 1.10 2012/02/28 17:36:11 stedwar2 Exp $
+ |  $Id: Session.java,v 1.11 2012/11/15 13:45:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.10 $, $Date: 2012/02/28 17:36:11 $
+ * @version $Revision: 1.11 $, $Date: 2012/11/15 13:45:21 $
  */
 public class Session
     extends er.extensions.appserver.ERXSession
@@ -476,6 +476,13 @@ public class Session
             + " users)");
         try
         {
+            if (loginSession != null && loginSession.editingContext() == null)
+            {
+                // This can happen if the session times out, instead of
+                // the user manually logging out.
+                loginSession = null;
+                loginSessionId = null;
+            }
             if (loginSession != null
                 && loginSessionId != null
                 && sessionID().equals(loginSessionId))
