@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.22 2012/06/22 16:23:17 aallowat Exp $
+ |  $Id: Application.java,v 1.23 2012/11/15 13:44:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -98,8 +98,8 @@ import er.extensions.foundation.ERXValueUtilities;
  * of exception handling for the Web-CAT application.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.22 $, $Date: 2012/06/22 16:23:17 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.23 $, $Date: 2012/11/15 13:44:48 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -1678,6 +1678,7 @@ public class Application
                 errorBuffer.append(anException.getClass().getName());
                 errorBuffer.append(":\n");
                 errorBuffer.append(anException.getMessage());
+                errorBuffer.append("\n");
                 if (anException.getMessage() != null
                     && loggedError != null)
                 {
