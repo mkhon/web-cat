@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryEntryModel.java,v 1.2 2011/11/08 14:06:07 aallowat Exp $
+ |  $Id: RepositoryEntryModel.java,v 1.3 2012/11/29 16:31:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -37,20 +37,35 @@ import com.webobjects.foundation.NSArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.2 $, $Date: 2011/11/08 14:06:07 $
+ * @version $Revision: 1.3 $, $Date: 2012/11/29 16:31:59 $
  */
 public class RepositoryEntryModel extends WCTreeModel<GitTreeEntry>
 {
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public RepositoryEntryModel(GitRef ref)
+    public RepositoryEntryModel()
     {
-        this.ref = ref;
+        this.ref = null;
     }
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    public GitRef ref()
+    {
+        return ref;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setRef(GitRef aRef)
+    {
+        this.ref = aRef;
+        rearrangeObjects();
+    }
+
 
     // ----------------------------------------------------------
     @Override
@@ -81,6 +96,7 @@ public class RepositoryEntryModel extends WCTreeModel<GitTreeEntry>
         while (it.hasNext())
         {
             GitTreeEntry entry = it.next();
+
             if (".gitignore".equals(entry.name()))
             {
                 it.remove();

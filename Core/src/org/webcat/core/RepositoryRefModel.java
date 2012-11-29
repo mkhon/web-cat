@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: RepositoryRefModel.java,v 1.4 2012/06/22 16:23:18 aallowat Exp $
+ |  $Id: RepositoryRefModel.java,v 1.5 2012/11/29 16:31:59 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -36,7 +36,7 @@ import com.webobjects.foundation.NSMutableArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.4 $, $Date: 2012/06/22 16:23:18 $
+ * @version $Revision: 1.5 $, $Date: 2012/11/29 16:31:59 $
  */
 public class RepositoryRefModel
     extends WCTreeModel<Object>
@@ -44,13 +44,28 @@ public class RepositoryRefModel
     //~ Constructors ..........................................................
 
     // ----------------------------------------------------------
-    public RepositoryRefModel(NSArray<? extends EOBase> providers)
+    public RepositoryRefModel()
     {
-        this.providers = providers;
+        this.providers = NSArray.emptyArray();
     }
 
 
     //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    public NSArray<?> providers()
+    {
+        return providers;
+    }
+
+
+    // ----------------------------------------------------------
+    public void setProviders(NSArray<? extends EOBase> someProviders)
+    {
+        this.providers = someProviders;
+        rearrangeObjects();
+    }
+
 
     // ----------------------------------------------------------
     @Override
@@ -158,5 +173,5 @@ public class RepositoryRefModel
 
     //~ Static/instance variables .............................................
 
-    private NSArray<? extends EOEnterpriseObject> providers;
+    private NSArray<?> providers;
 }
