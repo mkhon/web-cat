@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitUtilities.java,v 1.8 2012/06/22 16:23:18 aallowat Exp $
+ |  $Id: GitUtilities.java,v 1.9 2012/11/29 16:31:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -61,7 +61,7 @@ import com.webobjects.foundation.NSMutableArray;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.8 $, $Date: 2012/06/22 16:23:18 $
+ * @version $Revision: 1.9 $, $Date: 2012/11/29 16:31:25 $
  */
 public class GitUtilities
 {
@@ -237,15 +237,18 @@ public class GitUtilities
 
 
     // ----------------------------------------------------------
-    @SuppressWarnings("deprecation")
     public static RevCommit pushWorkingCopyImmediately(Repository workingCopy,
             String authorName, String emailAddress, String commitMessage)
     {
         try
         {
-            boolean amend = false;
+            // Amending commits after they've been pushed is BAD NEWS. This is
+            // going to go away.
+            //
+            /*boolean amend = false;
 
             GitRepository gitRepo = new GitRepository(workingCopy);
+
             GitRef ref = gitRepo.refWithName(
                     Constants.R_HEADS + Constants.MASTER);
             NSArray<GitCommit> commits = ref.commits();
@@ -259,7 +262,7 @@ public class GitUtilities
                 {
                     amend = true;
                 }
-            }
+            }*/
 
             Git git = new Git(workingCopy);
 
@@ -272,7 +275,7 @@ public class GitUtilities
                 .setAuthor(authorName, emailAddress)
                 .setCommitter(authorName, emailAddress)
                 .setMessage(commitMessage)
-                .setAmend(amend)
+                .setAmend(false)
                 .call();
 
             RefSpec allHeadsSpec = new RefSpec()

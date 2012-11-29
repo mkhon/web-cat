@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GitTreeEntry.java,v 1.3 2012/03/28 13:48:08 stedwar2 Exp $
+ |  $Id: GitTreeEntry.java,v 1.4 2012/11/29 16:31:25 aallowat Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -35,8 +35,8 @@ import com.webobjects.foundation.NSKeyValueCodingAdditions;
  * TODO real description
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2012/03/28 13:48:08 $
+ * @author  Last changed by $Author: aallowat $
+ * @version $Revision: 1.4 $, $Date: 2012/11/29 16:31:25 $
  */
 public class GitTreeEntry
     implements NSKeyValueCodingAdditions
@@ -153,8 +153,8 @@ public class GitTreeEntry
         {
             GitTreeEntry otherEntry = (GitTreeEntry) other;
             return path.equals(otherEntry.path)
-                && name.equals(otherEntry.name)
-                && objectId.equals(otherEntry.objectId);
+                && name.equals(otherEntry.name);
+                //&& objectId.equals(otherEntry.objectId);
         }
         else
         {
