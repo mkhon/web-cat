@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: User.java,v 1.16 2012/06/22 16:23:18 aallowat Exp $
+ |  $Id: User.java,v 1.17 2013/08/11 01:56:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -55,8 +55,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * </ul>
  *
  * @author  Stephen Edwards
- * @author  Last changed by: $Author: aallowat $
- * @version $Revision: 1.16 $, $Date: 2012/06/22 16:23:18 $
+ * @author  Last changed by: $Author: stedwar2 $
+ * @version $Revision: 1.17 $, $Date: 2013/08/11 01:56:43 $
  */
 public class User
     extends _User
@@ -325,12 +325,33 @@ public class User
 
     // ----------------------------------------------------------
     /**
-     * Return the user's full name as a string, in the format "First Last".
+     * Return the user's full name as a string, in the format "First Last",
+     * followed by the user name in parentheses.
      * @return the name
      */
     public String nameAndUid()
     {
         String name  = name();
+        if (name == null || name.equals(""))
+        {
+            return userName();
+        }
+        else
+        {
+            return name + " (" + userName() + ")";
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Return the user's full name as a string, in the format "Last, First",
+     * followed by the user name in parentheses.
+     * @return the name
+     */
+    public String nameAndUid_LF()
+    {
+        String name  = name_LF();
         if (name == null || name.equals(""))
         {
             return userName();
