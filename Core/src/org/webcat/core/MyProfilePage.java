@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MyProfilePage.java,v 1.6 2012/06/22 16:23:17 aallowat Exp $
+ |  $Id: MyProfilePage.java,v 1.7 2013/08/11 01:57:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 import org.webcat.core.git.http.GitRequestHandler;
 import org.webcat.core.webdav.WebDAVRequestHandler;
+import org.webcat.ui.WCBasePage;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WODisplayGroup;
@@ -35,6 +36,7 @@ import com.webobjects.foundation.NSTimeZone;
 import com.webobjects.foundation.NSTimestamp;
 import er.extensions.eof.ERXQ;
 import er.extensions.foundation.ERXArrayUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 
 //-------------------------------------------------------------------------
 /**
@@ -42,8 +44,8 @@ import er.extensions.foundation.ERXArrayUtilities;
  * (is "to be defined").
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.6 $, $Date: 2012/06/22 16:23:17 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.7 $, $Date: 2013/08/11 01:57:11 $
  */
 public class MyProfilePage
     extends WCComponent
@@ -382,6 +384,24 @@ public class MyProfilePage
         log.debug("sharing ");
         openThemes = true;
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean wantsDevelopmentJavascript()
+    {
+        return ERXValueUtilities.booleanValueWithDefault(
+            user().preferences().valueForKey(
+                WCBasePage.UNCOMPRESSED_SCRIPT_PREF_KEY),
+                Application.isDevelopmentModeSafe());
+    }
+
+
+    // ----------------------------------------------------------
+    public void setWantsDevelopmentJavascript(boolean value)
+    {
+        user().preferences().takeValueForKey(Boolean.toString(value),
+            WCBasePage.UNCOMPRESSED_SCRIPT_PREF_KEY);
     }
 
 
