@@ -7,7 +7,7 @@
 //
 //
 //
-// $Id: codearea.js,v 1.8 2010/10/13 20:36:04 aallowat Exp $
+// $Id: codearea.js,v 1.9 2013/08/11 02:01:13 stedwar2 Exp $
 
 // Creates a new HTMLArea object.  Tries to replace the textarea with the given
 // ID with it.
@@ -984,13 +984,13 @@ HTMLArea.prototype._insertComment = function(param) {
         + ":I\" src=\"" + editor.config.coreResourceURL + "/icons/"
             + editor.getIcon(cat)
         + ".png\" border=\"0\"/><option id=\"" + idTag + ":T\" value=\""
-        + tar + "\"/><b id=\"" + idTag + "\"><span id=\"" + idTag
+        + tar + "\"></option><b id=\"" + idTag + "\"><span id=\"" + idTag
         + ":C\">&nbsp;" + cat + "&nbsp;</span><span id=\"" + idTag
         + ":N\">[" + editor.config.userName + "]"
             + ( ( pts == "" || pts == " " ) ? "" : " : " ) + "</span><span id=\""
         + idTag + ":P\" contentEditable=\"" + editor.config.viewPoints
         + "\">" + ( ( pts == "" || pts == " " ) ? "" : pts )
-            + "</span></b><br id=\"" + idTag + "\"><i id=\""
+            + "</span></b><br id=\"" + idTag + "\"/><i id=\""
         + idTag + "\"><div id=\"" + idTag
         + ":M\" contentEditable=\"true\">" + msg
         + "</div></i></td></tr></tbody></table>";
