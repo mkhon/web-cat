@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Application.java,v 1.23 2012/11/15 13:44:48 stedwar2 Exp $
+ |  $Id: Application.java,v 1.24 2013/08/11 01:57:50 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -99,7 +99,7 @@ import er.extensions.foundation.ERXValueUtilities;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.23 $, $Date: 2012/11/15 13:44:48 $
+ * @version $Revision: 1.24 $, $Date: 2013/08/11 01:57:50 $
  */
 public class Application
     extends er.extensions.appserver.ERXApplication
@@ -441,10 +441,19 @@ public class Application
             }
             NSTimestamp thirtyDaysAgo = new NSTimestamp()
                 .timestampByAddingGregorianUnits(0, 0, -30, 0, 0, 0);
-            for (UsagePeriod period : UsagePeriod.objectsMatchingQualifier(
-                ec, UsagePeriod.startTime.before(thirtyDaysAgo)))
+            try
             {
-                period.delete();
+                for (UsagePeriod period : UsagePeriod.objectsMatchingQualifier(
+                    ec, UsagePeriod.startTime.before(thirtyDaysAgo)))
+                {
+                    period.delete();
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("Unable to purge old usage periods due to exception",
+                    e);
+                // TODO: drop all rows in usage period table here
             }
             ec.saveChanges();
         }}.run();
