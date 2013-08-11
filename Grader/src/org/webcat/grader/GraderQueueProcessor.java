@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderQueueProcessor.java,v 1.19 2012/05/09 16:33:08 stedwar2 Exp $
+ |  $Id: GraderQueueProcessor.java,v 1.20 2013/08/11 02:09:04 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -61,7 +61,7 @@ import er.extensions.eof.ERXConstant;
  *
  * @author  Amit Kulkarni
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.19 $, $Date: 2012/05/09 16:33:08 $
+ * @version $Revision: 1.20 $, $Date: 2013/08/11 02:09:04 $
  */
 public class GraderQueueProcessor
     extends Thread
@@ -808,6 +808,8 @@ public class GraderQueueProcessor
 
             properties.setProperty(
                 "userName", job.submission().user().userName());
+            properties.setProperty("userInstitution", job.submission().user()
+                .authenticationDomain().displayableName());
             properties.setProperty(
                 "workingDir", job.workingDirName());
             properties.setProperty(
@@ -1243,7 +1245,11 @@ public class GraderQueueProcessor
         boolean wasRegraded = job.regrading();
         submissionResult.addToSubmissionsRelationship(job.submission());
 
-        if (!job.submission().assignmentOffering().assignment().usesTAScore())
+        if (!job.submission().assignmentOffering().assignment().usesTAScore()
+            && (job.submission().assignmentOffering().assignment()
+                .usesTestingScore()
+                || job.submission().assignmentOffering().assignment()
+                    .usesToolCheckScore()))
         {
             submissionResult.setStatus(Status.CHECK);
         }
