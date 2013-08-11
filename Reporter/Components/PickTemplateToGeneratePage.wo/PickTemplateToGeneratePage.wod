@@ -16,6 +16,11 @@ NameColumn: WCTableHeading {
     sortOnKeyPaths = "name";
 }
 
+DateColumn: WCTableHeading {
+    title = "Date";
+    sortOnKeyPaths = "uploadedTime";
+}
+
 VersionColumn: WCTableHeading {
     title = "Version";
     sortOnKeyPaths = "version";
