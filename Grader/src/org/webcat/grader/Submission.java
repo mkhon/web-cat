@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.26 2012/06/06 19:15:32 aallowat Exp $
+ |  $Id: Submission.java,v 1.27 2013/08/11 02:05:19 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -49,8 +49,8 @@ import org.webcat.woextensions.MigratingEditingContext;
  *  Represents a single student assignment submission.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.26 $, $Date: 2012/06/06 19:15:32 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.27 $, $Date: 2013/08/11 02:05:19 $
  */
 public class Submission
     extends _Submission
@@ -538,11 +538,11 @@ public class Submission
     public String namesOfAllUsers()
     {
         NSMutableArray<String> names = new NSMutableArray<String>();
-        names.addObject(user().name());
+        names.addObject(user().nameAndUid());
 
         for (Submission partnerSub : partneredSubmissions())
         {
-            names.addObject(partnerSub.user().name());
+            names.addObject(partnerSub.user().nameAndUid());
         }
 
         StringBuffer buffer = new StringBuffer();
@@ -580,11 +580,11 @@ public class Submission
     public String namesOfAllUsers_LF()
     {
         NSMutableArray<String> names = new NSMutableArray<String>();
-        names.addObject(user().name_LF());
+        names.addObject(user().nameAndUid_LF());
 
         for (Submission partnerSub : partneredSubmissions())
         {
-            names.addObject(partnerSub.user().name_LF());
+            names.addObject(partnerSub.user().nameAndUid_LF());
         }
 
         StringBuffer buffer = new StringBuffer();
@@ -789,13 +789,13 @@ public class Submission
         if (isSubmissionForGrading())
         {
             setIsSubmissionForGrading(false);
-            System.out.println("removing submissionForGrading from " + this);
+//            System.out.println("removing submissionForGrading from " + this);
             Submission existingSubmissionForGrading = gradedSubmission();
             if (existingSubmissionForGrading != null)
             {
                 existingSubmissionForGrading.setIsSubmissionForGrading(true);
-                System.out.println("setting submissionForGrading on "
-                    + existingSubmissionForGrading);
+//                System.out.println("setting submissionForGrading on "
+//                    + existingSubmissionForGrading);
             }
         }
     }
@@ -1211,10 +1211,22 @@ public class Submission
             else if (sub.submitNumber() < number)
             {
                 index++;
+                if (index < subs.count()
+                    && subs.objectAtIndex(index).submitNumber() > number)
+                {
+                    // oops! not found
+                    return -1;
+                }
             }
             else if (sub.submitNumber() > number)
             {
                 index--;
+                if (index >= 0
+                    && subs.objectAtIndex(index).submitNumber() < number)
+                {
+                    // oops! not found
+                    return -1;
+                }
             }
         }
 
@@ -2292,15 +2304,16 @@ public class Submission
             + " from TSUBMISSION where CASSIGNMENTID = "
             + offering.id() + " group by CUSERID";
 
+        @SuppressWarnings("unchecked")
         NSArray<NSDictionary> rawRows = EOUtilities.rawRowsForSQL(
                 ec, modelName, sql, null);
 
         NSMutableArray<EOGlobalID> gids = new NSMutableArray<EOGlobalID>();
-        for (NSDictionary row : rawRows)
+        for (NSDictionary<?, ?> row : rawRows)
         {
             // This feels kind of like a hack; for globalIDForRow to work
             // correctly, the object id must have the key "id".
-            ((NSMutableDictionary) row).setObjectForKey(
+            ((NSMutableDictionary<?, ?>) row).setObjectForKey(
                     row.objectForKey("OID"), "id");
 
             EOGlobalID gid = entity.globalIDForRow(row);
@@ -2311,6 +2324,7 @@ public class Submission
             }
         }
 
+        @SuppressWarnings("unchecked")
         NSArray<Submission> submissions =
             ERXEOGlobalIDUtilities.fetchObjectsWithGlobalIDs(ec, gids);
 
