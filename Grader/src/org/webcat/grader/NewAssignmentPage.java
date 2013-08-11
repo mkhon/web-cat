@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.2 2010/09/27 04:23:20 stedwar2 Exp $
+ |  $Id: NewAssignmentPage.java,v 1.3 2013/08/11 02:06:57 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -43,7 +43,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:23:20 $
+ * @version $Revision: 1.3 $, $Date: 2013/08/11 02:06:57 $
  */
 public class NewAssignmentPage
     extends GraderCourseComponent
@@ -312,9 +312,9 @@ public class NewAssignmentPage
         // as a default
         {
             AssignmentOffering other = null;
-            System.out.println("ao = " + newOffering);
-            System.out.println("assignment = " + newOffering.assignment());
-            System.out.println("offerings = " + newOffering.assignment().offerings());
+//            System.out.println("ao = " + newOffering);
+//            System.out.println("assignment = " + newOffering.assignment());
+//            System.out.println("offerings = " + newOffering.assignment().offerings());
             NSArray<AssignmentOffering> others =
                 newOffering.assignment().offerings();
             for (AssignmentOffering ao : others)
