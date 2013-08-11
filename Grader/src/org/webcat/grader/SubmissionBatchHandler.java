@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionBatchHandler.java,v 1.2 2010/09/27 04:24:58 stedwar2 Exp $
+ |  $Id: SubmissionBatchHandler.java,v 1.3 2013/08/11 02:04:48 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.core.WCProperties;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:24:58 $
+ * @version $Revision: 1.3 $, $Date: 2013/08/11 02:04:48 $
  */
 public class SubmissionBatchHandler
 {
@@ -81,6 +81,8 @@ public class SubmissionBatchHandler
                 propertiesFile.getAbsolutePath());
         properties.setProperty("submissionPath",
                 submission.file().getAbsolutePath());
+        properties.setProperty("submissionUserName",
+            submission.user().userName());
         properties.setProperty("isSubmissionForGrading",
                 Boolean.toString(submission.isSubmissionForGrading()));
         properties.setProperty("hasResults",
