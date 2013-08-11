@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadSubmissionPage.java,v 1.9 2011/06/08 02:21:32 stedwar2 Exp $
+ |  $Id: UploadSubmissionPage.java,v 1.10 2013/08/11 02:04:18 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.9 $, $Date: 2011/06/08 02:21:32 $
+ * @version $Revision: 1.10 $, $Date: 2013/08/11 02:04:18 $
  */
 public class UploadSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -125,7 +125,11 @@ public class UploadSubmissionPage
 
         if (previousPartners == null)
         {
-            if (submissionInProcess().partners() != null)
+            if (!offering.assignment().submissionProfile().allowPartners())
+            {
+                previousPartners = new NSMutableArray<User>();
+            }
+            else if (submissionInProcess().partners() != null)
             {
                 previousPartners =
                     submissionInProcess().partners().mutableClone();
@@ -148,6 +152,11 @@ public class UploadSubmissionPage
         if (partnersForEditing == null)
         {
             partnersForEditing = previousPartners.mutableClone();
+        }
+        if (!offering.assignment().submissionProfile().allowPartners()
+            && partnersForEditing.count() > 0)
+        {
+            partnersForEditing.clear();
         }
 
         Number maxSubmissions = offering
