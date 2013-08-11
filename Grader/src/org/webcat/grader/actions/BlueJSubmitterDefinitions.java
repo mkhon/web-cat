@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BlueJSubmitterDefinitions.java,v 1.4 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: BlueJSubmitterDefinitions.java,v 1.5 2013/08/11 02:09:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2011/12/25 21:11:41 $
+ * @version $Revision: 1.5 $, $Date: 2013/08/11 02:09:46 $
  */
 public class BlueJSubmitterDefinitions
     extends WOComponent
@@ -253,7 +253,7 @@ public class BlueJSubmitterDefinitions
     // ----------------------------------------------------------
     public boolean useSecureSubmissionURLs()
     {
-        return false;
+        return true;
     }
 
 
