@@ -36,7 +36,9 @@ my %categoryPriority = (
 %extensionMap = (
     "ascii"  => "ascii",
     "cpp"    => "cpp",
+    "csv"    => "ascii",
     "cxx"    => "cpp",
+    "g"      => "ANTLR",
     "h"      => "cpp",
     "hpp"    => "cpp",
     "hs"     => "haskell",
@@ -185,7 +187,7 @@ sub highlightFile
         {
             $messageCount++;
             my $category = $self->{codeMessages}{$self->{fileName}}{$num}{category};
-            
+
             if ($categoryPriority{$category})
             {
                 $lineClass = " class=\"$category\"";
@@ -365,7 +367,7 @@ sub beautify
     if ( -d $fileName )
     {
         # print "$fileName is directory\n";
-        
+
         foreach my $f ( <$fileName/*> )
         {
             $self->beautify( $f, $outBase, $outPrefix, $numCodeMarkups,
