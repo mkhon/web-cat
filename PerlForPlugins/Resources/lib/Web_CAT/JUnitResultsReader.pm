@@ -76,7 +76,7 @@ sub addHint
     {
         # priority wasn't an integer, so assume it was a hint
         unshift @_, $priority;
-        $priority = 0;
+        $priority = 2147483647; # Java Integer.MAX_VALUE = 2^31 - 1
     }
 
     my $hint     = shift; croak( "hint text required" ) if !defined( $hint );
@@ -105,7 +105,7 @@ sub addHint
         $hintRecord = $self->{'hints'}->[$category]->{$hint};
     }
     $hintRecord->{'count'}++;
-    if ($hintRecord->{'priority'} < $priority)
+    if ($hintRecord->{'priority'} > $priority)
     {
         $hintRecord->{'priority'} = $priority;
     }
@@ -277,7 +277,7 @@ sub formatHints
     my $result        = undef;
 
     my @hints = sort
-        { ( $b->{'priority'} <=> $a->{'priority'} )
+        { ( $a->{'priority'} <=> $b->{'priority'} )
           || ( $b->{'count'} <=> $a->{'count'} )
           || ( $a->{'id'} <=> $b->{'id'} ) }
         values %{$self->{'hints'}->[$category]};
@@ -291,7 +291,7 @@ sub formatHints
     if ( $category == 0 && $showMandatory )
     {
         my @mandatory = sort
-        { ( $b->{'priority'} <=> $a->{'priority'} )
+        { ( $a->{'priority'} <=> $b->{'priority'} )
           || ( $b->{'count'} <=> $a->{'count'} )
           || ( $a->{'id'} <=> $b->{'id'} ) }
             values %{$self->{'hints'}->[$category + 1]};
@@ -318,7 +318,7 @@ sub formatHints
         $result = "<ul>";
         while ( $limit >0 && $#hints >= 0 )
         {
-            my $hint = pop( @hints );
+            my $hint = shift( @hints );
             $result .= "<li><p>" . htmlEscape($hint->{'text'});
             if ( $hint->{'count'} > 1 )
             {
