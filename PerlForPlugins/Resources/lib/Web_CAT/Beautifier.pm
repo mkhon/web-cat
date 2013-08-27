@@ -83,8 +83,22 @@ sub new
     my $self = $class->SUPER::new( new Web_CAT::HFile::HFile_ascii,
                                    new Web_CAT::Output::HTML );
     $self->{language} = "ascii";
+    $self->{countLoc} = 0;
     bless( $self, $class );
     return $self;
+}
+
+
+#========================================================================
+sub setCountLoc
+{
+    my $self = shift;
+    $self->{countLoc} = shift;
+    if (!defined $self->{countLoc})
+    {
+        # Default to true, if no argument given
+        $self->{countLoc} = 1;
+    }
 }
 
 
@@ -148,11 +162,77 @@ sub loadFile
     open( BEAUTIFIERFILEIN, $fileName ) or return;
     my @outstr = <BEAUTIFIERFILEIN>;
     close( BEAUTIFIERFILEIN );
+    if ($self->{countLoc})
+    {
+         $self->countLoc(\@outstr);
+    }
+
     my $result = join( "", @outstr );
     # Strip all NULL characters, in case this is UTF-16 or something.
     $result =~ s/\x00//go;
     $result =~ s/^[\xfe\xff]+//o;
     return $result;
+}
+
+
+#========================================================================
+sub countLoc
+{
+    my $self = shift;
+    my $lines = shift;
+
+    if (!defined $self->{codeMessages})
+    {
+        $self->{codeMessages} = {};
+    }
+    if (!defined $self->{codeMessages}->{$self->{fileName}})
+    {
+        $self->{codeMessages}->{$self->{fileName}} = {};
+    }
+
+    my $loc = 0;
+    my $ncloc = 0;
+    my $inComment = 0;
+
+    # Only handles C++/Java-style comments at present.
+    # Need to revise to use HFile comment info.
+    foreach my $origline (@{$lines})
+    {
+        my $line = $origline;
+        $loc++;
+        if ($inComment)
+        {
+            if ($line =~ s,^.*?\*/,,o)
+            {
+                $inComment = 0;
+            }
+        }
+
+        if (!$inComment)
+        {
+            # Eliminate all closed C-style comments on current line
+            $line =~ s,/\*.*?\*/,,go;
+            # There can be at most one remaining comment, which goes to
+            # end of line
+            if ($line =~ m,(/\*|//),o)
+            {
+                 if ($1 eq '/*')
+                 {
+                     $inComment = 1;
+                 }
+                 $line = $`;
+            }
+            if ($line !~ m/^\s*[\r\n]*$/o)
+            {
+                # found some code on this line
+                $ncloc++;
+                print "counting '$line'\n";
+            }
+        }
+    }
+
+    $self->{codeMessages}->{$self->{fileName}}->{ncloc} = $ncloc;
+    $self->{codeMessages}->{$self->{fileName}}->{loc} = $loc;
 }
 
 
@@ -376,33 +456,104 @@ sub beautify
     }
     else
     {
+        my $thisMarkup = 0;
+        my $trimmedName = $fileName;
+        if (defined $self->{sourcePrefix})
+        {
+            $trimmedName =~ s/^\Q$self->{sourcePrefix}\E//;
+        }
+
+        if (defined $self->{codeMarkupIds})
+        {
+            # print "searching for trimmed name: '$trimmedName'\n";
+            if (defined $self->{codeMarkupIds}->{$trimmedName})
+            {
+                $thisMarkup = $self->{codeMarkupIds}->{$trimmedName};
+            }
+            else
+            {
+                my $mungedFileName = lcfirst($trimmedName);
+                if (defined $self->{codeMarkupIds}->{$mungedFileName})
+                {
+                    $thisMarkup = $self->{codeMarkupIds}->{$mungedFileName};
+                }
+            }
+
+            if (!$thisMarkup && !defined $self->{sourcePrefix})
+            {
+                # print "trying to find source prefix\n";
+                $self->{sourcePrefix} = '';
+                while (!$thisMarkup && $trimmedName =~ m,^[^/]+/,o)
+                {
+                    $self->{sourcePrefix} .= $&;
+                    $trimmedName = $';
+                    # print "    checking source prefix = '",
+                    #    $self->{sourcePrefix}, "', trimmed name = '",
+                    #    $trimmedName = $', "'\n";
+                    if (defined $self->{codeMarkupIds}->{$trimmedName})
+                    {
+                        $thisMarkup = $self->{codeMarkupIds}->{$trimmedName};
+                    }
+                    else
+                    {
+                        my $mungedFileName = lcfirst($trimmedName);
+                        if (defined $self->{codeMarkupIds}->{$mungedFileName})
+                        {
+                            $thisMarkup =
+                                $self->{codeMarkupIds}->{$mungedFileName};
+                        }
+                    }
+                }
+                if (!$thisMarkup)
+                {
+                    delete $self->{sourcePrefix};
+                }
+            }
+        }
+        if ($thisMarkup
+            && $trimmedName ne $fileName
+            && defined $self->{codeMarkupIds}
+            && defined $self->{codeMarkupIds}->{$trimmedName})
+        {
+            $self->{codeMarkupIds}->{$fileName} =
+                $self->{codeMarkupIds}->{$trimmedName};
+            if (defined $self->{codeMessages}
+                && defined $self->{codeMessages}->{$trimmedName})
+            {
+                $self->{codeMessages}->{$fileName} =
+                    $self->{codeMessages}->{$trimmedName};
+            }
+        }
+
         my $outfile = $self->generateHighlightOutputFile(
-            "$outBase/$outPrefix", $fileName );
+            "$outBase/$outPrefix", $fileName);
 
         if ( defined $outfile )
         {
-            my $thisMarkup;
-            my $mungedFileName = lcfirst( $self->{fileName} );
-            if ( defined $self->{codeMarkupIds}
-                 && defined $self->{codeMarkupIds}->{$fileName} )
-            {
-                $thisMarkup = $self->{codeMarkupIds}->{$fileName};
-            }
-            elsif ( defined $self->{codeMarkupIds}
-                 && defined $self->{codeMarkupIds}->{$mungedFileName} )
-            {
-                $thisMarkup = $self->{codeMarkupIds}->{$mungedFileName};
-            }
-            else
+            if (!$thisMarkup)
             {
                 $$numCodeMarkups++;
                 $thisMarkup = $$numCodeMarkups;
             }
-            $cfg->setProperty( "codeMarkup${thisMarkup}.sourceFileName",
-                               $fileName );
+            $cfg->setProperty("codeMarkup${thisMarkup}.sourceFileName",
+                              $fileName);
             $outfile =~ s,^$outBase/,,o;
-            $cfg->setProperty( "codeMarkup${thisMarkup}.markupFileName",
-                               $outfile );
+            $cfg->setProperty("codeMarkup${thisMarkup}.markupFileName",
+                              $outfile);
+            if (defined $self->{codeMessages}
+                && defined $self->{codeMessages}->{$fileName})
+            {
+                if (defined $self->{codeMessages}->{$fileName}->{loc})
+                {
+                    $cfg->setProperty("codeMarkup${thisMarkup}.loc",
+                        $self->{codeMessages}->{$fileName}->{loc});
+                }
+                if (defined $self->{codeMessages}->{$fileName}->{ncloc})
+                {
+                    $cfg->setProperty("codeMarkup${thisMarkup}.ncloc",
+                        $self->{codeMessages}->{$fileName}->{ncloc});
+                }
+            }
         }
     }
 }
@@ -436,6 +587,11 @@ sub beautifyCwd
     elsif ( defined $self->{codeMessages} )
     {
         delete $self->{codeMessages};
+    }
+
+    if (defined $self->{sourcePrefix})
+    {
+        delete $self->{sourcePrefix};
     }
 
     foreach my $f ( <*> )
