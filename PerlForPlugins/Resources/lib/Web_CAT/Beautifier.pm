@@ -226,7 +226,6 @@ sub countLoc
             {
                 # found some code on this line
                 $ncloc++;
-                print "counting '$line'\n";
             }
         }
     }
