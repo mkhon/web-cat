@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.3 2010/10/28 00:40:37 aallowat Exp $
+ |  $Id: CourseRosterPage.java,v 1.4 2013/08/27 02:05:20 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -31,6 +31,7 @@ import com.webobjects.eocontrol.EONotQualifier;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSData;
 import er.extensions.appserver.ERXDisplayGroup;
+import er.extensions.batching.ERXBatchingDisplayGroup;
 
 // -------------------------------------------------------------------------
 /**
@@ -38,8 +39,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * allows new users to be added.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2010/10/28 00:40:37 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2013/08/27 02:05:20 $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -61,7 +62,7 @@ public class CourseRosterPage
     //~ KVC Attributes (must be public) .......................................
 
     public ERXDisplayGroup<User> studentDisplayGroup;
-    public ERXDisplayGroup<User> notStudentDisplayGroup;
+    public ERXBatchingDisplayGroup<User> notStudentDisplayGroup;
     /** student in the worepetition */
     public User           student;
     /** index in the worepetition */
@@ -87,16 +88,17 @@ public class CourseRosterPage
         // Set up student list filters
         studentDisplayGroup.setObjectArray( courseOffering().students() );
 
-        notStudentDisplayGroup.setQualifier( new EONotQualifier(
-            new EOKeyValueQualifier(
-                User.ENROLLED_IN_KEY,
-                EOQualifier.QualifierOperatorContains,
-                courseOffering()
-            ) ) );
         if ( firstLoad )
         {
+            notStudentDisplayGroup.setQualifier( new EONotQualifier(
+                new EOKeyValueQualifier(
+                    User.ENROLLED_IN_KEY,
+                    EOQualifier.QualifierOperatorContains,
+                    courseOffering()
+                ) ) );
             notStudentDisplayGroup.queryMatch().takeValueForKey(
-                user().authenticationDomain().propertyName(),
+                courseOffering().course().department().institution()
+                .propertyName(),
                 "authenticationDomain.propertyName" );
             firstLoad = false;
         }
