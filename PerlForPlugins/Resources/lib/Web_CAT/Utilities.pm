@@ -25,7 +25,7 @@ use warnings;
 use strict;
 use File::stat;
 use File::Copy;
-use HTML::Entities;
+use Web_CAT::HTML::Entities;
 use Text::Tabs;
 use Carp qw( carp confess );
 use vars qw( @ISA @EXPORT_OK $PATH_SEPARATOR $FILE_SEPARATOR $SHELL );
@@ -210,7 +210,7 @@ characters, returning the final result.
     my $str = shift;
     if ( defined $str )
     {
-        $str = HTML::Entities::encode_entities_numeric(
+        $str = Web_CAT::HTML::Entities::encode_entities_numeric(
             expand($str), '^\n\r\t !\#\$%\(-;=?-~');
         $str =~ s/&#([01]?[0-9A-Fa-f]);/&#171;&amp;#$1&#187;/g;
     }
@@ -358,7 +358,11 @@ file handle is optional, and defaults to *main::ANTLOG{IO}.
     my $pattern = shift || confess "scanThrough: pattern required";
     my $fh      = shift || *main::ANTLOG{IO};
 
-    while ( defined( $_ ) && ( m/^\s*$/o || m/$pattern/ ) )
+    while (defined($_) && (
+        m/^\s*$/o
+        || m/$pattern/
+        || m/^([Tt]arget )?\S+: (started|finished)/o
+        ))
     {
         $_ = <$fh>;
     }
@@ -531,4 +535,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.8 2011/03/01 17:38:14 aallowat Exp $
+$Id: Utilities.pm,v 1.9 2013/08/27 02:09:56 stedwar2 Exp $

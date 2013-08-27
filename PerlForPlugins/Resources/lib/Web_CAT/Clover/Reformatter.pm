@@ -3,6 +3,7 @@ package Web_CAT::Clover::Reformatter;
 #========================================================================
 use strict;
 use HTML::SimpleParse;
+use Web_CAT::HTML::Entities;
 use vars qw( @ISA );
 use Data::Dump qw( dump );
 use Carp;
@@ -218,8 +219,8 @@ sub output_text {
     {
         return "";
     }
-    $text = HTML::Entities::encode_numeric($text, '^\n\r\t \x20-\x7e');
-#    $text = HTML::Entities::encode_numeric($text, '^\n\x20-\x7e');
+    $text = Web_CAT::HTML::Entities::encode_numeric($text, '^\n\r\t \x20-\x7e');
+#    $text = Web_CAT::HTML::Entities::encode_numeric($text, '^\n\x20-\x7e');
     $text =~ s/&#([01]?[0-9A-Fa-f]);/&#171;&amp;#$1&#187;/g;
     $text =~ s/&nbsp;/&\#160;/go;
     $text =~ s/((ht|f)tps?:\/\/         # The protocol
