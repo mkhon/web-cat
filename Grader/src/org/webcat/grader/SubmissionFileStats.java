@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.9 2012/06/06 18:43:56 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.10 2013/08/27 02:03:10 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.WCResourceManager;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.9 $, $Date: 2012/06/06 18:43:56 $
+ *  @version $Revision: 1.10 $, $Date: 2013/08/27 02:03:10 $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -646,7 +646,8 @@ public class SubmissionFileStats
                                 + WCResourceManager.resourceURLFor(
                                     thisComment.categoryIcon(),
                                     "Core", null, null)
-                                + "\" border=\"0\"/><option id=\"" + idnum
+                                + "\" border=\"0\"/><input type=\"hidden\" "
+                                + "id=\"" + idnum
                                 + ":T\" value=\"" + thisComment.to()
                                 + "\"/><b id=\"" + idnum + "\"> <span id=\""
                                 + idnum + ":C\">" + thisComment.category()
