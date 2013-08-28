@@ -236,11 +236,152 @@ sub countLoc
 
 
 #========================================================================
+sub extractPotentialPartners
+{
+    my $self = shift;
+    my $lines = shift;
+
+    if (defined $self->{cfg})
+    {
+        my @partnerExcludePatterns = ();
+        my $partnerExcludePatterns_raw =
+            $self->{cfg}->getProperty('grader.partnerExcludePatterns', '');
+        if ($partnerExcludePatterns_raw ne '')
+        {
+            @partnerExcludePatterns =
+                split(/(?<!\\),/, $partnerExcludePatterns_raw);
+        }
+        my $userName = $self->{cfg}->getProperty('userName', '');
+        if ($userName ne '')
+        {
+            push(@partnerExcludePatterns, $userName);
+        }
+        my $potentialPartners =
+            $self->{cfg}->getProperty('grader.potentialpartners', '');
+        foreach my $line (@{$lines})
+        {
+            if ($line =~
+                m/<span[^<>]*class="comment"[^<>]*>[\*\s]*\@author\s+([^<>]*)<\/span>/mo)
+            {
+                my $authors = $1;
+                $authors =~ s/\@[a-zA-Z][a-zA-Z0-9\.]+[a-zA-Z]/ /g;
+                $authors =~
+                    s/your-pid [\(]?and if in lab[,]? partner[']?s pid on same line[\)]?//;
+                $authors =~ s/Partner [1-9][' ]?s name [\(]?pid[\)]?//;
+                $authors =~ s/[,;:\(\)\]\]\{\}=!\@#%^&\*<>\/\\\`'"\r\n]/ /mg;
+                foreach my $pat (@partnerExcludePatterns)
+                {
+                    $authors =~ s/(?<!\S)$pat(?!\S)//g;
+                }
+                $authors =~ s/^\s+//;
+                $authors =~ s/\s+$//;
+                $authors =~ s/\s\s+/ /g;
+                if ($authors ne '')
+                {
+                    foreach my $author (split(/\s+/, $authors))
+                    {
+                        if ($potentialPartners !~ m/\b\Q$author\E\b/)
+                        {
+                            if ($potentialPartners ne '')
+                            {
+                                $potentialPartners .= ' ';
+                            }
+                            $potentialPartners .= $author;
+                        }
+                    }
+                }
+            }
+            if ($potentialPartners ne '')
+            {
+                $self->{cfg}->setProperty(
+                    'grader.potentialpartners', $potentialPartners);
+            }
+        }
+    }
+}
+
+
+#========================================================================
+# Copied from clover reformatter module.
+# Needs refactoring to eliminate duplication between commentBody and
+# commentBody2
+sub commentBody2
+{
+    my $self      = shift;
+    my $lineNo    = shift;
+    my $commentId = shift;
+    my $comment   = shift;
+
+    my $id   = 'N:' . $commentId . ':' . $lineNo;
+    my $message = ($comment->{message}->null)
+        ? $comment->content
+        : $comment->{message}->content;
+    $message = Web_CAT::Utilities::htmlEscape($message);
+    my $deduction = '';
+    if ($comment->{deduction}->content > 0)
+    {
+        $deduction = ': -' . $comment->{deduction}->content;
+        if ($comment->{overLimit}->content > 0)
+        {
+            $deduction .=
+                " <font size=\"-1\" id=\"$id\">(limit exceeded)</font>";
+        }
+    }
+    else
+    {
+        if ($comment->{overLimit}->content > 0)
+        {
+            $deduction =
+                ": 0 <font size=\"-1\" id=\"$id\">(limit exceeded)</font>";
+        }
+    }
+    my $category = Web_CAT::Utilities::htmlEscape(
+        $comment->{category}->content);
+    my $source = ($comment->{message}->null)
+        ? 'PMD'
+        : 'Checkstyle';
+    my $icon = $icons{$category};
+    if (!defined($icon))
+    {
+        $icon = $icons{default};
+    }
+    my $url = $comment->{url}->content;
+    if (!defined($url))
+    {
+        $url = '';
+    }
+    elsif ($url ne '')
+    {
+        $url = "&#160;&#160;<a id=\"$id\" href=\"$url\"><img id=\"$id\" "
+            . 'src="http://web-cat.cs.vt.edu/icons/info.gif" border="0" '
+            . 'width="16" height="16" target="WCHelp" alt="help"/>';
+    }
+
+    # still need to place icon
+
+    my $result = <<EOF;
+<tr id="$id"><td colspan="3" id="$id"><img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" alt="" border="0" id="$id"/></td></tr>
+<tr id="$id"><td id="$id">&#160;</td><td id="$id">&#160;</td><td id="$id">
+<table border="0" cellpadding="1" cellspacing="0" id="$id">
+<tr id="$id"><td class="messageBox" id="$id">
+<img src="$icon" width="16" height="16" alt="" id="$id"/> <b id="$id"><span id="$id:C">$category</span> \[$source\]$deduction</b>$url<br id="$id"/><i id="$id">
+$message
+</i></td></tr></table></td></tr>
+<tr id="$id"><td colspan="3" id="$id"><img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" alt="" id="$id"/></td>
+</tr>
+EOF
+    # print "\n\ncomment:\n--------\n", $result;
+    return $result;
+}
+
+
+#========================================================================
 sub highlightFile
 {
     my $self = shift;
-    my @lines = split( "\n", $self->highlight_text( $self->loadFile ) );
+    my @lines = split("\n", $self->highlight_text($self->loadFile));
     my $numLines = scalar @lines;
+    $self->extractPotentialPartners(\@lines);
     my @newLines = (
         qq(<TABLE cellspacing="0" cellpadding="0" class="srcView" )
             . qq(bgcolor="white" id="bigtab">\n),
@@ -254,70 +395,31 @@ sub highlightFile
         my $id = "O:$num";
         my $line = $lines[$i];
         $line =~ s/"\@id\@"/"$id"/g;
-        my $hl = "";
-        my $Line = "Line";
-        my $starta = "";
-        my $enda = "";
-        my $lineClass = "";
+        my $hl = '';
+        my $Line = 'Line';
+        my $starta = '';
+        my $enda = '';
+        my $lineClass = '';
+        my $category = undef;
+        my $messages = '';
 
-        if ( defined( $self->{codeMessages} )
-             && defined( $self->{codeMessages}{$self->{fileName}} )
-             && defined( $self->{codeMessages}{$self->{fileName}}{$num} ) )
+        if (defined $self->{codeMessages}
+            && defined $self->{codeMessages}{$self->{fileName}}
+            && defined $self->{codeMessages}{$self->{fileName}}{$num})
         {
-            $messageCount++;
-            my $category = $self->{codeMessages}{$self->{fileName}}{$num}{category};
+            # Handle conventional, one-off messages, plus code coverage info
+            if (defined $self->{codeMessages}{$self->{fileName}}{$num}{category})
+            {
+                $category = $self->{codeMessages}{$self->{fileName}}{$num}{category};
 
-            if ($categoryPriority{$category})
-            {
-                $lineClass = " class=\"$category\"";
-            }
-            else
-            {
-                $starta = "<a title=\"" . $self->{codeMessages}{$self->{fileName}}{$num}{message} . "\" id=\"$id\">";
-                $enda = "</a>";
-            }
-            $hl = "Hilight";
-            $Line = $hl;
-        }
-        my $mungedFileName = lcfirst( $self->{fileName} );
-        if ( defined( $self->{codeMessages} )
-             && defined( $self->{codeMessages}{$mungedFileName} )
-             && defined( $self->{codeMessages}{$mungedFileName}{$num} ) )
-        {
-            if ($lineClass eq "")
-            {
-                $messageCount++;
-            }
-            my $category = $self->{codeMessages}{$self->{fileName}}{$num}{category};
-
-            if ($categoryPriority{$category})
-            {
-                $lineClass = " class=\"$category\"";
-            }
-            else
-            {
-                $starta = "<a title=\"" . $self->{codeMessages}{$self->{fileName}}{$num}{message} . "\" id=\"$id\">";
-                $enda = "</a>";
-            }
-            $hl = "Hilight";
-            $Line = $hl;
-        }
-        my $outLine = <<EOF;
-<tr id="$id"$lineClass>
-    <td align="right" class="lineCount$hl" id="$id">&#160;$num</td>
-    <td align="right" class="lineCount$hl" id="$id">&#160;&#160;</td>
-    <td class="src$Line" id="$id">
-        <pre class="srcLine" id="$id">$starta&#160;$line$enda</pre>
-    </td>
-</tr>
-EOF
-
-        if ($lineClass)
-        {
-            my $messageId = "N:$messageCount:$num";
-            my $commentBody = ${self}->commentBody($messageId,
-                $self->{codeMessages}{$self->{fileName}}{$num});
-            $outLine .= <<EOF;
+                if ($categoryPriority{$category})
+                {
+                    $lineClass = " class=\"$category\"";
+                    $messageCount++;
+                    my $messageId = "N:$messageCount:$num";
+                    my $commentBody = ${self}->commentBody($messageId,
+                        $self->{codeMessages}{$self->{fileName}}{$num});
+                    $messages .= <<EOF;
 <tr id="$messageId"><td colspan="3" id="$messageId">
     <img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" border="0" id="$messageId"/>
 </td></tr>
@@ -330,7 +432,55 @@ EOF
     <img src="http://web-cat.cs.vt.edu/images/blank.gif" width="1" height="2" border="0" id="$messageId"/>
 </td></tr>
 EOF
+                }
+                else
+                {
+                    $starta = "<a title=\""
+                         . $self->{codeMessages}{$self->{fileName}}{$num}{message}
+                         . "\" id=\"$id\">";
+                    $enda = "</a>";
+                }
+                $hl = "Hilight";
+                $Line = $hl;
+            }
+
+            if (defined $self->{codeMessages}{$self->{fileName}}{$num}{violations})
+            {
+                foreach my $c (@{$self->{codeMessages}{$self->{fileName}}{$num}{violations}})
+                {
+                    if ($c->{kill}->null)
+                    {
+                        $messageCount++;
+                        if (!defined $category
+                            || !defined $categoryPriority{$category}
+                            || $categoryPriority{$category} >
+                               $categoryPriority{$c->{category}->content})
+                        {
+                            $category = $c->{category}->content;
+                            $lineClass = " class=\"$category\"";
+                        }
+                        my $message = ($c->{message}->null)
+                            ? $c->content
+                            : $c->{message}->content;
+#                       print "comment = ", $c->data(tree => $c), "\n";
+#                       print 'group = ', $c->{group}->content, ', line = ',
+#                           $c->{line}->content, ', message = ',
+#                           $message, "\n";
+                        $messages .=
+                            $self->commentBody2($num, $messageCount, $c);
+                    }
+                }
+            }
         }
+        my $outLine = <<EOF;
+<tr id="$id"$lineClass>
+    <td align="right" class="lineCount$hl" id="$id">&#160;$num</td>
+    <td align="right" class="lineCount$hl" id="$id">&#160;&#160;</td>
+    <td class="src$Line" id="$id">
+        <pre class="srcLine" id="$id">$starta&#160;$line$enda</pre>
+    </td>
+</tr>$messages
+EOF
 
         push(@newLines, $outLine);
     }
@@ -475,6 +625,7 @@ sub beautify
                 if (defined $self->{codeMarkupIds}->{$mungedFileName})
                 {
                     $thisMarkup = $self->{codeMarkupIds}->{$mungedFileName};
+                    $trimmedName = $mungedFileName;
                 }
             }
 
@@ -500,6 +651,7 @@ sub beautify
                         {
                             $thisMarkup =
                                 $self->{codeMarkupIds}->{$mungedFileName};
+                            $trimmedName = $mungedFileName;
                         }
                     }
                 }
@@ -519,13 +671,24 @@ sub beautify
             if (defined $self->{codeMessages}
                 && defined $self->{codeMessages}->{$trimmedName})
             {
-                $self->{codeMessages}->{$fileName} =
-                    $self->{codeMessages}->{$trimmedName};
+                foreach my $key (keys %{$self->{codeMessages}->{$trimmedName}})
+                {
+                    $self->{codeMessages}->{$fileName}{$key} =
+                        $self->{codeMessages}->{$trimmedName}{$key};
+                }
             }
         }
 
+        if (defined $cfg)
+        {
+            $self->{cfg} = $cfg;
+        }
         my $outfile = $self->generateHighlightOutputFile(
             "$outBase/$outPrefix", $fileName);
+        if (defined $self->{cfg})
+        {
+            delete $self->{cfg};
+        }
 
         if ( defined $outfile )
         {
