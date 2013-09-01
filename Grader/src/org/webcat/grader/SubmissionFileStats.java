@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.10 2013/08/27 02:03:10 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.11 2013/09/01 01:31:11 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.WCResourceManager;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.10 $, $Date: 2013/08/27 02:03:10 $
+ *  @version $Revision: 1.11 $, $Date: 2013/09/01 01:31:11 $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -142,8 +142,12 @@ public class SubmissionFileStats
         String result = sourceFileNameRaw();
         if ( result == null )
         {
-            result = fullyQualifiedClassName().replace( '.', '/' ) + ".java";
-            setSourceFileNameRaw( result );
+            result = fullyQualifiedClassName();
+            if (result != null)
+            {
+                result = result.replace( '.', '/' ) + ".java";
+                setSourceFileNameRaw( result );
+            }
         }
         return result;
     }
@@ -155,8 +159,11 @@ public class SubmissionFileStats
         String result = markupFileNameRaw();
         if ( result == null )
         {
-            result =  "clover/" + fullyQualifiedClassName().replace( '.', '/' )
-                + ".html";
+            result = fullyQualifiedClassName();
+            if (result != null)
+            {
+                result =  "clover/" + result.replace( '.', '/' ) + ".html";
+            }
         }
         return result;
     }
