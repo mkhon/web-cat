@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: assignments.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ |  $Id: assignments.java,v 1.2 2013/09/01 01:30:41 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -31,7 +31,7 @@ import er.extensions.appserver.ERXDirectAction;
  * definitions published for the BlueJ submitter extension.
  *
  * @author Stephen Edwards
- * @version $Id: assignments.java,v 1.1 2010/05/11 14:51:40 aallowat Exp $
+ * @version $Id: assignments.java,v 1.2 2013/09/01 01:30:41 stedwar2 Exp $
  */
 public class assignments
     extends ERXDirectAction
@@ -44,9 +44,9 @@ public class assignments
      *
      * @param aRequest The request to respond to
      */
-    public assignments( WORequest aRequest )
+    public assignments(WORequest aRequest)
     {
-        super( aRequest );
+        super(aRequest);
     }
 
 
@@ -61,7 +61,7 @@ public class assignments
      */
     public WOActionResults bluejAction()
     {
-        return pageWithName( BlueJSubmitterDefinitions.class.getName() );
+        return pageWithName(BlueJSubmitterDefinitions.class.getName());
     }
 
 
@@ -74,7 +74,7 @@ public class assignments
      */
     public WOActionResults eclipseAction()
     {
-        return pageWithName( EclipseSubmitterDefinitions.class.getName() );
+        return pageWithName(EclipseSubmitterDefinitions.class.getName());
     }
 
 
@@ -87,7 +87,7 @@ public class assignments
      */
     public WOActionResults icalAction()
     {
-        return pageWithName( ICalView.class.getName() );
+        return pageWithName(ICalView.class.getName());
     }
 
 
@@ -109,12 +109,12 @@ public class assignments
      * @param actionName The name of the action to dispatch
      * @return the action's result
      */
-    public WOActionResults performActionNamed( String actionName )
+    public WOActionResults performActionNamed(String actionName)
     {
-        if ( "ical.ics".equals( actionName ) )
+        if ("ical.ics".equals(actionName))
         {
             actionName = "ical";
         }
-        return super.performActionNamed( actionName );
+        return super.performActionNamed(actionName);
     }
 }
