@@ -5,7 +5,7 @@ subsystem.ANTForPlugins=org.webcat.antforplugins.ANTForPlugins
 
 ANTForPlugins.version.major=1
 ANTForPlugins.version.minor=1
-ANTForPlugins.version.revision=7
+ANTForPlugins.version.revision=8
 ANTForPlugins.requires=Core
 ANTForPlugins.provides=env, pluginProperties
 
@@ -22,6 +22,6 @@ ANTForPlugins.license.url=http\://www.gnu.org/licenses/agpl.html
 ANTForPlugins.description=\
     This subsystem provides <a href\="http\://ant.apache.org/">ANT</a> \
     to support grading plug-ins that use ANT to manage building, executing, \
-    and testing student work.  It includes ANT v1.9.2.
+    and testing student work.  It includes ANT v1.8.1.
 
 ANTForPlugins.chmodx=Resources/ant/bin/ant, Resources/ant/bin/antRun
