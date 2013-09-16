@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCComponent.java,v 1.4 2012/05/09 14:25:30 stedwar2 Exp $
+ |  $Id: WCComponent.java,v 1.5 2013/09/16 13:11:42 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -66,7 +66,7 @@ import org.webcat.woextensions.WCEC;
  *
  * @author Stephen Edwards
  * @author  latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2012/05/09 14:25:30 $
+ * @version $Revision: 1.5 $, $Date: 2013/09/16 13:11:42 $
  */
 public class WCComponent
     extends WCComponentWithErrorMessages
@@ -335,7 +335,7 @@ public class WCComponent
      */
     public WOComponent back()
     {
-        if ( hasMessages() )
+        if ( hasBlockingErrors() )
         {
             return null;
         }
@@ -550,7 +550,7 @@ public class WCComponent
      */
     public WOComponent finish()
     {
-        if ( applyLocalChanges() && !hasMessages() )
+        if ( applyLocalChanges() && !hasBlockingErrors() )
         {
             TabDescriptor parent = currentTab().parent();
             if ( parent.parent().parent() != null )
@@ -808,7 +808,7 @@ public class WCComponent
     // ----------------------------------------------------------
     private WOComponent internalNext(boolean save)
     {
-        if ( hasMessages() )
+        if ( hasBlockingErrors() )
         {
             return null;
         }
