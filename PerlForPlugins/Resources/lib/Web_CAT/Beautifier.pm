@@ -5,6 +5,7 @@ use warnings;
 use strict;
 use Web_CAT::Beautifier::Core;
 use File::Path;
+use File::Glob qw(bsd_glob);
 use Web_CAT::HFile::HFile_ascii;
 use Web_CAT::Output::HTML;
 use vars qw( @ISA %extensionMap );
@@ -597,7 +598,7 @@ sub beautify
     {
         # print "$fileName is directory\n";
 
-        foreach my $f ( <$fileName/*> )
+        foreach my $f (bsd_glob("$fileName/*"))
         {
             $self->beautify( $f, $outBase, $outPrefix, $numCodeMarkups,
                              $skipExtensions, $cfg );
@@ -694,8 +695,7 @@ sub beautify
         {
             if (!$thisMarkup)
             {
-                $$numCodeMarkups++;
-                $thisMarkup = $$numCodeMarkups;
+                $thisMarkup = ++$$numCodeMarkups;
             }
             $cfg->setProperty("codeMarkup${thisMarkup}.sourceFileName",
                               $fileName);

@@ -25,6 +25,7 @@ use warnings;
 use strict;
 use File::stat;
 use File::Copy;
+use File::Glob qw(bsd_glob);
 use Web_CAT::HTML::Entities;
 use Text::Tabs;
 use Carp qw( carp confess );
@@ -171,25 +172,29 @@ will be added to the corresponding array.
     $base =~ s,/$,,o;
     my $newfile = $file;
     $newfile =~ s,^\Q$base/\E,,;
-    if ( -d $file )
+    if (-d $file)
     {
-        if ( $file ne $base )
+        if ($file ne $base)
         {
             # print "mkdir( $newfile );\n" if $debug;
-            mkdir( $newfile );
+            mkdir($newfile);
         }
-        foreach my $f ( glob("$file/*") )
+        foreach my $f (bsd_glob("$file/*"))
         {
-            copyHere( $f, $base );
+            if ($f =~ m,/(\.gitignore|__MAC_OSX|CVS),o)
+            {
+                next;
+            }
+            copyHere($f, $base, $ignoreList);
         }
     }
     else
     {
-        # print "copy( $file, $newfile );\n" if $debug;
-        copy( $file, $newfile );
-        if ( defined $ignoreList )
+        # print "copy($file, $newfile);\n" if $debug;
+        copy($file, $newfile);
+        if (defined $ignoreList)
         {
-            push( @{ $ignoreList }, $newfile );
+            push(@{$ignoreList}, $newfile);
         }
     }
 }
@@ -535,4 +540,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.9 2013/08/27 02:09:56 stedwar2 Exp $
+$Id: Utilities.pm,v 1.10 2013/09/16 13:35:06 stedwar2 Exp $
