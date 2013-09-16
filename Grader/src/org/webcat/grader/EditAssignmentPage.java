@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.13 2012/05/16 14:10:42 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.14 2013/09/16 13:25:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -41,7 +41,7 @@ import static org.webcat.woextensions.ECAction.run;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.13 $, $Date: 2012/05/16 14:10:42 $
+ *  @version $Revision: 1.14 $, $Date: 2013/09/16 13:25:46 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent
@@ -591,7 +591,7 @@ public class EditAssignmentPage
                 AssignmentOffering localAO = offering.localInstance(ec);
                 log.info(
                     "cancelling all paused assignments: "
-                    + coreSelections().courseOffering().course().deptNumber()
+                    + localAO.courseOffering().course().deptNumber()
                     + " "
                     + localAO.assignment().name());
                 NSArray<EnqueuedJob> jobList =
