@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UploadRosterPage.java,v 1.2 2010/09/27 04:26:49 stedwar2 Exp $
+ |  $Id: UploadRosterPage.java,v 1.3 2013/09/16 13:28:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.2 $, $Date: 2010/09/27 04:26:49 $
+ * @version $Revision: 1.3 $, $Date: 2013/09/16 13:28:25 $
  */
 public class UploadRosterPage
     extends GraderCourseEditComponent
@@ -142,20 +142,6 @@ public class UploadRosterPage
         page.refresh("preview", "fileInfo", "error-panel");
         return page;
     }
-
-
-//    // ----------------------------------------------------------
-//    public WOComponent next()
-//    {
-//        if ( applyLocalChanges() )
-//        {
-//            return super.next();
-//        }
-//        else
-//        {
-//            return null;
-//        }
-//    }
 
 
     // ----------------------------------------------------------
@@ -901,7 +887,7 @@ public class UploadRosterPage
         Pattern.compile( "(?i)^\\s*first(\\b|\\s)" ),
         Pattern.compile( "(?i)^\\s*(last\\b|surname)" ),
         Pattern.compile( "(?i)^\\s*(name|((last\\b|surname).*,.*first))" ),
-        Pattern.compile( "(?i)\\be(-)?mail\\b" ),
+        Pattern.compile( "(?i)\\be(-)?mail\\b(?!\\s+confidential)" ),
         Pattern.compile( "(?i)^\\s*(user\\s*name?|uid|pid|user\\s*id|user)$" ),
         Pattern.compile( "(?i)^\\s*(pass(word)?|pw$)" ),
         Pattern.compile( "(?i)\\bid(\\s*(number|#|no|no\\.)?)\\b" ),
