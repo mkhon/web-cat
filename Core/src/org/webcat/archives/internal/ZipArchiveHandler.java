@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ZipArchiveHandler.java,v 1.1 2010/05/11 14:51:59 aallowat Exp $
+ |  $Id: ZipArchiveHandler.java,v 1.2 2013/09/16 13:48:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -96,12 +96,14 @@ public class ZipArchiveHandler
 	        String name = zipEntry.getName();
 			if ( zipEntry.isDirectory() )
 			{
-			    if (!"__MACOSX".equals(name))
+			    if (!"__MACOSX".equals(name)
+			        && !name.startsWith("__MACOSX/"))
 			    {
 			        File destDir = new File( destPath, name );
 
 			        if ( !destDir.exists() )
 			        {
+			            System.out.println("mkdir: " + destDir);
 			            destDir.mkdirs();
 			        }
 			    }
@@ -116,9 +118,11 @@ public class ZipArchiveHandler
 
 				if ( destParent != null  &&  !destParent.exists() )
                 {
+                    System.out.println("mkdir2: " + destParent);
 					destParent.mkdirs();
                 }
 
+                System.out.println("unpacking: " + destFile);
 				FileUtilities.copyStreamToFile(
                     zipStream, destFile, zipEntry.getTime() );
 			}

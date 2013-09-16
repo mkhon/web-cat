@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: TarUtil.java,v 1.1 2010/05/11 14:51:59 aallowat Exp $
+ |  $Id: TarUtil.java,v 1.2 2013/09/16 13:48:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -55,6 +55,7 @@ public class TarUtil
             if (name != null
                 && !tarEntry.isDirectory()
                 && !name.equals(".DS_Store")
+                && !name.endsWith("/.DS_Store")
                 && !name.startsWith("__MACOSX/"))
             {
                 ArchiveEntry entry = new ArchiveEntry(
@@ -83,7 +84,8 @@ public class TarUtil
             String name = tarEntry.getName();
 			if ( tarEntry.isDirectory() )
 			{
-                if (!"__MACOSX".equals(name))
+                if (!"__MACOSX".equals(name)
+                    && !name.startsWith("__MACOSX/"))
                 {
                     File destDir = new File( destPath, name );
 
