@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditScriptFilesPage.java,v 1.5 2011/05/19 16:55:09 stedwar2 Exp $
+ |  $Id: EditScriptFilesPage.java,v 1.6 2013/10/09 00:04:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -37,7 +37,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/05/19 16:55:09 $
+ * @version $Revision: 1.6 $, $Date: 2013/10/09 00:04:21 $
  */
 public class EditScriptFilesPage
     extends GraderComponent
@@ -130,7 +130,7 @@ public class EditScriptFilesPage
             }
             else
             {
-                title += "Script ";
+                title += "Plug-in ";
             }
             if (base.isDirectory())
             {

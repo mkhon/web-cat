@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Assignment.java,v 1.6 2012/05/09 16:19:41 stedwar2 Exp $
+ |  $Id: Assignment.java,v 1.7 2013/10/09 00:04:21 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -38,7 +38,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2012/05/09 16:19:41 $
+ * @version $Revision: 1.7 $, $Date: 2013/10/09 00:04:21 $
  */
 public class Assignment
     extends _Assignment
@@ -251,7 +251,9 @@ public class Assignment
     {
         SubmissionProfile profile = submissionProfile();
         return profile != null
-            && ( profile.awardEarlyBonus() || profile.deductLatePenalty() );
+            && (profile.awardEarlyBonus()
+                || profile.deductLatePenalty()
+                || profile.deductExcessSubmissionPenalty());
     }
 
 

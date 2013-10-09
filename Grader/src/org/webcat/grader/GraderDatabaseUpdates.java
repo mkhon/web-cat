@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.13 2012/06/06 18:43:56 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.14 2013/10/09 00:04:16 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2012/06/06 18:43:56 $
+ * @version $Revision: 1.14 $, $Date: 2013/10/09 00:04:16 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -466,6 +466,31 @@ public class GraderDatabaseUpdates
     {
         database().executeSQL(
             "update TSUBMISSION set CISSUBMISSIONFORGRADING = NULL");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add support for excess submission penalties.
+     * @throws SQLException on error
+     */
+    public void updateIncrement23() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TSUBMISSIONPROFILE add "
+            + "deductExcessSubmissionPenalty BIT NOT NULL Default 0");
+        database().executeSQL(
+            "alter table TSUBMISSIONPROFILE add "
+            + "excessSubmissionsMaxPts DOUBLE");
+        database().executeSQL(
+            "alter table TSUBMISSIONPROFILE add "
+            + "excessSubmissionsThreshold INTEGER");
+        database().executeSQL(
+            "alter table TSUBMISSIONPROFILE add "
+            + "excessSubmissionsUnitPts DOUBLE");
+        database().executeSQL(
+            "alter table TSUBMISSIONPROFILE add "
+            + "excessSubmissionsUnitSize INTEGER");
     }
 
 
