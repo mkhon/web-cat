@@ -5,3 +5,4 @@ Properties
 **/*.api
 **/*.strings
 Resources/lib
+config.plist

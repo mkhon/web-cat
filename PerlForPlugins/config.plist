@@ -1,0 +1,17 @@
+{
+    optionCategories = ( "Perl Home" );
+    options = (
+    {
+        property    = "PerlForPlugins.perl.exe";
+        default     = "perl";
+        type        = shortText;
+        size        = 70;
+        name        = "Perl Executable";
+        category    = "Perl Home";
+        description =
+  "Some Web-CAT plug-ins may be executed using Perl, or may use Perl to
+  execute some commands.  This setting controls the command used to execute
+  Perl on the host server.";
+    }
+    );
+}
