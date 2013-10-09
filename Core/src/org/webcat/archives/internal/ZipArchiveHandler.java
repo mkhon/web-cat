@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ZipArchiveHandler.java,v 1.2 2013/09/16 13:48:46 stedwar2 Exp $
+ |  $Id: ZipArchiveHandler.java,v 1.3 2013/10/09 00:02:22 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -103,7 +103,6 @@ public class ZipArchiveHandler
 
 			        if ( !destDir.exists() )
 			        {
-			            System.out.println("mkdir: " + destDir);
 			            destDir.mkdirs();
 			        }
 			    }
@@ -118,11 +117,9 @@ public class ZipArchiveHandler
 
 				if ( destParent != null  &&  !destParent.exists() )
                 {
-                    System.out.println("mkdir2: " + destParent);
 					destParent.mkdirs();
                 }
 
-                System.out.println("unpacking: " + destFile);
 				FileUtilities.copyStreamToFile(
                     zipStream, destFile, zipEntry.getTime() );
 			}
