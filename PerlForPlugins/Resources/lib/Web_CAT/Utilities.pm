@@ -29,17 +29,19 @@ use File::Glob qw(bsd_glob);
 use Web_CAT::HTML::Entities;
 use Text::Tabs;
 use Carp qw( carp confess );
-use vars qw( @ISA @EXPORT_OK $PATH_SEPARATOR $FILE_SEPARATOR $SHELL );
+use vars qw( @ISA @EXPORT_OK $PATH_SEPARATOR $FILE_SEPARATOR $SHELL
+             %WINDOWS_1252_EXTENDED );
 use Exporter qw( import );
 
 @ISA = qw( Exporter );
 @EXPORT_OK = qw( initFromConfig
                  confirmExists filePattern copyHere htmlEscape addReportFile
                  addReportFileWithStyle scanTo scanThrough printableSize
-                 linesFromFile ltrim rtrim trim
+                 linesFromFile ltrim rtrim trim rawToUtf8 loadFileAsUtf8
                  $PATH_SEPARATOR
                  $FILE_SEPARATOR
                  $SHELL
+                 $WINDOWS_1252_EXTENDED
                  );
 
 $PATH_SEPARATOR = ':';
@@ -531,6 +533,209 @@ Returns the string with all white space removed from both ends.
 }
 
 
+#========================================================================
+%WINDOWS_1252_EXTENDED = (
+  "\x{80}" => "\x{e2}\x{82}\x{ac}",
+  "\x{81}" => "",
+  "\x{82}" => "\x{e2}\x{80}\x{9a}",
+  "\x{83}" => "\x{c6}\x{92}",
+  "\x{84}" => "\x{e2}\x{80}\x{9e}",
+  "\x{85}" => "\x{e2}\x{80}\x{a6}",
+  "\x{86}" => "\x{e2}\x{80}\x{a0}",
+  "\x{87}" => "\x{e2}\x{80}\x{a1}",
+  "\x{88}" => "\x{cb}\x{86}",
+  "\x{89}" => "\x{e2}\x{80}\x{b0}",
+  "\x{8a}" => "\x{c5}\x{a0}",
+  "\x{8b}" => "\x{e2}\x{80}\x{b9}",
+  "\x{8c}" => "\x{c5}\x{92}",
+  "\x{8d}" => "",
+  "\x{8e}" => "\x{c5}\x{bd}",
+  "\x{8f}" => "",
+
+  "\x{90}" => "",
+  "\x{91}" => "\x{e2}\x{80}\x{98}",
+  "\x{92}" => "\x{e2}\x{80}\x{99}",
+  "\x{93}" => "\x{e2}\x{80}\x{9c}",
+  "\x{94}" => "\x{e2}\x{80}\x{9d}",
+  "\x{95}" => "\x{e2}\x{80}\x{a2}",
+  "\x{96}" => "\x{e2}\x{80}\x{93}",
+  "\x{97}" => "\x{e2}\x{80}\x{94}",
+  "\x{98}" => "\x{cb}\x{9c}",
+  "\x{99}" => "\x{e2}\x{84}\x{a2}",
+  "\x{9a}" => "\x{c5}\x{a1}",
+  "\x{9b}" => "\x{e2}\x{80}\x{ba}",
+  "\x{9c}" => "\x{c5}\x{93}",
+  "\x{9d}" => "",
+  "\x{9e}" => "\x{c5}\x{be}",
+  "\x{9f}" => "\x{c5}\x{b8}",
+
+  "\x{a0}" => "\x{c2}\x{a0}",
+  "\x{a1}" => "\x{c2}\x{a1}",
+  "\x{a2}" => "\x{c2}\x{a2}",
+  "\x{a3}" => "\x{c2}\x{a3}",
+  "\x{a4}" => "\x{c2}\x{a4}",
+  "\x{a5}" => "\x{c2}\x{a5}",
+  "\x{a6}" => "\x{c2}\x{a6}",
+  "\x{a7}" => "\x{c2}\x{a7}",
+  "\x{a8}" => "\x{c2}\x{a8}",
+  "\x{a9}" => "\x{c2}\x{a9}",
+  "\x{aa}" => "\x{c2}\x{aa}",
+  "\x{ab}" => "\x{c2}\x{ab}",
+  "\x{ac}" => "\x{c2}\x{ac}",
+  "\x{ad}" => "\x{c2}\x{ad}",
+  "\x{ae}" => "\x{c2}\x{ae}",
+  "\x{af}" => "\x{c2}\x{af}",
+
+  "\x{b0}" => "\x{c2}\x{b0}",
+  "\x{b1}" => "\x{c2}\x{b1}",
+  "\x{b2}" => "\x{c2}\x{b2}",
+  "\x{b3}" => "\x{c2}\x{b3}",
+  "\x{b4}" => "\x{c2}\x{b4}",
+  "\x{b5}" => "\x{c2}\x{b5}",
+  "\x{b6}" => "\x{c2}\x{b6}",
+  "\x{b7}" => "\x{c2}\x{b7}",
+  "\x{b8}" => "\x{c2}\x{b8}",
+  "\x{b9}" => "\x{c2}\x{b9}",
+  "\x{ba}" => "\x{c2}\x{ba}",
+  "\x{bb}" => "\x{c2}\x{bb}",
+  "\x{bc}" => "\x{c2}\x{bc}",
+  "\x{bd}" => "\x{c2}\x{bd}",
+  "\x{be}" => "\x{c2}\x{be}",
+  "\x{bf}" => "\x{c2}\x{bf}",
+
+  "\x{c0}" => "\x{c3}\x{80}",
+  "\x{c1}" => "\x{c3}\x{81}",
+  "\x{c2}" => "\x{c3}\x{82}",
+  "\x{c3}" => "\x{c3}\x{83}",
+  "\x{c4}" => "\x{c3}\x{84}",
+  "\x{c5}" => "\x{c3}\x{85}",
+  "\x{c6}" => "\x{c3}\x{86}",
+  "\x{c7}" => "\x{c3}\x{87}",
+  "\x{c8}" => "\x{c3}\x{88}",
+  "\x{c9}" => "\x{c3}\x{89}",
+  "\x{ca}" => "\x{c3}\x{8a}",
+  "\x{cb}" => "\x{c3}\x{8b}",
+  "\x{cc}" => "\x{c3}\x{8c}",
+  "\x{cd}" => "\x{c3}\x{8d}",
+  "\x{ce}" => "\x{c3}\x{8e}",
+  "\x{cf}" => "\x{c3}\x{8f}",
+
+  "\x{d0}" => "\x{c3}\x{90}",
+  "\x{d1}" => "\x{c3}\x{91}",
+  "\x{d2}" => "\x{c3}\x{92}",
+  "\x{d3}" => "\x{c3}\x{93}",
+  "\x{d4}" => "\x{c3}\x{94}",
+  "\x{d5}" => "\x{c3}\x{95}",
+  "\x{d6}" => "\x{c3}\x{96}",
+  "\x{d7}" => "\x{c3}\x{97}",
+  "\x{d8}" => "\x{c3}\x{98}",
+  "\x{d9}" => "\x{c3}\x{99}",
+  "\x{da}" => "\x{c3}\x{9a}",
+  "\x{db}" => "\x{c3}\x{9b}",
+  "\x{dc}" => "\x{c3}\x{9c}",
+  "\x{dd}" => "\x{c3}\x{9d}",
+  "\x{de}" => "\x{c3}\x{9e}",
+  "\x{df}" => "\x{c3}\x{9f}",
+
+  "\x{e0}" => "\x{c3}\x{a0}",
+  "\x{e1}" => "\x{c3}\x{a1}",
+  "\x{e2}" => "\x{c3}\x{a2}",
+  "\x{e3}" => "\x{c3}\x{a3}",
+  "\x{e4}" => "\x{c3}\x{a4}",
+  "\x{e5}" => "\x{c3}\x{a5}",
+  "\x{e6}" => "\x{c3}\x{a6}",
+  "\x{e7}" => "\x{c3}\x{a7}",
+  "\x{e8}" => "\x{c3}\x{a8}",
+  "\x{e9}" => "\x{c3}\x{a9}",
+  "\x{ea}" => "\x{c3}\x{aa}",
+  "\x{eb}" => "\x{c3}\x{ab}",
+  "\x{ec}" => "\x{c3}\x{ac}",
+  "\x{ed}" => "\x{c3}\x{ad}",
+  "\x{ee}" => "\x{c3}\x{ae}",
+  "\x{ef}" => "\x{c3}\x{af}",
+
+  "\x{f0}" => "\x{c3}\x{b0}",
+  "\x{f1}" => "\x{c3}\x{b1}",
+  "\x{f2}" => "\x{c3}\x{b2}",
+  "\x{f3}" => "\x{c3}\x{b3}",
+  "\x{f4}" => "\x{c3}\x{b4}",
+  "\x{f5}" => "\x{c3}\x{b5}",
+  "\x{f6}" => "\x{c3}\x{b6}",
+  "\x{f7}" => "\x{c3}\x{b7}",
+  "\x{f8}" => "\x{c3}\x{b8}",
+  "\x{f9}" => "\x{c3}\x{b9}",
+  "\x{fa}" => "\x{c3}\x{ba}",
+  "\x{fb}" => "\x{c3}\x{bb}",
+  "\x{fc}" => "\x{c3}\x{bc}",
+  "\x{fd}" => "\x{c3}\x{bd}",
+  "\x{fe}" => "\x{c3}\x{be}",
+  "\x{ff}" => "\x{c3}\x{bf}"
+);
+
+sub rawToUtf8
+{
+
+=head2 rawToUtf8($stringRef)
+
+Takes a string consisting of raw octets/bytes and converts it in place
+into the corresponding UTF-8 string, similar to utf8::decode().  However,
+this function handles non-UTF-8-compliant octets in the range 0x80-0xff
+by interpreting them as being Windows-1252-encoded (which subsumes
+Latin1/OSI-8859-1 as well).  Always returns with the string transformed
+into a valid UTF-8 string with the Perl utf-8 marker set.
+
+=cut
+
+    my $string = shift || confess "rawToUtf8: string required";
+    if (!utf8::decode(${ $string }))
+    {
+        ${ $string } =~ s/
+            ([\x{c0}-\x{df}][\x{80}-\x{bf}])
+            |([\x{e0}-\x{ef}][\x{80}-\x{bf}][\x{80}-\x{bf}])
+            |([\x{f0}-\x{f7}][\x{80}-\x{bf}][\x{80}-\x{bf}][\x{80}-\x{bf}])
+
+            |([\x{80}-\x{ff}])
+        /
+            (defined $4)
+                ? ($WINDOWS_1252_EXTENDED{$4} || '')
+                : $&
+        /oexg;
+        utf8::decode(${ $string });
+    }
+    return $string;
+}
+
+
+#========================================================================
+sub loadFileAsUtf8
+{
+
+=head2 loadFileAsUtf8($fileName)
+
+Pull lines from a specified file into memory and return them as an
+array of UTF-8 strings.  Files in UTF-8, Windows-1252, ISO-8559-1,
+or an improper mix of these encodings will be converted correctly.
+Files in other encodings will result in proper UTF-8 results, although
+extended characters outside the ASCII range may be misinterpreted.
+
+=cut
+
+    my $fileName = shift || confess "loadFileAsUtf8: fileName required";
+
+    open(FILEIN, '<:raw', $fileName) or return undef;
+    my @out = <FILEIN>;
+    close(FILEIN);
+    if ($#out >= 0)
+    {
+        # Strip UTF-8 BOM, if any
+        # TODO: what about other UTF-x BOMs?
+        $out[0] =~ s/^\x{ef}\x{bb}\x{bf}//o;
+        map { rawToUtf8(\$_) } @out;
+    }
+    return @out;
+}
+
+
 # ---------------------------------------------------------------------------
 1;
 # ---------------------------------------------------------------------------
@@ -540,4 +745,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.10 2013/09/16 13:35:06 stedwar2 Exp $
+$Id: Utilities.pm,v 1.11 2013/10/09 00:10:32 stedwar2 Exp $

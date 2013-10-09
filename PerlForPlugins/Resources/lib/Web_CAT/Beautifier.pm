@@ -8,10 +8,11 @@ use File::Path;
 use File::Glob qw(bsd_glob);
 use Web_CAT::HFile::HFile_ascii;
 use Web_CAT::Output::HTML;
-use vars qw( @ISA %extensionMap );
+use Web_CAT::Utilities qw(rawToUtf8 loadFileAsUtf8);
+use vars qw(@ISA %extensionMap);
 use Carp;
 
-@ISA = qw( Web_CAT::Beautifier::Core );
+@ISA = qw(Web_CAT::Beautifier::Core);
 
 my %icons = (
     "Error"        => "http://web-cat.org/icons/exclaim.gif",
@@ -151,7 +152,7 @@ sub loadFile
 {
     my $self = shift;
     my $fileName = shift;
-    if ( defined $fileName )
+    if (defined $fileName)
     {
         $self->{fileName} = $fileName;
     }
@@ -159,19 +160,17 @@ sub loadFile
     {
         $fileName = $self->{fileName};
     }
-    return if ( ! -f $fileName );
-    open( BEAUTIFIERFILEIN, $fileName ) or return;
-    my @outstr = <BEAUTIFIERFILEIN>;
-    close( BEAUTIFIERFILEIN );
+    return if (! -f $fileName);
+    my @outstr = loadFileAsUtf8($fileName);
     if ($self->{countLoc})
     {
          $self->countLoc(\@outstr);
     }
-
-    my $result = join( "", @outstr );
-    # Strip all NULL characters, in case this is UTF-16 or something.
-    $result =~ s/\x00//go;
-    $result =~ s/^[\xfe\xff]+//o;
+    my $result = join('', @outstr);
+    # Strip all control characters that are illegal in XML.
+    # There are some other unicode characters that are also disallowed,
+    # but those aren't removed yet.
+    $result =~ s/[\x{00}-\x{08}\x{0b}\x{0c}\x{0e}-\x{1f}]/ /go;
     return $result;
 }
 
@@ -559,7 +558,8 @@ sub generateHighlightOutputFile
             mkpath( join( "/", @dirPath ) );
         }
         # print "    attempting to open output file\n";
-        open( BEAUTIFIERFILEOUT, ">:utf8", $outFileName ) or return;
+        open( BEAUTIFIERFILEOUT, ">:encoding(UTF-8)", $outFileName ) or return;
+#        open( BEAUTIFIERFILEOUT, ">:raw", $outFileName ) or return;
         my @lines = $self->highlightFile;
         print BEAUTIFIERFILEOUT @lines;
         close( BEAUTIFIERFILEOUT );
