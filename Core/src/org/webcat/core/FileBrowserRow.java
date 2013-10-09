@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileBrowserRow.java,v 1.3 2010/11/01 17:04:05 aallowat Exp $
+ |  $Id: FileBrowserRow.java,v 1.4 2013/10/09 00:02:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -35,6 +35,7 @@ import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSData;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
+import er.extensions.foundation.ERXArrayUtilities;
 import er.extensions.foundation.ERXFileUtilities;
 
 //-------------------------------------------------------------------------
@@ -42,8 +43,8 @@ import er.extensions.foundation.ERXFileUtilities;
  *  One row in a directory contents table.
  *
  *  @author  Stephen Edwards
- *  @author  Last changed by $Author: aallowat $
- *  @version $Revision: 1.3 $, $Date: 2010/11/01 17:04:05 $
+ *  @author  Last changed by $Author: stedwar2 $
+ *  @version $Revision: 1.4 $, $Date: 2013/10/09 00:02:02 $
  */
 public class FileBrowserRow
     extends WOComponent
@@ -197,7 +198,10 @@ public class FileBrowserRow
         {
             if (file.isDirectory())
             {
-                contents = new NSArray<File>(file.listFiles(notDotOrDotDot));
+                NSMutableArray<File> files =
+                    new NSMutableArray<File>(file.listFiles(notDotOrDotDot));
+                ERXArrayUtilities.sortArrayWithKey(files, "name");
+                contents = files;
             }
             else
             {
