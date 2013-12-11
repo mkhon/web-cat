@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.11 2012/05/09 16:32:02 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.12 2013/12/11 14:43:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.11 $, $Date: 2012/05/09 16:32:02 $
+ * @version $Revision: 1.12 $, $Date: 2013/12/11 14:43:55 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -100,6 +100,10 @@ public class GradeStudentSubmissionPage
             if ( submission.result() == null )
             {
                 throw new RuntimeException( "null submission result" );
+            }
+            if (submission.partnerLink())
+            {
+                submission = submission.primarySubmission();
             }
             result = submission.result();
         }
