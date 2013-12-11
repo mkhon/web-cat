@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Submission.java,v 1.27 2013/08/11 02:05:19 stedwar2 Exp $
+ |  $Id: Submission.java,v 1.28 2013/12/11 14:44:46 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -50,7 +50,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.27 $, $Date: 2013/08/11 02:05:19 $
+ *  @version $Revision: 1.28 $, $Date: 2013/12/11 14:44:46 $
  */
 public class Submission
     extends _Submission
@@ -2023,6 +2023,10 @@ public class Submission
     {
         final NSMutableArray<Submission> brokenPartners =
             new NSMutableArray<Submission>();
+//        final Set<Submission> partnerSubsForGrading =
+//            new HashSet<Submission>();
+//        final NSMutableDictionary<User, Submission> alternatePrimarySubs =
+//            new NSMutableDictionary<User, Submission>();
 
         for (User student : users.immutableClone())
         {
@@ -2069,6 +2073,7 @@ public class Submission
             }
 
             Submission forGrading = null;
+            Submission bestPrimary = null;
             for (Submission sub : candidates)
             {
                 if (sub.result() == null)
@@ -2095,12 +2100,27 @@ public class Submission
                 {
                     forGrading = sub;
                 }
+                if (!sub.partnerLink()
+                    && (bestPrimary == null
+                        || sub.isBetterGradingChoiceThan(bestPrimary)))
+                {
+                    bestPrimary = sub;
+                }
             }
 
             if (forGrading != null)
             {
                 if (omitPartners && forGrading.partnerLink())
                 {
+//                    if (bestPrimary == null)
+//                    {
+//                        users.removeObject(student);
+//                    }
+//                    else
+//                    {
+//                        partnerSubsForGrading.add(forGrading);
+//                        alternatePrimarySubs.put(student, bestPrimary);
+//                    }
                     users.removeObject(student);
                 }
                 else
@@ -2180,6 +2200,30 @@ public class Submission
                 }});
             }
         }
+
+        // Add any potential partner subs back
+//        Set<Submission> primarySubmissionsShown =
+//            new HashSet<Submission>(submissions.values());
+//        for (Submission partnered : partnerSubsForGrading)
+//        {
+//            User student = partnered.user();
+//            if (primarySubmissionsShown.contains(partnered.primarySubmission())
+//                || primarySubmissionsShown.contains(
+//                    alternatePrimarySubs.get(student)))
+//            {
+//                users.removeObject(student);
+//            }
+//            else
+//            {
+//                Submission forGrading = alternatePrimarySubs.get(student);
+//                primarySubmissionsShown.add(forGrading);
+//                submissions.setObjectForKey(forGrading, student);
+//                if (accumulator != null)
+//                {
+//                    accumulator.accumulate(forGrading);
+//                }
+//            }
+//        }
 
         //return new Submissions(subs, brokenPartners);
         return brokenPartners.count() > 0;
