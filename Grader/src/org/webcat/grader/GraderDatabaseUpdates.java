@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.14 2013/10/09 00:04:16 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.15 2013/12/11 14:39:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.14 $, $Date: 2013/10/09 00:04:16 $
+ * @version $Revision: 1.15 $, $Date: 2013/12/11 14:39:17 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -491,6 +491,19 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TSUBMISSIONPROFILE add "
             + "excessSubmissionsUnitSize INTEGER");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Extend result outcome contents column to "long" size.
+     * @throws SQLException on error
+     */
+    public void updateIncrement24() throws SQLException
+    {
+        database().executeSQL(
+            "alter table TRESULTOUTCOME modify "
+            + "CCONTENTS LONGBLOB");
     }
 
 
