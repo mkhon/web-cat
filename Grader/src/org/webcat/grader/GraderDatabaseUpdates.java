@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderDatabaseUpdates.java,v 1.15 2013/12/11 14:39:17 stedwar2 Exp $
+ |  $Id: GraderDatabaseUpdates.java,v 1.16 2014/06/16 17:13:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -32,7 +32,7 @@ import org.webcat.dbupdate.UpdateSet;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.15 $, $Date: 2013/12/11 14:39:17 $
+ * @version $Revision: 1.16 $, $Date: 2014/06/16 17:13:28 $
  */
 public class GraderDatabaseUpdates
     extends UpdateSet
@@ -504,6 +504,32 @@ public class GraderDatabaseUpdates
         database().executeSQL(
             "alter table TRESULTOUTCOME modify "
             + "CCONTENTS LONGBLOB");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds field for enabling auto-partnering behavior.
+     * @throws SQLException on error
+     */
+    public void updateIncrement25() throws SQLException
+    {
+        database().executeSQL(
+                "alter table TSUBMISSIONPROFILE add "
+                + "autoAssignPartners BIT NOT NULL DEFAULT 1");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds field for storing the processor id for each enqueued job.
+     * @throws SQLException on error
+     */
+    public void updateIncrement26() throws SQLException
+    {
+        database().executeSQL(
+                "alter table TENQUEUEDJOB add "
+                + "processor INTEGER");
     }
 
 
