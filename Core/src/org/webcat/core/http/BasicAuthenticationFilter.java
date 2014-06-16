@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: BasicAuthenticationFilter.java,v 1.5 2012/06/22 16:23:18 aallowat Exp $
+ |  $Id: BasicAuthenticationFilter.java,v 1.6 2014/06/16 16:00:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -57,8 +57,8 @@ import com.webobjects.eocontrol.EOEditingContext;
  * </ol>
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.5 $, $Date: 2012/06/22 16:23:18 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.6 $, $Date: 2014/06/16 16:00:40 $
  */
 public abstract class BasicAuthenticationFilter
      implements RequestFilter
@@ -206,31 +206,37 @@ public abstract class BasicAuthenticationFilter
                 authorization = Base64.decode(authorization.substring(6));
                 String[] parts = authorization.split(":");
 
-                final String username = parts[0];
-                final String password = (parts.length > 1) ? parts[1] : null;
-
-                final Session oldSession = session;
-                session = call(new ECActionWithResult<Session>()
+                if (parts != null && parts.length >= 2)
                 {
-                    public Session action() {
-                        Session result = oldSession;
-                        User user = validateUser(username, password, ec);
+                    final String username = parts[0];
+                    final String password =
+                        (parts.length > 1) ? parts[1] : null;
 
-                        if (user == null)
+                    final Session oldSession = session;
+                    session = call(new ECActionWithResult<Session>()
+                    {
+                        public Session action()
                         {
-                            Application.wcApplication().saveSessionForContext(
-                                context);
+                            Session result = oldSession;
+                            User user = validateUser(username, password, ec);
+
+                            if (user == null)
+                            {
+                                Application.wcApplication()
+                                    .saveSessionForContext(context);
+                            }
+                            else
+                            {
+                                context._setRequestSessionID(existingSessionId);
+                                result = (Session)context.session();
+                                result.setUser(user.localInstance(
+                                    result.defaultEditingContext()));
+                                result._appendCookieToResponse(response);
+                            }
+                            return result;
                         }
-                        else
-                        {
-                            context._setRequestSessionID(existingSessionId);
-                            result = (Session) context.session();
-                            result.setUser(user.localInstance(
-                                result.defaultEditingContext()));
-                            result._appendCookieToResponse(response);
-                        }
-                        return result;
-                }});
+                    });
+                }
             }
         }
 
