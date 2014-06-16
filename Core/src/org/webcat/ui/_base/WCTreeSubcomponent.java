@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCTreeSubcomponent.java,v 1.1 2011/05/13 19:43:46 aallowat Exp $
+ |  $Id: WCTreeSubcomponent.java,v 1.2 2014/06/16 15:57:55 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2009 Virginia Tech
  |
@@ -21,13 +21,10 @@
 
 package org.webcat.ui._base;
 
-import org.webcat.ui.WCTable;
 import org.webcat.ui.WCTree;
 import org.webcat.ui.WCTreeModel;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOContext;
-import com.webobjects.appserver.WODisplayGroup;
-import er.extensions.appserver.ERXDisplayGroup;
 
 //-------------------------------------------------------------------------
 /**
@@ -35,8 +32,8 @@ import er.extensions.appserver.ERXDisplayGroup;
  * and provides convenience methods for referring to that tree and its model.
  *
  * @author  Tony Allevato
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.1 $, $Date: 2011/05/13 19:43:46 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.2 $, $Date: 2014/06/16 15:57:55 $
  */
 public class WCTreeSubcomponent extends WOComponent
 {
@@ -76,7 +73,7 @@ public class WCTreeSubcomponent extends WOComponent
      * @return the display group that is bound to the table that contains this
      *     subcomponent
      */
-    public WCTreeModel treeModel()
+    public WCTreeModel<Object> treeModel()
     {
         return tree().treeModel;
     }
