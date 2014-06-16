@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionPage.java,v 1.3 2011/06/08 02:21:32 stedwar2 Exp $
+ |  $Id: PickSubmissionPage.java,v 1.4 2014/06/16 17:28:27 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -33,7 +33,7 @@ import org.webcat.core.*;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/06/08 02:21:32 $
+ * @version $Revision: 1.4 $, $Date: 2014/06/16 17:28:27 $
  */
 public class PickSubmissionPage
     extends GraderAssignmentComponent
@@ -46,9 +46,9 @@ public class PickSubmissionPage
      *
      * @param context The page's context
      */
-    public PickSubmissionPage( WOContext context )
+    public PickSubmissionPage(WOContext context)
     {
-        super( context );
+        super(context);
     }
 
 
@@ -188,7 +188,7 @@ public class PickSubmissionPage
             log.warn("saveSelectionCanContinue(): null submission!");
             error("Please choose a submission.");
         }
-        else if (prefs().submission().result() == null)
+        else if (!prefs().submission().resultIsReady())
         {
             error("The Grader has not yet completed processing "
                 + "on that submission.");
@@ -200,7 +200,7 @@ public class PickSubmissionPage
     // ----------------------------------------------------------
     public boolean hasResult()
     {
-        boolean result = (aSubmission.result() != null);
+        boolean result = (aSubmission.resultIsReady());
         log.debug("hasResult() = " + result);
         return result;
     }

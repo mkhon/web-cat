@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentCourseSummaryPage.java,v 1.6 2012/01/20 21:31:42 stedwar2 Exp $
+ |  $Id: StudentCourseSummaryPage.java,v 1.7 2014/06/16 17:27:58 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011-2012 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2012/01/20 21:31:42 $
+ * @version $Revision: 1.7 $, $Date: 2014/06/16 17:27:58 $
  */
 public class StudentCourseSummaryPage
     extends GraderAssignmentComponent
@@ -341,7 +341,7 @@ public class StudentCourseSummaryPage
                 + "submission, submission was null");
             error("Please choose a submission.");
         }
-        else if (submission.result() == null)
+        else if (!submission.resultIsReady())
         {
             error("Results for that submission are not available.");
         }

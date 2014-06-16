@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: PickSubmissionDialog.java,v 1.8 2012/05/09 16:22:05 stedwar2 Exp $
+ |  $Id: PickSubmissionDialog.java,v 1.9 2014/06/16 17:28:39 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -36,7 +36,7 @@ import er.extensions.appserver.ERXDisplayGroup;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2012/05/09 16:22:05 $
+ * @version $Revision: 1.9 $, $Date: 2014/06/16 17:28:39 $
  */
 public class PickSubmissionDialog
 	extends GraderComponent
@@ -186,7 +186,7 @@ public class PickSubmissionDialog
         {
             return errorMessageOnParent("Please choose a submission.");
         }
-        else if (selectedSub.result() == null)
+        else if (!selectedSub.resultIsReady())
         {
             return errorMessageOnParent(
                 "Results for that submission are not available.");
