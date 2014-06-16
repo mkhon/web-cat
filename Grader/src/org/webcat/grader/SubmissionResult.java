@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionResult.java,v 1.15 2013/10/09 00:04:21 stedwar2 Exp $
+ |  $Id: SubmissionResult.java,v 1.16 2014/06/16 17:26:43 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.15 $, $Date: 2013/10/09 00:04:21 $
+ *  @version $Revision: 1.16 $, $Date: 2014/06/16 17:26:43 $
  */
 public class SubmissionResult
     extends _SubmissionResult
@@ -92,6 +92,18 @@ public class SubmissionResult
             }
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Determine whether this submission result object is ready for
+     * viewing or not.
+     * @return True if this submission result is valid/finished.
+     */
+    public boolean isReady()
+    {
+        return submission().enqueuedJob() == null;
     }
 
 
