@@ -5,6 +5,7 @@ use warnings;
 use strict;
 use Web_CAT::Beautifier::Core;
 use File::Path;
+use File::Copy;
 use File::Glob qw(bsd_glob);
 use Web_CAT::HFile::HFile_ascii;
 use Web_CAT::Output::HTML;
@@ -35,6 +36,19 @@ my %categoryPriority = (
     "Extra Credit" => 7
 );
 
+my %extensionsNotMarkedUpMap = (
+    "zip"  => 1,
+    "pdf"  => 1,
+    "png"  => 1,
+    "gif"  => 1,
+    "jpg"  => 1,
+    "wav"  => 1,
+    "wmv"  => 1,
+    "avi"  => 1,
+    "jpeg" => 1,
+    "mpg"  => 1,
+    "jar"  => 1
+);
 %extensionMap = (
     "ascii"  => "ascii",
     "cpp"    => "cpp",
@@ -138,6 +152,11 @@ sub setInputFileName
             }
         }
         return 0;
+    }
+    elsif (defined $extensionsNotMarkedUpMap{$extension})
+    {
+        # print "extension to preserve unchanged: $extension\n";
+        return -1;
     }
     else
     {
@@ -537,15 +556,24 @@ sub generateHighlightOutputFile
     {
         $fileName = $self->{fileName};
     }
-    # print "  checking for $fileName\n";
+#     print "  checking for $fileName\n";
     return if ( ! -f $fileName );
-    # print "   found\n";
+#     print "   found\n";
 
-    # print "$fileName is file\n";
+#     print "$fileName is file\n";
 
-    if ( $self->setInputFileName( $fileName ) )
+    my $recognized = $self->setInputFileName($fileName);
+    if ($recognized)
     {
-        my $outFileName = $fileName . ".html";
+        my $outFileName = $fileName;
+        if ($recognized > 0)
+        {
+            $fileName .= ".html";
+        }
+        else
+        {
+            $destPrefix =~ s/\/html$/\/public/o;
+        }
         if ( defined $destPrefix )
         {
             $outFileName = "$destPrefix/$outFileName";
@@ -557,12 +585,20 @@ sub generateHighlightOutputFile
             pop( @dirPath );
             mkpath( join( "/", @dirPath ) );
         }
-        # print "    attempting to open output file\n";
-        open( BEAUTIFIERFILEOUT, ">:encoding(UTF-8)", $outFileName ) or return;
-#        open( BEAUTIFIERFILEOUT, ">:raw", $outFileName ) or return;
-        my @lines = $self->highlightFile;
-        print BEAUTIFIERFILEOUT @lines;
-        close( BEAUTIFIERFILEOUT );
+        if ($recognized > 0)
+        {
+            # print "    attempting to open output file\n";
+            open(BEAUTIFIERFILEOUT, ">:encoding(UTF-8)", $outFileName)
+                or return;
+#           open( BEAUTIFIERFILEOUT, ">:raw", $outFileName ) or return;
+            my @lines = $self->highlightFile;
+            print BEAUTIFIERFILEOUT @lines;
+            close( BEAUTIFIERFILEOUT );
+        }
+        else
+        {
+            copy($fileName, $outFileName);
+        }
         return $outFileName;
     }
     else
