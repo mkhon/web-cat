@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EOManager.java,v 1.5 2011/12/25 02:24:53 stedwar2 Exp $
+ |  $Id: EOManager.java,v 1.6 2014/06/16 16:01:32 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.eof.ERXEC;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2011/12/25 02:24:53 $
+ * @version $Revision: 1.6 $, $Date: 2014/06/16 16:01:32 $
  */
 public interface EOManager
     extends NSKeyValueCoding,
@@ -66,7 +66,6 @@ public interface EOManager
         public ECManager()
         {
             ec = WCEC.newAutoLockingEditingContext();
-            ec.setSharedEditingContext(null);
         }
 
 
@@ -202,7 +201,6 @@ public interface EOManager
                 // Something happened, so try replacing the old context
                 // with a new one.
                 ERXEC newContext = WCEC.newAutoLockingEditingContext();
-                newContext.setSharedEditingContext(null);
                 eo = EOUtilities.localInstanceOfObject(newContext, eo);
                 newContext.refreshObject(eo);
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: Message.java,v 1.8 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: Message.java,v 1.9 2014/06/16 16:01:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2010-2011 Virginia Tech
  |
@@ -60,7 +60,7 @@ import com.webobjects.foundation.NSTimestamp;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2011/12/25 02:24:54 $
+ * @version $Revision: 1.9 $, $Date: 2014/06/16 16:01:24 $
  */
 public abstract class Message
 {
@@ -499,7 +499,6 @@ public abstract class Message
         if (editingContext == null)
         {
             editingContext = WCEC.newAutoLockingEditingContext();
-            editingContext.setSharedEditingContext(null);
         }
         return editingContext;
     }
