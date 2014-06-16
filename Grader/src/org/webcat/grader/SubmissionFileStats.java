@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionFileStats.java,v 1.11 2013/09/01 01:31:11 stedwar2 Exp $
+ |  $Id: SubmissionFileStats.java,v 1.12 2014/06/16 17:27:25 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.WCResourceManager;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.11 $, $Date: 2013/09/01 01:31:11 $
+ *  @version $Revision: 1.12 $, $Date: 2014/06/16 17:27:25 $
  */
 public class SubmissionFileStats
     extends _SubmissionFileStats
@@ -150,6 +150,13 @@ public class SubmissionFileStats
             }
         }
         return result;
+    }
+
+
+    // ----------------------------------------------------------
+    public boolean canMarkupFile()
+    {
+        return !markupFileName().startsWith("public/");
     }
 
 
