@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FinalReportPage.java,v 1.6 2011/12/06 18:38:25 stedwar2 Exp $
+ |  $Id: FinalReportPage.java,v 1.7 2014/06/16 17:16:17 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.webcat.woextensions.WCResourceManager;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2011/12/06 18:38:25 $
+ * @version $Revision: 1.7 $, $Date: 2014/06/16 17:16:17 $
  */
 public class FinalReportPage
     extends GraderSubmissionComponent
@@ -124,16 +124,16 @@ public class FinalReportPage
         }
         if (submission != null)
         {
-            result = submission.result();
-            reportIsReady   = (result != null);
+            reportIsReady   = submission.resultIsReady();
             if (reportIsReady)
             {
+                result = submission.result();
                 statsDisplayGroup.setObjectArray(result.submissionFileStats());
-
                 reportArray = result.resultFiles().mutableClone();
             }
             else
             {
+                result = null;
                 reportArray = new NSMutableArray<ResultFile>();
             }
 
@@ -222,6 +222,11 @@ public class FinalReportPage
     // ----------------------------------------------------------
     public WOComponent fileStatsDetails()
     {
+        if (!submission.resultIsReady())
+        {
+            return null;
+        }
+
         log.debug("fileStatsDetails()");
         prefs().setSubmissionFileStatsRelationship(stats);
         WCComponent statsPage = (WCComponent)pageWithName(
@@ -232,8 +237,26 @@ public class FinalReportPage
 
 
     // ----------------------------------------------------------
+    public String viewSourceFile()
+    {
+        return context().directActionURLForActionNamed(
+            "submissionResultResource",
+            new NSDictionary<String, Object>(result.id(), "id"))
+            + "&path="
+            + stats.sourceFileName();
+    }
+
+
+    // ----------------------------------------------------------
     public WOComponent fullPrintableReport()
     {
+        // In case of a regrade or something while the student has
+        // the current page visible.
+        if (!submission.resultIsReady())
+        {
+            return null;
+        }
+
         FullPrintableReport fullReport = pageWithName(
             FullPrintableReport.class);
         fullReport.result = result;
@@ -429,7 +452,9 @@ public class FinalReportPage
     public boolean canSubmitAgain()
     {
         boolean answer = false;
-        if (result != null && !showReturnToGrading)
+        if (result != null
+            && result.submissions() != null
+            && !showReturnToGrading)
         {
 //            answer = result.submission().assignmentOffering().userCanSubmit(
 //                wcSession().localUser() );
@@ -558,31 +583,14 @@ public class FinalReportPage
         if (jobData == null)
         {
             jobData = new JobData();
-            NSMutableArray<EOQualifier> qualifiers =
-                new NSMutableArray<EOQualifier>();
-            qualifiers.addObject(new EOKeyValueQualifier(
-                            EnqueuedJob.DISCARDED_KEY,
-                            EOQualifier.QualifierOperatorEqual,
-                            ERXConstant.integerForInt(0)));
-            qualifiers.addObject(new EOKeyValueQualifier(
-                            EnqueuedJob.PAUSED_KEY,
-                            EOQualifier.QualifierOperatorEqual,
-                            ERXConstant.integerForInt(0)));
-            qualifiers.addObject(new EOKeyValueQualifier(
-                            EnqueuedJob.REGRADING_KEY,
-                            EOQualifier.QualifierOperatorEqual,
-                            ERXConstant.integerForInt(0)));
-            EOFetchSpecification fetchSpec =
-                new EOFetchSpecification(
-                        EnqueuedJob.ENTITY_NAME,
-                        new EOAndQualifier(qualifiers),
-                        new NSArray<EOSortOrdering>(new EOSortOrdering[]{
-                                new EOSortOrdering(
-                                        EnqueuedJob.SUBMIT_TIME_KEY,
-                                        EOSortOrdering.CompareAscending)
-                            }));
             jobData.jobs = EnqueuedJob.objectsWithFetchSpecification(
-                localContext(), fetchSpec);
+                localContext(),
+                new EOFetchSpecification(
+                    EnqueuedJob.ENTITY_NAME,
+                    EnqueuedJob.discarded.isFalse().and(
+                        EnqueuedJob.paused.isFalse()).and(
+                            EnqueuedJob.regrading.isFalse()),
+                    EnqueuedJob.submitTime.ascs()));
             jobData.queueSize = jobData.jobs.count();
             if (oldQueuePos < 0
                 || oldQueuePos >= jobData.queueSize)
