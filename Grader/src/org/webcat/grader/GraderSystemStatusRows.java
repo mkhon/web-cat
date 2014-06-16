@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSystemStatusRows.java,v 1.4 2012/05/09 16:25:38 stedwar2 Exp $
+ |  $Id: GraderSystemStatusRows.java,v 1.5 2014/06/16 17:20:26 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -24,6 +24,7 @@ package org.webcat.grader;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 import er.extensions.eof.ERXConstant;
+import er.extensions.foundation.ERXArrayUtilities;
 import org.apache.log4j.*;
 import org.webcat.core.*;
 
@@ -33,7 +34,7 @@ import org.webcat.core.*;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.4 $, $Date: 2012/05/09 16:25:38 $
+ *  @version $Revision: 1.5 $, $Date: 2014/06/16 17:20:26 $
  */
 public class GraderSystemStatusRows
     extends WOComponent
@@ -70,6 +71,7 @@ public class GraderSystemStatusRows
     public void appendToResponse(WOResponse response, WOContext context)
     {
         queuedJobs = -1;
+        regradingJobs = -1;
         storageStatus = Grader.StorageStatus.instance();
         super.appendToResponse(response, context);
     }
@@ -124,18 +126,39 @@ public class GraderSystemStatusRows
             {
                 jobs = EnqueuedJob.objectsMatchingQualifier(
                     ((Session)session()).sessionContext(),
-                    EnqueuedJob.paused.eq(ERXConstant.integerForInt(0)));
+                    EnqueuedJob.paused.isFalse().and(
+                        EnqueuedJob.discarded.isFalse()));
             }
             catch (Exception e)
             {
                 log.debug("Retrying queued job fetch");
                 jobs = EnqueuedJob.objectsMatchingQualifier(
                     ((Session)session()).sessionContext(),
-                    EnqueuedJob.paused.eq(ERXConstant.integerForInt(0)));
+                    EnqueuedJob.paused.isFalse().and(
+                        EnqueuedJob.discarded.isFalse()));
             }
-            queuedJobs = (jobs == null) ? 0 : jobs.count();
+            queuedJobs = (jobs == null)
+                ? 0
+                : ERXArrayUtilities.filteredArrayWithQualifierEvaluation(jobs,
+                    EnqueuedJob.regrading.isFalse()).count();
+            regradingJobs = (jobs == null) ? 0 : (jobs.count() - queuedJobs);
         }
         return queuedJobs;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Returns the number of regraded jobs queued for grade processing
+     * @return the number of regraded jobs queued
+     */
+    public int regradingJobCount()
+    {
+        if (regradingJobs < 0)
+        {
+            queuedJobCount();
+        }
+        return regradingJobs;
     }
 
 
@@ -271,6 +294,7 @@ public class GraderSystemStatusRows
 
     private Grader grader;
     private int queuedJobs;
+    private int regradingJobs;
 
     static Logger log = Logger.getLogger(GraderSystemStatusRows.class);
 }
