@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: NewAssignmentPage.java,v 1.3 2013/08/11 02:06:57 stedwar2 Exp $
+ |  $Id: NewAssignmentPage.java,v 1.4 2014/06/16 17:30:02 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -43,7 +43,7 @@ import er.extensions.foundation.ERXArrayUtilities;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2013/08/11 02:06:57 $
+ * @version $Revision: 1.4 $, $Date: 2014/06/16 17:30:02 $
  */
 public class NewAssignmentPage
     extends GraderCourseComponent
@@ -434,11 +434,22 @@ public class NewAssignmentPage
     // ----------------------------------------------------------
     public boolean hasMultipleSections()
     {
-        Course course = coreSelections().courseOffering().course();
-        Semester semester = coreSelections().courseOffering().semester();
-        NSArray<CourseOffering> offerings =
-            CourseOffering.offeringsForSemesterAndCourse(
+        NSArray<CourseOffering> offerings = null;
+        Course course = coreSelections().course();
+        if (course == null && coreSelections().courseOffering() != null)
+        {
+            course = coreSelections().courseOffering().course();
+        }
+        Semester semester = coreSelections().semester();
+        if (semester == null && coreSelections().courseOffering() != null)
+        {
+            semester = coreSelections().courseOffering().semester();
+        }
+        if (course != null && semester != null)
+        {
+            offerings = CourseOffering.offeringsForSemesterAndCourse(
                 localContext(), course, semester);
+        }
         return offerings != null && offerings.count() > 1;
     }
 
