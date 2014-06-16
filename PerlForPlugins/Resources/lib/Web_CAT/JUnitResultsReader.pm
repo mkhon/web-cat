@@ -267,6 +267,20 @@ sub perlList
 
 
 #========================================================================
+sub suites
+{
+    my $self = shift;
+    my %result = ();
+    my $list = $self->{'perlList'};
+    while ($list =~ m/'suite'=>'([^']*)'/g)
+    {
+        $result{$1} = $1;
+    }
+    return keys %result;
+}
+
+
+#========================================================================
 # formatHints( category, limit );
 sub formatHints
 {
