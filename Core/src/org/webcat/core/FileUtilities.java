@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: FileUtilities.java,v 1.4 2012/01/27 16:38:44 stedwar2 Exp $
+ |  $Id: FileUtilities.java,v 1.5 2014/06/16 15:59:40 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
  *
  * @author  Tony Allowatt
  * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2012/01/27 16:38:44 $
+ * @version $Revision: 1.5 $, $Date: 2014/06/16 15:59:40 $
  */
 public class FileUtilities
 {
@@ -521,7 +521,8 @@ public class FileUtilities
     public static String mimeType( String fileName )
     {
         return FileUtilities.fileProperties.getFileProperty(
-            extensionOf( fileName ), "mimeType", "application/octet-stream" );
+            extensionOf( fileName ).toLowerCase(),
+            "mimeType", "application/octet-stream" );
     }
 
 
