@@ -730,7 +730,16 @@ extended characters outside the ASCII range may be misinterpreted.
         # Strip UTF-8 BOM, if any
         # TODO: what about other UTF-x BOMs?
         $out[0] =~ s/^\x{ef}\x{bb}\x{bf}//o;
-        map { rawToUtf8(\$_) } @out;
+
+        # Convert to utf8, if it looks like something else
+        @out = map { rawToUtf8(\$_); $_ } @out;
+
+        # Normalize line endings, including old Mac-style
+        @out = map {
+            $_ =~ s/\r\n/\n/go;
+            $_ =~ s/\r/\r\n/go;
+            map { $_ =~ s/\r//go; $_ } split(/(?<=\r\n)/, $_)
+        } @out;
     }
     return @out;
 }
@@ -745,4 +754,4 @@ __END__
 
 Stephen Edwards
 
-$Id: Utilities.pm,v 1.11 2013/10/09 00:10:32 stedwar2 Exp $
+$Id: Utilities.pm,v 1.12 2014/06/16 17:45:37 stedwar2 Exp $
