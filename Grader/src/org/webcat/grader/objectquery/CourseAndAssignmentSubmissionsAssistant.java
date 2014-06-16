@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.6 2012/05/09 16:24:22 stedwar2 Exp $
+ |  $Id: CourseAndAssignmentSubmissionsAssistant.java,v 1.7 2014/06/16 17:24:13 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -35,7 +35,6 @@ import org.webcat.woextensions.WCFetchSpecification;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
-import com.webobjects.eocontrol.EOGenericRecord;
 import com.webobjects.eocontrol.EOQualifier;
 import com.webobjects.foundation.NSArray;
 import er.extensions.eof.ERXQ;
@@ -49,7 +48,7 @@ import er.extensions.eof.ERXS;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.6 $, $Date: 2012/05/09 16:24:22 $
+ * @version $Revision: 1.7 $, $Date: 2014/06/16 17:24:13 $
  */
 public class CourseAndAssignmentSubmissionsAssistant
     extends WCComponent
@@ -107,23 +106,6 @@ public class CourseAndAssignmentSubmissionsAssistant
 
 
         // ----------------------------------------------------------
-        @Override
-        public String persistentIdOfObject(Object item)
-        {
-            if (item instanceof EOGenericRecord)
-            {
-                EOGenericRecord record = (EOGenericRecord) item;
-                return "id_" + record.entityName() + "_"
-                    + record.valueForKey("id");
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        // ----------------------------------------------------------
         private NSArray<Semester> allSemesters()
         {
             return Semester.objectsMatchingQualifier(localContext(), null,
@@ -174,23 +156,6 @@ public class CourseAndAssignmentSubmissionsAssistant
             }
 
             return children;
-        }
-
-
-        // ----------------------------------------------------------
-        @Override
-        public String persistentIdOfObject(Object item)
-        {
-            if (item instanceof EOGenericRecord)
-            {
-                EOGenericRecord record = (EOGenericRecord) item;
-                return "id_" + record.entityName() + "_"
-                    + record.valueForKey("id");
-            }
-            else
-            {
-                return null;
-            }
         }
 
 
