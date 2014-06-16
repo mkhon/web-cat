@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: WCEC.java,v 1.2 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: WCEC.java,v 1.3 2014/06/16 16:03:24 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -39,7 +39,7 @@ import er.extensions.eof.ERXEC;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2011/12/25 02:24:54 $
+ *  @version $Revision: 1.3 $, $Date: 2014/06/16 16:03:24 $
  */
 public class WCEC
     extends ERXEC
@@ -109,11 +109,14 @@ public class WCEC
     @Override
     public void saveChanges()
     {
-        EOSharedEditingContext defaultSharedEC =
-            EOSharedEditingContext.defaultSharedEditingContext();
-        if (defaultSharedEC != null)
+        EOSharedEditingContext sharedEC = null;
+        if (sharedEditingContext() == null)
         {
-            defaultSharedEC.lock();
+            sharedEC = EOSharedEditingContext.defaultSharedEditingContext();
+            if (sharedEC != null)
+            {
+                sharedEC.lock();
+            }
         }
         try
         {
@@ -121,9 +124,9 @@ public class WCEC
         }
         finally
         {
-            if (defaultSharedEC != null)
+            if (sharedEC != null)
             {
-                defaultSharedEC.unlock();
+                sharedEC.unlock();
             }
         }
     }
