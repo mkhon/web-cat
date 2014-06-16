@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradingPlugin.java,v 1.14 2012/05/09 16:32:42 stedwar2 Exp $
+ |  $Id: GradingPlugin.java,v 1.15 2014/06/16 17:30:30 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -40,7 +40,7 @@ import static org.webcat.woextensions.ECAction.run;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.14 $, $Date: 2012/05/09 16:32:42 $
+ *  @version $Revision: 1.15 $, $Date: 2014/06/16 17:30:30 $
  */
 public class GradingPlugin
     extends _GradingPlugin
@@ -742,7 +742,7 @@ public class GradingPlugin
         User                            installedBy,
         net.sf.webcat.FeatureDescriptor plugin,
         boolean                         overwrite,
-        GradingPlugin                      scriptFile )
+        GradingPlugin                   scriptFile )
     {
         if ( scriptFile != null && !scriptFile.hasSubdir() )
         {
@@ -964,7 +964,7 @@ public class GradingPlugin
             if (plugin.getProperty("batchEntity") == null)
             {
                 log.info("Installing new plug-in: \"" + plugin.name() + "\"");
-                String msg = installOrUpdate(admin, plugin, false, null);
+                String msg = installOrUpdate(admin, plugin, true, null);
                 if (msg != null)
                 {
                     log.error("Error installing new plug-in \""
