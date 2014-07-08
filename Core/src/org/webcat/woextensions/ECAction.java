@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ECAction.java,v 1.2 2012/01/04 16:24:19 stedwar2 Exp $
+ |  $Id: ECAction.java,v 1.3 2014/07/08 17:35:00 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2011 Virginia Tech
  |
@@ -73,7 +73,7 @@ import er.extensions.eof.ERXEC;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.2 $, $Date: 2012/01/04 16:24:19 $
+ *  @version $Revision: 1.3 $, $Date: 2014/07/08 17:35:00 $
  */
 public abstract class ECAction
     implements Runnable
@@ -144,6 +144,7 @@ public abstract class ECAction
         if (ec == null)
         {
             ec = WCEC.newEditingContext();
+            this.ownsEC = true;
         }
     }
 
