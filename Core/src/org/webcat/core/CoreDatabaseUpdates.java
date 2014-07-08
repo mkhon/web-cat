@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CoreDatabaseUpdates.java,v 1.5 2012/01/27 16:36:20 stedwar2 Exp $
+ |  $Id: CoreDatabaseUpdates.java,v 1.6 2014/07/08 17:35:28 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -32,7 +32,7 @@ import java.sql.SQLException;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.5 $, $Date: 2012/01/27 16:36:20 $
+ * @version $Revision: 1.6 $, $Date: 2014/07/08 17:35:28 $
  */
 public class CoreDatabaseUpdates
     extends UpdateSet
@@ -326,6 +326,18 @@ public class CoreDatabaseUpdates
         // Clear all existing login sessions, which happens at startup anyway
         database().executeSQL("DELETE FROM TLOGINSESSION");
         createIndexFor("TLOGINSESSION", "usagePeriodId");
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Adds the salt and iterations columns to the user table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement18() throws SQLException
+    {
+        database().executeSQL("ALTER TABLE TUSER ADD salt TINYTEXT");
+        database().executeSQL("ALTER TABLE TUSER ADD iterations INTEGER");
     }
 
 
