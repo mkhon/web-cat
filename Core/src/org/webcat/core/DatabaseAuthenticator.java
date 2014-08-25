@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DatabaseAuthenticator.java,v 1.6 2014/08/25 15:28:42 stedwar2 Exp $
+ |  $Id: DatabaseAuthenticator.java,v 1.7 2014/08/25 15:37:06 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2014 Virginia Tech
  |
@@ -77,7 +77,7 @@ import org.apache.log4j.Logger;
  *
  *  @author Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.6 $, $Date: 2014/08/25 15:28:42 $
+ *  @version $Revision: 1.7 $, $Date: 2014/08/25 15:37:06 $
  */
 public class DatabaseAuthenticator
     implements UserAuthenticator
@@ -320,7 +320,9 @@ public class DatabaseAuthenticator
                 properties.stringForKeyWithDefault(
                     "DatabaseAuthenticator.new.user.email.message",
                     "Your Web-CAT user name is   : ${user.userName}\n"
-                    + "Your new Web-CAT password is: ${user.password}\n\n"
+                    + "Your new Web-CAT password is: "
+                    + newPass
+                    + "\n\n"
                     + "You login to Web-CAT at:\n\n"
                     + "${login.url}\n\n"
                     + institutionMsg
