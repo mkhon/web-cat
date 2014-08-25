@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MigratingEditingContext.java,v 1.1 2011/12/25 02:24:54 stedwar2 Exp $
+ |  $Id: MigratingEditingContext.java,v 1.2 2014/08/25 15:28:01 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -34,7 +34,7 @@ import com.webobjects.eocontrol.EOObjectStore;
  *
  * @author  Tony Allevato
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2011/12/25 02:24:54 $
+ * @version $Revision: 1.2 $, $Date: 2014/08/25 15:28:01 $
  */
 public class MigratingEditingContext
     extends WCEC
@@ -75,7 +75,7 @@ public class MigratingEditingContext
         {
             EOEditingContext result =
                 super._newEditingContext(objectStore, validationEnabled);
-            result.setSharedEditingContext(null);
+//            result.setSharedEditingContext(null);
             return result;
         }
     }
