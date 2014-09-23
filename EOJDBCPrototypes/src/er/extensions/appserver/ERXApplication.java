@@ -341,7 +341,11 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 						String bundle = jar.replaceAll(".*?[/\\\\](\\w+)\\.framework.*", "$1");
 						String excludes = "(JavaVM)";
 						if (isWO54()) {
-							excludes = "(JavaVM|JavaWebServicesSupport|JavaEODistribution|JavaWebServicesGeneration|JavaWebServicesClient)";
+							excludes = "(JavaVM|JavaWebServicesSupport|"
+							    + "JavaEODistribution|"
+							    + "JavaWebServicesGeneration|"
+							    + "JavaWebServicesClient|"
+							    + "JavaWOJSPServlet)";
 						}
 						if (bundle.matches("^\\w+$") && !bundle.matches(excludes)) {
 							String info = jar.replaceAll("(.*?[/\\\\]\\w+\\.framework/Resources/).*", "$1Info.plist");
