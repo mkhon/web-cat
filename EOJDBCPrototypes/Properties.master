@@ -5,10 +5,10 @@ subsystem.EOJDBCPrototypes =
 
 EOJDBCPrototypes.version.major = 1
 EOJDBCPrototypes.version.minor = 1
-EOJDBCPrototypes.version.revision = 10
+EOJDBCPrototypes.version.revision = 11
 
 EOJDBCPrototypes.copyright =\
-	(c) 2006-2012 Virginia Tech Department of Computer Science
+	(c) 2006-2014 Virginia Tech Department of Computer Science
 EOJDBCPrototypes.provider = Virginia Tech Computer Science
 EOJDBCPrototypes.provider.url = http\://web-cat.org/updates
 EOJDBCPrototypes.info.url = http\://web-cat.org/WCWiki/EoJdbcPrototypes
