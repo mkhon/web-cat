@@ -5,12 +5,12 @@ subsystem.PMDForPlugins=org.webcat.pmdforplugins.PMDForPlugins
 
 PMDForPlugins.version.major=1
 PMDForPlugins.version.minor=2
-PMDForPlugins.version.revision=0
+PMDForPlugins.version.revision=1
 PMDForPlugins.requires=Core, ANTForPlugins
 PMDForPlugins.provides=pluginProperties
 
 PMDForPlugins.copyright=\
-	(c) 2006-2013 Virginia Tech Department of Computer Science
+	(c) 2006-2014 Virginia Tech Department of Computer Science
 PMDForPlugins.provider=Virginia Tech Computer Science
 PMDForPlugins.provider.url=http\://web-cat.org/updates
 PMDForPlugins.info.url=http\://wiki.web-cat.org/WCWiki/PmdForPluginsSubsystem
