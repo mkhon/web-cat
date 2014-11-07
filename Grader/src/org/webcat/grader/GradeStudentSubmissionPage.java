@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GradeStudentSubmissionPage.java,v 1.13 2014/06/16 17:31:28 stedwar2 Exp $
+ |  $Id: GradeStudentSubmissionPage.java,v 1.14 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -34,7 +34,7 @@ import org.webcat.ui.generators.JavascriptGenerator;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2014/06/16 17:31:28 $
+ * @version $Revision: 1.14 $, $Date: 2014/11/07 13:55:03 $
  */
 public class GradeStudentSubmissionPage
     extends GraderComponent
@@ -318,12 +318,15 @@ public class GradeStudentSubmissionPage
     // ----------------------------------------------------------
     public WOComponent regradeActionOk()
     {
-        if (!applyLocalChanges()) return null;
+        if (!applyLocalChanges())
+        {
+            return null;
+        }
         Submission sub = prefs().submission();
-        sub.requeueForGrading( localContext() );
-        prefs().setSubmissionRelationship( null );
+        sub.requeueForGrading(localContext());
+        prefs().setSubmissionRelationship(null);
         applyLocalChanges();
-        Grader.getInstance().graderQueue().enqueue( null );
+        GraderQueueProcessor.processSubmission(sub);
         return back();
     }
 

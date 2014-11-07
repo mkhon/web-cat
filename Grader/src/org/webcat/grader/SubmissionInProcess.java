@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: SubmissionInProcess.java,v 1.6 2011/03/23 15:10:56 aallowat Exp $
+ |  $Id: SubmissionInProcess.java,v 1.7 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2008 Virginia Tech
  |
@@ -33,8 +33,8 @@ import org.webcat.core.User;
  * that has been started (but not yet completed).
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.6 $, $Date: 2011/03/23 15:10:56 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.7 $, $Date: 2014/11/07 13:55:03 $
  */
 public class SubmissionInProcess
 {
@@ -113,6 +113,11 @@ public class SubmissionInProcess
         if (pos >= 0)
         {
             uploadedFileName = uploadedFileName.substring(pos + 1);
+        }
+        pos = uploadedFileName.indexOf(";*");
+        if (pos > 0)
+        {
+            uploadedFileName = uploadedFileName.substring(0, pos);
         }
         if ("".equals(uploadedFileName))
         {

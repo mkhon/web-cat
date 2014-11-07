@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: MassRegraderPage.java,v 1.3 2011/12/25 21:11:41 stedwar2 Exp $
+ |  $Id: MassRegraderPage.java,v 1.4 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -42,7 +42,7 @@ import er.extensions.eof.ERXSortOrdering.ERXSortOrderings;
  *
  * @author  Tony Allevato
  * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.3 $, $Date: 2011/12/25 21:11:41 $
+ * @version $Revision: 1.4 $, $Date: 2014/11/07 13:55:03 $
  */
 public class MassRegraderPage
     extends GraderAssignmentComponent
@@ -384,10 +384,14 @@ public class MassRegraderPage
             new ECAction() { public void action() {
                 int countForRecycling = 0;
                 clearEnqueuedSoFar();
+                NSMutableArray<Submission> subs =
+                    new NSMutableArray<Submission>();
 
                 while (hasMoreSubmissions())
                 {
-                    popNextSubmission().requeueForGrading(ec);
+                    Submission sub = popNextSubmission();
+                    sub.requeueForGrading(ec);
+                    subs.add(sub);
                     incrementEnqueuedSoFar();
 
                     // Recycle the editing context every 100 submissions.
@@ -396,6 +400,8 @@ public class MassRegraderPage
                     if (countForRecycling == 100)
                     {
                         ec.saveChanges();
+                        GraderQueueProcessor.processSubmissions(subs);
+                        subs.clear();
                         ec.unlock();
                         ec.dispose();
                         ec = WCEC.newEditingContext();
@@ -408,7 +414,7 @@ public class MassRegraderPage
                 setIsDone(true);
 
                 ec.saveChanges();
-                Grader.getInstance().graderQueue().enqueue( null );
+                GraderQueueProcessor.processSubmissions(subs);
             }}.run();
         }
 

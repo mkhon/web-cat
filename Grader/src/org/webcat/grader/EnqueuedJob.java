@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EnqueuedJob.java,v 1.3 2011/03/23 15:10:56 aallowat Exp $
+ |  $Id: EnqueuedJob.java,v 1.4 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2009 Virginia Tech
  |
@@ -31,8 +31,8 @@ import er.extensions.eof.ERXKey;
  * enqueued for compilation/processing but not yet handled.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: aallowat $
- * @version $Revision: 1.3 $, $Date: 2011/03/23 15:10:56 $
+ * @author  Last changed by $Author: stedwar2 $
+ * @version $Revision: 1.4 $, $Date: 2014/11/07 13:55:03 $
  */
 public class EnqueuedJob
     extends _EnqueuedJob
@@ -78,13 +78,15 @@ public class EnqueuedJob
      */
     public String workingDirName()
     {
-        StringBuffer dir = new StringBuffer( 50 );
-        dir.append( org.webcat.core.Application
-            .configurationProperties().getProperty( "grader.workarea" ) );
-        dir.append( '/' );
-        dir.append( submission().user().authenticationDomain().subdirName() );
-        dir.append( '/' );
-        dir.append( submission().user().userName() );
+        StringBuffer dir = new StringBuffer(100);
+        dir.append(org.webcat.core.Application
+            .configurationProperties().getProperty("grader.workarea"));
+        dir.append('/');
+        dir.append(submission().user().authenticationDomain().subdirName());
+        dir.append('/');
+        dir.append(submission().user().userName());
+        dir.append('.');
+        dir.append(submission().id());
         return dir.toString();
     }
 

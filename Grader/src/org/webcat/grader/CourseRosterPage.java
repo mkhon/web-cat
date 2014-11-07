@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: CourseRosterPage.java,v 1.4 2013/08/27 02:05:20 stedwar2 Exp $
+ |  $Id: CourseRosterPage.java,v 1.5 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2010 Virginia Tech
  |
@@ -40,7 +40,7 @@ import er.extensions.batching.ERXBatchingDisplayGroup;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.4 $, $Date: 2013/08/27 02:05:20 $
+ * @version $Revision: 1.5 $, $Date: 2014/11/07 13:55:03 $
  */
 public class CourseRosterPage
     extends GraderCourseEditComponent
@@ -85,6 +85,12 @@ public class CourseRosterPage
     protected void beforeAppendToResponse(
         WOResponse response, WOContext context)
     {
+        if (log.isDebugEnabled())
+        {
+            log.debug("context = " + localContext().getClass().getName());
+            log.debug("shared context = "
+                + localContext().sharedEditingContext());
+        }
         // Set up student list filters
         studentDisplayGroup.setObjectArray( courseOffering().students() );
 

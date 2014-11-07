@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: AssignmentOffering.java,v 1.13 2012/05/09 16:20:01 stedwar2 Exp $
+ |  $Id: AssignmentOffering.java,v 1.14 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -43,7 +43,7 @@ import org.webcat.woextensions.MigratingEditingContext;
  *
  * @author  Stephen Edwards
  * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.13 $, $Date: 2012/05/09 16:20:01 $
+ * @version $Revision: 1.14 $, $Date: 2014/11/07 13:55:03 $
  */
 public class AssignmentOffering
     extends _AssignmentOffering
@@ -450,7 +450,8 @@ public class AssignmentOffering
      */
     public void regradeMostRecentSubsForAll(EOEditingContext ec)
     {
-        for (Submission sub : mostRecentSubsForAll())
+        NSArray<Submission> subs = mostRecentSubsForAll();
+        for (Submission sub : subs)
         {
             // A fake partnered submission will have a non-null
             // primarySubmission attribute. We only want to regrade the actual
@@ -463,7 +464,7 @@ public class AssignmentOffering
             }
         }
         ec.saveChanges();
-        Grader.getInstance().graderQueue().enqueue(null);
+        GraderQueueProcessor.processSubmissions(subs);
     }
 
 
@@ -478,11 +479,11 @@ public class AssignmentOffering
      *        (a / is added to this buffer, followed by the subdirectory name
      *        generated here)
      */
-    public void addSubdirTo( StringBuffer dir )
+    public void addSubdirTo(StringBuffer dir)
     {
-        courseOffering().addSubdirTo( dir );
-        dir.append( '/' );
-        dir.append( assignment().subdirName() );
+        courseOffering().addSubdirTo(dir);
+        dir.append('/');
+        dir.append(assignment().subdirName());
     }
 
 
@@ -494,7 +495,7 @@ public class AssignmentOffering
     public Long moodleId()
     {
         Long result = super.moodleId();
-        if ( result == null && assignment() != null )
+        if (result == null && assignment() != null)
         {
             result = assignment().moodleId();
         }
@@ -1001,6 +1002,13 @@ public class AssignmentOffering
             }
         }
         return results;
+    }
+
+
+    // ----------------------------------------------------------
+    public SubmissionProfile submissionProfile()
+    {
+        return assignment().submissionProfile();
     }
 
 

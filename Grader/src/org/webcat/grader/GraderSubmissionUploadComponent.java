@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: GraderSubmissionUploadComponent.java,v 1.8 2012/05/09 16:31:36 stedwar2 Exp $
+ |  $Id: GraderSubmissionUploadComponent.java,v 1.9 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.8 $, $Date: 2012/05/09 16:31:36 $
+ *  @version $Revision: 1.9 $, $Date: 2014/11/07 13:55:03 $
  */
 public class GraderSubmissionUploadComponent
     extends GraderAssignmentComponent
@@ -209,8 +209,23 @@ public class GraderSubmissionUploadComponent
         job.setQueueTime( new NSTimestamp() );
         applyLocalChanges();
         prefs().setSubmissionRelationship(submission);
+        {
+            try
+            {
+                log.info("enqueued job " + job + ", queue size now = "
+                    + EnqueuedJob.countOfObjectsMatchingQualifier(
+                        localContext(),
+                        EnqueuedJob.paused.isFalse()
+                            .and(EnqueuedJob.regrading.isFalse())
+                            .and(EnqueuedJob.submission.isNotNull())));
+            }
+            catch (Exception e)
+            {
+                log.error("Unexpected exception", e);
+            }
+        }
 
-        Grader.getInstance().graderQueue().enqueue( null );
+        GraderQueueProcessor.processJob(job);
 
         // reset the submission in process so it is clear again
         submissionInProcess().cancelSubmission();

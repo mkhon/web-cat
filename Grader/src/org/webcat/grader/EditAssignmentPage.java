@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: EditAssignmentPage.java,v 1.14 2013/09/16 13:25:46 stedwar2 Exp $
+ |  $Id: EditAssignmentPage.java,v 1.15 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2011 Virginia Tech
  |
@@ -41,7 +41,7 @@ import static org.webcat.woextensions.ECAction.run;
  *
  *  @author  Stephen Edwards
  *  @author  Last changed by $Author: stedwar2 $
- *  @version $Revision: 1.14 $, $Date: 2013/09/16 13:25:46 $
+ *  @version $Revision: 1.15 $, $Date: 2014/11/07 13:55:03 $
  */
 public class EditAssignmentPage
     extends GraderAssignmentsComponent
@@ -557,25 +557,32 @@ public class EditAssignmentPage
         log.info("releasing all paused assignments: "
               + assignment.titleString());
 
-        run(new ECAction() { public void action() {
-            for (AssignmentOffering offering : offeringGroup.displayedObjects())
+        run(new ECAction() {
+            public void action()
             {
-                AssignmentOffering localAO = offering.localInstance(ec);
-                NSArray<EnqueuedJob> jobList =
-                    localAO.suspendedSubmissionsInQueue();
-                for (EnqueuedJob job : jobList)
+                NSMutableArray<EnqueuedJob> jobs =
+                    new NSMutableArray<EnqueuedJob>();
+                for (AssignmentOffering offering :
+                    offeringGroup.displayedObjects())
                 {
-                    job.setPaused(false);
-                    job.setQueueTime(new NSTimestamp());
+                    AssignmentOffering localAO = offering.localInstance(ec);
+                    NSArray<EnqueuedJob> jobList =
+                        localAO.suspendedSubmissionsInQueue();
+                    for (EnqueuedJob job : jobList)
+                    {
+                        job.setPaused(false);
+                        job.setQueueTime(new NSTimestamp());
+                    }
+                    jobs.addAll(jobList);
+                    log.info("released " + jobList.count() + " jobs");
                 }
-                log.info("released " + jobList.count() + " jobs");
-            }
 
-            ec.saveChanges();
-        }});
+                ec.saveChanges();
+                GraderQueueProcessor.processJobs(jobs);
+            }
+        });
 
         // trigger the grading queue to read the released jobs
-        Grader.getInstance().graderQueue().enqueue(null);
 
         return new JavascriptGenerator().refresh(
                 "allOfferings", "allOfferingsActions", "error-panel");

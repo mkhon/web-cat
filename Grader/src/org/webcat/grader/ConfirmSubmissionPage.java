@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: ConfirmSubmissionPage.java,v 1.8 2012/05/09 16:28:04 stedwar2 Exp $
+ |  $Id: ConfirmSubmissionPage.java,v 1.9 2014/11/07 13:55:03 stedwar2 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2006-2012 Virginia Tech
  |
@@ -21,6 +21,8 @@
 
 package org.webcat.grader;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 import org.apache.log4j.Logger;
@@ -36,7 +38,7 @@ import org.webcat.core.messaging.UnexpectedExceptionMessage;
  *
  * @author  Amit Kulkarni
  * @author  Latest changes by: $Author: stedwar2 $
- * @version $Revision: 1.8 $, $Date: 2012/05/09 16:28:04 $
+ * @version $Revision: 1.9 $, $Date: 2014/11/07 13:55:03 $
  */
 public class ConfirmSubmissionPage
     extends GraderSubmissionUploadComponent
@@ -117,6 +119,44 @@ public class ConfirmSubmissionPage
             }
             catch ( Exception e )
             {
+                String name = "null";
+                try
+                {
+                    name = submissionInProcess().uploadedFileName();
+                }
+                catch (Exception ee)
+                {
+                    // ignore
+                }
+                int length = -1;
+                try
+                {
+                    length = submissionInProcess().uploadedFile().length();
+                }
+                catch (Exception ee)
+                {
+                    // ignore
+                }
+                String dest = null;
+                boolean saved = false;
+                try
+                {
+                    File outFile = new File(
+                        Application.configurationProperties()
+                        .getProperty("grader.submissiondir"), name);
+                    if (!outFile.exists())
+                    {
+                        FileOutputStream out = new FileOutputStream(outFile);
+                        submissionInProcess().uploadedFile()
+                            .writeToStream(out);
+                        out.close();
+                        saved = true;
+                    }
+                }
+                catch (Exception ee)
+                {
+                    log.error("Unable to save local file " + name, ee);
+                }
                 submissionInProcess().clearUpload();
                 error(
                     "An error occurred while unpacking "
@@ -125,7 +165,9 @@ public class ConfirmSubmissionPage
                     + "have uploaded the wrong file by accident, "
                     + "use the Back button to try again." );
                 new UnexpectedExceptionMessage(e, context(), null,
-                    "Exception unzipping submission file").send();
+                    "Exception unzipping submission file "
+                    + name + ", length = " + length
+                    + (saved ? (", saved") : ", not saved")).send();
             }
         }
         else
