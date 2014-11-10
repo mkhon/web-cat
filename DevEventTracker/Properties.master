@@ -1,0 +1,24 @@
+# ===================================================================
+# DevEventTracker subsystem characteristics
+# ===================================================================
+subsystem.DevEventTracker=
+
+DevEventTracker.version.major=1
+DevEventTracker.version.minor=0
+DevEventTracker.version.revision=0
+DevEventTracker.requires=Core, Grader
+
+DevEventTracker.copyright=\
+	(c) 2014 Virginia Tech Department of Computer Science
+DevEventTracker.provider=Virginia Tech Computer Science
+DevEventTracker.provider.url=http\://web-cat.org/updates
+DevEventTracker.info.url=\
+	http\://wiki.web-cat.org/WCWiki/WebApiSubsystem
+DevEventTracker.history.url=\
+	http\://wiki.web-cat.org/WCWiki/WebApiSubsystem/ChangeHistory
+DevEventTracker.license=GNU Affero General Public License v.3
+DevEventTracker.license.url=http\://www.gnu.org/licenses/agpl.html
+
+DevEventTracker.description=\
+	This subsystem provides support for IDE-based event data collection \
+	from IDE's such as Eclipse.
