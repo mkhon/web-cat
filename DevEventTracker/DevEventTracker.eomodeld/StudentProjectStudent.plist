@@ -1,0 +1,30 @@
+{
+    attributes = (
+        {allowsNull = N; name = projectId; columnName = projectId; prototypeName = foreignId;},
+        {allowsNull = N; name = studentId; columnName = studentId; prototypeName = foreignId;}
+    );
+    attributesUsedForLocking = (projectId, studentId);
+    className = EOGenericRecord;
+    externalName = StudentProjectStudent;
+    fetchSpecificationDictionary = {};
+    name = StudentProjectStudent;
+    primaryKeyAttributes = (projectId, studentId);
+    relationships = (
+        {
+            destination = StudentProject;
+            isMandatory = Y;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = projectId; });
+            name = project;
+        },
+        {
+            destination = User;
+            isMandatory = Y;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = studentId; });
+            name = student;
+        }
+    );
+}

@@ -1,0 +1,22 @@
+{
+    attributes = (
+        {allowsNull = N; name = id; prototypeName = id; },
+        {allowsNull = N; columnName = name; name = name; prototypeName = tinyText; }
+    );
+    attributesUsedForLocking = (id, name);
+    className = "org.webcat.deveventtracker.SensorDataType";
+    classProperties = (name, sensorData);
+    externalName = SensorDataType;
+    fetchSpecificationDictionary = {};
+    name = SensorDataType;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = SensorData;
+            isToMany = Y;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = typeId; sourceAttribute = id; });
+            name = sensorData;
+        }
+    );
+}

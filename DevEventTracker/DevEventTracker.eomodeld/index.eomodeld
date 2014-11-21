@@ -1,0 +1,24 @@
+{
+    EOModelVersion = "2.1"; 
+    adaptorName = JDBC; 
+    connectionDictionary = {}; 
+    entities = (
+        {
+            className = "org.webcat.deveventtracker.ProjectForAssignment"; 
+            name = ProjectForAssignment; 
+        }, 
+        {className = EOGenericRecord; name = ProjectForAssignmentStudent; }, 
+        {className = "org.webcat.deveventtracker.SensorData"; name = SensorData; }, 
+        {
+            className = "org.webcat.deveventtracker.SensorDataType"; 
+            name = SensorDataType; 
+        }, 
+        {
+            className = "org.webcat.deveventtracker.StudentProject"; 
+            name = StudentProject; 
+        }, 
+        {className = EOGenericRecord; name = StudentProjectForAssignment; }, 
+        {className = EOGenericRecord; name = StudentProjectStudent; }, 
+        {className = "org.webcat.deveventtracker.UuidForUser"; name = UuidForUser; }
+    ); 
+}

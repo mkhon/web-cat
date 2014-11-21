@@ -1,0 +1,29 @@
+{
+    attributes = (
+        {allowsNull = N; name = id; prototypeName = id; },
+        {
+            allowsNull = N;
+            columnName = userId;
+            name = userId;
+            prototypeName = foreignId;
+        },
+        {allowsNull = N; columnName = uuid; name = uuid; prototypeName = tinyText; }
+    );
+    attributesUsedForLocking = (id, user, uuid);
+    className = "org.webcat.deveventtracker.UuidForUser";
+    classProperties = (user, uuid);
+    externalName = UuidForUser;
+    fetchSpecificationDictionary = {};
+    name = UuidForUser;
+    primaryKeyAttributes = (id);
+    relationships = (
+        {
+            destination = User;
+            isMandatory = Y;
+            isToMany = N;
+            joinSemantic = EOInnerJoin;
+            joins = ({destinationAttribute = id; sourceAttribute = userId; });
+            name = user;
+        }
+    );
+}

@@ -1,0 +1,54 @@
+{
+    attributes = (
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = projectId; name = projectId; prototypeName = foreignId; }, 
+        {columnName = runTime; name = runTime; prototypeName = dateTime; }, 
+        {allowsNull = N; columnName = time; name = time; prototypeName = dateTime; }, 
+        {columnName = tool; name = tool; prototypeName = tinyText; }, 
+        {
+            allowsNull = N; 
+            columnName = typeId; 
+            name = typeId; 
+            prototypeName = foreignId; 
+        }, 
+        {columnName = uri; name = uri; prototypeName = mediumText; }, 
+        {
+            allowsNull = N; 
+            columnName = userId; 
+            name = userId; 
+            prototypeName = foreignId; 
+        }
+    ); 
+    attributesUsedForLocking = (id, projectId, runTime, time, tool, typeId, uri, userId); 
+    className = "org.webcat.deveventtracker.SensorData"; 
+    classProperties = (project, runTime, time, tool, type, uri, user); 
+    externalName = SensorData; 
+    fetchSpecificationDictionary = {}; 
+    name = SensorData; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = User; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
+            name = user; 
+        }, 
+        {
+            destination = StudentProject; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = projectId; }); 
+            name = project; 
+        }, 
+        {
+            destination = SensorDataType; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = typeId; }); 
+            name = type; 
+        }
+    ); 
+}

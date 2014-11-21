@@ -1,7 +1,7 @@
 # ===================================================================
 # DevEventTracker subsystem characteristics
 # ===================================================================
-subsystem.DevEventTracker=
+subsystem.DevEventTracker=org.webcat.deveventtracker.DevEventTracker
 
 DevEventTracker.version.major=1
 DevEventTracker.version.minor=0
