@@ -241,8 +241,7 @@ public abstract class _SensorDataType
     @SuppressWarnings("unchecked")
     public NSArray<org.webcat.deveventtracker.SensorData> sensorData()
     {
-        return (NSArray<org.webcat.deveventtracker.SensorData>)
-            storedValueForKey("sensorData");
+        return (NSArray)storedValueForKey( "sensorData" );
     }
 
 
@@ -253,15 +252,14 @@ public abstract class _SensorDataType
      *
      * @param value The new set of entities to relate to
      */
-    public void setSensorData(
-        NSMutableArray<org.webcat.deveventtracker.SensorData>  value)
+    public void setSensorData( NSMutableArray<org.webcat.deveventtracker.SensorData>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug("setSensorData("
-                + value + "): was " + sensorData());
+            log.debug( "setSensorData("
+                + value + "): was " + sensorData() );
         }
-        takeStoredValueForKey(value, "sensorData");
+        takeStoredValueForKey( value, "sensorData" );
     }
 
 
@@ -477,8 +475,8 @@ public abstract class _SensorDataType
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<SensorDataType> fspec =
-            new WCFetchSpecification<SensorDataType>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
@@ -501,13 +499,8 @@ public abstract class _SensorDataType
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<SensorDataType> fspec =
-            new WCFetchSpecification<SensorDataType>(
-                ENTITY_NAME, qualifier, sortOrderings);
-        fspec.setUsesDistinct(true);
-        fspec.setFetchLimit(1);
         NSArray<SensorDataType> objects =
-            objectsWithFetchSpecification(context, fspec);
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
         return (objects.size() > 0)
             ? objects.get(0)
             : null;
@@ -599,7 +592,7 @@ public abstract class _SensorDataType
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -671,7 +664,7 @@ public abstract class _SensorDataType
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return firstObjectMatchingValues(
@@ -695,8 +688,8 @@ public abstract class _SensorDataType
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        WCFetchSpecification<SensorDataType> fspec =
-            new WCFetchSpecification<SensorDataType>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME,
                 EOQualifier.qualifierToMatchAllValues(keysAndValues),
                 sortOrderings);
@@ -762,7 +755,7 @@ public abstract class _SensorDataType
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -872,7 +865,7 @@ public abstract class _SensorDataType
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

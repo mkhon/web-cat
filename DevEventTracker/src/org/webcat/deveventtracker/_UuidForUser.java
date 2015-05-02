@@ -361,8 +361,8 @@ public abstract class _UuidForUser
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<UuidForUser> fspec =
-            new WCFetchSpecification<UuidForUser>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
@@ -385,13 +385,8 @@ public abstract class _UuidForUser
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<UuidForUser> fspec =
-            new WCFetchSpecification<UuidForUser>(
-                ENTITY_NAME, qualifier, sortOrderings);
-        fspec.setUsesDistinct(true);
-        fspec.setFetchLimit(1);
         NSArray<UuidForUser> objects =
-            objectsWithFetchSpecification(context, fspec);
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
         return (objects.size() > 0)
             ? objects.get(0)
             : null;
@@ -483,7 +478,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -555,7 +550,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return firstObjectMatchingValues(
@@ -579,8 +574,8 @@ public abstract class _UuidForUser
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        WCFetchSpecification<UuidForUser> fspec =
-            new WCFetchSpecification<UuidForUser>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME,
                 EOQualifier.qualifierToMatchAllValues(keysAndValues),
                 sortOrderings);
@@ -646,7 +641,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -756,7 +751,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

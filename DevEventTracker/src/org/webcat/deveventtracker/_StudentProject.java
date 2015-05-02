@@ -276,8 +276,7 @@ public abstract class _StudentProject
     @SuppressWarnings("unchecked")
     public NSArray<org.webcat.deveventtracker.ProjectForAssignment> projectsForAssignment()
     {
-        return (NSArray<org.webcat.deveventtracker.ProjectForAssignment>)
-            storedValueForKey("projectsForAssignment");
+        return (NSArray)storedValueForKey( "projectsForAssignment" );
     }
 
 
@@ -288,15 +287,14 @@ public abstract class _StudentProject
      *
      * @param value The new set of entities to relate to
      */
-    public void setProjectsForAssignment(
-        NSMutableArray<org.webcat.deveventtracker.ProjectForAssignment>  value)
+    public void setProjectsForAssignment( NSMutableArray<org.webcat.deveventtracker.ProjectForAssignment>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug("setProjectsForAssignment("
-                + value + "): was " + projectsForAssignment());
+            log.debug( "setProjectsForAssignment("
+                + value + "): was " + projectsForAssignment() );
         }
-        takeStoredValueForKey(value, "projectsForAssignment");
+        takeStoredValueForKey( value, "projectsForAssignment" );
     }
 
 
@@ -456,8 +454,7 @@ public abstract class _StudentProject
     @SuppressWarnings("unchecked")
     public NSArray<org.webcat.deveventtracker.SensorData> sensorData()
     {
-        return (NSArray<org.webcat.deveventtracker.SensorData>)
-            storedValueForKey("sensorData");
+        return (NSArray)storedValueForKey( "sensorData" );
     }
 
 
@@ -468,15 +465,14 @@ public abstract class _StudentProject
      *
      * @param value The new set of entities to relate to
      */
-    public void setSensorData(
-        NSMutableArray<org.webcat.deveventtracker.SensorData>  value)
+    public void setSensorData( NSMutableArray<org.webcat.deveventtracker.SensorData>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug("setSensorData("
-                + value + "): was " + sensorData());
+            log.debug( "setSensorData("
+                + value + "): was " + sensorData() );
         }
-        takeStoredValueForKey(value, "sensorData");
+        takeStoredValueForKey( value, "sensorData" );
     }
 
 
@@ -636,8 +632,7 @@ public abstract class _StudentProject
     @SuppressWarnings("unchecked")
     public NSArray<org.webcat.core.User> students()
     {
-        return (NSArray<org.webcat.core.User>)
-            storedValueForKey("students");
+        return (NSArray)storedValueForKey( "students" );
     }
 
 
@@ -648,15 +643,14 @@ public abstract class _StudentProject
      *
      * @param value The new set of entities to relate to
      */
-    public void setStudents(
-        NSMutableArray<org.webcat.core.User>  value)
+    public void setStudents( NSMutableArray<org.webcat.core.User>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug("setStudents("
-                + value + "): was " + students());
+            log.debug( "setStudents("
+                + value + "): was " + students() );
         }
-        takeStoredValueForKey(value, "students");
+        takeStoredValueForKey( value, "students" );
     }
 
 
@@ -872,8 +866,8 @@ public abstract class _StudentProject
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<StudentProject> fspec =
-            new WCFetchSpecification<StudentProject>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
@@ -896,13 +890,8 @@ public abstract class _StudentProject
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<StudentProject> fspec =
-            new WCFetchSpecification<StudentProject>(
-                ENTITY_NAME, qualifier, sortOrderings);
-        fspec.setUsesDistinct(true);
-        fspec.setFetchLimit(1);
         NSArray<StudentProject> objects =
-            objectsWithFetchSpecification(context, fspec);
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
         return (objects.size() > 0)
             ? objects.get(0)
             : null;
@@ -994,7 +983,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1066,7 +1055,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return firstObjectMatchingValues(
@@ -1090,8 +1079,8 @@ public abstract class _StudentProject
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        WCFetchSpecification<StudentProject> fspec =
-            new WCFetchSpecification<StudentProject>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME,
                 EOQualifier.qualifierToMatchAllValues(keysAndValues),
                 sortOrderings);
@@ -1157,7 +1146,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1267,7 +1256,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

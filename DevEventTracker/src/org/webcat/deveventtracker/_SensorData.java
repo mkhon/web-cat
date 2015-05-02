@@ -588,8 +588,8 @@ public abstract class _SensorData
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<SensorData> fspec =
-            new WCFetchSpecification<SensorData>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
@@ -612,13 +612,8 @@ public abstract class _SensorData
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<SensorData> fspec =
-            new WCFetchSpecification<SensorData>(
-                ENTITY_NAME, qualifier, sortOrderings);
-        fspec.setUsesDistinct(true);
-        fspec.setFetchLimit(1);
         NSArray<SensorData> objects =
-            objectsWithFetchSpecification(context, fspec);
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
         return (objects.size() > 0)
             ? objects.get(0)
             : null;
@@ -710,7 +705,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -782,7 +777,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return firstObjectMatchingValues(
@@ -806,8 +801,8 @@ public abstract class _SensorData
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        WCFetchSpecification<SensorData> fspec =
-            new WCFetchSpecification<SensorData>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME,
                 EOQualifier.qualifierToMatchAllValues(keysAndValues),
                 sortOrderings);
@@ -873,7 +868,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -983,7 +978,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

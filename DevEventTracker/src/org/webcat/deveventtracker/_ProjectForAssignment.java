@@ -64,16 +64,19 @@ public abstract class _ProjectForAssignment
      * attributes and relationships.
      * @param editingContext The context in which the new object will be
      * inserted
+     * @param assignmentOfferingValue
      * @return The newly created object
      */
     public static ProjectForAssignment create(
-        EOEditingContext editingContext
+        EOEditingContext editingContext,
+        org.webcat.grader.AssignmentOffering assignmentOfferingValue
         )
     {
         ProjectForAssignment eoObject = (ProjectForAssignment)
             EOUtilities.createAndInsertInstance(
                 editingContext,
                 _ProjectForAssignment.ENTITY_NAME);
+        eoObject.setAssignmentOfferingRelationship(assignmentOfferingValue);
         return eoObject;
     }
 
@@ -145,6 +148,9 @@ public abstract class _ProjectForAssignment
     public static final ERXKey<NSTimestamp> start =
         new ERXKey<NSTimestamp>(START_KEY);
     // To-one relationships ---
+    public static final String ASSIGNMENT_OFFERING_KEY = "assignmentOffering";
+    public static final ERXKey<org.webcat.grader.AssignmentOffering> assignmentOffering =
+        new ERXKey<org.webcat.grader.AssignmentOffering>(ASSIGNMENT_OFFERING_KEY);
     // To-many relationships ---
     public static final String STUDENT_PROJECTS_KEY = "studentProjects";
     public static final ERXKey<org.webcat.deveventtracker.StudentProject> studentProjects =
@@ -266,6 +272,67 @@ public abstract class _ProjectForAssignment
 
     // ----------------------------------------------------------
     /**
+     * Retrieve the entity pointed to by the <code>assignmentOffering</code>
+     * relationship.
+     * @return the entity in the relationship
+     */
+    public org.webcat.grader.AssignmentOffering assignmentOffering()
+    {
+        return (org.webcat.grader.AssignmentOffering)storedValueForKey( "assignmentOffering" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>assignmentOffering</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>setAssignmentOfferingRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setAssignmentOffering( org.webcat.grader.AssignmentOffering value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setAssignmentOffering("
+                + value + "): was " + assignmentOffering() );
+        }
+        takeStoredValueForKey( value, "assignmentOffering" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set the entity pointed to by the <code>assignmentOffering</code>
+     * relationship.  This method is a type-safe version of
+     * <code>addObjectToBothSidesOfRelationshipWithKey()</code>.
+     *
+     * @param value The new entity to relate to
+     */
+    public void setAssignmentOfferingRelationship(
+        org.webcat.grader.AssignmentOffering value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setAssignmentOfferingRelationship("
+                + value + "): was " + assignmentOffering() );
+        }
+        if ( value == null )
+        {
+            org.webcat.grader.AssignmentOffering object = assignmentOffering();
+            if ( object != null )
+                removeObjectFromBothSidesOfRelationshipWithKey( object, "assignmentOffering" );
+        }
+        else
+        {
+            addObjectToBothSidesOfRelationshipWithKey( value, "assignmentOffering" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * Retrieve the entities pointed to by the <code>studentProjects</code>
      * relationship.
      * @return an NSArray of the entities in the relationship
@@ -273,8 +340,7 @@ public abstract class _ProjectForAssignment
     @SuppressWarnings("unchecked")
     public NSArray<org.webcat.deveventtracker.StudentProject> studentProjects()
     {
-        return (NSArray<org.webcat.deveventtracker.StudentProject>)
-            storedValueForKey("studentProjects");
+        return (NSArray)storedValueForKey( "studentProjects" );
     }
 
 
@@ -285,15 +351,14 @@ public abstract class _ProjectForAssignment
      *
      * @param value The new set of entities to relate to
      */
-    public void setStudentProjects(
-        NSMutableArray<org.webcat.deveventtracker.StudentProject>  value)
+    public void setStudentProjects( NSMutableArray<org.webcat.deveventtracker.StudentProject>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug("setStudentProjects("
-                + value + "): was " + studentProjects());
+            log.debug( "setStudentProjects("
+                + value + "): was " + studentProjects() );
         }
-        takeStoredValueForKey(value, "studentProjects");
+        takeStoredValueForKey( value, "studentProjects" );
     }
 
 
@@ -453,8 +518,7 @@ public abstract class _ProjectForAssignment
     @SuppressWarnings("unchecked")
     public NSArray<org.webcat.core.User> students()
     {
-        return (NSArray<org.webcat.core.User>)
-            storedValueForKey("students");
+        return (NSArray)storedValueForKey( "students" );
     }
 
 
@@ -465,15 +529,14 @@ public abstract class _ProjectForAssignment
      *
      * @param value The new set of entities to relate to
      */
-    public void setStudents(
-        NSMutableArray<org.webcat.core.User>  value)
+    public void setStudents( NSMutableArray<org.webcat.core.User>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug("setStudents("
-                + value + "): was " + students());
+            log.debug( "setStudents("
+                + value + "): was " + students() );
         }
-        takeStoredValueForKey(value, "students");
+        takeStoredValueForKey( value, "students" );
     }
 
 
@@ -689,8 +752,8 @@ public abstract class _ProjectForAssignment
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<ProjectForAssignment> fspec =
-            new WCFetchSpecification<ProjectForAssignment>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME, qualifier, sortOrderings);
         fspec.setUsesDistinct(true);
         return objectsWithFetchSpecification(context, fspec);
@@ -713,13 +776,8 @@ public abstract class _ProjectForAssignment
         EOQualifier qualifier,
         NSArray<EOSortOrdering> sortOrderings)
     {
-        WCFetchSpecification<ProjectForAssignment> fspec =
-            new WCFetchSpecification<ProjectForAssignment>(
-                ENTITY_NAME, qualifier, sortOrderings);
-        fspec.setUsesDistinct(true);
-        fspec.setFetchLimit(1);
         NSArray<ProjectForAssignment> objects =
-            objectsWithFetchSpecification(context, fspec);
+            objectsMatchingQualifier(context, qualifier, sortOrderings);
         return (objects.size() > 0)
             ? objects.get(0)
             : null;
@@ -811,7 +869,7 @@ public abstract class _ProjectForAssignment
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -883,7 +941,7 @@ public abstract class _ProjectForAssignment
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return firstObjectMatchingValues(
@@ -907,8 +965,8 @@ public abstract class _ProjectForAssignment
         NSArray<EOSortOrdering> sortOrderings,
         NSDictionary<String, Object> keysAndValues)
     {
-        WCFetchSpecification<ProjectForAssignment> fspec =
-            new WCFetchSpecification<ProjectForAssignment>(
+        @SuppressWarnings("unchecked")
+        EOFetchSpecification fspec = new WCFetchSpecification(
                 ENTITY_NAME,
                 EOQualifier.qualifierToMatchAllValues(keysAndValues),
                 sortOrderings);
@@ -974,7 +1032,7 @@ public abstract class _ProjectForAssignment
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1084,7 +1142,7 @@ public abstract class _ProjectForAssignment
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

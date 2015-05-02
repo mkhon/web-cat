@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: UuidForUser.java,v 1.1 2014/11/21 14:50:26 stedwar2 Exp $
+ |  $Id: UuidForUser.java,v 1.2 2015/05/02 01:16:54 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2012 Virginia Tech
  |
@@ -21,13 +21,17 @@
 
 package org.webcat.deveventtracker;
 
+import java.util.UUID;
+
+import com.webobjects.eocontrol.EOEditingContext;
+
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
  *
  * @author
- * @author  Last changed by: $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2014/11/21 14:50:26 $
+ * @author  Last changed by: $Author: jluke13 $
+ * @version $Revision: 1.2 $, $Date: 2015/05/02 01:16:54 $
  */
 public class UuidForUser
     extends _UuidForUser
@@ -45,5 +49,4 @@ public class UuidForUser
 
 
     //~ Methods ...............................................................
-
 }

@@ -1,16 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/Core"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/Grader"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/ERExtensions"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/ERJars"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/JavaWOExtensions"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/JavaEOAccess"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/JavaEOControl"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/JavaFoundation"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/JavaJDBCAdaptor"/>
-    <classpathentry exported="true" kind="con" path="WOFramework/JavaWebObjects"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/ERExtensions"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/ERJars"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JavaWOExtensions"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JavaEOAccess"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JavaEOControl"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JavaFoundation"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JavaJDBCAdaptor"/>
+	<classpathentry exported="true" kind="con" path="WOFramework/JavaWebObjects"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/admin.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/Ajax.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/antforplugins.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/bcprov-jdk15-129.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/birtruntime.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/Bootstrap.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/chartengineapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/checkstyleforplugins.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/cloverforplugins.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/com.ibm.icu_3.8.1.v20080530.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/core.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/coreapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/crosstabcoreapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/dataadapterapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/dataaggregationapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/dataextraction.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/dbupdateengine.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/dteapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/eddo-1_3.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/edldap-2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/engineapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/eojdbcprototypes.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/ERDirectToWeb.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/ERExtensions.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/ERJars.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/erxservletadaptor.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/erxwo54.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/externaljars.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/flute.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/grader.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/httpclient-4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/icu4j-3_8_1.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/jabsorb-1.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javadirecttoweb.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javadtwgeneration.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javaeoaccess.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javaeocontrol.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javaeoproject.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javafoundation.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javajdbcadaptor.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javassist-3.7.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javawebobjects.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/JavaWOExtensions.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/javawojspservlet.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/JavaWOJSPServlet_client.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/jcommon-1.0.16.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/jdom.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/jobqueue.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/js.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/jsch-0.1.44.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/mail.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/milton-api-1.5.7.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/mime-util-2.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/modelapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/modelodaapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/mysql-connector-java-5.1.6-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/odadesignapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/ognl-2.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/ognl-2.7.3.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/OpenBaseJDBC.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.apache.commons.codec_1.3.0.v20080530-1600.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.eclipse.emf.common_2.4.0.v200808251517.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.eclipse.emf.ecore.xmi_2.4.1.v200808251517.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.eclipse.emf.ecore_2.4.1.v200808251517.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.eclipse.jgit-0.12.1.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.eclipse.jgit-1.0.0.201106090707-r.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/org.w3c.css.sac_1.3.0.v200805290154.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/perlforplugins.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/pmdforplugins.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/poi-3.6-20091214.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/reporter.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/scriptapi.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/slf4j-api-1.5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/slf4j-log4j12-1.5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/src.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/tar.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/twitter4j-core-2.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/utils.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/vt-ldap-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/webcat-oda-commons.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/webobjectsupdater.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/wonderupdater.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/WOOgnl.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/wounittest.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/xerces.jar"/>
+	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/xml-apis.jar"/>
+	<classpathentry kind="con" path="WOFramework/EOJDBCPrototypes"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
