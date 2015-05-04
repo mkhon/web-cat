@@ -27,8 +27,10 @@ package org.webcat.deveventtracker;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
+
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
 import org.webcat.woextensions.WCFetchSpecification;
@@ -147,6 +149,9 @@ public abstract class _SensorData
     //~ Constants (for key names) .............................................
 
     // Attributes ---
+    public static final String COMMIT_HASH_KEY = "commitHash";
+    public static final ERXKey<String> commitHash =
+        new ERXKey<String>(COMMIT_HASH_KEY);
     public static final String RUN_TIME_KEY = "runTime";
     public static final ERXKey<NSTimestamp> runTime =
         new ERXKey<NSTimestamp>(RUN_TIME_KEY);
@@ -222,6 +227,34 @@ public abstract class _SensorData
         {
             return er.extensions.eof.ERXConstant.ZeroInteger;
         }
+    }
+    
+    // ----------------------------------------------------------
+    /**
+     * Retrieve this object's <code>commitHash</code> value.
+     * @return the value of the attribute
+     */
+    public String commitHash()
+    {
+        return (String)storedValueForKey( "commitHash" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Change the value of this object's <code>commitHash</code>
+     * property.
+     *
+     * @param value The new value for this property
+     */
+    public void setCommitHash( String value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setCommitHash("
+                + value + "): was " + commitHash() );
+        }
+        takeStoredValueForKey( value, "commitHash" );
     }
 
     // ----------------------------------------------------------

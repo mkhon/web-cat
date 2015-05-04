@@ -1,5 +1,6 @@
 {
     attributes = (
+        {columnName = commitHash; name = commitHash; prototypeName = mediumText; }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {columnName = projectId; name = projectId; prototypeName = foreignId; }, 
         {columnName = runTime; name = runTime; prototypeName = dateTime; }, 
@@ -19,20 +20,19 @@
             prototypeName = foreignId; 
         }
     ); 
-    attributesUsedForLocking = (id, projectId, runTime, time, tool, typeId, uri, userId); 
+    attributesUsedForLocking = (commitHash, id, projectId, runTime, time, tool, typeId, uri, userId); 
     className = "org.webcat.deveventtracker.SensorData"; 
-    classProperties = (project, runTime, time, tool, type, uri, user); 
+    classProperties = (commitHash, project, runTime, time, tool, type, uri, user); 
     externalName = SensorData; 
     fetchSpecificationDictionary = {}; 
     name = SensorData; 
     primaryKeyAttributes = (id); 
     relationships = (
         {
-            destination = User; 
             isMandatory = Y; 
             isToMany = N; 
             joinSemantic = EOInnerJoin; 
-            joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
+            joins = ({sourceAttribute = userId; }); 
             name = user; 
         }, 
         {

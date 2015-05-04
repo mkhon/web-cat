@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: event.java,v 1.2 2015/05/02 01:16:54 jluke13 Exp $
+ |  $Id: event.java,v 1.3 2015/05/04 09:45:08 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2014 Virginia Tech
  |
@@ -27,6 +27,7 @@ import java.util.UUID;
 import org.webcat.core.AuthenticationDomain;
 import org.webcat.core.User;
 import org.webcat.grader.AssignmentOffering;
+import org.webcat.core.git.*;
 
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
@@ -44,7 +45,7 @@ import er.extensions.appserver.ERXDirectAction;
  *
  * @author  edwards
  * @author  Last changed by $Author: jluke13 $
- * @version $Revision: 1.2 $, $Date: 2015/05/02 01:16:54 $
+ * @version $Revision: 1.3 $, $Date: 2015/05/04 09:45:08 $
  */
 public class event
     extends ERXDirectAction
@@ -92,6 +93,7 @@ public class event
     	String email = request.stringFormValueForKey("email");
     	
     	//TODO: Fix this (API change the lookupUserByEMail method)
+    	//Incorrect signature (confirmed by Edwards)
     	AuthenticationDomain domain = AuthenticationDomain.forId(ec, 1);
     	User user = User.lookupUserByEmail(ec, email, domain);
     	
@@ -157,26 +159,34 @@ public class event
     		newStudents.add(user);
     		studentProject.setStudents(newStudents);
     		
-        	//TODO: Look and see if there is a ProjectForAssignment that matches this StudentProject and create
-    		//the relationship appropriately if there is.
-    		//How to match URIs?
     		
     		//is there a PFA that has the same user and this uri matches the assignment #/name
     		
     		//All ProjectsForAssignments associated with this user
     		NSArray<ProjectForAssignment> potentialProjects = ProjectForAssignment.objectsMatchingQualifier(ec, ProjectForAssignment.students.is(user));
-    		
-    		for(ProjectForAssignment p : potentialProjects)
+			boolean foundProject = false;
+    		if(potentialProjects.size() > 0)
     		{
-    			if(normalizeName(p.assignmentOffering().assignment().name()).equals(normalizeName(projectUri)))
-    			{
-    				p.addToStudentProjectsRelationship(studentProject);
-    				break;
-    			}
+	    		for(ProjectForAssignment p : potentialProjects)
+	    		{
+	    			if(normalizeName(p.assignmentOffering().assignment().name()).equals(normalizeName(projectUri)))
+	    			{
+	    				p.addToStudentProjectsRelationship(studentProject);
+	    				foundProject = true;
+	    				break;
+	    			}
+	    		}
     		}
-    		
-
-    		ec.saveChanges();
+    		if(!foundProject)
+    		{
+    			//TODO Look up AssignmentOffering
+    			AssignmentOffering offering = null;
+    			createProjectForAssignment(ec, offering.availableFrom(), offering.lateDeadline(), offering);
+    		}
+		    ec.saveChanges();
+		    
+		    //Create a new repository for this student project.
+		    GitRepository.repositoryForObject(studentProject);
     	}
     	RetrieveStudentProjectResponse page = pageWithName(RetrieveStudentProjectResponse.class);
     	page.uuid = studentProject.uuid();
@@ -213,6 +223,7 @@ public class event
     	String tool = request.stringFormValueForKey("tool");
     	String sensorDataTypeName = request.stringFormValueForKey("sensorDataType");
     	String uri = request.stringFormValueForKey("uri");
+    	String commitHash = request.stringFormValueForKey("CommitHash");
     	
     	NSTimestamp time = new NSTimestamp(Long.parseLong(timeString));
     	NSTimestamp runtime = new NSTimestamp(Long.parseLong(runtimeString));
@@ -258,6 +269,10 @@ public class event
     	sensorData.setRunTime(runtime);
     	sensorData.setTool(tool);
     	sensorData.setUri(uri);
+    	if(commitHash != null)
+    	{
+    		sensorData.setCommitHash(commitHash);
+    	}
     	ec.saveChanges();
     	
     	return pageWithName(PostSensorDataResponse.class);
@@ -270,7 +285,7 @@ public class event
      * @param end The end time of the ProjectForAssignment
      * @param assignmentOffering The assignmentOffering to link to
      */
-    private void createProjectForAssignmentAction(EOEditingContext ec, NSTimestamp start, NSTimestamp end, AssignmentOffering assignmentOffering)
+    private void createProjectForAssignment(EOEditingContext ec, NSTimestamp start, NSTimestamp end, AssignmentOffering assignmentOffering)
     {
     	
     	//NSTimestamp start = new NSTimestamp(Long.parseLong(startString));
@@ -288,5 +303,14 @@ public class event
     	//Match to existing ProjectsForAssignment, create new where necessary.
     	
     	return null;
+    }
+    
+    public  WOActionResults pushAction()
+    {
+    	SensorData associatedEvent = null; //= SensorData.uniqueObjectMatchingQualifier(context, qualifier)
+    	GitRepository repo = GitRepository.repositoryForObject(associatedEvent.project());
+    	SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
+    	page.message = "Snapshot pushed successfully";
+    	return page;
     }
 }
