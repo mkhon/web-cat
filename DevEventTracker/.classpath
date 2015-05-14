@@ -107,5 +107,7 @@
 	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/xerces.jar"/>
 	<classpathentry kind="lib" path="C:/Library/Frameworks/WebCatJars/xml-apis.jar"/>
 	<classpathentry kind="con" path="WOFramework/EOJDBCPrototypes"/>
+	<classpathentry kind="con" path="WOFramework/Grader"/>
+	<classpathentry kind="con" path="WOFramework/Core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
