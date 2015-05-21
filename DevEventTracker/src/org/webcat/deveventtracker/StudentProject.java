@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentProject.java,v 1.2 2015/05/14 02:47:13 jluke13 Exp $
+ |  $Id: StudentProject.java,v 1.3 2015/05/21 08:15:29 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2012 Virginia Tech
  |
@@ -35,7 +35,7 @@ import org.webcat.core.User;
  *
  * @author
  * @author  Last changed by: $Author: jluke13 $
- * @version $Revision: 1.2 $, $Date: 2015/05/14 02:47:13 $
+ * @version $Revision: 1.3 $, $Date: 2015/05/21 08:15:29 $
  */
 public class StudentProject
     extends _StudentProject
@@ -72,4 +72,9 @@ public class StudentProject
 	{
 		return this.students().contains(user);
 	}
+	
+    public String apiId()
+    {
+        return this.uuid();
+    }
 }

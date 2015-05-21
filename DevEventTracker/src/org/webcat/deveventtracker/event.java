@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: event.java,v 1.3 2015/05/04 09:45:08 jluke13 Exp $
+ |  $Id: event.java,v 1.4 2015/05/21 08:15:29 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2014 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXDirectAction;
  *
  * @author  edwards
  * @author  Last changed by $Author: jluke13 $
- * @version $Revision: 1.3 $, $Date: 2015/05/04 09:45:08 $
+ * @version $Revision: 1.4 $, $Date: 2015/05/21 08:15:29 $
  */
 public class event
     extends ERXDirectAction
@@ -180,8 +180,8 @@ public class event
     		if(!foundProject)
     		{
     			//TODO Look up AssignmentOffering
-    			AssignmentOffering offering = null;
-    			createProjectForAssignment(ec, offering.availableFrom(), offering.lateDeadline(), offering);
+    			//AssignmentOffering offering = null;
+    			//createProjectForAssignment(ec, offering.availableFrom(), offering.lateDeadline(), offering);
     		}
 		    ec.saveChanges();
 		    

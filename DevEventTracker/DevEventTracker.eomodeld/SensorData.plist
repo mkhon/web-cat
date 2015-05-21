@@ -29,10 +29,11 @@
     primaryKeyAttributes = (id); 
     relationships = (
         {
+            destination = User; 
             isMandatory = Y; 
             isToMany = N; 
             joinSemantic = EOInnerJoin; 
-            joins = ({sourceAttribute = userId; }); 
+            joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
             name = user; 
         }, 
         {

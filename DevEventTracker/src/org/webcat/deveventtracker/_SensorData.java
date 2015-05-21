@@ -228,7 +228,7 @@ public abstract class _SensorData
             return er.extensions.eof.ERXConstant.ZeroInteger;
         }
     }
-    
+
     // ----------------------------------------------------------
     /**
      * Retrieve this object's <code>commitHash</code> value.
@@ -256,6 +256,7 @@ public abstract class _SensorData
         }
         takeStoredValueForKey( value, "commitHash" );
     }
+
 
     // ----------------------------------------------------------
     /**
@@ -738,7 +739,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -810,7 +811,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return firstObjectMatchingValues(
@@ -901,7 +902,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1011,7 +1012,7 @@ public abstract class _SensorData
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

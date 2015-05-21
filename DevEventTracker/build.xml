@@ -1,5 +1,5 @@
 <project name="DevEventTracker" default="install" basedir=".">
 
-    <import file="../Core/framework.xml"/>
+    <import file="../../../Core/framework.xml"/>
 
 </project>
