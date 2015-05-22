@@ -27,10 +27,8 @@ package org.webcat.deveventtracker;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
-
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
-
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
 import org.webcat.woextensions.WCFetchSpecification;
@@ -985,7 +983,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String) key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1057,7 +1055,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String) key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return firstObjectMatchingValues(
@@ -1148,7 +1146,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String) key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1258,7 +1256,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String) key);
+            valueDictionary.setObjectForKey(value, (String)key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

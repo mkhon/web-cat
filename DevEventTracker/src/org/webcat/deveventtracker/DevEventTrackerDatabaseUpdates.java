@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DevEventTrackerDatabaseUpdates.java,v 1.1 2014/11/21 14:50:27 stedwar2 Exp $
+ |  $Id: DevEventTrackerDatabaseUpdates.java,v 1.2 2015/05/22 06:24:27 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2014 Virginia Tech
  |
@@ -31,8 +31,8 @@ import org.webcat.dbupdate.UpdateSet;
  * underlying the DevEventTracker subsystem and the DevEventTracker.eomodeld.
  *
  * @author  Stephen Edwards
- * @author  Last changed by $Author: stedwar2 $
- * @version $Revision: 1.1 $, $Date: 2014/11/21 14:50:27 $
+ * @author  Last changed by $Author: jluke13 $
+ * @version $Revision: 1.2 $, $Date: 2015/05/22 06:24:27 $
  */
 public class DevEventTrackerDatabaseUpdates
     extends UpdateSet
@@ -67,6 +67,16 @@ public class DevEventTrackerDatabaseUpdates
         createStudentProjectForAssignmentTable();
         createStudentProjectStudentTable();
         createUuidForUserTable();
+    }
+    
+    /**
+     * Adds column for commit hash in SensorData table.
+     * @throws SQLException on error
+     */
+    public void updateIncrement1() throws SQLException
+    {
+        database().executeSQL(
+            "alter table SENSORDATA add commitHash MEDIUMTEXT");
     }
 
 

@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentProject.java,v 1.3 2015/05/21 08:15:29 jluke13 Exp $
+ |  $Id: StudentProject.java,v 1.4 2015/05/22 06:24:27 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2012 Virginia Tech
  |
@@ -29,52 +29,64 @@ import java.io.IOException;
 import org.webcat.core.RepositoryProvider;
 import org.webcat.core.User;
 
+import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.foundation.NSArray;
+
 // -------------------------------------------------------------------------
 /**
  * TODO: place a real description here.
- *
+ * 
  * @author
- * @author  Last changed by: $Author: jluke13 $
- * @version $Revision: 1.3 $, $Date: 2015/05/21 08:15:29 $
+ * @author Last changed by: $Author: jluke13 $
+ * @version $Revision: 1.4 $, $Date: 2015/05/22 06:24:27 $
  */
-public class StudentProject
-    extends _StudentProject
-    implements RepositoryProvider
-{
-    //~ Constructors ..........................................................
+public class StudentProject extends _StudentProject implements
+		RepositoryProvider {
+	// ~ Constructors ..........................................................
 
-    // ----------------------------------------------------------
-    /**
-     * Creates a new StudentProject object.
-     */
-    public StudentProject()
-    {
-        super();
-    }
+	// ----------------------------------------------------------
+	/**
+	 * Creates a new StudentProject object.
+	 */
+	public StudentProject() {
+		super();
+	}
 
-    //~ Methods ...............................................................
+	// ~ Methods ...............................................................
 
 	public void initializeRepositoryContents(File file) throws IOException {
-		File readme = new File(file, "/readme.txt");
-		readme.createNewFile();
-		FileWriter fw = new FileWriter(readme);
-		BufferedWriter out = new BufferedWriter(fw);
-		out.write("This repository is used for storing student code snapshots as they work. There is one repository per Eclipse project they work on");
-		out.flush();
-		out.close();
+		// Not using a readme file for now as it requires an extra pull before
+		// push works.
+		/*
+		 * File readme = new File(file, "/readme.txt"); readme.createNewFile();
+		 * FileWriter fw = new FileWriter(readme); BufferedWriter out = new
+		 * BufferedWriter(fw); out.write(
+		 * "This repository is used for storing student code snapshots as they work. There is one repository per Eclipse project they work on"
+		 * ); out.flush(); out.close();
+		 */
 	}
 
 	public boolean userCanAccessRepository(User user) {
 		return this.accessibleByUser(user);
 	}
-	
-	public boolean accessibleByUser(User user)
-	{
+
+	public boolean accessibleByUser(User user) {
 		return this.students().contains(user);
 	}
-	
-    public String apiId()
-    {
-        return this.uuid();
-    }
+
+	public String apiId() {
+		return this.uuid();
+	}
+
+	public static StudentProject findObjectWithApiId(EOEditingContext ec,
+			String apiId) throws EOUtilities.MoreThanOneException {
+		return StudentProject.uniqueObjectMatchingQualifier(ec,
+				StudentProject.uuid.is(apiId));
+	}
+
+	public static NSArray<User> repositoriesPresentedToUser(User user,
+			EOEditingContext ec) {
+		return NSArray.<User> emptyArray();
+	}
 }

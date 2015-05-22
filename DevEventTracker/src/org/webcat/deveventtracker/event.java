@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: event.java,v 1.4 2015/05/21 08:15:29 jluke13 Exp $
+ |  $Id: event.java,v 1.5 2015/05/22 06:24:27 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2014 Virginia Tech
  |
@@ -45,7 +45,7 @@ import er.extensions.appserver.ERXDirectAction;
  *
  * @author  edwards
  * @author  Last changed by $Author: jluke13 $
- * @version $Revision: 1.4 $, $Date: 2015/05/21 08:15:29 $
+ * @version $Revision: 1.5 $, $Date: 2015/05/22 06:24:27 $
  */
 public class event
     extends ERXDirectAction
@@ -155,9 +155,7 @@ public class event
     		studentProject = StudentProject.create(ec);
     		studentProject.setUri(projectUri);
     		studentProject.setUuid(UUID.randomUUID().toString());
-    		NSMutableArray<User> newStudents = new NSMutableArray<User>();
-    		newStudents.add(user);
-    		studentProject.setStudents(newStudents);
+    		studentProject.addToStudentsRelationship(user);
     		
     		
     		//is there a PFA that has the same user and this uri matches the assignment #/name
@@ -303,14 +301,5 @@ public class event
     	//Match to existing ProjectsForAssignment, create new where necessary.
     	
     	return null;
-    }
-    
-    public  WOActionResults pushAction()
-    {
-    	SensorData associatedEvent = null; //= SensorData.uniqueObjectMatchingQualifier(context, qualifier)
-    	GitRepository repo = GitRepository.repositoryForObject(associatedEvent.project());
-    	SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
-    	page.message = "Snapshot pushed successfully";
-    	return page;
     }
 }
