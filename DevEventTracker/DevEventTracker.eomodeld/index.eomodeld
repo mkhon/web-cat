@@ -3,6 +3,7 @@
     adaptorName = JDBC; 
     connectionDictionary = {}; 
     entities = (
+        {className = "org.webcat.deveventtracker.PluginError"; name = PluginError; }, 
         {
             className = "org.webcat.deveventtracker.ProjectForAssignment"; 
             name = ProjectForAssignment; 
@@ -18,7 +19,7 @@
             name = StudentProject; 
         }, 
         {className = EOGenericRecord; name = StudentProjectForAssignment; }, 
-        {className = EOGenericRecord; name = StudentProjectStudent; }, 
+        {className = EOGenericRecord; name = StudentProjectUuidForUser; }, 
         {className = "org.webcat.deveventtracker.UuidForUser"; name = UuidForUser; }
     ); 
 }

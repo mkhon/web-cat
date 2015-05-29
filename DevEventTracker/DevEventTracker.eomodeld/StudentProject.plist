@@ -1,47 +1,47 @@
 {
     attributes = (
-        {allowsNull = N; name = id; prototypeName = id; },
-        {columnName = uri; name = uri; prototypeName = mediumText; },
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = uri; name = uri; prototypeName = mediumText; }, 
         {columnName = uuid; name = uuid; prototypeName = tinyText; }
-    );
-    attributesUsedForLocking = (id, uri, uuid);
-    className = "org.webcat.deveventtracker.StudentProject";
-    classProperties = (projectsForAssignment, sensorData, students, uri, uuid);
-    externalName = StudentProject;
-    fetchSpecificationDictionary = {};
-    internalInfo = {"_javaClientClassName" = StudentProject; };
-    name = StudentProject;
-    primaryKeyAttributes = (id);
+    ); 
+    attributesUsedForLocking = (id, uri, uuid); 
+    className = "org.webcat.deveventtracker.StudentProject"; 
+    classProperties = (projectsForAssignment, sensorData, studentUuids, uri, uuid); 
+    externalName = StudentProject; 
+    fetchSpecificationDictionary = {}; 
+    internalInfo = {"_javaClientClassName" = StudentProject; }; 
+    name = StudentProject; 
+    primaryKeyAttributes = (id); 
     relationships = (
         {
-            destination = SensorData;
-            isToMany = Y;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = projectId; sourceAttribute = id; });
-            name = sensorData;
-        },
+            destination = SensorData; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = projectId; sourceAttribute = id; }); 
+            name = sensorData; 
+        }, 
         {
-            deleteRule = EODeleteRuleCascade;
-            destination = StudentProjectStudent;
-            isToMany = Y;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = projectId; sourceAttribute = id; });
-            name = projectStudents;
-            propagatesPrimaryKey = Y;
-        },
-        {definition = "projectStudents.student"; name = students; },
+            deleteRule = EODeleteRuleCascade; 
+            destination = StudentProjectForAssignment; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = studentProjectId; sourceAttribute = id; }); 
+            name = studentProjectForAssignments; 
+            propagatesPrimaryKey = Y; 
+        }, 
         {
-            deleteRule = EODeleteRuleCascade;
-            destination = StudentProjectForAssignment;
-            isToMany = Y;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = studentProjectId; sourceAttribute = id; });
-            name = studentProjectForAssignments;
-            propagatesPrimaryKey = Y;
-        },
+            definition = "studentProjectForAssignments.projectForAssignment"; 
+            name = projectsForAssignment; 
+        }, 
         {
-            definition = "studentProjectForAssignments.projectForAssignment";
-            name = projectsForAssignment;
-        }
-    );
+            deleteRule = EODeleteRuleCascade; 
+            destination = StudentProjectUuidForUser; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = studentProjectId; sourceAttribute = id; }); 
+            name = studentProjectUuidForUsers; 
+            propagatesPrimaryKey = Y; 
+        }, 
+        {definition = "studentProjectUuidForUsers.uuidForUser"; name = studentUuids; }
+    ); 
 }

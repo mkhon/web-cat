@@ -1,29 +1,43 @@
 {
     attributes = (
-        {allowsNull = N; name = id; prototypeName = id; },
-        {
-            allowsNull = N;
-            columnName = userId;
-            name = userId;
-            prototypeName = foreignId;
-        },
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = userId; name = userId; prototypeName = foreignId; }, 
         {allowsNull = N; columnName = uuid; name = uuid; prototypeName = tinyText; }
-    );
-    attributesUsedForLocking = (id, user, uuid);
-    className = "org.webcat.deveventtracker.UuidForUser";
-    classProperties = (user, uuid);
-    externalName = UuidForUser;
-    fetchSpecificationDictionary = {};
-    name = UuidForUser;
-    primaryKeyAttributes = (id);
+    ); 
+    attributesUsedForLocking = (id, uuid); 
+    className = "org.webcat.deveventtracker.UuidForUser"; 
+    classProperties = (pluginErrors, studentProjects, user, uuid); 
+    externalName = UuidForUser; 
+    fetchSpecificationDictionary = {}; 
+    name = UuidForUser; 
+    primaryKeyAttributes = (id); 
     relationships = (
         {
-            destination = User;
-            isMandatory = Y;
-            isToMany = N;
-            joinSemantic = EOInnerJoin;
-            joins = ({destinationAttribute = id; sourceAttribute = userId; });
-            name = user;
+            destination = PluginError; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = uuidForUserID; sourceAttribute = id; }); 
+            name = pluginErrors; 
+        }, 
+        {
+            definition = "studentProjectUuidForUsers.studentProject"; 
+            name = studentProjects; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = StudentProjectUuidForUser; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = uuidForUserId; sourceAttribute = id; }); 
+            name = studentProjectUuidForUsers; 
+            propagatesPrimaryKey = Y; 
+        }, 
+        {
+            destination = User; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userId; }); 
+            name = user; 
         }
-    );
+    ); 
 }

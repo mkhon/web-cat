@@ -65,13 +65,11 @@ public abstract class _UuidForUser
      * @param editingContext The context in which the new object will be
      * inserted
      * @param uuidValue
-     * @param userValue
      * @return The newly created object
      */
     public static UuidForUser create(
         EOEditingContext editingContext,
-        String uuidValue,
-        org.webcat.core.User userValue
+        String uuidValue
         )
     {
         UuidForUser eoObject = (UuidForUser)
@@ -79,7 +77,6 @@ public abstract class _UuidForUser
                 editingContext,
                 _UuidForUser.ENTITY_NAME);
         eoObject.setUuid(uuidValue);
-        eoObject.setUserRelationship(userValue);
         return eoObject;
     }
 
@@ -152,6 +149,12 @@ public abstract class _UuidForUser
     public static final ERXKey<org.webcat.core.User> user =
         new ERXKey<org.webcat.core.User>(USER_KEY);
     // To-many relationships ---
+    public static final String PLUGIN_ERRORS_KEY = "pluginErrors";
+    public static final ERXKey<org.webcat.deveventtracker.PluginError> pluginErrors =
+        new ERXKey<org.webcat.deveventtracker.PluginError>(PLUGIN_ERRORS_KEY);
+    public static final String STUDENT_PROJECTS_KEY = "studentProjects";
+    public static final ERXKey<org.webcat.deveventtracker.StudentProject> studentProjects =
+        new ERXKey<org.webcat.deveventtracker.StudentProject>(STUDENT_PROJECTS_KEY);
     // Fetch specifications ---
     public static final String ENTITY_NAME = "UuidForUser";
 
@@ -292,6 +295,362 @@ public abstract class _UuidForUser
         else
         {
             addObjectToBothSidesOfRelationshipWithKey( value, "user" );
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entities pointed to by the <code>pluginErrors</code>
+     * relationship.
+     * @return an NSArray of the entities in the relationship
+     */
+    @SuppressWarnings("unchecked")
+    public NSArray<org.webcat.deveventtracker.PluginError> pluginErrors()
+    {
+        return (NSArray)storedValueForKey( "pluginErrors" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Replace the list of entities pointed to by the
+     * <code>pluginErrors</code> relationship.
+     *
+     * @param value The new set of entities to relate to
+     */
+    public void setPluginErrors( NSMutableArray<org.webcat.deveventtracker.PluginError>  value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setPluginErrors("
+                + value + "): was " + pluginErrors() );
+        }
+        takeStoredValueForKey( value, "pluginErrors" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>pluginErrors</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>addToPluginErrorsRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToPluginErrors( org.webcat.deveventtracker.PluginError value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToPluginErrors("
+                + value + "): was " + pluginErrors() );
+        }
+        NSMutableArray<org.webcat.deveventtracker.PluginError> array =
+            (NSMutableArray<org.webcat.deveventtracker.PluginError>)pluginErrors();
+        willChange();
+        array.addObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>pluginErrors</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>removeFromPluginErrorsRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromPluginErrors( org.webcat.deveventtracker.PluginError value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromPluginErrors("
+                + value + "): was " + pluginErrors() );
+        }
+        NSMutableArray<org.webcat.deveventtracker.PluginError> array =
+            (NSMutableArray<org.webcat.deveventtracker.PluginError>)pluginErrors();
+        willChange();
+        array.removeObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>pluginErrors</code>
+     * relationship.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToPluginErrorsRelationship( org.webcat.deveventtracker.PluginError value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToPluginErrorsRelationship("
+                + value + "): was " + pluginErrors() );
+        }
+        addObjectToBothSidesOfRelationshipWithKey(
+            value, "pluginErrors" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>pluginErrors</code>
+     * relationship.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromPluginErrorsRelationship( org.webcat.deveventtracker.PluginError value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromPluginErrorsRelationship("
+                + value + "): was " + pluginErrors() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "pluginErrors" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create a brand new object that is a member of the
+     * <code>pluginErrors</code> relationship.
+     *
+     * @return The new entity
+     */
+    public org.webcat.deveventtracker.PluginError createPluginErrorsRelationship()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createPluginErrorsRelationship()" );
+        }
+        EOClassDescription eoClassDesc = EOClassDescription
+            .classDescriptionForEntityName( "PluginError" );
+        EOEnterpriseObject eoObject = eoClassDesc
+            .createInstanceWithEditingContext( editingContext(), null );
+        editingContext().insertObject( eoObject );
+        addObjectToBothSidesOfRelationshipWithKey(
+            eoObject, "pluginErrors" );
+        return (org.webcat.deveventtracker.PluginError)eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove and then delete a specific entity that is a member of the
+     * <code>pluginErrors</code> relationship.
+     *
+     * @param value The entity to remove from the relationship and then delete
+     */
+    public void deletePluginErrorsRelationship( org.webcat.deveventtracker.PluginError value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deletePluginErrorsRelationship("
+                + value + "): was " + pluginErrors() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "pluginErrors" );
+        editingContext().deleteObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove (and then delete, if owned) all entities that are members of the
+     * <code>pluginErrors</code> relationship.
+     */
+    public void deleteAllPluginErrorsRelationships()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllPluginErrorsRelationships(): was "
+                + pluginErrors() );
+        }
+        for (org.webcat.deveventtracker.PluginError object : pluginErrors())
+        {
+            deletePluginErrorsRelationship(object);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve the entities pointed to by the <code>studentProjects</code>
+     * relationship.
+     * @return an NSArray of the entities in the relationship
+     */
+    @SuppressWarnings("unchecked")
+    public NSArray<org.webcat.deveventtracker.StudentProject> studentProjects()
+    {
+        return (NSArray)storedValueForKey( "studentProjects" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Replace the list of entities pointed to by the
+     * <code>studentProjects</code> relationship.
+     *
+     * @param value The new set of entities to relate to
+     */
+    public void setStudentProjects( NSMutableArray<org.webcat.deveventtracker.StudentProject>  value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "setStudentProjects("
+                + value + "): was " + studentProjects() );
+        }
+        takeStoredValueForKey( value, "studentProjects" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>studentProjects</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>addToStudentProjectsRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToStudentProjects( org.webcat.deveventtracker.StudentProject value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToStudentProjects("
+                + value + "): was " + studentProjects() );
+        }
+        NSMutableArray<org.webcat.deveventtracker.StudentProject> array =
+            (NSMutableArray<org.webcat.deveventtracker.StudentProject>)studentProjects();
+        willChange();
+        array.addObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>studentProjects</code>
+     * relationship (DO NOT USE--instead, use
+     * <code>removeFromStudentProjectsRelationship()</code>.
+     * This method is provided for WebObjects use.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromStudentProjects( org.webcat.deveventtracker.StudentProject value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "RemoveFromStudentProjects("
+                + value + "): was " + studentProjects() );
+        }
+        NSMutableArray<org.webcat.deveventtracker.StudentProject> array =
+            (NSMutableArray<org.webcat.deveventtracker.StudentProject>)studentProjects();
+        willChange();
+        array.removeObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Add a new entity to the <code>studentProjects</code>
+     * relationship.
+     *
+     * @param value The new entity to relate to
+     */
+    public void addToStudentProjectsRelationship( org.webcat.deveventtracker.StudentProject value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "addToStudentProjectsRelationship("
+                + value + "): was " + studentProjects() );
+        }
+        addObjectToBothSidesOfRelationshipWithKey(
+            value, "studentProjects" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove a specific entity from the <code>studentProjects</code>
+     * relationship.
+     *
+     * @param value The entity to remove from the relationship
+     */
+    public void removeFromStudentProjectsRelationship( org.webcat.deveventtracker.StudentProject value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "removeFromStudentProjectsRelationship("
+                + value + "): was " + studentProjects() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "studentProjects" );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Create a brand new object that is a member of the
+     * <code>studentProjects</code> relationship.
+     *
+     * @return The new entity
+     */
+    public org.webcat.deveventtracker.StudentProject createStudentProjectsRelationship()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "createStudentProjectsRelationship()" );
+        }
+        EOClassDescription eoClassDesc = EOClassDescription
+            .classDescriptionForEntityName( "StudentProject" );
+        EOEnterpriseObject eoObject = eoClassDesc
+            .createInstanceWithEditingContext( editingContext(), null );
+        editingContext().insertObject( eoObject );
+        addObjectToBothSidesOfRelationshipWithKey(
+            eoObject, "studentProjects" );
+        return (org.webcat.deveventtracker.StudentProject)eoObject;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove and then delete a specific entity that is a member of the
+     * <code>studentProjects</code> relationship.
+     *
+     * @param value The entity to remove from the relationship and then delete
+     */
+    public void deleteStudentProjectsRelationship( org.webcat.deveventtracker.StudentProject value )
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteStudentProjectsRelationship("
+                + value + "): was " + studentProjects() );
+        }
+        removeObjectFromBothSidesOfRelationshipWithKey(
+            value, "studentProjects" );
+        editingContext().deleteObject( value );
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Remove (and then delete, if owned) all entities that are members of the
+     * <code>studentProjects</code> relationship.
+     */
+    public void deleteAllStudentProjectsRelationships()
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug( "deleteAllStudentProjectsRelationships(): was "
+                + studentProjects() );
+        }
+        for (org.webcat.deveventtracker.StudentProject object : studentProjects())
+        {
+            deleteStudentProjectsRelationship(object);
         }
     }
 
@@ -478,7 +837,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -550,7 +909,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return firstObjectMatchingValues(
@@ -641,7 +1000,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -751,7 +1110,7 @@ public abstract class _UuidForUser
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

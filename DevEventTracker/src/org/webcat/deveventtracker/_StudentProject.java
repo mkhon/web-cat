@@ -152,9 +152,9 @@ public abstract class _StudentProject
     public static final String SENSOR_DATA_KEY = "sensorData";
     public static final ERXKey<org.webcat.deveventtracker.SensorData> sensorData =
         new ERXKey<org.webcat.deveventtracker.SensorData>(SENSOR_DATA_KEY);
-    public static final String STUDENTS_KEY = "students";
-    public static final ERXKey<org.webcat.core.User> students =
-        new ERXKey<org.webcat.core.User>(STUDENTS_KEY);
+    public static final String STUDENT_UUIDS_KEY = "studentUuids";
+    public static final ERXKey<org.webcat.deveventtracker.UuidForUser> studentUuids =
+        new ERXKey<org.webcat.deveventtracker.UuidForUser>(STUDENT_UUIDS_KEY);
     // Fetch specifications ---
     public static final String ENTITY_NAME = "StudentProject";
 
@@ -625,53 +625,53 @@ public abstract class _StudentProject
 
     // ----------------------------------------------------------
     /**
-     * Retrieve the entities pointed to by the <code>students</code>
+     * Retrieve the entities pointed to by the <code>studentUuids</code>
      * relationship.
      * @return an NSArray of the entities in the relationship
      */
     @SuppressWarnings("unchecked")
-    public NSArray<org.webcat.core.User> students()
+    public NSArray<org.webcat.deveventtracker.UuidForUser> studentUuids()
     {
-        return (NSArray)storedValueForKey( "students" );
+        return (NSArray)storedValueForKey( "studentUuids" );
     }
 
 
     // ----------------------------------------------------------
     /**
      * Replace the list of entities pointed to by the
-     * <code>students</code> relationship.
+     * <code>studentUuids</code> relationship.
      *
      * @param value The new set of entities to relate to
      */
-    public void setStudents( NSMutableArray<org.webcat.core.User>  value )
+    public void setStudentUuids( NSMutableArray<org.webcat.deveventtracker.UuidForUser>  value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "setStudents("
-                + value + "): was " + students() );
+            log.debug( "setStudentUuids("
+                + value + "): was " + studentUuids() );
         }
-        takeStoredValueForKey( value, "students" );
+        takeStoredValueForKey( value, "studentUuids" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Add a new entity to the <code>students</code>
+     * Add a new entity to the <code>studentUuids</code>
      * relationship (DO NOT USE--instead, use
-     * <code>addToStudentsRelationship()</code>.
+     * <code>addToStudentUuidsRelationship()</code>.
      * This method is provided for WebObjects use.
      *
      * @param value The new entity to relate to
      */
-    public void addToStudents( org.webcat.core.User value )
+    public void addToStudentUuids( org.webcat.deveventtracker.UuidForUser value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "addToStudents("
-                + value + "): was " + students() );
+            log.debug( "addToStudentUuids("
+                + value + "): was " + studentUuids() );
         }
-        NSMutableArray<org.webcat.core.User> array =
-            (NSMutableArray<org.webcat.core.User>)students();
+        NSMutableArray<org.webcat.deveventtracker.UuidForUser> array =
+            (NSMutableArray<org.webcat.deveventtracker.UuidForUser>)studentUuids();
         willChange();
         array.addObject( value );
     }
@@ -679,22 +679,22 @@ public abstract class _StudentProject
 
     // ----------------------------------------------------------
     /**
-     * Remove a specific entity from the <code>students</code>
+     * Remove a specific entity from the <code>studentUuids</code>
      * relationship (DO NOT USE--instead, use
-     * <code>removeFromStudentsRelationship()</code>.
+     * <code>removeFromStudentUuidsRelationship()</code>.
      * This method is provided for WebObjects use.
      *
      * @param value The entity to remove from the relationship
      */
-    public void removeFromStudents( org.webcat.core.User value )
+    public void removeFromStudentUuids( org.webcat.deveventtracker.UuidForUser value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "RemoveFromStudents("
-                + value + "): was " + students() );
+            log.debug( "RemoveFromStudentUuids("
+                + value + "): was " + studentUuids() );
         }
-        NSMutableArray<org.webcat.core.User> array =
-            (NSMutableArray<org.webcat.core.User>)students();
+        NSMutableArray<org.webcat.deveventtracker.UuidForUser> array =
+            (NSMutableArray<org.webcat.deveventtracker.UuidForUser>)studentUuids();
         willChange();
         array.removeObject( value );
     }
@@ -702,82 +702,82 @@ public abstract class _StudentProject
 
     // ----------------------------------------------------------
     /**
-     * Add a new entity to the <code>students</code>
+     * Add a new entity to the <code>studentUuids</code>
      * relationship.
      *
      * @param value The new entity to relate to
      */
-    public void addToStudentsRelationship( org.webcat.core.User value )
+    public void addToStudentUuidsRelationship( org.webcat.deveventtracker.UuidForUser value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "addToStudentsRelationship("
-                + value + "): was " + students() );
+            log.debug( "addToStudentUuidsRelationship("
+                + value + "): was " + studentUuids() );
         }
         addObjectToBothSidesOfRelationshipWithKey(
-            value, "students" );
+            value, "studentUuids" );
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Remove a specific entity from the <code>students</code>
+     * Remove a specific entity from the <code>studentUuids</code>
      * relationship.
      *
      * @param value The entity to remove from the relationship
      */
-    public void removeFromStudentsRelationship( org.webcat.core.User value )
+    public void removeFromStudentUuidsRelationship( org.webcat.deveventtracker.UuidForUser value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "removeFromStudentsRelationship("
-                + value + "): was " + students() );
+            log.debug( "removeFromStudentUuidsRelationship("
+                + value + "): was " + studentUuids() );
         }
         removeObjectFromBothSidesOfRelationshipWithKey(
-            value, "students" );
+            value, "studentUuids" );
     }
 
 
     // ----------------------------------------------------------
     /**
      * Create a brand new object that is a member of the
-     * <code>students</code> relationship.
+     * <code>studentUuids</code> relationship.
      *
      * @return The new entity
      */
-    public org.webcat.core.User createStudentsRelationship()
+    public org.webcat.deveventtracker.UuidForUser createStudentUuidsRelationship()
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "createStudentsRelationship()" );
+            log.debug( "createStudentUuidsRelationship()" );
         }
         EOClassDescription eoClassDesc = EOClassDescription
-            .classDescriptionForEntityName( "User" );
+            .classDescriptionForEntityName( "UuidForUser" );
         EOEnterpriseObject eoObject = eoClassDesc
             .createInstanceWithEditingContext( editingContext(), null );
         editingContext().insertObject( eoObject );
         addObjectToBothSidesOfRelationshipWithKey(
-            eoObject, "students" );
-        return (org.webcat.core.User)eoObject;
+            eoObject, "studentUuids" );
+        return (org.webcat.deveventtracker.UuidForUser)eoObject;
     }
 
 
     // ----------------------------------------------------------
     /**
      * Remove and then delete a specific entity that is a member of the
-     * <code>students</code> relationship.
+     * <code>studentUuids</code> relationship.
      *
      * @param value The entity to remove from the relationship and then delete
      */
-    public void deleteStudentsRelationship( org.webcat.core.User value )
+    public void deleteStudentUuidsRelationship( org.webcat.deveventtracker.UuidForUser value )
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "deleteStudentsRelationship("
-                + value + "): was " + students() );
+            log.debug( "deleteStudentUuidsRelationship("
+                + value + "): was " + studentUuids() );
         }
         removeObjectFromBothSidesOfRelationshipWithKey(
-            value, "students" );
+            value, "studentUuids" );
         editingContext().deleteObject( value );
     }
 
@@ -785,18 +785,18 @@ public abstract class _StudentProject
     // ----------------------------------------------------------
     /**
      * Remove (and then delete, if owned) all entities that are members of the
-     * <code>students</code> relationship.
+     * <code>studentUuids</code> relationship.
      */
-    public void deleteAllStudentsRelationships()
+    public void deleteAllStudentUuidsRelationships()
     {
         if (log.isDebugEnabled())
         {
-            log.debug( "deleteAllStudentsRelationships(): was "
-                + students() );
+            log.debug( "deleteAllStudentUuidsRelationships(): was "
+                + studentUuids() );
         }
-        for (org.webcat.core.User object : students())
+        for (org.webcat.deveventtracker.UuidForUser object : studentUuids())
         {
-            deleteStudentsRelationship(object);
+            deleteStudentUuidsRelationship(object);
         }
     }
 
@@ -983,7 +983,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1055,7 +1055,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return firstObjectMatchingValues(
@@ -1146,7 +1146,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1256,7 +1256,7 @@ public abstract class _StudentProject
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, (String)key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

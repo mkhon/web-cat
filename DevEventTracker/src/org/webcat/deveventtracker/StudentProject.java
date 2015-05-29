@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentProject.java,v 1.4 2015/05/22 06:24:27 jluke13 Exp $
+ |  $Id: StudentProject.java,v 1.5 2015/05/29 03:54:08 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2012 Virginia Tech
  |
@@ -29,7 +29,9 @@ import java.io.IOException;
 import org.webcat.core.RepositoryProvider;
 import org.webcat.core.User;
 
+import com.webobjects.appserver.WORequest;
 import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eoaccess.EOUtilities.MoreThanOneException;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
 
@@ -39,7 +41,7 @@ import com.webobjects.foundation.NSArray;
  * 
  * @author
  * @author Last changed by: $Author: jluke13 $
- * @version $Revision: 1.4 $, $Date: 2015/05/22 06:24:27 $
+ * @version $Revision: 1.5 $, $Date: 2015/05/29 03:54:08 $
  */
 public class StudentProject extends _StudentProject implements
 		RepositoryProvider {
@@ -65,6 +67,8 @@ public class StudentProject extends _StudentProject implements
 		 * "This repository is used for storing student code snapshots as they work. There is one repository per Eclipse project they work on"
 		 * ); out.flush(); out.close();
 		 */
+		File readme = new File(file, "readme.txt");
+		readme.delete();
 	}
 
 	public boolean userCanAccessRepository(User user) {
@@ -72,7 +76,25 @@ public class StudentProject extends _StudentProject implements
 	}
 
 	public boolean accessibleByUser(User user) {
-		return this.students().contains(user);
+		// Check if user is listed as a student for this project.
+		NSArray<UuidForUser> uuidsForUser = this.studentUuids();
+		for (UuidForUser uuid : uuidsForUser)
+		{
+			if (uuid.user().equals(user))
+			{
+				return true;
+			}
+		}
+		// Check if user is staff for an assignment associated with this project.
+		NSArray<ProjectForAssignment> projectsForAssignment = this.projectsForAssignment();
+		for (ProjectForAssignment project : projectsForAssignment)
+		{
+			if(user.staffFor().contains(project.assignmentOffering().courseOffering()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public String apiId() {
@@ -80,7 +102,7 @@ public class StudentProject extends _StudentProject implements
 	}
 
 	public static StudentProject findObjectWithApiId(EOEditingContext ec,
-			String apiId) throws EOUtilities.MoreThanOneException {
+			String apiId) throws MoreThanOneException {
 		return StudentProject.uniqueObjectMatchingQualifier(ec,
 				StudentProject.uuid.is(apiId));
 	}
@@ -88,5 +110,21 @@ public class StudentProject extends _StudentProject implements
 	public static NSArray<User> repositoriesPresentedToUser(User user,
 			EOEditingContext ec) {
 		return NSArray.<User> emptyArray();
+	}
+
+	public User authorizedUserForRepository(EOEditingContext ec, String altUsername,
+			String altPassword) {
+		if (this.uuid().equals(altPassword)) {
+			UuidForUser uuidForUser = UuidForUser
+					.uniqueObjectMatchingQualifier(ec,
+							UuidForUser.uuid.is(altUsername));
+			if (uuidForUser != null) {
+				User user = uuidForUser.user();
+				if (this.userCanAccessRepository(user)) {
+					return user;
+				}
+			}
+		}
+		return null;
 	}
 }
