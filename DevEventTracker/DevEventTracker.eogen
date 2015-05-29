@@ -4,7 +4,7 @@
  -javaTemplate JavaSourceEOF52.eotemplate \
  -model DevEventTracker.eomodeld \
  -packagedirs \
- -refmodel ../EOJDBCPrototypes/EOJDBCPrototypes.eomodeld \
+ -refmodel /Library/Frameworks/EOJDBCPrototypes.framework/Resources/EOJDBCPrototypes.eomodeld \
  -refmodel ../Core/Core.eomodeld \
  -refmodel ../Grader/Grader.eomodeld \
  -subclassDestination src \

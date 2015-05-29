@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: DevEventTrackerDatabaseUpdates.java,v 1.3 2015/05/29 03:54:08 jluke13 Exp $
+ |  $Id: DevEventTrackerDatabaseUpdates.java,v 1.4 2015/05/29 18:47:55 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2014 Virginia Tech
  |
@@ -30,8 +30,9 @@ import org.webcat.dbupdate.UpdateSet;
  * underlying the DevEventTracker subsystem and the DevEventTracker.eomodeld.
  * 
  * @author Stephen Edwards
+ * @author Joseph Luke
  * @author Last changed by $Author: jluke13 $
- * @version $Revision: 1.3 $, $Date: 2015/05/29 03:54:08 $
+ * @version $Revision: 1.4 $, $Date: 2015/05/29 18:47:55 $
  */
 public class DevEventTrackerDatabaseUpdates extends UpdateSet {
 	// ~ Constructors ..........................................................

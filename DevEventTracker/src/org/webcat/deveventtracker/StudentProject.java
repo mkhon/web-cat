@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: StudentProject.java,v 1.5 2015/05/29 03:54:08 jluke13 Exp $
+ |  $Id: StudentProject.java,v 1.6 2015/05/29 18:47:55 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2012 Virginia Tech
  |
@@ -41,7 +41,7 @@ import com.webobjects.foundation.NSArray;
  * 
  * @author
  * @author Last changed by: $Author: jluke13 $
- * @version $Revision: 1.5 $, $Date: 2015/05/29 03:54:08 $
+ * @version $Revision: 1.6 $, $Date: 2015/05/29 18:47:55 $
  */
 public class StudentProject extends _StudentProject implements
 		RepositoryProvider {
@@ -112,6 +112,7 @@ public class StudentProject extends _StudentProject implements
 		return NSArray.<User> emptyArray();
 	}
 
+	
 	public User authorizedUserForRepository(EOEditingContext ec, String altUsername,
 			String altPassword) {
 		if (this.uuid().equals(altPassword)) {

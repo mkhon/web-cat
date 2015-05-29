@@ -8,7 +8,6 @@
     className = "org.webcat.deveventtracker.StudentProject"; 
     classProperties = (projectsForAssignment, sensorData, studentUuids, uri, uuid); 
     externalName = StudentProject; 
-    fetchSpecificationDictionary = {}; 
     internalInfo = {"_javaClientClassName" = StudentProject; }; 
     name = StudentProject; 
     primaryKeyAttributes = (id); 

@@ -27,8 +27,10 @@ package org.webcat.deveventtracker;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
+
 import er.extensions.eof.ERXEOControlUtilities;
 import er.extensions.eof.ERXKey;
+
 import org.apache.log4j.Logger;
 import org.webcat.core.EOBasedKeyGenerator;
 import org.webcat.woextensions.WCFetchSpecification;
@@ -156,6 +158,7 @@ public abstract class _StudentProject
     public static final ERXKey<org.webcat.deveventtracker.UuidForUser> studentUuids =
         new ERXKey<org.webcat.deveventtracker.UuidForUser>(STUDENT_UUIDS_KEY);
     // Fetch specifications ---
+    public static final String FOR_USER_UUID_FSPEC = "forUserUuid";
     public static final String ENTITY_NAME = "StudentProject";
 
     public transient final EOBasedKeyGenerator generateKey =
@@ -1279,6 +1282,52 @@ public abstract class _StudentProject
     {
         return countOfObjectsMatchingQualifier(context,
                 EOQualifier.qualifierToMatchAllValues(keysAndValues));
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Retrieve objects according to the <code>forUserUuid</code>
+     * fetch specification.
+     *
+     * @param context The editing context to use
+     * @param uriBinding fetch spec parameter
+     * @param uuidBinding fetch spec parameter
+     * @return an NSArray of the entities retrieved
+     */
+    public static NSArray<StudentProject> forUserUuid(
+            EOEditingContext context,
+            String uriBinding,
+            org.webcat.deveventtracker.UuidForUser uuidBinding)
+    {
+        EOFetchSpecification spec = WCFetchSpecification
+            .fetchSpecificationNamed("forUserUuid", "StudentProject");
+
+        NSMutableDictionary<String, Object> bindings =
+            new NSMutableDictionary<String, Object>();
+
+        if (uriBinding != null)
+        {
+            bindings.setObjectForKey(uriBinding,
+                                     "uri");
+        }
+        if (uuidBinding != null)
+        {
+            bindings.setObjectForKey(uuidBinding,
+                                     "uuid");
+        }
+        spec = spec.fetchSpecificationWithQualifierBindings(bindings);
+
+        NSArray<StudentProject> objects =
+            objectsWithFetchSpecification(context, spec);
+        if (log.isDebugEnabled())
+        {
+            log.debug("forUserUuid(ec"
+                + ", " + uriBinding
+                + ", " + uuidBinding
+                + "): " + objects);
+        }
+        return objects;
     }
 
 

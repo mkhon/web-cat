@@ -1,5 +1,5 @@
 /*==========================================================================*\
- |  $Id: event.java,v 1.6 2015/05/29 03:54:08 jluke13 Exp $
+ |  $Id: event.java,v 1.7 2015/05/29 18:47:55 jluke13 Exp $
  |*-------------------------------------------------------------------------*|
  |  Copyright (C) 2014 Virginia Tech
  |
@@ -25,6 +25,8 @@ import java.util.UUID;
 
 import org.webcat.core.AuthenticationDomain;
 import org.webcat.core.Course;
+import org.webcat.core.CourseOffering;
+import org.webcat.core.Semester;
 import org.webcat.core.User;
 import org.webcat.grader.Assignment;
 import org.webcat.grader.AssignmentOffering;
@@ -44,8 +46,9 @@ import er.extensions.appserver.ERXDirectAction;
  * This direct action class handles all response actions for this subsystem.
  * 
  * @author edwards
+ * @author Joseph Luke
  * @author Last changed by $Author: jluke13 $
- * @version $Revision: 1.6 $, $Date: 2015/05/29 03:54:08 $
+ * @version $Revision: 1.7 $, $Date: 2015/05/29 18:47:55 $
  */
 public class event extends ERXDirectAction {
 
@@ -92,8 +95,9 @@ public class event extends ERXDirectAction {
 		// associated user,
 		// then fill the user in later (via confirmUUID action).
 		if (email == null || email.equals("")) {
-			UuidForUser noUserUuid = UuidForUser.create(ec, UUID.randomUUID().toString());
-			
+			UuidForUser noUserUuid = UuidForUser.create(ec, UUID.randomUUID()
+					.toString());
+
 			RetrieveUserResponse page = pageWithName(RetrieveUserResponse.class);
 			page.uuid = noUserUuid.uuid();
 			return page;
@@ -155,15 +159,18 @@ public class event extends ERXDirectAction {
 			page.message = "No UuidForUser found for that UUID.";
 			return page;
 		}
-
-		StudentProject studentProject = StudentProject
-				.uniqueObjectMatchingQualifier(
-						ec,
-						StudentProject.uri.is(projectUri).and(
-								StudentProject.studentUuids.is(uuidForUser)));
-
+		/*
+		 * NSArray<StudentProject> studentProjects =
+		 * StudentProject.forUserUuid(ec, projectUri, uuidForUser);
+		 * StudentProject studentProject = null; if(studentProjects.size() > 0)
+		 * { studentProject = studentProjects.get(0); }
+		 */
+		NSArray<StudentProject> studentProjects = StudentProject
+				.objectsMatchingQualifier(ec, StudentProject.uri.is(projectUri)
+						.and(StudentProject.studentUuids.is(uuidForUser)));
 		// No StudentProject that matches both the projectUri and the userUuid
-		if (studentProject == null) {
+		StudentProject studentProject;
+		if (studentProjects.size() > 0) {
 			studentProject = StudentProject.create(ec);
 			studentProject.setUri(projectUri);
 			studentProject.setUuid(UUID.randomUUID().toString());
@@ -173,21 +180,29 @@ public class event extends ERXDirectAction {
 
 			// Create a new repository for this student project.
 			GitRepository.repositoryForObject(studentProject);
+		} else {
+			// TODO there needs to be tracking/check here to deal with same
+			// projectUri for same user on different computers/Eclipse
+			// installations.
+			studentProject = studentProjects.get(0);
+		}
+
+		Boolean userInActiveCourse = false;
+
+		User user = uuidForUser.user();
+		if (user != null) {
+			NSArray<CourseOffering> offeringsForUser = user.enrolledIn();
+			for (CourseOffering co : offeringsForUser) {
+				if (co.semester().semesterEndDate().after(new NSTimestamp())) {
+					userInActiveCourse = true;
+					break;
+				}
+			}
 		}
 		RetrieveStudentProjectResponse page = pageWithName(RetrieveStudentProjectResponse.class);
 		page.uuid = studentProject.uuid();
+		page.pushLogs = userInActiveCourse.toString();
 		return page;
-	}
-
-	private String normalizeName(String name) {
-		String normalizedName = "";
-		for (char c : name.toCharArray()) {
-			if ((Character.isLetter(c) && normalizedName.equals(""))
-					|| Character.isDigit(c)) {
-				normalizedName += c;
-			}
-		}
-		return normalizedName;
 	}
 
 	/**
@@ -233,7 +248,7 @@ public class event extends ERXDirectAction {
 			page.message = "No user found for that UUID.";
 			return page;
 		}
-		
+
 		// Look up StudentProject from the given UUID.
 		StudentProject studentProject = StudentProject
 				.uniqueObjectMatchingQualifier(ec,
@@ -272,11 +287,13 @@ public class event extends ERXDirectAction {
 	}
 
 	/**
-	 * Given that a submission happened for the given user for the given project,
-	 * look up the most recent submission for that user in the db and
-	 * create a ProjectForAssignment linking this StudentProject to the AssignmentOffering
-	 * (unless there already is a PFA doing this).
-	 * @return The page indicating success or failure for creating a new ProjectForAssignment.
+	 * Given that a submission happened for the given user for the given
+	 * project, look up the most recent submission for that user in the db and
+	 * create a ProjectForAssignment linking this StudentProject to the
+	 * AssignmentOffering (unless there already is a PFA doing this).
+	 * 
+	 * @return The page indicating success or failure for creating a new
+	 *         ProjectForAssignment.
 	 */
 	public WOActionResults submissionHappenedAction() {
 		EOEditingContext ec = session().defaultEditingContext();
@@ -289,8 +306,7 @@ public class event extends ERXDirectAction {
 
 		UuidForUser uuidForUser = UuidForUser.uniqueObjectMatchingQualifier(ec,
 				UuidForUser.uuid.is(userUuid));
-		if (uuidForUser == null)
-		{
+		if (uuidForUser == null) {
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "No user found for that UUID.";
 			return page;
@@ -299,8 +315,7 @@ public class event extends ERXDirectAction {
 
 		Submission latestSubmission = Submission.firstObjectMatchingQualifier(
 				ec, Submission.user.is(user), Submission.submitTime.descs());
-		if (latestSubmission == null)
-		{
+		if (latestSubmission == null) {
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "No submissions found for that user.";
 			return page;
@@ -309,19 +324,18 @@ public class event extends ERXDirectAction {
 
 		StudentProject project = StudentProject.uniqueObjectMatchingQualifier(
 				ec, StudentProject.uuid.is(studentProjectUuid));
-		if (project == null)
-		{
+		if (project == null) {
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "No StudentProject found for that UUID.";
 			return page;
 		}
-		// If there is a PFA associated with this StudentProject that matches the
+		// If there is a PFA associated with this StudentProject that matches
+		// the
 		// given User and AssignmentOffering, we don't need to create one.
 		NSArray<ProjectForAssignment> pfas = project.projectsForAssignment();
-		for (ProjectForAssignment p : pfas)
-		{
-			if(p.students().contains(user) && p.assignmentOffering().equals(offering))
-			{
+		for (ProjectForAssignment p : pfas) {
+			if (p.students().contains(user)
+					&& p.assignmentOffering().equals(offering)) {
 				SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 				page.message = "StudentProject already part of the correct ProjectForAssignment.";
 				return page;
@@ -341,10 +355,11 @@ public class event extends ERXDirectAction {
 	}
 
 	/**
-	 * Given an email and a user UUID, checks to see if the given UUID corresponds
-	 * to a null user, and reassociates it with the User from the email if so.
-	 * This rematches all StudentProjects associated with the old user UUID with
-	 * the new one if necessary.
+	 * Given an email and a user UUID, checks to see if the given UUID
+	 * corresponds to a null user, and reassociates it with the User from the
+	 * email if so. This rematches all StudentProjects associated with the old
+	 * user UUID with the new one if necessary.
+	 * 
 	 * @return The page indicating success or failure for the confirmation.
 	 */
 	public WOActionResults confirmUuidAction() {
@@ -381,8 +396,7 @@ public class event extends ERXDirectAction {
 				NSArray<StudentProject> projects = StudentProject
 						.objectsMatchingQualifier(ec,
 								StudentProject.studentUuids.is(oldUuidForUser));
-				for (StudentProject p : projects)
-				{
+				for (StudentProject p : projects) {
 					p.removeFromStudentUuidsRelationship(oldUuidForUser);
 					oldUuidForUser.delete();
 					p.addToStudentUuidsRelationship(uuidForConfirmedUser);
@@ -393,11 +407,12 @@ public class event extends ERXDirectAction {
 				page.uuid = uuidForConfirmedUser.uuid();
 				return page;
 			}
-			// If the user with the given email does not have an associated UUID, we 
+			// If the user with the given email does not have an associated
+			// UUID, we
 			// need to create one and return it.
-			else if(uuidForConfirmedUser == null)
-			{
-				UuidForUser newUuidForUser = UuidForUser.create(ec, UUID.randomUUID().toString());
+			else if (uuidForConfirmedUser == null) {
+				UuidForUser newUuidForUser = UuidForUser.create(ec, UUID
+						.randomUUID().toString());
 				newUuidForUser.setUserRelationship(user);
 				ec.saveChanges();
 
@@ -405,7 +420,8 @@ public class event extends ERXDirectAction {
 				page.uuid = newUuidForUser.uuid();
 				return page;
 			}
-			// We should never get here, as it's the same case as the else below.
+			// We should never get here, as it's the same case as the else
+			// below.
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "This UUID is already associated with a user.";
 			return page;
@@ -416,17 +432,25 @@ public class event extends ERXDirectAction {
 		}
 	}
 
+	/**
+	 * Given a projectUri, user UUID, and assignmentName that a user has
+	 * downloaded, create the StudentProject and associate it with a
+	 * ProjectForAssignment for the appropriate assignment.
+	 * 
+	 * @return The page with the studentProject UUID generated, or a failure
+	 *         message.
+	 */
 	public WOActionResults projectDownloadAction() {
 		EOEditingContext ec = session().defaultEditingContext();
 		WORequest request = request();
-		
+
 		// Get parameters
 		String projectUri = request.stringFormValueForKey("projectUri");
 		String userUuid = request.stringFormValueForKey("userUuid");
 		String assignmentName = request.stringFormValueForKey("assignmentName");
-		String courseName = request.stringFormValueForKey("courseName");
-		
-		UuidForUser uuidForUser = UuidForUser.uniqueObjectMatchingQualifier(ec, UuidForUser.uuid.is(userUuid));
+
+		UuidForUser uuidForUser = UuidForUser.uniqueObjectMatchingQualifier(ec,
+				UuidForUser.uuid.is(userUuid));
 		if (uuidForUser == null) {
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "No UuidForUser found for that Uuid.";
@@ -438,38 +462,36 @@ public class event extends ERXDirectAction {
 			page.message = "No user found for that UUID.";
 			return page;
 		}
-		
-		Assignment assignment = Assignment.uniqueObjectMatchingQualifier(ec, Assignment.name.is(assignmentName));
-		if(assignment == null)
-		{
+
+		Assignment assignment = Assignment.uniqueObjectMatchingQualifier(ec,
+				Assignment.name.is(assignmentName));
+		if (assignment == null) {
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "No Assignment found for that name.";
 			return page;
 		}
 		AssignmentOffering offering = assignment.offeringForUser(user);
-		
-		if(offering == null)
-		{
+
+		if (offering == null) {
 			SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 			page.message = "No AssignmentOffering found for that user and assignment name.";
 			return page;
 		}
-		
-		StudentProject studentProject = StudentProject.uniqueObjectMatchingQualifier(ec, StudentProject.studentUuids.is(uuidForUser).and(StudentProject.uri.is(projectUri)));
-		if(studentProject == null)
-		{
+
+		StudentProject studentProject = StudentProject
+				.uniqueObjectMatchingQualifier(ec, StudentProject.studentUuids
+						.is(uuidForUser).and(StudentProject.uri.is(projectUri)));
+		if (studentProject == null) {
 			studentProject = StudentProject.create(ec);
 			studentProject.setUri(projectUri);
 			studentProject.setUuid(UUID.randomUUID().toString());
 			studentProject.addToStudentUuidsRelationship(uuidForUser);
-		}
-		else
-		{
-			NSArray<ProjectForAssignment> pfas = studentProject.projectsForAssignment();
-			for (ProjectForAssignment p : pfas)
-			{
-				if(p.students().contains(user) && p.assignmentOffering().equals(offering))
-				{
+		} else {
+			NSArray<ProjectForAssignment> pfas = studentProject
+					.projectsForAssignment();
+			for (ProjectForAssignment p : pfas) {
+				if (p.students().contains(user)
+						&& p.assignmentOffering().equals(offering)) {
 					SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 					page.message = "StudentProject already part of the correct ProjectForAssignment.";
 					return page;
@@ -483,39 +505,54 @@ public class event extends ERXDirectAction {
 		pfa.addToStudentProjectsRelationship(studentProject);
 		pfa.setStart(offering.availableFrom());
 		pfa.setEnd(offering.lateDeadline());
-		
+
 		ec.saveChanges();
 		SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 		page.message = "Starter project stored in database.";
 		return page;
 	}
-	
+
+	/**
+	 * Given parameters for an exception that occurred in the plugin, record
+	 * those parameters for future debugging.
+	 * 
+	 * @return The page indicating success.
+	 */
 	public WOActionResults pluginExceptionHappenedAction() {
 		EOEditingContext ec = session().defaultEditingContext();
 		WORequest request = request();
-		
-		//Get parameters
+
+		// Get parameters
 		String userUuid = request.stringFormValueForKey("userUuid");
 		String exceptionClass = request.stringFormValueForKey("exceptionClass");
-		String exceptionMessage = request.stringFormValueForKey("exceptionMessage");
+		String exceptionMessage = request
+				.stringFormValueForKey("exceptionMessage");
 		String className = request.stringFormValueForKey("className");
 		String methodName = request.stringFormValueForKey("methodName");
 		String fileName = request.stringFormValueForKey("fileName");
 		String lineNumber = request.stringFormValueForKey("lineNumber");
 		String stackTrace = request.stringFormValueForKey("stackTrace");
-		
-		UuidForUser uuidForUser = UuidForUser.uniqueObjectMatchingQualifier(ec, UuidForUser.uuid.is(userUuid));
-		
+
+		UuidForUser uuidForUser = UuidForUser.uniqueObjectMatchingQualifier(ec,
+				UuidForUser.uuid.is(userUuid));
+
 		PluginError error = PluginError.create(ec);
-		error.setExceptionClass(exceptionClass);
-		error.setExceptionMessage(exceptionMessage);
-		error.setClassName(className);
-		error.setMethodName(methodName);
-		error.setFileName(fileName);
-		error.setLineNumber(Integer.parseInt(lineNumber));
-		error.setStackTrace(stackTrace);
+		if (exceptionClass != null)
+			error.setExceptionClass(exceptionClass);
+		if (exceptionMessage != null)
+			error.setExceptionMessage(exceptionMessage);
+		if (className != null)
+			error.setClassName(className);
+		if (methodName != null)
+			error.setMethodName(methodName);
+		if (fileName != null)
+			error.setFileName(fileName);
+		if (lineNumber != null)
+			error.setLineNumber(Integer.parseInt(lineNumber));
+		if (stackTrace != null)
+			error.setStackTrace(stackTrace);
 		error.setUuidForUserRelationship(uuidForUser);
-		
+
 		ec.saveChanges();
 		SimpleMessageResponse page = pageWithName(SimpleMessageResponse.class);
 		page.message = "PluginError stored in database.";
