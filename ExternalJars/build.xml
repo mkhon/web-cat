@@ -2,7 +2,7 @@
 
   <import file="../Core/framework.xml"/>
 
-  <target name="copy.woframework.libraries" depends="fetch, common.copy.woframework.libraries" />
+  <target name="copy.woframework.libraries" depends="fetch, common.copy.woframework.libraries, update-jfreechart" />
 
   <target name="fetch">
     <get dest="Libraries" usetimestamp="yes" verbose="yes">
@@ -66,4 +66,13 @@
       <zipfileset src="Xerces-J-bin.2.9.0.zip" includes="**/xml-apis.jar" />
     </copy>
   </target>
+
+  <target name="update-jfreechart" depends="setProps, fetch">
+   <delete verbose="yes">
+     <fileset dir="${wo.wolocalroot}" includes="**/jfreechart-*.jar" excludes="**/jfreechart-1.0.13.jar" />
+   </delete>
+   <copy file="Libraries/jfreechart-1.0.13.jar" todir="${wo.wolocalroot}/Library/Frameworks/ERJasperReports.framework/Resources/Java" />
+   <copy file="Libraries/jfreechart-1.0.13.jar" todir="${wo.wolocalroot}/Library/Frameworks/ERPlot.framework/Resources/Java" />
+  </target>
+
 </project>
