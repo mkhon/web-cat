@@ -1,4 +1,4 @@
-<project name="common">
+<project name="common" xmlns:if="ant:if">
   <!-- ==============================================================
        Common Web-CAT framework build.xml file
        ==============================================================
@@ -165,6 +165,7 @@
         </fileset>
         <fileset dir="../Bootstrap" includes="Bootstrap.jar" />
       </classpath>
+      <excludesfile name="${excludes.file}" if:set="excludes.file" />
     </javac>
   </target>
 
