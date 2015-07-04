@@ -1,4 +1,5 @@
 *.jar
+*.war
 *.zip
 *.framework/
 bin/
@@ -11,3 +12,5 @@ Core/WebServerResources/dijit/
 Core/WebServerResources/dojo/
 Core/WebServerResources/dojox/
 Core/WebServerResources/webcat/
+WOUnitTest/WOUnitTest/build/
+Web-CAT/dist/
