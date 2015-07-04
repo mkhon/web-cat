@@ -1098,7 +1098,7 @@ public abstract class ERXApplication extends ERXAjaxApplication implements ERXGr
 	@SuppressWarnings("all")
 	// Suppress @Override warning for 5.3
 	public WORequest createRequest(String method, String aurl, String anHTTPVersion, Map<String, ? extends List<String>> someHeaders, NSData content, Map<String, Object> someInfo) {
-		return _createRequest(method, aurl, anHTTPVersion, (someHeaders != null ? new NSDictionary<String, Object>(someHeaders, true) : null), content, (someInfo != null ? new NSDictionary<String, Object>(someInfo, true) : null));
+		return _createRequest(method, aurl, anHTTPVersion, (someHeaders != null ? new NSDictionary<String, List<String>>((Map<String, List<String>>) someHeaders, true) : null), content, (someInfo != null ? new NSDictionary<String, Object>(someInfo, true) : null));
 	}
 
 	/**
