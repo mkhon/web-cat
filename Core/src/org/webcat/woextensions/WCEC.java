@@ -138,11 +138,13 @@ public class WCEC
     {
         synchronized (this)
         {
+/*
             int lockCount = lockCount();
             if (lockCount > 0)
             {
                 log.error("Open lock count = " + lockCount);
             }
+*/
             super._checkOpenLockTraces();
         }
     }
