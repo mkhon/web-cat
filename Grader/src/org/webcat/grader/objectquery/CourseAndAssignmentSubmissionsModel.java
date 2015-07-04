@@ -282,7 +282,7 @@ public class CourseAndAssignmentSubmissionsModel
         {
             if (obj instanceof CourseOffering)
             {
-                array.addObject(obj);
+                array.addObject((CourseOffering) obj);
             }
         }
 
@@ -323,7 +323,7 @@ public class CourseAndAssignmentSubmissionsModel
         {
             if (obj instanceof Assignment)
             {
-                array.addObject(obj);
+                array.addObject((Assignment) obj);
             }
         }
 

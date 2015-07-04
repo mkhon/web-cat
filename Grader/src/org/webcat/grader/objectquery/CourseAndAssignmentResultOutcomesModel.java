@@ -335,7 +335,7 @@ public class CourseAndAssignmentResultOutcomesModel
         {
             if (obj instanceof CourseOffering)
             {
-                array.addObject(obj);
+                array.addObject((CourseOffering) obj);
             }
         }
 
@@ -376,7 +376,7 @@ public class CourseAndAssignmentResultOutcomesModel
         {
             if (obj instanceof Assignment)
             {
-                array.addObject(obj);
+                array.addObject((Assignment) obj);
             }
         }
 

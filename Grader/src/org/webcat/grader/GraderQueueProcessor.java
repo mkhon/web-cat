@@ -1458,7 +1458,7 @@ public class GraderQueueProcessor
      * @param array the array
      * @param index the index to grow up to
      */
-    private void growArrayUpToIndex(NSMutableArray<?> array, int index)
+    private void growArrayUpToIndex(NSMutableArray<Object> array, int index)
     {
         while (array.count() <= index)
         {

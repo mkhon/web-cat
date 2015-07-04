@@ -187,7 +187,7 @@ public class StepConfig
 
     // ----------------------------------------------------------
     @Override
-    public void updateFromSnapshot(NSDictionary<String, Object> snapshot)
+    public void updateFromSnapshot(NSDictionary snapshot)
     {
         System.out.println(
             "updating StepConfig " + this + " from snapshot " + snapshot);

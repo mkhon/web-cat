@@ -2382,7 +2382,7 @@ public class Submission
         {
             // This feels kind of like a hack; for globalIDForRow to work
             // correctly, the object id must have the key "id".
-            ((NSMutableDictionary<?, ?>) row).setObjectForKey(
+            ((NSMutableDictionary<String, Object>) row).setObjectForKey(
                     row.objectForKey("OID"), "id");
 
             EOGlobalID gid = entity.globalIDForRow(row);
