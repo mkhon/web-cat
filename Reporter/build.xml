@@ -2,4 +2,10 @@
 
   <import file="../Core/framework.xml"/>
 
+  <target name="compile" depends="oda-commons-plugin, common.compile" />
+
+  <target name="oda-commons-plugin">
+    <ant dir="../ODACommonsPlugin" antfile="export-jar.xml" />
+  </target>
+
 </project>
