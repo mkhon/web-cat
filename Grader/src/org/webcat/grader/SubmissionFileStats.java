@@ -32,6 +32,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.webcat.core.*;
 import org.webcat.grader.messaging.GraderMarkupParseError;
@@ -745,8 +746,7 @@ public class SubmissionFileStats
             }   // big while ends here
             // Now render the DOM tree in string form at append it
             // to contents
-            XMLOutputter outputter = new XMLOutputter();
-            outputter.setOmitDeclaration( true );
+            XMLOutputter outputter = new XMLOutputter(Format.getRawFormat().setOmitDeclaration(true));
             contents.append( outputter.outputString( doc ) );
         }
         catch ( Exception e )
