@@ -1,4 +1,4 @@
-<project name="common" xmlns:if="ant:if">
+<project name="common">
   <!-- ==============================================================
        Common Web-CAT framework build.xml file
        ==============================================================
@@ -22,7 +22,7 @@
     it in a specified pending updates dir, if desired."
   -->
   <target name="install"
-    depends="setProps, init.install, build.woframework, export.jar,
+    depends="setProps, init.install, compile, build.woframework, export.jar,
              install.pending.updates"
     description="Build and install the framework, then export a jar."/>
 
@@ -151,6 +151,9 @@
     <mkdir dir="bin"/>
     <javac srcdir="src" destdir="bin">
       <classpath>
+        <fileset dir="Libraries">
+          <include name="**/*.jar"/>
+        </fileset>
         <fileset dir="${wo.dir.user.home.library.frameworks}"
           includesfile="woproject/ant.frameworks.user.home">
           <include name="**/*.jar"/>
@@ -165,7 +168,7 @@
         </fileset>
         <fileset dir="../Bootstrap" includes="Bootstrap.jar" />
       </classpath>
-      <excludesfile name="${excludes.file}" if:set="excludes.file" />
+      <excludesfile name="${excludes.file}" if="excludes.file" />
     </javac>
   </target>
 
