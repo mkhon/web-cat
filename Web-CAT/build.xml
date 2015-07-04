@@ -67,7 +67,7 @@
 
   <!-- ............................................................... -->
   <target name="build.subsystems">
-    <subant target="install" dir="../WOUnitTest/WOUnitTest" />
+    <ant dir="../WOUnitTest/WOUnitTest" />
     <subant target="install">
       <filelist dir=".."
         files="Bootstrap
