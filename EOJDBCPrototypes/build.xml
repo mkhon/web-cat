@@ -2,4 +2,19 @@
 
   <import file="../Core/framework.xml"/>
 
+  <target name="copy.woframework.libraries" depends="fetch, common.copy.woframework.libraries" />
+
+  <target name="fetch">
+    <get dest="Libraries" usetimestamp="yes" verbose="yes">
+      <url url="http://central.maven.org/maven2/ognl/ognl/2.7.2/ognl-2.7.2.jar" />
+    </get>
+    <get dest="." usetimestamp="yes" verbose="yes">
+      <url url="http://downloads.sourceforge.net/project/jboss/Javassist/3.7.0.GA/javassist-3.7.GA.zip" />
+    </get>
+    <copy todir="Libraries">
+      <mapper type="flatten" />
+      <zipfileset src="javassist-3.7.GA.zip" includes="**/javassist.jar" />
+    </copy>
+  </target>
+
 </project>

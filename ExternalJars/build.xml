@@ -2,4 +2,67 @@
 
   <import file="../Core/framework.xml"/>
 
+  <target name="copy.woframework.libraries" depends="fetch, common.copy.woframework.libraries" />
+
+  <target name="fetch">
+    <get dest="Libraries" usetimestamp="yes" verbose="yes">
+      <url url="http://www.bouncycastle.org/archive/129/bcprov-jdk15-129.jar" />
+      <url url="http://downloads.sourceforge.net/project/jsch/jsch.jar/0.1.53/jsch-0.1.53.jar" />
+      <url url="https://java.net/downloads/javamail/javax.mail.jar" />
+      <url url="https://raw.githubusercontent.com/gramant/maven-repo/master/com/ettrema/milton-api/1.5.7/milton-api-1.5.7.jar" />
+      <url url="http://downloads.sourceforge.net/project/mime-util/mime-util/mime-util-2.1.3/mime-util-2.1.3.jar" />
+      <url url="http://download.eclipse.org/jgit/maven/org/eclipse/jgit/org.eclipse.jgit/1.0.0.201106090707-r/org.eclipse.jgit-1.0.0.201106090707-r.jar" />
+    </get>
+    <get dest="." usetimestamp="yes" verbose="yes">
+      <url url="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.5-bin.zip" />
+      <url url="http://archive.apache.org/dist/commons/io/binaries/commons-io-2.0.1-bin.zip" />
+      <url url="https://archive.apache.org/dist/httpcomponents/httpclient/binary/httpcomponents-client-4.0-bin.zip" />
+      <url url="https://archive.apache.org/dist/httpcomponents/httpcore/binary/httpcomponents-core-4.0.1-bin.zip" />
+      <url url="http://downloads.sourceforge.net/project/jfreechart/1.%20JFreeChart/1.0.13/jfreechart-1.0.13.zip" />
+      <url url="http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.6.zip" />
+      <url url="http://www.openbase.com/released/OpenBaseJDBC_Jan2009.zip" />
+      <url url="http://archive.apache.org/dist/poi/release/bin/poi-bin-3.6-20091214.zip" />
+      <url url="http://www.gjt.org/download/time/java/tar/javatar-2.5.zip" />
+      <url url="http://twitter4j.org/archive/twitter4j-2.1.2.zip" />
+      <url url="http://ostermiller.org/utils/ostermillerutils-1.08.02-bin.zip" />
+      <url url="https://vt-middleware.googlecode.com/files/vt-ldap-3.1-dist.zip" />
+      <url url="http://archive.apache.org/dist/xml/xerces-j/Xerces-J-bin.2.9.0.zip" />
+    </get>
+    <copy todir="Libraries">
+      <mapper type="flatten" />
+      <zipfileset src="commons-codec-1.5-bin.zip" includes="**/commons-codec-1.5.jar" />
+      <zipfileset src="commons-io-2.0.1-bin.zip" includes="**/commons-io-2.0.1.jar" />
+      <zipfileset src="httpcomponents-client-4.0-bin.zip" includes="**/httpclient-4.0.jar" />
+      <zipfileset src="httpcomponents-core-4.0.1-bin.zip" includes="**/httpcore-4.0.1.jar" />
+      <zipfileset src="jfreechart-1.0.13.zip">
+        <patternset>
+          <include name="**/jcommon-1.0.16.jar" />
+          <include name="**/jfreechart-1.0.13.jar" />
+        </patternset>
+      </zipfileset>
+      <zipfileset src="mysql-connector-java-5.1.6.zip" includes="**/mysql-connector-java-5.1.6-bin.jar" />
+      <zipfileset src="OpenBaseJDBC_Jan2009.zip" includes="**/OpenBaseJDBC.jar" />
+      <zipfileset src="poi-bin-3.6-20091214.zip">
+        <patternset>
+          <include name="**/commons-logging-1.1.jar" />
+          <include name="**/poi-3.6-20091214.jar" />
+        </patternset>
+      </zipfileset>
+      <zipfileset src="javatar-2.5.zip">
+        <patternset>
+          <include name="**/activation.jar" />
+          <include name="**/tar.jar" />
+        </patternset>
+      </zipfileset>
+      <zipfileset src="twitter4j-2.1.2.zip">
+        <patternset>
+         <include name="**/twitter4j-core-2.1.2.jar" />
+         <include name="**/jdom-1.0.jar" />
+        </patternset>
+      </zipfileset>
+      <zipfileset src="ostermillerutils-1.08.02-bin.zip" includes="**/ostermillerutils-1.08.02.jar" />
+      <zipfileset src="vt-ldap-3.1-dist.zip" includes="**/vt-ldap-3.1.jar" />
+      <zipfileset src="Xerces-J-bin.2.9.0.zip" includes="**/xml-apis.jar" />
+    </copy>
+  </target>
 </project>
