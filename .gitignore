@@ -6,3 +6,7 @@ Core/dojo-release/dijit/
 Core/dojo-release/dojo/
 Core/dojo-release/dojox/
 Core/dojo-release/util/
+Core/WebServerResources/dijit/
+Core/WebServerResources/dojo/
+Core/WebServerResources/dojox/
+Core/WebServerResources/webcat/
