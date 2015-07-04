@@ -1,0 +1,45 @@
+{
+    attributes = (
+        {
+            columnName = name; 
+            externalType = varchar; 
+            name = name; 
+            serverTimeZone = "Canada/Mountain"; 
+            valueClassName = NSString; 
+            width = 255; 
+        }, 
+        {
+            columnName = oid; 
+            externalType = int; 
+            name = oid; 
+            serverTimeZone = "Canada/Mountain"; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }, 
+        {
+            allowsNull = Y; 
+            columnName = otherName; 
+            externalType = varchar; 
+            name = otherName; 
+            serverTimeZone = "Canada/Mountain"; 
+            valueClassName = NSString; 
+            width = 255; 
+        }, 
+        {
+            allowsNull = Y; 
+            columnName = whatever; 
+            externalType = varchar; 
+            name = whatever; 
+            valueClassName = NSString; 
+            width = 255; 
+        }
+    ); 
+    attributesUsedForLocking = (oid, name, otherName, whatever); 
+    className = EOGenericRecord; 
+    classProperties = (name, otherName, whatever); 
+    externalName = "entity_a_grandchild"; 
+    fetchSpecificationDictionary = {}; 
+    name = EntityAGrandchild; 
+    parent = EntityAChild; 
+    primaryKeyAttributes = (oid); 
+}

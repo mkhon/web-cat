@@ -1,0 +1,33 @@
+Conditional1: WOConditional {
+	condition = canStop;
+}
+
+Conditional2: WOConditional {
+	condition = isStopping;
+}
+
+Form1: WOForm {
+}
+
+ProgressBar: WOCompletionBar {
+    value = numberOfTestCasesAlreadyDone;
+    valueMin = 0;
+    valueMax = testSuite.countTestCases;
+    align = "RIGHT";
+    border = "1";
+	barColor = barColor;
+	backgroundColor = "#000000";
+	numberformat = "0";
+}
+
+String1: WOString {
+	value = testSuite.countTestCases;
+}
+
+SubmitButton1: WOSubmitButton {
+	action = stop;
+	value = "Stop";
+}
+
+UTPageWrapper1: WOUTPageWrapper {
+}

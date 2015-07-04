@@ -1,0 +1,4 @@
+Hyperlink11: WOHyperlink {
+	actionClass = "com.codefab.wounittest.ut";
+	directActionName = "default";
+}

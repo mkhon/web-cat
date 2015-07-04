@@ -1,0 +1,33 @@
+Conditional1: WOConditional {
+	condition = result.wasSuccessful;
+	negate = true;
+}
+
+Conditional2: WOConditional {
+	condition = result.wasSuccessful;
+}
+
+Conditional3: WOConditional {
+	condition = result;
+}
+
+FailureDisplay: WOUTTestResultFailureDisplay {
+	result = runner.result;
+}
+
+String2: WOString {
+	value = result.runCount;
+}
+
+String3: WOString {
+	value = result.errorCount;
+}
+
+String4: WOString {
+	escapeHTML = false;
+	value = runner.time;
+}
+
+String5: WOString {
+	value = result.failureCount;
+}

@@ -1,0 +1,93 @@
+<!--
+depends on http://www.objectstyle.org/woproject
+on OSX need file ~/Library/wobuild.properties with content:
+wo.wolocalroot=/
+wo.woroot=/System
+-->
+
+<project name="WOUnitTest" default="install">
+
+    <target name="setProperties">
+        <property file="build.properties"/>
+        <property file="${user.home}${file.separator}Library${file.separator}wobuild.properties"/>
+        <condition property="wo.properties.check.failed">
+            <not>
+                <and>
+                    <isset property="wo.woroot"/>
+                    <isset property="wo.wolocalroot"/>
+                </and>
+            </not>
+        </condition>
+        <fail message="Could not find ${user.home}${file.separator}Library${file.separator}wobuild.properties." if="wo.properties.check.failed"/>
+        <property name="build_dir" value="build"/>
+        <property name="framework_install_dir" value="${wo.wolocalroot}/Library/Frameworks"/>
+        <property name="framework_path" value="${framework_install_dir}/${ant.project.name}.framework"/>
+        <property name="template" value="WOUTTestCase class.pbfiletemplate"/>
+        <property name="template_path" value="/Developer/ProjectBuilder Extras/File Templates/WebObjects/${template}"/>
+    </target>
+
+    <target name="init" depends="setProperties">
+        <tstamp/>
+        <property name="build" value="${build_dir}/classes"/>
+        <path id="classpath">
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaFoundation.framework/Resources/Java/javafoundation.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaEOControl.framework/Resources/Java/javaeocontrol.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaEOAccess.framework/Resources/Java/javaeoaccess.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaWebObjects.framework/Resources/Java/javawebobjects.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaWOExtensions.framework/Resources/Java/JavaWOExtensions.jar"/>
+        </path>
+   </target>
+
+    <target name="clean" depends="init" description="remove the WO framework">
+        <delete dir="${build_dir}"/>
+        <delete dir="${framework_path}"/>
+    </target>
+
+    <target name="makeBuildDir" depends="init">
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="makeBuildDir">
+        <javac srcdir="." destdir="${build}" debug="off" deprecation="on">
+            <exclude name="*.pbfiletemplate/**"/>
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="install" depends="compile" description="install the WO framework">        
+        <taskdef name="woframework" classname="org.objectstyle.woproject.ant.WOFramework"/>
+        <woframework name="${ant.project.name}" destDir="${framework_install_dir}">
+            <classes dir="${build}"/>
+            <resources dir=".">
+                <include name="*.wo/**"/>
+                <include name="*.api"/>
+                <include name="*.plist"/>
+            </resources>
+        </woframework>
+    </target>
+
+    <target name="cleanTemplate" depends="setProperties" description="remove the PBX template">
+        <delete dir="${template_path}"/>
+    </target>
+
+    <target name="makeTemplateDir" depends="setProperties">
+        <mkdir dir="${template_path}"/>
+    </target>
+
+    <target name="installTemplate" depends="makeTemplateDir" description="install the PBX template">
+        <copy todir="${template_path}">
+            <fileset dir="${template}"/>
+        </copy>
+    </target>
+
+    <target name="all" depends="clean,install,cleanTemplate,installTemplate" description="clean and install the WO framework and PBX template"/>
+
+    <target name="doc" depends="init" description="creates api documentation">
+		<javadoc sourcefiles="Source/org/pekeler/eof/EOFetcher.java,Source/com/codefab/wounittest/WOUTTestCase.java,Source/com/codefab/wounittest/WOUTMockEditingContext.java" destdir="/tmp/javadoc" author="false" version="false" use="false" windowtitle="WOUnitTest API" classpathref="classpath" nodeprecatedlist="true" notree="true" noindex="true" nohelp="true" nonavbar="true">
+            <link href="http://www.junit.org/junit/javadoc"/>
+            <link href="http://developer.apple.com/documentation/WebObjects/Reference/API" packagelistLoc="/Developer/Documentation/WebObjects/Reference/"/>
+            <link href="http://java.sun.com/j2se/1.4.2/docs/api"/>
+        </javadoc>
+    </target>
+
+</project>

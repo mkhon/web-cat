@@ -1,0 +1,5 @@
+ComponentContent1: WOComponentContent {
+}
+String1: WOString {
+	value = application.name;
+}

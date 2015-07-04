@@ -1,0 +1,32 @@
+{
+    attributes = (
+        {
+            columnName = name; 
+            externalType = varchar; 
+            name = name; 
+            valueClassName = NSString; 
+            width = 255; 
+        }, 
+        {
+            columnName = type; 
+            externalType = int; 
+            name = type; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }, 
+        {
+            columnName = oid; 
+            externalType = int; 
+            name = oid; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }
+    ); 
+    attributesUsedForLocking = (oid, name, type); 
+    className = "com.codefab.testwounittest.Thing"; 
+    classProperties = (name, type); 
+    externalName = Thing; 
+    fetchSpecificationDictionary = {}; 
+    name = Thing; 
+    primaryKeyAttributes = (oid); 
+}

@@ -1,0 +1,119 @@
+<!--
+depends on http://www.objectstyle.org/woproject
+on OSX need file ~/Library/wobuild.properties with content:
+wo.wolocalroot=/
+wo.woroot=/System
+-->
+
+<project name="WOUnitTestTest" default="all" >
+
+    <target name="setProperties">
+        <property file="build.properties"/>
+        <property file="${user.home}${file.separator}Library${file.separator}wobuild.properties"/>
+        <condition property="wo.properties.check.failed">
+            <not>
+                <and>
+                    <isset property="wo.woroot"/>
+                    <isset property="wo.wolocalroot"/>
+                </and>
+            </not>
+        </condition>
+        <fail message="Could not find ${user.home}${file.separator}Library${file.separator}wobuild.properties." if="wo.properties.check.failed"/>
+        <property name="build_dir" value="build"/>
+        <property name="app_install_dir" value="${wo.wolocalroot}/Library/WebObjects/Applications"/>
+        <property name="app_path" value="${app_install_dir}/${ant.project.name}.woa"/>
+    </target>
+
+    <target name="init" depends="setProperties">
+        <tstamp/>
+        <property name="build" value="${build_dir}/classes"/>
+        <path id="classpath">
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaFoundation.framework/Resources/Java/javafoundation.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaEOControl.framework/Resources/Java/javaeocontrol.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaEOAccess.framework/Resources/Java/javaeoaccess.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaWebObjects.framework/Resources/Java/javawebobjects.jar"/>
+            <pathelement location="${wo.wolocalroot}/Library/Frameworks/WOUnitTest.framework/Resources/Java/WOUnitTest.jar"/>
+        </path>
+        <path id="runClasspath">
+            <pathelement location="${app_path}/Contents/Resources/Java/wounittesttest.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaXML.framework/Resources/Java/javaxml.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaJDBCAdaptor.framework/Resources/Java/javajdbcadaptor.jar"/>
+            <pathelement location="${wo.woroot}/Library/Frameworks/JavaWOExtensions.framework/Resources/Java/JavaWOExtensions.jar"/>
+        </path>
+   </target>
+
+    <target name="clean" depends="init" description="remove the WO application">
+        <delete dir="${build_dir}" />
+        <delete dir="${app_path}"/>
+    </target>
+
+    <target name="makeBuildDir" depends="init">
+        <mkdir dir="${build}" />
+    </target>
+
+    <target name="compile" depends="makeBuildDir">
+        <javac srcdir="." destdir="${build}" debug="off" deprecation="on">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="install" depends="compile" description="install the WO application">        
+        <taskdef name="woapplication" classname="org.objectstyle.woproject.ant.WOApplication"/>
+        <woapplication name="${ant.project.name}" stdFrameworks="false" destDir="${app_install_dir}">
+            <classes dir="${build}"/>
+            <resources dir=".">
+                <include name="*.wo/**"/>
+                <include name="*.eomodeld/**"/>
+            </resources>
+            <frameworks root="${wo.woroot}">
+                <include name="Library/Frameworks/JavaFoundation.framework"/>
+                <include name="Library/Frameworks/JavaEOControl.framework"/>
+                <include name="Library/Frameworks/JavaEOAccess.framework"/>
+                <include name="Library/Frameworks/JavaWebObjects.framework"/>
+                <include name="Library/Frameworks/JavaJDBCAdaptor.framework"/>
+                <include name="Library/Frameworks/JavaXML.framework"/>
+                <include name="Library/Frameworks/JavaWOExtensions.framework"/>
+            </frameworks>
+            <frameworks root="${wo.wolocalroot}">
+                <include name="Library/Frameworks/WOUnitTest.framework"/>
+            </frameworks>
+        </woapplication>
+    </target>
+
+    <target name="run" depends="install" description="run the WO application">
+        <java classname="Application" fork="yes" dir="${app_path}">
+            <classpath refid="classpath"/>
+            <classpath refid="runClasspath"/>
+            <jvmarg value="-XX:NewSize=2m"/>
+            <jvmarg value="-Xmx256m"/>
+            <jvmarg value="-Xms128m"/>
+            <sysproperty key="WORootDirectory" value="${wo.woroot}"/>
+            <sysproperty key="WOLocalRootDirectory" value="${wo.wolocalroot}"/>
+            <sysproperty key="WOUserDirectory" value="${build_dir}"/>      
+        </java>
+    </target>
+
+    <target name="testAll" depends="install" description="run all unit tests">
+        <junit fork="yes" printsummary="withOutAndErr" filtertrace="on" showoutput="off" haltonfailure="off" dir="${app_path}">
+            <classpath refid="classpath"/>
+            <classpath refid="runClasspath"/>
+            <jvmarg value="-Djava.compiler=NONE"/>
+            <formatter type="brief"/>
+            <test name="com.codefab.wounittest.WOUTAllTestsSuite"/>
+        </junit>
+    </target>
+
+    <target name="test" depends="install" description="run the regular unit tests, use as 'ant test' or 'ant test -Dtestclass=your.testcase'">
+        <property name="testclass" value="com.codefab.testwounittest.AllRegularTestsTestCase"/>
+        <junit fork="yes" haltonfailure="on" dir="${app_path}">
+            <classpath refid="classpath"/>
+            <classpath refid="runClasspath"/>
+            <jvmarg value="-Djava.compiler=NONE"/>
+            <formatter type="brief"/>
+            <test name="${testclass}"/>
+        </junit>
+    </target>
+
+    <target name="all" depends="clean,install" description="clean and install the WO application"/>
+
+</project>

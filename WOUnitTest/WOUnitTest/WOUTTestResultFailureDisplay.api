@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<wodefinitions>
+	<wo class="WOUTTestResultFailureDisplay" wocomponentcontent="false">
+
+		<binding name="result"/>
+		<binding name="singleException"/>
+
+		<validation message="Only one of &apos;result&apos; or &apos;singleException&apos; must be bound.">
+			<and>
+				<unbound name="result"/>
+				<unbound name="singleException"/>
+			</and>
+		</validation>
+
+		<validation message="Exactly one of &apos;result&apos; or &apos;singleException&apos; must be bound.  Both were.">
+			<and>
+				<bound name="result"/>
+				<bound name="singleException"/>
+			</and>
+		</validation>
+	</wo>
+</wodefinitions>

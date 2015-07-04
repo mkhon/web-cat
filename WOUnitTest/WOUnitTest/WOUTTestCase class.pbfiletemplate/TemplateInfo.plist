@@ -1,0 +1,4 @@
+{
+	MainTemplateFile = "class.java";
+	Description = "A WOUnitTest TestCase class.";
+}

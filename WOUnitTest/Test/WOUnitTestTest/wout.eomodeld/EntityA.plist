@@ -1,0 +1,25 @@
+{
+    attributes = (
+        {
+            columnName = name; 
+            externalType = varchar; 
+            name = name; 
+            valueClassName = NSString; 
+            width = 255; 
+        }, 
+        {
+            columnName = oid; 
+            externalType = int; 
+            name = oid; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }
+    ); 
+    attributesUsedForLocking = (oid, name); 
+    className = EOGenericRecord; 
+    classProperties = (name); 
+    externalName = "entity_a"; 
+    fetchSpecificationDictionary = {}; 
+    name = EntityA; 
+    primaryKeyAttributes = (oid); 
+}

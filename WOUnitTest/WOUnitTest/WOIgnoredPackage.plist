@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ignoredPackages</key>
+	<array>
+		<string>junit.framework</string>
+		<string>java.lang</string>
+		<string>sun.reflect</string>
+		<string>com.codefab.wounittest</string>
+		<string>org.pekeler.foundation</string>
+	</array>
+</dict>
+</plist>

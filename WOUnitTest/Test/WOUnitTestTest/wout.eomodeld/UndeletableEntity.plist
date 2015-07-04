@@ -1,0 +1,26 @@
+{
+    attributes = (
+        {
+            columnName = name; 
+            externalType = varchar; 
+            name = name; 
+            valueClassName = NSString; 
+            width = 255; 
+        }, 
+        {
+            columnName = oid; 
+            externalType = int; 
+            name = oid; 
+            valueClassName = NSNumber; 
+            valueType = i; 
+        }
+    ); 
+    attributesUsedForLocking = (name, oid); 
+    className = "com.codefab.testwounittest.UndeletableEntity"; 
+    classProperties = (name); 
+    externalName = "entity_a"; 
+    fetchSpecificationDictionary = {}; 
+    internalInfo = {"_nameInObjectStore" = UndeletableEntity; }; 
+    name = UndeletableEntity; 
+    primaryKeyAttributes = (oid); 
+}

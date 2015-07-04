@@ -1,0 +1,31 @@
+CollapsibleComponentContent1: WOCollapsibleComponentContent {
+	closedLabel = testFailureInRepetition.toString;
+	condition = false;
+	openedLabel = testFailureInRepetition.toString;
+	disabled = false;
+}
+
+CollapsibleComponentContent2: WOCollapsibleComponentContent {
+	closedLabel = testFailureInRepetition.toString;
+	openedLabel = testFailureInRepetition.toString;
+	disabled = false;
+	condition = false;
+}
+
+Repetition1: WORepetition {
+	item = testFailureInRepetition;
+	list = testErrors;
+}
+
+Repetition2: WORepetition {
+	item = testFailureInRepetition;
+	list = testFailures;
+}
+
+UTExceptionDisplay1: WOUTExceptionDisplay {
+	exception = testFailureInRepetition.thrownException;
+}
+
+UTExceptionDisplay2: WOUTExceptionDisplay {
+	exception = testFailureInRepetition.thrownException;
+}

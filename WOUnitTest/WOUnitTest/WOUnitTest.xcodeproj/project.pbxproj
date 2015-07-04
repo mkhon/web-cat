@@ -1,0 +1,1450 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		017C7B4DFFD714AF7F000001 /* JavaEOControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B5828EFFD5E91B7F000001 /* JavaEOControl.framework */; };
+		017C7B4EFFD714AF7F000001 /* JavaFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B5828FFFD5E91B7F000001 /* JavaFoundation.framework */; };
+		017C7B50FFD714AF7F000001 /* JavaWebObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B58291FFD5E91B7F000001 /* JavaWebObjects.framework */; };
+		017C7B51FFD714AF7F000001 /* JavaWOExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B58292FFD5E91B7F000001 /* JavaWOExtensions.framework */; };
+		04B9D3C5FFD8653E11CD2B8D /* JavaEOControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B5828EFFD5E91B7F000001 /* JavaEOControl.framework */; };
+		04B9D3C6FFD8653E11CD2B8D /* JavaFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B5828FFFD5E91B7F000001 /* JavaFoundation.framework */; };
+		04B9D3C8FFD8653E11CD2B8D /* JavaWebObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B58291FFD5E91B7F000001 /* JavaWebObjects.framework */; };
+		04B9D3C9FFD8653E11CD2B8D /* JavaWOExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B58292FFD5E91B7F000001 /* JavaWOExtensions.framework */; };
+		5926058905349DE800A8023C /* JavaEOAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5926058805349DE800A8023C /* JavaEOAccess.framework */; };
+		59E2A48006FD463C00E11FC8 /* ut.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47306FD463B00E11FC8 /* ut.java */; };
+		59E2A48106FD463C00E11FC8 /* uta.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47406FD463B00E11FC8 /* uta.java */; };
+		59E2A48206FD463C00E11FC8 /* WOUTAllTestsSuite.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47506FD463B00E11FC8 /* WOUTAllTestsSuite.java */; };
+		59E2A48306FD463C00E11FC8 /* WOUTDirectAction.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47606FD463B00E11FC8 /* WOUTDirectAction.java */; };
+		59E2A48406FD463C00E11FC8 /* WOUTLogger.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47706FD463B00E11FC8 /* WOUTLogger.java */; };
+		59E2A48506FD463C00E11FC8 /* WOUTMockEditingContext.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47806FD463B00E11FC8 /* WOUTMockEditingContext.java */; };
+		59E2A48606FD463C00E11FC8 /* WOUTTestCase.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47906FD463B00E11FC8 /* WOUTTestCase.java */; };
+		59E2A48706FD463C00E11FC8 /* WOUTTestCenter.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47A06FD463B00E11FC8 /* WOUTTestCenter.java */; };
+		59E2A48806FD463C00E11FC8 /* WOUTTestRunner.java in Sources */ = {isa = PBXBuildFile; fileRef = 59E2A47B06FD463B00E11FC8 /* WOUTTestRunner.java */; };
+		7703434101492D5D2B26A158 /* WOUTRefreshPage.wo in Resources */ = {isa = PBXBuildFile; fileRef = 7703433F01492D5D2B26A158 /* WOUTRefreshPage.wo */; };
+		7703434201492D5D2B26A158 /* WOUTRefreshPage.api in Resources */ = {isa = PBXBuildFile; fileRef = 7703434001492D5D2B26A158 /* WOUTRefreshPage.api */; };
+		7703434301492D5D2B26A158 /* WOUTRefreshPage.java in Sources */ = {isa = PBXBuildFile; fileRef = 7703433E01492D5D2B26A158 /* WOUTRefreshPage.java */; };
+		79B8ED0100FCEA112B26A157 /* WOUTMain.api in Resources */ = {isa = PBXBuildFile; fileRef = 79B8ECFE00FCEA112B26A157 /* WOUTMain.api */; };
+		79B8ED0200FCEA112B26A157 /* WOUTMain.wo in Resources */ = {isa = PBXBuildFile; fileRef = 79B8ED0000FCEA112B26A157 /* WOUTMain.wo */; };
+		79B8ED0300FCEA112B26A157 /* WOUTMain.java in Sources */ = {isa = PBXBuildFile; fileRef = 79B8ECFF00FCEA112B26A157 /* WOUTMain.java */; };
+		79DE47EC01A99FD52B26A157 /* WOUTTestResultDisplay.wo in Resources */ = {isa = PBXBuildFile; fileRef = 79DE47EA01A99FD52B26A157 /* WOUTTestResultDisplay.wo */; };
+		79DE47ED01A99FD52B26A157 /* WOUTTestResultDisplay.api in Resources */ = {isa = PBXBuildFile; fileRef = 79DE47EB01A99FD52B26A157 /* WOUTTestResultDisplay.api */; };
+		79DE47EE01A99FD52B26A157 /* WOUTTestResultDisplay.java in Sources */ = {isa = PBXBuildFile; fileRef = 79DE47E901A99FD52B26A157 /* WOUTTestResultDisplay.java */; };
+		79DE47F301A9B21D2B26A157 /* WOUTPageWrapper.wo in Resources */ = {isa = PBXBuildFile; fileRef = 79DE47F101A9B21D2B26A157 /* WOUTPageWrapper.wo */; };
+		79DE47F401A9B21D2B26A157 /* WOUTPageWrapper.api in Resources */ = {isa = PBXBuildFile; fileRef = 79DE47F201A9B21D2B26A157 /* WOUTPageWrapper.api */; };
+		79DE47F501A9B21D2B26A157 /* WOUTPageWrapper.java in Sources */ = {isa = PBXBuildFile; fileRef = 79DE47F001A9B21D2B26A157 /* WOUTPageWrapper.java */; };
+		AAC19F1608393985000516F6 /* junit.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC19F1508393985000516F6 /* junit.jar */; };
+		AAE14F880844D10400A3659D /* EOFetcher.java in Sources */ = {isa = PBXBuildFile; fileRef = AAE14F870844D10400A3659D /* EOFetcher.java */; };
+		EF04F6540222B3260326A157 /* WOUTExceptionDisplay.api in Resources */ = {isa = PBXBuildFile; fileRef = EF04F6510222B3260326A157 /* WOUTExceptionDisplay.api */; };
+		EF04F6550222B3260326A157 /* WOUTExceptionDisplay.wo in Resources */ = {isa = PBXBuildFile; fileRef = EF04F6520222B3260326A157 /* WOUTExceptionDisplay.wo */; };
+		EF04F6560222B3260326A157 /* WOUTExceptionDisplay.java in Sources */ = {isa = PBXBuildFile; fileRef = EF04F6530222B3260326A157 /* WOUTExceptionDisplay.java */; };
+		EFA224880340C15E0326A10F /* WOIgnoredPackage.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFA224870340C15E0326A10F /* WOIgnoredPackage.plist */; };
+		F5B7DF0001F881EA01A80168 /* WOUTTestResultFailureDisplay.wo in Resources */ = {isa = PBXBuildFile; fileRef = F5B7DEFD01F881EA01A80168 /* WOUTTestResultFailureDisplay.wo */; };
+		F5B7DF0101F881EA01A80168 /* WOUTTestResultFailureDisplay.api in Resources */ = {isa = PBXBuildFile; fileRef = F5B7DEFF01F881EA01A80168 /* WOUTTestResultFailureDisplay.api */; };
+		F5B7DF0201F881EA01A80168 /* WOUTTestResultFailureDisplay.java in Sources */ = {isa = PBXBuildFile; fileRef = F5B7DEFE01F881EA01A80168 /* WOUTTestResultFailureDisplay.java */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		01735AADFFDED26B11CD2B8D /* WebServer */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				INSTALL_MODE_FLAG = "a-w,a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(INSTALL_PATH)";
+				SPLIT_INSTALL = YES;
+				WEBSERVER_DOCROOT = "$(LOCAL_LIBRARY_DIR)/WebServer/Documents";
+				WEBSERVER_INSTALL_DIR_APPLICATION = "$(WEBSERVER_INSTALL_ROOT)";
+				WEBSERVER_INSTALL_DIR_FRAMEWORK = "$(WEBSERVER_INSTALL_ROOT)/Frameworks";
+				WEBSERVER_INSTALL_ROOT = "$(WEBSERVER_DOCROOT)/WebObjects";
+				WEBSERVER_RESOURCES_DIR = "$(WEBSERVER_CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_INSTALL_ROOT)/Java";
+				WEBSERVER_WRAPPER_DIR = "$(WEBSERVER_INSTALL_DIR)/$(WRAPPER_NAME)";
+			};
+			name = WebServer;
+		};
+		40B5829AFFD5EB0D7F000001 /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				SPLIT_INSTALL = NO;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		40B5829BFFD5EB0D7F000001 /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(DSTROOT)/$(INSTALL_PATH)";
+				SPLIT_INSTALL = NO;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		590D959C055221B0009C315D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40B5827EFFD5E7DB7F000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 017C7B36FFD7144B7F000001;
+			remoteInfo = "Web Server";
+		};
+		590D959D055221B0009C315D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40B5827EFFD5E7DB7F000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 017C7B2FFFD7144B7F000001;
+			remoteInfo = "Application Server";
+		};
+		59F74BDE056C77AF00D6A295 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40B5827EFFD5E7DB7F000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 59F74BB0056C72EE00D6A295;
+			remoteInfo = Template;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		017C7B2CFFD7144B7F000001 /* _WOServerWOUnitTest.tmp */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = _WOServerWOUnitTest.tmp; sourceTree = BUILT_PRODUCTS_DIR; };
+		017C7B2DFFD7144B7F000001 /* _WOClientWOUnitTest.tmp */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = _WOClientWOUnitTest.tmp; sourceTree = BUILT_PRODUCTS_DIR; };
+		40B58281FFD5E8187F000001 /* WOUnitTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WOUnitTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		40B5828EFFD5E91B7F000001 /* JavaEOControl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaEOControl.framework; path = /System/Library/Frameworks/JavaEOControl.framework; sourceTree = "<absolute>"; };
+		40B5828FFFD5E91B7F000001 /* JavaFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaFoundation.framework; path = /System/Library/Frameworks/JavaFoundation.framework; sourceTree = "<absolute>"; };
+		40B58291FFD5E91B7F000001 /* JavaWebObjects.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaWebObjects.framework; path = /System/Library/Frameworks/JavaWebObjects.framework; sourceTree = "<absolute>"; };
+		40B58292FFD5E91B7F000001 /* JavaWOExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaWOExtensions.framework; path = /System/Library/Frameworks/JavaWOExtensions.framework; sourceTree = "<absolute>"; };
+		590601D203BBCF440092F319 /* WOUTTestCase class.pbfiletemplate */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = "WOUTTestCase class.pbfiletemplate"; sourceTree = "<group>"; };
+		5926058805349DE800A8023C /* JavaEOAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaEOAccess.framework; path = /System/Library/Frameworks/JavaEOAccess.framework; sourceTree = "<absolute>"; };
+		593CA49F03EE48FA0092F319 /* build.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = build.xml; sourceTree = "<group>"; };
+		59E2A47306FD463B00E11FC8 /* ut.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = ut.java; sourceTree = "<group>"; };
+		59E2A47406FD463B00E11FC8 /* uta.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = uta.java; sourceTree = "<group>"; };
+		59E2A47506FD463B00E11FC8 /* WOUTAllTestsSuite.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTAllTestsSuite.java; sourceTree = "<group>"; };
+		59E2A47606FD463B00E11FC8 /* WOUTDirectAction.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTDirectAction.java; sourceTree = "<group>"; };
+		59E2A47706FD463B00E11FC8 /* WOUTLogger.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTLogger.java; sourceTree = "<group>"; };
+		59E2A47806FD463B00E11FC8 /* WOUTMockEditingContext.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTMockEditingContext.java; sourceTree = "<group>"; };
+		59E2A47906FD463B00E11FC8 /* WOUTTestCase.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTTestCase.java; sourceTree = "<group>"; };
+		59E2A47A06FD463B00E11FC8 /* WOUTTestCenter.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTTestCenter.java; sourceTree = "<group>"; };
+		59E2A47B06FD463B00E11FC8 /* WOUTTestRunner.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = WOUTTestRunner.java; sourceTree = "<group>"; };
+		59F74BB1056C72EE00D6A295 /* Template */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Template; sourceTree = BUILT_PRODUCTS_DIR; };
+		7703433E01492D5D2B26A158 /* WOUTRefreshPage.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; name = WOUTRefreshPage.java; path = Source/com/codefab/wounittest/WOUTRefreshPage.java; sourceTree = "<group>"; };
+		7703433F01492D5D2B26A158 /* WOUTRefreshPage.wo */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; path = WOUTRefreshPage.wo; sourceTree = "<group>"; };
+		7703434001492D5D2B26A158 /* WOUTRefreshPage.api */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.woapi; path = WOUTRefreshPage.api; sourceTree = "<group>"; };
+		79B8ECFE00FCEA112B26A157 /* WOUTMain.api */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.woapi; path = WOUTMain.api; sourceTree = SOURCE_ROOT; };
+		79B8ECFF00FCEA112B26A157 /* WOUTMain.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; name = WOUTMain.java; path = Source/com/codefab/wounittest/WOUTMain.java; sourceTree = SOURCE_ROOT; };
+		79B8ED0000FCEA112B26A157 /* WOUTMain.wo */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; path = WOUTMain.wo; sourceTree = SOURCE_ROOT; };
+		79DE47E901A99FD52B26A157 /* WOUTTestResultDisplay.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; name = WOUTTestResultDisplay.java; path = Source/com/codefab/wounittest/WOUTTestResultDisplay.java; sourceTree = "<group>"; };
+		79DE47EA01A99FD52B26A157 /* WOUTTestResultDisplay.wo */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; path = WOUTTestResultDisplay.wo; sourceTree = "<group>"; };
+		79DE47EB01A99FD52B26A157 /* WOUTTestResultDisplay.api */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.woapi; path = WOUTTestResultDisplay.api; sourceTree = "<group>"; };
+		79DE47F001A9B21D2B26A157 /* WOUTPageWrapper.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; name = WOUTPageWrapper.java; path = Source/com/codefab/wounittest/WOUTPageWrapper.java; sourceTree = "<group>"; };
+		79DE47F101A9B21D2B26A157 /* WOUTPageWrapper.wo */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; path = WOUTPageWrapper.wo; sourceTree = "<group>"; };
+		79DE47F201A9B21D2B26A157 /* WOUTPageWrapper.api */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.woapi; path = WOUTPageWrapper.api; sourceTree = "<group>"; };
+		AAC19F1508393985000516F6 /* junit.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = junit.jar; path = /Developer/Java/Ant/lib/junit.jar; sourceTree = "<absolute>"; };
+		AAE14F870844D10400A3659D /* EOFetcher.java */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.java; path = EOFetcher.java; sourceTree = "<group>"; };
+		EF04F6510222B3260326A157 /* WOUTExceptionDisplay.api */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.woapi; path = WOUTExceptionDisplay.api; sourceTree = "<group>"; };
+		EF04F6520222B3260326A157 /* WOUTExceptionDisplay.wo */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; path = WOUTExceptionDisplay.wo; sourceTree = "<group>"; };
+		EF04F6530222B3260326A157 /* WOUTExceptionDisplay.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; name = WOUTExceptionDisplay.java; path = Source/com/codefab/wounittest/WOUTExceptionDisplay.java; sourceTree = "<group>"; };
+		EFA224870340C15E0326A10F /* WOIgnoredPackage.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = WOIgnoredPackage.plist; sourceTree = "<group>"; };
+		F5B7DEFD01F881EA01A80168 /* WOUTTestResultFailureDisplay.wo */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; path = WOUTTestResultFailureDisplay.wo; sourceTree = "<group>"; };
+		F5B7DEFE01F881EA01A80168 /* WOUTTestResultFailureDisplay.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; name = WOUTTestResultFailureDisplay.java; path = Source/com/codefab/wounittest/WOUTTestResultFailureDisplay.java; sourceTree = "<group>"; };
+		F5B7DEFF01F881EA01A80168 /* WOUTTestResultFailureDisplay.api */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.woapi; path = WOUTTestResultFailureDisplay.api; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworkTarget section */
+		017C7B2FFFD7144B7F000001 /* Application Server */ = {
+			isa = PBXFrameworkTarget;
+			buildConfigurationList = 59BECAA709688F2600951859 /* Build configuration list for PBXFrameworkTarget "Application Server" */;
+			buildPhases = (
+				017C7B30FFD7144B7F000001 /* Headers */,
+				017C7B31FFD7144B7F000001 /* Resources */,
+				017C7B32FFD7144B7F000001 /* Sources */,
+				017C7B33FFD7144B7F000001 /* Frameworks */,
+				017C7B34FFD7144B7F000001 /* Rez */,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				JAVA_ARCHIVE_CLASSES = YES;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = Resources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(SERVER_UNIQUIFIER)WOUnitTest";
+				SERVER_UNIQUIFIER = Server;
+				WRAPPER_EXTENSION = tmp;
+			};
+			dependencies = (
+			);
+			name = "Application Server";
+			productInstallPath = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+			productName = Server;
+			productReference = 017C7B2CFFD7144B7F000001 /* _WOServerWOUnitTest.tmp */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>_WO$(SERVER_UNIQUIFIER)WOUnitTest</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>webo</string>
+	<key>CFBundleVersion</key>
+	<string>0.0.1d1</string>
+	<key>NSJavaNeeded</key>
+	<string>YES</string>
+	<key>NSJavaPath</key>
+	<array>
+		<string>_WO$(SERVER_UNIQUIFIER)WOUnitTest.jar</string>
+	</array>
+	<key>NSJavaRoot</key>
+	<string>Versions/A/Resources/Java</string>
+</dict>
+</plist>
+";
+		};
+		017C7B36FFD7144B7F000001 /* Web Server */ = {
+			isa = PBXFrameworkTarget;
+			buildConfigurationList = 59BECAAC09688F2600951859 /* Build configuration list for PBXFrameworkTarget "Web Server" */;
+			buildPhases = (
+				017C7B37FFD7144B7F000001 /* Headers */,
+				017C7B38FFD7144B7F000001 /* Resources */,
+				017C7B39FFD7144B7F000001 /* Sources */,
+				017C7B3AFFD7144B7F000001 /* Frameworks */,
+				017C7B3BFFD7144B7F000001 /* Rez */,
+			);
+			buildSettings = {
+				CLIENT_UNIQUIFIER = Client;
+				COMPILE_JAVA_SOURCES_IN_NIB_FILES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				JAVA_ARCHIVE_CLASSES = BOTH;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = WebServerResources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(CLIENT_UNIQUIFIER)WOUnitTest";
+				WO_TEMPLATE_VERSION = 5;
+				WRAPPER_EXTENSION = tmp;
+			};
+			dependencies = (
+			);
+			name = "Web Server";
+			productInstallPath = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+			productName = Client;
+			productReference = 017C7B2DFFD7144B7F000001 /* _WOClientWOUnitTest.tmp */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>_WO$(CLIENT_UNIQUIFIER)WOUnitTest</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>webo</string>
+	<key>CFBundleVersion</key>
+	<string>0.0.1d1</string>
+</dict>
+</plist>
+";
+		};
+		40B58282FFD5E8187F000001 /* WOUnitTest */ = {
+			isa = PBXFrameworkTarget;
+			buildConfigurationList = 59BECAB609688F2600951859 /* Build configuration list for PBXFrameworkTarget "WOUnitTest" */;
+			buildPhases = (
+				40B58283FFD5E8187F000001 /* Headers */,
+				40B58284FFD5E8187F000001 /* Resources */,
+				40B58285FFD5E8187F000001 /* Sources */,
+				40B58286FFD5E8187F000001 /* Frameworks */,
+				40B58287FFD5E8187F000001 /* Rez */,
+				017C7B3CFFD7144B7F000001 /* ShellScript */,
+				01CC6D580020D11E11CD2B8D /* ShellScript */,
+			);
+			buildSettings = {
+				BUILD_FILES_DIR = "$(LOCAL_LIBRARY_DIR)/Application Support/Apple/Developer Tools/WebObjects Support";
+				BUILD_VERSION_DIR = "$(VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				BUNDLE_AS_JAR = YES;
+				CLIENT_UNIQUIFIER = Client;
+				CONTENTS_DIR = "$(BUILD_VERSION_DIR)";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_SYMLINK = "$(VERSIONS_DIR)/Current";
+				FRAMEWORK_VERSION = A;
+				INFO_FILE_NAME = Info.plist;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				JAR_BUNDLE_INSTALL_DIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/lib";
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				PRODUCT_NAME = WOUnitTest;
+				RESOURCES_DIR = "$(CONTENTS_DIR)/Resources";
+				RESOURCES_JAVA_DIR = "$(RESOURCES_DIR)/Java";
+				RESOURCES_SYMLINK = "$(WRAPPER_DIR)/Resources";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = NO;
+				VERSIONS_DIR = "$(WRAPPER_DIR)/Versions";
+				WEBSERVER_BUILD_VERSION_DIR = "$(WEBSERVER_VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				WEBSERVER_CONTENTS_DIR = "$(WEBSERVER_BUILD_VERSION_DIR)";
+				WEBSERVER_CURRENT_SYMLINK = "$(WEBSERVER_VERSIONS_DIR)/Current";
+				WEBSERVER_INSTALL_DIR = "$(WEBSERVER_INSTALL_DIR_FRAMEWORK)";
+				WEBSERVER_RESOURCES_DIR = "$(CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_RESOURCES_DIR)/Java";
+				WEBSERVER_RESOURCES_SYMLINK = "$(WEBSERVER_WRAPPER_DIR)/WebServerResources";
+				WEBSERVER_VERSIONS_DIR = "$(WEBSERVER_WRAPPER_DIR)/Versions";
+				WEBSERVER_WRAPPER_DIR = "$(WRAPPER_DIR)";
+				WO_TEMPLATE_MAJOR_VERSION = 5;
+				WO_TEMPLATE_MINOR_VERSION = 2;
+				WRAPPER_DIR = "$(INSTALL_PATH_FOR_STYLE)/$(WRAPPER_NAME)";
+				WRAPPER_EXTENSION = framework;
+				WRAPPER_NAME = "$(PRODUCT_NAME).$(WRAPPER_EXTENSION)";
+			};
+			dependencies = (
+				017C7B2EFFD7144B7F000001 /* PBXTargetDependency */,
+				017C7B35FFD7144B7F000001 /* PBXTargetDependency */,
+				59F74BDF056C77AF00D6A295 /* PBXTargetDependency */,
+			);
+			name = WOUnitTest;
+			productInstallPath = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+			productName = WOFramework;
+			productReference = 40B58281FFD5E8187F000001 /* WOUnitTest.framework */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>WOUnitTest</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>webo</string>
+	<key>CFBundleVersion</key>
+	<string>0.0.1d1</string>
+	<key>Has_WOComponents</key>
+	<true/>
+	<key>NSExecutable</key>
+	<string>WOUnitTest</string>
+	<key>NSJavaClientRoot</key>
+	<string>WebServerResources/Java</string>
+	<key>NSJavaNeeded</key>
+	<true/>
+	<key>NSJavaPath</key>
+	<array>
+		<string>WOUnitTest.jar</string>
+	</array>
+	<key>NSJavaPathClient</key>
+	<string>WOUnitTest.jar</string>
+	<key>NSJavaRoot</key>
+	<string>Resources/Java</string>
+</dict>
+</plist>
+";
+		};
+/* End PBXFrameworkTarget section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		017C7B33FFD7144B7F000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				017C7B4DFFD714AF7F000001 /* JavaEOControl.framework in Frameworks */,
+				017C7B4EFFD714AF7F000001 /* JavaFoundation.framework in Frameworks */,
+				017C7B50FFD714AF7F000001 /* JavaWebObjects.framework in Frameworks */,
+				017C7B51FFD714AF7F000001 /* JavaWOExtensions.framework in Frameworks */,
+				5926058905349DE800A8023C /* JavaEOAccess.framework in Frameworks */,
+				AAC19F1608393985000516F6 /* junit.jar in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		017C7B3AFFD7144B7F000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B9D3C5FFD8653E11CD2B8D /* JavaEOControl.framework in Frameworks */,
+				04B9D3C6FFD8653E11CD2B8D /* JavaFoundation.framework in Frameworks */,
+				04B9D3C8FFD8653E11CD2B8D /* JavaWebObjects.framework in Frameworks */,
+				04B9D3C9FFD8653E11CD2B8D /* JavaWOExtensions.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40B58286FFD5E8187F000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0B4F248C0022200711CD2B8D /* Intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				017C7B2CFFD7144B7F000001 /* _WOServerWOUnitTest.tmp */,
+				017C7B2DFFD7144B7F000001 /* _WOClientWOUnitTest.tmp */,
+			);
+			name = Intermediates;
+			sourceTree = "<group>";
+		};
+		40B5827FFFD5E7DB7F000001 = {
+			isa = PBXGroup;
+			children = (
+				59E2A46F06FD463B00E11FC8 /* Source */,
+				40B58289FFD5E91B7F000001 /* Web Components */,
+				40B5828AFFD5E91B7F000001 /* Resources */,
+				40B5828CFFD5E91B7F000001 /* Frameworks */,
+				40B58280FFD5E8187F000001 /* Products */,
+				593CA49F03EE48FA0092F319 /* build.xml */,
+			);
+			sourceTree = "<group>";
+		};
+		40B58280FFD5E8187F000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40B58281FFD5E8187F000001 /* WOUnitTest.framework */,
+				0B4F248C0022200711CD2B8D /* Intermediates */,
+				59F74BB1056C72EE00D6A295 /* Template */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40B58289FFD5E91B7F000001 /* Web Components */ = {
+			isa = PBXGroup;
+			children = (
+				EF04F6500222B3260326A157 /* WOUTExceptionDisplay */,
+				7703434401492D8D2B26A158 /* WOUTMain */,
+				79DE47EF01A9B21D2B26A157 /* WOUTPageWrapper */,
+				7703433D01492D5D2B26A158 /* WOUTRefreshPage */,
+				79DE47E801A99FD52B26A157 /* WOUTTestResultDisplay */,
+				F5B7DEFC01F881EA01A80168 /* WOUTTestResultFailureDisplay */,
+			);
+			name = "Web Components";
+			sourceTree = "<group>";
+		};
+		40B5828AFFD5E91B7F000001 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EFA224870340C15E0326A10F /* WOIgnoredPackage.plist */,
+				590601D203BBCF440092F319 /* WOUTTestCase class.pbfiletemplate */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		40B5828CFFD5E91B7F000001 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AAC19F1508393985000516F6 /* junit.jar */,
+				5926058805349DE800A8023C /* JavaEOAccess.framework */,
+				40B5828EFFD5E91B7F000001 /* JavaEOControl.framework */,
+				40B5828FFFD5E91B7F000001 /* JavaFoundation.framework */,
+				40B58292FFD5E91B7F000001 /* JavaWOExtensions.framework */,
+				40B58291FFD5E91B7F000001 /* JavaWebObjects.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		59E2A46F06FD463B00E11FC8 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				59E2A47006FD463B00E11FC8 /* com */,
+				59E2A47C06FD463B00E11FC8 /* org */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		59E2A47006FD463B00E11FC8 /* com */ = {
+			isa = PBXGroup;
+			children = (
+				59E2A47106FD463B00E11FC8 /* codefab */,
+			);
+			path = com;
+			sourceTree = "<group>";
+		};
+		59E2A47106FD463B00E11FC8 /* codefab */ = {
+			isa = PBXGroup;
+			children = (
+				59E2A47206FD463B00E11FC8 /* wounittest */,
+			);
+			path = codefab;
+			sourceTree = "<group>";
+		};
+		59E2A47206FD463B00E11FC8 /* wounittest */ = {
+			isa = PBXGroup;
+			children = (
+				59E2A47306FD463B00E11FC8 /* ut.java */,
+				59E2A47406FD463B00E11FC8 /* uta.java */,
+				59E2A47506FD463B00E11FC8 /* WOUTAllTestsSuite.java */,
+				59E2A47606FD463B00E11FC8 /* WOUTDirectAction.java */,
+				59E2A47706FD463B00E11FC8 /* WOUTLogger.java */,
+				59E2A47806FD463B00E11FC8 /* WOUTMockEditingContext.java */,
+				59E2A47906FD463B00E11FC8 /* WOUTTestCase.java */,
+				59E2A47A06FD463B00E11FC8 /* WOUTTestCenter.java */,
+				59E2A47B06FD463B00E11FC8 /* WOUTTestRunner.java */,
+			);
+			path = wounittest;
+			sourceTree = "<group>";
+		};
+		59E2A47C06FD463B00E11FC8 /* org */ = {
+			isa = PBXGroup;
+			children = (
+				59E2A47D06FD463B00E11FC8 /* pekeler */,
+			);
+			path = org;
+			sourceTree = "<group>";
+		};
+		59E2A47D06FD463B00E11FC8 /* pekeler */ = {
+			isa = PBXGroup;
+			children = (
+				59E2A47E06FD463B00E11FC8 /* eof */,
+			);
+			path = pekeler;
+			sourceTree = "<group>";
+		};
+		59E2A47E06FD463B00E11FC8 /* eof */ = {
+			isa = PBXGroup;
+			children = (
+				AAE14F870844D10400A3659D /* EOFetcher.java */,
+			);
+			path = eof;
+			sourceTree = "<group>";
+		};
+		7703433D01492D5D2B26A158 /* WOUTRefreshPage */ = {
+			isa = PBXGroup;
+			children = (
+				7703434001492D5D2B26A158 /* WOUTRefreshPage.api */,
+				7703433E01492D5D2B26A158 /* WOUTRefreshPage.java */,
+				7703433F01492D5D2B26A158 /* WOUTRefreshPage.wo */,
+			);
+			name = WOUTRefreshPage;
+			sourceTree = "<group>";
+		};
+		7703434401492D8D2B26A158 /* WOUTMain */ = {
+			isa = PBXGroup;
+			children = (
+				79B8ECFE00FCEA112B26A157 /* WOUTMain.api */,
+				79B8ECFF00FCEA112B26A157 /* WOUTMain.java */,
+				79B8ED0000FCEA112B26A157 /* WOUTMain.wo */,
+			);
+			name = WOUTMain;
+			sourceTree = "<group>";
+		};
+		79DE47E801A99FD52B26A157 /* WOUTTestResultDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				79DE47EB01A99FD52B26A157 /* WOUTTestResultDisplay.api */,
+				79DE47E901A99FD52B26A157 /* WOUTTestResultDisplay.java */,
+				79DE47EA01A99FD52B26A157 /* WOUTTestResultDisplay.wo */,
+			);
+			name = WOUTTestResultDisplay;
+			sourceTree = "<group>";
+		};
+		79DE47EF01A9B21D2B26A157 /* WOUTPageWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				79DE47F201A9B21D2B26A157 /* WOUTPageWrapper.api */,
+				79DE47F001A9B21D2B26A157 /* WOUTPageWrapper.java */,
+				79DE47F101A9B21D2B26A157 /* WOUTPageWrapper.wo */,
+			);
+			name = WOUTPageWrapper;
+			sourceTree = "<group>";
+		};
+		EF04F6500222B3260326A157 /* WOUTExceptionDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				EF04F6510222B3260326A157 /* WOUTExceptionDisplay.api */,
+				EF04F6530222B3260326A157 /* WOUTExceptionDisplay.java */,
+				EF04F6520222B3260326A157 /* WOUTExceptionDisplay.wo */,
+			);
+			name = WOUTExceptionDisplay;
+			sourceTree = "<group>";
+		};
+		F5B7DEFC01F881EA01A80168 /* WOUTTestResultFailureDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				F5B7DEFF01F881EA01A80168 /* WOUTTestResultFailureDisplay.api */,
+				F5B7DEFE01F881EA01A80168 /* WOUTTestResultFailureDisplay.java */,
+				F5B7DEFD01F881EA01A80168 /* WOUTTestResultFailureDisplay.wo */,
+			);
+			name = WOUTTestResultFailureDisplay;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		017C7B30FFD7144B7F000001 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		017C7B37FFD7144B7F000001 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40B58283FFD5E8187F000001 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXProject section */
+		40B5827EFFD5E7DB7F000001 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 59BECABB09688F2600951859 /* Build configuration list for PBXProject "WOUnitTest" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				40B5829AFFD5EB0D7F000001 /* Development */,
+				40B5829BFFD5EB0D7F000001 /* Deployment */,
+				01735AADFFDED26B11CD2B8D /* WebServer */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = 40B5827FFFD5E7DB7F000001;
+			productRefGroup = 40B58280FFD5E8187F000001 /* Products */;
+			projectDirPath = "";
+			targets = (
+				40B58282FFD5E8187F000001 /* WOUnitTest */,
+				017C7B2FFFD7144B7F000001 /* Application Server */,
+				017C7B36FFD7144B7F000001 /* Web Server */,
+				59F74BB0056C72EE00D6A295 /* Template */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		017C7B31FFD7144B7F000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79B8ED0100FCEA112B26A157 /* WOUTMain.api in Resources */,
+				79B8ED0200FCEA112B26A157 /* WOUTMain.wo in Resources */,
+				7703434101492D5D2B26A158 /* WOUTRefreshPage.wo in Resources */,
+				7703434201492D5D2B26A158 /* WOUTRefreshPage.api in Resources */,
+				79DE47EC01A99FD52B26A157 /* WOUTTestResultDisplay.wo in Resources */,
+				79DE47ED01A99FD52B26A157 /* WOUTTestResultDisplay.api in Resources */,
+				79DE47F301A9B21D2B26A157 /* WOUTPageWrapper.wo in Resources */,
+				79DE47F401A9B21D2B26A157 /* WOUTPageWrapper.api in Resources */,
+				F5B7DF0001F881EA01A80168 /* WOUTTestResultFailureDisplay.wo in Resources */,
+				F5B7DF0101F881EA01A80168 /* WOUTTestResultFailureDisplay.api in Resources */,
+				EF04F6540222B3260326A157 /* WOUTExceptionDisplay.api in Resources */,
+				EF04F6550222B3260326A157 /* WOUTExceptionDisplay.wo in Resources */,
+				EFA224880340C15E0326A10F /* WOIgnoredPackage.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		017C7B38FFD7144B7F000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40B58284FFD5E8187F000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		017C7B34FFD7144B7F000001 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		017C7B3BFFD7144B7F000001 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40B58287FFD5E8187F000001 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		017C7B3CFFD7144B7F000001 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Copy the requisite files from the Server and Client directories into the final wrapper directory\n. \"${BUILD_FILES_DIR}/AssembleFramework.sh\"";
+		};
+		01CC6D580020D11E11CD2B8D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Set the permissions for the build product\n. \"${BUILD_FILES_DIR}/SetPermissions.sh\"";
+		};
+		59F74BAF056C72EE00D6A295 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p '/Library/Application Support/Apple/Developer Tools/File Templates/WebObjects/WOUTTestCase class.pbfiletemplate'\ncp -r $SRCROOT/'WOUTTestCase class.pbfiletemplate/class.java' '/Library/Application Support/Apple/Developer Tools/File Templates/WebObjects/WOUTTestCase class.pbfiletemplate/'\ncp -r $SRCROOT/'WOUTTestCase class.pbfiletemplate/TemplateInfo.plist' '/Library/Application Support/Apple/Developer Tools/File Templates/WebObjects/WOUTTestCase class.pbfiletemplate/'\nexit 0";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		017C7B32FFD7144B7F000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79B8ED0300FCEA112B26A157 /* WOUTMain.java in Sources */,
+				7703434301492D5D2B26A158 /* WOUTRefreshPage.java in Sources */,
+				79DE47EE01A99FD52B26A157 /* WOUTTestResultDisplay.java in Sources */,
+				79DE47F501A9B21D2B26A157 /* WOUTPageWrapper.java in Sources */,
+				F5B7DF0201F881EA01A80168 /* WOUTTestResultFailureDisplay.java in Sources */,
+				EF04F6560222B3260326A157 /* WOUTExceptionDisplay.java in Sources */,
+				59E2A48006FD463C00E11FC8 /* ut.java in Sources */,
+				59E2A48106FD463C00E11FC8 /* uta.java in Sources */,
+				59E2A48206FD463C00E11FC8 /* WOUTAllTestsSuite.java in Sources */,
+				59E2A48306FD463C00E11FC8 /* WOUTDirectAction.java in Sources */,
+				59E2A48406FD463C00E11FC8 /* WOUTLogger.java in Sources */,
+				59E2A48506FD463C00E11FC8 /* WOUTMockEditingContext.java in Sources */,
+				59E2A48606FD463C00E11FC8 /* WOUTTestCase.java in Sources */,
+				59E2A48706FD463C00E11FC8 /* WOUTTestCenter.java in Sources */,
+				59E2A48806FD463C00E11FC8 /* WOUTTestRunner.java in Sources */,
+				AAE14F880844D10400A3659D /* EOFetcher.java in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		017C7B39FFD7144B7F000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40B58285FFD5E8187F000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		017C7B2EFFD7144B7F000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 017C7B2FFFD7144B7F000001 /* Application Server */;
+			targetProxy = 590D959D055221B0009C315D /* PBXContainerItemProxy */;
+		};
+		017C7B35FFD7144B7F000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 017C7B36FFD7144B7F000001 /* Web Server */;
+			targetProxy = 590D959C055221B0009C315D /* PBXContainerItemProxy */;
+		};
+		59F74BDF056C77AF00D6A295 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 59F74BB0056C72EE00D6A295 /* Template */;
+			targetProxy = 59F74BDE056C77AF00D6A295 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXToolTarget section */
+		59F74BB0056C72EE00D6A295 /* Template */ = {
+			isa = PBXToolTarget;
+			buildConfigurationList = 59BECAB109688F2600951859 /* Build configuration list for PBXToolTarget "Template" */;
+			buildPhases = (
+				59F74BAF056C72EE00D6A295 /* ShellScript */,
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Template;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			dependencies = (
+			);
+			name = Template;
+			productInstallPath = /usr/local/bin;
+			productName = Template;
+			productReference = 59F74BB1056C72EE00D6A295 /* Template */;
+		};
+/* End PBXToolTarget section */
+
+/* Begin XCBuildConfiguration section */
+		59BECAA809688F2600951859 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				JAVA_ARCHIVE_CLASSES = YES;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = Resources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(SERVER_UNIQUIFIER)WOUnitTest";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = NO;
+				WRAPPER_EXTENSION = tmp;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		59BECAA909688F2600951859 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(DSTROOT)/$(INSTALL_PATH)";
+				JAVA_ARCHIVE_CLASSES = YES;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = Resources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(SERVER_UNIQUIFIER)WOUnitTest";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = NO;
+				WRAPPER_EXTENSION = tmp;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		59BECAAA09688F2600951859 /* WebServer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				INSTALL_MODE_FLAG = "a-w,a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(INSTALL_PATH)";
+				JAVA_ARCHIVE_CLASSES = YES;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = Resources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(SERVER_UNIQUIFIER)WOUnitTest";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = YES;
+				WEBSERVER_DOCROOT = "$(LOCAL_LIBRARY_DIR)/WebServer/Documents";
+				WEBSERVER_INSTALL_DIR_APPLICATION = "$(WEBSERVER_INSTALL_ROOT)";
+				WEBSERVER_INSTALL_DIR_FRAMEWORK = "$(WEBSERVER_INSTALL_ROOT)/Frameworks";
+				WEBSERVER_INSTALL_ROOT = "$(WEBSERVER_DOCROOT)/WebObjects";
+				WEBSERVER_RESOURCES_DIR = "$(WEBSERVER_CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_INSTALL_ROOT)/Java";
+				WEBSERVER_WRAPPER_DIR = "$(WEBSERVER_INSTALL_DIR)/$(WRAPPER_NAME)";
+				WRAPPER_EXTENSION = tmp;
+			};
+			name = WebServer;
+		};
+		59BECAAB09688F2600951859 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				JAVA_ARCHIVE_CLASSES = YES;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = Resources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(SERVER_UNIQUIFIER)WOUnitTest";
+				SERVER_UNIQUIFIER = Server;
+				WRAPPER_EXTENSION = tmp;
+			};
+			name = Default;
+		};
+		59BECAAD09688F2600951859 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLIENT_UNIQUIFIER = Client;
+				COMPILE_JAVA_SOURCES_IN_NIB_FILES = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				JAVA_ARCHIVE_CLASSES = BOTH;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = WebServerResources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(CLIENT_UNIQUIFIER)WOUnitTest";
+				SPLIT_INSTALL = NO;
+				WO_TEMPLATE_VERSION = 5;
+				WRAPPER_EXTENSION = tmp;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		59BECAAE09688F2600951859 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLIENT_UNIQUIFIER = Client;
+				COMPILE_JAVA_SOURCES_IN_NIB_FILES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(DSTROOT)/$(INSTALL_PATH)";
+				JAVA_ARCHIVE_CLASSES = BOTH;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = WebServerResources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(CLIENT_UNIQUIFIER)WOUnitTest";
+				SPLIT_INSTALL = NO;
+				WO_TEMPLATE_VERSION = 5;
+				WRAPPER_EXTENSION = tmp;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		59BECAAF09688F2600951859 /* WebServer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLIENT_UNIQUIFIER = Client;
+				COMPILE_JAVA_SOURCES_IN_NIB_FILES = YES;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				INSTALL_MODE_FLAG = "a-w,a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(INSTALL_PATH)";
+				JAVA_ARCHIVE_CLASSES = BOTH;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = WebServerResources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(CLIENT_UNIQUIFIER)WOUnitTest";
+				SPLIT_INSTALL = YES;
+				WEBSERVER_DOCROOT = "$(LOCAL_LIBRARY_DIR)/WebServer/Documents";
+				WEBSERVER_INSTALL_DIR_APPLICATION = "$(WEBSERVER_INSTALL_ROOT)";
+				WEBSERVER_INSTALL_DIR_FRAMEWORK = "$(WEBSERVER_INSTALL_ROOT)/Frameworks";
+				WEBSERVER_INSTALL_ROOT = "$(WEBSERVER_DOCROOT)/WebObjects";
+				WEBSERVER_RESOURCES_DIR = "$(WEBSERVER_CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_INSTALL_ROOT)/Java";
+				WEBSERVER_WRAPPER_DIR = "$(WEBSERVER_INSTALL_DIR)/$(WRAPPER_NAME)";
+				WO_TEMPLATE_VERSION = 5;
+				WRAPPER_EXTENSION = tmp;
+			};
+			name = WebServer;
+		};
+		59BECAB009688F2600951859 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLIENT_UNIQUIFIER = Client;
+				COMPILE_JAVA_SOURCES_IN_NIB_FILES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				FRAMEWORK_VERSION = TMP;
+				JAVA_ARCHIVE_CLASSES = BOTH;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER_FLAGS = "-extdirs /Library/WebObjects/Extensions:/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Home/lib/ext";
+				JAVA_FRAMEWORK_RESOURCES_DIRS = WebServerResources;
+				OTHER_JAVA_CLASS_PATH = "";
+				PRODUCT_NAME = "_WO$(CLIENT_UNIQUIFIER)WOUnitTest";
+				WO_TEMPLATE_VERSION = 5;
+				WRAPPER_EXTENSION = tmp;
+			};
+			name = Default;
+		};
+		59BECAB209688F2600951859 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Template;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				SPLIT_INSTALL = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		59BECAB309688F2600951859 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(DSTROOT)/$(INSTALL_PATH)";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Template;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				SPLIT_INSTALL = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		59BECAB409688F2600951859 /* WebServer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				INSTALL_MODE_FLAG = "a-w,a+rX";
+				INSTALL_PATH_FOR_STYLE = "$(INSTALL_PATH)";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Template;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				SPLIT_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WEBSERVER_DOCROOT = "$(LOCAL_LIBRARY_DIR)/WebServer/Documents";
+				WEBSERVER_INSTALL_DIR_APPLICATION = "$(WEBSERVER_INSTALL_ROOT)";
+				WEBSERVER_INSTALL_DIR_FRAMEWORK = "$(WEBSERVER_INSTALL_ROOT)/Frameworks";
+				WEBSERVER_INSTALL_ROOT = "$(WEBSERVER_DOCROOT)/WebObjects";
+				WEBSERVER_RESOURCES_DIR = "$(WEBSERVER_CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_INSTALL_ROOT)/Java";
+				WEBSERVER_WRAPPER_DIR = "$(WEBSERVER_INSTALL_DIR)/$(WRAPPER_NAME)";
+			};
+			name = WebServer;
+		};
+		59BECAB509688F2600951859 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Template;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Default;
+		};
+		59BECAB709688F2600951859 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_FILES_DIR = "$(LOCAL_LIBRARY_DIR)/Application Support/Apple/Developer Tools/WebObjects Support";
+				BUILD_VERSION_DIR = "$(VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				BUNDLE_AS_JAR = YES;
+				CLIENT_UNIQUIFIER = Client;
+				CONTENTS_DIR = "$(BUILD_VERSION_DIR)";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_SYMLINK = "$(VERSIONS_DIR)/Current";
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFO_FILE_NAME = Info.plist;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				JAR_BUNDLE_INSTALL_DIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/lib";
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				PRODUCT_NAME = WOUnitTest;
+				RESOURCES_DIR = "$(CONTENTS_DIR)/Resources";
+				RESOURCES_JAVA_DIR = "$(RESOURCES_DIR)/Java";
+				RESOURCES_SYMLINK = "$(WRAPPER_DIR)/Resources";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = NO;
+				VERSIONS_DIR = "$(WRAPPER_DIR)/Versions";
+				WEBSERVER_BUILD_VERSION_DIR = "$(WEBSERVER_VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				WEBSERVER_CONTENTS_DIR = "$(WEBSERVER_BUILD_VERSION_DIR)";
+				WEBSERVER_CURRENT_SYMLINK = "$(WEBSERVER_VERSIONS_DIR)/Current";
+				WEBSERVER_INSTALL_DIR = "$(WEBSERVER_INSTALL_DIR_FRAMEWORK)";
+				WEBSERVER_RESOURCES_DIR = "$(CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_RESOURCES_DIR)/Java";
+				WEBSERVER_RESOURCES_SYMLINK = "$(WEBSERVER_WRAPPER_DIR)/WebServerResources";
+				WEBSERVER_VERSIONS_DIR = "$(WEBSERVER_WRAPPER_DIR)/Versions";
+				WEBSERVER_WRAPPER_DIR = "$(WRAPPER_DIR)";
+				WO_TEMPLATE_MAJOR_VERSION = 5;
+				WO_TEMPLATE_MINOR_VERSION = 2;
+				WRAPPER_DIR = "$(INSTALL_PATH_FOR_STYLE)/$(WRAPPER_NAME)";
+				WRAPPER_EXTENSION = framework;
+				WRAPPER_NAME = "$(PRODUCT_NAME).$(WRAPPER_EXTENSION)";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		59BECAB809688F2600951859 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_FILES_DIR = "$(LOCAL_LIBRARY_DIR)/Application Support/Apple/Developer Tools/WebObjects Support";
+				BUILD_VERSION_DIR = "$(VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				BUNDLE_AS_JAR = YES;
+				CLIENT_UNIQUIFIER = Client;
+				CONTENTS_DIR = "$(BUILD_VERSION_DIR)";
+				COPY_PHASE_STRIP = YES;
+				CURRENT_SYMLINK = "$(VERSIONS_DIR)/Current";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INFO_FILE_NAME = Info.plist;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH_FOR_STYLE = "$(DSTROOT)/$(INSTALL_PATH)";
+				JAR_BUNDLE_INSTALL_DIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/lib";
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				PRODUCT_NAME = WOUnitTest;
+				RESOURCES_DIR = "$(CONTENTS_DIR)/Resources";
+				RESOURCES_JAVA_DIR = "$(RESOURCES_DIR)/Java";
+				RESOURCES_SYMLINK = "$(WRAPPER_DIR)/Resources";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = NO;
+				VERSIONS_DIR = "$(WRAPPER_DIR)/Versions";
+				WEBSERVER_BUILD_VERSION_DIR = "$(WEBSERVER_VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				WEBSERVER_CONTENTS_DIR = "$(WEBSERVER_BUILD_VERSION_DIR)";
+				WEBSERVER_CURRENT_SYMLINK = "$(WEBSERVER_VERSIONS_DIR)/Current";
+				WEBSERVER_INSTALL_DIR = "$(WEBSERVER_INSTALL_DIR_FRAMEWORK)";
+				WEBSERVER_RESOURCES_DIR = "$(CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_RESOURCES_DIR)/Java";
+				WEBSERVER_RESOURCES_SYMLINK = "$(WEBSERVER_WRAPPER_DIR)/WebServerResources";
+				WEBSERVER_VERSIONS_DIR = "$(WEBSERVER_WRAPPER_DIR)/Versions";
+				WEBSERVER_WRAPPER_DIR = "$(WRAPPER_DIR)";
+				WO_TEMPLATE_MAJOR_VERSION = 5;
+				WO_TEMPLATE_MINOR_VERSION = 2;
+				WRAPPER_DIR = "$(INSTALL_PATH_FOR_STYLE)/$(WRAPPER_NAME)";
+				WRAPPER_EXTENSION = framework;
+				WRAPPER_NAME = "$(PRODUCT_NAME).$(WRAPPER_EXTENSION)";
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		59BECAB909688F2600951859 /* WebServer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_FILES_DIR = "$(LOCAL_LIBRARY_DIR)/Application Support/Apple/Developer Tools/WebObjects Support";
+				BUILD_VERSION_DIR = "$(VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				BUNDLE_AS_JAR = YES;
+				CLIENT_UNIQUIFIER = Client;
+				CONTENTS_DIR = "$(BUILD_VERSION_DIR)";
+				COPY_PHASE_STRIP = YES;
+				CURRENT_SYMLINK = "$(VERSIONS_DIR)/Current";
+				FRAMEWORK_VERSION = A;
+				INFO_FILE_NAME = Info.plist;
+				INSTALL_MODE_FLAG = "a-w,a+rX";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH_FOR_STYLE = "$(INSTALL_PATH)";
+				JAR_BUNDLE_INSTALL_DIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/lib";
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				PRODUCT_NAME = WOUnitTest;
+				RESOURCES_DIR = "$(CONTENTS_DIR)/Resources";
+				RESOURCES_JAVA_DIR = "$(RESOURCES_DIR)/Java";
+				RESOURCES_SYMLINK = "$(WRAPPER_DIR)/Resources";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = YES;
+				VERSIONS_DIR = "$(WRAPPER_DIR)/Versions";
+				WEBSERVER_BUILD_VERSION_DIR = "$(WEBSERVER_VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				WEBSERVER_CONTENTS_DIR = "$(WEBSERVER_BUILD_VERSION_DIR)";
+				WEBSERVER_CURRENT_SYMLINK = "$(WEBSERVER_VERSIONS_DIR)/Current";
+				WEBSERVER_DOCROOT = "$(LOCAL_LIBRARY_DIR)/WebServer/Documents";
+				WEBSERVER_INSTALL_DIR = "$(WEBSERVER_INSTALL_DIR_FRAMEWORK)";
+				WEBSERVER_INSTALL_DIR_APPLICATION = "$(WEBSERVER_INSTALL_ROOT)";
+				WEBSERVER_INSTALL_DIR_FRAMEWORK = "$(WEBSERVER_INSTALL_ROOT)/Frameworks";
+				WEBSERVER_INSTALL_ROOT = "$(WEBSERVER_DOCROOT)/WebObjects";
+				WEBSERVER_RESOURCES_DIR = "$(WEBSERVER_CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_INSTALL_ROOT)/Java";
+				WEBSERVER_RESOURCES_SYMLINK = "$(WEBSERVER_WRAPPER_DIR)/WebServerResources";
+				WEBSERVER_VERSIONS_DIR = "$(WEBSERVER_WRAPPER_DIR)/Versions";
+				WEBSERVER_WRAPPER_DIR = "$(WEBSERVER_INSTALL_DIR)/$(WRAPPER_NAME)";
+				WO_TEMPLATE_MAJOR_VERSION = 5;
+				WO_TEMPLATE_MINOR_VERSION = 2;
+				WRAPPER_DIR = "$(INSTALL_PATH_FOR_STYLE)/$(WRAPPER_NAME)";
+				WRAPPER_EXTENSION = framework;
+				WRAPPER_NAME = "$(PRODUCT_NAME).$(WRAPPER_EXTENSION)";
+			};
+			name = WebServer;
+		};
+		59BECABA09688F2600951859 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_FILES_DIR = "$(LOCAL_LIBRARY_DIR)/Application Support/Apple/Developer Tools/WebObjects Support";
+				BUILD_VERSION_DIR = "$(VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				BUNDLE_AS_JAR = YES;
+				CLIENT_UNIQUIFIER = Client;
+				CONTENTS_DIR = "$(BUILD_VERSION_DIR)";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_SYMLINK = "$(VERSIONS_DIR)/Current";
+				FRAMEWORK_VERSION = A;
+				INFO_FILE_NAME = Info.plist;
+				INSTALL_MODE_FLAG = "a+rX";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH_FOR_STYLE = "$(TARGET_BUILD_DIR)";
+				JAR_BUNDLE_INSTALL_DIR = "$(LOCAL_LIBRARY_DIR)/WebObjects/lib";
+				JAVA_COMPILER_DEPRECATED_WARNINGS = YES;
+				PRODUCT_NAME = WOUnitTest;
+				RESOURCES_DIR = "$(CONTENTS_DIR)/Resources";
+				RESOURCES_JAVA_DIR = "$(RESOURCES_DIR)/Java";
+				RESOURCES_SYMLINK = "$(WRAPPER_DIR)/Resources";
+				SERVER_UNIQUIFIER = Server;
+				SPLIT_INSTALL = NO;
+				VERSIONS_DIR = "$(WRAPPER_DIR)/Versions";
+				WEBSERVER_BUILD_VERSION_DIR = "$(WEBSERVER_VERSIONS_DIR)/$(FRAMEWORK_VERSION)";
+				WEBSERVER_CONTENTS_DIR = "$(WEBSERVER_BUILD_VERSION_DIR)";
+				WEBSERVER_CURRENT_SYMLINK = "$(WEBSERVER_VERSIONS_DIR)/Current";
+				WEBSERVER_INSTALL_DIR = "$(WEBSERVER_INSTALL_DIR_FRAMEWORK)";
+				WEBSERVER_RESOURCES_DIR = "$(CONTENTS_DIR)/WebServerResources";
+				WEBSERVER_RESOURCES_JAVA_DIR = "$(WEBSERVER_RESOURCES_DIR)/Java";
+				WEBSERVER_RESOURCES_SYMLINK = "$(WEBSERVER_WRAPPER_DIR)/WebServerResources";
+				WEBSERVER_VERSIONS_DIR = "$(WEBSERVER_WRAPPER_DIR)/Versions";
+				WEBSERVER_WRAPPER_DIR = "$(WRAPPER_DIR)";
+				WO_TEMPLATE_MAJOR_VERSION = 5;
+				WO_TEMPLATE_MINOR_VERSION = 2;
+				WRAPPER_DIR = "$(INSTALL_PATH_FOR_STYLE)/$(WRAPPER_NAME)";
+				WRAPPER_EXTENSION = framework;
+				WRAPPER_NAME = "$(PRODUCT_NAME).$(WRAPPER_EXTENSION)";
+			};
+			name = Default;
+		};
+		59BECABC09688F2600951859 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		59BECABD09688F2600951859 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		59BECABE09688F2600951859 /* WebServer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = WebServer;
+		};
+		59BECABF09688F2600951859 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		59BECAA709688F2600951859 /* Build configuration list for PBXFrameworkTarget "Application Server" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59BECAA809688F2600951859 /* Development */,
+				59BECAA909688F2600951859 /* Deployment */,
+				59BECAAA09688F2600951859 /* WebServer */,
+				59BECAAB09688F2600951859 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		59BECAAC09688F2600951859 /* Build configuration list for PBXFrameworkTarget "Web Server" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59BECAAD09688F2600951859 /* Development */,
+				59BECAAE09688F2600951859 /* Deployment */,
+				59BECAAF09688F2600951859 /* WebServer */,
+				59BECAB009688F2600951859 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		59BECAB109688F2600951859 /* Build configuration list for PBXToolTarget "Template" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59BECAB209688F2600951859 /* Development */,
+				59BECAB309688F2600951859 /* Deployment */,
+				59BECAB409688F2600951859 /* WebServer */,
+				59BECAB509688F2600951859 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		59BECAB609688F2600951859 /* Build configuration list for PBXFrameworkTarget "WOUnitTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59BECAB709688F2600951859 /* Development */,
+				59BECAB809688F2600951859 /* Deployment */,
+				59BECAB909688F2600951859 /* WebServer */,
+				59BECABA09688F2600951859 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		59BECABB09688F2600951859 /* Build configuration list for PBXProject "WOUnitTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59BECABC09688F2600951859 /* Development */,
+				59BECABD09688F2600951859 /* Deployment */,
+				59BECABE09688F2600951859 /* WebServer */,
+				59BECABF09688F2600951859 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 40B5827EFFD5E7DB7F000001 /* Project object */;
+}
