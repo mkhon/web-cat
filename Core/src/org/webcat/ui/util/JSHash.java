@@ -78,7 +78,7 @@ public class JSHash
                 throw new IllegalArgumentException("Keys should be strings.");
             }
 
-            options.setObjectForKey(value, key);
+            options.setObjectForKey(value, (String) key);
         }
     }
 

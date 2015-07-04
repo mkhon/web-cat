@@ -122,7 +122,7 @@ public class EntityResourceRequestHandler
         log.debug("Registering entity resource handler for class "
                 + entityClass.getCanonicalName());
 
-        resourceHandlers.setObjectForKey(handler, entityClass);
+        resourceHandlers.setObjectForKey((EntityResourceHandler<EOEnterpriseObject>) handler, entityClass);
     }
 
 

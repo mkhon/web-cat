@@ -996,7 +996,7 @@ public abstract class _SentMessage
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return objectsMatchingValues(context, valueDictionary);
@@ -1068,7 +1068,7 @@ public abstract class _SentMessage
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return firstObjectMatchingValues(
@@ -1159,7 +1159,7 @@ public abstract class _SentMessage
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return uniqueObjectMatchingValues(context, valueDictionary);
@@ -1269,7 +1269,7 @@ public abstract class _SentMessage
                     + java.util.Arrays.toString(keysAndValues));
             }
 
-            valueDictionary.setObjectForKey(value, key);
+            valueDictionary.setObjectForKey(value, (String) key);
         }
 
         return countOfObjectsMatchingValues(context, valueDictionary);

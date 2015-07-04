@@ -140,8 +140,10 @@ public class WCForm extends ERXWOForm
 
 
     // ----------------------------------------------------------
-    protected void _setFormName(WOContext context, boolean wasInForm)
+    protected String _setFormName(WOContext context, boolean wasInForm)
     {
+        String previousFormName = super.formName(context, null);
+
         if (_shouldAppendFormTags(context, wasInForm))
         {
             String formName = _formName(context);
@@ -155,6 +157,8 @@ public class WCForm extends ERXWOForm
                 _updateContextFromStack();
             }
         }
+
+        return previousFormName;
     }
 
 

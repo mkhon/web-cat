@@ -94,8 +94,8 @@ public class DirectAction
         {
             return (new install(request())).defaultAction();
         }
-        NSMutableDictionary<?, ?> errors =
-            new NSMutableDictionary<Object, Object>();
+        NSMutableDictionary<String, Object> errors =
+            new NSMutableDictionary<String, Object>();
         NSMutableDictionary extra = request().formValues().mutableClone();
         for (String key : keysToScreen)
         {
@@ -206,7 +206,7 @@ public class DirectAction
      * @return True on success
      */
     protected boolean tryLogin(
-        WORequest request, NSMutableDictionary<?, ?> errors)
+        WORequest request, NSMutableDictionary<String, Object> errors)
     {
         boolean result = false;
         if (request.formValues().count() == 0
@@ -413,7 +413,7 @@ public class DirectAction
      * @return True on success
      */
     protected boolean tryPasswordReset(
-        WORequest request, NSMutableDictionary<?, ?> errors)
+        WORequest request, NSMutableDictionary<String, Object> errors)
     {
         boolean result = false;
         EOEditingContext ec = WCEC.newEditingContext();
@@ -484,8 +484,8 @@ public class DirectAction
      */
     public WOActionResults passwordChangeRequestAction()
     {
-        NSMutableDictionary<?, ?> errors =
-            new NSMutableDictionary<Object, Object>();
+        NSMutableDictionary<String, Object> errors =
+            new NSMutableDictionary<String, Object>();
 
         if (tryPasswordReset(request(), errors))
         {
@@ -541,8 +541,8 @@ public class DirectAction
     {
         // TODO: this entire action should be moved to a separate
         // class in the Grader subsystem.
-        NSMutableDictionary<?, ?> errors =
-            new NSMutableDictionary<Object, Object>();
+        NSMutableDictionary<String, Object> errors =
+            new NSMutableDictionary<String, Object>();
         log.debug("entering submitAction()");
         log.debug("hasSession() = " + context().hasSession());
         WOActionResults result = null;

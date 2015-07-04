@@ -855,7 +855,7 @@ public class Application
      * @return a new instance of the class, appropriately typed.
      */
     @SuppressWarnings("unchecked")
-    public <T> T pageWithName(Class<T> pageClass, WOContext context)
+    public <T extends WOComponent> T pageWithName(Class<T> pageClass, WOContext context)
     {
         return (T)pageWithName(pageClass.getName(), context);
     }
@@ -1245,7 +1245,7 @@ public class Application
     public NSMutableDictionary<?, ?> extraInformationForExceptionInContext(
         Exception exception, WOContext context)
     {
-        NSMutableDictionary<?, ?> result =
+        NSMutableDictionary<Object, Object> result =
             super.extraInformationForExceptionInContext(exception, context);
         if (   context != null
             && context.hasSession()

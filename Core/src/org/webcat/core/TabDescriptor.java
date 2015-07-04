@@ -738,7 +738,7 @@ public class TabDescriptor
                     continue tabSearch;
                 }
             }
-            newChildren.addObject( newTab.clone() );
+            newChildren.addObject( (TabDescriptor) newTab.clone() );
         }
         addChildren( newChildren );
     }

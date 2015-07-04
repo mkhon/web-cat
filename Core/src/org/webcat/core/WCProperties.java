@@ -910,7 +910,7 @@ public class WCProperties
         }
         else
         {
-            NSMutableArray<?> newArray = new NSMutableArray<Object>();
+            NSMutableArray<Object> newArray = new NSMutableArray<Object>();
 
             for (Object value : array)
             {
@@ -968,7 +968,7 @@ public class WCProperties
         }
         else
         {
-            NSMutableDictionary<?, ?> newDictionary =
+            NSMutableDictionary<Object, Object> newDictionary =
                 new NSMutableDictionary<Object, Object>();
 
             for (Object key : dictionary.allKeys())

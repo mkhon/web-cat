@@ -590,7 +590,7 @@ public class AdvancedQueryValueComponent
 	    		if (object instanceof EOEnterpriseObject
                     && valueType.isAssignableFrom(object.getClass()))
 	    		{
-	    			values.addObject(object);
+	    			values.addObject((EOEnterpriseObject) object);
 	    		}
 	    	}
     	}
