@@ -163,6 +163,7 @@
           includesfile="woproject/ant.frameworks.wo.wosystemroot">
           <include name = "**/*.jar"/>
         </fileset>
+        <fileset dir="../Bootstrap" includes="Bootstrap.jar" />
       </classpath>
     </javac>
   </target>
