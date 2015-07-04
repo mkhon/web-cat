@@ -2,4 +2,21 @@
 
   <import file="../Core/framework.xml"/>
 
+  <target name="compile" depends="fetch, common.compile" />
+
+  <target name="fetch">
+    <get dest="." usetimestamp="yes" verbose="yes">
+      <url url="http://archive.eclipse.org/birt/downloads/drops/R-R1-2_6_2-201102191842/birt-runtime-2_6_2.zip" />
+    </get>
+    <copy todir="Libraries">
+      <mapper type="flatten" />
+      <zipfileset src="birt-runtime-2_6_2.zip" includes="**/ReportEngine/lib/*.jar" />
+    </copy>
+    <copy todir="Resources">
+      <cutdirsmapper dirs="1"/>
+      <zipfileset src="birt-runtime-2_6_2.zip" includes="**/ReportEngine/configuration/**" />
+      <zipfileset src="birt-runtime-2_6_2.zip" includes="**/ReportEngine/plugins/**" />
+    </copy>
+  </target>
+
 </project>
