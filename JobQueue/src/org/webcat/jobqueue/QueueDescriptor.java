@@ -179,6 +179,7 @@ public class QueueDescriptor
         int lockCount = 0;
         try
         {
+/*
             if (descriptor.editingContext() instanceof ERXEC)
             {
                 ERXEC ec = (ERXEC)descriptor.editingContext();
@@ -188,6 +189,7 @@ public class QueueDescriptor
                     lockCount++;
                 }
             }
+*/
             dispenser.getJobToken();
         }
         finally
