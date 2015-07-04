@@ -1,0 +1,38 @@
+<project name="main">
+
+<ant dir="Bootstrap">
+  <target name="compile" />
+  <target name="install" />
+</ant>
+<ant dir="DBUpdateEngine">
+  <target name="compile" />
+  <target name="install" />
+</ant>
+<ant dir="EOJDBCPrototypes">
+  <target name="compile" />
+  <target name="install" />
+</ant>
+<ant dir="ExternalJars">
+  <target name="compile" />
+  <target name="install" />
+</ant>
+<ant dir="WebObjectsUpdater">
+  <target name="compile" />
+  <target name="install" />
+</ant>
+<ant dir="WonderUpdater">
+  <target name="compile" />
+  <target name="install" />
+</ant>
+<ant dir="Core" />
+
+<ant dir="Admin" />
+<ant dir="AntForPlugins" />
+<ant dir="CheckStyleForPlugins" />
+<ant dir="CloverForPlugins" />
+<ant dir="Grader" />
+<ant dir="PerlForPlugins" />
+<ant dir="PMDForPlugins" />
+
+<ant dir="Web-CAT" />
+</project>
