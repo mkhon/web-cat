@@ -47,10 +47,19 @@ wo.woroot=/System
         <mkdir dir="${build}"/>
     </target>
 
-    <target name="compile" depends="makeBuildDir">
-        <javac srcdir="." destdir="${build}" debug="off" deprecation="on">
+    <target name="fetch">
+      <get dest="." usetimestamp="yes" verbose="yes">
+        <url url="https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar" />
+      </get>
+    </target>
+
+    <target name="compile" depends="makeBuildDir, fetch">
+        <javac srcdir="." destdir="${build}" debug="off" deprecation="on" source="1.4">
             <exclude name="*.pbfiletemplate/**"/>
             <classpath refid="classpath"/>
+            <classpath>
+              <pathelement location="junit-4.12.jar" />
+            </classpath>
         </javac>
     </target>
 
