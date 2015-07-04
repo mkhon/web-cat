@@ -1,4 +1,4 @@
-<project name="common">
+<project name="common" xmlns:if="ant:if">
   <!-- ==============================================================
        Common Web-CAT framework build.xml file
        ==============================================================
@@ -151,7 +151,7 @@
     <mkdir dir="bin"/>
     <javac srcdir="src" destdir="bin">
       <classpath>
-        <fileset dir="Libraries">
+        <fileset dir="Libraries" if:set="has.internal.libraries.dir">
           <include name="**/*.jar"/>
         </fileset>
         <fileset dir="${wo.dir.user.home.library.frameworks}"
