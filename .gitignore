@@ -2,3 +2,7 @@
 *.zip
 *.framework/
 bin/
+Core/dojo-release/dijit/
+Core/dojo-release/dojo/
+Core/dojo-release/dojox/
+Core/dojo-release/util/
