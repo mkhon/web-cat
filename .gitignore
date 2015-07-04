@@ -2,6 +2,7 @@
 *.zip
 *.framework/
 bin/
+BIRTRuntime/Resources/ReportEngine/
 Core/dojo-release/dijit/
 Core/dojo-release/dojo/
 Core/dojo-release/dojox/
