@@ -11,6 +11,19 @@
   <!-- main targets                                                    -->
   <!-- ==============================================================  -->
 
+  <target name="compile">
+    <property file="${user.home}/Library/wobuild.properties"/>
+    <mkdir dir="bin" />
+    <javac srcdir="src" destdir="bin">
+      <classpath>
+        <fileset dir="${wo.extensions}" includes="**/*.jar" />
+      </classpath>
+      <classpath>
+        <fileset dir="${wo.wolocalroot}/Local/Library/WebObjects/lib" includes="**/*.jar" />
+      </classpath>
+    </javac>
+  </target>
+
   <!-- jar ..........................................................
     Build the jar file only.  Presumes all the Java files have
     already been compiled by Eclipse.  Adds a manifest containing
