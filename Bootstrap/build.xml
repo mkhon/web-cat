@@ -49,7 +49,7 @@
 
   <!-- install ...................................................... -->
   <target name="install"
-    depends="jar, dir.check"
+    depends="compile, jar, dir.check"
     description="Build the jar and install it in an active servlet dir."
   	if="servlet.install.dir.exists">
     <copy todir="${servlet.install.dir}/${project.name}/WEB-INF/lib/"
