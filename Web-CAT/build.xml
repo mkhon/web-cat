@@ -85,8 +85,8 @@
                PerlForPlugins
                PMDForPlugins
       	       BIRTRuntime
-               Reporter
       	       JobQueue
+               Reporter
       	       Notifications
                Opinions
                BatchProcessor
@@ -98,6 +98,8 @@
   <!-- ............................................................... -->
   <target name="build.woapp" depends="init.build">
     <fail unless="dest.dir"/>
+
+    <mkdir dir="bin" />
 
     <taskdef name="woapplication"
       classname="org.objectstyle.woproject.ant.WOApplication"/>
