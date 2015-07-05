@@ -100,6 +100,7 @@
     <fail unless="dest.dir"/>
 
     <mkdir dir="bin" />
+    <mkdir dir="${wo.user.root}/Library/Application Support/WOLips" />
 
     <taskdef name="woapplication"
       classname="org.objectstyle.woproject.ant.WOApplication"/>
