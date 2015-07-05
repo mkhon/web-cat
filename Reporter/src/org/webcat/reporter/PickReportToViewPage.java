@@ -64,7 +64,7 @@ public class PickReportToViewPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        NSMutableDictionary<?, ?> bindings;
+        NSMutableDictionary<String, Object> bindings;
 
         bindings = generatedReportsDisplayGroup.queryBindings();
         bindings.setObjectForKey(user(), "user");

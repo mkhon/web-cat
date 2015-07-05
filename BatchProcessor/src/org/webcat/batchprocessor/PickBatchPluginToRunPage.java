@@ -85,7 +85,7 @@ public class PickBatchPluginToRunPage
     // ----------------------------------------------------------
     public void appendToResponse(WOResponse response, WOContext context)
     {
-        NSMutableDictionary<?, ?> bindings;
+        NSMutableDictionary<String, Object> bindings;
 
         bindings = batchResultDisplayGroup.queryBindings();
         bindings.setObjectForKey(user(), "user");

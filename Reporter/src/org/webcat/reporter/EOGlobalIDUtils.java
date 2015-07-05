@@ -83,7 +83,7 @@ public class EOGlobalIDUtils
         for (Object value : array)
         {
             Object newValue = tryEnterpriseObjectForId(value, ec);
-            newArray.addObject(newValue);
+            newArray.addObject((EOEnterpriseObject) newValue);
         }
 
         return newArray;
@@ -105,7 +105,7 @@ public class EOGlobalIDUtils
     public static NSDictionary<?, ?> enterpriseObjectsForIdDictionary(
         Map<?, ?> dictionary, EOEditingContext ec)
     {
-        NSMutableDictionary<?, ?> newDictionary =
+        NSMutableDictionary<Object, Object> newDictionary =
             new NSMutableDictionary<Object, Object>();
 
         if (dictionary instanceof NSDictionary)
@@ -190,7 +190,7 @@ public class EOGlobalIDUtils
     public static NSArray<?> idsForEnterpriseObjectArray(
         List<?> array, EOEditingContext ec)
     {
-        NSMutableArray<?> newArray = new NSMutableArray<Object>();
+        NSMutableArray<Object> newArray = new NSMutableArray<Object>();
 
         if (array instanceof NSArray)
         {
@@ -234,7 +234,7 @@ public class EOGlobalIDUtils
     public static NSDictionary<?, ?> idsForEnterpriseObjectDictionary(
         Map<?, ?> dictionary, EOEditingContext ec)
     {
-        NSMutableDictionary<?, ?> newDictionary =
+        NSMutableDictionary<Object, Object> newDictionary =
             new NSMutableDictionary<Object, Object>();
 
         if (dictionary instanceof NSDictionary)

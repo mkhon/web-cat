@@ -281,7 +281,7 @@ public class ReportTemplate extends _ReportTemplate
      */
     public static ReportTemplate createNewReportTemplate(EOEditingContext ec,
             User owner, String uploadedName, NSData uploadedData,
-            NSMutableDictionary<?, ?> errors)
+            NSMutableDictionary<String, Object> errors)
     {
         ReportTemplate template = new ReportTemplate();
         ec.insertObject(template);

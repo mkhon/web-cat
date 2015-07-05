@@ -102,7 +102,7 @@ public class DescribeReportInputsPage extends ReporterComponent
     // ----------------------------------------------------------
     public void setValueForParameter(Object value)
     {
-        parameterValues.setObjectForKey(value, parameter.objectForKey("name"));
+        parameterValues.setObjectForKey(value, (String) parameter.objectForKey("name"));
     }
 
 
