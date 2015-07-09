@@ -75,7 +75,7 @@
       <copy todir="dojo-release/dijit/themes/aristo">
           <fileset dir="dojo-release/extras/aristo"/>
       </copy>
-      <get dest="." usetimestamp="yes" verbose="yes">
+      <get dest="." usetimestamp="yes">
         <url url="https://download.dojotoolkit.org/release-1.5.1/dojo-release-1.5.1-src.zip" />
       </get>
       <unzip src="dojo-release-1.5.1-src.zip" dest="dojo-release">

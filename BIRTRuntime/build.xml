@@ -5,7 +5,7 @@
   <target name="compile" depends="fetch, common.compile" />
 
   <target name="fetch">
-    <get dest="." usetimestamp="yes" verbose="yes">
+    <get dest="." usetimestamp="yes">
       <url url="http://archive.eclipse.org/birt/downloads/drops/R-R1-2_6_2-201102191842/birt-runtime-2_6_2.zip" />
     </get>
     <copy todir="Libraries">

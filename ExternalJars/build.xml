@@ -5,7 +5,7 @@
   <target name="copy.woframework.libraries" depends="fetch, common.copy.woframework.libraries, update-jfreechart" />
 
   <target name="fetch">
-    <get dest="Libraries" usetimestamp="yes" verbose="yes">
+    <get dest="Libraries" usetimestamp="yes">
       <url url="http://www.bouncycastle.org/archive/129/bcprov-jdk15-129.jar" />
       <url url="http://downloads.sourceforge.net/project/jsch/jsch.jar/0.1.53/jsch-0.1.53.jar" />
       <url url="https://java.net/downloads/javamail/javax.mail.jar" />
@@ -14,7 +14,7 @@
       <url url="http://downloads.sourceforge.net/project/mime-util/mime-util/mime-util-2.1.3/mime-util-2.1.3.jar" />
       <url url="http://download.eclipse.org/jgit/maven/org/eclipse/jgit/org.eclipse.jgit/1.0.0.201106090707-r/org.eclipse.jgit-1.0.0.201106090707-r.jar" />
     </get>
-    <get dest="." usetimestamp="yes" verbose="yes">
+    <get dest="." usetimestamp="yes">
       <url url="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.5-bin.zip" />
       <url url="http://archive.apache.org/dist/commons/io/binaries/commons-io-2.0.1-bin.zip" />
       <url url="https://archive.apache.org/dist/httpcomponents/httpclient/binary/httpcomponents-client-4.0-bin.zip" />
