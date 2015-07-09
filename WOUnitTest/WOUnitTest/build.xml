@@ -48,7 +48,7 @@ wo.woroot=/System
     </target>
 
     <target name="fetch">
-      <get dest="." usetimestamp="yes" verbose="yes">
+      <get dest="." usetimestamp="yes">
         <url url="https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar" />
       </get>
     </target>
