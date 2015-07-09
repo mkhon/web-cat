@@ -1,4 +1,4 @@
-<project name="Web-CAT" default="build.redistributable.war" basedir=".">
+<project name="Web-CAT" default="build.redistributable.war" basedir="." xmlns:if="ant:if">
 
   <property name="project.name.for.version" value="webcat"/>
   <property name="framework.name"           value="webcat"/>
@@ -320,7 +320,7 @@
           <include name="Library/Frameworks/JavaWOJSPServlet.framework/**/*.jar"/>
           <include name="Library/Frameworks/JavaXML.framework/**/*.jar"/>
         </fileset>
-        <fileset dir="${servlet.jar.dir}">
+        <fileset dir="${servlet.jar.dir}" if:set="servlet.jar.dir">
           <include name="servlet-api.jar"/>
           <include name="jsp-api.jar"/>
         </fileset>
