@@ -21,6 +21,9 @@
       <classpath>
         <fileset dir="${wo.wolocalroot}/Local/Library/WebObjects/lib" includes="**/*.jar" />
       </classpath>
+      <classpath>
+        <fileset dir="${wo.wolocalroot}/Library/Frameworks/ERJars.framework" includes="**/erxservletadaptor.jar" />
+      </classpath>
     </javac>
   </target>
 

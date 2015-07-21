@@ -26,12 +26,18 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.zip.*;
 import javax.servlet.ServletException;
+import javax.servlet.UnavailableException;
 import javax.servlet.http.*;
+import javax.servlet.ServletContext;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import net.sf.webcat.FileUtilities;
 import net.sf.webcat.SubsystemUpdater;
 import net.sf.webcat.WCServletContext;
 import net.sf.webcat.WCUpdater;
+
+import com.webobjects.jspservlet.WOServletAdaptor;
 
 // -------------------------------------------------------------------------
 /**
@@ -45,7 +51,7 @@ import net.sf.webcat.WCUpdater;
  */
 @SuppressWarnings("serial")
 public class WCServletAdaptor
-    extends com.webobjects.jspservlet.WOServletAdaptor
+    extends er.extensions.jspservlet.ERXServletAdaptor
 {
     //~ Constructors ..........................................................
 
@@ -112,6 +118,7 @@ public class WCServletAdaptor
 
         try
         {
+            this.invokeApplicationSetupMethod(this.getServletContext());
             super.init();
         }
         catch (NoClassDefFoundError e)
@@ -294,6 +301,51 @@ public class WCServletAdaptor
 
 
     //~ Private Methods .......................................................
+
+    private static URL[] mangleClasspathForClassLoader(final String aClasspath) {
+        final String fileURLPrefix = (File.pathSeparatorChar == ';') ? "file:///" : "file://";
+        final ArrayList<String> al = new ArrayList<String>();
+        final StringTokenizer tokenizer = new StringTokenizer(aClasspath, "\r\n");
+        while (tokenizer.hasMoreTokens()) {
+          al.add(tokenizer.nextToken().trim());
+        }
+        final URL[] urls = new URL[al.size()];
+        for (int i = 0; i < al.size(); ++i) {
+            try {
+                urls[i] = new URL(fileURLPrefix.concat(al.get(i)));
+            }
+            catch (Throwable ex) {
+                throw new RuntimeException("Error creating URL " + ex);
+            }
+        }
+        return urls;
+    }
+
+    private void invokeApplicationSetupMethod(final ServletContext servletContext)
+        throws UnavailableException
+    {
+        try {
+            final ClassLoader classLoader = WOServletAdaptor.class.getClassLoader();
+            final Method method = classLoader.getClass().getDeclaredMethod("addURL", new Class[]{URL.class});
+            method.setAccessible(true);
+            for (URL url: mangleClasspathForClassLoader(woClasspath)) {
+                method.invoke(classLoader, new Object[]{ url });
+            }
+
+            final String applicationClassName = servletContext.getInitParameter("WOApplicationClass");
+            if (applicationClassName == null || "".equals(applicationClassName)) {
+                throw new UnavailableException("WOApplicationClass must be defined. Verify your web.xml configuration.");
+            }
+
+            System.out.println("Invoking " + applicationClassName + ".setup()");
+            final Class<?> applicationClass = classLoader.loadClass(applicationClassName);
+            applicationClass.getMethod("setup", String[].class).invoke(null, new Object[] {new String[0]});
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new UnavailableException("Error initializing ERXServletAdaptor: " + e.getMessage());
+        }
+    }
 
     // ----------------------------------------------------------
     /**
