@@ -206,8 +206,8 @@
       <lib dir="../Bootstrap">
         <include name="Bootstrap.jar"/>
       </lib>
-      <lib dir="${wo.wolocalroot}/Library/Frameworks/ERJars.framework/Resources/Java">
-        <include name="erxservletadaptor.jar" />
+      <lib dir="${wo.wolocalroot}/Library/Frameworks/ERExtensions.framework/Resources/Java">
+        <include name="ERExtensions.jar" />
       </lib>
       <exclude name="WEB-INF/${project.name}.woa/Contents/MacOS/**"/>
       <exclude name="WEB-INF/${project.name}.woa/Contents/Windows/**"/>
