@@ -27,7 +27,7 @@
       <url url="http://twitter4j.org/archive/twitter4j-2.1.2.zip" />
       <url url="http://ostermiller.org/utils/ostermillerutils-1.08.02-bin.zip" />
       <url url="https://vt-middleware.googlecode.com/files/vt-ldap-3.1-dist.zip" />
-      <url url="http://archive.apache.org/dist/xml/xerces-j/Xerces-J-bin.2.9.0.zip" />
+      <url url="http://apache.xmlcity.org/xml/xerces-j/Xerces-J-bin.2.9.0.zip" />
     </get>
     <copy todir="Libraries">
       <mapper type="flatten" />
